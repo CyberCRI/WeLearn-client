@@ -1,0 +1,38 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CheckboxCompnentVue > renders properly 1`] = `
+<div
+  class="queues scroll"
+  data-v-b972df67=""
+>
+  <div
+    class="flexy"
+    data-v-b972df67=""
+  >
+    
+    <div
+      class="card cursor"
+      data-v-b972df67=""
+    >
+      <div
+        class="card-content"
+        data-v-b972df67=""
+      >
+        i am a question 1
+      </div>
+    </div>
+    <div
+      class="card cursor"
+      data-v-b972df67=""
+    >
+      <div
+        class="card-content"
+        data-v-b972df67=""
+      >
+        i am a question 2
+      </div>
+    </div>
+    
+  </div>
+</div>
+`;

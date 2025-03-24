@@ -1,0 +1,70 @@
+name: WeLearn
+run-name: ${{ github.actor }} is testing WeLearn 🚀
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '**'
+      - '!**_deploy'
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-docker:
+    uses: CyberCRI/github-workflows/.github/workflows/build-push.yaml@main
+    with:
+      registry-name: ${{ vars.DOCKER_PROD_REGISTRY }}
+      image-name: welearn-client
+      image-tag: ${{ github.sha }}
+      recursive-submodule-checkout: true
+      build-args: |
+        VITE_API_BASE=$DOCKER_INJECT_VITE_API_BASE
+        VITE_ENVIRONMENT=$DOCKER_INJECT_VITE_ENVIRONMENT
+        VITE_WL_API_KEY=$DOCKER_INJECT_VITE_WL_API_KEY
+    secrets:
+      registry-username: ${{ secrets.DOCKER_PROD_USERNAME }}
+      registry-password: ${{ secrets.DOCKER_PROD_PASSWORD }}
+      submodules-app-id: ${{ secrets.INFRA_BOT_APP_ID }}
+      submodules-app-installation-id: ${{ secrets.INFRA_BOT_APP_INSTALLATION_ID }}
+      submodules-app-private-key: ${{ secrets.INFRA_BOT_APP_PRIVATE_KEY }}
+
+  lint-and-test:
+    timeout-minutes: 60
+    runs-on: wlc-lint-and-test-runner
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install Yarn
+        run: npm install -g yarn
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run linter and formatter
+        run: |
+          yarn lint
+          yarn format:check
+
+      - name: Run unit tests
+        run: yarn test:unit
+
+      - name: Install Playwright Browsers
+        run: yarn playwright install --with-deps
+      - name: Run Playwright tests
+        run: yarn playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+  tag-deploy:
+    needs:
+      - lint-and-test
+      - build-docker
+    uses: CyberCRI/github-workflows/.github/workflows/tag-deploy.yaml@main

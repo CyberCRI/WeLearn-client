@@ -1,0 +1,979 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`QandA > renders properly 1`] = `
+<div
+  data-v-app=""
+>
+  
+  <!--v-if-->
+  <div
+    class="gridy-template"
+    data-v-8fb8e834=""
+    data-v-dbbc9003=""
+  >
+    <div
+      class="panely left scroll"
+      data-v-8fb8e834=""
+    >
+      
+      <div
+        class="chat-template"
+        data-v-8765cc6e=""
+        data-v-dbbc9003=""
+      >
+        <div
+          class="delete-button-wrapper"
+          data-v-8765cc6e=""
+        >
+          <!--v-if-->
+        </div>
+        
+        <div
+          class="chat-component hidden-scroll"
+          data-v-69ac69ea=""
+        >
+          <div
+            class="chat-area-wrapper empty-chat"
+            data-v-69ac69ea=""
+          >
+            
+            <!--v-if-->
+            <div
+              class="bubbles-wrapper"
+              data-v-8765cc6e=""
+            >
+              
+              
+            </div>
+            <!--v-if-->
+            
+          </div>
+          <div
+            class="bottom-wrapper"
+            data-v-69ac69ea=""
+          >
+            <div
+              class="loading"
+              data-v-69ac69ea=""
+            >
+              
+              
+            </div>
+            
+            <div
+              class="queues"
+              data-v-8765cc6e=""
+            >
+              <div
+                class="queues scroll"
+                data-v-8765cc6e=""
+                data-v-b972df67=""
+              >
+                <div
+                  class="flexy"
+                  data-v-b972df67=""
+                >
+                  
+                  <div
+                    class="card cursor"
+                    data-v-b972df67=""
+                  >
+                    <div
+                      class="card-content"
+                      data-v-b972df67=""
+                    >
+                      defaultQueues[0]
+                    </div>
+                  </div>
+                  <div
+                    class="card cursor"
+                    data-v-b972df67=""
+                  >
+                    <div
+                      class="card-content"
+                      data-v-b972df67=""
+                    >
+                      defaultQueues[1]
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        <div
+          class="scroll-arrow hidden"
+          data-v-69ac69ea=""
+        >
+          <svg
+            data-v-69ac69ea=""
+            viewBox="0 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path
+              d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        
+        <a
+          class="sourcesListLink phone"
+          data-v-8765cc6e=""
+          href="#sourcesAnchor"
+        >
+          goToSources
+        </a>
+        <div
+          class="input-area mx-6"
+          data-v-8765cc6e=""
+        >
+          <div
+            class="chat-input-wrapper is-flex is-full-width is-flex-grow-1"
+            data-v-4fef38d0=""
+            data-v-8765cc6e=""
+            type="text"
+          >
+            <div
+              class="grow-wrap"
+              data-v-4fef38d0=""
+              style="height: 2.75rem;"
+            >
+              <textarea
+                auto-grow=""
+                class="chat-input"
+                data-v-4fef38d0=""
+                placeholder="chatInputPlaceholder"
+                row="1"
+                type="text-area"
+              />
+            </div>
+            <div
+              class="action"
+              data-v-4fef38d0=""
+            >
+              <svg
+                data-v-4fef38d0=""
+                fill="none"
+                height="20"
+                version="1.1"
+                viewBox="-335.5 3078 19.5 20"
+                width="19.5"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g
+                  class="fills"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="m-335.1 3078.2c0.318-0.237 0.749-0.271 1.102-0.089l17.447 9c0.337 0.173 0.547 0.513 0.547 0.884s-0.21 0.711-0.547 0.884l-17.447 9c-0.353 0.182-0.783 0.148-1.101-0.089-0.319-0.236-0.467-0.631-0.381-1.011l2.004-8.784-2.004-8.783c-0.086-0.381 0.062-0.776 0.38-1.012zm3.498 10.795-1.392 6.103 11.831-6.103h-10.439zm10.439-2h-10.439l-1.392-6.103 11.831 6.103z"
+                    fill="#00dba7"
+                    fill-rule="evenodd"
+                    rx="0"
+                    ry="0"
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div
+            class="is-flex ml-auto is-clickable is-align-items-center"
+            data-v-8765cc6e=""
+          >
+            <span
+              class="ml-auto mr-2 is-size-7"
+              data-v-8765cc6e=""
+            >
+              showFilters
+            </span>
+            <svg
+              class="chatIcon"
+              data-v-8765cc6e=""
+              fill="currentcolor"
+              height="800px"
+              id="Capa_1"
+              version="1.1"
+              viewBox="0 0 485.008 485.008"
+              width="800px"
+              xml:space="preserve"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+            >
+              <g>
+                <g>
+                  <path
+                    d="M171.501,464.698v-237.9l-166.3-192.6c-8.9-10.9-7.9-33.3,15.1-33.3h443.6c21.6,0,26.6,19.8,15.1,33.3l-162.3,187.5v147.2
+			c0,6-2,11.1-7.1,15.1l-103.8,95.8C193.801,488.698,171.501,483.898,171.501,464.698z M64.701,41.298l142.2,164.3c3,4,5,8.1,5,13.1
+			v200.6l64.5-58.5v-146.1c0-5,2-9.1,5-13.1l138.1-160.3L64.701,41.298L64.701,41.298z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="filters mt-2 is-flex hide-filters"
+          data-v-8765cc6e=""
+        >
+          <div
+            class="dropdown is-fullwidth is-up"
+            data-v-8765cc6e=""
+            data-v-d2915419=""
+          >
+            <div
+              class="dropdown-trigger"
+              data-v-d2915419=""
+            >
+              <button
+                aria-controls="dropdown-menu"
+                aria-haspopup="true"
+                class="button"
+                data-v-d2915419=""
+              >
+                <div
+                  class="drop-title container is-flex"
+                  data-v-d2915419=""
+                >
+                  <span
+                    data-v-d2915419=""
+                  >
+                    filterBySource
+                  </span>
+                  <!--v-if-->
+                </div>
+                <span
+                  class="icon is-small"
+                  data-v-d2915419=""
+                >
+                  <svg
+                    data-v-d2915419=""
+                    viewBox="0 0 448 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path
+                      d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div
+              class="dropdown-menu"
+              data-v-d2915419=""
+              id="dropdown-menu"
+              role="menu"
+            >
+              <div
+                class="dropdown-content"
+                data-v-d2915419=""
+              >
+                
+                <div
+                  class="shortcuts"
+                  data-v-b4ccca1b=""
+                >
+                  <a
+                    class="clickable-test dropdown-item"
+                    data-v-6584cefd=""
+                    data-v-b4ccca1b=""
+                  >
+                    selectAll
+                  </a>
+                  <a
+                    class="clickable-test dropdown-item"
+                    data-v-6584cefd=""
+                    data-v-b4ccca1b=""
+                  >
+                    removeSelection
+                  </a>
+                </div>
+                
+                
+                
+              </div>
+            </div>
+          </div>
+          <div
+            class="dropdown is-fullwidth is-up"
+            data-v-8765cc6e=""
+            data-v-d2915419=""
+          >
+            <div
+              class="dropdown-trigger"
+              data-v-d2915419=""
+            >
+              <button
+                aria-controls="dropdown-menu"
+                aria-haspopup="true"
+                class="button"
+                data-v-d2915419=""
+              >
+                <div
+                  class="drop-title container is-flex"
+                  data-v-d2915419=""
+                >
+                  <span
+                    data-v-d2915419=""
+                  >
+                    filterSDG
+                  </span>
+                  <!--v-if-->
+                </div>
+                <span
+                  class="icon is-small"
+                  data-v-d2915419=""
+                >
+                  <svg
+                    data-v-d2915419=""
+                    viewBox="0 0 448 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path
+                      d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div
+              class="dropdown-menu"
+              data-v-d2915419=""
+              id="dropdown-menu"
+              role="menu"
+            >
+              <div
+                class="dropdown-content"
+                data-v-d2915419=""
+              >
+                
+                <div
+                  class="shortcuts"
+                  data-v-b4ccca1b=""
+                >
+                  <a
+                    class="clickable-test dropdown-item"
+                    data-v-6584cefd=""
+                    data-v-b4ccca1b=""
+                  >
+                    selectAll
+                  </a>
+                  <a
+                    class="clickable-test dropdown-item"
+                    data-v-6584cefd=""
+                    data-v-b4ccca1b=""
+                  >
+                    removeSelection
+                  </a>
+                </div>
+                
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="1"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        1 - sdgs.1
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-1.png0"
+                      type="checkbox"
+                      value="1"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="2"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        2 - sdgs.2
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-2.png1"
+                      type="checkbox"
+                      value="2"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="3"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        3 - sdgs.3
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-3.png2"
+                      type="checkbox"
+                      value="3"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="4"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        4 - sdgs.4
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-4.png3"
+                      type="checkbox"
+                      value="4"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="5"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        5 - sdgs.5
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-5.png4"
+                      type="checkbox"
+                      value="5"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="6"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        6 - sdgs.6
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-6.png5"
+                      type="checkbox"
+                      value="6"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="7"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        7 - sdgs.7
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-7.png6"
+                      type="checkbox"
+                      value="7"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="8"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        8 - sdgs.8
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-8.png7"
+                      type="checkbox"
+                      value="8"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="9"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        9 - sdgs.9
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-9.png8"
+                      type="checkbox"
+                      value="9"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="10"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        10 - sdgs.10
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-10.png9"
+                      type="checkbox"
+                      value="10"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="11"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        11 - sdgs.11
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-11.png10"
+                      type="checkbox"
+                      value="11"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="12"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        12 - sdgs.12
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-12.png11"
+                      type="checkbox"
+                      value="12"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="13"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        13 - sdgs.13
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-13.png12"
+                      type="checkbox"
+                      value="13"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="14"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        14 - sdgs.14
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-14.png13"
+                      type="checkbox"
+                      value="14"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="15"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        15 - sdgs.15
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-15.png14"
+                      type="checkbox"
+                      value="15"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="16"
+                    class="container"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        16 - sdgs.16
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      id="/src/assets/sdg/sdg-16.png15"
+                      type="checkbox"
+                      value="16"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                <div
+                  class="dropdown-item"
+                >
+                  <label
+                    aria-label="17"
+                    class="container disabled"
+                    data-v-7932c334=""
+                  >
+                    <div
+                      class="checkbox-label"
+                      data-v-7932c334=""
+                    >
+                      <p
+                        data-v-7932c334=""
+                      >
+                        17 - sdgs.17
+                      </p>
+                      
+                      
+                    </div>
+                    <input
+                      data-v-7932c334=""
+                      disabled=""
+                      id="/src/assets/sdg/sdg-17.png16"
+                      type="checkbox"
+                      value="17"
+                    />
+                    <span
+                      class="checkmark"
+                      data-v-7932c334=""
+                    />
+                  </label>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div
+      class="toggle"
+      data-v-8fb8e834=""
+    >
+      <div
+        class="outer"
+        data-v-8fb8e834=""
+      >
+        <button
+          class="tab primary"
+          data-v-8fb8e834=""
+        >
+          &gt;&gt;
+        </button>
+        <div
+          class="tooltip-wraper tltip"
+          data-v-8fb8e834=""
+          data-v-c996eafb=""
+        >
+          <div
+            class="tooltip isleft"
+            data-v-c996eafb=""
+          >
+            hideSources
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="panely right scroll opened"
+      data-v-8fb8e834=""
+    >
+      
+      <!--v-if-->
+      <div
+        class="steps-description"
+        data-v-dbbc9003=""
+      >
+        <p>
+          ...
+        </p>
+      </div>
+      <!--v-if-->
+      <!--v-if-->
+      
+    </div>
+  </div>
+  
+</div>
+`;

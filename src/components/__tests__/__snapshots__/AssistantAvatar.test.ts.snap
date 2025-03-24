@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AssistantAvatar > renders properly 1`] = `
+<div
+  class="avatar"
+  data-v-23b3df74=""
+>
+  <img
+    alt="chat assistant avatar"
+    data-v-23b3df74=""
+    src="/src/assets/wl_logo.png"
+  />
+</div>
+`;

@@ -1,0 +1,8 @@
+injectedEnv:
+  nonSensitive:
+    VITE_API_BASE: https://api.welearn.k8s.lp-i.dev
+    VITE_ENVIRONMENT: dev
+
+ingress:
+  hosts:
+  - welearn.k8s.lp-i.dev

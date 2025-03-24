@@ -1,0 +1,21 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ToasterComponent > renders properly 1`] = `
+<div
+  class="toaster error"
+  data-v-ca54f05c=""
+>
+  <h1
+    class="header"
+    data-v-ca54f05c=""
+  >
+    Error
+  </h1>
+  <p
+    class="body"
+    data-v-ca54f05c=""
+  >
+    Oops something wrong hapened. Please try again later.
+  </p>
+</div>
+`;

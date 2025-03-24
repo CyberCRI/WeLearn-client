@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ChatInput > renders properly 1`] = `
+<div
+  class="chat-input-wrapper"
+  data-v-4fef38d0=""
+>
+  <div
+    class="grow-wrap"
+    data-v-4fef38d0=""
+    style="height: 2.75rem;"
+  >
+    <textarea
+      auto-grow=""
+      class="chat-input"
+      data-v-4fef38d0=""
+      placeholder="chatInputPlaceholder"
+      row="1"
+      type="text-area"
+    />
+  </div>
+  <div
+    class="action"
+    data-v-4fef38d0=""
+  >
+    <svg
+      data-v-4fef38d0=""
+      fill="none"
+      height="20"
+      version="1.1"
+      viewBox="-335.5 3078 19.5 20"
+      width="19.5"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g
+        class="fills"
+      >
+        <path
+          clip-rule="evenodd"
+          d="m-335.1 3078.2c0.318-0.237 0.749-0.271 1.102-0.089l17.447 9c0.337 0.173 0.547 0.513 0.547 0.884s-0.21 0.711-0.547 0.884l-17.447 9c-0.353 0.182-0.783 0.148-1.101-0.089-0.319-0.236-0.467-0.631-0.381-1.011l2.004-8.784-2.004-8.783c-0.086-0.381 0.062-0.776 0.38-1.012zm3.498 10.795-1.392 6.103 11.831-6.103h-10.439zm10.439-2h-10.439l-1.392-6.103 11.831 6.103z"
+          fill="#00dba7"
+          fill-rule="evenodd"
+          rx="0"
+          ry="0"
+        />
+      </g>
+    </svg>
+  </div>
+</div>
+`;

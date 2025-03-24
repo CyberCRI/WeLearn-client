@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    {{- (tpl ($.Values.commonLabels | toYaml ) $) | nindent 4 }}
+    {{- if .Values.sablier.enabled }}
+    sablier.enable: "true"
+    sablier.group: {{ .Values.sablier.groupName }}
+    {{- end }}
+  name: {{ tpl .Values.fullName . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- (tpl ($.Values.commonLabels | toYaml ) $) | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- (tpl ($.Values.commonLabels | toYaml ) $) | nindent 8 }}
+      annotations: {{- include "common.config.checksum" (dict "filePath" "/config.yaml" "root" $)  | nindent 8 }}
+    spec:
+      {{- if .Values.runOnGpu }}
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: gpu-node
+                operator: In
+                values:
+                - "true"
+      tolerations:
+      - key: "Gpu"
+        operator: "Equal"
+        value: "true"
+        effect: "NoSchedule"
+      {{- end }}
+      securityContext:
+        {{- include "common.security.podSecurityContext.restricted" (dict "user" 101) | nindent 8 }}
+      containers:
+      - image: {{ include "common.pods.image" (dict "root" . "image" .Values.image) }}
+        imagePullPolicy: IfNotPresent
+        name: welearn-client
+        ports:
+          - name: http
+            containerPort: 8080
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /index.html
+            port: 8080
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /index.html
+            port: 8080
+        envFrom:
+        {{- if .Values.injectedEnv.nonSensitive }}
+        - configMapRef:
+            name: {{ tpl .Values.fullName . }}
+        {{- end }}
+        securityContext:
+          {{- include "common.security.containerSecurityContext.restricted" dict | nindent 10 }}
+
+        resources: {{ toYaml .Values.resources | nindent 10 }}
+
+        {{- if .Values.injectedEnv.sensitive }}
+        volumeMounts:
+        - name: secrets
+          mountPath: "/secrets"
+          readOnly: true
+      volumes:
+      - name: secrets
+        secret:
+          secretName: {{ tpl $.Values.fullName $ }}
+        {{- end }}

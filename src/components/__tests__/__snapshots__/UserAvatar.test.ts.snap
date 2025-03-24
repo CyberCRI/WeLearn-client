@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UserAvatar > renders properly 1`] = `
+<div
+  class="avatar"
+  data-v-9b599479=""
+>
+  <img
+    alt="chat user avatar"
+    data-v-9b599479=""
+    src="/src/assets/user.png"
+  />
+</div>
+`;

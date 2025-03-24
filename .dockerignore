@@ -1,0 +1,11 @@
+.github
+.git/
+e2e/
+node_modules/
+.dockerignore
+.eslintrc.cjs
+.gitignore
+.prettierrc.json
+Dockerfile
+env.
+README.md

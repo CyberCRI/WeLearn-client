@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CheckboxCompnentVue > renders properly 1`] = `
+<label
+  aria-label="i am a value"
+  class="container"
+  data-v-7932c334=""
+>
+  <div
+    class="checkbox-label"
+    data-v-7932c334=""
+  >
+    <p
+      data-v-7932c334=""
+    >
+      i am a label
+    </p>
+    
+    
+  </div>
+  <input
+    checked=""
+    data-v-7932c334=""
+    id="i am an id"
+    type="checkbox"
+    value="i am a value"
+  />
+  <span
+    class="checkmark"
+    data-v-7932c334=""
+  />
+</label>
+`;

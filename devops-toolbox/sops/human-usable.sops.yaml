@@ -1,0 +1,105 @@
+# PUBLIC KEYS ONLY !
+
+usersKeyMapping:
+  argocd-dev: age1dvu205sflecfu6uewgwmgs83nkm2c2fzfxs55zfkjs2gmqjya50qmm6lck
+  argocd-prod: age13da407hamk8c3rdp3nu3q8hqgxsefn902vrxsuphw2ljfmd2k5qqy7mgzx
+  sam: age195mrdujpg239kfgzq45je9fr7xsdnplt7etu35l0u8y6g67h3a3qxtzam2
+  stanislas: age14qavd6070runmtefwsh60ps3kxnu36fhsp76wvct4w4k4g7wqeksmk3r9z
+  sandra: age1w7q7xfuw2z4nshys80lt3l7y409rws4elevsqm74kh52a2g3pagqcfp9wq
+
+regexesUsersMappings:
+- name: dev-charts-in-repo-welearn
+  regex: k8s/welearn-.*/secrets\.dev\.yaml
+  users:
+  - argocd-dev
+  - stanislas
+  - sandra
+- name: prod-charts-in-repo-welearn
+  regex: k8s/welearn-.*/secrets\.dev\.yaml
+  users:
+  - argocd-prod
+  - stanislas
+  - sandra
+- name: all-charts-in-repo-welearn
+  regex: k8s/welearn.*/secrets\.yaml
+  users:
+  - argocd-dev
+  - argocd-prod
+  - stanislas
+  - sandra
+- name: dev-charts-in-repo
+  regex: k8s/.*/secrets\.dev\.yaml
+  users:
+  - argocd-dev
+  - sam
+  - stanislas
+- name: stag-charts-in-repo
+  regex: k8s/.*/secrets\.staging\.yaml
+  users:
+  - argocd-dev
+  - sam
+  - stanislas
+- name: prod-charts-in-repo
+  regex: k8s/.*/secrets\.prod\.yaml
+  users:
+  - argocd-prod
+  - sam
+  - stanislas
+- name: all-charts-in-repo
+  regex: k8s/.*/secrets\.yaml
+  users:
+  - argocd-dev
+  - argocd-prod
+  - sam
+  - stanislas
+- name: dev-external-helm-charts
+  regex: .*/dev-lab.*/secrets.yaml
+  users:
+  - argocd-dev
+  - sam
+  - stanislas
+- name: dev-external-helm-charts-root
+  regex: .*/secrets.dev.yaml
+  users:
+  - argocd-dev
+  - sam
+  - stanislas
+- name: stag-external-helm-charts
+  regex: .*/stag-test.*/secrets.yaml
+  users:
+  - argocd-dev
+  - sam
+  - stanislas
+- name: stag-external-helm-charts-root
+  regex: .*/secrets.staging.yaml
+  users:
+  - argocd-dev
+  - sam
+  - stanislas
+- name: prod-external-helm-charts
+  regex: .*/prod.*/secrets.yaml
+  users:
+  - argocd-prod
+  - sam
+  - stanislas
+- name: prod-external-helm-charts-root
+  regex: .*/secrets.prod.yaml
+  users:
+  - argocd-prod
+  - sam
+  - stanislas
+- name: shared-external-helm-charts-root
+  regex: .*/secrets.shared.yaml
+  users:
+  - argocd-prod
+  - argocd-dev
+  - sam
+  - stanislas
+- name: cri-infra-prod
+  regex: live/prod-prod/secrets.yml
+  users:
+  - stanislas
+- name: cri-infra-dev
+  regex: live/dev-lab/secrets.yml
+  users:
+  - stanislas

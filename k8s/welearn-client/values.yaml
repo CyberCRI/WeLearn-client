@@ -1,0 +1,32 @@
+fullName: welearn-client
+
+commonLabels:
+  app.kubernetes.io/name: welearn-client
+  app.kubernetes.io/component: client
+  app.kubernetes.io/part-of: welearn
+  app.kubernetes.io/managed-by: helm
+  app.kubernetes.io/version: "{{ .Chart.AppVersion }}"
+
+image:
+  repository: criprodprod.azurecr.io
+  path: welearn-client
+  tag: "{{ .Values.application.revision }}"
+
+replicaCount: 1
+
+ingress:
+  path: /
+
+sablier:
+  enabled: false
+  groupName: welearn
+  traefikMiddleware: "{{.Values.namespace}}-{{.Values.sablier.groupName}}-sablier@kubernetescrd"
+
+resources:
+  limits:
+    memory: 100Mi
+  requests:
+    cpu: 10m
+    memory: 100Mi
+
+runOnGpu: false

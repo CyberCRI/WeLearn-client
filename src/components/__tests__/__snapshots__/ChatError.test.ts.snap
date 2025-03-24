@@ -1,0 +1,22 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ChatError > renders properly 1`] = `
+<div
+  class="chat-error"
+  data-v-9a0d2e9c=""
+>
+  <div
+    data-v-9a0d2e9c=""
+  >
+    Oops something wrong hapened. Please try again later.
+  </div>
+  <button
+    class="button is-secondary"
+    data-v-9a0d2e9c=""
+  >
+    
+    reload
+    
+  </button>
+</div>
+`;

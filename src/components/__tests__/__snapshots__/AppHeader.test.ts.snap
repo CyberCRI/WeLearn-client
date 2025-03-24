@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`AppHeader > renders properly 1`] = `
+<div
+  class="app-header"
+  data-v-48a13218=""
+>
+  <router-link-stub
+    ariacurrentvalue="page"
+    custom="false"
+    data-v-48a13218=""
+    replace="false"
+    to="/"
+  />
+</div>
+`;

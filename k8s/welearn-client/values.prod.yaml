@@ -1,0 +1,8 @@
+ingress:
+  hosts:
+  - welearn-demo.learningplanetinstitute.org
+
+injectedEnv:
+  nonSensitive:
+    VITE_API_BASE: https://api.welearn.k8s.lp-i.org
+    VITE_ENVIRONMENT: prod
