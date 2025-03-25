@@ -89,6 +89,7 @@ const handleModalOpen = () => {
 <style scoped>
 .block.is-flex.is-fullwidth {
   --bulma-block-spacing: 0rem;
+  width: 100%;
   &:hover {
     background-color: var(--neutral-10);
   }
