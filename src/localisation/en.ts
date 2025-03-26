@@ -196,7 +196,13 @@ export const en = {
   tutor: {
     firstStep: {
       title: 'Documents to start with',
-      description: 'Upload one or more documents to get started.'
+      description: 'Upload one or more documents to get started.',
+      cursusTitleLabel: 'Cursus title',
+      cursusTitlePlaceholder: 'Socilinguistics 101',
+      cursusLevelLabel: 'Cursus level',
+      cursusLevelPlaceholder: 'Undergraduate, Graduate, etc.',
+      cursusDurationLabel: 'Cursus duration',
+      cursusDurationPlaceholder: '1 semester, 6 weeks, etc.'
     },
     secondStep: {
       title: 'Select more source',

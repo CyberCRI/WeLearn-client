@@ -5,6 +5,7 @@ defineProps<{
 }>();
 const inputGroupLength = ref(1);
 
+// TODO: think of a vue way of doing this
 const appendNewInputFile = () => {
   const inputGroup = document.querySelector('.input-group');
   const div = document.createElement('div');
@@ -43,6 +44,35 @@ const removeLastInputFile = () => {
   <div class="wrapper" :class="{ disabled: disabled }">
     <h1 class="title is-4">{{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
+    <div class="is-flex is-flex-wrap-wrap mb-4 descriptions">
+      <div class="description">
+        <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
+        <input
+          class="input decription"
+          type="text"
+          id="cursus-title"
+          :placeholder="$t('tutor.firstStep.cursusTitlePlaceholder')"
+        />
+      </div>
+      <div class="description">
+        <label for="cursus-level">{{ $t('tutor.firstStep.cursusLevelLabel') }}</label>
+        <input
+          class="input decription"
+          type="text"
+          id="cursus-level"
+          :placeholder="$t('tutor.firstStep.cursusLevelPlaceholder')"
+        />
+      </div>
+      <div class="description">
+        <label for="cursus-duration">{{ $t('tutor.firstStep.cursusDurationLabel') }}</label>
+        <input
+          class="input decription"
+          type="text"
+          id="cursus-duration"
+          :placeholder="$t('tutor.firstStep.cursusDurationPlaceholder')"
+        />
+      </div>
+    </div>
     <div>
       <div class="input-group is-flex is-flex-direction-column">
         <div class="is-flex is-flex-direction-row" id="first">
@@ -62,15 +92,24 @@ const removeLastInputFile = () => {
   display: flex;
   flex-direction: column;
   flex-grow: 0.25;
-  flex-shrink: 1;
-  flex-basis: 1;
-  transition: all 2s;
+  flex-shrink: 0.25;
+  flex-basis: 30%;
+  transition: all 1s;
   margin: 0 auto;
 }
 
 .wrapper.disabled {
+  flex-basis: 25%;
   opacity: 0.5;
   pointer-events: none;
-  flex-grow: 0.5;
+  flex-grow: 0.25;
+}
+
+.description {
+  width: calc((100% / 3) - (0.5rem * 2));
+}
+
+.descriptions {
+  gap: 0.5rem;
 }
 </style>

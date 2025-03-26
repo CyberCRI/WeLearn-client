@@ -200,7 +200,13 @@ export const fr = {
   tutor: {
     firstStep: {
       title: 'Documents pour commencer',
-      description: 'Téléchargez un ou plusieurs documents pour commencer.'
+      description: 'Téléchargez un ou plusieurs documents pour commencer.',
+      cursusTitleLabel: 'Titre du cours',
+      cursusTitlePlaceholder: 'Sociolinguistique 101',
+      cursusLevelLabel: 'Niveau du cours',
+      cursusLevelPlaceholder: 'Licence, Master, etc.',
+      cursusDurationLabel: 'Durée du cours',
+      cursusDurationPlaceholder: '1 semestre, 6 semaines, etc.'
     },
     secondStep: {
       title: 'Sélectionnez plus de sources',

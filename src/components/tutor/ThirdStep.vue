@@ -1,40 +1,32 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+import { marked } from 'marked';
+import axios from 'axios';
 defineProps<{
   visible?: boolean;
 }>();
+const syllabus = ref('');
+
+const setSyllabusValue = (text) => {
+  syllabus.value = text;
+};
+
+axios
+  .get('./src/components/tutor/mockedSyllabus.md')
+  .then((res) => setSyllabusValue(res.data))
+  .catch((err) => console.log(err));
 </script>
 <template>
-  <div class="wrapper" :class="{ visible: visible }">
+  <div class="wrapper" :class="{ visible: visible && syllabus.length }">
     <h1 class="title is-4">{{ $t('tutor.thirdStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.thirdStep.description') }}</p>
     <!-- syllabus -->
-    <p contenteditable="true" class="syllabus">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus nec nunc ultricies
-      tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-      tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-      tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec purus Lorem ipsum dolor
-      sit amet, consectetur adipiscing elit. Nullam nec purus Lorem ipsum dolor sit amet,
-      consectetur adipiscing elit. Nullam nec purus Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit. Nullam nec purus Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt.
-      Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt.
-      Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt.
-      Nullam nec purus nec nunc ultricies nec nunc ultricies tincidunt. Nullam nec purus nec nunc
-      ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc
-      ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc
-      ultricies tincidunt. Nullam nec purus nec nunc ultricies nec nunc ultricies tincidunt. Nullam
-      nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam
-      nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam
-      nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies nec nunc ultricies
-      tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-      tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-      tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies
-      nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus
-      nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus
-      nec nunc ultricies tincidunt. Nullam nec purus nec nunc ultricies tincidunt. Nullam nec purus
-      nec nunc ultricies
-    </p>
+    <p
+      contenteditable="true"
+      class="syllabus content"
+      v-if="syllabus.length"
+      v-html="marked.parse(syllabus)"
+    />
   </div>
 </template>
 
@@ -46,7 +38,7 @@ defineProps<{
   flex-direction: column;
   flex-grow: 0;
   flex-basis: 0;
-  transition: flex-grow 2s;
+  transition: flex-grow 0.3s;
 }
 
 .wrapper.visible {
@@ -54,22 +46,13 @@ defineProps<{
 }
 
 .syllabus {
-  padding: 1rem;
+  padding: 2rem;
   border: 1px solid var(--neutral-20);
   border-radius: 0.5rem;
-  margin: 1rem 0;
   min-height: 10rem;
-  width: 90%;
   overflow-y: auto;
-  overflow-x: hidden;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  word-break: break-all;
-  font-size: 1rem;
-  line-height: 1.5rem;
+  overflow-x: auto;
   background-color: var(--neutral-10);
-  color: var(--neutral-90);
   cursor: text;
-  transition: background-color 0.3s;
 }
 </style>
