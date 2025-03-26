@@ -27,7 +27,6 @@ const handleModalClose = () => {
   isModalActive.value = false;
 };
 const handleModalOpen = () => {
-  console.log('handleModalOpen');
   isModalActive.value = true;
   addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
