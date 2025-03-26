@@ -6,6 +6,24 @@ import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 
 const step = ref(1);
+const setStep = (val) => {
+  step.value = val;
+};
+
+const handleSearch = () => {
+  console.log('handle search');
+  step.value = step.value + 1;
+};
+
+const handleCreateSyllabus = () => {
+  console.log('create syllabus');
+  step.value = step.value + 1;
+};
+
+const stepToAction = {
+  1: handleSearch,
+  2: handleCreateSyllabus
+};
 </script>
 <template>
   <div class="content-centered-wrapper">
@@ -14,7 +32,7 @@ first step: input to add files short form
 second step: shows search result and allows to select the sources of interes
 third step: show the syllabus produced by the agents
 -->
-    <StepsIndicator :step="step" stepsLength="3" />
+    <StepsIndicator :step="step" :setStep="setStep" stepsLength="3" />
     <div class="layout-flex">
       <div class="flex-wrap" :class="{ shrink: step === 3 }">
         <FirstStep :disabled="step > 1" v-if="step >= 1" />
@@ -24,7 +42,7 @@ third step: show the syllabus produced by the agents
     </div>
     <div class="actions">
       <button class="button" v-if="step > 1" @click="step = step - 1">previous</button>
-      <button class="button" v-if="step < 3" @click="step = step + 1">next</button>
+      <button class="button" v-if="step < 3" @click="stepToAction[step]()">next</button>
     </div>
   </div>
 </template>
@@ -34,7 +52,6 @@ third step: show the syllabus produced by the agents
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   padding: 1rem 2rem;
   height: 100%;
   overflow: hidden;
@@ -48,7 +65,8 @@ third step: show the syllabus produced by the agents
 .layout-flex {
   display: flex;
   gap: 2rem;
-  max-height: 80%;
+  max-height: 85%;
+  margin: 1rem 0rem;
 }
 
 .flex-wrap {
@@ -58,11 +76,17 @@ third step: show the syllabus produced by the agents
   min-width: 20%;
   flex-grow: 1;
   flex-shrink: 1;
-  flex-basis: 0;
-  transition: flex-grow 1.5s;
+  flex-basis: 100%;
+  transition: flex-grow 0s;
+  height: 100%;
 }
 
 .flex-wrap.shrink {
-  flex-grow: 0.5;
+  flex-grow: 0.7;
+  flex-basis: 10%;
+  & > * {
+    flex-basis: 100%;
+    transition: flex-grow 0s;
+  }
 }
 </style>

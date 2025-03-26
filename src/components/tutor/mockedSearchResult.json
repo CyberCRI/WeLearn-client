@@ -1,0 +1,1509 @@
+[
+  {
+    "score": 0.7456217,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Fat talk and citizen scienceFat talk is a spontaneous verbal interaction in which interlocutors make self-disparaging comments about the body, usually as a request for assessment. Fat talk often reflects concerns about the self that stem from broader sociocultural factors. It is therefore an important target for sociocultural linguistics. However, real-time studies of fat talk are uncommon due to the resource and time burdens required to capture these fleeting utterances. This limits the scope of data produced using standard sociolinguistic methods. Citizen science may alleviate these burdens by producing a scale of social observation not afforded via traditional methods. Here we present a proof-of-concept for a novel methodology, citizen sociolinguistics. This research approach involves collaborations with citizen researchers to capture forms of conversational data that are typically inaccessible, including fat talk.Aims and outcomesThis study had two primary aims. Aim 1 focused on scientific output, testing a novel research strategy wherein citizen sociolinguists captured fat talk data in a diverse metropolitan region (Southwestern United States). Results confirm that citizen sociolinguistic research teams captured forms of fat talk that mirrored the scripted responses previously reported. However, they also capture unique forms of fat talk, likely due to greater diversity in sample and sampling environments. Aim 2 focused on the method itself via reflective exercises shared by the citizen sociolinguists throughout the project. In addition to confirming that the citizen sociolinguistic method produces reliable, scientifically valid data, we contend that citizen sociolinguist inclusion has broader scientific benefits which include applied scientific training, fostering sustained relationships between professional researchers and the public, and producing novel, meaningful scientific output that advances professional discourse.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "School of Human Evolution and Social Change, Arizona State University, Tempe, Arizona, United States of America",
+            "name": "Agostini Gina"
+          },
+          {
+            "misc": "School of Human Evolution and Social Change, Arizona State University, Tempe, Arizona, United States of America",
+            "name": "SturtzSreetharan Cindi"
+          },
+          {
+            "misc": "School of Human Evolution and Social Change, Arizona State University, Tempe, Arizona, United States of America",
+            "name": "Wutich Amber"
+          },
+          {
+            "misc": "School of Nutrition and Health Promotion, College of Health Solutions, Arizona State University, Phoenix, Arizona, United States of America",
+            "name": "Williams Deborah"
+          },
+          {
+            "misc": "School of Human Evolution and Social Change, Arizona State University, Tempe, Arizona, United States of America",
+            "name": "Brewis Alexandra"
+          }
+        ],
+        "duration": "1560",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "38.55"
+      },
+      "document_id": "f5f89c00-1701-4b02-8f7b-ad474693f1f0",
+      "document_lang": "en",
+      "document_sdg": [16, 5],
+      "document_title": "Citizen sociolinguistics: A new method to understand fat talk",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0217618",
+      "slice_content": "The relative paucity of citizen social scientists (and associated loss of scientific knowledge) has been noted by several scholars, including linguists Rymes and Leone [6], who have championed for the creation of citizen sociolinguistics, specifically. The definition of citizen sociolinguistics remains unsettled. While the inclusion of laypeople in research projects is one obvious aspect of such work, opinions differ as to the nature of their involvement. Svendsen [7] states this burgeoning field is defined by the engagement of lay people in the process of sociolinguistic research. Fitting with the approach we apply here, this can range from data documentation to more complex tasks associated with analysis and interpretation. Rymes and Leone [6], however, define citizen sociolinguistics using a more metalinguistic lens, focusing on the secondary analysis of language by everyday people as they reflect publicly (e.g., via social media) on language phenomena (e.g., use of accent/dialect, non-prescriptive grammar forms, monolingualism, etc.). In effect, the layperson becomes the citizen sociolinguist and analyst at the moment they make comments on everyday language uses. Rymes et al. [ 8] therefore seem to suggest that the citizen sociolinguist need not be included in the execution of research (or even be aware of it).Despite these differences in perspective on the defining boundaries of practice, both Rymes’ et al. and Svendsen’s approaches entail some form of indirect or direct engagement with local citizens to understand otherwise inaccessible language data.\n\nHere we report on the methodological outcomes of a novel citizen sociolinguistics project designed to leverage citizen social scientists to identify and systematically capture spontaneous, verbal interactions, a key form of linguistic data. We follow Svendsen [7] in our interpretation of citizen sociolinguistics in that we include lay people in the actual doing of research. Volunteers from the local community were trained to be citizen sociolinguists and were embedded in research teams, identifying and documenting a specific conversational interaction called “fat talk.” Fat talk consists of verbal exchanges wherein speakers disparage their own bodies; the disparagement often takes the form of a request for evaluation from fellow interlocutors [19]. For example, fat talk frequently includes self-deprecating or body-checking utterances like “I look so fat!” or “Does this make me look fat?” which typically evoke a scripted conversational response (such as “No, you don’t”) [19–21]. The response to fat talk seems to depend on the perceived status, identity, familiarity, and cultural backgrounds among interlocutors. Therefore, fat talk is sociolinguistically important precisely because it is rooted in interaction, making audible the commonly held, deep-seated concerns about physical appearance shaped by broader sociocultural norms [20–21].Fat talk was first identified by Nichter and Vukovich [19] who investigated the pervasiveness of diet-focused culture in American adolescents (see also [20–21]). Self-deprecating or self-evaluating statements such as “My thighs are so fat!” or “Do these jeans make me look fat?!” were frequently expressed by the young people in Nichter’s focus groups [20].",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.71127796,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "In this paper, we conduct a study about differences between female and male discursive strategies when posting in the microblogging service Twitter, with a particular focus on the hashtag designation process during political debate. The fact that men and women use language in distinct ways, reverberating practices linked to their expected roles in the social groups, is a linguistic phenomenon known to happen in several cultures and that can now be studied on the Web and on online social networks in a large scale enabled by computing power. Here, for instance, after analyzing tweets with political content posted during Brazilian presidential campaign,we found out that male Twitter users, when expressing their attitude toward a given candidate, are more prone to use imperative verbal forms in hashtags, while female users tend to employ declarative forms. This difference can be interpreted as a sign of distinct approaches in relation to other network members: for example, if political hashtags are seen as strategies of persuasion in Twitter, imperative tags could be understood as more overt ways of persuading and declarative tags as more indirect ones. Our findings help to understand human gendered behavior in social networks and contribute to research on the new fields of computer-enabled Internet linguistics and social computing, besides being useful for several computational tasks such as developing tag recommendation systems based on users' collective preferences and tailoring targeted advertising strategies, among others.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Computer Science Department, Federal University of Minas Gerais, Belo Horizonte, Minas Gerais, Brazil",
+            "name": "Cunha Evandro"
+          },
+          {
+            "misc": "Computer Science Department, Federal University of Minas Gerais, Belo Horizonte, Minas Gerais, Brazil",
+            "name": "Magno Gabriel"
+          },
+          {
+            "misc": "Computer Science Department, Federal University of Minas Gerais, Belo Horizonte, Minas Gerais, Brazil",
+            "name": "Gonçalves Marcos André"
+          },
+          {
+            "misc": "College of Letters, Federal University of Minas Gerais, Belo Horizonte, Minas Gerais, Brazil",
+            "name": "Cambraia César"
+          },
+          {
+            "misc": "Computer Science Department, Federal University of Minas Gerais, Belo Horizonte, Minas Gerais, Brazil",
+            "name": "Almeida Virgilio"
+          }
+        ],
+        "duration": "1363",
+        "journal": "PLoS ONE",
+        "publisher": "Public Library of Science, San Francisco, USA",
+        "readability": "42.9"
+      },
+      "document_id": "6536d87b-fba0-40cb-8a62-124af05b2a81",
+      "document_lang": "en",
+      "document_sdg": [5, 16],
+      "document_title": "He Votes or She Votes? Female and Male Discursive Strategies in Twitter Political Hashtags",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0087041",
+      "slice_content": "Language, as a major cultural trait shared by societies, is known to be an important element which reflects values and roles played by individuals in the communities that they belong to. Social factors of all sorts, such as gender, age, level of education, socioeconomic class and many others influence the way it is used, and the study of these factors is a relevant task in sociolinguistics, a field of linguistics focused on the relations between language and society [1]–[3].One of these relevant social factors is undoubtedly the gender of the speakers: it is known that men and women express themselves differently, reflecting the behavior patterns associated with their roles in the social groups. Many studies have already correlated gender to linguistic variation and significant differences between lexicon, pronunciation, morphology, syntax, speech organization and language interaction of female and male speakers have been found in the last 50 years [1]–[3]. Naturally, differences in the linguistic behavior between genders may vary from society to society, since the roles played by individuals of each gender across distinct communities are also different. One of the first studies that correlated gender to linguistic variation examined the pronunciation of the final -ing in the Boston area [4]. It was found a significant difference between the pronunciation of female and male speakers, which was confirmed by studies of the same linguistic variable in British and Australian communities, with similar results [5], [6].\n\nMany other studies also showed several contrasts between the way men and women use language, including in Brazilian Portuguese [7], the language in which we focus in this paper. Most of them point out that female speakers are more likely to use prestige variants than male speakers. This characteristic was found not only in English, but also in other Western modern languages. Other studies, however, indicated that this pattern is different, for instance, in some Indian and Islamic communities, where prestige variants are usually predominant not among women, but among men [1]. These results support that the correlation between gender and linguistic variation must be associated with the social organization of the studied communities - since, as formulated by Simone de Beauvoir, ''one is not born, but rather becomes, a woman'' [8].It is possible to list a number of other gender-related linguistic and discursive patterns, keeping in mind that these patterns are just reflections of socio-cultural situations, not biologically determined. Past studies that examined characteristics of female and male linguistic behaviors found contrasts in relation to questions and responses, turn-taking, topic change, self-disclosure and many others. It has been argued that Western women's communication patterns are distinct from those of men not only in form, but also in content, and that female speech often reflects the socialization of women into subordinate roles in patriarchal societies [9].\n\nAs said before, studies of language and gender investigate the crucial yet often unnoticed role that gender - which is, unlike sex, a social construction rather than a biological determinant - plays in our daily linguistic behavior in relation to discursive strategies [19]. Reflections on these previously cited studies led us to hypothesize that, also in the context of the tag designation process, gender might act as a social factor able to influence the choice of a linguistic form. In this section, before discussing the results obtained in our analysis, we briefly present specific related work on gender and written style in offline and online scenarios. First, it is important to mention that several approaches have been taken to the analysis of the relation between gender and speech [20]. In this work, we adopt the difference one [21], that considers female and male speakers as part of different subcultures that demand from each individual characteristic modes of expression according to the subculture to which he or she belongs. The study of differences between female and male writing styles was performed by Argamon et al. [ 22], who found that, even in formal writing, women tend to use more features identified as ''involved'' - that typically show interaction between the speaker/writer and the listener/reader, such as first and second person pronouns - while men exhibit greater usage of features identified as ''informational'' - like noun specifiers and quantifiers.",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.6431856,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Analysis of language geography is increasingly being used for studying spatial patterns of social dynamics. This trend is fueled by social media platforms such as Twitter which provide access to large amounts of natural language data combined with geolocation and user metadata enabling reconstruction of detailed spatial patterns of language use. Most studies are performed on large spatial scales associated with countries and regions, where language dynamics are often dominated by the effects of geographic and administrative borders. Extending to smaller, urban scales, however, allows visualization of spatial patterns of language use determined by social dynamics within the city, providing valuable information for a range of social topics from demographic studies to urban planning. So far, few studies have been made in this domain, due, in part, to the challenges in developing algorithms that accurately classify linguistic features. Here we extend urban-scale geographical analysis of language use beyond lexical meaning to include other sociolinguistic markers that identify language style, dialect and social groups. Some features, which have not been explored with social-media data on the urban scale, can be used to target a range of social phenomena. Our study focuses on Twitter use in Buenos Aires and our approach classifies tweets based on contrasting sets of tokens manually selected to target precise linguistic features. We perform statistical analyses of eleven categories of language use to quantify the presence of spatial patterns and the extent to which they are socially driven. We then perform the first comparative analysis assessing how the patterns and strength of social drivers vary with category. Finally, we derive plausible explanations for the patterns by comparing them with independently generated maps of geosocial context. Identifying these connections is a key aspect of the social-dynamics analysis which has so far received insufficient attention.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Romance studies, Georg-August-Universität Göttingen, Göttingen, Germany",
+            "name": "Kellert Olga"
+          },
+          {
+            "misc": "Center for Free-Electron Laser Science CFEL, Deutsches Elektronen-Synchrotron DESY, Hamburg, Germany",
+            "name": "Matlis Nicholas H."
+          }
+        ],
+        "duration": "5087",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "53.22"
+      },
+      "document_id": "d6a031e3-a05c-4a37-bd7c-5e4df2849b98",
+      "document_lang": "en",
+      "document_sdg": [11, 16],
+      "document_title": "Geolocation of multiple sociolinguistic markers in Buenos Aires",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0274114",
+      "slice_content": "The strong impact that social circumstances have on the content and mode of people’s communication allows language to be used as a probe of human behavior and circumstances. The relationship between language and human context depends on many factors, including the identity and social role of the people involved, as well as the location and even the time of day [1]. Groups of people sharing a common characteristic, such as gender, age, ethnic or cultural identity or political orientation can also have common patterns in the style and content of their communication [2]. If these \"social groups\" have characteristic locations that they frequent or inhabit, spatial patterns of language use will result. Language use can also be correlated to location by the “geosocial context”, i.e., the presence of geographical and social features of a location, such as a bar, a school or a park, which influence the kinds of human activity associated with the location. Analyzing spatial patterns of language use is therefore an important tool for social sciences which provides valuable geosocial-context information. This information is applicable to a diverse range of linguistic and social issues ranging from commerce and education to geodemographics and urban planning. Until recently, the range of possible studies has been strongly limited by the availability of data. Traditional data-taking methods, such as in-person interviews are time consuming and do not allow the kind of detailed geographical mapping or large samples of people necessary to answer some questions.\n\nIt has also been shown that formal language, as represented by, for example, complete and correct sentences, polite forms, technical terms, etc. is used in different social circumstances than informal language, which is more likely to contain incomplete sentences, shortcuts, swear words, and common language terms [1,37]. The former type is more often used in public context situations, such as when addressing an official, where the familiarity relation is missing between the speaker and the addressee [37]. The latter type, on the other hand, is more often used in private and intimate context situations, such as when talking to friends and family [37]. We therefore expect a correlation between formal/informal language and public/private space. Within a city, public space includes those associated with commerce, finance, administration and government, for example, which tend to be concentrated near the city center. Services in the form of tweets addressed to the general public, such as weather forecasts, official news from publishing services, commercial services, etc., are therefore more likely to come from the city center. Private space, on the other hand, is more likely to include areas associated with leisure activities as well as with residential zones, which tend to be distributed farther away from the city center. To test this hypothesis, we plotted the differential distribution of informal vs formal tweets over the extents of CABA+ and CABA (Fig 8).",
+      "slice_sdg": 11
+    }
+  },
+  {
+    "score": 0.63472843,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Does it matter if you speak with a regional accent? Speaking immediately reveals something of one’s own social and cultural identity, be it consciously or unconsciously. Perceiving accents involves not only reconstructing such imprints but also augmenting them with particular attitudes and stereotypes. Even though we know much about attitudes and stereotypes that are transmitted by, e.g. skin color, names or physical attractiveness, we do not yet have satisfactory answers how accent perception affects human behavior. How do people act in economically relevant contexts when they are confronted with regional accents? This paper reports a laboratory experiment where we address this question. Participants in our experiment conduct cognitive tests where they can choose to either cooperate or compete with a randomly matched male opponent identified only via his rendering of a standardized text in either a regional accent or standard accent. We find a strong connection between the linguistic performance and the cognitive rating of the opponent. When matched with an opponent who speaks the accent of the participant’s home region—the in-group opponent –, individuals tend to cooperate significantly more often. By contrast, they are more likely to compete when matched with an accent speaker from outside their home region, the out-group opponent. Our findings demonstrate, firstly, that the perception of an out-group accent leads not only to social discrimination but also influences economic decisions. Secondly, they suggest that this economic behavior is not necessarily attributable to the perception of a regional accent per se, but rather to the social rating of linguistic distance and the in-group/out-group perception it evokes.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "University of Bristol, CESifo, IZA and SERC, Department of Economics, Bristol, United Kingdom",
+            "name": "Heblich Stephan"
+          },
+          {
+            "misc": "Research Centre Deutscher Sprachatlas and ADW Mainz, Marburg, Germany",
+            "name": "Lameli Alfred"
+          },
+          {
+            "misc": "Düsseldorf Institute for Competition Economics, University of Mannheim and CRC PEG University of Göttingen, Mannheim, Germany",
+            "name": "Riener Gerhard"
+          }
+        ],
+        "duration": "1788",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "50.8"
+      },
+      "document_id": "ab4ea5a5-91b5-41a2-8a1f-736c9744ab22",
+      "document_lang": "en",
+      "document_sdg": [16, 4],
+      "document_title": "The Effect of Perceived Regional Accents on Individual Economic Behavior: A Lab Experiment on Linguistic Performance, Cognitive Ratings and Economic Decisions",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0113475",
+      "slice_content": "Language as the primary means of human communication forms a large part of social practice. It is shaped by speakers’ idiosyncratic experiences [1] and by long-lasting cultural traits [2]. In everyday communication, both of these components, the individual and the cultural, evoke stereotypes and social ratings. Spoken language is thus a signal that elicits particular conceptualizations about the speaker [3]. The extent to which these determine non-linguistic behavior is still poorly understood. The identifying potential of language has recently attracted researchers from different fields, including linguists [4,5], psychologists [6,7] and economists [8,9]. Measuring the effect of language on social behavior and individual interaction is however very difficult, given its dependence on specific contexts and individual preconditions. The most common way of addressing this challenge is to focus on individual attitudes and judgments. It turns out that listening to non-native or regional accents can invoke judgments about the credibility of speakers [7,10], their character traits and cognitive capacities [6,11], or even influence the perception of facts in criminal cases [12,13]. There is also evidence that the use of an accent can imply strategic advantages, e.g., in sales conversations [9] or job interviews [14], where accents suggest a joint identity. What remains open is to what extent attitudes really suit the action. While extensive research has already established a link between attitudes and action for individual characteristics like beauty or ethnicity [15–17], there has been widespread disregard for the gap between reported attitudes to accents and actual behavior.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.6247368,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Adapting laboratory psycholinguistic methods to fieldwork contexts can be fraught with difficulties. However, successful implementation of such methods in the field enhances our ability to learn the true extent and limitations of human behavior. This paper reports two attempts to run word learning experiments with the small community of Nungon speakers in Towet village in the Saruwaged Mountains, Papua New Guinea. A first attempt involved running a cross-situational task in which word-object pairings were presented ambiguously in each trial, and an explicit word learning task in which pairings were presented explicitly, or unambiguously, in each trial. While this quickly garnered a respectable 34 participants over the course of a week, it yielded null results, with many participants appearing to show simple patterned responses at test. We interpreted the null result as possibly reflecting the unfamiliarity of both the task and the laptop-based presentation mode. In Experiment 2, we made several adjustments to the explicit word learning task in an attempt to provide clearer instructions, reduce cognitive load, and frame the study within a real-world context. During a second 11-day stay in the village, 34 participants completed this modified task and demonstrated clear evidence of word learning. With this success serving as a future guide for researchers, our experiences show that it may require multiple attempts, even by experienced fieldworkers familiar with the target community, to successfully adapt experiments to a field setting.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Australian Research Council Centre of Excellence for the Dynamics of Language, Canberra, Australian Capital Territory, Australia",
+            "name": "Mulak Karen E."
+          },
+          {
+            "misc": "Australian Research Council Centre of Excellence for the Dynamics of Language, Canberra, Australian Capital Territory, Australia",
+            "name": "Sarvasy Hannah S."
+          },
+          {
+            "misc": "Australian Research Council Centre of Excellence for the Dynamics of Language, Canberra, Australian Capital Territory, Australia",
+            "name": "Tuninetti Alba"
+          },
+          {
+            "misc": "Australian Research Council Centre of Excellence for the Dynamics of Language, Canberra, Australian Capital Territory, Australia",
+            "name": "Escudero Paola"
+          }
+        ],
+        "duration": "2985",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "49.62"
+      },
+      "document_id": "6ebbc23e-9b88-456e-ac5a-fd77852267d0",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "Word learning in the field: Adapting a laboratory-based task for testing in remote Papua New Guinea",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0257393",
+      "slice_content": "Thus, restricting research to limited groups of people and languages has led us astray, not only in terms of incorrect conclusions about the generality or specificity of certain aspects of language learning and processing, but also by stopping us from considering a more complete range of the possibilities in human language processing. Therefore, there is a clear need for and value in studying psycholinguistics across a broader range of languages and peoples. However, the practices of psycholinguistic research have been, in a sense, optimized for WEIRD settings. Laboratories have tended to study the languages and populations (often young university students) available in their community for reasons of convenience, familiarity, and relevance to their communities. The procedures and methods for data acquisition in psycholinguistics often involve written instruction or responses, and computer-based activities. They may be modeled on the multiple-choice-type tests that students in WEIRD educational systems begin taking at young ages. Data collection sessions are often lengthy, repetitive experiences in front of a computer screen, completing seemingly arbitrary or purposeless tasks, allowing the collection of large volumes of fine-grained data. In many non-WEIRD settings, these tasks are simply inappropriate, due to differences in literacy, computer use, and familiarity with a test-taking style of task. Beyond this, in some societies, assumptions about questions and answers may be very different from the neutral, objective role assumed in many experimental tasks [28].",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.6212387,
+    "payload": {
+      "document_corpus": "wikipedia",
+      "document_desc": "Research into the many possible relationships, intersections and tensions between language and gender is diverse. It crosses disciplinary boundaries, and, as a bare minimum, could be said to encompass work notionally housed within applied linguistics, linguistic anthropology, conversation analysis, cultural studies, feminist media studies, feminist psychology, gender studies, interactional sociolinguistics, linguistics, mediated stylistics, sociolinguistics, and feminist language reform and media studies. In methodological terms, there is no single approach that could be said to 'hold the field'. Discursive, poststructural, ethnomethodological, ethnographic, phenomenological, positivist and experimental approaches can all be seen in action during the study of language and gender, producing and reproducing what Susan Speer has described as 'different, and often competing, theoretical and political assumptions about the way discourse, ideology and gender identity should be conceived and understood'. As a result, research in this area can perhaps most usefully be divided into two main areas of study: first, there is a broad and sustained interest in the varieties of speech associated with a particular gender; also a related interest in the social norms and conventions that (re)produce gendered language use (a variety of speech, or sociolect associated with a particular gender which is sometimes called a genderlect). Second, there are studies that focus on ways language can produce and maintain sexism and gender bias, and studies that focus on the contextually specific and locally situated ways in which gender is constructed and operationalized. In this sense, researchers try to understand how language affects the gender binary in society. The study of gender and language in sociolinguistics and gender studies is often said to have begun with Robin Lakoff's 1975 book, Language and Woman's Place, as well as some earlier studies by Lakoff. The study of language and gender has developed greatly since the 1970s. Prominent scholars include Deborah Tannen, Penelope Eckert, Janet Holmes, Mary Bucholtz, Kira Hall, Deborah Cameron, Jane Sunderland and others. The 1995 edited volume Gender Articulated: Language and the Socially Constructed Self is often referred to as a central text on language and gender.",
+      "document_details": {
+        "duration": 1865,
+        "readability": 47.27
+      },
+      "document_id": "02d85bf5-7387-45e3-a466-9aa53a189112",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "Language and gender",
+      "document_url": "https://en.wikipedia.org/wiki/Language_and_gender",
+      "slice_content": "Research into the many possible relationships, intersections and tensions between language and gender is diverse. It crosses disciplinary boundaries, and, as a bare minimum, could be said to encompass work notionally housed within applied linguistics, linguistic anthropology, conversation analysis, cultural studies, feminist media studies, feminist psychology, gender studies, interactional sociolinguistics, linguistics, mediated stylistics, sociolinguistics, and feminist language reform and media studies. In methodological terms, there is no single approach that could be said to 'hold the field'. Discursive, poststructural, ethnomethodological, ethnographic, phenomenological, positivist and experimental approaches can all be seen in action during the study of language and gender, producing and reproducing what Susan Speer has described as 'different, and often competing, theoretical and political assumptions about the way discourse, ideology and gender identity should be conceived and understood'. As a result, research in this area can perhaps most usefully be divided into two main areas of study: first, there is a broad and sustained interest in the varieties of speech associated with a particular gender; also a related interest in the social norms and conventions that (re)produce gendered language use (a variety of speech, or sociolect associated with a particular gender which is sometimes called a genderlect). Second, there are studies that focus on ways language can produce and maintain sexism and gender bias, and studies that focus on the contextually specific and locally situated ways in which gender is constructed and operationalized. In this sense, researchers try to understand how language affects the gender binary in society.\n\nNowadays, some researchers consider that power is embedded in the language structures rather than being outside of it. For instance, the language of science helps to regulate the ideas of the dominant groups in it, which can never be completely neutral. Even in psychology, the interpretations of gender had always some benefits for the academics who were writing about it, so it was always important that who is using the language and how they are using it to explain something. The norms of appropriate ways of talking for different genders are an example of the concept of power in language. There are many social forces to determine the ways different genders are supposed to communicate with each other. As these norms are the results of the present hierarchy in society, doubting them leads to challenging the social orders which originate these patterns. Many studies in this field presume that there are gender differences in language use; therefore, they examine how different genders vary in their speech styles. However, this approach does not incorporate the debate that who, initially, decided to set these differences and norms, and why these norms are generally accepted. \" Language is a complex and dynamic system that produces meaning about social categories such as gender\". In this sense, power is not something outside this system, but it is a part of it. The notion of gender is not static. Rather, this notion varies from culture to culture and from time to time. \"\n\nPeople gradually learn how to use language in specific social situations and develop communicative competence. Therefore, language and social norms are dynamic and interconnected. As people use language concerning these norms, it plays a vital role in manifesting and sustaining social standards and can be a tool for reproducing power relations and gender oppression. One of the examples to show this interconnection would be the fact that there is no equivalent for \"sir\" to use in addressing a female authority. This fact cannot be related to the language itself, but it is correlated to the perception that authorities have always been male. The other example is the way women get addressed by Miss, Mrs., or Ms., while men are only addressed by Mr., which is a term that shows their gender, not marital status. Unlike men, women's relationships can affect their social status, and they can be judged and qualified based on it. Language and symbolism Language is one of the most powerful ways of communicating with a wide variety of people in different contexts. Humans look for symbolism and meaning in the world. Language is a way of communicating how a person perceives the world and how one builds connections with oneself and others. Linguistic abilities hold power and change through the lens of culture and gender. According to Susan Gal in the book Language, Gender, and Power, \"Such visions are inscribed in language, and most important, enacted in interaction.\n\nThe study of gender and language in sociolinguistics and gender studies is often said to have begun with Robin Lakoff's 1975 book, Language and Woman's Place, as well as some earlier studies by Lakoff. The study of language and gender has developed greatly since the 1970s. Prominent scholars include Deborah Tannen, Penelope Eckert, Janet Holmes, Mary Bucholtz, Kira Hall, Deborah Cameron, Jane Sunderland and others. The 1995 edited volume Gender Articulated: Language and the Socially Constructed Self is often referred to as a central text on language and gender. History of gender and language Verbal language has been around for over 150,000 years and non-verbal communication has existed since the beginning of the first bipedal locomotive species. Homo sapiens began evolving 150,000 years ago along with tool use, cultural practices, and communication with other hunter-gatherers to get their kill or gather different varieties of fruits. Men and women worked together well to continue to adapt and survive. The term \"genderlect\", which means the difference between how men and women communicate, was coined by Robin Lakoff. In other words, it is a way of speaking that tends to be characteristic of a certain gender. The linguist Deborah Tannen introduced this term in her book titled You Just Don't Understand: Women and Men in Conversation. Tannen was inspired by Lakoff, who wrote the book Language and Woman's Place (Lakoff 1975).",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.59117126,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "We here quantify the qualities of language. Specifically, we derive numerical values, and associated variability scores for statements of general probability as well as for anchor terms commonly expressed on Likert-type scales. Our results show significant inter-responder variability in the understanding of such terms. We also demonstrate scale compression such that average estimates are poorly aligned to the a priori expectations of equal response spacing in commonly used verbal response instruments. Terms further show intriguing propensities such that people agree more about statements of agreement, but manifestly disagree more about statements of disagreement. The valence of these terms is thus systematically related to their degree of common understanding. The accuracy of language, especially when used in conjunction with modern advanced technologies, proves vital for effective communication. Our work demonstrates that the tool of language still remains a fairly blunt one, but one that can be sharpened by systematic quantitative evaluation, as we demonstrate here.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Psychology Department, University of Central Florida, Orlando, Florida, United States of America",
+            "name": "Hancock P. A."
+          },
+          {
+            "misc": "Psychology Department, University of Central Florida, Orlando, Florida, United States of America",
+            "name": "Volante William G."
+          }
+        ],
+        "duration": "2551",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "44.17"
+      },
+      "document_id": "41b540a4-cd6d-4519-8fb6-65e95b872991",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Quantifying the qualities of language",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0232198",
+      "slice_content": "Language is one of the most powerful tools that human beings possess. In all of its various incarnations, language is the fundamental foundation for common communication between virtually all rationale agents. Language is ubiquitous across human societies. The original impetus for such a tool most probably lies in its capacity to transfer thoughts, ideas, and emotions between living organisms. As a result, language represents one of the fundamental pillars of civilization [1]. However, the tool of language is far from perfect. Often, in the course of everyday conversation, there occur problems inherent in its imprecision of expression [2,3]. Even when referring to common terms and concepts, people do not always mean exactly the same thing. Such imprecisions are further complicated by factors such as the use of different native tongues, which are themselves embedded in varying cultural contexts. Assumptions intrinsic to such different cultures further introduce the potential for linguistic confusion, as does also each speaker and listener’s own individual personality profile. Such variability, while appearing to be some type of a ‘natural’ phenomenon, does pose significant theoretical and practical challenges. The potential for miscommunication becomes of increasing import in realms such as scientific, technical, and legal discourse where accuracy can be pivotal. Often, even expert elicitations in such areas may be misunderstood or misrepresented, due to the inadequacy of the spoken word [4,5]. In practical realms such as ground-to-air traffic control in both commercial and military aviation, interpretational ambiguities can and, across the years, have caused disaster [6,7].",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5849123,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "The huge power for social influence of digital media may come with the risk of intensifying common societal biases, such as gender and age stereotypes. Speaker’s gender and age also behaviorally manifest in language use, and language may be a powerful tool to shape impact. The present study took the example of TED, a highly successful knowledge dissemination platform, to study online influence. Our goal was to investigate how gender- and age-linked language styles–beyond chronological age and identified gender–link to talk impact and whether this reflects gender and age stereotypes. In a pre-registered study, we collected transcripts of TED Talks along with their impact measures, i.e., views and ratios of positive and negative talk ratings, from the TED website. We scored TED Speakers’ (N = 1,095) language with gender- and age-morphed language metrics to obtain measures of female versus male, and younger versus more senior language styles. Contrary to our expectations and to the literature on gender stereotypes, more female language was linked to higher impact in terms of quantity, i.e., more talk views, and this was particularly the case among talks with a lot of views. Regarding quality of impact, language signatures of gender and age predicted different types of positive and negative ratings above and beyond main effects of speaker’s gender and age. The differences in ratings seem to reflect common stereotype contents of warmth (e.g., “beautiful” for female, “courageous” for female and senior language) versus competence (e.g., “ingenious”, “informative” for male language). The results shed light on how verbal behavior may contribute to stereotypical evaluations. They also illuminate how, within new digital social contexts, female language might be uniquely rewarded and, thereby, an underappreciated but highly effective tool for social influence. WC = 286 (max. 300 words).",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Psychology, University of Zurich, Zurich, Switzerland",
+            "name": "Meier Tabea"
+          },
+          {
+            "misc": "Department of Psychology, Lancaster University, Lancaster, Lancashire, United Kingdom",
+            "name": "Boyd Ryan L."
+          },
+          {
+            "misc": "Department of Psychology, University of Arizona, Tucson, Arizona, United States of America",
+            "name": "Mehl Matthias R."
+          },
+          {
+            "misc": "Department of Psychology, University of Münster, Münster, North Rhine-Westphalia, Germany",
+            "name": "Milek Anne"
+          },
+          {
+            "misc": "Department of Psychology, The University of Texas, Austin, Texas, United States of America",
+            "name": "Pennebaker James W."
+          },
+          {
+            "misc": "Department of Psychology, University of Zurich, Zurich, Switzerland",
+            "name": "Martin Mike"
+          },
+          {
+            "misc": "Department of Psychology, University of Zurich, Zurich, Switzerland",
+            "name": "Wolf Markus"
+          },
+          {
+            "misc": "Department of Psychology, University of Zurich, Zurich, Switzerland",
+            "name": "Horn Andrea B."
+          }
+        ],
+        "duration": "3114",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "50.84"
+      },
+      "document_id": "4b7c1287-5e33-4997-9803-6f75b94edb77",
+      "document_lang": "en",
+      "document_sdg": [5, 16],
+      "document_title": "Stereotyping in the digital age: Male language is “ingenious”, female language is “beautiful” – and popular",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0243637",
+      "slice_content": "In addition, a more abstract language style has been linked to the perception of higher power in a variety of laboratory and naturalistic experiments [45]. All in all, these examples reveal insights into how complex and fact-oriented rather than personal or narrative language styles may be a successful persuasion mean both in offline and online settings. In light of the well-documented disadvantages of women and older people in social influence, this brings up the question of how language might contribute to these differences. In fact, people’s word use differs as a function of their social groups and related characteristics, e.g. their gender and age [12,13,37,46]. Abstract and analytical language–language features with greater persuasive power–are more commonly displayed by men than by women [38,46,47]. Male-typical language seems to be more concerned with references to facts and “the big picture”. Conversely, female-typical language has been described as more narrative, personal, social and emotional; women tend to refer more to themselves and to other people [38,46,48–50]. While these language features have previously been linked to lower persuasive power and status [42,43,51,52], language features commonly displayed by women may at the same time convey more psychological closeness and authenticity [47,53]. This is in line with findings suggesting that women refer more to affiliative topics in social media [54]. Rather unexpectedly, the same study found that female users of social media also used slightly more assertive language than male users. In addition to gender, language use differs between people of different ages [37].\n\nAlthough TED Speakers’ language use shows gender differences in line with those observed in more spontaneous contexts [38], their language might not fully conform with their natural language use. This should, however, not change conclusions drawn from the present study, since we investigated the effects of gender-linked language styles independently of speakers’ genders. And third, we investigated the effects of gender- and age-linked language styles separately from each other to create a preliminary understanding these language signatures’ unique effects on talk impact. In real life, these language styles do of course not occur in isolation of each other, but speakers do rather have different combinations of prototypical female, male, and senior language styles that possibly even depend on context. While the correlation between these two language metrics was small (r = .13), studying their interaction was out of scope but might be an interesting avenue for future research. Based on the present work, the following future directions can be taken into consideration. The current study took a naturalistic approach to examine how gender- and age-linked language styles link to social evaluations. A promising future research line on this topic will be studies that employ experimental manipulations. Future studies could for example present participants with the same talk given in the same language style by a male versus a female speaker to participants in order to gain a more fine-grained picture on the interplay between gender, language style and social evaluations.\n\nResults from our study provide first evidence that such a shift might extend onto digital contexts in which influence may be achieved at an unprecedented scale, and that this may be in favor of female language. Women might then be the winners of this cultural shift by having a language style that fits with the rhetoric requirements of the digital culture. The present research adds to the extensive body of literature on social perception in two meaningful ways. First, we showed that language commonly linked to social groups may uniquely link to social evaluation and influence, and might thus explain one mechanism through which social evaluations occur. Second, we showed that social processes, e.g. gendered evaluations, often observed in offline settings might partially extend onto modern, digital contexts, but in other ways than expected. Digital communication contexts might be more receptive of female behavior, and represent spaces in which femininity may unfold its full potential. The research presented in this article should be understood in the context of its limitations. First, although conveying ideas in a concise and entertaining manner is probably relevant for most public speeches, TED Talks may have a particularly pronounced entertaining character and the degree to which findings from this study generalize onto other public speech and modern self-presentation contexts will be subject to further research. Furthermore, TED coaches its speakers on various aspects of presentation techniques [83].\n\nThis is in sharp contrast to our expectation (male over female-hypothesis) that the male language benefit commonly observed in offline interactions and written language [6,10,11,42] would generalize onto digital communication spaces. Most importantly, female-typical language was associated with more talk views irrespective of speaker’s gender − Female-typical language thus conferred an advantage for male and female speakers alike in our sample. In other words, behavior typically shown by women was associated with higher talk impact. This finding contradicts the common notion that female-typical behavior elicits perceptions of warmth and that this comes at the cost of ascribed status and power. These results provided an important foundation for new explorations of the associations between female-typical behavior and status. In the social context of digital communication aimed at spreading relevant ideas, it seems to be an advantage to “speak like a woman”− perhaps because it fosters stronger connection with the audience. Further research is needed to investigate whether this advantageous effect is limited to TED Talks, digital contexts of communication, or whether rules may have changed more generally so that warmth may no longer be in contrast to power and competence when it comes to gender stereotypes. More generally, our findings open the door for speculations about how the rules underlying social influence in digital communication might have shifted from the rules in traditional forms of communication.\n\nWhile the present study focused on verbal aspects of female communication, oral presentations come with a variety of other observable behaviors. Paralinguistic cues, such as pitch, or volume may affect persuasion [80], and future research will have to determine how stylistic features of female language in interaction with paralinguistic cues might predict impact. Future research will also be required to exactly understand in which contexts (e.g.; oral versus written, academic versus non-academic) and for whom (e.g.; junior versus senior professionals) female-typical language holds the persuasive potential we observed in TED Talks. Technological shifts pose new challenges on how to convey complex ideas to a large number of people. In the digital age, speakers must appeal to large, diverse crowds and communicate their ideas effectively while still sustaining the audience's attention and compete with alternatives. In similar ways as social interactions have been described as more socially binding processes among women [81], female-typical language may perhaps be a successful tool to increase emotional rapport with the audience, and drive the message’s overall impact. Our findings on the intriguing benefits of female-typical language might be taken as another example of a more general phenomenon recently described in how influential figures communicate [82]. Both in political and in news media contexts, researchers observed a cultural shift for leaders towards using less analytical, and more informal language. In other words, influential figures increasingly use simple rhetoric, and the effectiveness of this rhetoric in convincing a mass audience has been exemplified by the American Presidency [82].\n\nAt the same time, TED Talks given by female speakers elicited more emotional discussions online: Comments on female speakers’ talks were more positive and more negative (rather than neutral) compared to male speakers’ talks [1].While studies like these provide a preliminary understanding of how influence in the digital age might be affected by social processes, what remains unanswered are the specific behaviors that may contribute to biased evaluations and influence. One promising channel to look at in digital communication is verbal behavior. Studies that specifically examined behaviors as salient features of social roles are scarce; however, a recent laboratory-based experiment showed that evaluations were not biased in terms of gender or age when people rated silent excerpts of TED Talks videos [41]. It thus seems convincing that differences in the way speakers communicate their ideas may contribute to their talks’ impact. Language is crucial for shaping the impact of a message and content shared online. In social media, an analytical rather than narrative, informal or story-telling like communication styles has been linked to greater online influence [42,43]. In online pet advertisements for example, profiles of successfully adopted pets were characterized by more complex descriptions and fewer social references compared to profiles of unadopted pets [42]. Similarly, grant proposals written in complex writing styles predicted higher funding magnitude [10]. This adds to research demonstrating that analytical thinking styles are rewarded in academic contexts [10,44].",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.5781536,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "Language is adaptive, self-balancing and evolves with environmental change. Understanding this may be the key to developing more nuanced climate change discourse.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Associate Professor, Department of Language and Literacy Education, University of British Columbia",
+            "name": "Derek Gladwin"
+          },
+          {
+            "misc": "Professor of Teaching, Department of Language and Literacy Education, University of British Columbia",
+            "name": "Kedrick James"
+          }
+        ],
+        "duration": 248,
+        "readability": 51.32
+      },
+      "document_id": "9675664e-3ce1-4e57-9595-28d09e16912a",
+      "document_lang": "en",
+      "document_sdg": [13],
+      "document_title": "How language can turn down the temperature of heated climate change discourse",
+      "document_url": "http://theconversation.com/how-language-can-turn-down-the-temperature-of-heated-climate-change-discourse-210865",
+      "slice_content": "Stories co-create worlds, much like fungal or human networks, drawing on living languages in various cultural or social systems. Similar comparisons can be made with terms like “heat” and “warming,” both of which produce various stories that are associated with systems of thought or understanding and corresponding actions. Simply put, discursive ecologies allow us to see stories involving multiple people, cultures and languages as interconnected systems connected to their environments — and also allow us to grasp the impact of language upon human discourse. The power of discourse How people think, act and communicate about rising temperatures influences social progress. And yet, polarization has become commonplace in social and political discourse. This is particularly true around the term climate change. By understanding the discursive metalanguages — or the systems of languages and meaning that connect humans and non-humans — citizens can re-imagine the divisive block of social discourse. À lire aussi : A quick guide to climate change jargon – what experts mean by mitigation, carbon neutral and 6 other key terms Instead of using terms such as “climate crisis” or “climate emergency,” people of the world might consider the context in which we now find ourselves: in an age of mass extinction. Such a shift in language invites collective action towards the mass extinction of wildlife instead of reducing individual human actions to fear responses. A brief overview produced by Babbel USA on the impacts of climate change for language.",
+      "slice_sdg": 13
+    }
+  },
+  {
+    "score": 0.57735157,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "The legislative process before the adoption of the revised European Union renewable energy directive mobilised various actors around the forest biomass issue in Europe. Which storylines do actors use to discuss and define the sustainability of forest biomass, how are the differences between the existing storylines explained, and can distinct ‘discourse coalitions’ of actors be observed as following each storyline? These questions are addressed through a discourse analysis to critically evaluate the debate around the utilisation of forest biomass for European renewable energy to identify persistent storylines adopted by discourse coalitions as they communicate their understanding of the issue, and compete to influence the policymaking and public perception. The hypotheses are that there are more than the hypothetical binary arrangement of pro versus anti storylines, and that some actors follow multiple storylines. Locating the methodological approach on the two dimensions; text versus context and critical versus constructivist, this study pays closer attention to context rather than on individual linguistic elements of texts. Regarding the second dimension, this study builds upon constructivist epistemology, being concerned with understanding which truths these storylines produce for their speakers, and their external influences upon alternative storylines and actors. The three storylines presented here represent three competing discourses regarding forest biomass usage in European renewable energy: forestry prioritised, climate focussed and critical. Each of these are promoted by actors aiming to gain discursive hegemony on the issue, both in terms of the impact of their discourse upon EU policy making and in the eyes of the public. Despite the discursive differences created by these deeply held opposing views of what sustainability and nature are and what this means for forest biomass, there were several points where narrative elements overlapped. These can provide insight for developing a more constructive debate on the sustainability of forest biomass.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Faculty for Forest Science and Forest Ecology, Georg-August University, Göttingen, Germany",
+            "name": "Mather-Gratton Zachary James"
+          },
+          {
+            "misc": "Danish Energy, Frederiksberg, Denmark",
+            "name": "Larsen Søren"
+          },
+          {
+            "misc": "Department of Geosciences and Natural Resource Management, University of Copenhagen, Frederiksberg, Denmark",
+            "name": "Bentsen Niclas Scott"
+          }
+        ],
+        "duration": "3696",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "37.74"
+      },
+      "document_id": "6472dee8-2607-4b0d-98a8-86291b99db77",
+      "document_lang": "en",
+      "document_sdg": [15, 7],
+      "document_title": "Understanding the sustainability debate on forest biomass for energy in Europe: A discourse analysis",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0246873",
+      "slice_content": "Discourse analysis is a methodological approach using the study of texts (using the above definition) to determine the constructive effects of discourse, along with the contextual relationships between texts and other discourses termed by Fairclough [36] as ‘interdiscursive’ factors. It also embodies a particular perspective to qualitative research, in which discourse becomes an active element in shaping social practices [39]. Discourse analysis therefore provides a useful tool for investigating the interrelationships of context upon the language by which environmental problems are debated, and vice versa. Phillips and Hardy [35] provide an overview of the epistemological and methodological characteristics of the different discourse analysis styles, presented on framework of two dimensions as shown by Fig 1.10.1371/journal.pone.0246873.g001Fig 1The first dimension (the vertical axis on Fig 1) considers whether more attention is paid to a detailed analysis of individual texts, or to the wider contexts in which they are located. Given the concern of discourse analysts with the social construction of language, studies will necessarily consider both individual texts and their contexts [40]. The second dimension describes the degree to which the analysis is concerned with power and ideology as fundamental to the discourse process (a more critical approach), or whether the focus is more constructivist, concerning the social construction of meaning and reality through discourse. The legislative process before the adoption of RED II in 2018 has mobilised various actors around the forest biomass issue in Europe, both within and external to the political system.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5731621,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "The Moral Foundations Dictionary (MFD) is a useful tool for applying the conceptual framework developed in Moral Foundations Theory and quantifying the moral meanings implicated in the linguistic information people convey. However, the applicability of the MFD is limited because it is available only in English. Translated versions of the MFD are therefore needed to study morality across various cultures, including non-Western cultures. The contribution of this paper is two-fold. We developed the first Japanese version of the MFD (referred to as the J-MFD) using a semi-automated method—this serves as a reference when translating the MFD into other languages. We next tested the validity of the J-MFD by analyzing open-ended written texts about the situations that Japanese participants thought followed and violated the five moral foundations. We found that the J-MFD correctly categorized the Japanese participants’ descriptions into the corresponding moral foundations, and that the Moral Foundations Questionnaire (MFQ) scores correlated with the frequency of situations, of total words, and of J-MFD words in the participants’ descriptions for the Harm and Fairness foundations. The J-MFD can be used to study morality unique to the Japanese and also multicultural comparisons in moral behavior.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Psychology, Graduate School of Environmental Studies, Nagoya University, Nagoya, Japan",
+            "name": "Matsuo   Akiko"
+          },
+          {
+            "misc": "Department of Complex Systems Science, Graduate School of Informatics, Nagoya University, Nagoya, Japan",
+            "name": "Sasahara   Kazutoshi"
+          },
+          {
+            "misc": "Department of Humanities and Social Sciences, School of Letters, Aichi University, Toyohashi, Japan",
+            "name": "Taguchi   Yasuhiro"
+          },
+          {
+            "misc": "Department of Cognitive and Psychological Sciences, Graduate School of Informatics, Nagoya University, Nagoya, Japan",
+            "name": "Karasawa   Minoru"
+          }
+        ],
+        "duration": "933",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "45.9"
+      },
+      "document_id": "bb8cc00f-5763-449d-908a-6c2ba42c9656",
+      "document_lang": "en",
+      "document_sdg": [16, 5],
+      "document_title": "Development and validation of the Japanese Moral Foundations Dictionary",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0213343",
+      "slice_content": "This is consistent with the general trends documented for these ideological camps on different measures [2].Even though the MFD is useful for linguistic analyses of moral foundations, the dictionary is currently available only in English, and thus it is unknown to what extent we can generalize the findings to the linguistic communities outside of the English-speaking world. This is a problem because it is plausible that the contents—as well as the roles of different moral foundations—would vary across cultures. For instance, evidence shows that people living in Western cultures tend to emphasize Care and Fairness in their moral judgments, whereas non-Western people tend to rely more on Ingroup and Purity [4]. The use of the MFD translated into different languages might reveal similar differences in communication and discourses. An accumulating body of evidence concerning cultural differences would also be important in the context of criticism about the potential bias in morality research that leans toward the so-called WEIRD (Western, Educated, Industrialized, Rich, and Democratic) cultural samples [5–7]. Furthermore, social media platforms provide an excellent arena for analyzing human behavior in a natural setting, and some recent research has successfully applied natural language processing (NLP) to social media data to quantify people’s moral behaviors [8, 9]. Particularly notable are the findings by Dehghani et al., who identified a key role of Purity in social networking [10], and the work by Kaur and Sasahara [11] showing that although Care was the most dominant, Purity was the most distinct moral foundation in online conversations.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.57302475,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Although the Science of Team Science or SciTS has already provided substantial evidence for research collaboration positive links to scientific productivity, much less is known about such links with broadly defined academic networking, especially with regard to the dilemma about forms of academic networking that may help individual scholars in handling risks and dynamics inherent in academic connections. This study uses cross-disciplinary theoretical insights to conceptualize “dynamic academic networking” as a distinct collaboration-related phenomenon that is theoretically linked with research productivity on the one hand, and with English language skills on the other, especially in the context of non-Anglophone academic systems. The study combines survey-based data and Scopus-based data to test two main hypothesized connections while controlling for the potential effects of other factors, e.g. home faculty research connections and faculty-industry professional connections. The research results provide support for the structural model which is also interpreted in terms of dynamic networking being valid concept in relation to further development of SciTS.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "University of Bielsko-Biala, Bielsko-Biala, Poland",
+            "name": "Wieczorek Anna L."
+          },
+          {
+            "misc": "University of Economics in Katowice, Katowice, Poland",
+            "name": "Mitręga Maciej"
+          },
+          {
+            "misc": "VSB—Technical University of Ostrava, Ostrava, Czech Republic",
+            "name": "Spáčil Vojtěch"
+          }
+        ],
+        "duration": "3353",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "34.27"
+      },
+      "document_id": "b449406b-ffaa-43e4-bb55-39c16103b1e3",
+      "document_lang": "en",
+      "document_sdg": [4, 9],
+      "document_title": "Dynamic academic networking concept and its links with English language skills and research productivity–non-Anglophone context",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0245980",
+      "slice_content": "Additionally, in all post-communist countries there is a substantial disproportion of English languages skills between people at various age groups, because in these countries since the end of WW2 and the beginning of 90. last century, it was common to teach the Russian language as a foreign language at schools as all of these countries were Soviet Union satellite countries in that period. Thus, in these countries, older people usually have a low knowledge of English language, which crosses all industries and professions in the society. Here we call all countries with relatively low level of English language non-Anglophone countries. Many inhabitants of non-Anglophone countries not only have worse command of English, but they also perceive the world differently which is caused by general cultural differences and also by the language they speak and by absence of some notions in their native language which, in turn, may make some phenomena difficult to understand for those people. Sapir–Whorf hypothesis [58, 59] explains differences in human cognition [60] and emotion [61] through differences in human language. In the context of academic interactions, it means that the way the scholar constructs his/her worldview is based on the language the scholar acquired and uses. Extrapolating this mechanism to the concept of DN, it could be that acquiring English language skills makes non-Anglophone scholars not only more capable of English-language based communication with other scholars, but also it may change their approach to interaction with other scholars.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.5677339,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "This article is in keeping with a reflection on the language and the numerous computer tools available for its analysis in social psychology...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Nikos Kalampalikis"
+          },
+          {
+            "misc": "",
+            "name": "Fabrice Buschini"
+          }
+        ]
+      },
+      "document_id": "1189cd3b-b89a-4766-959d-3ffab60a7977",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "The Prospero software program: an alternative tool for the study of social representations",
+      "document_url": "https://shs.hal.science/halshs-00494628",
+      "slice_content": "This article is in keeping with a reflection on the language and the numerous computer tools available for its analysis in social psychology. The article stresses the necessity to avoid the trap that consists in blindly using the results of computer textual analyses. The researcher should actually wonder about the epistemological presuppositions of the software programs he uses and must check if those programs do fit with his own theoretical frame. Thus, for the study of social representations, software programs based on the standard method of content analysis are presented as the most relevant. Results from empirical research studies, carried out with a software of this kind (Prospero), provide illustrations on the possibility and the benefits of creating dynamic and flexible networks of categorizations under three different qualitative forms: Synonymy, analogy and taxonomy. In accordance with the theory, these categorizations allow to grasp the processes of objectification and anchorage, which are constituent of social representations, within their context of linguistic communication. Cet article s'inscrit dans une réflexion autour du langage et des nombreux outils informatisés dont nous disposons pour son analyse en psychologie sociale. Il insiste sur la nécessité d'éviter le piège consistant à utiliser aveuglement les résultats d'analyses textuelles informatiques. Le chercheur doit en effet s'interroger sur les présupposés épistémologiques des logiciels qu'il utilise et vérifier qu'ils s'accordent avec son propre cadre théorique. Ainsi, pour l'étude des représentations sociales, les logiciels basés sur la méthode classique de l'analyse de contenu sont présentés comme les plus pertinents.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.56596565,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "While many people rely on written signage to find their way around, oral language plays a significant role in giving directions in rural areas.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Lorato Mokwena"
+          },
+          {
+            "misc": "",
+            "name": "University of the Western Cape"
+          }
+        ],
+        "duration": "272",
+        "readability": "61.56",
+        "source": "africa"
+      },
+      "document_id": "05e14214-7bf4-4c88-a9f4-39cdcf0fca78",
+      "document_lang": "en",
+      "document_sdg": [11],
+      "document_title": "‘Walk straight’: how small-town residents navigate without street signs and names",
+      "document_url": "https://theconversation.com/walk-straight-how-small-town-residents-navigate-without-street-signs-and-names-185443",
+      "slice_content": "Linguistic landscape is the study of languages used in signs. As most of the field’s pioneering studies were based on cities, research comes to be associated with cityscapes. However, a focus on written language or signage overlooks the reality that information is not always consumed and produced through writing. Additionally, associating linguistic landscape research with cities marginalises the experiences of people residing in “non-urban” spaces. Lastly, in South Africa, the distinction between rural and urban environments is not always clear. An example of information that is primarily consumed and produced orally due to insufficient or non-existent written signage in “rural” parts of the Northern Cape province in South Africa is route directions. As part of my PhD studies in linguistics, I explored the oral strategies that people use to find their way around and give directions. I chose two sparsely populated settlements in South Africa, Ulco and Delportshoop, for the research because they have little or no written signage in their physical environments. I asked residents to explain step by step how they would travel from their home to the local shop, and to mention examples of street names in their town. I wanted to know what resources they drew on to navigate space. The residents used a mixture of rural and urban spatial markers to produce oral route directions. They also invented oral street names. Oral route directions have not received much attention in linguistic landscape studies.",
+      "slice_sdg": 11
+    }
+  },
+  {
+    "score": 0.5656395,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Twitter was an integral part of Donald Trump’s communication platform during his 2016 campaign. Although its topical content has been examined by researchers and the media, we know relatively little about the style of the language used on the account or how this style changed over time. In this study, we present the first detailed description of stylistic variation on the Trump Twitter account based on a multivariate analysis of grammatical co-occurrence patterns in tweets posted between 2009 and 2018. We identify four general patterns of stylistic variation, which we interpret as representing the degree of conversational, campaigning, engaged, and advisory discourse. We then track how the use of these four styles changed over time, focusing on the period around the campaign, showing that the style of tweets shifts systematically depending on the communicative goals of Trump and his team. Based on these results, we propose a series of hypotheses about how the Trump campaign used social media during the 2016 elections.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of English Language and Linguistics, University of Birmingham, Birmingham, England, United Kingdom",
+            "name": "Clarke Isobelle"
+          },
+          {
+            "misc": "Department of English Language and Linguistics, University of Birmingham, Birmingham, England, United Kingdom",
+            "name": "Grieve Jack"
+          }
+        ],
+        "duration": "2798",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "48.78"
+      },
+      "document_id": "d62e40df-266e-4149-bb99-75da552f8ae3",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Stylistic variation on the Donald Trump Twitter account: A linguistic analysis of tweets posted between 2009 and 2018",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0222062",
+      "slice_content": "A more focused analysis of stylistic variation and change on the Trump Twitter account during his presidency would allow for more detailed patterns to be identified that could help us better understand the strategy of the administration, much as we have been able to better understand the strategy of the campaign. Finally, this study has demonstrated how a detailed and objective linguistic analysis can be used to better understand important societal issues. With the rise of the internet and social media, world events are being driven by online communication, which generates huge amounts of text that must be analysed to understand these events and the forces that drive them. For example, in terms of the Trump presidency, the Democratic National Committee hack, the New York Times anonymous op-ed, and the fake news crisis are all major news items that are directly linked to collections of online language data. This new communicative landscape has led to a proliferation of what are essentially linguistic analyses being published in the popular press, hoping to make sense of internet chatter. These analyses, however, have largely been conducted by journalists and data scientists; from a linguistic perspective they are superficial at best and often appear to be politically biased. This need not be the case. The theories and methods of linguistics–including corpus linguistics, forensic linguistics, sociolinguistics, and discourse analysis–offer a foundation for linguists to make sense of these large collections of textual data, rather than to simply increase the amount of noise online. This is a challenge linguists must accept.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.563241,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "The film and publishing industries are fraught with gender disparities, with men overpowering nearly every sector of these domains. For instance, men are not only paid more than women in the film industry, but they also outnumber women in positions such as director, screenwriter, and lead acting roles. Similarly, women often resort to assuming gender-neutral or male pseudonyms to increase their prospects in the publishing industry. This widespread gender inequality in the film and publishing industries raises the question of how writers’ gender relates to gendered language and narrative receptions. Two archival studies examined whether gender-linked language relates to film (N = 521) and novel (N = 150) ratings, and whether those associations differ as a function of writer gender or the expertise of the rater (professional critics and lay audience members). Results demonstrated that female screenwriters and novelists used a more feminine style of writing, whereas male screenwriters and novelists used a more masculine style of writing. Lay audiences gave more positive ratings to films and novels by writers who used a more gender-congruent writing style, in contrast with professional critics, who gave more positive reviews to films by writers who used a more gender-incongruent writing style. Our findings substantiate past research regarding the differing tastes of lay audiences and professional critics in addition to lending insight into subtle social dynamics that may sustain gender biases in the film and publishing industries.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Psychological Sciences, Texas Tech University, Lubbock, TX, United States of America",
+            "name": "Nalabandian Taleen"
+          },
+          {
+            "misc": "Department of Psychological Sciences, Texas Tech University, Lubbock, TX, United States of America",
+            "name": "Ireland Molly E."
+          }
+        ],
+        "duration": "3375",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "49.03"
+      },
+      "document_id": "452b804b-995c-4c75-900d-99d1685100fc",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "Linguistic gender congruity differentially correlates with film and novel ratings by critics and audiences",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0248402",
+      "slice_content": "These linguistic cues of gender coincide with gender stereotypes and previous research elaborating on how language used by women places a greater emphasis on interpersonal connections, whereas language used by men focuses more on objective, assertive statements. A wealth of recent work has focused on computational linguistic approaches to understanding literature, film, and other narrative texts in relation to gender-linked language. Specifically, research evaluating character dialogue of film scripts found that male and female characters use language patterns comparable (but not identical) to those of men and women in real life. For example, in films, male characters use more sophisticated language as well as more words associated with masculinity, achievement, death, and swear words, whereas female characters use more positive emotion words [2]. Notably, language differences between women and men in fiction may be a product of media bias, wherein male and female character roles often embody (or exaggerate) gender stereotypes through their speech and actions [21]. Women in particular are more often than men depicted as embodying a social role, such as love interest or mother, rather than driving the action—a pattern that seems to persist even in roles where women depict scientists or engineers [28–30]. Along the same lines, researchers have studied characters’ dialogue in novels as a way to examine gender-linked differences in language.\n\nAlthough there were no differences in gender-linked language and assertiveness, women used warmer language (i.e., positive emotion), while men used more negative or colder language (i.e., swearing, criticism). Another study where language use on Facebook was analyzed using similar open-vocabulary techniques also found that men used more swear words and women used more emotion words as well as more self- and social-references [25]. Together, the literature finds subtle but reliable gender differences in language, with women using more personal and socially sensitive language than men, and men using more impersonal and object-focused or categorical words than women [23].Furthermore, a large-scale dictionary-based computerized text analysis of 14,000 spoken and written text samples (e.g., stream of consciousness, fiction, college exams, spoken conversations) collected from multiple labs confirmed the aforementioned pattern of gender-linked language found in previous work [26]. Specifically, women used more first- and third-person singular pronouns, negations, verbs, social words (e.g., references to friends and family), psychological process words (e.g., emotions, sensations), cognitive process words (e.g., insight, discrepancy, certainty), and words relating to home. On the other hand, men used more swear words, words relating to sports, numbers, articles, prepositions, words per sentence, and large words (i.e., greater than six letters). A more recent study analyzing nearly 7,000 conversations corroborated past results, finding that women used more first- and third-person singular pronouns, auxiliary verbs, adverbs, and conjunctions, and men used more articles, prepositions, and quantifiers [27].",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.5515318,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Language input in childhood and literacy (and/or schooling) have been described as two key experiences impacting phonological processing. In this study, we assess phonological processing via a non-word repetition (NWR) group game, in adults and children living in two villages of an ethnic group where infants are rarely spoken to, and where literacy is variable. We found lower NWR scores than in previous work for both children (N = 17; aged 1-12 years) and adults (N = 13; aged 18-60 years), which is consistent with the hypothesis that there would be long-term effects on phonological processing of experiencing low levels of directed input in infancy. Additionally, we found some evidence that literacy and/or schooling increases NWR scores, although results should be interpreted with caution given the small sample size. These findings invite further investigations in similar communities, as current results are most compatible with phonological processing being influenced by aspects of language experience that vary greatly between and within populations.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Laboratoire de Sciences Cognitives et de Psycholinguistique, Département d’Etudes cognitives, ENS, EHESS, CNRS, PSL University, Paris, France",
+            "name": "Cristia   Alejandrina"
+          },
+          {
+            "misc": "Department of Experimental and Clinical Medicine, Università Politecnica delle Marche, Ancona, Italy",
+            "name": "Farabolini   Gianmatteo"
+          },
+          {
+            "misc": "Institute of Evolutionary Medicine, University of Zurich, Zurich, Switzerland",
+            "name": "Scaff   Camila"
+          },
+          {
+            "misc": "Laboratoire de Sciences Cognitives et de Psycholinguistique, Département d’Etudes cognitives, ENS, EHESS, CNRS, PSL University, Paris, France",
+            "name": "Havron   Naomi"
+          },
+          {
+            "misc": "Institute for Advanced Study in Toulouse, Université Toulouse 1 Capitole, Toulouse, France",
+            "name": "Stieglitz   Jonathan"
+          }
+        ],
+        "duration": "3012",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "51.18"
+      },
+      "document_id": "b45a4407-bb8c-46b3-af9c-80cc1e391c8b",
+      "document_lang": "en",
+      "document_sdg": [4, 3],
+      "document_title": "Infant-directed input and literacy effects on phonological processing: Non-word repetition scores among the Tsimane’",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0237702",
+      "slice_content": "We set aside the literature comparing monolinguals against non-monolinguals because this contrast may not only show effects of input differences, but also interference across the languages being learned. Socio-economic status has repeatedly been reported to correlate with differences in quantity of speech directed to children [12, 40]. If anything, one could argue that effects of socio-economic status may overestimate input effects since socio-economic status is likely to be correlated with factors that affect performance in any task, such as stress [41]. And yet, our small-scale systematic review revealed that correlations between socio-economic status and NWR scores tend to be too weak to be detected with the sample sizes used in previous work. To be precise, seven of the 17 papers in our review did not discuss SES differences at all [22, 24, 29, 30, 33–35]. Among the remaining 10, 5 did not analyze potential NWR scores differences as a function of SES, often citing work suggesting that NWR scores did not vary as a function of SES; [31, 36–38, 42], and the remaining 5 did analyze their data and reported no significant effect [23, 27, 28, 39, 43].To sum up, one key motivation for this study was to investigate NWR scores in a population in which infant-directed speech has been previously found to be rare.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.55117226,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "From the discourse analysis perspective, ecopolitics has experienced a discourse change from authoritarianism to democracy. This study uses theory of authoritarianism and democracy in ecopolitics to explore the impact of authoritarian ecopolitical discourse (AED) and democratic ecopolitical discourse (DED) on environmental quality in China. After analysis using panel data and comparison of three main regions, results suggest a negative relationship between AED of the central government and environmental quality. By contrast, a positive relationship exists between AED of local governments and environmental quality. A positive relationship exists between DED, which measures the proposals of People’s Congress deputies and Chinese People's Political Consultative Conference (CPPCC), and environmental quality. Nevertheless, the positive effect of DED is weaker than that of AED. The impact is also different among the regions. Our interpretations are as follows. China’s current governance mechanism is a top–down decision-making mechanism, rather than a bottom–up information transmission mechanism. The concentration of power keeps decision-making power and resources away from levels with considerably accurate information and capabilities in problem solving. Therefore, we suggest that governments should change their decision-making process and exert effort to be transparent to the entire society. A bottom–up mechanism of information collection and transmission should be established, such as environmental inspection mechanism and checking on cadres’ achievements with green GDP.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Research Centre of the Economy of the Upper Reaches of the Yangtze River, Chongqing Technology and Business University, Chongqing, China",
+            "name": "Hu Xinyun"
+          },
+          {
+            "misc": "Department of Economics and Business, Central European University, Budapest, Hungary",
+            "name": "Li Mingming"
+          }
+        ],
+        "duration": "2033",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "30.25"
+      },
+      "document_id": "0f96a801-cfea-4282-930d-a8c1db94ee72",
+      "document_lang": "en",
+      "document_sdg": [16, 7],
+      "document_title": "Ecopolitical discourse: Authoritarianism or democracy? — Evidence from China",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239872",
+      "slice_content": "However, the positive effect is lower than that of AED.As mentioned in Section 2, ecological politics is mainly divided into two consecutive and opposite discourse systems, namely AED and DED. The ecopolitical discourse is mainly constructed through four dimensions and the transformation of the discourse from authoritarianism to democracy is mainly reflected in the four dimensions, especially the second one, which reflects the process of the gradual dissolution of subject's centrality. Discourse is the language that the subject speaks or writes. Discourse analysis refers to the study of the social consequences brought by subject's narration and the way of narration [31, 32]. Foucault’ s discourse analysis is the specific language patterns intertwined with social power and an activity between the speaker and the receiver through text or communication in a specific social context [37]. This shows that discourse can be reflected in the text, representing the attention of knowledge producers to a certain field of society in the process of communication. Some studies have shown that attention can affect decision-makers' behavior and decision-making effect. Dahl and Simon believed that the key to decision-making is how decision-makers effectively allocate their limited attention [38]. Ocasio held that decision-making depends on attention-focused issues [39]. Stone et al. introduced attention study into the field of government management, explored the factors affecting the conversion of government policy decisions, and proposed an \"attention-driven policy choice model\". The model shows that the choice of government behavior mainly depends on the factors that most attract the government's attention [40].",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5506928,
+    "payload": {
+      "document_corpus": "oapen",
+      "document_desc": "Traditional dialects have been encroached upon by the increasing mobility of their speakers and by the onslaught of national languages in education and mass media. Typically, older dialects are “leveling” to become more like national languages. This is regrettable when the last articulate traces of a culture are lost, but it also promotes a complex dynamics of interaction as speakers shift from dialect to standard and to intermediate compromises between the two in their forms of speech. Varieties of speech thus live on in modern communities, where they still function to mark provenance, but increasingly cultural and social provenance as opposed to pure geography. They arise at times from the need to function throughout the different groups in society, but they also may have roots in immigrants’ speech, and just as certainly from the ineluctable dynamics of groups wishing to express their identity to themselves and to the world.",
+      "document_details": {
+        "publisher": "Language Science Press",
+        "authors": [
+          {
+            "name": "Marie-Hélène Côté",
+            "misc": ""
+          },
+          {
+            "name": "Remco Knooihuizen",
+            "misc": ""
+          },
+          {
+            "name": "John Nerbonne",
+            "misc": ""
+          }
+        ],
+        "duration": 33630,
+        "readability": 56.27
+      },
+      "document_id": "0089e91b-a2c7-4883-9821-5f6f585fa514",
+      "document_lang": "en",
+      "document_sdg": [4, 11],
+      "document_title": "The future of dialects: Selected papers from Methods in Dialectology XV",
+      "document_url": "https://library.oapen.org/handle/20.500.12657/32847",
+      "slice_content": "This combined network effect was much stronger than individual network effects. The informants for the current study have possibly established their identity as being not just that of âforeigner teaching English in Japanâ; but rather âEnglish teacher and contributor to En- glish education in Japan within a team made up of both Japanese and NS English teachersâ. One of the possible reasons why the informants increased their frequency of usage of Japanese that could be easily expressed in English may be explained by the concept of group phraseology. One of the applications of group phraseol- ogy offered by Yonekawa (2009: 8) is its usage by certain functional social com- munities as a language for professional groups. The informants of the current study were all teaching English at schools. A large portion of words and phrases used by them are actually work-related and are mutually understandable even in Japanese. It might be easier to use and to understand the work-related terms in Japanese rather than those translated into English for NS English teachers when the conversation interlocutor is also in the same profession. Another useful concept whichmight help to explain the linguistic behaviour of this particular social group is community of practice (Eckert 1988). This concept is described as being active amongst âpeople who share a concern, a set of problems, or a passion about a topic, and who deepen their knowledge and expertise in this 311 Keiko Hirano area by interacting on an ongoing basisâ (Wenger, McDermott & Snyder 2002: 4).\n\nI compared the language use of younger and older women, not of younger women and older men (contrary to Heeringa & Hinskens 2014), as I did not want age effects to be confounded by gender effects. 6 Gender was not controlled for in these conversations, as it was already difficult finding suit- able informants without making demands on the gender of the speech partners. 6 of the 20 conversations with friends (of the same or of a different dialect area) were mixed-sex conver- sations, so the majority were same-sex conversations. This potentially confounding factor will be taken into account when discussing the results. 7 Thedata obtained in the test settings are of a very different nature than the spontaneous speech data (cf. Lenz 2003: 57â62). This difference will be taken into account when analyzing the results. 8 Of each conversation with a friend 30 minutes were transcribed; the interviews and dialect and standard tests were transcribed entirely. 41 Anne-Sophie Ghyselen The built corpus was analysed using a correlative sociolinguistic approach: the distributions of 26 phonological and morphosyntactic features were studied in the five types of data. In total, 22495 tokens were auditorily categorised into 60 variant categories by one linguist. To judge the objectiveness of these categori- sations, a random sample of about 190 tokens was taken for each phonological variable, which was subsequently rated by a second linguist. If the inter-rater agreement proved to be too low (Cohenâs kappa <0.61, cf. Landis & Koch 1977: 165), the variable was excluded from the study.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.549085,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "Is it possible to teach sociopragmatic competence in FFL classes? Some studies in language acquisition (Bardovi-Harlig : 2001) demonstrate the benefits of instruction in various aspects of pragmatics...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Juliette Delahaie"
+          }
+        ]
+      },
+      "document_id": "6faf668d-fae9-462c-80a7-5f7dcfc3259b",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "Sociopragmatic competence in FFL language teaching : discourse markers as contextualisation cues",
+      "document_url": "https://shs.hal.science/halshs-00689854",
+      "slice_content": "Is it possible to teach sociopragmatic competence in FFL classes? Some studies in language acquisition (Bardovi-Harlig : 2001) demonstrate the benefits of instruction in various aspects of pragmatics. Morevover, The Common european Framework of Reference for Languages (2001) focuses on pragmatic and sociolinguistic skills such as the knowledge of scripts, the ability to manage an interaction, or the knowledge and use of relational and social markers. Thus, sociopragmatic competence is closely related to the context as the \"extralinguistic environment of a utterance\" (Kerbrat-Orecchioni, 1998 : 76) ; this environment is always changing during the interaction. So, how should sociopragmatic competence be taught and the apparent variability of the context taken into account ? In language teaching and learning, the communicative competence is divided into three components (pragmatic, sociolinguistic, linguistic) which are actually intertwined. Indeed, some linguistic features convey information about context : speakers places and shared knowledge (voilà/d'accord), the way to open or close a conversation (tiens vs alors/donc, bon/OK/voilà). The aim of this paper is to demonstrate that discourse markers are contextualisation cues and to propose some ways in which discourse markers might therefore be taught. I will first provide a definition of sociopragmatic competence and discourse markers in linguistics and in language teaching and learning, and then I will focus on the discourse marker voilà, because it is very frequent in spoken French.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.5466585,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "This project set out to illuminate the discursive existence of nuclear waste in American culture. Given the significant temporal dimension of the phenomenon as well as the challenging size of the United States setting, the project adapted key methodological elements of the sociocultural anthropology tradition and produced proxies for ethnographic fieldnotes and key informant interviews through sampling the digital archives of the New York Times over a 64-year period that starts with the first recorded occurrence of the notion of nuclear waste and ends with the conclusion of the presidency of George W. Bush. Two paradigmatic waves of American public discourse on nuclear waste come to light when subjecting this empirical data to quantitative inventorying and interpretive analysis: between 1945 and 1969 nuclear waste was generally framed in light of the beneficial utilizations of nuclear reactions and with optimistic expectations for a scientific/technological solution; by contrast, between 1969 and 2009 nuclear waste was conceptualized as inherited harm that could not be undone and contestation that required political/legal management. Besides this key finding and the empirical timing of the two paradigms, the study’s value lies also with its detailed empirical documentation of nuclear waste in its sociocultural existence.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Sociology/Anthropology, Dyson College, Pace University, New York, New York, United States of America",
+            "name": "Pajo Judi"
+          }
+        ],
+        "duration": "3070",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "43.75"
+      },
+      "document_id": "e224d88e-8290-43ce-8f07-bc63eef06a5c",
+      "document_lang": "en",
+      "document_sdg": [12, 16],
+      "document_title": "Two Paradigmatic Waves of Public Discourse on Nuclear Waste in the United States, 1945-2009: Understanding a Magnitudinal and Longitudinal Phenomenon in Anthropological Terms",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0157652",
+      "slice_content": "The New York Times archive classified these 693 items, which constitute the present project’s dataset, as articles, letters to the editor, front page articles, editorials, and other: 566 are articles, 57 are letters to the editor, 50 are front page articles, 18 are editorials, 2 are other formats. Given that “discourse analysis” is often used broadly and refers to practices that can range from exegesis of entirely qualitative data to entirely computerized processing of quantitative data, a specification is in order: the analytical procedure employed in this project may be reasonably described as discourse analysis that is systematic, qualitative, and interpretive. In order to guide and inform the interpretations outlined in following, the researcher conducted a measure of counting and comparing of frequencies for a selection of key notions that occurred in the textual records in the dataset. However, the paper’s conclusions were ultimately reached on basis of cataloging and qualitatively interpreting the meanings and perspectives that, in the researcher’s understanding, underlay the words of the written records. At the foundations of this analytical framework lie certain insights from the cognitive and interpretive traditions in social and cultural anthropology where making sense of communication have a long and venerable tradition with highlights ranging from the structural analyses and theorizings of Claude Lévi-Strauss’ [44–45] to the cognitive theories of George Lakoff and Mark Johnson [46] as well as of Claudia Strauss and Naomi Quinn [47].",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.54573154,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "In the present study, the effect of footstep noise on emotions was investigated. This study used noise stimulus of human footsteps throughout the study. First, Korean emotion lexicons were collected from narratives of residents living in multi-family housing buildings. The lexicons were then classified into four emotion clusters, with three expressing negative emotions (anger, dislike, and pain) and the fourth depicting empathy. Since self-reported annoyance has long been investigated as one of the major non-auditory responses to noise, annoyance was measured along with affective responses in a laboratory experiment with varying noise levels. The findings revealed that the emotion and noise annoyance experienced by the participants were significantly affected by noise levels. All clusters expressing negative emotions showed strong correlations with noise annoyance, whereas that representing empathy showed the weakest correlation. Noise sensitivity and attitudes to the noise source were observed as possible moderators in emotional responses and annoyance ratings.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Acoustics Research Unit, School of Architecture, University of Liverpool, Liverpool, United Kingdom",
+            "name": "Park Sang Hee"
+          },
+          {
+            "misc": "Acoustics Research Unit, School of Architecture, University of Liverpool, Liverpool, United Kingdom",
+            "name": "Lee Pyoung Jik"
+          },
+          {
+            "misc": "Fire Safety & Building Environment System Research Team, Fire Insurers Laboratories of Korea, Yeoju-si, Gyeonggi-do, South Korea",
+            "name": "Jeong Jeong Ho"
+          }
+        ],
+        "duration": "2198",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "52.92"
+      },
+      "document_id": "5d640f23-c383-4751-820f-3e1dab65bdbd",
+      "document_lang": "en",
+      "document_sdg": [11, 16],
+      "document_title": "Emotions evoked by exposure to footstep noise in residential buildings",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0202058",
+      "slice_content": "Emotion lexicons on footstep noise were collected from a number of residents’ narratives, which were clustered into different groups by a series of questionnaire surveys. A laboratory experiment was conducted to test the clustered emotional groups with varying sound pressure levels. Participants with different noise sensitivity scores took part in the experiment. Korean emotion lexicons were collected from narratives of residents living in multi-family housing buildings in South Korea. First, interview transcripts from a previous study [32] were used to collect emotion lexicons regarding footstep noise. The interviews were carried out with 14 residents (five males and nine females) living in multi-family housing buildings; their ages ranged from 21 to 55 years and the length of residency in their houses ranged from 10 months to 15 years [32]. Expressions towards their neighbours’ footstep noise, such as ‘bothered’, ‘painful’, and ‘tolerable’, were identified in the transcripts. The second source of lexicons was online communities. As listed in Table 1, posts on a total of 18 different online communities were searched. Nine online communities concerned general topics, such as food, sports, and children, so the members were not restricted to residents of multi-family housing buildings. On the other hand, the other nine communities were limited to residents living in multi-family housing buildings. Lexicons about footstep noise were collected by using the keywords listed in Table 2. The two words ‘noise’ and ‘sound’ were used as the main keywords, and seven sub-keywords, such as ‘floor’ and ‘neighbour’, were introduced.",
+      "slice_sdg": 11
+    }
+  },
+  {
+    "score": 0.54425335,
+    "payload": {
+      "document_corpus": "wikipedia",
+      "document_desc": "Language policy is an interdisciplinary academic field. Some scholars such as Joshua Fishman and Ofelia García consider it as part of sociolinguistics. On the other hand, other scholars such as Bernard Spolsky, Robert B. Kaplan and Joseph Lo Bianco argue that language policy is a branch of applied linguistics. As a field, language policy used to be known as language planning and is related to other fields such as language ideology, language revitalization, language education, among others.",
+      "document_details": {
+        "duration": "292",
+        "readability": "35.91"
+      },
+      "document_id": "152b7567-4fbe-43dd-b972-c46d7b8cd997",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Language policy",
+      "document_url": "https://en.wikipedia.org/wiki/Language_policy",
+      "slice_content": "Language policy is an interdisciplinary academic field. Some scholars such as Joshua Fishman and Ofelia García consider it as part of sociolinguistics. On the other hand, other scholars such as Bernard Spolsky, Robert B. Kaplan and Joseph Lo Bianco argue that language policy is a branch of applied linguistics. As a field, language policy used to be known as language planning and is related to other fields such as language ideology, language revitalization, language education, among others. Definitions Language policy has been defined in a number of ways. According to Kaplan and Baldauf (1997), \"A language policy is a body of ideas, laws, regulations, rules and practices intended to achieve the planned language change in the societies, group or system\" (p. xi). Lo Bianco defines the field as \"a situated activity, whose specific history and local circumstances influence what is regarded as a language problem, and whose political dynamics determine which language problems are given policy treatment” (p. 152). McCarty (2011) defines language policy as \"a complex sociocultural process [and as] modes of human interaction, negotiation, and production mediated by relations of power. The 'policy' in these processes resides in their language-regulating power; that is, the ways in which they express normative claims about legitimate and illegitimate language forms and uses, thereby governing language statuses and uses\" (p. 8). Overview Language policy is broad, but it can be categorized into three components.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.54243195,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "This paper has three main objectives...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Audrey Alejandro"
+          }
+        ]
+      },
+      "document_id": "0122866c-7bcd-4de2-a959-2c364d6f063d",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Ethnocentrism in IR : Interest and aversion of our discipline for the study of cultural reflexivity",
+      "document_url": "https://shs.hal.science/halshs-00631406",
+      "slice_content": "This paper has three main objectives. First, the core elements of cultural reflexivity and ethnocentrism will be detailed based on an overview of the literature in anthropology and linguistics. Second, the relevance of cultural reflexivity vis-à-vis of IR will be demonstrated by underlying three arguments put forward by scholars from the discipline. Finally, I will measure the sensitivity of the field of IR with regards to the question of cultural reflexivity through two empirical studies. A lexicometric analysis based on a corpus of more than 100,000 articles (from 15 IR journals between 1906 and 2011) will count the occurrences of ethnocentrism and its substitute concepts. Then, two hypotheses on the causes of the marginality of cultural reflexivity as an object of study in IR will be tested by examining the 371 articles that do mention ?ethnocentrism? (selected from the 100,000 articles previously mentioned).",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5417328,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "Substantial attention has been paid to the language of mental ill health, but the generic terms used to refer to it–“mental illness”, “psychiatric condition”, “mental health problem” and so forth–have largely escaped empirical scrutiny. We examined changes in the prevalence of alternative terms in two large English language text corpora from 1940 to 2019. Twenty-four terms were studied, compounds of four adjectival expressions (“mental”, “mental health”, “psychiatric”, “psychological”) and six nouns (“condition”, “disease”, “disorder”, “disturbance”, “illness”, “problem”). Terms incorporating “condition”, “disease” and “disturbance” became less popular over time, whereas those involving “psychiatric”, “mental health” and “illness” became more popular. Although there were some trends away from terms with medical connotations and towards more normalizing expressions, “mental illness” consolidated its position as the dominant term over the study period.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Melbourne School of Psychological Sciences University of Melbourne Parkville, Melbourne, Victoria, Australia",
+            "name": "Haslam Nick"
+          },
+          {
+            "misc": "Melbourne School of Psychological Sciences University of Melbourne Parkville, Melbourne, Victoria, Australia",
+            "name": "Baes Naomi"
+          }
+        ],
+        "duration": "977",
+        "journal": "PLOS Mental Health",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "44.57"
+      },
+      "document_id": "d2d2399b-3149-4176-aaaa-b2c08cbaf6b4",
+      "document_lang": "en",
+      "document_sdg": [3],
+      "document_title": "What should we call mental ill health? Historical shifts in the popularity of generic terms",
+      "document_url": "https://journals.plos.org/mentalhealth/article?id=10.1371/journal.pmen.0000032",
+      "slice_content": "Second, the study’s datasets ended in 2019 and there may have been significant changes since that time, during a period of intense attention to mental ill health. Future studies should examine ongoing terminological shifts. Third, the two corpora are drawn entirely (Google Books) or primarily (CoHA/CoCA) from written texts drawn from specific regions and therefore cannot be presumed to correspond to spoken language use or equally to all relevant geographical communities. More colloquial spoken language might employ different terms from written texts, or the same terms with significantly differing frequencies. The corpora are entirely (CoCA/CoHA) or predominantly (Google Books) based on U.S.A. sources, for example, and the extent to which our findings generalize across the Anglosphere is uncertain. Regrettably, addressing these possibilities may be challenging because corpora of comparable size and historical depth that collect spoken language or text from other regions may not exist. Fourth and more generally, while corpus studies enable powerful, large-scale quantitative analyses of language use, they do not allow for more nuanced analyses of connotational meaning or detailed studies of how words are understood or used differently in specific communities or contexts and possibly even replaced. Qualitative studies that illuminate these complexities would be valuable to complement our findings. Debates over diagnostic labels, person- versus identity-first language, and appropriate ways of referring to people using mental health services reflect a conviction that language use in the field of mental health is profoundly important.",
+      "slice_sdg": 3
+    }
+  },
+  {
+    "score": 0.5349169,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "BackgroundLack of social awareness is a major barrier to the development of palliative care. Mass media influences public opinion, and frequently deal with palliative care contributing to its image and public understanding.AimTo analyse how palliative care is portrayed in Spanish newspapers, as well as the contribution made by the press to its social representation.DesignBased on criteria of scope and editorial plurality, four print newspapers were selected. Using the newspaper archive MyNews (www.mynews.es), articles published between 2009 and 2014 containing the words “palliative care” or “palliative medicine” were identified. Sociological discourse analysis was performed on the identified texts on two levels: a) contextual analysis, focusing on the message as a statement; b) interpretative analysis, considering the discourse as a social product.ResultsWe examined 262 articles. Politician and healthcare professionals were the main representatives transmitting messages on palliative care. The discourses identified were characterised by: strong ideological and moral content focusing on social debate, strong ties linking palliative care and death and, to a lesser degree, as a healthcare service. The messages transmitted by representatives with direct experience in palliative care (professionals, patients and families) contributed the most to building a positive image of this healthcare practice. Overall, media reflect different interests in framing public understanding about palliative care.ConclusionThe knowledge generated about how palliative care is reflected in the printed media may help to understand better one of the main barriers to its development not only in Spain, but also in other contexts.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "ATLANTES Research Program, Institute for Culture and Society, University of Navarra, Pamplona, Spain",
+            "name": "Carrasco José Miguel"
+          },
+          {
+            "misc": "Journalism Projects Department, School of Communication, University of Navarra, Pamplona, Spain",
+            "name": "Gómez-Baceiredo Beatriz"
+          },
+          {
+            "misc": "Public Communication Department, School of Communication, University of Navarra, Pamplona, Spain",
+            "name": "Navas Alejandro"
+          },
+          {
+            "misc": "Centre for Health Evaluation and Outcome Sciences, Vancouver, Canada",
+            "name": "Krawczyk Marian"
+          },
+          {
+            "misc": "Errea Comunicación, Pamplona, Spain",
+            "name": "García Miriam"
+          },
+          {
+            "misc": "ATLANTES Research Program, Institute for Culture and Society, University of Navarra, Pamplona, Spain",
+            "name": "Centeno Carlos"
+          }
+        ],
+        "duration": "1152",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "40.44"
+      },
+      "document_id": "98c91e40-77be-48ff-80e8-d2ecfa29e937",
+      "document_lang": "en",
+      "document_sdg": [3, 16],
+      "document_title": "Social representation of palliative care in the Spanish printed media: A qualitative analysis",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0211106",
+      "slice_content": "The complete text of the news item containing the searched words was obtained and entered into a database. Sociological discourse analysis (SDA) has been shown as a useful methodology to analyse cultural and social constructions of reality. SDA focuses on the discourses or discursive fields of structured contexts where a set of activities of collective actors is conceived to produce and reproduce reality [13,22]. We undertook a SDA on two levels in the identified texts: contextual analysis, focusing on the message as a statement and considering the discourse as a unique fact or occurrence; and interpretive analysis by considering the discourse as a social product. These levels of analysis should not be understood as a linear process, but as multi-directional and carried out simultaneously [13]. Discursive positions (who produced the discourse, under what circumstances, with what objective) were also identified. With the aim of strengthening interpretive results, the analysis was triangulated by three researchers with different backgrounds but with experience in qualitative research: a sociologist with expertise in public health (JMC), a sociologist with expertise in communication (AN) and a communication science professional with expertise in narration (BG). Throughout the study process, the researchers considered reflexivity and self-monitoring in their role as researchers. Descriptive coding categories were mutually generated and agreed on by all three researchers. NVivo software was used for storage of data and for analytic purposes. This study did not involve human participation and all documents analysed are part of the public domain; it is therefore exempt from ethics approval.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5337864,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "Este artigo investiga como aspectos extraverbais implicam na assimetria de turnos em dinâmicas de interação discursiva, revelando como a linguagem e seus usos demarcam as hierarquias na estrutura social...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Paulo Delgado"
+          },
+          {
+            "misc": "",
+            "name": "Vanessa Barbosa"
+          },
+          {
+            "misc": "",
+            "name": "Yuri Santos"
+          }
+        ]
+      },
+      "document_id": "153efb08-9610-43cd-9efe-5e72322c551f",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "The time of the other from a dialogical perspective: horizontality vs. socio-economic hierarchy in public-private debate",
+      "document_url": "https://shs.hal.science/halshs-03925493",
+      "slice_content": "Este artigo investiga como aspectos extraverbais implicam na assimetria de turnos em dinâmicas de interação discursiva, revelando como a linguagem e seus usos demarcam as hierarquias na estrutura social. Para isso, analisou-se uma conversa a respeito do entrave entre os âmbitos público-privado (Teatro Oficina) a partir do entrecruzamento da análise de textos orais, proposta pelo Projeto da Norma Urbana Linguística Culta, e de princípios da Análise Dialógica do Discurso (ADD). Amparando-se especialmente nas noções de turno conversacional e de orientação social do enunciado, as considerações feitas observam que a condução de conflito de interesses no contexto democrático é permeada pelo peso da hierarquia socioeconômica na distribuição de turnos de fala, o que levanta questionamentos sobre a relação entre o poder aquisitivo e o direito à palavra.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5333204,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "National character stereotypes, or beliefs about the personality characteristics of the members of a nation, present a paradox. Such stereotypes have been argued to not be grounded in the actual personality traits of members of nations, yet they are also prolific and reliable. Stereotypes of Canadians and Americans exemplify the paradox; people in both nations strongly believe that the personality profiles of typical Canadians and Americans diverge, yet aggregated self-reports of personality profiles of Canadians and Americans show no reliable differences. We present evidence that the linguistic behavior of nations mirrors national character stereotypes. Utilizing 40 million tweets from the microblogging platform Twitter, in Study 1A we quantify the words and emojis diagnostic of Canadians and Americans. In Study 1B we explore the positivity of national language use. In Studies 2A and 2B, we present the 120 most nationally diagnostic words and emojis of each nation to naive participants, and ask them to assess personality of a hypothetical person who uses either diagnostically Canadian or American words and emojis. Personality profiles derived from the diagnostic words of each nation bear close resemblance to national character stereotypes. We therefore propose that national character stereotypes may be partially grounded in the collective linguistic behaviour of nations.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Linguistics and Languages, McMaster University, Hamilton, Ontario, Canada",
+            "name": "Snefjella   Bryor"
+          },
+          {
+            "misc": "Department of Linguistics and Languages, McMaster University, Hamilton, Ontario, Canada",
+            "name": "Schmidtke   Daniel"
+          },
+          {
+            "misc": "Department of Linguistics and Languages, McMaster University, Hamilton, Ontario, Canada",
+            "name": "Kuperman   Victor"
+          }
+        ],
+        "duration": "3608",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "42.01"
+      },
+      "document_id": "4e208af5-5092-4230-95c1-50901b952764",
+      "document_lang": "en",
+      "document_sdg": [16, 4],
+      "document_title": "National character stereotypes mirror language use: A study of Canadian and American tweets",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0206188",
+      "slice_content": "Whether national character stereotypes are manifested in the distinctive linguistic behaviours of nations not sharing a language remains to be seen. At the level of words, such comparisons could be undertaken using the methods in this paper provided a set of translation pairs of words (i.e. “cat” and “chat” in English and French). This would allow application of the LORIDP statistic corpora from two different languages. Our Study 1B assumes that Americans and Canadians agree on how positive they perceive words to be. Indeed, we also inherently ignore differences in perceptions of posivity of words between speakers as well. Future work could reduce these potential biases by developing country-specific lexica of positive words, and taking into account individual differences in the perception of how positivity words are. In a similar vein, it could be that the observed differences in positivity are driven by national differences in why Canadians and Americans use Twitter. As the aggregated self-reports of individuals do not seem to explain national character stereotypes, [13] emphasizes the role of culture and other factors (climate, historical influences etc.) in maintaining national character stereotypes. Yet, cultural factors are also challenging to measure and compare. Social media activity discussing interactions between Canadian and American leadership fulfilling or subverting national character stereotypes provide a rich set of natural experiments in which national character stereotypes play a salient role, and often an explicit one. Recent and ongoing political events evoke stereotypes of Canadians and Americans.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5321331,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "The chatbot industry sees more data as the answer to building a truly conversational system. But the industry may be teaching chatbots the wrong thing.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Amanda Turnbull"
+          },
+          {
+            "misc": "",
+            "name": "L’Université d’Ottawa/University of Ottawa"
+          }
+        ],
+        "duration": "269",
+        "readability": "62.68",
+        "source": "ca"
+      },
+      "document_id": "61878693-9983-43c9-ad48-4ca544f16a28",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Teaching chatbots how to do the right thing",
+      "document_url": "https://theconversation.com/teaching-chatbots-how-to-do-the-right-thing-93570",
+      "slice_content": "In this age of information — and misinformation — advancements in technology are challenging us to rethink how language works. Take conversational chatbots, for example. These computer programs mimic human conversation via text or audio. The mattress company Casper created Insomnobot-3000 to communicate with people who have sleep disorders. It gives those who have trouble sleeping the opportunity to talk to “someone” while everyone else is asleep. But Insomnobot-3000 doesn’t only chit-chat with its users, answering questions. It aims to reduce the loneliness felt by sufferers of insomnia. Its words have the potential to have an impact on the human user. At its most basic, language does things with words. It is a form of action that does more than simply state facts. This fairly straightforward observation was made in the 1950s by an obscure and slightly eccentric Oxford University philosopher, John Langshaw Austin. In his book, How To Do Things With Words, Austin developed the concept of performative language. What Austin meant was that language doesn’t just describe things, it actually “performs.” For example, if I say I bequeath my grandmother’s pearl necklace to my daughter, I am doing more than simply describing or reporting something. I am making a meaningful action. Austin also classified speech into three parts: Meaning, use and impact. His study and findings on language became known as speech-act theory. This theory was important not only in philosophy, but also in other areas such as law, literature and feminist thought.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.53021145,
+    "payload": {
+      "document_corpus": "plos",
+      "document_desc": "IntroductionHigher levels of social connectedness are associated with better physical and mental health outcomes, but measures of connectedness are often study specific. Prior research has distinguished between perceived and received (quantifiable) measures of social connectedness, with differing impacts on health, sometimes mediated by place of residence. This analysis investigated the relationship between perceptions of social support/connection and quantifiable measures of social encounters, by neighbourhood, to inform understanding of place-based differences in connectedness and health outcomes.MethodsNegative binomial regression models were used to determine associations between perceptions of social connectedness (perceived community connections and social involvement) and the number of recorded daily social encounters as a proxy for received support/connectedness. Analyses were undertaken across two Local Government Areas (LGAs) in Melbourne with disparate socio-economic profiles to examine potential modification of social connectedness measures by neighbourhood of residence.ResultsTwo measures of perceived connectedness had a clear relationship with recorded daily social encounters–feeling a sense of community belonging (RR 1.20 (1.04, 1.37), p = 0.010) and having family or friends close by (RR 1.30 (1.10,1.54), p = 0.002 “neither” compared to “disagree”, (RR 1.15 (1.04, 1.26), p = 0.006 “agree” compared to “disagree”). Involvement in a local church, sporting or social club was associated with a greater number of daily social encounters for respondents who participated a few times a year (RR 1.17 (1.05,1.32), p = 0.006) or often (RR 1.23 (1.12,1.36), p<0.001) compared to never. In the less affluent LGA, active contributions to neighbours and community through assistance and volunteering were a frequent driver of social connection. Differences in patterns between the two areas were found with some measures of perception showing stronger relationships with recorded daily encounters in one area but not the other.ConclusionsThese results indicate substantial complexity in the relationship between perceptions of social connectedness and recorded daily social encounters/received connectedness, meaning that one cannot be reliably extrapolated from the other. Drivers of individuals’ social connections also varied by area of residence. These findings offer new insights into potential mediators of the association between connectedness and wellbeing.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Centre for Epidemiology and Biostatistics, Melbourne School of Population and Global Health, The University of Melbourne, Melbourne, Australia",
+            "name": "Dias Alison"
+          },
+          {
+            "misc": "Centre for Epidemiology and Biostatistics, Melbourne School of Population and Global Health, The University of Melbourne, Melbourne, Australia",
+            "name": "Geard Nicholas"
+          },
+          {
+            "misc": "Victorian Infectious Diseases Reference Laboratory Epidemiology Unit at The Peter Doherty Institute for Infection and Immunity, The University of Melbourne and Royal Melbourne Hospital, Melbourne, Australia",
+            "name": "Campbell Patricia Therese"
+          },
+          {
+            "misc": "Centre for Health Equity, Melbourne School of Population and Global Health, The University of Melbourne, Melbourne, Australia",
+            "name": "Warr Deborah"
+          },
+          {
+            "misc": "Centre for Epidemiology and Biostatistics, Melbourne School of Population and Global Health, The University of Melbourne, Melbourne, Australia",
+            "name": "McVernon Jodie"
+          }
+        ],
+        "duration": "1108",
+        "journal": "PLOS ONE",
+        "publisher": "Public Library of Science, San Francisco, CA USA",
+        "readability": "42.5"
+      },
+      "document_id": "fd7a7a5c-9ef0-4ebc-ac87-e51315799040",
+      "document_lang": "en",
+      "document_sdg": [3, 11],
+      "document_title": "Quantity or quality? Assessing relationships between perceived social connectedness and recorded encounters",
+      "document_url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0208083",
+      "slice_content": "Furthermore, participants who declined to participate due to limited English or communication difficulties may have affected the representativeness of the sample and influenced the results, as limited English could be related to lower levels of social connectedness in an English-speaking country. This study took a broad perspective in looking at daily recorded social encounters, which was a coarse measurement. Further research is needed in this area. Indeed, a 2015 meta-analysis of social contact frequency and all-cause mortality reported that mere social contact frequency (defined as quantity of interactions, without assessing the quality of the support) may not benefit health as much as was previously thought [2], indicating that we need to delve deeper into social connectedness to identify the specific factors that do benefit health. More nuanced work is needed to further illuminate the mechanisms through which social connectedness affects health, as this study has shown that the relationship between qualitative and quantifiable connection is not straightforward. S1 FileSelected data was used in the present study.(DOC)S1 InformationTable A. Demographics of participants by neighbourhood (Local Government Area).Table B. Survey frequency results by neighbourhood (Local Government Area)–perceived community connections. Table C. Survey frequency results by neighbourhood (Local Government Area)–perceived social involvement. Table D. Survey frequency results by neighbourhood (Local Government Area)–neighbourhood perceptions. Table E. Multivariate negative binomial regression subgroup analysis results–neighbourhood perceptions.(DOCX)S1 Data and dictionary(XLS)",
+      "slice_sdg": 3
+    }
+  },
+  {
+    "score": 0.52989197,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "English is a language made by men, for men and it reinforces inequality.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Ella Tennant"
+          },
+          {
+            "misc": "",
+            "name": "Keele University"
+          }
+        ],
+        "duration": "255",
+        "readability": "54.56",
+        "source": "uk"
+      },
+      "document_id": "fc195c72-51fc-4b2c-ac72-61ce6cf30b99",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "International Women’s Day: Women have been written out of power – time is ripe for a new language of equality",
+      "document_url": "https://theconversation.com/international-womens-day-women-have-been-written-out-of-power-time-is-ripe-for-a-new-language-of-equality-112883",
+      "slice_content": "So it can’t be fair that there are more derogatory terms for girls and women than for boys and men (whore, hussy, spinster, hag, are some examples) and that the continued use of generic words or forms – man, mankind – are supposed to be all-inclusive and designate human beings in general. Meanwhile when “woman” is used as a label, it is a category with limiting criteria. Nevertheless, any discussion about the link between language and gender discrimination often results in predictable comments about the trivial nature of the issue. It is this attitude that contributes to perpetuating male power and authority at the expense of women. Defining status Language defines women’s position as inferior in relation to men. Unlike some other languages, English is not a gendered language – but gender is still often arbitrarily used for some things. Cognitive research suggests that language and the way people use it has a profound influence on the way we see the world. The way we communicate with others can be influenced by a number of things, including the relationship of the speakers, their age, social status and gender. If we view language as a form of social practice, then the way in which words – whether spoken or written – are received and interpreted by the listener reveal a great deal about how power relations are established and reinforced. Even the allocation of names and titles can be seen as an act of power.",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.52698505,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "This chapter introduces to the main theories that pertain to the sociocultural approaches to the study of second language acquisition...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Georges Daniel Véronique"
+          }
+        ]
+      },
+      "document_id": "c0bc288d-ebd8-4296-a03b-6776260afa0f",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "Socialization",
+      "document_url": "https://hal.science/hal-01481682",
+      "slice_content": "This chapter introduces to the main theories that pertain to the sociocultural approaches to the study of second language acquisition.ce chapitre présente les principales théories qui relèvent des courants sociocuturels qui étudient l'acquisition d'une langue étrangère.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.52697206,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "As a first attempt to date, this book addresses the notion of hypocrisy from a pragmatic perspective and devises a comprehensive model of verbal hypocrisy...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Sandrine Sorlin"
+          },
+          {
+            "misc": "",
+            "name": "Tuija Virtanen"
+          }
+        ]
+      },
+      "document_id": "d82d547e-208d-41ce-8b24-077e4a9f3a79",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "The Pragmatics of Hypocrisy",
+      "document_url": "https://hal.science/hal-04489072",
+      "slice_content": "As a first attempt to date, this book addresses the notion of hypocrisy from a pragmatic perspective and devises a comprehensive model of verbal hypocrisy. The studies included adopt emic and etic approaches in order to contribute jointly towards an understanding of what appears to be a ubiquitous and multifaceted phenomenon. Going beyond hypocrisy as a mere moral vice, this volume establishes its pragmatic space and confronts it with adjacent notions which, unlike hypocrisy, have been subject to pragmatic examination. The Pragmatics of Hypocrisy is of interest to students and scholars in pragmatics, discourse analysis, sociolinguistics, rhetoric, communication and media studies, as well as corpus linguistics, and by its transdisciplinary nature, to researchers in philosophy, sociology, and political science. It is also essential reading for anyone interested in the interplay between language, culture and society, across varieties and registers of English.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5258839,
+    "payload": {
+      "document_corpus": "open-edition-books",
+      "document_desc": "Communicative interactions in international negotiations on cultural property not only provide information about the emergence and proliferation of arguments, rhetorics, and registers, but also permit valuable insights into actors' positions, strategies and alliances. They significantly influence local and national practices and views related to cultural property debates. What can be gained from a deep analysis of the communicative patterns and strategies that actors engage in - the entailing text and talk of negotiations - is a better understanding of the process itself: how do different actors argue, what kind of strategies and rhetorics do they use, to which instruments and institutions do they refer, and in what way do actors react to each other? An analysis of communicative interactions contributes to the question of how international negotiations work. The analytic inclusion of sociolinguistic practices allows insights into positions, strategies, and perspectives pertaining to cultural property. By looking at not only what actors say, but also at how and in what contexts they do so, it is possible to make more accurate statements about their positions and perceptions in cultural property debates. As these communicative interactions influence outcomes considerably, an approach from linguistic anthropology is not only beneficial for an understanding of specific negotiations, but also for the analysis of broader cultural property issues.",
+      "document_details": {
+        "authors": [
+          {
+            "name": "Stefan Groth",
+            "misc": ""
+          }
+        ],
+        "duration": 55,
+        "publisher": "Göttingen University Press",
+        "readability": 18.27
+      },
+      "document_id": "94ade64d-6548-47f3-a0b9-197b657edf0a",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Negotiating Tradition",
+      "document_url": "https://books.openedition.org/gup/608",
+      "slice_content": "Communicative interactions in international negotiations on cultural property not only provide information about the emergence and proliferation of arguments, rhetorics, and registers, but also permit valuable insights into actors' positions, strategies and alliances. They significantly influence local and national practices and views related to cultural property debates. What can be gained from a deep analysis of the communicative patterns and strategies that actors engage in - the entailing text and talk of negotiations - is a better understanding of the process itself: how do different actors argue, what kind of strategies and rhetorics do they use, to which instruments and institutions do they refer, and in what way do actors react to each other? An analysis of communicative interactions contributes to the question of how international negotiations work. The analytic inclusion of sociolinguistic practices allows insights into positions, strategies, and perspectives pertaining to cultural property. By looking at not only what actors say, but also at how and in what contexts they do so, it is possible to make more accurate statements about their positions and perceptions in cultural property debates. As these communicative interactions influence outcomes considerably, an approach from linguistic anthropology is not only beneficial for an understanding of specific negotiations, but also for the analysis of broader cultural property issues.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.52217007,
+    "payload": {
+      "document_corpus": "peerj",
+      "document_desc": "Although computational linguistic methods—such as topic modelling, sentiment analysis and emotion detection—can provide social media researchers with insights into online public discourses, it is not inherent as to how these methods should be used, with a lack of transparent instructions on how to apply them in a critical way. There is a growing body of work focusing on the strengths and shortcomings of these methods. Through applying best practices for using these methods within the literature, we focus on setting expectations, presenting trajectories, examining with context and critically reflecting on the diachronic Twitter discourse of two case studies: the longitudinal discourse of the NHS Covid-19 digital contact-tracing app and the snapshot discourse of the Ofqual A Level grade calculation algorithm, both related to the UK. We identified difficulties in interpretation and potential application in all three of the approaches. Other shortcomings, such the detection of negation and sarcasm, were also found. We discuss the need for further transparency of these methods for diachronic social media researchers, including the potential for combining these approaches with qualitative ones—such as corpus linguistics and critical discourse analysis—in a more formal framework.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "School of Computer Science, University of Nottingham, Nottingham, United Kingdom",
+            "name": "Dan Heaton"
+          },
+          {
+            "misc": "School of Computer Science, University of Nottingham, Nottingham, United Kingdom",
+            "name": "Jeremie Clos"
+          },
+          {
+            "misc": "School of Computer Science, University of Nottingham, Nottingham, United Kingdom",
+            "name": "Elena Nichele"
+          },
+          {
+            "misc": "School of Computer Science, University of Nottingham, Nottingham, United Kingdom",
+            "name": "Joel Fischer"
+          }
+        ],
+        "journal": "PeerJ Computer Science",
+        "publisher": "PeerJ Inc.",
+        "readability": "49.637044879092684"
+      },
+      "document_id": "3c8fe893-8b95-42be-95c8-999633e4faeb",
+      "document_lang": "en",
+      "document_sdg": [16, 3],
+      "document_title": "Critical reflections on three popular computational linguistic approaches to examine Twitter discourses",
+      "document_url": "https://peerj.com/articles/cs-1211/",
+      "slice_content": "Social media researchers using this approach may apply these computational linguistic methods to analyse large social media datasets with confidence. It means researchers can realistically manage expectations through the logging of what the researcher wishes to achieve so this can be revisited in the critical reflection aspect, as well as doing more than looking at the outputs of the predictive algorithms by displaying trajectories and examining with context. When considering future work, this should investigate the ways in which computational linguistic methods may be used more effectively by combining them with qualitative research methods, such as corpus linguistics or discourse analysis. This may help to mitigate some of the limitations of computationally descriptive and predictive analytical approaches that were found during the process of critical reflection in this article. The strong emphasis on context, particularly in critical discourse analysis, means that how views are expressed and related to the events occurring at the time can play a more prevalent role in the analysis of public discourses. In applying popular computational linguistic methods to Twitter case studies, we demonstrate the potential use of a process that combines existing best practice and critical reflections on the use of the methods for social media researchers, like us, who are not experts in computational linguistics. Our findings show that, by following this analysis process, we were able to do more with the results generated by the algorithms through the examination of contextual factors and chronological trajectories post-human review.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5203868,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "This article takes an Amazonian example to question one of the main issues of the shamanic ritual utterance: the operation of composition-translation that the ritual specialist has to carry out to “represent” the invisibles during his performance, and the sensory apparatuses it implies...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Andrea-Luz Gutierrez-Choquevilca"
+          }
+        ]
+      },
+      "document_id": "366b79f4-86e1-4815-afd9-a34f22fab4e2",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "The contagion of images: embedded voices and sensory apparatuses in an Amerindian shamanic ritual",
+      "document_url": "https://hal.science/hal-03924913",
+      "slice_content": "The Western paradigm of communication, defined by language sciences in terms of signifying intention or relevance, is here replaced by a pragmatic model based on the multiplication of voices, points of view and possible interpretations of the image.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5190853,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "Few grammatical affixes have been borrowed from Spanish into native Mesoamerican languages...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Claudine Chamoreau"
+          }
+        ]
+      },
+      "document_id": "a45029b1-6f81-47d4-8d56-ff5d758b7b56",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "Morphology in Mesoamerican languages contacts",
+      "document_url": "https://shs.hal.science/halshs-00672769",
+      "slice_content": "The specific behaviour of each language can be explained by sociolinguistic and pragmatic factors. I will thus argue that even if certain typological constraints exist, sociolinguistic and pragmatic factors allow to get round them and make possible the introduction of a distinction of gender in contexts related with the borrowing of the diminutive marker in these languages (Thomason 2001).",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.51657677,
+    "payload": {
+      "document_corpus": "wikipedia",
+      "document_desc": "Friedrich Wilhelm Christian Karl Ferdinand von Humboldt (, also US: , UK: ; German: [ˈvɪlhɛlm fɔn ˈhʊmbɔlt]; 22 June 1767 – 8 April 1835) was a German philosopher, linguist, government functionary, diplomat, and founder of the Humboldt University of Berlin, which was named after him in 1949 (and also after his younger brother, Alexander von Humboldt, a naturalist). He is especially remembered as a linguist who made important contributions to the philosophy of language, ethnolinguistics and to the theory and practice of education. He made a major contribution to the development of liberalism by envisioning education as a means of realizing individual possibility rather than a way of drilling traditional ideas into youth to suit them for an already established occupation or social role. In particular, he was the architect of the Humboldtian education ideal, which was used from the beginning in Prussia as a model for its system of public education, as well as in the United States and Japan. He was elected as a member of the American Philosophical Society in 1822.",
+      "document_details": {
+        "duration": "539",
+        "readability": "49.15"
+      },
+      "document_id": "43da3fce-0ed9-4029-8c63-cac2a110b84f",
+      "document_lang": "en",
+      "document_sdg": [16, 4],
+      "document_title": "Wilhelm von Humboldt",
+      "document_url": "https://en.wikipedia.org/wiki/Wilhelm_von_Humboldt",
+      "slice_content": "Polish linguists at the Lublin School (see Jerzy Bartmiński), in their research of Humboldt, also stress this distinction between the worldviews of a personal or political kind and the worldview that is implicit in language as a conceptual system. However, little rigorous research in English has gone into exploring the relationship between the linguistic worldview and the transformation and maintenance of this worldview by individual speakers. One notable exception is the work of Underhill, who explores comparative linguistic studies in both Creating Worldviews: Language, Ideology & Metaphor (2011) and in Ethnolinguistics and Cultural Concepts: Truth, Love, Hate & War (2012). In Underhill's work, a distinction is made between five forms of worldview: world-perceiving, world-conceiving, cultural mindset, personal world and perspective, in order to convey the distinctions Humboldt was concerned with preserving in his ethnolinguistics. Probably the best-known linguist working with a truly Humboldtian perspective writing in English today is Anna Wierzbicka, who has published a number of comparative works on semantic universals and conceptual distinctions in language. The Rouen Ethnolinguistics Project, in France, published online a 7-hour series of lectures on Humboldt's thought on language, with the Berlin specialist Professor Trabant. In Charles Taylor's important summative work, The Language Animal: The Full Shape of the Human Linguistic Capacity (2016), von Humboldt is given credit, along with Johann Georg Hamann and Johann Gottfried Herder, for inspiring Taylor's \"HHH\" approach to the philosophy of language, emphasizing the creative power and cultural specificity of language. Collected writings Humboldt, Wilhelm von. Gesammelte Schriften. Ausgabe der preussischen Akademie der Wissenschaften. Vols.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.51446533,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "Language-learning research in the Netherlands has determined that using a foreign language rather than just memorizing its grammar can transform how students progress.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Grégory Miras"
+          },
+          {
+            "misc": "",
+            "name": "Université de Lorraine et Audrey Rousse-Malpat"
+          },
+          {
+            "misc": "",
+            "name": "University of Groningen"
+          }
+        ],
+        "duration": "245",
+        "readability": "48.23",
+        "source": "fr"
+      },
+      "document_id": "0eef063f-c3e0-4cfc-856a-21dc9161a663",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "Could the Netherlands crack the secret of language learning using this approach?",
+      "document_url": "https://theconversation.com/could-the-netherlands-crack-the-secret-of-language-learning-using-this-approach-194683",
+      "slice_content": "Collaboration takes place between learners in the target language, ensuring it is used most of the time. The teacher is also the one who determines learners’ individual or collective needs and offers activities to meet them. Teachers also play a key role in organising peer feedback, testing language skills and assessing the learners’ state of development – the strengths and the elements that each one needs to work on. The method moves away from counting students’ “errors”. In this regard, teachers need to move away from the way they learned the language – and sometimes even from their personal beliefs. Their actions will be all the more relevant if they understand how language develops from a social and psycho-cognitive point of view, and consider how and when to intervene. Several studies have shown the benefits of usage-based inspired methodologies on learners’ listening, speaking, and writing skills. These methods are underpinned by the idea that the language speaker is a social agent rather than a grammarian. What is happening in the Netherlands shows the relevance of the research and education communities working together to experiment with and implement methods that are based on contemporary scientific knowledge about language and languages.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.5135279,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "Inspired by the works of Foucault, Butler or Bourdieu, this article examines the links between gender, discourse and power at work based on a variety of researches in sociolinguistics...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Sophie Bailly"
+          }
+        ]
+      },
+      "document_id": "daf63700-2f9d-4410-94ed-1e26d4be6a6b",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "Discours, sexe et pouvoir au travail",
+      "document_url": "https://hal.science/hal-00524303",
+      "slice_content": "Inspired by the works of Foucault, Butler or Bourdieu, this article examines the links between gender, discourse and power at work based on a variety of researches in sociolinguistics. It adresses in particular the reasons why speakers adopt gendered stereotyped variants at the workplace. Les femmes ont conquis des territoires professionnels autrefois réservés aux hommes en bravant des interdits sociaux et langagiers qui pèsent sur elles. Comment l'usage sociolangagier reflète-t-il ou construit-il cette émancipation par le travail ? Comment les hommes et les femmes s'accommodent-ils au plan discursif de nouvelles répartitions du pouvoir et interagissent-ils dans le cadre professionnel ? S'inspirant des propositions de Foucault, Bourdieu ou Butler, cet article examine les liens entre sexe, discours et pouvoir au travail à partir de diverses recherches en sociolinguistique et interroge les motivations des locuteurs à adopter des variantes sexotypées.",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.51010364,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "Topics play an important role in the global organisation of a conversation as what is currently discussed constrains the possible contributions of the participant. Understanding the way topics are organised in interaction would provide insight on the structure of dialogue beyond the sequence of utterances. However, studying this high-level structure is a complex task that we try to approach by first segmenting dialogues into smaller topically coherent sets of utterances. Understanding the interactions between these segments would then enable us to propose a model of topic organisation at a dialogue level. In this paper we work with open-domain conversations and try to reach a comparable level of accuracy as recent machine learning based topic segmentation models but with a formal approach. The features we identify as meaningful for this task help us understand better the topical structure of a conversation....",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Amandine Decker"
+          },
+          {
+            "misc": "",
+            "name": "Maxime Amblard"
+          }
+        ]
+      },
+      "document_id": "a29dbce7-e9e2-4d9e-b51c-c90a37558318",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "With a Little Help from my (Linguistic) Friends: Topic Segmentation of Multi-party Casual Conversations",
+      "document_url": "https://hal.science/hal-04425655",
+      "slice_content": "In particular, our dataset did not contain any prosodic information and lacked most of the visual context one may need to understand topic shifts that rely on a change in the context. While the notes could have brought some additional information, we chose to focus on linguistic information in this study. But future modalities to be complete. Ethical Statement For this experiment, we did not employ any people and we used tools that were free to use. We have taken care to ensure that the data used is representative of a certain diversity. For example, the corpus is the corpus is balanced in terms of gender. However, we acknowledge that working covers little cultural diversity.",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.5088005,
+    "payload": {
+      "document_corpus": "peerj",
+      "document_desc": "Mobile devices now rival desktop computers as the most popular devices for web surfing and E-commerce. As screen sizes of mobile devices continue to get larger, operating smartphones with a single-hand becomes increasingly difficult. Automatic operating hand detection would enable E-commerce applications to adapt their interfaces to better suit their user’s handedness interaction requirements. This paper addresses the problem of identifying the operative hand by avoiding the use of mobile sensors that may pose a problem in terms of battery consumption or distortion due to different calibrations, improving the accuracy of user categorization through an evaluation of different classification strategies. A supervised classifier based on machine learning was constructed to label the operating hand as left or right. The classifier uses features extracted from touch traces such as scrolls and button clicks on a data-set of 174 users. The approach proposed by this paper is not platform-specific and does not rely on access to gyroscopes or accelerometers, widening its applicability to any device with a touchscreen.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Department of Computer Science, University of Oviedo, Oviedo, Asturias, Spain",
+            "name": "Carla Fernández"
+          },
+          {
+            "misc": "Department of Computer Science, University of Oviedo, Oviedo, Asturias, Spain",
+            "name": "Martin Gonzalez-Rodriguez"
+          },
+          {
+            "misc": "Department of Computer Science, University of Oviedo, Oviedo, Asturias, Spain",
+            "name": "Daniel Fernandez-Lanvin"
+          },
+          {
+            "misc": "Department of Accounting, University of Oviedo, Oviedo, Asturias, Spain",
+            "name": "Javier De Andrés"
+          },
+          {
+            "misc": "Department of Computer Science, University of South Florida, Tampa, FL, United States of America",
+            "name": "Miguel Labrador"
+          }
+        ],
+        "journal": "PeerJ Computer Science",
+        "publisher": "PeerJ Inc.",
+        "readability": "54.16074192063925"
+      },
+      "document_id": "34a0ba9c-209c-4b78-867f-2055bf97cbfa",
+      "document_lang": "en",
+      "document_sdg": [15, 5],
+      "document_title": "Implicit detection of user handedness in touchscreen devices through interaction analysis",
+      "document_url": "https://peerj.com/articles/cs-487/",
+      "slice_content": "This sample distribution is consistent with the target population of e-commerce users and consequent to the volunteer recruit strategy employed, as users belonging to those age groups tend to use these interaction scenarios more frequently than older or younger users (Hutchinson, 2017).Although this sample distribution reinforces the internal validity of the study, it weakens its external validity in specific age ranges as the study cannot draw conclusions concerning user profiling of children and/or elderly users. Regarding gender distribution, 44% of the test subjects were female, in comparison with the approximately 50% found in the global population (World Bank, 2017). This slight difference may be due to the method of distribution of the experiment. Nevertheless, this study’s gender ratio remains representative of the global population. Additionally, the data in this research was gathered from Spanish and English-speaking users. These languages belong to the Western culture and share the same writing direction (from left to right), among other common characteristics. As a result, the profiling model may not be extensible to other cultures, specifically to the users of the majority of the Semitic languages (like the Arabic, the Amharic, etc.) which are written from right to left. The goal of this research was to implicitly determine the operating hand of a mobile device user in an E-commerce web application. Previous studies had mostly focused on sensor-based solutions, with few test subjects.",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.50706863,
+    "payload": {
+      "document_corpus": "wikipedia",
+      "document_desc": "Gender includes the social, psychological, cultural and behavioral aspects of being a man, woman, or other gender identity. Depending on the context, this may include sex-based social structures (i.e. gender roles) and gender expression. Most cultures use a gender binary, in which gender is divided into two categories, and people are considered part of one or the other (boys/men and girls/women); those who are outside these groups may fall under the umbrella term non-binary. Some societies have specific genders besides \"man\" and \"woman\", such as the hijras of South Asia; these are often referred to as third genders (and fourth genders, etc.). Most scholars agree that gender is a central characteristic for social organization.In the mid-20th century, a terminological distinction in modern English (known as the sex and gender distinction) between biological sex and gender began to develop in the academic areas of psychology, sexology, and feminism. Before the mid-20th century, it was uncommon to use the word gender to refer to anything but grammatical categories. In the 1970s, feminist theory embraced the concept of a distinction between biological sex and the social construct of gender. The distinction between gender and sex is made by most contemporary social scientists in western countries, behavioral scientists and biologists, many legal systems and government bodies, and intergovernmental agencies such as WHO.The social sciences have a branch devoted to gender studies. Other sciences, such as psychology, sociology, sexology and neuroscience, are interested in the subject. The social sciences sometimes approach gender as a social construct, and gender studies particularly do, while research in the natural sciences investigates whether biological differences in females and males influence the development of gender in humans; both inform the debate about how far biological differences influence the formation of gender identity and gendered behavior. Biopsychosocial approaches to gender include biological, psychological, and social/cultural aspects.",
+      "document_details": {
+        "duration": "2652",
+        "readability": "47.12"
+      },
+      "document_id": "f64da902-ae93-411f-9a19-6cbbef5f4c13",
+      "document_lang": "en",
+      "document_sdg": [5],
+      "document_title": "Gender",
+      "document_url": "https://en.wikipedia.org/wiki/Gender",
+      "slice_content": "Languages of the Niger-Congo language family can have as many as twenty genders, including plants, places, and shapes. Many languages include terms that are used asymmetrically in reference to men and women. Concern that current language may be biased in favor of men has led some authors in recent times to argue for the use of a more gender-neutral vocabulary in English and other languages. Several languages attest the use of different vocabulary by men and women, to differing degrees. See, for instance, Gender differences in Japanese. The oldest documented language, Sumerian, records a distinctive sub-language, Emesal, only used by female speakers. Conversely, many Indigenous Australian languages have distinctive registers with a limited lexicon used by men in the presence of their mothers-in-law (see Avoidance speech). As well, quite a few sign languages have a gendered distinction due to boarding schools segregated by gender, such as Irish Sign Language. Several languages such as Persian or Hungarian are gender-neutral. In Persian the same word is used in reference to men and women. Verbs, adjectives and nouns are not gendered. ( See Gender-neutrality in genderless languages). Several languages employ different ways to refer to people where there are three or more genders, such as Navajo Science Historically, science has been portrayed as a masculine pursuit in which women have faced significant barriers to participate. Even after universities began admitting women in the 19th century, women were still largely relegated to certain scientific fields, such as home science, nursing, and child psychology.",
+      "slice_sdg": 5
+    }
+  },
+  {
+    "score": 0.50679016,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "Increasingly, parents are realising that flexibility is key to navigating multiple languages, and cultures, within family life.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Max Antony-Newman"
+          },
+          {
+            "misc": "",
+            "name": "Sheffield Hallam University"
+          }
+        ],
+        "duration": "214",
+        "readability": "62.58",
+        "source": "uk"
+      },
+      "document_id": "fe8028f0-6cad-4c04-a3c4-0679bca23f7c",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "Plurilingual parenting: why many experts think families who speak multiple languages should just go with the flow",
+      "document_url": "https://theconversation.com/plurilingual-parenting-why-many-experts-think-families-who-speak-multiple-languages-should-just-go-with-the-flow-185255",
+      "slice_content": "Many of us live not just in diverse societies, but what anthropologist Steven Vertovec terms “super-diverse” societies. More and more people are moving around and bringing their languages and cultures with them. In the UK, 20% of school children are multilingual. They speak at least one other language in addition to English. Parents, of course, have a lot on their plate simply keeping their children fed, safe and educated. But if you do have more than one language in your family, then decisions have to be made on how to navigate that terrain too. If linguists have long paid attention to the idea of bilingual parenting, a new appreciation of linguistic and cultural complexity in super-diverse societies has seen the advent of a new approach. What experts call plurilingualism views language use as fluid and dynamic. Previous theories about language-learning in homes, where several languages are present, have often advocated strict rules. The one-language-one-parent policy sees each parent only speak their first language to the child to avoid confusion. Other immigrant parents, meanwhile, decide to speak only their heritage language at home, while the local language is learned at school. Adopting a plurilingual approach, by contrast, brings a measure of relief. It suggests you can simply go with the flow. You can mix things up, using different languages in different situations. Celebrating linguisitic diversity We already know how important plurilingualism in teaching is, in terms of both the academic achievement and the wellbeing of multilingual students.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.506701,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "Abstract We present a new paradigm investigating social meaning through strategic action. More precisely, we present an experimental technique (a textual role-playing game developed with the Ren’Py engine), which we view as an enrichment of the matched-guise technique (MGT). In this paradigm the explicit response scales of the MGT are substituted for strategic choices in a video game. We argue that studying social meaning experimentally through looking at its effects on participants’ actions is more interactive than the classic paradigm. We compare the results from both the video game and a more classic version of the paradigm based on scales, conducted with the same linguistic materials, and we show that researchers who use only the MGT may be missing some crucial aspects of the social meanings of the linguistic phenomena they are studying. We also argue that a paradigm based on strategic action is better equipped to study the social, political, and economic outcomes for the users of those linguistic variants, and therefore to contribute to understanding phenomena like linguistic discrimination....",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Gabriel Thiberge"
+          },
+          {
+            "misc": "",
+            "name": "Heather Burnett"
+          }
+        ]
+      },
+      "document_id": "a918efcd-cb9a-4657-af3f-35aab015a3d1",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "From sociolinguistic perception to strategic action in the study of social meaning",
+      "document_url": "https://hal.science/hal-04841793",
+      "slice_content": "In other words, the contrast between Anthony ’ s standard and vernacular guises that we observed in the strategic action paradigm was not observed in the MGT. On the status scales, we fi nd a similar pattern, with Anthony showing no distinction between his two guises, although always being rated lower than Martin. Here again, it seems the contrast between the two linguistic guises that we observed in th e video game is neutralized in the sociolinguistic perception task. On the other hand, the contrast between Martin ’ s two guises is observed in the MGT: a s the sociolinguistics literature and the video game results would predict, Martin is rated higher on the status scales in his standard guise, andhigher on the solidarity scales in his vernacular guise. This is captured in the model by the robust evidence for a three-way interaction between the NPC × scales × context variables ( β̂ = 1.54, 95 % CrI [ − 0.34, 3.49], P ( β > 0) = 0.95). We fi nd a similar pattern for the contexts: as shown in Figure 9, the status and solidarity versions of each context do indeed rate higher on the status and solidarity scales, respectively. However, we again see some neutralization for the café location.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5052452,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "AUSTRALIA IN THE ASIAN CENTURY – A series examining Australia’s role in the rapidly transforming Asian region. Delivered in partnership with the Australian government. Today, Dr Yuko Kinoshita looks at…",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Yuko Kinoshita"
+          },
+          {
+            "misc": "",
+            "name": "University of Canberra"
+          }
+        ],
+        "duration": "255",
+        "readability": "51.28",
+        "source": "au"
+      },
+      "document_id": "12177f99-6b3d-4e75-a05e-65b2a0610d44",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "Want to get ahead this century? Learn an Asian language",
+      "document_url": "https://theconversation.com/want-to-get-ahead-this-century-learn-an-asian-language-6247",
+      "slice_content": "By learning about these linguistic features of culture, students efficiently develop understandings of the importance of cultural attitudes in society, rather than trying to do this through ethnographic or sociological studies. In communication practice, students put this understanding into action. They get a living experience which is immediate, deep, and personalised. Communicating in a language we cannot speak well is a precious experience. Struggling to communicate, feeling inadequate, getting frustrated or even frightened can forge pathways for understanding the experiences of many in our community, particularly those from non-English speaking backgrounds. This empathy is crucial in engaging with our Asian neighbours, as well as in working together with fellow Australians from Asian backgrounds. An understanding of the breadth and depth of cultural difference — and the possibility of bridging that gap – is the key outcome of quality language education. And you might become fluent in another language as a bonus. Languages in tertiary education With the economic and social importance of Asia giving more reason than ever for quality language education, it is nevertheless becoming more and more difficult to achieve due to the financial pressures at universities. Language staff are often forced to increase class sizes, reduce face-to-face contact hours, and eliminate continuous assessments — all of which reduce effectiveness. “ Can’t you use modern technologies to deliver the course at a lower cost?” is a popular question from management. Modern technologies have brought some exciting changes to the environment of language education in the last few decades. “",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.502408,
+    "payload": {
+      "document_corpus": "wikipedia",
+      "document_desc": "Occitania (Occitan: Occitània [utsiˈtanjɔ], locally [u(k)siˈtanjɔ], [ukʃiˈtanjɔ] or [u(k)siˈtanja]) is the historical region in Western and Southern Europe where the Occitan language was historically spoken and where it is occasionally used as a second language. This cultural area roughly encompasses much of the southern third of France (except the French Basque Country and French Catalonia) as well as part of Spain (Aran Valley), Monaco, and parts of Italy (Occitan Valleys). Occitania has been recognized as a linguistic and cultural concept since the Middle Ages. The territory was united in Roman times as the Seven Provinces (Latin: Septem Provinciae) and in the Early Middle Ages (Aquitanica or the Visigothic Kingdom of Toulouse, or the share of Louis the Pious following Thionville divisio regnorum in 806). Currently, the region has a population of 16 million, and between 200,000–800,000 people are either native or proficient speakers of Occitan. More commonly, French, Piedmontese, Catalan, Spanish and Italian are spoken. Since 2006, the Occitan language has been an official language in Catalonia, which includes the Aran Valley where Occitan gained official status in 1990. Under Roman Empire rule, most of Occitania was known as Aquitania, the earlier conquered territories were known as Provincia Romana (see modern Provence), while the northern provinces of what is now France were called Gallia (Gaul). Under the Later Empire, both Aquitania and Provincia Romana were grouped in the Seven Provinces or Viennensis. Provence and Gallia Aquitania (or Aquitanica) have been in use since medieval times for Occitania (i.e. Limousin, Auvergne, Languedoc and Gascony). The historic Duchy of Aquitaine should not be confused with the modern French region called Aquitaine: this is a reason why the term Occitania was revived in the mid-19th century. The names \"Occitania\" and \"Occitan language\" (Occitana lingua) appeared in Latin texts from as early as 1242–1254 to 1290 and during the following years of the early 14th century; texts exist in which the area is referred indirectly as \"the country of the Occitan language\" (Patria Linguae Occitanae). The name Lenga d'òc was used in Italian (Lingua d'òc) by Dante in the late 13th century. The somewhat uncommon ending of the term Occitania is most likely from a French clerk who joined the òc [ɔk] and Aquitània [ɑkiˈtanjɑ] in a portmanteau term, thus blending the language and the land in just one concept.On 28 September 2016, Occitanie became the name of an administrative region that succeeded the regions of Midi-Pyrénées and Languedoc-Roussillon; it is a small part of Occitania.",
+      "document_details": {
+        "duration": "1951",
+        "readability": "49.04"
+      },
+      "document_id": "693af0be-21f1-4107-94c4-2a95c4acd9d1",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Occitania",
+      "document_url": "https://en.wikipedia.org/wiki/Occitania",
+      "slice_content": "A unique object of study: d'oc culture The speakers of the Occitan language do not use a single meaning of their language because Occitan is not a monolithic language with for example a single dictionary where each speaker finds exactly their vocabulary, but a juxtaposition of dialects. Also, many studies have focused on the differences between Provençal, Languedoc, etc. We must also remember the many common features of the Occitan cultural space, which are generally considered partisans. The consciousness of a common culture Robert Lafont develops this idea in the introduction of the \"History and Anthology of Occitan Literature\". The reference to troubadours is essential. This socio-linguistic argument is modulated according to the authors but it is accepted by all the current scholarship, including the authors who speak of \"domain d'oc\", since by definition, their study of the d'oc domain rests on the consciousness of the existence of a common culture. Intercomprehension The different speakers of the language share many common traits (tonic accentuation, close vocabulary, frequent use of the subjunctive, etc.) that allow mutual understanding. For Occitanists, this intercomprehension means that Occitan is one language; for others, it means that these languages are very close but all agree that the speakers in this defined space understand each other. Common social characteristics The social characteristics of Occitania are not eternal and intangible because factors of endogenous mutations and European influences, especially of Northern France, can blur these social peculiarities.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.5021801,
+    "payload": {
+      "document_corpus": "conversation",
+      "document_desc": "The way questions on language were posed call the results into question.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Ellen Bishop"
+          },
+          {
+            "misc": "",
+            "name": "University of Leicester"
+          }
+        ],
+        "duration": "208",
+        "readability": "59.53",
+        "source": "uk"
+      },
+      "document_id": "c7995f29-f705-4c53-8c6f-32e85f44d480",
+      "document_lang": "en",
+      "document_sdg": [4],
+      "document_title": "2021 census shows English decreasing as main language but masks England and Wales’ true diversity",
+      "document_url": "https://theconversation.com/2021-census-shows-english-decreasing-as-main-language-but-masks-england-and-wales-true-diversity-195678",
+      "slice_content": "This information helps them to plan and provide appropriate translation services, educational support for speakers of other languages, and translated signage and documentation. Linguistic inclusivity is also important to make speakers of other languages feel valued and part of multicultural British society.",
+      "slice_sdg": 4
+    }
+  },
+  {
+    "score": 0.50047493,
+    "payload": {
+      "document_corpus": "peerj",
+      "document_desc": "Mental health issues are a global concern, with a particular focus on the rise of depression. Depression affects millions of people worldwide and is a leading cause of suicide, particularly among young people. Recent surveys indicate an increase in cases of depression during the COVID-19 pandemic, which affected approximately 5.4% of the population in Spain in 2020. Social media platforms such as X (formerly Twitter) have become important hubs for health information as more people turn to these platforms to share their struggles and seek emotional support. Researchers have discovered a link between emotions and mental illnesses such as depression. This correlation provides a valuable opportunity for automated analysis of social media data to detect changes in mental health status that might otherwise go unnoticed, thus preventing more serious health consequences. Therefore, this research explores the field of emotion analysis in Spanish towards mental disorders. There are two contributions in this area. On the one hand, the compilation, translation, evaluation and correction of a novel dataset composed of a mixture of other existing datasets in the bibliography. This dataset compares a total of 16 emotions, with an emphasis on negative emotions. On the other hand, the in-depth evaluation of this novel dataset with several state-of-the-art transformers based on encoder-only and encoder-decoder architectures. The analysis compromises monolingual, multilingual and distilled models as well as feature integration techniques. The best results are obtained with the encoder-only MarIA model, with a macro-average F1 score of 60.4771%.",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "Departamento de Informática y Sistemas, Universidad de Murcia, Campus de Espinardo, Murcia, Murcia, Spain",
+            "name": "Alejandro Salmerón-Ríos"
+          },
+          {
+            "misc": "Departamento de Informática y Sistemas, Universidad de Murcia, Campus de Espinardo, Murcia, Murcia, Spain",
+            "name": "José Antonio García-Díaz"
+          },
+          {
+            "misc": "Departamento de Informática y Sistemas, Universidad de Murcia, Campus de Espinardo, Murcia, Murcia, Spain",
+            "name": "Ronghao Pan"
+          },
+          {
+            "misc": "Departamento de Informática y Sistemas, Universidad de Murcia, Campus de Espinardo, Murcia, Murcia, Spain",
+            "name": "Rafael Valencia-García"
+          }
+        ],
+        "duration": "2476",
+        "journal": "PeerJ Computer Science",
+        "publisher": "PeerJ Inc.",
+        "readability": "53.22"
+      },
+      "document_id": "4b6616a4-3b62-44cd-8bbb-e703576da616",
+      "document_lang": "en",
+      "document_sdg": [3, 16],
+      "document_title": "Fine grain emotion analysis in Spanish using linguistic features and transformers",
+      "document_url": "https://peerj.com/articles/cs-1992/",
+      "slice_content": "Includes sound words, polite expressions, derogatory terms, and figures of speech in which the part represents the whole. Pragmatics (PRA). The use of figurative language devices, including understatement, rhetorical questions, hyperbole, idiomatic expressions, verbal irony, metaphors, and similes. Stylometry (STY). It records punctuation symbols, corpus statistics, and metrics related to the number of words, syllables, or sentences. Lexical (LEC). The text provides a thorough identification and analysis of the topics, covering both abstract and general topics. Psycho-linguistic processes (PLI). This category contains emoticons and lexicons related to emotions and feelings. Register (REG). It emphasizes the distinction between informal and formal language, and addresses topics that may be considered offensive. Social media jargon (SOC). This category captures features related to the speaker’s mastery of social media jargon. For the training the baseline based on the LFs, we relied on a multilayer perceptron (MLP) because these features do not contain sequential information such as text. We evaluated several encoder-only language models. Figure 3 shows the pipeline of our approach as well as different feature-integration strategies, such as knowledge integration. Regarding sentence embeddings, several pre-trained transformer-based models are evaluated, which can be broadly classified into BERT-based and RoBERTa-based models. The main difference between these two architectures is that RoBERTa performs masking during training, whereas BERT performs masking at the beginning of training. Transformer-based models can be pre-trained with a multilingual corpus or with a monolingual corpus of a specific language. Thus, we have performed an evaluation of several multilingual and monolingual Spanish models for this task.",
+      "slice_sdg": 16
+    }
+  },
+  {
+    "score": 0.50034493,
+    "payload": {
+      "document_corpus": "hal",
+      "document_desc": "The concept of “text” is ambiguous: it can identify at the same time a concrete reality and an abstract one...",
+      "document_details": {
+        "authors": [
+          {
+            "misc": "",
+            "name": "Rossana De Angelis"
+          }
+        ]
+      },
+      "document_id": "5d2f9556-eb08-44d0-958b-2efda299742c",
+      "document_lang": "en",
+      "document_sdg": [16],
+      "document_title": "Textuality",
+      "document_url": "https://hal.u-pec.fr/hal-04226251",
+      "slice_content": "The concept of “text” is ambiguous: it can identify at the same time a concrete reality and an abstract one. Indeed, text presents itself both as an empirical object subject to analysis and an abstract object constructed by the analysis itself. This duplicity characterizes the development of the concept in the 20th century. According to different theories of language, there are also different understandings of “text”: a restricted use as written text, an extensive use as written and spoken text, and an expanded use as any written, verbal, gestural, or visual manifestation. The concept of “text” also presupposes two other concepts: from a generative point of view, it involves a proceeding by which something becomes a text (textualization); from an interpretative point of view, it involves a proceeding by which something can be interpreted as a text (textuality). In textual linguistics, “text” is considered at the same time as an abstract object, issued from a specific theoretical approach, and a concrete object, a linguistic phenomenon starting the process of analysis. In textual linguistics, textuality presents as a global quality of text issued from the interlacing of the sentences composing it. In linguistics, the definition of textuality depends on the definition of text. For instance, M. A. K. Halliday and Ruqaiya Hasan define textuality through the concepts of “cohesion” and “coherence.” Cohesion is a necessary condition of textuality, because it enables text to be perceived as a whole, but it’s not sufficient to explain it.",
+      "slice_sdg": 16
+    }
+  }
+]
