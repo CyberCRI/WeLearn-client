@@ -90,7 +90,6 @@ export const useChatStore = defineStore('chat', () => {
   };
 
   const setQueriesToSearch = (queries: string[]): void => {
-    console.log(queries);
     queriesToSearch.value = queries;
   };
 
