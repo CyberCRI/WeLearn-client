@@ -1,18 +1,21 @@
 export const en = {
+  adaptedTo: 'Adapted to:',
+  addBookmark: 'Add to bookmarks',
+  bookmarks: 'Bookmarks',
   cardArticle: {
     seeDetails: 'See details',
     openArticle: 'Open article',
     addBookmark: 'Add to bookmarks',
     removeBookmark: 'Remove from bookmark'
   },
-  moreDocuments: 'Explore more documents',
+  chat: 'Chat',
   chatInputPlaceholder: 'Ask a question',
-  rephrase: 'Rephrase',
-  emptyChatPresentation: 'Hello! I am WeLearn, your AI-powered SDG expert. How can I help?',
-  emptyChatAction: 'Here are some examples of what you can ask me:',
+  chatNoResults:
+    'Your current filters did not return any results. Please try modifying your query or broadening your search criteria to explore relevant documents.',
+  chatProvideValidQuestion: 'Please provide a valid question to get a response.',
+  clearBookmarks: 'Clear bookmarks',
   clearChat: 'Clear the conversation',
   clearSearch: 'Clear the search',
-  search_sdgs_in_query: 'SDGs in query',
   copied: 'Copied!',
   copy: 'Copy',
   corpus: {
@@ -26,16 +29,43 @@ export const en = {
     'Is climate change aggravated by human activity?',
     'What is the impact of climate change on the economy?'
   ],
+  description:
+    'Explore resources, learn, and boost sustainability integration in your courses with AI.',
+  emptyChatAction: 'Here are some examples of what you can ask me:',
+  emptyChatPresentation: 'Hello! I am WeLearn, your AI-powered SDG expert. How can I help?',
+  error: {
+    UNKNOWN_ERROR: {
+      title: 'Oops!',
+      description: 'Something went wrong. Please try again later.'
+    },
+    COLL_NOT_FOUND: {
+      title: 'Oops!',
+      description:
+        'The current collection is not yet available in the language used for the search.'
+    },
+    LANG_NOT_SUPPORTED: {
+      title: 'Sorry!',
+      description: 'This language is not supported yet.'
+    }
+  },
+  errorModalGeneric: {
+    title: 'Sorry! Something went wrong.',
+    message: 'Please try again later.',
+    action: 'Reload'
+  },
   extract: 'extract',
+  filterBySource: 'Filter by source',
+  filterSDG: 'Filter by SDG',
+  filteredBySDG: 'Filtered by SDG: | Filtered by SDGs:',
   goToSources: 'Go to source',
   goToTop: 'Go to top',
+  gotIt: 'Got it!',
+  hideAuthors: 'Hide authors',
+  hideFilters: 'Hide filters',
+  hideSources: 'Hide sources',
   lang: {
     fr: 'French',
     en: 'English'
-  },
-  sourcesList: {
-    fetching: 'Searching over 356,000 documents...',
-    formulatingAnswer: 'Formulating answer...'
   },
   landing: {
     slogan: 'Sustainability Education Made Easy',
@@ -76,42 +106,31 @@ export const en = {
       }
     }
   },
-  smallScreenPage: {
-    title: 'Oops! Your screen is too small to properly view this app.',
-    subtitle: 'For the best experience, please use a device with a larger screen. Thank you!'
-  },
-  hideSources: 'Hide sources',
-  showSources: 'Show sources',
-  showMoreAuthors: 'Show more',
-  hideAuthors: 'Hide authors',
-  errorModalGeneric: {
-    title: 'Sorry! Something went wrong.',
-    message: 'Please try again later.',
-    action: 'Reload'
-  },
-  error: {
-    UNKNOWN_ERROR: {
-      title: 'Oops!',
-      description: 'Something went wrong. Please try again later.'
-    },
-    COLL_NOT_FOUND: {
-      title: 'Oops!',
+  moreDocuments: 'Explore more documents',
+  next: 'Next',
+  noBookmarks: 'No bookmarks yet.',
+  noResults: 'I have no results for this search',
+  onboarding: {
+    welcome: {
+      title: 'Welcome to WeLearn!',
       description:
-        'The current collection is not yet available in the language used for the search.'
+        'WeLearn is a search engine that helps you find educational resources on the Sustainable Development Goals (SDGs).'
     },
-    LANG_NOT_SUPPORTED: {
-      title: 'Sorry!',
-      description: 'This language is not supported yet.'
+    search: {
+      INPUT: 'Type or paste a text here.\nLonger text, better results.',
+      FILTERS: 'You can filter your search by SDGs, subjects, or sources.',
+      SEND: 'Click on the search button to start the search.'
+    },
+    results: {
+      RESULTS: 'Here are the results of your search.',
+      ADD_BOOKMARK: 'You can add a bookmark to save this result.',
+      CHECK_BOOKMARK: 'You can check your bookmarks at any time.'
     }
   },
-  bookmarks: 'Bookmarks',
-  clearBookmarks: 'Clear bookmarks',
-  noBookmarks: 'No bookmarks yet.',
+  reload: 'Reload',
+  removeBookmark: 'Remove from bookmark',
   removeSelection: 'Clear',
-  selectAll: 'Select all',
-  adaptedTo: 'Adapted to:',
-  selectSubject: 'Adapt to subject',
-  selectSubjectInfo: 'Select a subject to adapt the results to your field of study.',
+  rephrase: 'Rephrase',
   sdgs: {
     1: 'No Poverty',
     2: 'Zero Hunger',
@@ -131,13 +150,28 @@ export const en = {
     16: 'Peace, Justice and Strong Institutions',
     17: 'Partnerships for the Goals'
   },
-  filterSDG: 'Filter by SDG',
+  search: 'Search',
+  searchPlaceholder: 'Type or paste a text here.\nLonger text, better results.',
+  search_sdgs_in_query: 'SDGs in query',
+  selectAll: 'Select all',
+  selectSubject: 'Adapt to subject',
+  selectSubjectInfo: 'Select a subject to adapt the results to your field of study.',
+  selectedSource: 'Filtered by source: | Filtered by sources:',
   showFilters: 'Show filters',
-  hideFilters: 'Hide filters',
-  filteredBySDG: 'Filtered by SDG: | Filtered by SDGs:',
-  SDGs: 'SDGs',
+  showMoreAuthors: 'Show more',
+  showSources: 'Show sources',
+  smallScreenPage: {
+    title: 'Oops! Your screen is too small to properly view this app.',
+    subtitle: 'For the best experience, please use a device with a larger screen. Thank you!'
+  },
+  sources: 'Sources',
+  sourcesList: {
+    fetching: 'Searching over 356,000 documents...',
+    formulatingAnswer: 'Formulating answer...'
+  },
   subjects: {
     anthropology: 'Anthropology',
+    arts: 'Arts',
     biology: 'Biology',
     business: 'Business',
     chemistry: 'Chemistry',
@@ -156,38 +190,22 @@ export const en = {
     psychology: 'Psychology',
     sociology: 'Sociology',
     space: 'Space Science',
-    arts: 'Arts',
     theology: 'Theology'
   },
-  filterBySource: 'Filter by source',
-  selectedSource: 'Filtered by source: | Filtered by sources:',
-  sources: 'Sources',
-  search: 'Search',
-  chat: 'Chat',
-  chatNoResults:
-    'Your current filters did not return any results. Please try modifying your query or broadening your search criteria to explore relevant documents.',
-  chatProvideValidQuestion: 'Please provide a valid question to get a response.',
-  reload: 'Reload',
-  searchPlaceholder: 'Type or paste a text here.\nLonger text, better results.',
   textLengthFeedback: 'Please provide a longer text for the search',
-  noResults: 'I have no results for this search',
-  next: 'Next',
-  gotIt: 'Got it!',
-  onboarding: {
-    welcome: {
-      title: 'Welcome to WeLearn!',
+  tutor: {
+    firstStep: {
+      title: 'Documents to start with',
+      description: 'Upload one or more documents to get started.'
+    },
+    secondStep: {
+      title: 'Select more source',
       description:
-        'WeLearn is a search engine that helps you find educational resources on the Sustainable Development Goals (SDGs).'
+        'Select more sources to enhance the results. The sources below are categorized as being Sustainable Development Goals (SDGs) related.'
     },
-    search: {
-      INPUT: 'Type or paste a text here.\nLonger text, better results.',
-      FILTERS: 'You can filter your search by SDGs, subjects, or sources.',
-      SEND: 'Click on the search button to start the search.'
-    },
-    results: {
-      RESULTS: 'Here are the results of your search.',
-      ADD_BOOKMARK: 'You can add a bookmark to save this result.',
-      CHECK_BOOKMARK: 'You can check your bookmarks at any time.'
+    thirdStep: {
+      title: 'Syllabus',
+      description: 'You can edit and download the syllabus below.'
     }
   }
 };
