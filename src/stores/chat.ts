@@ -202,11 +202,6 @@ export const useChatStore = defineStore('chat', () => {
         return;
       }
 
-      if (sourcesStatus === 206) {
-        // partial result
-        hasPartialResult.value = true;
-      }
-
       if (sourcesStatus === 200 && sources === null) {
         chatStatus.value = CHAT_STATUS.NO_RESULTS;
         // no result
