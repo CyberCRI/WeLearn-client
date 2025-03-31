@@ -38,20 +38,15 @@ export const postAxios = async (
       options,
       enhancedConfig
     );
+
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error fetching data');
     }
+
     return response;
   } catch (error) {
-    console.error(error);
-  }
-  const response = await axios.post(`${API_BASE}${API_VERSION}${endpoint}`, options);
-
-  if (!(response.status >= 200) && !(response.status <= 300)) {
     throw new Error('Error fetching data');
   }
-
-  return response;
 };
 
 export const getSDGsFromQuery = async (query: string): Promise<string[]> => {
