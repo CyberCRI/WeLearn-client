@@ -12,7 +12,7 @@ const setSyllabusValue = (text) => {
 };
 
 axios
-  .get('./src/components/tutor/mockedSyllabus.md')
+  .get('./mockedSyllabus.md')
   .then((res) => setSyllabusValue(res.data))
   .catch((err) => console.log(err));
 </script>
