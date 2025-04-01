@@ -170,7 +170,7 @@ export const fr = {
   },
   sources: 'Sources',
   sourcesList: {
-    fetching: 'Recherche dans plus de 356 000 documents...',
+    fetching: 'Recherche dans plus de 500 000 documents...',
     formulatingAnswer: 'Formulation de la réponse...'
   },
   subjects: {

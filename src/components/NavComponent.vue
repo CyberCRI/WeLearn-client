@@ -12,6 +12,8 @@ const user = useUserStore();
 
 const isNavOpened = ref<boolean>(false);
 
+const isProd = import.meta.env.VITE_ENVIRONMENT === 'prod';
+
 const handle_nav_bookmarks = () => {
   isNavOpened.value = false;
   user.updateSearchState('CHECK_BOOKMARK');
@@ -31,7 +33,7 @@ const handle_nav_bookmarks = () => {
           @click="isNavOpened = false"
           data-testid="nav-chat"
         >
-          <div class="icon">
+          <div class="icon mr-2">
             <QnAIcon />
           </div>
           <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('chat') }}</span>
@@ -44,7 +46,7 @@ const handle_nav_bookmarks = () => {
           @click="isNavOpened = false"
           data-testid="nav-search"
         >
-          <div class="icon">
+          <div class="icon mr-2">
             <SearchIcon />
           </div>
           <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('search') }}</span>
@@ -67,12 +69,25 @@ const handle_nav_bookmarks = () => {
           @click="handle_nav_bookmarks"
           data-testid="nav-bookmarks"
         >
-          <div class="icon">
+          <div class="icon mr-2">
             <BookIcon />
           </div>
           <span class="item-name" :class="isNavOpened && 'visible-name'">{{
             $t('bookmarks')
           }}</span>
+        </router-link>
+      </div>
+      <div class="link-wrapper" v-if="!isProd">
+        <router-link
+          class="router-link"
+          to="/tutor"
+          @click="isNavOpened = false"
+          data-testid="nav-tutor"
+        >
+          <div class="icon mr-2">
+            <BookIcon />
+          </div>
+          <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('tutor') }}</span>
         </router-link>
       </div>
       <div class="nav-langs" :class="isNavOpened && 'open'">

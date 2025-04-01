@@ -166,7 +166,7 @@ export const en = {
   },
   sources: 'Sources',
   sourcesList: {
-    fetching: 'Searching over 356,000 documents...',
+    fetching: 'Searching over 500,000 documents...',
     formulatingAnswer: 'Formulating answer...'
   },
   subjects: {
