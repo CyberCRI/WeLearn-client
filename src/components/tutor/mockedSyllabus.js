@@ -1,4 +1,4 @@
-# Syllabus: Introducing Sociolinguistics
+export const syllabus = `# Syllabus: Introducing Sociolinguistics
 
 ## Course Description
 
@@ -63,4 +63,4 @@ This course encourages the development of several competencies, including:
 
 ## Competencies Integration
 
-Integrating the GreenComp competencies, students will engage with sustainability themes, reflecting on their values and political agency in relation to language use and social justice, thereby fostering a holistic understanding of sociolinguistics in contemporary society.
+Integrating the GreenComp competencies, students will engage with sustainability themes, reflecting on their values and political agency in relation to language use and social justice, thereby fostering a holistic understanding of sociolinguistics in contemporary society.i`;

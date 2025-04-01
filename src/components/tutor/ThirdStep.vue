@@ -1,20 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { marked } from 'marked';
-import axios from 'axios';
+import { syllabus } from './mockedSyllabus.js';
 defineProps<{
   visible?: boolean;
 }>();
-const syllabus = ref('');
-
-const setSyllabusValue = (text) => {
-  syllabus.value = text;
-};
-
-axios
-  .get('./src/components/tutor/mockedSyllabus.md')
-  .then((res) => setSyllabusValue(res.data))
-  .catch((err) => console.log(err));
 </script>
 <template>
   <div class="wrapper" :class="{ visible: visible && syllabus.length }">
