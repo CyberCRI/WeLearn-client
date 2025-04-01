@@ -13,6 +13,7 @@ const user = useUserStore();
 const isNavOpened = ref<boolean>(false);
 
 const isProd = import.meta.env.VITE_ENVIRONMENT === 'prod';
+console.log('isProd', isProd);
 
 const handle_nav_bookmarks = () => {
   isNavOpened.value = false;
@@ -77,7 +78,7 @@ const handle_nav_bookmarks = () => {
           }}</span>
         </router-link>
       </div>
-      <div class="link-wrapper" v-if="!isProd">
+      <!-- <div class="link-wrapper" v-if="!isProd">
         <router-link
           class="router-link"
           to="/tutor"
@@ -89,7 +90,7 @@ const handle_nav_bookmarks = () => {
           </div>
           <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('tutor') }}</span>
         </router-link>
-      </div>
+      </div> -->
       <div class="nav-langs" :class="isNavOpened && 'open'">
         <a
           class="nav-lang"
