@@ -7,13 +7,14 @@ import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import i18n from '@/localisation/i18n';
 import BookIcon from './icons/BookIcon.vue';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
+
+const featureFlip = useFeatureFlipStore();
+const isFeatureEnabled = featureFlip.isFeatureEnabled('tutor');
 
 const user = useUserStore();
 
 const isNavOpened = ref<boolean>(false);
-
-const isProd = import.meta.env.VITE_ENVIRONMENT === 'prod';
-console.log('isProd', isProd);
 
 const handle_nav_bookmarks = () => {
   isNavOpened.value = false;
@@ -78,7 +79,7 @@ const handle_nav_bookmarks = () => {
           }}</span>
         </router-link>
       </div>
-      <!-- <div class="link-wrapper" v-if="!isProd">
+      <div class="link-wrapper" v-if="isFeatureEnabled">
         <router-link
           class="router-link"
           to="/tutor"
@@ -90,7 +91,7 @@ const handle_nav_bookmarks = () => {
           </div>
           <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('tutor') }}</span>
         </router-link>
-      </div> -->
+      </div>
       <div class="nav-langs" :class="isNavOpened && 'open'">
         <a
           class="nav-lang"
