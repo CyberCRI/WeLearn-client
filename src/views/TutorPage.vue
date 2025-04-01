@@ -27,11 +27,6 @@ const stepToAction = {
 </script>
 <template>
   <div class="content-centered-wrapper">
-    <!-- Three steps page 
-first step: input to add files short form
-second step: shows search result and allows to select the sources of interes
-third step: show the syllabus produced by the agents
--->
     <StepsIndicator :step="step" :setStep="setStep" stepsLength="3" />
     <div class="layout-flex">
       <div class="flex-wrap" :class="{ shrink: step === 3 }">
@@ -66,7 +61,7 @@ third step: show the syllabus produced by the agents
   display: flex;
   gap: 2rem;
   max-height: 85%;
-  margin: 1rem 0rem;
+  padding: 1rem 0rem;
 }
 
 .flex-wrap {
