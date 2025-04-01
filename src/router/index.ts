@@ -6,7 +6,11 @@ import Tutor from '@/views/TutorPage.vue';
 import LandingPage from '@/views/LandingPage.vue';
 import NotFound from '@/views/NotFound.vue';
 
-const env = import.meta.env.VITE_ENVIRONMENT;
+const mapEnv = {
+  dev: 'dev',
+  prod: 'prod'
+};
+const { VITE_ENVIRONMENT } = import.meta.env as 'dev' | 'prod';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,7 +37,7 @@ const router = createRouter({
       component: Bookmarks
     },
     {
-      ...(env !== 'prod' && {
+      ...(mapEnv[VITE_ENVIRONMENT] !== 'prod' && {
         path: '/tutor',
         name: 'tutor',
         component: Tutor
