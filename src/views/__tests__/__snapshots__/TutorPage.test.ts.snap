@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TutorPage > renders properly 1`] = `
+<div
+  class="content-centered-wrapper"
+  data-v-8a8621cb=""
+>
+  <steps-indicator-stub
+    data-v-8a8621cb=""
+    setstep="[Function]"
+    step="1"
+    stepslength="3"
+  />
+  <div
+    class="layout-flex"
+    data-v-8a8621cb=""
+  >
+    <div
+      class="flex-wrap"
+      data-v-8a8621cb=""
+    >
+      <first-step-stub
+        data-test="fist-step"
+        data-v-8a8621cb=""
+        disabled="false"
+      />
+      <second-step-stub
+        data-test="second-step"
+        data-v-8a8621cb=""
+        disabled="false"
+        visible="false"
+      />
+    </div>
+    <third-step-stub
+      data-test="third-step"
+      data-v-8a8621cb=""
+      visible="false"
+    />
+  </div>
+  <div
+    class="actions"
+    data-v-8a8621cb=""
+  >
+    <!--v-if-->
+    <button
+      class="button"
+      data-v-8a8621cb=""
+    >
+      next
+    </button>
+  </div>
+</div>
+`;

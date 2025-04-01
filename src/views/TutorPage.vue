@@ -27,13 +27,13 @@ const stepToAction = {
 </script>
 <template>
   <div class="content-centered-wrapper">
-    <StepsIndicator :step="step" :setStep="setStep" stepsLength="3" />
+    <StepsIndicator :step="step" :setStep="setStep" :stepsLength="3" />
     <div class="layout-flex">
       <div class="flex-wrap" :class="{ shrink: step === 3 }">
-        <FirstStep :disabled="step > 1" v-if="step >= 1" />
-        <SecondStep :disabled="step > 2" :visible="step >= 2" />
+        <FirstStep data-test="fist-step" :disabled="step > 1" v-if="step >= 1" />
+        <SecondStep data-test="second-step" :disabled="step > 2" :visible="step >= 2" />
       </div>
-      <ThirdStep :visible="step >= 3" />
+      <ThirdStep data-test="third-step" :visible="step >= 3" />
     </div>
     <div class="actions">
       <button class="button" v-if="step > 1" @click="step = step - 1">previous</button>
