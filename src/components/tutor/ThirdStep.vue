@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { marked } from 'marked';
-import { syllabus } from './mockedSyllabus.js';
 defineProps<{
   visible?: boolean;
+  syllabus?: string;
 }>();
 </script>
 <template>
@@ -39,6 +39,7 @@ defineProps<{
   border: 1px solid var(--neutral-20);
   border-radius: 0.5rem;
   min-height: 10rem;
+  max-width: 80rem;
   overflow-y: auto;
   overflow-x: auto;
   background-color: var(--neutral-10);

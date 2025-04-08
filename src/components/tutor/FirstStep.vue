@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-defineProps<{
+const props = defineProps<{
   disabled?: boolean;
+  addFile?: (e: Event) => void;
 }>();
 const inputGroupLength = ref(1);
 
@@ -22,6 +23,7 @@ const appendNewInputFile = () => {
   input.type = 'file';
   input.className = 'input';
   input.placeholder = 'Enter the name of the file';
+  input.onchange = (e) => props.addFile(e);
   div.appendChild(input);
   div.appendChild(deleteButton);
   inputGroup.appendChild(div);
@@ -52,6 +54,7 @@ const removeLastInputFile = () => {
           type="text"
           id="cursus-title"
           :placeholder="$t('tutor.firstStep.cursusTitlePlaceholder')"
+          @change="(e) => addFile(e)"
         />
       </div>
       <div class="description">

@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
-import data from './mockedSearchResult.json';
 defineProps<{
+  sources?: Document[];
   disabled?: boolean;
   visible?: boolean;
 }>();
-
-const sources = ref<Document[]>(data);
 </script>
 <template>
   <div class="wrapper" :class="{ disabled: disabled, visible: visible }">
