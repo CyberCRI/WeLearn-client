@@ -194,6 +194,18 @@ export const en = {
   },
   textLengthFeedback: 'Please provide a longer text for the search',
   tutor: {
+    loading: {
+      wait: 'Please wait:',
+      search: {
+        title: 'Searching for related documents',
+        description: 'We are loading your documents and searching for related documents.'
+      },
+      syllabus: {
+        title: 'Generating syllabus',
+        description:
+          'WeLearn is generating the syllabus based on the documents. This step may take a few minutes.'
+      }
+    },
     firstStep: {
       title: 'Documents to start with',
       description: 'Upload one or more documents to get started.',

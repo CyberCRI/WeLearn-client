@@ -198,6 +198,17 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez fournir un texte plus long pour la recherche',
   tutor: {
+    loading: {
+      wait: 'Veuillez patienter :',
+      search: {
+        title: 'Recherche de documents connexes',
+        description: 'Chargment de vos documents et recherche de documents connexes en cours.'
+      },
+      syllabus: {
+        title: 'Génération du syllabus',
+        description: 'Génération de votre syllabus en cours.'
+      }
+    },
     firstStep: {
       title: 'Documents pour commencer',
       description: 'Téléchargez un ou plusieurs documents pour commencer.',

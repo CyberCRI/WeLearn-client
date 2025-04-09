@@ -4,6 +4,7 @@ import FirstStep from '@/components/tutor/FirstStep.vue';
 import SecondStep from '@/components/tutor/SecondStep.vue';
 import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
+import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
 
 const store = useTutorStore();
@@ -12,6 +13,7 @@ const files: Ref<File[]> = ref([]);
 const response: Ref<TutorSearch | null> = ref(null);
 const syllabus = ref<string>('');
 const step = ref(1);
+const isLoading = ref(false);
 
 const formData = new FormData();
 
@@ -26,8 +28,10 @@ const handleSearch = async () => {
   if (!files.value.length) {
     return;
   }
+  isLoading.value = true;
 
   const resp = await store.retrieveTutorSearch(formData);
+  isLoading.value = false;
 
   response.value = resp;
   step.value = step.value + 1;
@@ -38,9 +42,22 @@ const setStep = (val) => {
 };
 
 const handleCreateSyllabus = async () => {
+  isLoading.value = true;
   const newSylalbus = await store.retrieveSyllabus();
+  isLoading.value = false;
   syllabus.value = newSylalbus.syllabus;
   step.value = step.value + 1;
+};
+
+const loaderI18nPathText = {
+  1: {
+    title: 'tutor.loading.search.title',
+    description: 'tutor.loading.search.description'
+  },
+  2: {
+    title: 'tutor.loading.syllabus.title',
+    description: 'tutor.loading.syllabus.description'
+  }
 };
 
 const stepToAction = {
@@ -48,12 +65,24 @@ const stepToAction = {
   2: handleCreateSyllabus
 };
 
-// TODO: add a modal with waiting info
 // button to export syllabus
 </script>
 <template>
   <div class="content-centered-wrapper">
     <StepsIndicator :step="step" :setStep="setStep" :stepsLength="3" />
+
+    <ModalWrapper v-if="isLoading" isOpen :onClose="() => {}">
+      <div class="box loading-modal">
+        <h1 class="title is-size-4 has-text-centered">
+          {{ $t(loaderI18nPathText[step]?.title) }}
+        </h1>
+        <progress class="progress is-large is-primary mb-6" max="100">60%</progress>
+        <p class="loader-text is-title is-size-5">{{ $t('tutor.loading.wait') }}</p>
+        <p class="loader-text is-title is-size-5">
+          {{ $t(loaderI18nPathText[step]?.description) }}
+        </p>
+      </div>
+    </ModalWrapper>
     <div class="layout-flex">
       <div class="flex-wrap" :class="{ shrink: step === 3 }">
         <FirstStep data-test="fist-step" :disabled="step > 1" v-if="step >= 1" :addFile="addFile" />
@@ -114,5 +143,15 @@ const stepToAction = {
     flex-basis: 100%;
     transition: flex-grow 0s;
   }
+}
+
+.loading-modal {
+  padding: 2rem;
+  widh: 100%;
+  height: 100%;
+}
+
+.loader-text {
+  text-align: center;
 }
 </style>

@@ -54,7 +54,6 @@ const removeLastInputFile = () => {
           type="text"
           id="cursus-title"
           :placeholder="$t('tutor.firstStep.cursusTitlePlaceholder')"
-          @change="(e) => addFile(e)"
         />
       </div>
       <div class="description">
@@ -79,7 +78,12 @@ const removeLastInputFile = () => {
     <div>
       <div class="input-group is-flex is-flex-direction-column">
         <div class="is-flex is-flex-direction-row" id="first">
-          <input class="input" type="file" placeholder="Enter the name of the file" />
+          <input
+            class="input"
+            type="file"
+            placeholder="Enter the name of the file"
+            @change="addFile"
+          />
           <button class="button" @click="removeFirstChild">x</button>
         </div>
       </div>
