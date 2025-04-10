@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-defineProps<{
+const props = defineProps<{
   disabled?: boolean;
+  addFile?: (e: Event) => void;
 }>();
 const inputGroupLength = ref(1);
 
@@ -22,6 +23,7 @@ const appendNewInputFile = () => {
   input.type = 'file';
   input.className = 'input';
   input.placeholder = 'Enter the name of the file';
+  input.onchange = (e) => props.addFile(e);
   div.appendChild(input);
   div.appendChild(deleteButton);
   inputGroup.appendChild(div);
@@ -76,7 +78,12 @@ const removeLastInputFile = () => {
     <div>
       <div class="input-group is-flex is-flex-direction-column">
         <div class="is-flex is-flex-direction-row" id="first">
-          <input class="input" type="file" placeholder="Enter the name of the file" />
+          <input
+            class="input"
+            type="file"
+            placeholder="Enter the name of the file"
+            @change="addFile"
+          />
           <button class="button" @click="removeFirstChild">x</button>
         </div>
       </div>

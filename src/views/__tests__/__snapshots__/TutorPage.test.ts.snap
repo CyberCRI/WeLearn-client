@@ -11,6 +11,7 @@ exports[`TutorPage > renders properly 1`] = `
     step="1"
     stepslength="3"
   />
+  <!--v-if-->
   <div
     class="layout-flex"
     data-v-8a8621cb=""
@@ -20,6 +21,7 @@ exports[`TutorPage > renders properly 1`] = `
       data-v-8a8621cb=""
     >
       <first-step-stub
+        addfile="[Function]"
         data-test="fist-step"
         data-v-8a8621cb=""
         disabled="false"
@@ -34,6 +36,7 @@ exports[`TutorPage > renders properly 1`] = `
     <third-step-stub
       data-test="third-step"
       data-v-8a8621cb=""
+      syllabus=""
       visible="false"
     />
   </div>
