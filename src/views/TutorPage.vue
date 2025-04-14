@@ -6,6 +6,7 @@ import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
+import { convertMarkdownToDocx, downloadDocx } from '@mohtasham/md-to-docx';
 
 const store = useTutorStore();
 
@@ -60,8 +61,10 @@ const loaderI18nPathText = {
   }
 };
 
-const handleDownload = () => {
+const handleDownload = async () => {
   console.log('downloaded');
+  const blob = await convertMarkdownToDocx(syllabus.value);
+  downloadDocx(blob, 'converted.docx');
 };
 
 const stepToAction = {
@@ -69,8 +72,6 @@ const stepToAction = {
   2: handleCreateSyllabus,
   3: handleDownload
 };
-
-// button to export syllabus
 </script>
 <template>
   <div class="content-centered-wrapper">
@@ -101,8 +102,10 @@ const stepToAction = {
       <ThirdStep data-test="third-step" :visible="step >= 3 && syllabus" :syllabus="syllabus" />
     </div>
     <div class="actions">
-      <button class="button" v-if="step > 1" @click="step = step - 1">previous</button>
-      <button class="button" v-if="step <= 3" @click="stepToAction[step]()">next</button>
+      <button class="button" v-if="step > 1" @click="step = step - 1">{{ $t('previous') }}</button>
+      <button class="button" v-if="step <= 3" @click="stepToAction[step]()">
+        {{ step < 3 ? $t('next') : $t('download') }}
+      </button>
     </div>
   </div>
 </template>

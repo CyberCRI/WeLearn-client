@@ -17,6 +17,7 @@
     "format:check": "prettier --check src/"
   },
   "dependencies": {
+    "@mohtasham/md-to-docx": "^1.2.1",
     "axios": "^1.8.2",
     "marked": "^12.0.2",
     "pinia": "^2.1.4",
