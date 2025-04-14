@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import FirstStep from '@/components/tutor/FirstStep.vue';
 import SecondStep from '@/components/tutor/SecondStep.vue';
 import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
-
+import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 const store = useTutorStore();
 
 const files: Ref<File[]> = ref([]);
@@ -60,12 +60,16 @@ const loaderI18nPathText = {
   }
 };
 
-const stepToAction = {
-  1: handleSearch,
-  2: handleCreateSyllabus
+const handleDownload = async () => {
+  const blob = await convertMarkdownToDocx(syllabus.value);
+  downloadDocx(blob, 'syllabus.docx');
 };
 
-// button to export syllabus
+const stepToAction = {
+  1: handleSearch,
+  2: handleCreateSyllabus,
+  3: handleDownload
+};
 </script>
 <template>
   <div class="content-centered-wrapper">
@@ -89,15 +93,17 @@ const stepToAction = {
         <SecondStep
           data-test="second-step"
           :disabled="step > 2"
-          :visible="step >= 2 && response"
+          :visible="step >= 2 && !!response"
           :sources="response ? response?.documents : null"
         />
       </div>
-      <ThirdStep data-test="third-step" :visible="step >= 3 && syllabus" :syllabus="syllabus" />
+      <ThirdStep data-test="third-step" :visible="step >= 3 && !!syllabus" :syllabus="syllabus" />
     </div>
     <div class="actions">
-      <button class="button" v-if="step > 1" @click="step = step - 1">previous</button>
-      <button class="button" v-if="step < 3" @click="stepToAction[step]()">next</button>
+      <button class="button" v-if="step > 1" @click="step = step - 1">{{ $t('previous') }}</button>
+      <button class="button" v-if="step <= 3" @click="stepToAction[step]()">
+        {{ step < 3 ? $t('next') : $t('download') }}
+      </button>
     </div>
   </div>
 </template>

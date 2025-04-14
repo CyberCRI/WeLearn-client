@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { shallowMount } from '@vue/test-utils';
+import { mount } from '@vue/test-utils';
 import TutorPage from '../TutorPage.vue';
 import { createPinia, setActivePinia } from 'pinia';
 
@@ -8,7 +8,7 @@ describe('TutorPage', () => {
     setActivePinia(createPinia());
   });
   it('renders properly', () => {
-    const wrapper = shallowMount(TutorPage);
+    const wrapper = mount(TutorPage);
     expect(wrapper.element).toMatchSnapshot();
   });
 });

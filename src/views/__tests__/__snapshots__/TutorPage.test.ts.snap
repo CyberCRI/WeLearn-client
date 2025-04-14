@@ -5,12 +5,32 @@ exports[`TutorPage > renders properly 1`] = `
   class="content-centered-wrapper"
   data-v-8a8621cb=""
 >
-  <steps-indicator-stub
+  <div
+    class="is-flex"
+    data-v-050e406a=""
     data-v-8a8621cb=""
-    setstep="[Function]"
-    step="1"
-    stepslength="3"
-  />
+  >
+    
+    <p
+      class="step-inidicator active"
+      data-v-050e406a=""
+    >
+      1
+    </p>
+    <p
+      class="step-inidicator disabled"
+      data-v-050e406a=""
+    >
+      2
+    </p>
+    <p
+      class="step-inidicator disabled"
+      data-v-050e406a=""
+    >
+      3
+    </p>
+    
+  </div>
   <!--v-if-->
   <div
     class="layout-flex"
@@ -20,25 +40,166 @@ exports[`TutorPage > renders properly 1`] = `
       class="flex-wrap"
       data-v-8a8621cb=""
     >
-      <first-step-stub
-        addfile="[Function]"
+      <div
+        class="wrapper"
         data-test="fist-step"
         data-v-8a8621cb=""
-        disabled="false"
-      />
-      <second-step-stub
+        data-v-e090ef8d=""
+      >
+        <h1
+          class="title is-4"
+          data-v-e090ef8d=""
+        >
+          tutor.firstStep.title
+        </h1>
+        <p
+          class="subtitle is-6"
+          data-v-e090ef8d=""
+        >
+          tutor.firstStep.description
+        </p>
+        <div
+          class="is-flex is-flex-wrap-wrap mb-4 descriptions"
+          data-v-e090ef8d=""
+        >
+          <div
+            class="description"
+            data-v-e090ef8d=""
+          >
+            <label
+              data-v-e090ef8d=""
+              for="cursus-title"
+            >
+              tutor.firstStep.cursusTitleLabel
+            </label>
+            <input
+              class="input decription"
+              data-v-e090ef8d=""
+              id="cursus-title"
+              placeholder="tutor.firstStep.cursusTitlePlaceholder"
+              type="text"
+            />
+          </div>
+          <div
+            class="description"
+            data-v-e090ef8d=""
+          >
+            <label
+              data-v-e090ef8d=""
+              for="cursus-level"
+            >
+              tutor.firstStep.cursusLevelLabel
+            </label>
+            <input
+              class="input decription"
+              data-v-e090ef8d=""
+              id="cursus-level"
+              placeholder="tutor.firstStep.cursusLevelPlaceholder"
+              type="text"
+            />
+          </div>
+          <div
+            class="description"
+            data-v-e090ef8d=""
+          >
+            <label
+              data-v-e090ef8d=""
+              for="cursus-duration"
+            >
+              tutor.firstStep.cursusDurationLabel
+            </label>
+            <input
+              class="input decription"
+              data-v-e090ef8d=""
+              id="cursus-duration"
+              placeholder="tutor.firstStep.cursusDurationPlaceholder"
+              type="text"
+            />
+          </div>
+        </div>
+        <div
+          data-v-e090ef8d=""
+        >
+          <div
+            class="input-group is-flex is-flex-direction-column"
+            data-v-e090ef8d=""
+          >
+            <div
+              class="is-flex is-flex-direction-row"
+              data-v-e090ef8d=""
+              id="first"
+            >
+              <input
+                class="input"
+                data-v-e090ef8d=""
+                placeholder="Enter the name of the file"
+                type="file"
+              />
+              <button
+                class="button"
+                data-v-e090ef8d=""
+              >
+                x
+              </button>
+            </div>
+          </div>
+          <button
+            class="button"
+            data-v-e090ef8d=""
+          >
+             + 
+          </button>
+          <!--v-if-->
+        </div>
+      </div>
+      <div
+        class="wrapper"
         data-test="second-step"
         data-v-8a8621cb=""
-        disabled="false"
-        visible="false"
-      />
+        data-v-ebcfbade=""
+      >
+        <h1
+          class="title is-4"
+          data-v-ebcfbade=""
+        >
+          tutor.secondStep.title
+        </h1>
+        <p
+          class="subtitle is-6"
+          data-v-ebcfbade=""
+        >
+          tutor.secondStep.description
+        </p>
+        <div
+          class="sources"
+          data-v-ebcfbade=""
+        >
+          
+          
+        </div>
+      </div>
     </div>
-    <third-step-stub
+    <div
+      class="wrapper"
       data-test="third-step"
+      data-v-7bf7679d=""
       data-v-8a8621cb=""
-      syllabus=""
-      visible="false"
-    />
+    >
+      <h1
+        class="title is-4"
+        data-v-7bf7679d=""
+      >
+        tutor.thirdStep.title
+      </h1>
+      <p
+        class="subtitle is-6"
+        data-v-7bf7679d=""
+      >
+        tutor.thirdStep.description
+      </p>
+      <!-- syllabus -->
+      <!--v-if-->
+    </div>
   </div>
   <div
     class="actions"
