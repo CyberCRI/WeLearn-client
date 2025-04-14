@@ -12,6 +12,7 @@ defineProps<{
     <!-- syllabus -->
     <p
       contenteditable="true"
+      id="syllabus"
       class="syllabus content"
       v-if="syllabus.length"
       v-html="marked.parse(syllabus)"

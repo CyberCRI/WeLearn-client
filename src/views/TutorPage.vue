@@ -60,9 +60,14 @@ const loaderI18nPathText = {
   }
 };
 
+const handleDownload = () => {
+  console.log('downloaded');
+};
+
 const stepToAction = {
   1: handleSearch,
-  2: handleCreateSyllabus
+  2: handleCreateSyllabus,
+  3: handleDownload
 };
 
 // button to export syllabus
@@ -97,7 +102,7 @@ const stepToAction = {
     </div>
     <div class="actions">
       <button class="button" v-if="step > 1" @click="step = step - 1">previous</button>
-      <button class="button" v-if="step < 3" @click="stepToAction[step]()">next</button>
+      <button class="button" v-if="step <= 3" @click="stepToAction[step]()">next</button>
     </div>
   </div>
 </template>
