@@ -18,6 +18,7 @@ defineProps<{
           :corpus="source.payload.document_corpus"
           :url="source.payload.document_url"
           :details="source.payload.document_details"
+          :sdg="source.payload.document_sdg"
         />
       </div>
     </div>

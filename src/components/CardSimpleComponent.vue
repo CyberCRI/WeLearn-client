@@ -17,8 +17,8 @@ defineProps<{
   hideRefIndicator?: boolean;
   shouldDisplayScore?: boolean;
   score?: number;
-  toggleBookmark: () => void;
-  isBookmarked: boolean;
+  toggleBookmark?: () => void;
+  isBookmarked?: boolean;
 }>();
 
 const isModalActive = ref(false);
@@ -73,7 +73,11 @@ const handleModalOpen = () => {
             <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.seeDetails')" isLeft />
           </div>
 
-          <BookmarkComponent :isBookmarked="isBookmarked" :toggleBookmark="toggleBookmark" />
+          <BookmarkComponent
+            v-if="toggleBookmark"
+            :isBookmarked="isBookmarked"
+            :toggleBookmark="toggleBookmark"
+          />
           <a class="icon-wrapper" target="_blank" :href="url">
             <OpenUrlIcon class="icon is-small" />
             <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.openArticle')" isLeft />

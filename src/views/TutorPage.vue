@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import FirstStep from '@/components/tutor/FirstStep.vue';
 import SecondStep from '@/components/tutor/SecondStep.vue';
 import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
-import { convertMarkdownToDocx, downloadDocx } from '@mohtasham/md-to-docx';
-
+import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 const store = useTutorStore();
 
 const files: Ref<File[]> = ref([]);
@@ -62,9 +61,8 @@ const loaderI18nPathText = {
 };
 
 const handleDownload = async () => {
-  console.log('downloaded');
   const blob = await convertMarkdownToDocx(syllabus.value);
-  downloadDocx(blob, 'converted.docx');
+  downloadDocx(blob, 'syllabus.docx');
 };
 
 const stepToAction = {
@@ -95,11 +93,11 @@ const stepToAction = {
         <SecondStep
           data-test="second-step"
           :disabled="step > 2"
-          :visible="step >= 2 && response"
+          :visible="step >= 2 && !!response"
           :sources="response ? response?.documents : null"
         />
       </div>
-      <ThirdStep data-test="third-step" :visible="step >= 3 && syllabus" :syllabus="syllabus" />
+      <ThirdStep data-test="third-step" :visible="step >= 3 && !!syllabus" :syllabus="syllabus" />
     </div>
     <div class="actions">
       <button class="button" v-if="step > 1" @click="step = step - 1">{{ $t('previous') }}</button>
