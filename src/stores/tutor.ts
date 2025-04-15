@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { type Ref, ref } from 'vue';
 import { type Document } from '@/types';
 import { postAxios } from '@/utils/fetch';
+import i18n from '@/localisation/i18n';
 
 export type TutorSearch = {
   extracts: { original_document: string; summary: string; themes: string[] }[];
@@ -32,7 +33,7 @@ export const useTutorStore = defineStore('tutor', () => {
     if (!tutorSearch.value) {
       throw new Error('Body is empty');
     }
-    const resp = await postAxios('/tutor/syllabus', {
+    const resp = await postAxios(`/tutor/syllabus?lang=${i18n.global.locale.value}`, {
       ...tutorSearch.value
     });
     return resp.data;
