@@ -75,7 +75,7 @@ const stepToAction = {
   <div class="content-centered-wrapper">
     <StepsIndicator :step="step" :setStep="setStep" :stepsLength="3" />
 
-    <ModalWrapper v-if="isLoading" isOpen :onClose="() => {}">
+    <ModalWrapper v-if="isLoading" :isOpen="isLoading">
       <div class="box loading-modal">
         <h1 class="title is-size-4 has-text-centered">
           {{ $t(loaderI18nPathText[step]?.title) }}

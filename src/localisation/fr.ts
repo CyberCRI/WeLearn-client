@@ -202,7 +202,7 @@ export const fr = {
       wait: 'Veuillez patienter :',
       search: {
         title: 'Recherche de documents connexes',
-        description: 'Chargment de vos documents et recherche de documents connexes en cours.'
+        description: 'Chargement de vos documents et recherche de documents connexes en cours.'
       },
       syllabus: {
         title: 'Génération du syllabus',

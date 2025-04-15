@@ -210,7 +210,7 @@ export const en = {
       title: 'Documents to start with',
       description: 'Upload one or more documents to get started.',
       cursusTitleLabel: 'Cursus title',
-      cursusTitlePlaceholder: 'Socilinguistics 101',
+      cursusTitlePlaceholder: 'Sociolinguistics 101',
       cursusLevelLabel: 'Cursus level',
       cursusLevelPlaceholder: 'Undergraduate, Graduate, etc.',
       cursusDurationLabel: 'Cursus duration',

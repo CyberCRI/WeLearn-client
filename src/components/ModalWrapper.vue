@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 const props = defineProps<{
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }>();
 
 const computedState = computed(() => props.isOpen);
@@ -23,6 +23,7 @@ const handleModalClose = () => {
       data-testid="close"
       class="modal-close is-large"
       aria-label="close"
+      v-if="onClose"
       @click="handleModalClose"
     ></button>
   </div>
