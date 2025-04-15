@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 const props = defineProps<{
   isOpen: boolean;
   onClose?: () => void;
 }>();
 
 const computedState = computed(() => props.isOpen);
-
-watch(props.isOpen, (val) => {
-  computedState.value = val;
-});
 
 const handleModalClose = () => {
   props.onClose();

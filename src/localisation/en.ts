@@ -194,6 +194,11 @@ export const en = {
   },
   textLengthFeedback: 'Please provide a longer text for the search',
   tutor: {
+    agents: {
+      UniversityTeacherAgent: 'Professor',
+      SDGExpertAgent: 'SDG Expert',
+      PedagogicalEngineerAgent: 'Pedagogical Engineer'
+    },
     fileSizeExceeded: 'File size exceeds 5MB',
     loading: {
       wait: 'Please wait:',
