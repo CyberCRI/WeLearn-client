@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import ModalWrapper from './ModalWrapper.vue';
 const props = defineProps<{
   title: string;
@@ -9,10 +9,6 @@ const props = defineProps<{
 }>();
 
 const state = ref<boolean>(props.isOpen);
-
-watch(isOpen, (val) => {
-  state.value = val;
-});
 
 const handleModalClose = () => {
   props.onClose();
