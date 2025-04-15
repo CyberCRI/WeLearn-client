@@ -194,6 +194,7 @@ export const en = {
   },
   textLengthFeedback: 'Please provide a longer text for the search',
   tutor: {
+    fileSizeExceeded: 'File size exceeds 5MB',
     loading: {
       wait: 'Please wait:',
       search: {
@@ -210,7 +211,7 @@ export const en = {
       title: 'Documents to start with',
       description: 'Upload one or more documents to get started.',
       cursusTitleLabel: 'Cursus title',
-      cursusTitlePlaceholder: 'Socilinguistics 101',
+      cursusTitlePlaceholder: 'Sociolinguistics 101',
       cursusLevelLabel: 'Cursus level',
       cursusLevelPlaceholder: 'Undergraduate, Graduate, etc.',
       cursusDurationLabel: 'Cursus duration',

@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 const props = defineProps<{
   isOpen: boolean;
-  onClose: () => void;
+  onClose?: () => void;
 }>();
 
 const computedState = computed(() => props.isOpen);
+
+watch(props.isOpen, (val) => {
+  computedState.value = val;
+});
 
 const handleModalClose = () => {
   props.onClose();
@@ -23,6 +27,7 @@ const handleModalClose = () => {
       data-testid="close"
       class="modal-close is-large"
       aria-label="close"
+      v-if="onClose"
       @click="handleModalClose"
     ></button>
   </div>

@@ -130,6 +130,7 @@ exports[`TutorPage > renders properly 1`] = `
               id="first"
             >
               <input
+                accept="application/pdf, text/*"
                 class="input"
                 data-v-e090ef8d=""
                 placeholder="Enter the name of the file"

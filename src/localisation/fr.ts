@@ -198,11 +198,12 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez fournir un texte plus long pour la recherche',
   tutor: {
+    fileSizeExceeded: 'Le fichier dépasse les 5MB',
     loading: {
       wait: 'Veuillez patienter :',
       search: {
         title: 'Recherche de documents connexes',
-        description: 'Chargment de vos documents et recherche de documents connexes en cours.'
+        description: 'Chargement de vos documents et recherche de documents connexes en cours.'
       },
       syllabus: {
         title: 'Génération du syllabus',

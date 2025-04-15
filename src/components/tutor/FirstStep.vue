@@ -22,6 +22,7 @@ const appendNewInputFile = () => {
   input.id = `file-${inputGroupLength.value}`;
   input.type = 'file';
   input.className = 'input';
+  input.accept = 'application/pdf, text/*';
   input.placeholder = 'Enter the name of the file';
   input.onchange = (e) => props.addFile(e);
   div.appendChild(input);
@@ -81,6 +82,7 @@ const removeLastInputFile = () => {
           <input
             class="input"
             type="file"
+            accept="application/pdf, text/*"
             placeholder="Enter the name of the file"
             @change="addFile"
           />
