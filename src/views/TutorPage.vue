@@ -7,6 +7,7 @@ import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
+import i18n from '@/localisation/i18n';
 const store = useTutorStore();
 
 const files: Ref<File[]> = ref([]);
@@ -18,6 +19,10 @@ const isLoading = ref(false);
 const formData = new FormData();
 
 const addFile = (e: any) => {
+  if (e.target.files[0].size > 5 * 1024 * 1024) {
+    alert(i18n.global.t('tutor.fileSizeExceeded'));
+    return;
+  }
   formData.append('files', e.target.files[0]);
   files.value.push(e.target.files);
 };

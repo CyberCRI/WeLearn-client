@@ -198,6 +198,7 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez fournir un texte plus long pour la recherche',
   tutor: {
+    fileSizeExceeded: 'Le fichier dépasse les 5MB',
     loading: {
       wait: 'Veuillez patienter :',
       search: {

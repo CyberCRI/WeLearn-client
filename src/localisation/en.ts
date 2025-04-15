@@ -194,6 +194,7 @@ export const en = {
   },
   textLengthFeedback: 'Please provide a longer text for the search',
   tutor: {
+    fileSizeExceeded: 'File size exceeds 5MB',
     loading: {
       wait: 'Please wait:',
       search: {
