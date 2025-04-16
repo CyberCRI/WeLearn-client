@@ -152,6 +152,7 @@ exports[`TutorPage > renders properly 1`] = `
           </button>
           <!--v-if-->
         </div>
+        <!--v-if-->
       </div>
       <div
         class="wrapper"

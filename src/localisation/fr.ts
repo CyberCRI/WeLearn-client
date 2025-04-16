@@ -216,6 +216,7 @@ export const fr = {
       }
     },
     firstStep: {
+      searchError: 'Aucun résultat trouvé pour le document fourni.',
       title: 'Documents pour commencer',
       description: 'Téléchargez un ou plusieurs documents pour commencer.',
       cursusTitleLabel: 'Titre du cours',

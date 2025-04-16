@@ -213,6 +213,7 @@ export const en = {
       }
     },
     firstStep: {
+      searchError: 'No results found for the provided document.',
       title: 'Documents to start with',
       description: 'Upload one or more documents to get started.',
       cursusTitleLabel: 'Cursus title',

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 const props = defineProps<{
   disabled?: boolean;
   addFile?: (e: Event) => void;
+  searchError?: boolean;
 }>();
 const inputGroupLength = ref(1);
 
@@ -94,6 +95,9 @@ const removeLastInputFile = () => {
       </button>
       <button v-if="inputGroupLength > 1" class="button" @click="removeLastInputFile">-</button>
     </div>
+    <p v-if="searchError" class="has-text-danger mt-2">
+      {{ $t('tutor.firstStep.searchError') }}
+    </p>
   </div>
 </template>
 <style scoped>

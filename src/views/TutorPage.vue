@@ -15,6 +15,7 @@ const response: Ref<TutorSearch | null> = ref(null);
 const syllabus = ref<[]>([]);
 const step = ref(1);
 const isLoading = ref(false);
+const searchError = ref(false);
 
 const formData = new FormData();
 
@@ -23,22 +24,32 @@ const addFile = (e: any) => {
     alert(i18n.global.t('tutor.fileSizeExceeded'));
     return;
   }
+  searchError.value = false;
   formData.append('files', e.target.files[0]);
   files.value.push(e.target.files);
 };
 
 const handleSearch = async () => {
   response.value = null;
+  searchError.value = false;
 
   if (!files.value.length) {
     return;
   }
   isLoading.value = true;
 
-  const resp = await store.retrieveTutorSearch(formData);
-  isLoading.value = false;
+  try {
+    const resp = await store.retrieveTutorSearch(formData);
+    response.value = resp;
+  } catch (error) {
+    isLoading.value = false;
+    response.value = { documents: [] };
+    searchError.value = true;
+    return;
+  } finally {
+    isLoading.value = false;
+  }
 
-  response.value = resp;
   step.value = step.value + 1;
 };
 
@@ -95,7 +106,13 @@ const stepToAction = {
     </ModalWrapper>
     <div class="layout-flex">
       <div class="flex-wrap" :class="{ shrink: step === 3 }">
-        <FirstStep data-test="fist-step" :disabled="step > 1" v-if="step >= 1" :addFile="addFile" />
+        <FirstStep
+          :searchError="searchError"
+          data-test="fist-step"
+          :disabled="step > 1"
+          v-if="step >= 1"
+          :addFile="addFile"
+        />
         <SecondStep
           data-test="second-step"
           :disabled="step > 2"
