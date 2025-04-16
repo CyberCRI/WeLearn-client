@@ -12,7 +12,7 @@ const store = useTutorStore();
 
 const files: Ref<File[]> = ref([]);
 const response: Ref<TutorSearch | null> = ref(null);
-const syllabus = ref<string>('');
+const syllabus = ref<[]>([]);
 const step = ref(1);
 const isLoading = ref(false);
 
@@ -51,6 +51,7 @@ const handleCreateSyllabus = async () => {
   const newSylalbus = await store.retrieveSyllabus();
   isLoading.value = false;
   syllabus.value = newSylalbus.syllabus;
+
   step.value = step.value + 1;
 };
 
@@ -66,7 +67,7 @@ const loaderI18nPathText = {
 };
 
 const handleDownload = async () => {
-  const blob = await convertMarkdownToDocx(syllabus.value);
+  const blob = await convertMarkdownToDocx(syllabus.value[2].content);
   downloadDocx(blob, 'syllabus.docx');
 };
 

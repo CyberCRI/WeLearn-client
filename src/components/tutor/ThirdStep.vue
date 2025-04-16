@@ -2,7 +2,7 @@
 import { marked } from 'marked';
 defineProps<{
   visible?: boolean;
-  syllabus?: string;
+  syllabus?: { content: string; source: string }[];
 }>();
 </script>
 <template>
@@ -10,19 +10,29 @@ defineProps<{
     <h1 class="title is-4">{{ $t('tutor.thirdStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.thirdStep.description') }}</p>
     <!-- syllabus -->
-    <p
-      contenteditable="true"
-      id="syllabus"
-      class="syllabus content"
-      v-if="syllabus.length"
-      v-html="marked.parse(syllabus)"
-    />
+    <details
+      :key="item.source"
+      v-for="item in syllabus"
+      class="details"
+      :open="item.source === 'PedagogicalEngineerAgent'"
+    >
+      <summary class="title is-6 mb-2">
+        {{ $t(`tutor.agents.${item.source}`) }}
+      </summary>
+      <p
+        contenteditable="true"
+        id="syllabus"
+        class="syllabus content"
+        v-if="item.content.length"
+        v-html="marked.parse(item.content)"
+      />
+    </details>
   </div>
 </template>
 
 <style scoped>
 .wrapper {
-  overflow: hidden;
+  overflow: scroll;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -35,6 +45,10 @@ defineProps<{
   flex-grow: 3;
 }
 
+details:not([open]) {
+  opacity: 0.5;
+}
+
 .syllabus {
   padding: 2rem;
   border: 1px solid var(--neutral-20);
@@ -42,7 +56,7 @@ defineProps<{
   min-height: 10rem;
   max-width: 80rem;
   overflow-y: auto;
-  overflow-x: auto;
+  overflow-x: scroll;
   background-color: var(--neutral-10);
   cursor: text;
 }

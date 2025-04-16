@@ -199,7 +199,8 @@ exports[`TutorPage > renders properly 1`] = `
         tutor.thirdStep.description
       </p>
       <!-- syllabus -->
-      <!--v-if-->
+      
+      
     </div>
   </div>
   <div
