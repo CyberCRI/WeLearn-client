@@ -9,9 +9,9 @@ test.describe('nav', () => {
       await route.fulfill({ json });
     });
 
-    await page.getByRole('button', { name: 'Search' }).click();
-    if (await page.getByRole('button', { name: 'Next' })) {
-      await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Recherche' }).click();
+    if (await page.getByRole('button', { name: 'Suivant' })) {
+      await page.getByRole('button', { name: 'Suivant' }).click();
     }
   });
   test('click on search', async ({ page }) => {
@@ -31,10 +31,10 @@ test.describe('nav', () => {
 
   test.describe('switch to french', () => {
     test('switch to French', async ({ page }) => {
-      expect(await page.getByText('Ask a question')).toBeTruthy();
-      await page.getByText('French').click();
-      expect(await page.getByText('Français')).toBeTruthy();
       expect(await page.getByText('Posez une question')).toBeTruthy();
+      await page.getByText('Anglais').click();
+      expect(await page.getByText('English')).toBeTruthy();
+      expect(await page.getByText('Ask a question')).toBeTruthy();
     });
   });
 });

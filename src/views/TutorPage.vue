@@ -19,6 +19,7 @@ const searchError = ref(false);
 
 const formData = new FormData();
 
+// TODO: handle remove document
 const addFile = (e: any) => {
   if (e.target.files[0].size > 5 * 1024 * 1024) {
     alert(i18n.global.t('tutor.fileSizeExceeded'));

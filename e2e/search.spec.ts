@@ -9,7 +9,7 @@ test.describe('search', () => {
 
     await page.goto('/search');
     // handle onboarding modal
-    await page.getByRole('button', { name: 'Next' }).click();
+    await page.getByRole('button', { name: 'Suivant' }).click();
   });
 
   // See here how to get started:
@@ -19,6 +19,9 @@ test.describe('search', () => {
   });
 
   test.describe('select a subject', () => {
+    test.beforeEach(async ({ page }) => {
+      await page.getByText('Anglais').click();
+    });
     test('click on select a subject', async ({ page }) => {
       await page.getByRole('button', { name: 'Adapt to subject' }).click();
       await expect(page.getByText('Biology')).toBeVisible();
@@ -52,64 +55,68 @@ test.describe('search', () => {
     test('show error if text length is less than 5', async ({ page }) => {
       await page.fill('textarea', 'abcd');
       // expect message to show
-      await expect(page.getByText('Please provide a longer text for the search')).toBeVisible();
+      await expect(
+        page.getByText('Veuillez fournir un texte plus long pour la recherche')
+      ).toBeVisible();
       // expect search button to be disabled
-      await expect(page.getByLabel('Search', { exact: true })).toBeDisabled();
+      await expect(page.getByLabel('Recherche', { exact: true })).toBeDisabled();
     });
 
     test('search button should be enabled if text length is greater than 5', async ({ page }) => {
       await page.fill('textarea', 'this is a longer text for testing');
       // expect message to not show
-      await expect(page.getByText('Please provide a longer text for the search')).not.toBeVisible();
+      await expect(
+        page.getByText('Veuillez fournir un texte plus long pour la recherche')
+      ).not.toBeVisible();
       // expect search button to be enabled
       await expect(page.getByRole('button').nth(1)).toBeEnabled();
     });
   });
 
   test.describe('sources', () => {
-    test('should display sources in filter', async ({ page }) => {
-      await expect(page.getByRole('button', { name: 'Filter by source' })).toBeVisible();
+    test('should display sources in filtrer', async ({ page }) => {
+      await expect(page.getByRole('button', { name: 'Filtrer par source' })).toBeVisible();
     });
 
-    test('should display list of sources in filter on click', async ({ page }) => {
-      await page.getByRole('button', { name: 'Filter by source' }).click();
+    test('should display list of sources in filtrer on click', async ({ page }) => {
+      await page.getByRole('button', { name: 'Filtrer par source' }).click();
       await expect(page.getByText('Fake Collections')).toBeVisible();
     });
 
     test('should select a source', async ({ page }) => {
-      await page.getByRole('button', { name: 'Filter by source' }).click();
+      await page.getByRole('button', { name: 'Filtrer par source' }).click();
       await page.getByText('Fake Collections').click();
-      await expect(
-        page.getByRole('button', { name: 'Filtered by source: fake-collections' })
-      ).toBeVisible();
+      await expect(page.getByRole('button', { name: /^filtré/i })).toBeVisible();
       await expect(page.getByRole('checkbox')).toBeChecked();
     });
 
     test('should deselect all sourcess', async ({ page }) => {
-      await page.getByRole('button', { name: 'Filter by source' }).click();
-      await page.getByText('fake collections').click();
-      await page.getByRole('menu').getByText('Clear').click();
+      await page.getByRole('button', { name: /source/i }).click();
+      await page.getByText('Fake Collections').click();
+      await page.getByRole('menu').getByText('Effacer').click();
       await expect(page.getByRole('checkbox')).not.toBeChecked();
     });
   });
 
   test.describe('SDGs', () => {
-    test('should display SDGs in filter', async ({ page }) => {
-      await expect(page.getByRole('button', { name: 'Filter by SDG' })).toBeVisible();
+    test('should display SDGs in filtrer', async ({ page }) => {
+      await expect(page.getByRole('button', { name: /ODD/ })).toBeVisible();
     });
-    test('should display list of SDGs in filter on click', async ({ page }) => {
-      await page.getByRole('button', { name: 'Filter by SDG' }).click();
-      await expect(page.getByText('1 - No Poverty')).toBeVisible();
+    test('should display list of SDGs in filtrer on click', async ({ page }) => {
+      await page.getByRole('button', { name: /ODD/ }).click();
+      await expect(page.getByText('1 - Pas de pauvreté')).toBeVisible();
     });
     test('last SDG should be disabled', async ({ page }) => {
-      await page.getByRole('button', { name: 'Filter by SDG' }).click();
-      await expect(page.getByText('17 - Partnerships for the Goals')).toBeDisabled();
+      await page.getByRole('button', { name: 'Filtrer par ODD' }).click();
+      await expect(
+        page.getByText('17 - Partenariats pour la réalisation des objectifs')
+      ).toBeDisabled();
     });
     test('should select a SDG', async ({ page }) => {
-      await page.getByRole('button', { name: 'Filter by SDG' }).click();
-      await page.getByText('1 - No Poverty').click();
-      await expect(page.getByRole('button', { name: 'Filtered by SDG: 1' })).toBeVisible();
-      await expect(page.getByLabel('1 - No Poverty')).toBeChecked();
+      await page.getByRole('button', { name: /ODD/i }).click();
+      await page.getByText('1 - Pas de pauvreté').click();
+      await expect(page.getByRole('button', { name: /filtré/i })).toBeVisible();
+      await expect(page.getByLabel('1 - Pas de pauvreté')).toBeChecked();
     });
   });
 });

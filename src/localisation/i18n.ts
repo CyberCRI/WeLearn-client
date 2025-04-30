@@ -5,7 +5,7 @@ import { getQueryParamValue } from '@/utils/urlsUtils';
 const lang = getQueryParamValue('lang');
 
 const i18n = createI18n({
-  locale: lang ?? 'en',
+  locale: lang ?? 'fr',
   messages,
   globalInjection: true,
   legacy: false,
