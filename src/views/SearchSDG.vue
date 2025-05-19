@@ -63,7 +63,9 @@ watch(
         :onClose="() => user.updateSearchState('WELCOME', true)"
       >
         <template #actions>
-          <button class="button is-primary" @click="user.updateSearchState('WELCOME')">Next</button>
+          <button class="button is-primary" @click="user.updateSearchState('WELCOME')">
+            {{ $t('next') }}
+          </button>
         </template>
       </ModalComponent>
       <ErrorComponent v-if="store.hasError" />

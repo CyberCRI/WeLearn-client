@@ -74,36 +74,36 @@ export const fr = {
       'Explorez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
     horizontal: {
       section_one: {
-        title: 'Curated Knowledge About Sustainability',
+        title: 'Connaissances sur la durabilité',
         content:
-          'Carefully selected from over 10 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
+          'WeLearn est un moteur de recherche qui vous aide à trouver des ressources éducatives sur les Objectifs de développement durable (ODD).'
       },
       section_two: {
-        title: 'Find What Matters, Fast',
+        title: 'Trouver ce qui compte, rapidement',
         content:
-          'Dive into sustainability topics and find the right resources quickly and easily with WeLearn’s semantic search engine.'
+          'Plungez dans des sujets de durabilité et trouvez les bonnes ressources rapidement et facilement grâce au moteur de recherche sémantique de WeLearn.'
       },
       section_three: {
-        title: 'Sourced Answers, Tailored to You',
+        title: 'Réponses sourcées, adaptées à vous',
         content:
-          'Get precise, referenced answers adapted to your context by chatting with the WeLearn virtual assistant.'
+          'Récupérez des réponses précises et sourcées adaptées à votre contexte en discutant avec l’assistant virtuel WeLearn.'
       }
     },
     vertical: {
       section_one: {
-        title: 'Supporting Sustainability with AI',
+        title: 'Soutenir la durabilité avec l’IA',
         content:
-          'We place sustainability at the heart of our mission, using technology to support a responsible future.'
+          'Nous plaçons la durabilité au cœur de notre mission, en utilisant la technologie pour soutenir un avenir responsable.'
       },
       section_two: {
-        title: 'Simplifying Sustainability Education',
+        title: 'Simplifier l’éducation à la durabilité',
         content:
-          'We are dedicated to empowering educators worldwide to learn and teach about sustainability.'
+          'Nous nous engageons à donner aux éducateurs du monde entier les moyens d’apprendre et d’enseigner la durabilité.'
       },
       section_three: {
-        title: 'Upholding Responsible AI Principles',
+        title: 'Respect des principes de l’IA responsable',
         content:
-          'We are committed to a transparent and eco-conscious usage of Artificial Intelligence.'
+          'Nous nous engageons à une utilisation transparente et respectueuse de l’environnement de l’intelligence artificielle.'
       }
     }
   },

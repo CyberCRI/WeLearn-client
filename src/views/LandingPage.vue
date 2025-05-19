@@ -2,7 +2,7 @@
 import LandingImage from '@/components/LandingImage.vue';
 </script>
 <template>
-  <div>
+  <div class="landing-wrapper">
     <div
       class="local-container is-flex is-fullwidth is-justify-content-center is-align-items-center px-6 pb-4 pt-6"
     >
@@ -44,7 +44,7 @@ import LandingImage from '@/components/LandingImage.vue';
       </div>
     </div>
     <div class="section">
-      <div class="is-flex is-fullwidth is-justify-content-space-between">
+      <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
           <p class="title mb-3">{{ $t('landing.horizontal.section_one.title') }}</p>
           <p class="subtitle mr-6">
@@ -55,7 +55,7 @@ import LandingImage from '@/components/LandingImage.vue';
       </div>
     </div>
     <div class="section">
-      <div class="is-flex is-fullwidth is-justify-content-space-between">
+      <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
           <p class="title mb-3">{{ $t('landing.horizontal.section_two.title') }}</p>
           <p class="subtitle mr-6">
@@ -66,7 +66,7 @@ import LandingImage from '@/components/LandingImage.vue';
       </div>
     </div>
     <div class="section">
-      <div class="is-flex is-fullwidth is-justify-content-space-between">
+      <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
           <p class="title mb-3">{{ $t('landing.horizontal.section_three.title') }}</p>
           <p class="subtitle mr-6">
@@ -75,12 +75,6 @@ import LandingImage from '@/components/LandingImage.vue';
         </div>
         <img class="placeholder ml-6" alt="placeholder" src="@/assets/chat_edit.gif" />
       </div>
-    </div>
-    <div class="section is-flex is-justify-content-center is-align-items-center">
-      <p class="ml-6 mr-6 mt-4 is-size-3 has-text-centered">
-        All conversations are securely stored and never used to train AI models. <br />
-        Your data is protected and remains confidential.
-      </p>
     </div>
     <div class="section is-flex is-justify-content-space-between">
       <div class="is-flex is-flex-direction-column is-align-items-center ml-4 mr-4">
@@ -124,10 +118,17 @@ import LandingImage from '@/components/LandingImage.vue';
 }
 .section {
   min-height: 50vh;
-  margin: 0 5%;
+  padding: 3rem 5%;
 }
+.landing-wrapper > .section:nth-child(2) {
+  background: linear-gradient(180deg, #91e7d3 0%, #91e7d3 20%, #fff 20%);
+}
+.title {
+  padding-top: 10%;
+}
+
 .description {
-  width: 50%;
+  width: 35%;
 }
 .local-container {
   width: 100%;

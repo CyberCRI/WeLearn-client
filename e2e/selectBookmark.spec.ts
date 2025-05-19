@@ -17,12 +17,12 @@ test.describe('select bookmark', () => {
     await page.getByTestId('close').click();
 
     await page.fill('textarea', 'this is a longer text for testing');
-    await page.getByLabel('Search', { exact: true }).click();
+    await page.getByLabel('Recherche', { exact: true }).click();
     await expect(page.getByText('Document one test').first()).toBeVisible();
 
     await page
       .locator('header')
-      .filter({ hasText: 'Document one testAdd to bookmarks' })
+      .filter({ hasText: 'Document one test' })
       .getByTestId('toggleBookmark')
       .click();
     await page.goto('/bookmarks');
