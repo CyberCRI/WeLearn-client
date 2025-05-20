@@ -11,13 +11,15 @@ export type TutorSearch = {
 };
 
 type TutorSyllabus = {
-  syllabus: string;
+  syllabus: string[];
   documents: Document[];
 };
+
 // TODO: :arrow-up: move this to types
 
 export const useTutorStore = defineStore('tutor', () => {
   const tutorSearch: Ref<TutorSearch | null> = ref(null);
+  const syllabi: Ref<string[] | null> = ref(null);
 
   const retrieveTutorSearch = async (arg: { string: File }): Promise<TutorSearch> => {
     const formData = new FormData();
@@ -40,8 +42,24 @@ export const useTutorStore = defineStore('tutor', () => {
     const resp = await postAxios(`/tutor/syllabus?lang=${i18n.global.locale.value}`, {
       ...tutorSearch.value
     });
+
+    syllabi.value = resp.data.syllabus;
     return resp.data;
   };
 
-  return { retrieveTutorSearch, retrieveSyllabus };
+  const giveFeedback = async (feedback: string): Promise<TutorSyllabus> => {
+    if (!tutorSearch.value || !syllabi.value) {
+      throw new Error('Body is empty');
+    }
+
+    const resp = await postAxios('/tutor/syllabus/feedback', {
+      feedback: feedback,
+      syllabus: [syllabi.value[2]],
+      ...tutorSearch.value
+    });
+
+    return resp.data;
+  };
+
+  return { retrieveTutorSearch, retrieveSyllabus, giveFeedback };
 });

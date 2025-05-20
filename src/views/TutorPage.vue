@@ -103,7 +103,12 @@ const stepToAction = {
 </script>
 <template>
   <div class="content-centered-wrapper">
-    <StepsIndicator :step="step" :setStep="setStep" :stepsLength="3" />
+    <StepsIndicator
+      :step="step"
+      :setStep="setStep"
+      :advancement="syllabus.length ? 3 : response ? 2 : 1"
+      :stepsLength="3"
+    />
 
     <ModalWrapper v-if="isLoading" :isOpen="isLoading">
       <div class="box loading-modal">
@@ -134,7 +139,12 @@ const stepToAction = {
           :sources="response ? response?.documents : null"
         />
       </div>
-      <ThirdStep data-test="third-step" :visible="step >= 3 && !!syllabus" :syllabus="syllabus" />
+      <ThirdStep
+        data-test="third-step"
+        :visible="step >= 3 && !!syllabus"
+        :syllabus="syllabus"
+        :giveFeedback="store.giveFeedback"
+      />
     </div>
     <div class="actions">
       <button class="button" v-if="step > 1" @click="step = step - 1">{{ $t('previous') }}</button>

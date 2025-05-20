@@ -1,9 +1,22 @@
 <script setup lang="ts">
 import { marked } from 'marked';
-defineProps<{
+import { ref, Ref } from 'vue';
+const props = defineProps<{
   visible?: boolean;
   syllabus?: { content: string; source: string }[];
+  giveFeedback: (feedback: string) => void;
 }>();
+
+const enableFeedback: Ref<boolean> = ref(false);
+const feedback: Ref<string> = ref('');
+const newSyllabus: Ref<string> = ref('');
+const toggleFeedback = async () => {
+  if (feedback.value.length > 0) {
+    const res = await props.giveFeedback(feedback.value);
+    newSyllabus.value = res.syllabus[0].content;
+  }
+  enableFeedback.value = !enableFeedback.value;
+};
 </script>
 <template>
   <div class="wrapper" :class="{ visible: visible && syllabus.length }">
@@ -27,6 +40,9 @@ defineProps<{
         v-html="marked.parse(item.content)"
       />
     </details>
+    <p class="content" v-if="newSyllabus" v-html="marked.parse(newSyllabus)" />
+    <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
+    <button class="button" @click="toggleFeedback">feedback</button>
   </div>
 </template>
 

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const props = defineProps<{ step: number; stepsLength: number; setStep: () => void }>();
+const props = defineProps<{
+  step: number;
+  stepsLength: number;
+  advancement: number;
+  setStep: () => void;
+}>();
 
 const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i + 1);
 </script>
@@ -9,7 +14,7 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
       class="step-inidicator"
       v-for="i in stepsLengthArray"
       :key="i"
-      :class="{ active: i === step, disabled: i > step }"
+      :class="{ active: i === step || advancement >= i, disabled: i > advancement }"
       @click="setStep(i)"
     >
       {{ i }}
@@ -22,14 +27,14 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
   padding: 0 0.5rem;
   border-radius: 30%;
   color: var(--neutral-90);
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .step-inidicator.active {
-  background-color: var(--neutral-90);
+  background-color: var(--primary-hover);
   color: var(--neutral-10);
 }
 
