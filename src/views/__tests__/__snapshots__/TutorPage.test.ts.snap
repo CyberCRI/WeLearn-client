@@ -132,8 +132,9 @@ exports[`TutorPage > renders properly 1`] = `
               <input
                 accept="application/pdf, text/*"
                 class="input"
+                data-testid="file-input"
                 data-v-e090ef8d=""
-                placeholder="Enter the name of the file"
+                placeholder="Enter the new file"
                 type="file"
               />
               <button
