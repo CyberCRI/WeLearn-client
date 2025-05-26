@@ -24,7 +24,8 @@ const appendNewInputFile = () => {
   input.type = 'file';
   input.className = 'input';
   input.accept = 'application/pdf, text/*';
-  input.placeholder = 'Enter the name of the file';
+  input.placeholder = 'Enter the new file';
+  input.setAttribute('data-testid', 'file-input');
   input.onchange = (e) => props.addFile(e);
   div.appendChild(input);
   div.appendChild(deleteButton);
@@ -84,7 +85,8 @@ const removeLastInputFile = () => {
             class="input"
             type="file"
             accept="application/pdf, text/*"
-            placeholder="Enter the name of the file"
+            placeholder="Enter the new file"
+            data-testid="file-input"
             @change="addFile"
           />
           <button class="button" @click="removeFirstChild">x</button>
