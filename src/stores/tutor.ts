@@ -19,8 +19,12 @@ type TutorSyllabus = {
 export const useTutorStore = defineStore('tutor', () => {
   const tutorSearch: Ref<TutorSearch | null> = ref(null);
 
-  const retrieveTutorSearch = async (arg: FormData): Promise<TutorSearch> => {
-    const resp = await postAxios('/tutor/search', arg, {
+  const retrieveTutorSearch = async (arg: { string: File }): Promise<TutorSearch> => {
+    const formData = new FormData();
+    const files = Object.values(arg);
+    files.forEach((file) => formData.append('files', file));
+
+    const resp = await postAxios('/tutor/search', formData, {
       headers: { 'content-type': 'multipart/form-data' }
     });
 

@@ -10,42 +10,54 @@ import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import i18n from '@/localisation/i18n';
 const store = useTutorStore();
 
-const files: Ref<File[]> = ref([]);
+const files: Ref<{ string: File }> = ref({});
 const response: Ref<TutorSearch | null> = ref(null);
 const syllabus = ref<[]>([]);
 const step = ref(1);
 const isLoading = ref(false);
 const searchError = ref(false);
 
-const formData = new FormData();
-
 // TODO: handle remove document
-const addFile = (e: any) => {
+const addFile = (e: any, input_id?: str = 'files') => {
   if (e.target.files[0].size > 5 * 1024 * 1024) {
     alert(i18n.global.t('tutor.fileSizeExceeded'));
     return;
   }
+
   searchError.value = false;
-  formData.append('files', e.target.files[0]);
-  files.value.push(e.target.files);
+  files.value = {
+    ...files.value,
+    [input_id]: e.target.files[0]
+  };
+  console.log('Current files:', files.value);
+};
+
+const handleRemoveFile = (id: string) => {
+  if (files.value[id]) {
+    delete files.value[id];
+  } else {
+    console.error('File not found:', id);
+  }
 };
 
 const handleSearch = async () => {
   response.value = null;
   searchError.value = false;
 
-  if (!files.value.length) {
+  if (!Object.keys(files.value).length) {
+    console.error('No files selected');
     return;
   }
   isLoading.value = true;
 
   try {
-    const resp = await store.retrieveTutorSearch(formData);
+    const resp = await store.retrieveTutorSearch(files.value);
     response.value = resp;
   } catch (error) {
     isLoading.value = false;
     response.value = { documents: [] };
     searchError.value = true;
+    console.error('Error during search:', error);
     return;
   } finally {
     isLoading.value = false;
@@ -113,6 +125,7 @@ const stepToAction = {
           :disabled="step > 1"
           v-if="step >= 1"
           :addFile="addFile"
+          :removeFile="handleRemoveFile"
         />
         <SecondStep
           data-test="second-step"
