@@ -127,7 +127,7 @@ exports[`TutorPage > renders properly 1`] = `
             <div
               class="is-flex is-flex-direction-row"
               data-v-e090ef8d=""
-              id="first"
+              id="file_0"
             >
               <input
                 accept="application/pdf, text/*"
@@ -141,7 +141,7 @@ exports[`TutorPage > renders properly 1`] = `
                 class="button"
                 data-v-e090ef8d=""
               >
-                x
+                 x 
               </button>
             </div>
           </div>

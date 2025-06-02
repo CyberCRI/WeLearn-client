@@ -17,6 +17,18 @@ const updateInputGroupLength = () => {
   inputGroupLength.value = document.querySelectorAll('.input-group input').length;
 };
 
+const removeElementById = (id: string) => {
+  const element = document.getElementById(id);
+  if (element && element.parentNode === inputGroupRef.value) {
+    inputGroupRef.value.removeChild(element);
+  }
+  updateInputGroupLength();
+};
+
+const handleRemoveFile = (id: string) => {
+  props.removeFile(id);
+  removeElementById(id);
+};
 const createInput = (id: string) => {
   const input = fileInputRef.value?.cloneNode(false) as HTMLInputElement;
   input.id = id;
@@ -25,14 +37,10 @@ const createInput = (id: string) => {
   return input;
 };
 
-const createDeletebutton = (container: HTMLElement) => {
+const createDeletebutton = (id: string) => {
   const delButton = deleteButtonRef.value?.cloneNode(true) as HTMLButtonElement;
   delButton.addEventListener('click', () => {
-    props.removeFile(container.id);
-    if (container && container.parentNode === inputGroupRef.value) {
-      inputGroupRef.value.removeChild(container);
-    }
-    updateInputGroupLength();
+    handleRemoveFile(id);
   });
   return delButton;
 };
@@ -48,25 +56,11 @@ const appendNewInputFile = () => {
   const container = inputContainerRef.value.cloneNode(false) as HTMLElement;
   container.id = elementId;
   const input = createInput(elementId);
-  const delButton = createDeletebutton(container);
+  const delButton = createDeletebutton(elementId);
 
   container.appendChild(input);
   container.appendChild(delButton);
   inputGroupRef.value.appendChild(container);
-  updateInputGroupLength();
-};
-
-const removeFirstChild = () => {
-  const inputGroup = inputGroupRef.value;
-  inputGroup.removeChild(inputGroup.firstChild);
-  props.removeFile('file_0');
-  updateInputGroupLength();
-};
-
-const removeLastInputFile = () => {
-  const inputGroup = document.querySelector('.input-group');
-  inputGroup.removeChild(inputGroup.lastChild);
-  props.removeFile(`file_${inputGroupLength.value}`);
   updateInputGroupLength();
 };
 </script>
@@ -105,7 +99,7 @@ const removeLastInputFile = () => {
     </div>
     <div>
       <div ref="inputGroupRef" class="input-group is-flex is-flex-direction-column">
-        <div ref="inputContainerRef" class="is-flex is-flex-direction-row" id="first">
+        <div ref="inputContainerRef" class="is-flex is-flex-direction-row" id="file_0">
           <input
             ref="fileInputRef"
             class="input"
@@ -115,13 +109,17 @@ const removeLastInputFile = () => {
             data-testid="file-input"
             @change="(e) => addFile(e, 'file_0')"
           />
-          <button ref="deleteButtonRef" class="button" @click="removeFirstChild">x</button>
+          <button ref="deleteButtonRef" class="button" @click="handleRemoveFile('file_0')">
+            x
+          </button>
         </div>
       </div>
       <button class="button" :disabled="inputGroupLength === 3" @click="appendNewInputFile">
         +
       </button>
-      <button v-if="inputGroupLength > 1" class="button" @click="removeLastInputFile">-</button>
+      <button v-if="inputGroupLength > 1" class="button" @click="handleRemoveFile(`file_${uid}`)">
+        -
+      </button>
     </div>
     <p v-if="searchError" class="has-text-danger mt-2">
       {{ $t('tutor.firstStep.searchError') }}
