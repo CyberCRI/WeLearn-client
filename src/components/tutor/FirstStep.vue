@@ -2,47 +2,66 @@
 import { ref } from 'vue';
 const props = defineProps<{
   disabled?: boolean;
-  addFile?: (e: Event) => void;
+  addFile?: (e: Event, id?: string) => void;
+  removeFile?: (id: string) => void;
   searchError?: boolean;
 }>();
-const inputGroupLength = ref(1);
+const inputGroupLength = ref(document.querySelectorAll('.input-group input').length || 1);
+const uid = ref(0);
+const inputGroupRef = ref<HTMLElement | null>(null);
+const inputContainerRef = ref<HTMLElement | null>(null);
+const fileInputRef = ref<HTMLInputElement | null>(null);
+const deleteButtonRef = ref<HTMLButtonElement | null>(null);
 
-// TODO: think of a vue way of doing this
+const updateInputGroupLength = () => {
+  inputGroupLength.value = document.querySelectorAll('.input-group input').length;
+};
+
+const removeElementById = (id: string) => {
+  const element = document.getElementById(id);
+  if (element && element.parentNode === inputGroupRef.value) {
+    inputGroupRef.value.removeChild(element);
+  }
+  updateInputGroupLength();
+};
+
+const handleRemoveFile = (id: string) => {
+  props.removeFile(id);
+  removeElementById(id);
+};
+const createInput = (id: string) => {
+  const input = fileInputRef.value?.cloneNode(false) as HTMLInputElement;
+  input.id = id;
+  input.files = new DataTransfer().files; // Clear previous files
+  input.addEventListener('change', (e) => props.addFile(e, id));
+  return input;
+};
+
+const createDeletebutton = (id: string) => {
+  const delButton = deleteButtonRef.value?.cloneNode(true) as HTMLButtonElement;
+  delButton.addEventListener('click', () => {
+    handleRemoveFile(id);
+  });
+  return delButton;
+};
+
 const appendNewInputFile = () => {
-  const inputGroup = document.querySelector('.input-group');
-  const div = document.createElement('div');
-  div.className = 'is-flex is-flex-direction-row';
-  const deleteButton = document.createElement('button');
-  deleteButton.className = 'button';
-  deleteButton.innerHTML = 'x';
-  deleteButton.onclick = () => {
-    inputGroup.removeChild(div);
-    inputGroupLength.value -= 1;
-  };
-  const input = document.createElement('input');
-  input.id = `file-${inputGroupLength.value}`;
-  input.type = 'file';
-  input.className = 'input';
-  input.accept = 'application/pdf, text/*';
-  input.placeholder = 'Enter the new file';
-  input.setAttribute('data-testid', 'file-input');
-  input.onchange = (e) => props.addFile(e);
-  div.appendChild(input);
-  div.appendChild(deleteButton);
-  inputGroup.appendChild(div);
-  inputGroupLength.value += 1;
-};
+  if (!inputGroupRef.value || !inputContainerRef.value) {
+    console.error('Input group is not defined');
+    return;
+  }
 
-const removeFirstChild = () => {
-  const inputGroup = document.querySelector('.input-group');
-  inputGroup.removeChild(inputGroup.firstChild);
-  inputGroupLength.value -= 1;
-};
+  const elementId = `file_${++uid.value}`;
 
-const removeLastInputFile = () => {
-  const inputGroup = document.querySelector('.input-group');
-  inputGroup.removeChild(inputGroup.lastChild);
-  inputGroupLength.value -= 1;
+  const container = inputContainerRef.value.cloneNode(false) as HTMLElement;
+  container.id = elementId;
+  const input = createInput(elementId);
+  const delButton = createDeletebutton(elementId);
+
+  container.appendChild(input);
+  container.appendChild(delButton);
+  inputGroupRef.value.appendChild(container);
+  updateInputGroupLength();
 };
 </script>
 <template>
@@ -79,23 +98,28 @@ const removeLastInputFile = () => {
       </div>
     </div>
     <div>
-      <div class="input-group is-flex is-flex-direction-column">
-        <div class="is-flex is-flex-direction-row" id="first">
+      <div ref="inputGroupRef" class="input-group is-flex is-flex-direction-column">
+        <div ref="inputContainerRef" class="is-flex is-flex-direction-row" id="file_0">
           <input
+            ref="fileInputRef"
             class="input"
             type="file"
             accept="application/pdf, text/*"
             placeholder="Enter the new file"
             data-testid="file-input"
-            @change="addFile"
+            @change="(e) => addFile(e, 'file_0')"
           />
-          <button class="button" @click="removeFirstChild">x</button>
+          <button ref="deleteButtonRef" class="button" @click="handleRemoveFile('file_0')">
+            x
+          </button>
         </div>
       </div>
       <button class="button" :disabled="inputGroupLength === 3" @click="appendNewInputFile">
         +
       </button>
-      <button v-if="inputGroupLength > 1" class="button" @click="removeLastInputFile">-</button>
+      <button v-if="inputGroupLength > 1" class="button" @click="handleRemoveFile(`file_${uid}`)">
+        -
+      </button>
     </div>
     <p v-if="searchError" class="has-text-danger mt-2">
       {{ $t('tutor.firstStep.searchError') }}
