@@ -13,10 +13,11 @@ const store = useTutorStore();
 
 const files: Ref<{ string: File }> = ref({});
 const response: Ref<TutorSearch | null> = ref(null);
-const syllabus = ref<[]>([]);
+const syllabus = ref<{} | null>(null);
 const step = ref(1);
 const isLoading = ref(false);
 const searchError = ref(false);
+const hasNewSearch = ref(false);
 
 // TODO: handle remove document
 const addFile = (e: any, input_id?: str = 'files') => {
@@ -48,6 +49,7 @@ const handleSearch = async () => {
 
   if (_isequal(store.searchedFiles, arg)) {
     step.value = step.value + 1;
+    hasNewSearch.value = false;
     return;
   }
   response.value = null;
@@ -57,6 +59,7 @@ const handleSearch = async () => {
   try {
     const resp = await store.retrieveTutorSearch(arg);
     response.value = resp;
+    hasNewSearch.value = true;
   } catch (error) {
     isLoading.value = false;
     response.value = { documents: [] };
@@ -75,12 +78,35 @@ const setStep = (val) => {
 };
 
 const handleCreateSyllabus = async () => {
+  if (!response.value || !response.value.documents.length) {
+    console.error('No documents found');
+    return;
+  }
+
+  if (!hasNewSearch.value) {
+    step.value = step.value + 1;
+    return;
+  }
+
   isLoading.value = true;
   const newSylalbus = await store.retrieveSyllabus();
   isLoading.value = false;
-  syllabus.value = newSylalbus.syllabus;
+  syllabus.value = [...newSylalbus.syllabus].pop();
+  hasNewSearch.value = false;
 
   step.value = step.value + 1;
+};
+
+const handleGiveFeedback = async (feedback: string) => {
+  // if (!syllabus.value || !syllabus.value.content) {
+  //   console.error('No syllabus content available');
+  //   return;
+  // }
+  isLoading.value = true;
+  console.log(isLoading.value);
+  const newSyllabus = await store.giveFeedback(feedback);
+  isLoading.value = false;
+  return newSyllabus;
 };
 
 const loaderI18nPathText = {
@@ -91,11 +117,15 @@ const loaderI18nPathText = {
   2: {
     title: 'tutor.loading.syllabus.title',
     description: 'tutor.loading.syllabus.description'
+  },
+  3: {
+    title: 'tutor.loading.syllabus.title',
+    description: 'tutor.loading.syllabus.description'
   }
 };
 
 const handleDownload = async () => {
-  const blob = await convertMarkdownToDocx(syllabus.value[2].content);
+  const blob = await convertMarkdownToDocx(syllabus.value.content);
   downloadDocx(blob, 'syllabus.docx');
 };
 
@@ -110,7 +140,7 @@ const stepToAction = {
     <StepsIndicator
       :step="step"
       :setStep="setStep"
-      :advancement="syllabus.length ? 3 : response ? 2 : 1"
+      :advancement="syllabus?.content.length ? 3 : response ? 2 : 1"
       :stepsLength="3"
     />
 
@@ -145,9 +175,9 @@ const stepToAction = {
       </div>
       <ThirdStep
         data-test="third-step"
-        :visible="step >= 3 && !!syllabus"
+        :visible="step >= 3 && !!syllabus.content"
         :syllabus="syllabus"
-        :giveFeedback="store.giveFeedback"
+        :giveFeedback="handleGiveFeedback"
       />
     </div>
     <div class="actions">
