@@ -7,6 +7,7 @@ import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
+import _isequal from 'lodash.isequal';
 import i18n from '@/localisation/i18n';
 const store = useTutorStore();
 
@@ -19,7 +20,8 @@ const searchError = ref(false);
 
 // TODO: handle remove document
 const addFile = (e: any, input_id?: str = 'files') => {
-  if (e.target.files[0].size > 5 * 1024 * 1024) {
+  const targetFiles = e.target.files[0];
+  if (targetFiles && targetFiles.size > 5 * 1024 * 1024) {
     alert(i18n.global.t('tutor.fileSizeExceeded'));
     return;
   }
@@ -27,31 +29,33 @@ const addFile = (e: any, input_id?: str = 'files') => {
   searchError.value = false;
   files.value = {
     ...files.value,
-    [input_id]: e.target.files[0]
+    [input_id]: targetFiles
   };
-  console.log('Current files:', files.value);
 };
 
 const handleRemoveFile = (id: string) => {
   if (files.value[id]) {
     delete files.value[id];
-  } else {
-    console.error('File not found:', id);
   }
 };
 
 const handleSearch = async () => {
-  response.value = null;
-  searchError.value = false;
-
-  if (!Object.keys(files.value).length) {
+  const arg = Object.values(files.value).filter((e) => e);
+  if (!arg.length) {
     console.error('No files selected');
     return;
   }
+
+  if (_isequal(store.searchedFiles, arg)) {
+    step.value = step.value + 1;
+    return;
+  }
+  response.value = null;
+  searchError.value = false;
   isLoading.value = true;
 
   try {
-    const resp = await store.retrieveTutorSearch(files.value);
+    const resp = await store.retrieveTutorSearch(arg);
     response.value = resp;
   } catch (error) {
     isLoading.value = false;

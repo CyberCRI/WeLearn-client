@@ -20,19 +20,28 @@ type TutorSyllabus = {
 export const useTutorStore = defineStore('tutor', () => {
   const tutorSearch: Ref<TutorSearch | null> = ref(null);
   const syllabi: Ref<string[] | null> = ref(null);
+  const searchedFiles: Ref<File[]> = ref([]);
 
-  const retrieveTutorSearch = async (arg: { string: File }): Promise<TutorSearch> => {
+  const retrieveTutorSearch = async (arg: File[]): Promise<TutorSearch> => {
     const formData = new FormData();
-    const files = Object.values(arg);
-    files.forEach((file) => formData.append('files', file));
-
-    const resp = await postAxios('/tutor/search', formData, {
-      headers: { 'content-type': 'multipart/form-data' }
+    arg.forEach((file) => {
+      if (file) {
+        formData.append('files', file);
+      }
     });
 
-    tutorSearch.value = resp.data;
+    try {
+      const resp = await postAxios('/tutor/search', formData, {
+        headers: { 'content-type': 'multipart/form-data' }
+      });
+      tutorSearch.value = resp.data;
+    } catch (error) {
+      console.error('Error during tutor search:', error);
+    } finally {
+      searchedFiles.value = arg;
+    }
 
-    return resp.data;
+    return tutorSearch.value;
   };
 
   const retrieveSyllabus = async (): Promise<TutorSyllabus> => {
@@ -61,5 +70,5 @@ export const useTutorStore = defineStore('tutor', () => {
     return resp.data;
   };
 
-  return { retrieveTutorSearch, retrieveSyllabus, giveFeedback };
+  return { searchedFiles, retrieveTutorSearch, retrieveSyllabus, giveFeedback };
 });
