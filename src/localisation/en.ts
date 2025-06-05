@@ -199,7 +199,8 @@ export const en = {
       SDGExpertAgent: 'SDG Expert',
       PedagogicalEngineerAgent: 'Pedagogical Engineer'
     },
-    fileSizeExceeded: 'File size exceeds 5MB',
+    BIG_FILE: 'File size exceeds 5MB',
+    BAD_EXTENSION: 'File extension not supported. Only PDF and TXT files are allowed.',
     loading: {
       wait: 'Please wait:',
       search: {

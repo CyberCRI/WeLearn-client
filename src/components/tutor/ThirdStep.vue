@@ -17,8 +17,7 @@ const feedback: Ref<string> = ref('');
 const toggleFeedback = async () => {
   if (feedback.value.length > 0) {
     const res = await props.giveFeedback(feedback.value);
-    console.log('res', res);
-    currSyllabus.value.content = res.syllabus[0].content;
+    currSyllabus.value.content = res[0].content;
     feedback.value = '';
   }
   enableFeedback.value = !enableFeedback.value;

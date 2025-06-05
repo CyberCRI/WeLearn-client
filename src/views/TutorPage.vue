@@ -8,37 +8,13 @@ import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useTutorStore, type TutorSearch } from '@/stores/tutor';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
-import i18n from '@/localisation/i18n';
 const store = useTutorStore();
 
 const files: Ref<{ string: File }> = ref({});
 const response: Ref<TutorSearch | null> = ref(null);
 const syllabus = ref<{} | null>(null);
 const step = ref(1);
-const isLoading = ref(false);
-const searchError = ref(false);
 const hasNewSearch = ref(false);
-
-// TODO: handle remove document
-const addFile = (e: any, input_id?: str = 'files') => {
-  const targetFiles = e.target.files[0];
-  if (targetFiles && targetFiles.size > 5 * 1024 * 1024) {
-    alert(i18n.global.t('tutor.fileSizeExceeded'));
-    return;
-  }
-
-  searchError.value = false;
-  files.value = {
-    ...files.value,
-    [input_id]: targetFiles
-  };
-};
-
-const handleRemoveFile = (id: string) => {
-  if (files.value[id]) {
-    delete files.value[id];
-  }
-};
 
 const handleSearch = async () => {
   const arg = Object.values(files.value).filter((e) => e);
@@ -53,23 +29,16 @@ const handleSearch = async () => {
     return;
   }
   response.value = null;
-  searchError.value = false;
-  isLoading.value = true;
 
   try {
     const resp = await store.retrieveTutorSearch(arg);
     response.value = resp;
     hasNewSearch.value = true;
   } catch (error) {
-    isLoading.value = false;
     response.value = { documents: [] };
-    searchError.value = true;
     console.error('Error during search:', error);
     return;
-  } finally {
-    isLoading.value = false;
   }
-
   step.value = step.value + 1;
 };
 
@@ -88,40 +57,22 @@ const handleCreateSyllabus = async () => {
     return;
   }
 
-  isLoading.value = true;
-  const newSylalbus = await store.retrieveSyllabus();
-  isLoading.value = false;
-  syllabus.value = [...newSylalbus.syllabus].pop();
+  syllabus.value = await store.retrieveSyllabus();
   hasNewSearch.value = false;
-
   step.value = step.value + 1;
 };
 
-const handleGiveFeedback = async (feedback: string) => {
-  // if (!syllabus.value || !syllabus.value.content) {
-  //   console.error('No syllabus content available');
-  //   return;
-  // }
-  isLoading.value = true;
-  console.log(isLoading.value);
-  const newSyllabus = await store.giveFeedback(feedback);
-  isLoading.value = false;
-  return newSyllabus;
-};
-
-const loaderI18nPathText = {
-  1: {
-    title: 'tutor.loading.search.title',
-    description: 'tutor.loading.search.description'
-  },
-  2: {
-    title: 'tutor.loading.syllabus.title',
-    description: 'tutor.loading.syllabus.description'
-  },
-  3: {
-    title: 'tutor.loading.syllabus.title',
-    description: 'tutor.loading.syllabus.description'
+const getI18nText = (step: number) => {
+  if (step === 1) {
+    return {
+      title: 'tutor.loading.search.title',
+      description: 'tutor.loading.search.description'
+    };
   }
+  return {
+    title: 'tutor.loading.syllabus.title',
+    description: 'tutor.loading.syllabus.description'
+  };
 };
 
 const handleDownload = async () => {
@@ -144,27 +95,28 @@ const stepToAction = {
       :stepsLength="3"
     />
 
-    <ModalWrapper v-if="isLoading" :isOpen="isLoading">
+    <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="() => {}">
       <div class="box loading-modal">
         <h1 class="title is-size-4 has-text-centered">
-          {{ $t(loaderI18nPathText[step]?.title) }}
+          {{ $t(getI18nText(step).title) }}
         </h1>
         <progress class="progress is-large is-primary mb-6" max="100">60%</progress>
         <p class="loader-text is-title is-size-5">{{ $t('tutor.loading.wait') }}</p>
         <p class="loader-text is-title is-size-5">
-          {{ $t(loaderI18nPathText[step]?.description) }}
+          {{ $t(getI18nText(step).description) }}
         </p>
       </div>
     </ModalWrapper>
     <div class="layout-flex">
       <div class="flex-wrap" :class="{ shrink: step === 3 }">
         <FirstStep
-          :searchError="searchError"
+          :searchError="store.hasSearchError"
+          :fileError="store.fileError"
           data-test="fist-step"
           :disabled="step > 1"
           v-if="step >= 1"
-          :addFile="addFile"
-          :removeFile="handleRemoveFile"
+          :addFile="store.addFile"
+          :removeFile="store.removeFile"
         />
         <SecondStep
           data-test="second-step"
@@ -177,7 +129,7 @@ const stepToAction = {
         data-test="third-step"
         :visible="step >= 3 && !!syllabus.content"
         :syllabus="syllabus"
-        :giveFeedback="handleGiveFeedback"
+        :giveFeedback="store.giveFeedback"
       />
     </div>
     <div class="actions">

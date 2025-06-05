@@ -203,7 +203,9 @@ export const fr = {
       SDGExpertAgent: 'Expert ODD',
       PedagogicalEngineerAgent: 'Ingénieur pédagogique'
     },
-    fileSizeExceeded: 'Le fichier dépasse les 5MB',
+    BIG_FILE: 'Le fichier dépasse les 5MB',
+    BAD_EXTENSION:
+      'Le type de fichier n’est pas pris en charge. Types pris en charge pour le moment : PDF, TXT',
     loading: {
       wait: 'Veuillez patienter :',
       search: {

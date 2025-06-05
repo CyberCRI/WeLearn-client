@@ -2,9 +2,10 @@
 import { ref } from 'vue';
 const props = defineProps<{
   disabled?: boolean;
-  addFile?: (e: Event, id?: string) => void;
-  removeFile?: (id: string) => void;
+  addFile: (e: Event, id?: string) => void;
+  removeFile: (id: string) => void;
   searchError?: boolean;
+  fileError: { state: boolean; reason: string };
 }>();
 const inputGroupLength = ref(document.querySelectorAll('.input-group input').length || 1);
 const uid = ref(0);
@@ -20,7 +21,7 @@ const updateInputGroupLength = () => {
 const removeElementById = (id: string) => {
   const element = document.getElementById(id);
   if (element && element.parentNode === inputGroupRef.value) {
-    inputGroupRef.value.removeChild(element);
+    inputGroupRef.value?.removeChild(element);
   }
   updateInputGroupLength();
 };
@@ -39,6 +40,7 @@ const createInput = (id: string) => {
 
 const createDeletebutton = (id: string) => {
   const delButton = deleteButtonRef.value?.cloneNode(true) as HTMLButtonElement;
+  delButton.disabled = false;
   delButton.addEventListener('click', () => {
     handleRemoveFile(id);
   });
@@ -109,11 +111,14 @@ const appendNewInputFile = () => {
             data-testid="file-input"
             @change="(e) => addFile(e, 'file_0')"
           />
-          <button ref="deleteButtonRef" class="button" @click="handleRemoveFile('file_0')">
+          <button ref="deleteButtonRef" disabled class="button" @click="handleRemoveFile('file_0')">
             x
           </button>
         </div>
       </div>
+      <p v-if="fileError.state" class="has-text-danger">
+        {{ $t(`tutor.${fileError.reason}`) }}
+      </p>
       <button class="button" :disabled="inputGroupLength === 3" @click="appendNewInputFile">
         +
       </button>

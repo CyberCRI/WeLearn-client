@@ -63,3 +63,14 @@ export type ReformulateResponse = {
   USER_LANGUAGE: string;
   QUERY_STATUS: 'INVALID' | 'VALID' | 'REF_TO_PAST';
 };
+
+export type TutorSearch = {
+  extracts: { original_document: string; summary: string; themes: string[] }[];
+  nb_results: number;
+  documents: Document[];
+};
+
+export type TutorSyllabus = {
+  syllabus: { content: string; source: string }[];
+  documents: Document[];
+};
