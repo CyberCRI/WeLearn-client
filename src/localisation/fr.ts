@@ -198,11 +198,6 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez fournir un texte plus long pour la recherche',
   tutor: {
-    agents: {
-      UniversityTeacherAgent: 'Professeur',
-      SDGExpertAgent: 'Expert ODD',
-      PedagogicalEngineerAgent: 'Ingénieur pédagogique'
-    },
     BIG_FILE: 'Le fichier dépasse les 5MB',
     BAD_EXTENSION:
       'Le type de fichier n’est pas pris en charge. Types pris en charge pour le moment : PDF, TXT',

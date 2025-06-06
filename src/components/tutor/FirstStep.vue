@@ -109,7 +109,7 @@ const appendNewInputFile = () => {
             accept="application/pdf, text/*"
             placeholder="Enter the new file"
             data-testid="file-input"
-            @change="(e) => addFile(e, 'file_0')"
+            @change="(e) => props.addFile(e, 'file_0')"
           />
           <button ref="deleteButtonRef" disabled class="button" @click="handleRemoveFile('file_0')">
             x

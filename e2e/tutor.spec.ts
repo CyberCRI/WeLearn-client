@@ -174,10 +174,16 @@ test.describe('Tutor', () => {
     await expect(fileInputs).toHaveCount(2);
   });
 
-  test('should remove input file from the page', async ({ page }) => {
-    await page.getByRole('button', { name: 'x' }).click();
-    const fileInputs = page.getByTestId('file-input');
-    await expect(fileInputs).toHaveCount(0);
+  test('should remove input when clicking on x', async ({ page }) => {
+    await page.getByRole('button', { name: '+' }).click();
+    await expect(page.getByTestId('file-input')).toHaveCount(2);
+    await page.getByRole('button', { name: 'x' }).last().click();
+    await expect(page.getByTestId('file-input')).toHaveCount(1);
+  });
+
+  test('first del button shpuld be disabled', async ({ page }) => {
+    const delButton = page.getByRole('button', { name: 'x' });
+    await expect(delButton.isDisabled()).toBeTruthy();
   });
 
   test('should add file to input', async ({ page }) => {
