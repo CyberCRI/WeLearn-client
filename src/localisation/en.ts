@@ -51,7 +51,7 @@ export const en = {
   errorModalGeneric: {
     title: 'Sorry! Something went wrong.',
     message: 'Please try again later.',
-    action: 'Reload'
+    action: 'Reload the page'
   },
   extract: 'extract',
   filterBySource: 'Filter by source',
@@ -222,7 +222,10 @@ export const en = {
     secondStep: {
       title: 'Select more source',
       description:
-        'Select more sources to enhance the results. The sources below are categorized as being Sustainable Development Goals (SDGs) related.'
+        'Select more sources to enhance the results. The sources below are categorized as being Sustainable Development Goals (SDGs) related.',
+      noSources: 'No sources related to your documents were found.',
+      noSourcesDescription:
+        'You can still proceed with the documents you uploaded, but the results may be limited. \n To add new sources, go back to the first step and upload more documents.'
     },
     thirdStep: {
       title: 'Syllabus',

@@ -12,9 +12,11 @@ const router = useRouter();
     isOpen
   >
     <template #actions>
-      <button class="button is-primary" @click="() => router.go(0)">
-        {{ $t('errorModalGeneric.action') }}
-      </button>
+      <div class="is-flex is-flex-direction-column is-align-items-center my-4">
+        <button class="button is-warning" @click="() => router.go(0)">
+          {{ $t('errorModalGeneric.action') }}
+        </button>
+      </div>
     </template>
   </Modal>
 </template>
