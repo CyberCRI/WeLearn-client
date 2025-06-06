@@ -12,19 +12,19 @@ exports[`TutorPage > renders properly 1`] = `
   >
     
     <p
-      class="step-inidicator active"
+      class="step-indicator active"
       data-v-050e406a=""
     >
       1
     </p>
     <p
-      class="step-inidicator disabled"
+      class="step-indicator disabled"
       data-v-050e406a=""
     >
       2
     </p>
     <p
-      class="step-inidicator disabled"
+      class="step-indicator disabled"
       data-v-050e406a=""
     >
       3
@@ -140,11 +140,13 @@ exports[`TutorPage > renders properly 1`] = `
               <button
                 class="button"
                 data-v-e090ef8d=""
+                disabled=""
               >
-                 x 
+                x
               </button>
             </div>
           </div>
+          <!--v-if-->
           <button
             class="button"
             data-v-e090ef8d=""
@@ -201,8 +203,14 @@ exports[`TutorPage > renders properly 1`] = `
         tutor.thirdStep.description
       </p>
       <!-- syllabus -->
-      
-      
+      <!--v-if-->
+      <!--v-if-->
+      <button
+        class="button"
+        data-v-7bf7679d=""
+      >
+        feedback
+      </button>
     </div>
   </div>
   <div
