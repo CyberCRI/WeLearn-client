@@ -46,7 +46,7 @@ export const postAxios = async (
     return response;
   } catch (error) {
     console.error('Error in postAxios:', error);
-    throw new Error('Error fetching data');
+    throw error;
   }
 };
 

@@ -5,6 +5,7 @@ import SecondStep from '@/components/tutor/SecondStep.vue';
 import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
+import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 
 const store = useTutorStore();
@@ -36,6 +37,7 @@ const stepToAction = {
       :advancement="store.syllabi?.content.length ? 3 : store.tutorSearch ? 2 : 1"
       :stepsLength="3"
     />
+    <ErrorComponent v-if="store.reloadError" :error="store.error" />
 
     <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="() => {}">
       <div class="box loading-modal">
