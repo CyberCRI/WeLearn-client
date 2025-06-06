@@ -27,7 +27,7 @@ export const useTutorStore = defineStore('tutor', () => {
     reason: null
   });
 
-  const addFile = (e: any, input_id: str) => {
+  const addFile = (e: any, input_id: string) => {
     const targetFile = e.target.files[0];
 
     if (targetFile && targetFile.size > 5 * 1024 * 1024) {
@@ -176,7 +176,7 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleDownloadSyllabus = async () => {
-    if (!syllabi.value || !syllabi.value.length) {
+    if (!syllabi.value || !syllabi.value.content) {
       console.error('No syllabi available for download');
       return;
     }

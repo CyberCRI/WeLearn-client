@@ -181,7 +181,7 @@ test.describe('Tutor', () => {
     await expect(page.getByTestId('file-input')).toHaveCount(1);
   });
 
-  test('first del button shpuld be disabled', async ({ page }) => {
+  test('first del button should be disabled', async ({ page }) => {
     const delButton = page.getByRole('button', { name: 'x' });
     await expect(delButton.isDisabled()).toBeTruthy();
   });

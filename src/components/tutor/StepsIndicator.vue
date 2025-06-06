@@ -3,7 +3,7 @@ const props = defineProps<{
   step: number;
   stepsLength: number;
   advancement: number;
-  setStep: () => void;
+  setStep: (step: number) => void;
 }>();
 
 const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i + 1);
@@ -11,7 +11,7 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
 <template>
   <div class="is-flex">
     <p
-      class="step-inidicator"
+      class="step-indicator"
       v-for="i in stepsLengthArray"
       :key="i"
       :class="{ active: i === step || advancement >= i, disabled: i > advancement }"
@@ -22,7 +22,7 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
   </div>
 </template>
 <style scoped>
-.step-inidicator {
+.step-indicator {
   margin: 0 0.5rem;
   padding: 0 0.5rem;
   border-radius: 30%;
@@ -33,12 +33,12 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
   transition: background-color 0.3s;
 }
 
-.step-inidicator.active {
+.step-indicator.active {
   background-color: var(--primary-hover);
   color: var(--neutral-10);
 }
 
-.step-inidicator.disabled {
+.step-indicator.disabled {
   pointer-events: none;
   color: var(--neutral-50);
 }

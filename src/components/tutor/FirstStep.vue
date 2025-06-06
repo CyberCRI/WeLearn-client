@@ -111,9 +111,7 @@ const appendNewInputFile = () => {
             data-testid="file-input"
             @change="(e) => props.addFile(e, 'file_0')"
           />
-          <button ref="deleteButtonRef" disabled class="button" @click="handleRemoveFile('file_0')">
-            x
-          </button>
+          <button ref="deleteButtonRef" disabled class="button">x</button>
         </div>
       </div>
       <p v-if="fileError.state" class="has-text-danger">

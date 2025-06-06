@@ -32,7 +32,7 @@ const stepToAction = {
   <div class="content-centered-wrapper">
     <StepsIndicator
       :step="store.step"
-      :setStep="setStep"
+      :setStep="store.setStep"
       :advancement="store.syllabi?.content.length ? 3 : store.tutorSearch ? 2 : 1"
       :stepsLength="3"
     />
@@ -75,7 +75,7 @@ const stepToAction = {
       />
     </div>
     <div class="actions">
-      <button class="button" v-if="store.step > 1" @click="sotre.goBack">
+      <button class="button" v-if="store.step > 1" @click="store.goBack">
         {{ $t('previous') }}
       </button>
       <button class="button" v-if="store.step <= 3" @click="stepToAction[store.step]()">
