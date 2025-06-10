@@ -13,7 +13,7 @@ const router = useRouter();
   >
     <template #actions>
       <div class="is-flex is-flex-direction-column is-align-items-center my-4">
-        <button class="button is-warning" @click="() => router.go(0)">
+        <button class="button is-warning" @click="router.go(0)">
           {{ $t('errorModalGeneric.action') }}
         </button>
       </div>

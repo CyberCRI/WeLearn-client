@@ -99,6 +99,7 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleSearch = async () => {
+    reloadError.value = false;
     const arg = Object.values(newFilesToSearch.value).filter((e) => e);
     if (!arg.length) {
       console.error('No files selected');
