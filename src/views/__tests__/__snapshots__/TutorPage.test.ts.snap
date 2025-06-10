@@ -125,7 +125,7 @@ exports[`TutorPage > renders properly 1`] = `
               tutor.firstStep.cursusTitleLabel
             </label>
             <input
-              class="input decription"
+              class="input"
               data-v-e090ef8d=""
               id="cursus-title"
               placeholder="tutor.firstStep.cursusTitlePlaceholder"
@@ -144,7 +144,7 @@ exports[`TutorPage > renders properly 1`] = `
               tutor.firstStep.cursusLevelLabel
             </label>
             <input
-              class="input decription"
+              class="input"
               data-v-e090ef8d=""
               id="cursus-level"
               placeholder="tutor.firstStep.cursusLevelPlaceholder"
@@ -163,7 +163,7 @@ exports[`TutorPage > renders properly 1`] = `
               tutor.firstStep.cursusDurationLabel
             </label>
             <input
-              class="input decription"
+              class="input"
               data-v-e090ef8d=""
               id="cursus-duration"
               placeholder="tutor.firstStep.cursusDurationPlaceholder"

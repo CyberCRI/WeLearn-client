@@ -120,7 +120,7 @@ const appendNewInputFile = () => {
       <div class="description">
         <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
         <input
-          class="input decription"
+          class="input"
           type="text"
           id="cursus-title"
           :value="courseTitle"
@@ -131,7 +131,7 @@ const appendNewInputFile = () => {
       <div class="description">
         <label for="cursus-level">{{ $t('tutor.firstStep.cursusLevelLabel') }}</label>
         <input
-          class="input decription"
+          class="input"
           type="text"
           id="cursus-level"
           :value="level"
@@ -142,7 +142,7 @@ const appendNewInputFile = () => {
       <div class="description">
         <label for="cursus-duration">{{ $t('tutor.firstStep.cursusDurationLabel') }}</label>
         <input
-          class="input decription"
+          class="input"
           type="text"
           id="cursus-duration"
           :value="duration"
