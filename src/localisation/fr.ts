@@ -214,14 +214,19 @@ export const fr = {
     },
     firstStep: {
       searchError: 'Aucun résultat trouvé pour le document fourni.',
-      title: 'Documents pour commencer',
-      description: 'Téléchargez un ou plusieurs documents pour commencer.',
+      title: 'Ajoutez des documents en lien avec votre cours',
+      description:
+        'Vous puvez ajouter un ou plusieurs documents pour commencer. Ces documents seront utilisés pour générer un syllabus.',
+      cursusDescriptionTitle: 'Quelques informations sur le cours',
       cursusTitleLabel: 'Titre du cours',
       cursusTitlePlaceholder: 'Sociolinguistique 101',
       cursusLevelLabel: 'Niveau du cours',
       cursusLevelPlaceholder: 'Licence, Master, etc.',
       cursusDurationLabel: 'Durée du cours',
-      cursusDurationPlaceholder: '1 semestre, 6 semaines, etc.'
+      cursusDurationPlaceholder: '1 semestre, 6 semaines, etc.',
+      cursusDescriptionLabel: 'Ajoutez une courte description pour créer un meilleur syllabus',
+      cursusDescriptionPlaceholder:
+        'Ce cours couvrira les bases de la sociolinguistique, y compris les concepts et théories clés.'
     },
     secondStep: {
       title: 'Sélectionnez plus de sources',
@@ -233,7 +238,9 @@ export const fr = {
     },
     thirdStep: {
       title: 'Syllabus',
-      description: 'Vous pouvez éditer et télécharger le syllabus ci-dessous.'
+      description: 'Vous pouvez éditer et télécharger le syllabus ci-dessous.',
+      giveFeedback: 'Donner un feedback',
+      sendFeedback: 'Envoyer le feedback'
     }
   }
 };

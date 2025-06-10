@@ -6,6 +6,9 @@ const props = defineProps<{
   removeFile: (id: string) => void;
   searchError?: boolean;
   fileError: { state: boolean; reason: string };
+  courseTitle: string;
+  level: string;
+  duration: string;
 }>();
 const inputGroupLength = ref(document.querySelectorAll('.input-group input').length || 1);
 const uid = ref(0);
@@ -13,6 +16,9 @@ const inputGroupRef = ref<HTMLElement | null>(null);
 const inputContainerRef = ref<HTMLElement | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const deleteButtonRef = ref<HTMLButtonElement | null>(null);
+
+const description = defineModel('description');
+defineEmits(['update:courseTitle', 'update:level', 'update:duration', 'update:description']);
 
 const updateInputGroupLength = () => {
   inputGroupLength.value = document.querySelectorAll('.input-group input').length;
@@ -70,38 +76,9 @@ const appendNewInputFile = () => {
   <div class="wrapper" :class="{ disabled: disabled }">
     <h1 class="title is-4">{{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
-    <div class="is-flex is-flex-wrap-wrap mb-4 descriptions">
-      <div class="description">
-        <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
-        <input
-          class="input decription"
-          type="text"
-          id="cursus-title"
-          :placeholder="$t('tutor.firstStep.cursusTitlePlaceholder')"
-        />
-      </div>
-      <div class="description">
-        <label for="cursus-level">{{ $t('tutor.firstStep.cursusLevelLabel') }}</label>
-        <input
-          class="input decription"
-          type="text"
-          id="cursus-level"
-          :placeholder="$t('tutor.firstStep.cursusLevelPlaceholder')"
-        />
-      </div>
-      <div class="description">
-        <label for="cursus-duration">{{ $t('tutor.firstStep.cursusDurationLabel') }}</label>
-        <input
-          class="input decription"
-          type="text"
-          id="cursus-duration"
-          :placeholder="$t('tutor.firstStep.cursusDurationPlaceholder')"
-        />
-      </div>
-    </div>
-    <div>
+    <div class="is-flex is-flex-direction-column">
       <div ref="inputGroupRef" class="input-group is-flex is-flex-direction-column">
-        <div ref="inputContainerRef" class="is-flex is-flex-direction-row" id="file_0">
+        <div ref="inputContainerRef" class="is-flex is-flex-direction-row mb-2" id="file_0">
           <input
             ref="fileInputRef"
             class="input"
@@ -117,16 +94,74 @@ const appendNewInputFile = () => {
       <p v-if="fileError.state" class="has-text-danger">
         {{ $t(`tutor.${fileError.reason}`) }}
       </p>
-      <button class="button" :disabled="inputGroupLength === 3" @click="appendNewInputFile">
-        +
-      </button>
-      <button v-if="inputGroupLength > 1" class="button" @click="handleRemoveFile(`file_${uid}`)">
-        -
-      </button>
+      <div class="is-align-self-flex-end">
+        <button class="button" :disabled="inputGroupLength === 3" @click="appendNewInputFile">
+          +
+        </button>
+        <button
+          v-if="inputGroupLength > 1"
+          class="button has-background-grey-light ml-2"
+          @click="handleRemoveFile(inputGroupRef.lastChild.id)"
+        >
+          -
+        </button>
+      </div>
     </div>
     <p v-if="searchError" class="has-text-danger mt-2">
       {{ $t('tutor.firstStep.searchError') }}
     </p>
+    <h2 class="title is-6 mt-4">
+      {{ $t('tutor.firstStep.cursusDescriptionTitle') }}
+    </h2>
+    <div
+      class="is-flex is-flex-wrap-wrap descriptions"
+      :class="disabled && 'is-flex-direction-column'"
+    >
+      <div class="description">
+        <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
+        <input
+          class="input"
+          type="text"
+          id="cursus-title"
+          :value="courseTitle"
+          @input="$emit('update:courseTitle', $event.target.value)"
+          :placeholder="$t('tutor.firstStep.cursusTitlePlaceholder')"
+        />
+      </div>
+      <div class="description">
+        <label for="cursus-level">{{ $t('tutor.firstStep.cursusLevelLabel') }}</label>
+        <input
+          class="input"
+          type="text"
+          id="cursus-level"
+          :value="level"
+          @input="$emit('update:level', $event.target.value)"
+          :placeholder="$t('tutor.firstStep.cursusLevelPlaceholder')"
+        />
+      </div>
+      <div class="description">
+        <label for="cursus-duration">{{ $t('tutor.firstStep.cursusDurationLabel') }}</label>
+        <input
+          class="input"
+          type="text"
+          id="cursus-duration"
+          :value="duration"
+          @input="$emit('update:duration', $event.target.value)"
+          :placeholder="$t('tutor.firstStep.cursusDurationPlaceholder')"
+        />
+      </div>
+    </div>
+    <label for="cursus-description" class="mt-4">
+      {{ $t('tutor.firstStep.cursusDescriptionLabel') }}
+    </label>
+    <textarea
+      id="cursus-description"
+      class="textarea mt-1"
+      :placeholder="$t('tutor.firstStep.cursusDescriptionPlaceholder')"
+      rows="5"
+      :value="description"
+      @input="$emit('update:description', $event.target.value)"
+    />
   </div>
 </template>
 <style scoped>
@@ -140,15 +175,18 @@ const appendNewInputFile = () => {
   margin: 0 auto;
 }
 
+.description {
+  width: 32%;
+}
+
 .wrapper.disabled {
   flex-basis: 25%;
   opacity: 0.5;
   pointer-events: none;
   flex-grow: 0.25;
-}
-
-.description {
-  width: calc((100% / 3) - (0.5rem * 2));
+  .description {
+    width: 100%;
+  }
 }
 
 .descriptions {

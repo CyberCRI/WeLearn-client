@@ -56,6 +56,10 @@ const stepToAction = {
         <FirstStep
           :searchError="store.hasSearchError"
           :fileError="store.fileError"
+          v-model:courseTitle="store.courseTitle"
+          v-model:level="store.level"
+          v-model:duration="store.duration"
+          v-model:description="store.description"
           data-test="fist-step"
           :disabled="store.step > 1"
           v-if="store.step >= 1"
