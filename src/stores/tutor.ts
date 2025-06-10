@@ -14,6 +14,10 @@ export const useTutorStore = defineStore('tutor', () => {
   const isLoading: Ref<boolean> = ref(false);
   const step: Ref<number> = ref(1);
   const hasNewSearch: Ref<boolean> = ref(false);
+  const level: Ref<string> = ref('');
+  const duration: Ref<string> = ref('');
+  const description: Ref<string> = ref('');
+  const courseTitle: Ref<string> = ref('');
 
   const goBack = () => (step.value = step.value - 1);
   const goNext = () => (step.value = step.value + 1);
@@ -126,7 +130,11 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading.value = true;
     try {
       const resp = await postAxios(`/tutor/syllabus?lang=${i18n.global.locale.value}`, {
-        ...tutorSearch.value
+        ...tutorSearch.value,
+        ...(courseTitle.value && { course_title: courseTitle.value }),
+        ...(level.value && { level: level.value }),
+        ...(duration.value && { duration: duration.value }),
+        ...(description.value && { description: description.value })
       });
 
       //keep only the syllabus from pedagogical engineer
@@ -212,6 +220,10 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading,
     searchedFiles,
     giveFeedback,
-    handleDownloadSyllabus
+    handleDownloadSyllabus,
+    courseTitle,
+    level,
+    duration,
+    description
   };
 });

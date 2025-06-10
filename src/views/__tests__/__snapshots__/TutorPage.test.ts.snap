@@ -60,65 +60,7 @@ exports[`TutorPage > renders properly 1`] = `
           tutor.firstStep.description
         </p>
         <div
-          class="is-flex is-flex-wrap-wrap mb-4 descriptions"
-          data-v-e090ef8d=""
-        >
-          <div
-            class="description"
-            data-v-e090ef8d=""
-          >
-            <label
-              data-v-e090ef8d=""
-              for="cursus-title"
-            >
-              tutor.firstStep.cursusTitleLabel
-            </label>
-            <input
-              class="input decription"
-              data-v-e090ef8d=""
-              id="cursus-title"
-              placeholder="tutor.firstStep.cursusTitlePlaceholder"
-              type="text"
-            />
-          </div>
-          <div
-            class="description"
-            data-v-e090ef8d=""
-          >
-            <label
-              data-v-e090ef8d=""
-              for="cursus-level"
-            >
-              tutor.firstStep.cursusLevelLabel
-            </label>
-            <input
-              class="input decription"
-              data-v-e090ef8d=""
-              id="cursus-level"
-              placeholder="tutor.firstStep.cursusLevelPlaceholder"
-              type="text"
-            />
-          </div>
-          <div
-            class="description"
-            data-v-e090ef8d=""
-          >
-            <label
-              data-v-e090ef8d=""
-              for="cursus-duration"
-            >
-              tutor.firstStep.cursusDurationLabel
-            </label>
-            <input
-              class="input decription"
-              data-v-e090ef8d=""
-              id="cursus-duration"
-              placeholder="tutor.firstStep.cursusDurationPlaceholder"
-              type="text"
-            />
-          </div>
-        </div>
-        <div
+          class="is-flex is-flex-direction-column"
           data-v-e090ef8d=""
         >
           <div
@@ -126,7 +68,7 @@ exports[`TutorPage > renders properly 1`] = `
             data-v-e090ef8d=""
           >
             <div
-              class="is-flex is-flex-direction-row"
+              class="is-flex is-flex-direction-row mb-2"
               data-v-e090ef8d=""
               id="file_0"
             >
@@ -148,15 +90,103 @@ exports[`TutorPage > renders properly 1`] = `
             </div>
           </div>
           <!--v-if-->
-          <button
-            class="button"
+          <div
+            class="is-align-self-flex-end"
             data-v-e090ef8d=""
           >
-             + 
-          </button>
-          <!--v-if-->
+            <button
+              class="button"
+              data-v-e090ef8d=""
+            >
+               + 
+            </button>
+            <!--v-if-->
+          </div>
         </div>
         <!--v-if-->
+        <h2
+          class="title is-6 mt-4"
+          data-v-e090ef8d=""
+        >
+          tutor.firstStep.cursusDescriptionTitle
+        </h2>
+        <div
+          class="is-flex is-flex-wrap-wrap descriptions"
+          data-v-e090ef8d=""
+        >
+          <div
+            class="description"
+            data-v-e090ef8d=""
+          >
+            <label
+              data-v-e090ef8d=""
+              for="cursus-title"
+            >
+              tutor.firstStep.cursusTitleLabel
+            </label>
+            <input
+              class="input decription"
+              data-v-e090ef8d=""
+              id="cursus-title"
+              placeholder="tutor.firstStep.cursusTitlePlaceholder"
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="description"
+            data-v-e090ef8d=""
+          >
+            <label
+              data-v-e090ef8d=""
+              for="cursus-level"
+            >
+              tutor.firstStep.cursusLevelLabel
+            </label>
+            <input
+              class="input decription"
+              data-v-e090ef8d=""
+              id="cursus-level"
+              placeholder="tutor.firstStep.cursusLevelPlaceholder"
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="description"
+            data-v-e090ef8d=""
+          >
+            <label
+              data-v-e090ef8d=""
+              for="cursus-duration"
+            >
+              tutor.firstStep.cursusDurationLabel
+            </label>
+            <input
+              class="input decription"
+              data-v-e090ef8d=""
+              id="cursus-duration"
+              placeholder="tutor.firstStep.cursusDurationPlaceholder"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <label
+          class="mt-4"
+          data-v-e090ef8d=""
+          for="cursus-description"
+        >
+          tutor.firstStep.cursusDescriptionLabel
+        </label>
+        <textarea
+          class="textarea mt-1"
+          data-v-e090ef8d=""
+          id="cursus-description"
+          placeholder="tutor.firstStep.cursusDescriptionPlaceholder"
+          rows="5"
+          value=""
+        />
       </div>
       <div
         class="wrapper"
@@ -214,7 +244,7 @@ exports[`TutorPage > renders properly 1`] = `
         class="button"
         data-v-7bf7679d=""
       >
-        feedback
+        tutor.thirdStep.giveFeedback
       </button>
     </div>
   </div>

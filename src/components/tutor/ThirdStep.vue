@@ -31,7 +31,9 @@ const toggleFeedback = async () => {
       v-html="marked.parse(syllabus?.content)"
     />
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
-    <button class="button" @click="toggleFeedback">feedback</button>
+    <button class="button" @click="toggleFeedback">
+      {{ enableFeedback ? $t('tutor.thirdStep.sendFeedback') : $t('tutor.thirdStep.giveFeedback') }}
+    </button>
   </div>
 </template>
 
