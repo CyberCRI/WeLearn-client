@@ -21,6 +21,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
   // ERROR STATES
   const hasSearchError: Ref<boolean> = ref(false);
+  const reloadError: Ref<boolean> = ref(false);
   const hasSyllabusError: Ref<boolean> = ref(false);
   const fileError: Ref<{ state: boolean; reason: 'BIG_FILE' | 'BAD_EXTENSION' | null }> = ref({
     state: false,
@@ -88,6 +89,9 @@ export const useTutorStore = defineStore('tutor', () => {
     } catch (error) {
       console.error('Error during tutor search:', error);
       hasSearchError.value = true;
+      if (error.code === 'ERR_NETWORK') {
+        reloadError.value = true;
+      }
     } finally {
       searchedFiles.value = arg;
       isLoading.value = false;
@@ -95,6 +99,7 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleSearch = async () => {
+    reloadError.value = false;
     const arg = Object.values(newFilesToSearch.value).filter((e) => e);
     if (!arg.length) {
       console.error('No files selected');
@@ -138,7 +143,10 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleCreateSyllabus = async () => {
-    if (!tutorSearch.value || !tutorSearch.value.documents.length) {
+    if (
+      !tutorSearch.value ||
+      (!tutorSearch.value.documents.length && !searchedFiles.value.length)
+    ) {
       console.error('No documents found');
       return;
     }
@@ -193,6 +201,7 @@ export const useTutorStore = defineStore('tutor', () => {
     addFile,
     removeFile,
     fileError,
+    reloadError,
     handleSearch,
     retrieveTutorSearch,
     tutorSearch,

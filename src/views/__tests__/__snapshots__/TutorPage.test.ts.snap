@@ -32,6 +32,7 @@ exports[`TutorPage > renders properly 1`] = `
     
   </div>
   <!--v-if-->
+  <!--v-if-->
   <div
     class="layout-flex"
     data-v-8a8621cb=""
@@ -163,24 +164,28 @@ exports[`TutorPage > renders properly 1`] = `
         data-v-8a8621cb=""
         data-v-ebcfbade=""
       >
-        <h1
-          class="title is-4"
-          data-v-ebcfbade=""
-        >
-          tutor.secondStep.title
-        </h1>
-        <p
-          class="subtitle is-6"
-          data-v-ebcfbade=""
-        >
-          tutor.secondStep.description
-        </p>
         <div
-          class="sources"
+          class="has-text-centered mt-6"
           data-v-ebcfbade=""
         >
-          
-          
+          <p
+            class="title is-4"
+            data-v-ebcfbade=""
+          >
+            tutor.secondStep.noSources
+          </p>
+          <p
+            class="subtitle is-6 mt-6"
+            data-v-ebcfbade=""
+          >
+            tutor.secondStep.noSourcesDescription
+          </p>
+          <img
+            alt="No sources found"
+            class="image"
+            data-v-ebcfbade=""
+            src="/src/assets/no-sources.svg"
+          />
         </div>
       </div>
     </div>

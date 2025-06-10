@@ -52,7 +52,7 @@ export const fr = {
   errorModalGeneric: {
     title: 'Désolé ! Quelque chose s’est mal passé.',
     message: 'Veuillez réessayer plus tard.',
-    action: 'Recharger'
+    action: 'Recharger la page'
   },
   extract: 'extrait',
   filterBySource: 'Filtrer par source',
@@ -226,7 +226,10 @@ export const fr = {
     secondStep: {
       title: 'Sélectionnez plus de sources',
       description:
-        'Sélectionnez plus de sources pour améliorer les résultats. Les sources ci-dessous sont catégorisées comme étant liées aux Objectifs de développement durable (ODD).'
+        'Sélectionnez plus de sources pour améliorer les résultats. Les sources ci-dessous sont catégorisées comme étant liées aux Objectifs de développement durable (ODD).',
+      noSources: "Aucune source en lien avec votre document n'a été trouvé.",
+      noSourcesDescription:
+        "Vous pouvez choisir de passer à l'étape suivante et seulement vos documents seront pris en compte. \n Pour ajouter de nouvelles sources, vous pouvez revenir à l'étape précédente."
     },
     thirdStep: {
       title: 'Syllabus',

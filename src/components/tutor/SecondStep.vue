@@ -9,18 +9,25 @@ defineProps<{
 </script>
 <template>
   <div class="wrapper" :class="{ disabled: disabled, visible: visible }">
-    <h1 class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
-    <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>
-    <div class="sources">
-      <div class="source" v-for="source in sources" :key="source.id">
-        <CardSimpleComponent
-          :title="source.payload.document_title"
-          :corpus="source.payload.document_corpus"
-          :url="source.payload.document_url"
-          :details="source.payload.document_details"
-          :sdg="source.payload.document_sdg"
-        />
+    <div v-if="sources && sources.length">
+      <h1 class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
+      <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>
+      <div class="sources">
+        <div class="source" v-for="source in sources" :key="source.id">
+          <CardSimpleComponent
+            :title="source.payload.document_title"
+            :corpus="source.payload.document_corpus"
+            :url="source.payload.document_url"
+            :details="source.payload.document_details"
+            :sdg="source.payload.document_sdg"
+          />
+        </div>
       </div>
+    </div>
+    <div v-else class="has-text-centered mt-6">
+      <p class="title is-4">{{ $t('tutor.secondStep.noSources') }}</p>
+      <p class="subtitle is-6 mt-6">{{ $t('tutor.secondStep.noSourcesDescription') }}</p>
+      <img class="image" src="@/assets/no-sources.svg" alt="No sources found" />
     </div>
   </div>
 </template>
@@ -59,5 +66,11 @@ defineProps<{
 }
 .sources > * {
   width: 100%;
+}
+
+.image {
+  margin: 2rem auto;
+  width: 100%;
+  height: 250px;
 }
 </style>
