@@ -229,7 +229,7 @@ export const fr = {
         'Sélectionnez plus de sources pour améliorer les résultats. Les sources ci-dessous sont catégorisées comme étant liées aux Objectifs de développement durable (ODD).',
       noSources: "Aucune source en lien avec votre document n'a été trouvé.",
       noSourcesDescription:
-        "Vous pouvez choisir de passer a l'étape suivante et seulement vos documents seront pris en compte. \n Pour ajouter de nouvelles sources, vous pouvez revenir à l'étape précédente."
+        "Vous pouvez choisir de passer à l'étape suivante et seulement vos documents seront pris en compte. \n Pour ajouter de nouvelles sources, vous pouvez revenir à l'étape précédente."
     },
     thirdStep: {
       title: 'Syllabus',
