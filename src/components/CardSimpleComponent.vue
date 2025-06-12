@@ -67,18 +67,18 @@ const handleModalOpen = () => {
           </div>
         </div>
 
-        <div class="card-actions" data-testid="card-actions">
+        <div class="card-actions" data-testid="card-actions" @click.stop>
           <div class="icon-wrapper">
-            <SeeDetails class="icon is-small" @click="handleModalOpen" />
+            <SeeDetails class="icon is-small" @click.stop="handleModalOpen" />
             <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.seeDetails')" isLeft />
           </div>
 
           <BookmarkComponent
             v-if="toggleBookmark"
-            :isBookmarked="isBookmarked"
+            :isBookmarked="!!isBookmarked"
             :toggleBookmark="toggleBookmark"
           />
-          <a class="icon-wrapper" target="_blank" :href="url">
+          <a class="icon-wrapper" target="_blank" :href="url" @click.stop>
             <OpenUrlIcon class="icon is-small" />
             <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.openArticle')" isLeft />
           </a>
@@ -126,8 +126,6 @@ const handleModalOpen = () => {
 .card {
   /* display default-hidden when hover content */
   &:hover {
-    .card-content {
-    }
     .default-hidden {
       & > * {
         display: block;

@@ -2,10 +2,10 @@
 import { ref } from 'vue';
 const props = defineProps<{
   disabled?: boolean;
-  addFile: (e: Event, id?: string) => void;
+  addFile: (e: Event, id: string) => void;
   removeFile: (id: string) => void;
   searchError?: boolean;
-  fileError: { state: boolean; reason: string };
+  fileError: { state: boolean; reason: 'BIG_FILE' | 'BAD_EXTENSION' | null };
   courseTitle: string;
   level: string;
   duration: string;

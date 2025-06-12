@@ -100,7 +100,7 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
         <div class="content">
           {{ displayedDescription }}
         </div>
-        <details v-if="slice" class="mt-2 is-clickable">
+        <details v-if="slice" class="mt-2 is-clickable" @click.stop>
           <summary class="is-capitalized">{{ $t('extract') }}</summary>
           <blockquote class="is-italic">{{ slice }}</blockquote>
         </details>

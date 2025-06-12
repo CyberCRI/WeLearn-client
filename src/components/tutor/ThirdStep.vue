@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { marked } from 'marked';
-import { ref, Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 const props = defineProps<{
   visible?: boolean;
   syllabus?: { content: string; source: string };

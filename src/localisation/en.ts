@@ -227,7 +227,7 @@ export const en = {
     secondStep: {
       title: 'Select more source',
       description:
-        'Select more sources to enhance the results. The sources below are categorized as being Sustainable Development Goals (SDGs) related.',
+        'Click to select additional sources to improve the results. The sources below are categorized as being related to Sustainable Development Goals (SDGs). If no source is selected, the syllabus will be based only on your documents.',
       noSources: 'No sources related to your documents were found.',
       noSourcesDescription:
         'You can still proceed with the documents you uploaded, but the results may be limited. \n To add new sources, go back to the first step and upload more documents.'
