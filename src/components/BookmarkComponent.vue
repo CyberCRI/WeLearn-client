@@ -1,7 +1,7 @@
 <template>
   <div class="bookmark">
     <div
-      @click="toggleBookmark()"
+      @click.stop="toggleBookmark()"
       :class="isBookmarked && 'bookmarked'"
       data-testid="toggleBookmark"
     >

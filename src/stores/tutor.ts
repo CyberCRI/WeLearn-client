@@ -2,14 +2,14 @@ import { defineStore } from 'pinia';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';
-import { type TutorSearch, type TutorSyllabus } from '@/types';
+import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { postAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 
 export const useTutorStore = defineStore('tutor', () => {
-  const tutorSearch: Ref<TutorSearch | null> = ref(null);
-  const syllabi: Ref<{ content: string; source: string } | null> = ref(null);
-  const newFilesToSearch = ref({});
+  const tutorSearch: Ref<TutorSearch | undefined> = ref(undefined);
+  const syllabi: Ref<{ content: string; source: string } | undefined> = ref(undefined);
+  const newFilesToSearch: Ref<Record<string, File>> = ref({});
   const searchedFiles: Ref<File[]> = ref([]);
   const isLoading: Ref<boolean> = ref(false);
   const step: Ref<number> = ref(1);
@@ -18,6 +18,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const duration: Ref<string> = ref('');
   const description: Ref<string> = ref('');
   const courseTitle: Ref<string> = ref('');
+  const selectedSources: Ref<Document[]> = ref([]);
 
   const goBack = () => (step.value = step.value - 1);
   const goNext = () => (step.value = step.value + 1);
@@ -75,7 +76,7 @@ export const useTutorStore = defineStore('tutor', () => {
     };
   };
 
-  const retrieveTutorSearch = async (arg: File[]): Promise<TutorSearch> => {
+  const retrieveTutorSearch = async (arg: File[]) => {
     isLoading.value = true;
     const formData = new FormData();
     arg.forEach((file) => {
@@ -90,20 +91,34 @@ export const useTutorStore = defineStore('tutor', () => {
       });
       tutorSearch.value = resp.data;
       hasSearchError.value = false;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during tutor search:', error);
       hasSearchError.value = true;
       if (error.code === 'ERR_NETWORK') {
         reloadError.value = true;
       }
+      setStep(1)
     } finally {
       searchedFiles.value = arg;
       isLoading.value = false;
     }
   };
 
+  const appendSource = (source: Document) => {
+    const sourceExists =
+      selectedSources.value && selectedSources.value.some((s) => s.id === source.id);
+      console.log(sourceExists)
+    if (!sourceExists) {
+      console.log('adding source')
+      selectedSources.value.push(source);
+    } else {
+      selectedSources.value = selectedSources.value.filter((s) => s.id !== source.id);
+    }
+  };
+
   const handleSearch = async () => {
     reloadError.value = false;
+    selectedSources.value = [];
     const arg = Object.values(newFilesToSearch.value).filter((e) => e);
     if (!arg.length) {
       console.error('No files selected');
@@ -116,29 +131,33 @@ export const useTutorStore = defineStore('tutor', () => {
       return;
     }
 
-    tutorSearch.value = null;
+    tutorSearch.value = undefined;
     await retrieveTutorSearch(arg);
     hasNewSearch.value = true;
 
     goNext();
   };
 
-  const retrieveSyllabus = async (): Promise<TutorSyllabus> => {
+  const retrieveSyllabus = async () => {
     if (!tutorSearch.value) {
       throw new Error('Body is empty');
     }
     isLoading.value = true;
     try {
+      console.log(selectedSources.value.length)
       const resp = await postAxios(`/tutor/syllabus?lang=${i18n.global.locale.value}`, {
         ...tutorSearch.value,
+        documents: selectedSources.value,
         ...(courseTitle.value && { course_title: courseTitle.value }),
         ...(level.value && { level: level.value }),
         ...(duration.value && { duration: duration.value }),
         ...(description.value && { description: description.value })
       });
 
+      const data = resp.data as TutorSyllabus;
+      
       //keep only the syllabus from pedagogical engineer
-      syllabi.value = resp.data.syllabus.filter(({ source }) =>
+      syllabi.value = data.syllabus.filter(({ source }) =>
         source.toLowerCase().includes('pedagogicalengineer')
       )[0];
       hasSyllabusError.value = false;
@@ -169,7 +188,7 @@ export const useTutorStore = defineStore('tutor', () => {
     goNext();
   };
 
-  const giveFeedback = async (feedback: string): Promise<TutorSyllabus> => {
+  const giveFeedback = async (feedback: string) => {
     if (!tutorSearch.value || !syllabi.value) {
       throw new Error('Body is empty');
     }
@@ -180,8 +199,10 @@ export const useTutorStore = defineStore('tutor', () => {
       const resp = await postAxios('/tutor/syllabus/feedback', {
         feedback: feedback,
         syllabus: [syllabi.value],
-        ...tutorSearch.value
+        ...tutorSearch.value,
+        documents: selectedSources.value,
       });
+
 
       syllabi.value = resp.data.syllabus[0];
     } catch (error) {
@@ -196,7 +217,7 @@ export const useTutorStore = defineStore('tutor', () => {
       console.error('No syllabi available for download');
       return;
     }
-    const docxContent = await convertMarkdownToDocx(syllabi.value);
+    const docxContent = await convertMarkdownToDocx(syllabi.value.content);
     downloadDocx(docxContent, 'syllabus.docx');
   };
 
@@ -213,6 +234,7 @@ export const useTutorStore = defineStore('tutor', () => {
     handleSearch,
     retrieveTutorSearch,
     tutorSearch,
+    appendSource,
     retrieveSyllabus,
     handleCreateSyllabus,
     hasSearchError,
@@ -222,6 +244,7 @@ export const useTutorStore = defineStore('tutor', () => {
     giveFeedback,
     handleDownloadSyllabus,
     courseTitle,
+    selectedSources,
     level,
     duration,
     description

@@ -23,7 +23,7 @@ const getI18nText = computed(() => {
   };
 });
 
-const stepToAction = {
+const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
   1: store.handleSearch,
   2: store.handleCreateSyllabus,
   3: store.handleDownloadSyllabus
@@ -37,7 +37,7 @@ const stepToAction = {
       :advancement="store.syllabi?.content.length ? 3 : store.tutorSearch ? 2 : 1"
       :stepsLength="3"
     />
-    <ErrorComponent v-if="store.reloadError" :error="store.error" />
+    <ErrorComponent v-if="store.reloadError"  />
 
     <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="() => {}">
       <div class="box loading-modal">
@@ -70,12 +70,14 @@ const stepToAction = {
           data-test="second-step"
           :disabled="store.step > 2"
           :visible="store.step >= 2 && !!store.tutorSearch"
-          :sources="store.tutorSearch ? store.tutorSearch?.documents : null"
+          :sources="store.tutorSearch?.documents"
+          :appendSource="store.appendSource"
+          :selectedSources="store.selectedSources"
         />
       </div>
       <ThirdStep
         data-test="third-step"
-        :visible="store.step >= 3 && !!store.syllabi.content"
+        :visible="store.step >= 3 && !!store.syllabi?.content"
         :syllabus="store.syllabi"
         :giveFeedback="store.giveFeedback"
       />
@@ -84,7 +86,7 @@ const stepToAction = {
       <button class="button" v-if="store.step > 1" @click="store.goBack">
         {{ $t('previous') }}
       </button>
-      <button class="button" v-if="store.step <= 3" @click="stepToAction[store.step]()">
+      <button class="button" v-if="store.step <= 3" @click="stepToAction[store.step as 1 | 2 | 3]()">
         {{ store.step < 3 ? $t('next') : $t('download') }}
       </button>
     </div>
@@ -136,7 +138,7 @@ const stepToAction = {
 
 .loading-modal {
   padding: 2rem;
-  widh: 100%;
+  width: 100%;
   height: 100%;
 }
 
