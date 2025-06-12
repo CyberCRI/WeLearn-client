@@ -17,7 +17,13 @@ defineProps<{
       <h1 class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
       <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>
       <div class="sources">
-        <div class="source" @click="appendSource(source)" v-for="source in sources" :key="source.id" :class="{ selected: selectedSources.includes(source) }">
+        <div
+          class="source"
+          @click="appendSource(source)"
+          v-for="source in sources"
+          :key="source.id"
+          :class="{ selected: selectedSources.includes(source) }"
+        >
           <CardSimpleComponent
             :title="source.payload.document_title"
             :corpus="source.payload.document_corpus"
@@ -26,22 +32,26 @@ defineProps<{
             :sdg="source.payload.document_sdg"
           >
             <template #modal="scope">
-              <ModalWrapper :key="`modal-${source.id}`" :isOpen="scope.isOpen" :onClose="scope.onClose">
-            <Card
-              :key="`modal-card-${source.id}`"
-              :title="source.payload.document_title"
-              :description="source.payload.document_desc"
-              :url="source.payload.document_url"
-              :sdg="source.payload.document_sdg"
-              :details="source.payload.document_details"
-              :corpus="source.payload.document_corpus"
-              :score="source.score"
-              :toggleBookmark="() => {}"
-              :isBookmarked="false"
-              :slice="source.payload.slice_content"
-              hasFullDescription
-              />
-            </ModalWrapper>
+              <ModalWrapper
+                :key="`modal-${source.id}`"
+                :isOpen="scope.isOpen"
+                :onClose="scope.onClose"
+              >
+                <Card
+                  :key="`modal-card-${source.id}`"
+                  :title="source.payload.document_title"
+                  :description="source.payload.document_desc"
+                  :url="source.payload.document_url"
+                  :sdg="source.payload.document_sdg"
+                  :details="source.payload.document_details"
+                  :corpus="source.payload.document_corpus"
+                  :score="source.score"
+                  :toggleBookmark="() => {}"
+                  :isBookmarked="false"
+                  :slice="source.payload.slice_content"
+                  hasFullDescription
+                />
+              </ModalWrapper>
             </template>
           </CardSimpleComponent>
         </div>

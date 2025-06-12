@@ -37,7 +37,7 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
       :advancement="store.syllabi?.content.length ? 3 : store.tutorSearch ? 2 : 1"
       :stepsLength="3"
     />
-    <ErrorComponent v-if="store.reloadError"  />
+    <ErrorComponent v-if="store.reloadError" />
 
     <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="() => {}">
       <div class="box loading-modal">
@@ -86,7 +86,11 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
       <button class="button" v-if="store.step > 1" @click="store.goBack">
         {{ $t('previous') }}
       </button>
-      <button class="button" v-if="store.step <= 3" @click="stepToAction[store.step as 1 | 2 | 3]()">
+      <button
+        class="button"
+        v-if="store.step <= 3"
+        @click="stepToAction[store.step as 1 | 2 | 3]()"
+      >
         {{ store.step < 3 ? $t('next') : $t('download') }}
       </button>
     </div>

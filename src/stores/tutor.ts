@@ -97,7 +97,7 @@ export const useTutorStore = defineStore('tutor', () => {
       if (error.code === 'ERR_NETWORK') {
         reloadError.value = true;
       }
-      setStep(1)
+      setStep(1);
     } finally {
       searchedFiles.value = arg;
       isLoading.value = false;
@@ -107,9 +107,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const appendSource = (source: Document) => {
     const sourceExists =
       selectedSources.value && selectedSources.value.some((s) => s.id === source.id);
-      console.log(sourceExists)
     if (!sourceExists) {
-      console.log('adding source')
       selectedSources.value.push(source);
     } else {
       selectedSources.value = selectedSources.value.filter((s) => s.id !== source.id);
@@ -144,7 +142,7 @@ export const useTutorStore = defineStore('tutor', () => {
     }
     isLoading.value = true;
     try {
-      console.log(selectedSources.value.length)
+      console.log(selectedSources.value.length);
       const resp = await postAxios(`/tutor/syllabus?lang=${i18n.global.locale.value}`, {
         ...tutorSearch.value,
         documents: selectedSources.value,
@@ -155,7 +153,7 @@ export const useTutorStore = defineStore('tutor', () => {
       });
 
       const data = resp.data as TutorSyllabus;
-      
+
       //keep only the syllabus from pedagogical engineer
       syllabi.value = data.syllabus.filter(({ source }) =>
         source.toLowerCase().includes('pedagogicalengineer')
@@ -200,9 +198,8 @@ export const useTutorStore = defineStore('tutor', () => {
         feedback: feedback,
         syllabus: [syllabi.value],
         ...tutorSearch.value,
-        documents: selectedSources.value,
+        documents: selectedSources.value
       });
-
 
       syllabi.value = resp.data.syllabus[0];
     } catch (error) {
