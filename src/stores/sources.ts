@@ -2,12 +2,24 @@ import { defineStore } from 'pinia';
 import { type Ref, ref, computed } from 'vue';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import type { Document } from '@/types';
+import { getAxios } from '@/utils/fetch';
 
 export const useSourcesStore = defineStore('sources', () => {
   const sourcesBookmarked: Ref<Document[]> = ref(getFromStorage('bookmarkedSources') || []);
   const idsBookmarked: Ref<string[]> = ref(
     sourcesBookmarked.value.map((source) => source.payload.document_id)
   );
+
+  const totalDocs: Ref<number | undefined> = ref(undefined);
+
+  const getNbDocsInBase = async () => {
+    if (totalDocs.value) {
+      return;
+    }
+    const response = await getAxios('/search/nb_docs');
+    totalDocs.value = Math.floor(response.nb_docs / 100) * 100;
+    console.log('Total documents in the base:', totalDocs.value);
+  };
 
   const addBookmark = (source: Document) => {
     sourcesBookmarked.value.push(source);
@@ -49,6 +61,8 @@ export const useSourcesStore = defineStore('sources', () => {
     resetBookmarks,
     toggleBookmark,
     isBookmarked,
+    getNbDocsInBase,
+    totalDocs,
     bookmarkedLength
   };
 });
