@@ -6,7 +6,7 @@ import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useUserStore } from '@/stores/user';
-import { watch, ref } from 'vue';
+import { watch, ref, onBeforeMount } from 'vue';
 import { getPagePath } from '@/utils/urlsUtils';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
@@ -27,6 +27,10 @@ const props = defineProps<{
   cardType?: 'simple' | 'default';
   hideNumber?: boolean;
 }>();
+
+onBeforeMount(() => {
+  store.getNbDocsInBase();
+});
 
 watch(
   () => store.bookmarkedLength,
@@ -56,7 +60,9 @@ const ChosenCard = Cards[props.cardType || 'default'];
     <!-- fetching -->
     <div v-if="!hideSteps">
       <h2 v-if="noResults">{{ $t('noResults') }}</h2>
-      <h2 v-if="isFetchingSources">{{ $t('sourcesList.fetching') }}</h2>
+      <h2 v-if="isFetchingSources">
+        {{ $t('sourcesList.fetching', { docs_nb: store.totalDocs }) }}
+      </h2>
       <h2 v-if="fetchingAnswer">{{ $t('sourcesList.formulatingAnswer') }}</h2>
     </div>
     <!-- results -->
