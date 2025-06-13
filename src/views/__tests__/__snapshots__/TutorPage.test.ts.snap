@@ -59,6 +59,7 @@ exports[`TutorPage > renders properly 1`] = `
         >
           tutor.firstStep.description
         </p>
+        <!-- File Input Section -->
         <div
           class="is-flex is-flex-direction-column"
           data-v-e090ef8d=""
@@ -73,7 +74,7 @@ exports[`TutorPage > renders properly 1`] = `
               id="file_0"
             >
               <input
-                accept="application/pdf, text/*"
+                accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 class="input"
                 data-testid="file-input"
                 data-v-e090ef8d=""
@@ -94,16 +95,23 @@ exports[`TutorPage > renders properly 1`] = `
             class="is-align-self-flex-end"
             data-v-e090ef8d=""
           >
+            <span
+              class="has-text-grey-light mr-2"
+              data-v-e090ef8d=""
+            >
+              tutor.firstStep.acceptedFiles
+            </span>
+            <!--v-if-->
             <button
               class="button"
               data-v-e090ef8d=""
             >
-               + 
+              +
             </button>
-            <!--v-if-->
           </div>
         </div>
         <!--v-if-->
+        <!-- Course Description Section -->
         <h2
           class="title is-6 mt-4"
           data-v-e090ef8d=""

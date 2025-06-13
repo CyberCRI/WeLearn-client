@@ -200,7 +200,7 @@ export const fr = {
   tutor: {
     BIG_FILE: 'Le fichier dépasse les 5MB',
     BAD_EXTENSION:
-      'Le type de fichier n’est pas pris en charge. Types pris en charge pour le moment : PDF, TXT',
+      'Le type de fichier n’est pas pris en charge. Types pris en charge pour le moment : PDF, TXT, DOCX',
     loading: {
       wait: 'Veuillez patienter :',
       search: {
@@ -213,6 +213,7 @@ export const fr = {
       }
     },
     firstStep: {
+      acceptedFiles: 'Types de fichiers acceptés : PDF, TXT, DOCX',
       searchError: 'Aucun résultat trouvé pour le document fourni.',
       title: 'Ajoutez des documents en lien avec votre cours',
       description:

@@ -195,7 +195,7 @@ export const en = {
   textLengthFeedback: 'Please provide a longer text for the search',
   tutor: {
     BIG_FILE: 'File size exceeds 5MB',
-    BAD_EXTENSION: 'File extension not supported. Only PDF and TXT files are allowed.',
+    BAD_EXTENSION: 'File extension not supported. Only PDF, TXT and DOCX files are allowed.',
     loading: {
       wait: 'Please wait:',
       search: {
@@ -209,6 +209,7 @@ export const en = {
       }
     },
     firstStep: {
+      acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',
       searchError: 'No results found for the provided document.',
       title: 'Add documents related to your course',
       description:
