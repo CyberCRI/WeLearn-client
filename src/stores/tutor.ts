@@ -46,7 +46,12 @@ export const useTutorStore = defineStore('tutor', () => {
 
     if (
       targetFile &&
-      !(targetFile.type === 'application/pdf' || targetFile.type.startsWith('text/'))
+      !(
+        targetFile.type === 'application/pdf' ||
+        targetFile.type.startsWith('text/') ||
+        targetFile.type ===
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      )
     ) {
       fileError.value = {
         state: true,
