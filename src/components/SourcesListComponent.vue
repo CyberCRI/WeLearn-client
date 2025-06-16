@@ -42,9 +42,10 @@ watch(
   }
 );
 
-const translatedTotal = computed(() =>
-  new Intl.NumberFormat(i18n.global.locale.value).format(store.totalDocs)
-);
+const translatedTotal = computed(() => {
+  const totalDocs = store.totalDocs.value ?? 0;
+  return new Intl.NumberFormat(i18n.global.locale.value).format(totalDocs);
+});
 
 const handleSourcesOnboarding = () => {
   if (store.bookmarkedLength > 0) {
