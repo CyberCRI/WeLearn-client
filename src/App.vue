@@ -18,9 +18,7 @@ const screenWidth = computed(() => window.innerWidth);
       <NavComponent />
     </template>
     <template #main>
-      <transition name="fade">
-        <RouterView />
-      </transition>
+      <RouterView />
     </template>
   </AppLayout>
 </template>
