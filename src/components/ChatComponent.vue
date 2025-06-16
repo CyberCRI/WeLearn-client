@@ -53,9 +53,12 @@ const handleToggleFilters = () => {
       <template #loading>
         <Loading
           v-if="
-            [CHAT_STATUS.SEARCHING, CHAT_STATUS.SEARCHED, CHAT_STATUS.FORMULATING_ANSWER].includes(
-              computedStatus
-            )
+            [
+              CHAT_STATUS.REFORMULATING,
+              CHAT_STATUS.SEARCHING,
+              CHAT_STATUS.SEARCHED,
+              CHAT_STATUS.FORMULATING_ANSWER
+            ].includes(computedStatus)
           "
         />
       </template>

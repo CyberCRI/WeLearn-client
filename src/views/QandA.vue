@@ -30,7 +30,7 @@ const descriptions: Record<CHAT_STATUS, string> = {
       />
       <SourcesListComponentVue
         hideSteps
-        v-if="computedStatus !== CHAT_STATUS.EMPTY || computedStatus === CHAT_STATUS.DONE"
+        v-if="chatstore.sourcesList.length"
         cardType="simple"
         :shouldDisplayScore="!!chatstore.shouldDisplayScore"
         :sourcesList="
@@ -47,7 +47,7 @@ const descriptions: Record<CHAT_STATUS, string> = {
         <summary>{{ $t('moreDocuments') }} ({{ chatstore.sourcesList.length - 7 }})</summary>
         <SourcesListComponentVue
           cardType="simple"
-          hideNumber="true"
+          hideNumber
           :shouldDisplayScore="!!chatstore.shouldDisplayScore"
           :sourcesList="chatstore.sourcesList.slice(7)"
           :isSourcesError="computedStatus === CHAT_STATUS.ERROR"

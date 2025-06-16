@@ -18,7 +18,6 @@ export const useSourcesStore = defineStore('sources', () => {
     }
     const response = await getAxios('/search/nb_docs');
     totalDocs.value = Math.floor(response.nb_docs / 100) * 100;
-    console.log('Total documents in the base:', totalDocs.value);
   };
 
   const addBookmark = (source: Document) => {

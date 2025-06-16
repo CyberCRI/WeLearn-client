@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { Document } from '@/types';
+import i18n from '@/localisation/i18n';
 import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
 import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useUserStore } from '@/stores/user';
-import { watch, ref, onBeforeMount } from 'vue';
+import { watch, ref, onBeforeMount, computed } from 'vue';
 import { getPagePath } from '@/utils/urlsUtils';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
@@ -15,11 +16,11 @@ const user = useUserStore();
 const pathRef = ref<string>(getPagePath());
 
 const props = defineProps<{
-  hideSteps: boolean;
+  hideSteps?: boolean;
   sourcesList: Document[] | null;
   isSourcesError: boolean;
   isFetchingSources: boolean;
-  fetchingAnswer: boolean;
+  fetchingAnswer?: boolean;
   hideRefIndicator?: boolean;
   noResults?: boolean;
   errorCode?: string;
@@ -39,6 +40,10 @@ watch(
       user.updateSearchState('ADD_BOOKMARK');
     }
   }
+);
+
+const translatedTotal = computed(() =>
+  new Intl.NumberFormat(i18n.global.locale.value).format(store.totalDocs)
 );
 
 const handleSourcesOnboarding = () => {
@@ -61,7 +66,7 @@ const ChosenCard = Cards[props.cardType || 'default'];
     <div v-if="!hideSteps">
       <h2 v-if="noResults">{{ $t('noResults') }}</h2>
       <h2 v-if="isFetchingSources">
-        {{ $t('sourcesList.fetching', { docs_nb: store.totalDocs }) }}
+        {{ $t('sourcesList.fetching', { docs_nb: translatedTotal }) }}
       </h2>
       <h2 v-if="fetchingAnswer">{{ $t('sourcesList.formulatingAnswer') }}</h2>
     </div>
