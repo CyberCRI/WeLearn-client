@@ -27,7 +27,7 @@
       </div>
     </div>
 
-    <div class="product-decription has-text-centered">
+    <div class="product-description has-text-centered">
       <h3 class="title is-size-4 pt-6">{{ $t('landing.aboutTitle') }}</h3>
       <p class="subtitle mt-4">
         {{ $t('landing.aboutDescription') }}
@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="section">
-      <div class="is-flex i>s-fullwidth is-justify-content-space-evenly">
+      <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
           <p class="subtitle has-text-weight-bold mb-2 is-clickable">
             {{ $t('landing.horizontal.section_two.title') }}
@@ -99,7 +99,7 @@
   height: 5rem;
 }
 
-.product-decription {
+.product-description {
   width: 60%;
   margin: auto;
 }

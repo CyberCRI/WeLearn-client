@@ -105,7 +105,7 @@ const handle_nav_bookmarks = () => {
           class="router-link"
           to="/about"
           @click="isNavOpened = false"
-          data-testid="nav-tutor"
+          data-testid="nav-about"
         >
           <div class="icon mr-2">
             <AboutIcon />
