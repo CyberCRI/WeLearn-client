@@ -2,15 +2,12 @@
 defineProps<{ size?: string }>();
 </script>
 <template>
-  <svg
-    :width="size ? size : '100%'"
-    :height="size ? size : '100%'"
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 512 512"
-  >
-    <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
-      d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+      d="M14.927 15.0401L18.4001 18.4001M17.2801 9.4401C17.2801 13.77 13.77 17.2801 9.4401 17.2801C5.11019 17.2801 1.6001 13.77 1.6001 9.4401C1.6001 5.11019 5.11019 1.6001 9.4401 1.6001C13.77 1.6001 17.2801 5.11019 17.2801 9.4401Z"
+      stroke="black"
+      stroke-width="2"
+      stroke-linecap="round"
     />
   </svg>
 </template>

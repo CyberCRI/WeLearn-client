@@ -72,6 +72,10 @@ export const fr = {
     slogan: 'L’éducation à la durabilité facilitée',
     description:
       'Explorez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
+    aboutTitle: 'A propos de WeLearn',
+    aboutDescription:
+      'WeLearn est une plateforme d’apprentissage innovante, alimentée par l’intelligence artificielle, conçue pour accompagner les enseignants dans la création de contenus pédagogiques percutants, centrés sur les Objectifs de Développement Durable (ODD). Notre mission est de faciliter l’intégration de la durabilité dans les contenus éducatifs de manière fluide et intuitive. En s’appuyant sur des technologies d’IA avancées, WeLearn enrichit l’expérience d’enseignement en sélectionnant et en indexant des ressources ouvertes de haute qualité, issues de bases de données fiables telles que Wikipedia, The Conversation ou encore HAL.',
+    partnership: 'Un partenariat entre :',
     horizontal: {
       section_one: {
         title: 'Connaissances sur la durabilité',
@@ -108,6 +112,13 @@ export const fr = {
     }
   },
   moreDocuments: 'Explorer plus de documents',
+  nav: {
+    chat: 'Chat',
+    search: 'Recherche',
+    bookmarks: 'Favoris',
+    syllabus: 'Créer un syllabus',
+    about: 'À propos'
+  },
   next: 'Suivant',
   noBookmarks: 'Pas de favoris pour le moment.',
   noResults: "Je n'ai aucun résultat pour cette recherche",
