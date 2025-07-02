@@ -3,6 +3,7 @@ import HamburgerMenu from '@/components/icons/HamburgerMenu.vue';
 import SearchIcon from '@/components/icons/SearchIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 import QnAIcon from '@/components/icons/QnAIcon.vue';
+import HelpComponent from '@/components/HelpComponent.vue';
 import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
@@ -100,7 +101,7 @@ const handle_nav_bookmarks = () => {
         </router-link>
       </div>
 
-      <div class="link-wrapper">
+      <div class="link-wrapper mr-6">
         <router-link
           class="router-link"
           to="/about"
@@ -129,6 +130,7 @@ const handle_nav_bookmarks = () => {
           >{{ $t('lang.en') }}</a
         >
       </div>
+      <HelpComponent />
     </div>
   </div>
 </template>

@@ -116,7 +116,8 @@ export const en = {
     search: 'Search',
     bookmarks: 'Bookmarks',
     syllabus: 'Create a syllabus',
-    about: 'About'
+    about: 'About',
+    help: 'Help ?'
   },
 
   next: 'Next',

@@ -14,7 +14,7 @@ const handleModalClose = () => {
 </script>
 
 <template>
-  <div class="modal" :class="computedState ? 'is-active' : ''">
+  <div class="modal" :class="{ 'is-active': computedState }">
     <div class="modal-background" @click="handleModalClose"></div>
     <div class="modal-content">
       <slot></slot>

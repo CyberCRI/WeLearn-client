@@ -117,7 +117,8 @@ export const fr = {
     search: 'Recherche',
     bookmarks: 'Favoris',
     syllabus: 'Créer un syllabus',
-    about: 'À propos'
+    about: 'À propos',
+    help: 'Aide ?'
   },
   next: 'Suivant',
   noBookmarks: 'Pas de favoris pour le moment.',
