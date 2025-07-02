@@ -7,8 +7,8 @@ import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import i18n from '@/localisation/i18n';
-import BookIcon from './icons/BookIcon.vue';
-import NavBookmarkIcon from './icons/NavBookmarkIcon.vue';
+import BookIcon from '@/components/icons/BookIcon.vue';
+import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 const featureFlip = useFeatureFlipStore();
