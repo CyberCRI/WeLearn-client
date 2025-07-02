@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import HamburgerMenu from '@/components/icons/HamburgerMenu.vue';
 import SearchIcon from '@/components/icons/SearchIcon.vue';
+import AboutIcon from '@/components/icons/AboutIcon.vue';
 import QnAIcon from '@/components/icons/QnAIcon.vue';
 import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import i18n from '@/localisation/i18n';
-import BookIcon from './icons/BookIcon.vue';
+import BookIcon from '@/components/icons/BookIcon.vue';
+import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 const featureFlip = useFeatureFlipStore();
@@ -38,7 +40,23 @@ const handle_nav_bookmarks = () => {
           <div class="icon mr-2">
             <QnAIcon />
           </div>
-          <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('chat') }}</span>
+          <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('nav.chat') }}</span>
+        </router-link>
+      </div>
+
+      <div class="link-wrapper" v-if="isFeatureEnabled">
+        <router-link
+          class="router-link"
+          to="/tutor"
+          @click="isNavOpened = false"
+          data-testid="nav-tutor"
+        >
+          <div class="icon mr-2">
+            <BookIcon />
+          </div>
+          <span class="item-name" :class="isNavOpened && 'visible-name'">{{
+            $t('nav.syllabus')
+          }}</span>
         </router-link>
       </div>
       <div class="link-wrapper">
@@ -51,7 +69,9 @@ const handle_nav_bookmarks = () => {
           <div class="icon mr-2">
             <SearchIcon />
           </div>
-          <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('search') }}</span>
+          <span class="item-name" :class="isNavOpened && 'visible-name'">{{
+            $t('nav.search')
+          }}</span>
         </router-link>
       </div>
       <div class="link-wrapper is-relative">
@@ -72,24 +92,27 @@ const handle_nav_bookmarks = () => {
           data-testid="nav-bookmarks"
         >
           <div class="icon mr-2">
-            <BookIcon />
+            <NavBookmarkIcon />
           </div>
           <span class="item-name" :class="isNavOpened && 'visible-name'">{{
-            $t('bookmarks')
+            $t('nav.bookmarks')
           }}</span>
         </router-link>
       </div>
-      <div class="link-wrapper" v-if="isFeatureEnabled">
+
+      <div class="link-wrapper">
         <router-link
           class="router-link"
-          to="/tutor"
+          to="/about"
           @click="isNavOpened = false"
-          data-testid="nav-tutor"
+          data-testid="nav-about"
         >
           <div class="icon mr-2">
-            <BookIcon />
+            <AboutIcon />
           </div>
-          <span class="item-name" :class="isNavOpened && 'visible-name'">{{ $t('tutor') }}</span>
+          <span class="item-name" :class="isNavOpened && 'visible-name'">{{
+            $t('nav.about')
+          }}</span>
         </router-link>
       </div>
       <div class="nav-langs" :class="isNavOpened && 'open'">
@@ -282,6 +305,7 @@ const handle_nav_bookmarks = () => {
     all: unset;
     border-radius: 4px;
     padding: 0.25rem 0.75rem;
+    display: flex;
 
     gap: 0.5rem;
     cursor: pointer;

@@ -2,17 +2,12 @@ import { test, expect } from '@playwright/test';
 
 test.describe('nav', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/q-and-a');
 
     await page.route('**/**/search/collections', async (route) => {
       const json = [{ name: 'fake-collections', id: 21 }];
       await route.fulfill({ json });
     });
-
-    await page.getByRole('button', { name: 'Recherche' }).click();
-    if (await page.getByRole('button', { name: 'Suivant' })) {
-      await page.getByRole('button', { name: 'Suivant' }).click();
-    }
   });
   test('click on search', async ({ page }) => {
     await page.getByTestId('nav-search').click();

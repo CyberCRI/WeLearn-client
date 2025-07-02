@@ -3,7 +3,6 @@ import SearchSDG from '@/views/SearchSDG.vue';
 import QandA from '@/views/QandA.vue';
 import Bookmarks from '@/views/BookmarkdSources.vue';
 import Tutor from '@/views/TutorPage.vue';
-import LandingPage from '@/views/LandingPage.vue';
 import NotFound from '@/views/NotFound.vue';
 
 const router = createRouter({
@@ -11,9 +10,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'landing',
-      component: LandingPage,
-      meta: { hideTemplate: true }
+      redirect: '/q-and-a'
     },
     {
       path: '/search',
@@ -34,6 +31,11 @@ const router = createRouter({
       path: '/tutor',
       name: 'tutor',
       component: Tutor
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: () => import('@/views/AboutPage.vue')
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
   ]

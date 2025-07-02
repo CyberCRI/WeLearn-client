@@ -71,6 +71,10 @@ export const en = {
     slogan: 'Sustainability Education Made Easy',
     description:
       'Explore resources, learn, and boost sustainability integration in your courses with AI.',
+    aboutTitle: 'About WeLearn',
+    aboutDescription:
+      'WeLearn is a cutting-edge AI-powered learning platform designed to support educators in creating impactful, SDG-focused curricula. Our mission is to make the integration of sustainability into educational content seamless and intuitive. By leveraging advanced AI technologies, WeLearn enhances the teaching experience by curating and indexing high-quality, open resources from trusted databases, such as Wikipedia, The Conversation, and HAL.',
+    partnership: 'A partnership between:',
     horizontal: {
       section_one: {
         title: 'Curated Knowledge About Sustainability',
@@ -107,6 +111,14 @@ export const en = {
     }
   },
   moreDocuments: 'Explore more documents',
+  nav: {
+    chat: 'Chat',
+    search: 'Search',
+    bookmarks: 'Bookmarks',
+    syllabus: 'Create a syllabus',
+    about: 'About'
+  },
+
   next: 'Next',
   noBookmarks: 'No bookmarks yet.',
   noResults: 'I have no results for this search',
