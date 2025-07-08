@@ -16,7 +16,8 @@
 @media screen and (min-width: 576px) {
   .logo {
     width: 100%;
-    height: 2em;
+    min-width: 4em;
+    max-height: 2em;
   }
 }
 
