@@ -1,59 +1,41 @@
 <script setup lang="ts">
 import HelpIcon from '@/components/icons/HelpIcon.vue';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import HelpComponentContent from '@/components/HelpComponentContent.vue';
+import { HELP_USER } from '@/utils/constants';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const openModal = ref(false);
-const path = ref('');
+const instructions = ref([]);
 const toggleModal = () => {
-  path.value = window.location.pathname.split('/')[1];
+  if (!instructions.value.length) return;
   openModal.value = !openModal.value;
 };
 
-const toto = {
-  'q-and-a': [
-    {
-      title: 'help.step1.title',
-      description: 'help.step1.description'
-    },
-    {
-      title: 'help.step2.title',
-      description: 'help.step2.description',
-      image: 'https://example.com/step2.png'
-    },
-    {
-      title: 'help.step3.title',
-      image: 'https://example.com/step3.png'
-    }
-  ],
-  tutor: [
-    {
-      title: 'help.tutor.step1.title',
-      description: 'help.tutor.step1.description'
-    },
-    {
-      title: 'help.tutor.step2.title',
-      description: 'help.tutor.step2.description',
-      image: 'https://example.com/tutor-step2.png'
-    },
-    {
-      title: 'help.tutor.step3.title',
-      image: 'https://example.com/tutor-step3.png'
-    }
-  ]
-};
+watch(
+  () => route.path.split('/')[1],
+  async (path) => {
+    instructions.value = HELP_USER[path] || [];
+  }
+);
 </script>
 <template>
   <div>
-    <div class="link-wrapper is-clickable" @click="toggleModal">
+    <div class="link-wrapper" :class="{ disabled: !instructions.length }" @click="toggleModal">
       <div class="icon mr-2">
         <HelpIcon />
       </div>
       <span class="item-name">{{ $t('nav.help') }}</span>
     </div>
     <ModalWrapper :isOpen="openModal" :onClose="toggleModal">
-      <HelpComponentContent v-if="path" :stepsContent="toto[path]" :modalState="openModal" />
+      <HelpComponentContent
+        v-if="instructions.length"
+        :stepsContent="instructions"
+        :modalState="openModal"
+        :toggleModal="toggleModal"
+      />
     </ModalWrapper>
   </div>
 </template>
@@ -65,6 +47,7 @@ const toto = {
 
 .link-wrapper {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1rem;
@@ -76,7 +59,18 @@ const toto = {
 .item-name {
   display: default;
   visibility: visible;
+  white-space: nowrap;
   opacity: 1;
   width: auto;
+}
+.link-wrapper:hover {
+  background-color: var(--neutral-10);
+  cursor: pointer;
+}
+
+.link-wrapper.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

@@ -147,7 +147,7 @@ const handleToggleFilters = () => {
   position: absolute;
   right: 2rem;
   top: 1rem;
-  z-index: 2;
+  z-index: 1;
 }
 
 .chat-delete-button:has(.trash-icon).phone {

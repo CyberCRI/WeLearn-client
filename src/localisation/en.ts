@@ -60,6 +60,98 @@ export const en = {
   goToSources: 'Go to source',
   goToTop: 'Go to top',
   gotIt: 'Got it!',
+  helpUser: {
+    'q&a': {
+      title: 'How to use the Chat feature?',
+      step1: {
+        description:
+          'Welcome to the WeLearn chat! Here, you can talk with an SDG expert agent who answers your questions about sustainable development. All answers are sourced from reliable documents to ensure you receive accurate and verifiable information.'
+      },
+      step2: {
+        description: 'The Chat feature allows you to freely ask questions or use the sugg',
+        image: 'chat_2.png'
+      },
+      step3: {
+        description: "You'll then see appear the answer to your question.",
+        image: 'chat_3.png'
+      },
+      step4: {
+        description:
+          "You'll be able to copy the answer to your clipboard or ask for it to be rephrased.",
+        image: 'chat_4.png'
+      },
+      step5: {
+        description:
+          'All answers are sourced from the documents in the WeLearn database. For each question WeLearn makes a semantic search to find the most relevant documents and answer your question.'
+      },
+      step6: {
+        description:
+          'You have acces to the sources referenced in the answer. You can click on the source to open it in a new tab.',
+        image: 'chat_6.png'
+      },
+      step7: {
+        description: 'You can also add a bookmark to save the answer for later use.',
+        image: 'chat_7.png'
+      },
+      step8: {
+        description:
+          'Finally, you can filter the search by selecting the desired SDGs and/or sources.',
+        image: 'chat_8.png'
+      }
+    },
+    search: {
+      title: 'How to use the Search feature?',
+      step1: {
+        description:
+          'Welcome to the WeLearn search! Here, you can search for educational resources on the Sustainable Development Goals (SDGs). The search uses a semantic engine, so the more detailed your query, the better the results will be. You can find more information about our sources and how we select them in the About section.'
+      },
+      step2: {
+        description:
+          'The Search feature allows you to search for educational resources on the Sustainable Development Goals (SDGs).'
+      },
+      step3: {
+        description: 'You can filter the search by selecting the desired SDGs and/or sources.'
+      }
+    },
+    syllabus: {
+      title: 'How to use the Create a syllabus feature?',
+      step1: {
+        description:
+          'Welcome to the WeLearn syllabus! Here, you can create a syllabus for your course. The syllabus is generated based on the documents you upload and the documents you select from the search results. You can add some information about the course to improve the results. Finally, you will be able to improve the results by adding a feedback.'
+      },
+      step2: {
+        description:
+          'You can add one or more documents. Those documents will be used to generate a syllabus.'
+      },
+      step3: {
+        description: 'You can add some information about the course to improve the results.'
+      },
+      step4: {
+        description:
+          'You can select documents from the search results. Those documents will be used to generate a syllabus. If none is selected, the syllabus will be based only on your documents.'
+      },
+      step5: {
+        description: 'You can add a feedback to improve the results.'
+      }
+    },
+    bookmarks: {
+      title: 'How to use the Bookmarks feature?',
+      step1: {
+        description:
+          'Welcome to the WeLearn bookmarks! Here, you revisit the documents saved from the search results.'
+      },
+      step2: {
+        description:
+          'You can click on the bookmark icon to save a result, when savec the icon will be filled.'
+      },
+      step3: {
+        description: 'You can remove a bookmark by clicking on the bookmark icon.'
+      },
+      step4: {
+        description: 'You can remove all bookmarks at once by clicking on the bin icon.'
+      }
+    }
+  },
   hideAuthors: 'Hide authors',
   hideFilters: 'Hide filters',
   hideSources: 'Hide sources',

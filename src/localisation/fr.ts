@@ -61,6 +61,104 @@ export const fr = {
   goToSources: 'Voire les sources',
   goToTop: 'Revenir en haut',
   gotIt: 'Compris !',
+
+  helpUser: {
+    'q&a': {
+      title: 'Comment utiliser la fonctionnalité Chat ?',
+      step1: {
+        description:
+          'Bienvenue sur le chat WeLearn ! Ici, vous pouvez discuter avec un agent expert en ODDs qui répond à vos questions sur le développement durable. Toutes les réponses sont sourcées à partir de documents fiables pour vous garantir des informations précises et vérifiables.'
+      },
+      step2: {
+        description:
+          'La fonctionnalité Chat vous permet de poser librement des questions ou d’utiliser les suggestions.',
+        image: 'chat_2.png'
+      },
+      step3: {
+        description: 'Vous verrez alors apparaître la réponse à votre question.',
+        image: 'chat_3.png'
+      },
+      step4: {
+        description:
+          'Vous pourrez copier la réponse dans votre presse-papiers ou demander à ce qu’elle soit reformulée.',
+        image: 'chat_4.png'
+      },
+      step5: {
+        description:
+          'Toutes les réponses proviennent des documents de la base de données WeLearn. Pour chaque question, WeLearn effectue une recherche sémantique afin de trouver les documents les plus pertinents et d’y répondre.'
+      },
+      step6: {
+        description:
+          'Vous avez accès aux sources référencées dans la réponse. Vous pouvez cliquer sur la source pour l’ouvrir dans un nouvel onglet.',
+        image: 'chat_6.png'
+      },
+      step7: {
+        description:
+          'Vous pouvez également ajouter un signet pour sauvegarder la réponse pour une utilisation ultérieure.',
+        image: 'chat_7.png'
+      },
+      step8: {
+        description:
+          'Pour finir, vous pouvew choisir de filtrer les documents résultants de la recherche en choisissant les ODD et/ou les sources qui vous interessent.',
+        image: 'chat_8.png'
+      }
+    },
+    search: {
+      title: 'Comment utiliser la fonctionnalité de recherche ?',
+      step1: {
+        description:
+          'Bienvenue sur la recherche WeLearn ! Ici, vous pouvez rechercher des ressources éducatives sur les Objectifs de Développement Durable (ODD). La recherche utilise un moteur sémantique, donc plus votre requête est détaillée, meilleurs seront les résultats. Vous pouvez trouver plus d’informations sur nos sources et la façon dont nous les sélectionnons dans la section À propos.'
+      },
+      step2: {
+        description:
+          'La fonctionnalité de recherche vous permet de trouver des ressources éducatives sur les Objectifs de Développement Durable (ODD).'
+      },
+      step3: {
+        description:
+          'Vous pouvez filtrer la recherche en sélectionnant les ODD et/ou les sources souhaités.'
+      }
+    },
+    syllabus: {
+      title: 'Comment utiliser la fonctionnalité Créer un syllabus ?',
+      step1: {
+        description:
+          'Bienvenue sur le syllabus WeLearn ! Ici, vous pouvez créer un syllabus pour votre cours. Le syllabus est généré à partir des documents que vous téléchargez et de ceux que vous sélectionnez dans les résultats de recherche. Vous pouvez ajouter des informations sur le cours pour améliorer les résultats. Enfin, vous pourrez encore améliorer les résultats en ajoutant un retour.'
+      },
+      step2: {
+        description:
+          'Vous pouvez ajouter un ou plusieurs documents. Ces documents seront utilisés pour générer un syllabus.'
+      },
+      step3: {
+        description:
+          'Vous pouvez ajouter des informations sur le cours pour améliorer les résultats.'
+      },
+      step4: {
+        description:
+          'Vous pouvez sélectionner des documents parmi les résultats de recherche. Ces documents seront utilisés pour générer un syllabus. Si aucun n’est sélectionné, le syllabus sera basé uniquement sur vos documents.'
+      },
+      step5: {
+        description: 'Vous pouvez ajouter un retour pour améliorer les résultats.'
+      }
+    },
+    bookmarks: {
+      title: 'Comment utiliser la fonctionnalité Favoris ?',
+      step1: {
+        description:
+          'Bienvenue sur les favoris WeLearn ! Ici, vous pouvez retrouver les documents enregistrés depuis les résultats de recherche.'
+      },
+      step2: {
+        description:
+          'Vous pouvez cliquer sur l’icône de favori pour enregistrer un résultat ; une fois enregistré, l’icône sera remplie.'
+      },
+      step3: {
+        description: 'Vous pouvez supprimer un favori en cliquant à nouveau sur l’icône de favori.'
+      },
+      step4: {
+        description:
+          'Vous pouvez supprimer tous les favoris d’un coup en cliquant sur l’icône de corbeille.'
+      }
+    }
+  },
   hideAuthors: 'Cacher les auteurs',
   hideFilters: 'Cacher les filtres',
   hideSources: 'Cacher les sources',

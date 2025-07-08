@@ -237,6 +237,7 @@ const handle_nav_bookmarks = () => {
 
 .item-name {
   width: 0rem;
+  white-space: nowrap;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
