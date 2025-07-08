@@ -47,7 +47,7 @@ const handleNext = () => {
           <p class="subtitle" v-if="content.description">{{ $t(content.description) }}</p>
           <img
             v-if="content.image"
-            :src="`src/assets/${$t(content.image)}`"
+            :src="`@/assets/${$t(content.image)}`"
             alt="Step image"
             class="step-image mx-auto"
           />
