@@ -4,6 +4,8 @@ import { docs } from './data.ts';
 test.describe('bookmarks', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/bookmarks');
+    // close welcome modal
+    await page.getByTestId('close').click();
   });
   // test that page is empty
   test('page is empty', async ({ page }) => {

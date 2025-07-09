@@ -4,9 +4,7 @@ import SearchIcon from '@/components/icons/SearchIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 import QnAIcon from '@/components/icons/QnAIcon.vue';
 import HelpComponent from '@/components/HelpComponent.vue';
-import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { ref } from 'vue';
-import { useUserStore } from '@/stores/user';
 import i18n from '@/localisation/i18n';
 import BookIcon from '@/components/icons/BookIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
@@ -15,13 +13,10 @@ import { useFeatureFlipStore } from '@/stores/featureFlip';
 const featureFlip = useFeatureFlipStore();
 const isFeatureEnabled = featureFlip.isFeatureEnabled('tutor');
 
-const user = useUserStore();
-
 const isNavOpened = ref<boolean>(false);
 
 const handle_nav_bookmarks = () => {
   isNavOpened.value = false;
-  user.updateSearchState('CHECK_BOOKMARK');
 };
 </script>
 <template>
@@ -76,16 +71,6 @@ const handle_nav_bookmarks = () => {
         </router-link>
       </div>
       <div class="link-wrapper is-relative">
-        <OnboardingTooltip
-          v-if="
-            user.onboardingSearch.state === 'incomplete' &&
-            user.onboardingSearch.step === 'CHECK_BOOKMARK'
-          "
-          :description="$t('onboarding.results.CHECK_BOOKMARK')"
-          :onClose="() => user.updateSearchState('CHECK_BOOKMARK', true)"
-          :onNext="() => user.updateSearchState('CHECK_BOOKMARK')"
-          :buttonText="$t('gotIt')"
-        />
         <router-link
           class="router-link"
           to="/bookmarks"

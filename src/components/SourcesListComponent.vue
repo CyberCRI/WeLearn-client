@@ -4,16 +4,11 @@ import i18n from '@/localisation/i18n';
 import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
 import ToasterComponentVue from '@/components/ToasterComponent.vue';
-import OnboardingTooltip from '@/components/OnboardingTooltip.vue';
 import { useSourcesStore } from '@/stores/sources';
-import { useUserStore } from '@/stores/user';
-import { watch, ref, onBeforeMount, computed } from 'vue';
-import { getPagePath } from '@/utils/urlsUtils';
+import { onBeforeMount, computed } from 'vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
 const store = useSourcesStore();
-const user = useUserStore();
-const pathRef = ref<string>(getPagePath());
 
 const props = defineProps<{
   hideSteps?: boolean;
@@ -33,26 +28,10 @@ onBeforeMount(() => {
   store.getNbDocsInBase();
 });
 
-watch(
-  () => store.bookmarkedLength,
-  (a, b) => {
-    if (a > b && user.onboardingSearch.step === 'ADD_BOOKMARK') {
-      user.updateSearchState('ADD_BOOKMARK');
-    }
-  }
-);
-
 const translatedTotal = computed(() => {
   return new Intl.NumberFormat(i18n.global.locale.value).format(store.totalDocs);
 });
 
-const handleSourcesOnboarding = () => {
-  if (store.bookmarkedLength > 0) {
-    user.updateSearchState('ADD_BOOKMARK');
-  } else {
-    user.updateSearchState('RESULTS');
-  }
-};
 const Cards = {
   default: Card,
   simple: SimpleCard
@@ -73,17 +52,6 @@ const ChosenCard = Cards[props.cardType || 'default'];
     <!-- results -->
 
     <div v-if="sourcesList?.length">
-      <OnboardingTooltip
-        v-if="
-          user.onboardingSearch.state === 'incomplete' &&
-          user.onboardingSearch.step === 'RESULTS' &&
-          pathRef === '/search'
-        "
-        :description="$t('onboarding.results.RESULTS')"
-        :onClose="() => user.updateSearchState('RESULTS', true)"
-        :buttonText="$t('next')"
-        :onNext="handleSourcesOnboarding"
-      />
       <a id="sourcesAnchor"></a>
 
       <ChosenCard
@@ -123,20 +91,7 @@ const ChosenCard = Cards[props.cardType || 'default'];
             />
           </ModalWrapper>
         </template>
-        <template #onboard>
-          <OnboardingTooltip
-            v-if="
-              index === 0 &&
-              user.onboardingSearch.state === 'incomplete' &&
-              user.onboardingSearch.step === 'ADD_BOOKMARK' &&
-              pathRef === '/search'
-            "
-            :description="$t('onboarding.results.ADD_BOOKMARK')"
-            :onClose="() => user.updateSearchState('ADD_BOOKMARK', true)"
-            :buttonText="$t('next')"
-            :onNext="() => user.updateSearchState('ADD_BOOKMARK')"
-          />
-        </template>
+        <template #onboard> </template>
       </ChosenCard>
     </div>
     <!-- error  -->
@@ -152,6 +107,5 @@ const ChosenCard = Cards[props.cardType || 'default'];
 <style scoped>
 .sources-list {
   position: relative;
-  /* padding-bottom: 2rem; */
 }
 </style>

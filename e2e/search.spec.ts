@@ -8,8 +8,8 @@ test.describe('search', () => {
     });
 
     await page.goto('/search');
-    // handle onboarding modal
-    await page.getByRole('button', { name: 'Suivant' }).click();
+    // close welcome modal
+    await page.getByTestId('close').click();
   });
 
   // See here how to get started:
