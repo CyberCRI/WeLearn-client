@@ -6,15 +6,9 @@ import ChatComponent from '@/components/ChatComponent.vue';
 import SourcesListComponentVue from '@/components/SourcesListComponent.vue';
 import ReformulatedQuery from '@/components/ReformulatedQuery.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
-import StepsDescription from '@/components/StepsDescription.vue';
 
 const chatstore = useChatStore();
 const computedStatus = computed(() => chatstore.chatStatus);
-const descriptions: Record<CHAT_STATUS, string> = {
-  [CHAT_STATUS.SEARCHING]: 'sourcesList.fetching',
-  [CHAT_STATUS.FORMULATING_ANSWER]: 'sourcesList.formulatingAnswer',
-  [CHAT_STATUS.NO_RESULTS]: 'noResults'
-};
 </script>
 <template>
   <ErrorComponent v-if="chatstore.hasError" />
@@ -24,12 +18,7 @@ const descriptions: Record<CHAT_STATUS, string> = {
     </template>
     <template #rigth-panel>
       <ReformulatedQuery v-if="chatstore.reformulatedQuery" :query="chatstore.reformulatedQuery" />
-      <StepsDescription
-        v-if="computedStatus !== CHAT_STATUS.DONE"
-        :stepDescription="descriptions[computedStatus] || '...'"
-      />
       <SourcesListComponentVue
-        hideSteps
         v-if="chatstore.sourcesList.length"
         cardType="simple"
         :shouldDisplayScore="!!chatstore.shouldDisplayScore"

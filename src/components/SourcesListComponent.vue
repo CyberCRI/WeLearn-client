@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import type { Document } from '@/types';
 import i18n from '@/localisation/i18n';
 import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
 import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import { useSourcesStore } from '@/stores/sources';
-import { onBeforeMount, computed } from 'vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
 const store = useSourcesStore();
@@ -24,13 +24,9 @@ const props = defineProps<{
   hideNumber?: boolean;
 }>();
 
-onBeforeMount(() => {
-  store.getNbDocsInBase();
-});
-
-const translatedTotal = computed(() => {
-  return new Intl.NumberFormat(i18n.global.locale.value).format(store.totalDocs);
-});
+const translatedTotal = ref(
+  new Intl.NumberFormat(i18n.global.locale.value).format(store.totalDocs)
+);
 
 const Cards = {
   default: Card,
@@ -42,12 +38,13 @@ const ChosenCard = Cards[props.cardType || 'default'];
 <template>
   <div class="sources-list">
     <!-- fetching -->
-    <div v-if="!hideSteps">
+    <div v-if="!hideSteps && !sourcesList?.length">
       <h2 v-if="noResults">{{ $t('noResults') }}</h2>
       <h2 v-if="isFetchingSources">
         {{ $t('sourcesList.fetching', { docs_nb: translatedTotal }) }}
       </h2>
-      <h2 v-if="fetchingAnswer">{{ $t('sourcesList.formulatingAnswer') }}</h2>
+      <h2 v-else-if="fetchingAnswer">{{ $t('sourcesList.formulatingAnswer') }}</h2>
+      <h2 v-else>...</h2>
     </div>
     <!-- results -->
 
