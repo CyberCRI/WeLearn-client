@@ -219,17 +219,9 @@ export const en = {
     welcome: {
       title: 'Welcome to WeLearn!',
       description:
-        'WeLearn is a search engine that helps you find educational resources on the Sustainable Development Goals (SDGs).'
-    },
-    search: {
-      INPUT: 'Type or paste a text here.\nLonger text, better results.',
-      FILTERS: 'You can filter your search by SDGs, subjects, or sources.',
-      SEND: 'Click on the search button to start the search.'
-    },
-    results: {
-      RESULTS: 'Here are the results of your search.',
-      ADD_BOOKMARK: 'You can add a bookmark to save this result.',
-      CHECK_BOOKMARK: 'You can check your bookmarks at any time.'
+        "We're excited to have you on board. WeLearn is your AI-powered learning platform designed to support educators in integrating sustainability into their curricula. </br>Our platform helps you discover and curate high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, providing everything you need to create impactful and environmentally-conscious lessons.",
+      help: "You can learn more about WeLearn's features in the <strong>Help</strong> section in the navigation bar.",
+      action: 'Got it!'
     }
   },
   reload: 'Reload',

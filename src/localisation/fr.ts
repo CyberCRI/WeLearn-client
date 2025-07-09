@@ -225,18 +225,9 @@ export const fr = {
     welcome: {
       title: 'Bienvenue sur WeLearn !',
       description:
-        'WeLearn est un moteur de recherche qui vous aide à trouver des ressources éducatives sur les Objectifs de développement durable (ODD).'
-    },
-    search: {
-      INPUT:
-        'Entrez ou collez un texte ici.\nPlus le texte est long, meilleurs seront les résultats.',
-      FILTERS: 'Vous pouvez filtrer votre recherche par ODD, sujets ou sources.',
-      SEND: 'Cliquez sur le bouton de recherche pour lancer la recherche.'
-    },
-    results: {
-      RESULTS: 'Voici les résultats de votre recherche.',
-      ADD_BOOKMARK: 'Vous pouvez ajouter un signet pour enregistrer ce résultat.',
-      CHECK_BOOKMARK: 'Vous pouvez consulter vos signets à tout moment.'
+        "Nous sommes ravis de vous accueillir parmi nous. WeLearn est votre plateforme d'apprentissage alimentée par l'IA, conçue pour aider les éducateurs à intégrer la durabilité dans leurs programmes.</br>Notre plateforme vous aide à découvrir et à sélectionner des ressources de haute qualité liées aux <strong>Objectifs de Développement Durable (ODD)</strong>, en vous fournissant tout ce dont vous avez besoin pour créer des leçons percutantes et soucieuses de l'environnement.",
+      help: 'Vous pouvez en apprendre plus sur les fonctionnalités de WeLearn dans la section <strong>Aide</strong> sur la barre de navigation.',
+      action: 'Commençons !'
     }
   },
   reload: 'Recharger',

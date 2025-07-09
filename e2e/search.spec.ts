@@ -9,7 +9,7 @@ test.describe('search', () => {
 
     await page.goto('/search');
     // close welcome modal
-    await page.getByTestId('close').click();
+    await page.getByRole('button', { name: 'close' }).click();
   });
 
   // See here how to get started:
