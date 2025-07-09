@@ -163,7 +163,7 @@ test.describe('Tutor', () => {
     });
     await page.goto('/tutor');
     // close welcome modal
-    await page.getByTestId('close').click();
+    await page.getByRole('button', { name: 'close' }).click();
   });
 
   test('should display input type file', async ({ page }) => {
