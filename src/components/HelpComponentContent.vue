@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue';
+
 const props = defineProps<{
   stepsContent?: Record<string, string>[];
   modalState: boolean;
@@ -20,6 +21,8 @@ const handleNext = () => {
     props.toggleModal();
   }
 };
+
+const handleImgPath = (imgPath: string) => new URL(`../assets/${imgPath}`, import.meta.url).href;
 </script>
 <template>
   <div
@@ -47,7 +50,7 @@ const handleNext = () => {
           <p class="subtitle" v-if="content.description">{{ $t(content.description) }}</p>
           <img
             v-if="content.image"
-            :src="`@/assets/${$t(content.image)}`"
+            :src="handleImgPath($t(content.image))"
             alt="Step image"
             class="step-image mx-auto"
           />
