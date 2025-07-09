@@ -960,17 +960,6 @@ exports[`QandA > renders properly 1`] = `
       data-v-8fb8e834=""
     >
       
-      <!--v-if-->
-      <div
-        class="steps-description"
-        data-v-dbbc9003=""
-      >
-        <p>
-          ...
-        </p>
-      </div>
-      <!--v-if-->
-      <!--v-if-->
       
     </div>
   </div>

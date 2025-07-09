@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/NavComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
 import SmallScreenPage from '@/views/SmallScreenPage.vue';
 import ModalComponent from '@/components/WelcomeModal.vue';
+import { useSourcesStore } from '@/stores/sources';
 
+const store = useSourcesStore();
 const screenWidth = computed(() => window.innerWidth);
+
+onBeforeMount(() => {
+  store.getNbDocsInBase();
+});
 </script>
 
 <template>
