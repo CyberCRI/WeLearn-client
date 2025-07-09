@@ -3,6 +3,8 @@ import { test, expect } from '@playwright/test';
 test.describe('nav', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/q-and-a');
+    // close welcome modal
+    await page.getByTestId('close').click();
 
     await page.route('**/**/search/collections', async (route) => {
       const json = [{ name: 'fake-collections', id: 21 }];

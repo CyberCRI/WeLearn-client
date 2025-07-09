@@ -18,7 +18,8 @@ test.describe('select bookmark', () => {
     });
 
     await page.goto('/search');
-    await page.getByRole('button', { name: 'close' }).click();
+    // close welcome modal
+    await page.getByTestId('close').click();
 
     await page.fill('textarea', 'this is a longer text for testing');
     await page.getByLabel('Recherche', { exact: true }).click();
