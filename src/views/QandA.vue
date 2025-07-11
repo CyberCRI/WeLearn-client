@@ -6,6 +6,7 @@ import ChatComponent from '@/components/ChatComponent.vue';
 import SourcesListComponentVue from '@/components/SourcesListComponent.vue';
 import ReformulatedQuery from '@/components/ReformulatedQuery.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
+import FiltersComponent from '@/components/FiltersComponent.vue';
 
 const chatstore = useChatStore();
 const computedStatus = computed(() => chatstore.chatStatus);
@@ -17,6 +18,7 @@ const computedStatus = computed(() => chatstore.chatStatus);
       <ChatComponent />
     </template>
     <template #rigth-panel>
+      <FiltersComponent />
       <ReformulatedQuery v-if="chatstore.reformulatedQuery" :query="chatstore.reformulatedQuery" />
       <SourcesListComponentVue
         v-if="chatstore.sourcesList.length"

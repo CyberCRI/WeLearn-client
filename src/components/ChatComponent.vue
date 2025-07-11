@@ -145,7 +145,7 @@ const handleToggleFilters = () => {
 
 .delete-button-wrapper {
   position: absolute;
-  right: 2rem;
+  right: 10%;
   top: 1rem;
   z-index: 1;
 }
