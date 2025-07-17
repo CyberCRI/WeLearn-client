@@ -49,6 +49,9 @@ const store = useSearchStore();
             </div>
           </template>
         </SearchWrapper>
+        <p v-if="store.searchInput && store.isSearchDisabled" class="text-length-feedback">
+          {{ $t('textLengthFeedback') }}
+        </p>
 
         <SourcesListComponent
           v-if="
@@ -67,7 +70,7 @@ const store = useSearchStore();
         />
       </div>
     </template>
-    <template #rigth-panel>
+    <template #right-panel>
       <FiltersComponent />
     </template>
   </ColumnTemplate>

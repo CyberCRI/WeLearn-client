@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
 import type { Document } from '@/types';
 import i18n from '@/localisation/i18n';
 import Card from '@/components/CardComponent.vue';
@@ -26,7 +26,9 @@ const props = defineProps<{
   hideNumber?: boolean;
 }>();
 
-const translatedTotal = ref(new Intl.NumberFormat(i18n.global.locale.value).format(totalDocs));
+const translatedTotal = computed(() =>
+  new Intl.NumberFormat(i18n.global.locale.value).format(totalDocs.value)
+);
 
 const Cards = {
   default: Card,

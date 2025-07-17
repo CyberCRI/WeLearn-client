@@ -30,7 +30,7 @@ const toggleOpen = () => {
       ref="scrollerRef"
       @scroll="handleDisplayArrow"
     >
-      <slot name="rigth-panel"></slot>
+      <slot name="right-panel"></slot>
     </div>
   </div>
 </template>

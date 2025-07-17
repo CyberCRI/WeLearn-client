@@ -12,7 +12,7 @@ const store = useFiltersStore();
       v-model="store.sdgFilters"
       :label="`${sdg} - ${$t(`sdgs.${sdg}`)}`"
       :value="`${sdg}`"
-      :checked="store.sdgFilters?.includes(sdg + 1)"
+      :checked="store.sdgFilters?.includes(sdg)"
     />
   </div>
 </template>

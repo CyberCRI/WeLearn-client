@@ -17,7 +17,7 @@ const computedStatus = computed(() => chatstore.chatStatus);
     <template #left-panel>
       <ChatComponent />
     </template>
-    <template #rigth-panel>
+    <template #right-panel>
       <FiltersComponent />
       <ReformulatedQuery v-if="chatstore.reformulatedQuery" :query="chatstore.reformulatedQuery" />
       <SourcesListComponentVue

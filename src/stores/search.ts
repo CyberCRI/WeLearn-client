@@ -87,7 +87,6 @@ export const useSearchStore = defineStore('search', () => {
 
   function $reset() {
     searchInput.value = '';
-    handleResetFilters();
     searchResults.value = null;
     hasPartialResult.value = false;
     hasSourcesError.value = false;

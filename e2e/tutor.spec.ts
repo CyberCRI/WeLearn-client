@@ -2,6 +2,15 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Tutor', () => {
   test.beforeEach(async ({ page }) => {
+    await page.route('**/**/search/**', async (route) => {
+      if (route.request().url().includes('collections')) {
+        const json = [{ name: 'fake-collections', id: 21 }];
+        await route.fulfill({ json });
+      } else if (route.request().url().includes('nb_docs')) {
+        await route.fulfill({ json: { nb_docs: 10 } });
+      }
+    });
+
     await page.route('http://test/api/v1/tutor/**', async (route) => {
       if (route.request().url().includes('syllabus')) {
         const json = {
@@ -181,11 +190,6 @@ test.describe('Tutor', () => {
     await expect(page.getByTestId('file-input')).toHaveCount(2);
     await page.getByRole('button', { name: 'x' }).last().click();
     await expect(page.getByTestId('file-input')).toHaveCount(1);
-  });
-
-  test('first del button should be disabled', async ({ page }) => {
-    const delButton = page.getByRole('button', { name: 'x' });
-    await expect(delButton.isDisabled()).toBeTruthy();
   });
 
   test('should add file to input', async ({ page }) => {

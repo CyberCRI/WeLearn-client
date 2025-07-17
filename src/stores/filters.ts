@@ -2,8 +2,10 @@ import { defineStore } from 'pinia';
 import type { Corpus } from '@/types';
 import { ref, computed } from 'vue';
 
+const SDG_LIST = Array.from({ length: 17 }, (_, i) => i + 1);
+
 export const useFiltersStore = defineStore('filters', () => {
-  const sdgList = ref<number[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]);
+  const sdgList = ref<number[]>(SDG_LIST);
   const sdgFilters = ref<number[]>([]);
   const sourcesFilters = ref<Corpus['name'][]>([]);
   const hasFilters = computed(() => sdgFilters.value.length > 0 || sourcesFilters.value.length > 0);
