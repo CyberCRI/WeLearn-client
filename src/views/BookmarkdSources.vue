@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useSourcesStore } from '@/stores/sources';
+import { useBookmarksStore } from '@/stores/bookmarks';
 import SourcesListComponent from '@/components/SourcesListComponent.vue';
 import DeleteButton from '@/components/DeleteButton.vue';
 
-const store = useSourcesStore();
+const store = useBookmarksStore();
 </script>
 
 <template>

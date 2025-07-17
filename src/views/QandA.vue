@@ -34,7 +34,7 @@ const computedStatus = computed(() => chatstore.chatStatus);
         :noResults="computedStatus === CHAT_STATUS.NO_RESULTS"
         errorCode="UNKNOWN_ERROR"
       />
-      <details v-if="computedStatus === CHAT_STATUS.DONE && chatstore.sourcesList.length > 7">
+      <details open v-if="computedStatus === CHAT_STATUS.DONE && chatstore.sourcesList.length > 7">
         <summary>{{ $t('moreDocuments') }} ({{ chatstore.sourcesList.length - 7 }})</summary>
         <SourcesListComponentVue
           cardType="simple"

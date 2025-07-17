@@ -16,15 +16,13 @@ const toggleOpen = () => {
     <div class="panely left scroll">
       <slot name="left-panel"></slot>
     </div>
-    <!-- <div class="toggle"> -->
     <div class="outer is-outline">
       <SidePanelIcon class="primary" @click="toggleOpen" />
       <TooltipComponent
         class="tltip"
-        :tooltipText="isOpen ? $t('hideSources') : $t('showSources')"
+        :tooltipText="isOpen ? $t('closeSidebar') : $t('openSidebar')"
         isLeft
       />
-      <!-- </div> -->
     </div>
     <div
       class="panely right scroll"
@@ -92,7 +90,7 @@ const toggleOpen = () => {
     margin-left: 6rem;
   }
 
-  .gridy-template:has(.sources-list):has(.reformulated-query) {
+  .gridy-template {
     & > .toggle {
       margin-block: 0.5rem 15rem;
       width: auto;
@@ -112,6 +110,7 @@ const toggleOpen = () => {
     display: none;
   }
   .outer {
+    z-index: 1;
     position: absolute;
     top: 1rem;
     right: 2rem;

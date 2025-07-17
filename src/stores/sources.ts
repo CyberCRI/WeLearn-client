@@ -1,14 +1,36 @@
 import { defineStore } from 'pinia';
-import { type Ref, ref, computed } from 'vue';
-import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
-import type { Document } from '@/types';
 import { getAxios } from '@/utils/fetch';
+import { type Ref, ref } from 'vue';
+import type { Corpus, ReducedCorpus } from '@/types';
 
 export const useSourcesStore = defineStore('sources', () => {
-  const sourcesBookmarked: Ref<Document[]> = ref(getFromStorage('bookmarkedSources') || []);
-  const idsBookmarked: Ref<string[]> = ref(
-    sourcesBookmarked.value.map((source) => source.payload.document_id)
-  );
+  const sourcesList = ref<ReducedCorpus[]>([]);
+  async function getSourcesList() {
+    if (sourcesList.value.length > 0) {
+      return;
+    }
+
+    try {
+      const fetchedCorpus = await getAxios('/search/collections');
+
+      const mergedCorpusByLang = fetchedCorpus.reduce((acc: ReducedCorpus[], curr: Corpus) => {
+        const existingCorpus = acc.findIndex((corpus: ReducedCorpus) => corpus.name === curr.name);
+        if (existingCorpus >= 0) {
+          return acc;
+        }
+        return [...acc, curr];
+      }, [] as ReducedCorpus[]);
+
+      mergedCorpusByLang.sort((a, b) => a.name.localeCompare(b.name));
+
+      sourcesList.value = mergedCorpusByLang;
+      return mergedCorpusByLang;
+    } catch (error: unknown) {
+      // handle error
+      console.error('Error fetching sources list:', error);
+      throw error;
+    }
+  }
 
   const totalDocs: Ref<number | undefined> = ref(undefined);
 
@@ -19,49 +41,5 @@ export const useSourcesStore = defineStore('sources', () => {
     const response = await getAxios('/search/nb_docs');
     totalDocs.value = Math.floor(response.nb_docs / 100) * 100;
   };
-
-  const addBookmark = (source: Document) => {
-    sourcesBookmarked.value.push(source);
-    idsBookmarked.value.push(source.payload.document_id);
-    saveToStorage('bookmarkedSources', sourcesBookmarked.value);
-  };
-
-  const removeBookmark = (sourceId: string) => {
-    sourcesBookmarked.value = sourcesBookmarked.value.filter(
-      ({ payload }) => payload.document_id !== sourceId
-    );
-    idsBookmarked.value = idsBookmarked.value.filter((id) => id !== sourceId);
-    saveToStorage('bookmarkedSources', sourcesBookmarked.value);
-  };
-
-  const toggleBookmark = (source: Document) => {
-    const sourceId = source.payload.document_id;
-    if (idsBookmarked.value.includes(sourceId)) {
-      removeBookmark(sourceId);
-      return;
-    }
-    addBookmark(source);
-  };
-
-  const isBookmarked = (id: string) => idsBookmarked.value.includes(id);
-
-  const resetBookmarks = () => {
-    sourcesBookmarked.value = [];
-    idsBookmarked.value = [];
-    clearFromStorage('bookmarkedSources');
-  };
-
-  const bookmarkedLength = computed(() => sourcesBookmarked.value.length);
-
-  return {
-    sourcesBookmarked,
-    addBookmark,
-    removeBookmark,
-    resetBookmarks,
-    toggleBookmark,
-    isBookmarked,
-    getNbDocsInBase,
-    totalDocs,
-    bookmarkedLength
-  };
+  return { totalDocs, getNbDocsInBase, getSourcesList, sourcesList };
 });

@@ -6,9 +6,11 @@ import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
 import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import { useSourcesStore } from '@/stores/sources';
+import { useBookmarksStore } from '@/stores/bookmarks';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
-const store = useSourcesStore();
+const { totalDocs } = useSourcesStore();
+const store = useBookmarksStore();
 
 const props = defineProps<{
   hideSteps?: boolean;
@@ -24,9 +26,7 @@ const props = defineProps<{
   hideNumber?: boolean;
 }>();
 
-const translatedTotal = ref(
-  new Intl.NumberFormat(i18n.global.locale.value).format(store.totalDocs)
-);
+const translatedTotal = ref(new Intl.NumberFormat(i18n.global.locale.value).format(totalDocs));
 
 const Cards = {
   default: Card,
