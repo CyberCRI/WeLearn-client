@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeMount } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/NavComponent.vue';
@@ -7,17 +7,24 @@ import AppLayout from '@/components/AppLayout.vue';
 import SmallScreenPage from '@/views/SmallScreenPage.vue';
 import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
+import ErrorComponent from '@/components/ErrorComponent.vue';
 
-const store = useSourcesStore();
+const { getNbDocsInBase, getSourcesList } = useSourcesStore();
 const screenWidth = computed(() => window.innerWidth);
-
-onBeforeMount(() => {
-  store.getNbDocsInBase();
+const fetchError = ref(false);
+onMounted(async () => {
+  try {
+    await getSourcesList();
+    await getNbDocsInBase();
+  } catch (error) {
+    fetchError.value = true;
+  }
 });
 </script>
 
 <template>
-  <SmallScreenPage v-if="screenWidth < 995" />
+  <ErrorComponent v-if="fetchError" />
+  <SmallScreenPage v-else-if="screenWidth < 995" />
   <div class="fullscreen" v-else>
     <ModalComponent />
 

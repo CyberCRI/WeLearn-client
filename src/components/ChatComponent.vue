@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, type Ref } from 'vue';
+import { computed } from 'vue';
 import ChatArea from '@/components/ChatArea.vue';
 import ChatBuble from '@/components/ChatBuble.vue';
 import ChatInput from '@/components/ChatInput.vue';
@@ -9,17 +9,9 @@ import ChatQueuesPills from '@/components/ChatQueuesPills.vue';
 import Loading from '@/components/LoadingComponent.vue';
 import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import DeleteButton from '@/components/DeleteButton.vue';
-import SelectSource from '@/components/dropdowns/SourcesSelector.vue';
-import SDGSelector from '@/components/dropdowns/SDGSelector.vue';
-import FilterIcon from '@/components/icons/FilterIcon.vue';
 
 const store = useChatStore();
 const computedStatus = computed(() => store.chatStatus);
-const openedFilters: Ref<boolean> = ref(false);
-
-const handleToggleFilters = () => {
-  openedFilters.value = !openedFilters.value;
-};
 </script>
 <template>
   <div class="chat-template">
@@ -86,16 +78,6 @@ const handleToggleFilters = () => {
         type="text"
         :action="(content: string) => store.onSendMessage(content)"
       />
-      <div class="is-flex ml-auto is-clickable is-align-items-center" @click="handleToggleFilters">
-        <span class="ml-auto mr-2 is-size-7">{{
-          $t(!openedFilters ? 'showFilters' : 'hideFilters')
-        }}</span>
-        <FilterIcon class="chatIcon" />
-      </div>
-    </div>
-    <div class="filters mt-2 is-flex" :class="openedFilters ? 'show-filters' : 'hide-filters'">
-      <SelectSource isUp context="chat" />
-      <SDGSelector isUp context="chat" />
     </div>
   </div>
 </template>
@@ -145,7 +127,7 @@ const handleToggleFilters = () => {
 
 .delete-button-wrapper {
   position: absolute;
-  right: 2rem;
+  right: 10%;
   top: 1rem;
   z-index: 1;
 }

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { getAxios } from '@/utils/fetch';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ErrorDetails, ChatMessage, ReformulateResponse } from '@/types';
 import { fetchStream, postAxios } from '@/utils/fetch';
@@ -8,6 +7,7 @@ import { RELEVANCE_FACTOR } from '@/utils/constants';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import i18n from '@/localisation/i18n';
 import type { AxiosResponse } from 'axios';
+import { useFiltersStore } from '@/stores/filters';
 
 // CHAT STATUSES
 export const CHAT_STATUS = {
@@ -45,11 +45,8 @@ export const useChatStore = defineStore('chat', () => {
   const shouldFetchNewDocuments: Ref<boolean> = ref(true);
   const subjectHasChanged: Ref<boolean> = ref(true);
 
-  const sdgFilters: Ref<number[]> = ref([]);
-  const selectedCorpus: Ref<Corpus['name'][]> = ref([]);
   const storedSubject: Ref<string | undefined> = ref(getFromStorage('chatSubject') || undefined);
 
-  const allCorpus: Ref<Corpus['name'][]> = ref([]);
   const corpora: Ref<ReducedCorpus[]> = ref([]);
 
   const clearSubject = (): void => {
@@ -178,6 +175,8 @@ export const useChatStore = defineStore('chat', () => {
       return;
     }
 
+    const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
+
     try {
       chatStatus.value = CHAT_STATUS.SEARCHING;
       const sourcesResp: AxiosResponse<Document[]> = await postAxios(
@@ -187,8 +186,8 @@ export const useChatStore = defineStore('chat', () => {
         {
           query: queriesToSearch.value,
           relevance_factor: RELEVANCE_FACTOR,
-          sdg_filter: sdgFilters.value,
-          corpora: selectedCorpus.value
+          sdg_filter: sdgFilters,
+          corpora: selectedCorpus
         }
       );
 
@@ -371,42 +370,6 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.DONE;
   }
 
-  function toggleFilter(index: number) {
-    const sdg = index + 1;
-    if (sdgFilters.value.includes(sdg)) {
-      sdgFilters.value = sdgFilters.value.filter((x) => x !== sdg);
-      return;
-    }
-
-    sdgFilters.value.push(sdg);
-
-    return sdgFilters.value.sort((a, b) => a - b);
-  }
-
-  async function getCorpus() {
-    if (corpora.value.length > 0) {
-      return;
-    }
-
-    try {
-      const fetchedCorpus = await getAxios('/search/collections');
-
-      const mergedCorpusByLang = fetchedCorpus.reduce((acc: ReducedCorpus[], curr: Corpus) => {
-        const existingCorpus = acc.findIndex((corpus: ReducedCorpus) => corpus.name === curr.name);
-        if (existingCorpus >= 0) {
-          acc[existingCorpus].lang.push(curr.lang);
-          return acc;
-        }
-        return [...acc, { ...curr, lang: [curr.lang] }];
-      }, [] as ReducedCorpus[]);
-
-      corpora.value = mergedCorpusByLang;
-      allCorpus.value = mergedCorpusByLang.map(({ name }: { name: string }) => name);
-    } catch (error: unknown) {
-      chatStatus.value = CHAT_STATUS.ERROR;
-    }
-  }
-
   function $reset() {
     chatStatus.value = CHAT_STATUS.EMPTY;
     chatInput.value = '';
@@ -416,8 +379,6 @@ export const useChatStore = defineStore('chat', () => {
     reformulatedQuery.value = null;
     shouldFetchNewDocuments.value = true;
     storedSubject.value = undefined;
-    selectedCorpus.value = [];
-    sdgFilters.value = [];
     clearFromStorage('chat');
     clearFromStorage('chatSources');
     clearFromStorage('questionQueues');
@@ -431,12 +392,7 @@ export const useChatStore = defineStore('chat', () => {
     chatMessagesList,
     questionQueues,
     sourcesList,
-    selectedCorpus,
-    getCorpus,
     corpora,
-    allCorpus,
-    sdgFilters,
-    toggleFilter,
     reformulatedQuery,
     onSendMessage,
     fetchRephraseStream,

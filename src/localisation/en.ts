@@ -1,4 +1,5 @@
 export const en = {
+  ':': ':',
   adaptedTo: 'Adapted to:',
   addBookmark: 'Add to bookmarks',
   bookmarks: 'Bookmarks',
@@ -16,6 +17,7 @@ export const en = {
   clearBookmarks: 'Clear bookmarks',
   clearChat: 'Clear the conversation',
   clearSearch: 'Clear the search',
+  closeSidebar: 'Close sidebar',
   copied: 'Copied!',
   copy: 'Copy',
   corpus: {
@@ -214,7 +216,9 @@ export const en = {
 
   next: 'Next',
   noBookmarks: 'No bookmarks yet.',
+  noFiltersSelected: 'No filters selected',
   noResults: 'I have no results for this search',
+  openSidebar: 'Open sidebar',
   onboarding: {
     welcome: {
       title: 'Welcome to WeLearn!',
@@ -225,9 +229,11 @@ export const en = {
     }
   },
   reload: 'Reload',
+  removeAll: 'Remove all',
   removeBookmark: 'Remove from bookmark',
   removeSelection: 'Clear',
   rephrase: 'Rephrase',
+  sdgsAcronym: 'SDGs',
   sdgs: {
     1: 'No Poverty',
     2: 'Zero Hunger',
@@ -248,6 +254,7 @@ export const en = {
     17: 'Partnerships for the Goals'
   },
   search: 'Search',
+  searchFilters: 'Search filters',
   searchPlaceholder: 'Type or paste a text here.\nLonger text, better results.',
   search_sdgs_in_query: 'SDGs in query',
   selectAll: 'Select all',
