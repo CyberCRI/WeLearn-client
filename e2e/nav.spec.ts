@@ -2,15 +2,18 @@ import { test, expect } from '@playwright/test';
 
 test.describe('nav', () => {
   test.beforeEach(async ({ page }) => {
+    await page.route('**/**/search/**', async (route) => {
+      if (route.request().url().includes('collections')) {
+        const json = [{ name: 'fake-collections', id: 21 }];
+        await route.fulfill({ json });
+      } else if (route.request().url().includes('nb_docs')) {
+        await route.fulfill({ json: { nb_docs: 10 } });
+      }
+    });
     await page.goto('/q-and-a');
     // close welcome modal
 
     await page.getByRole('button', { name: 'close' }).click();
-
-    await page.route('**/**/search/collections', async (route) => {
-      const json = [{ name: 'fake-collections', id: 21 }];
-      await route.fulfill({ json });
-    });
   });
   test('click on search', async ({ page }) => {
     await page.getByTestId('nav-search').click();

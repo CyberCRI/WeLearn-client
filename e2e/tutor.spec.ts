@@ -11,7 +11,7 @@ test.describe('Tutor', () => {
       }
     });
 
-    await page.route('http://test/api/v1/tutor/**', async (route) => {
+    await page.route('**/**/tutor/**', async (route) => {
       if (route.request().url().includes('syllabus')) {
         const json = {
           syllabus: [
