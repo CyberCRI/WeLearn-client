@@ -101,7 +101,6 @@ export const en = {
         image: 'chat_8.png'
       }
     },
-    searchPlaceholder: 'Search...',
     search: {
       title: 'How to use the Search feature?',
       step1: {
@@ -234,6 +233,7 @@ export const en = {
   removeBookmark: 'Remove from bookmark',
   removeSelection: 'Clear',
   rephrase: 'Rephrase',
+  searchBarPlaceholder: 'Search...',
   sdgsAcronym: 'SDGs',
   sdgs: {
     1: 'No Poverty',

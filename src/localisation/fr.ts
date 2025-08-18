@@ -105,7 +105,6 @@ export const fr = {
         image: 'chat_8.png'
       }
     },
-    searchPlaceholder: 'Recherche...',
     search: {
       title: 'Comment utiliser la fonctionnalité de recherche ?',
       step1: {
@@ -240,6 +239,7 @@ export const fr = {
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
   rephrase: 'Reformuler',
+  searchBarPlaceholder: 'Recherche...',
   sdgsAcronym: 'ODD',
   sdgs: {
     1: 'Pas de pauvreté',

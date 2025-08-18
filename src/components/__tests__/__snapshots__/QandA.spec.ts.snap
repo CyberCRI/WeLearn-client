@@ -304,7 +304,7 @@ exports[`QandA > renders properly 1`] = `
         <input
           class="input"
           data-v-e843c1dd=""
-          placeholder="Search..."
+          placeholder="searchBarPlaceholder"
           type="text"
         />
         <details
