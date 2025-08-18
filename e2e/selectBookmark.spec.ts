@@ -6,7 +6,6 @@ test.describe('select bookmark', () => {
 
     await page.fill('textarea', 'this is a longer text for testing');
     await page.getByLabel('Recherche', { exact: true }).click();
-    await page.waitForLoadState();
 
     await expect(page.getByText('Document one test')).toBeVisible();
 

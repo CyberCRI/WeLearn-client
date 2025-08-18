@@ -16,6 +16,7 @@ export const test = base.extend({
         await route.fulfill({ json: { nb_docs: 10 } });
       } else if (route.request().url().includes('by_document')) {
         await route.fulfill({ status: 200, body: JSON.stringify(docs) });
+        await page.waitForLoadState();
       }
     });
     await use(page);

@@ -65,7 +65,7 @@ const clearFilters = () => {
     <span class="has-text-grey">{{ $t('noFiltersSelected') }}</span>
   </p>
   <div :class="{ hide: !visibleFilters }" class="pr-5 filters">
-    <input class="input" type="text" placeholder="Search..." />
+    <input class="input" type="text" :placeholder="$t('searchPlaceholder')" />
     <details class="filter-section" open>
       <summary>{{ $t('sources') }}</summary>
       <div class="filter-options">

@@ -105,6 +105,7 @@ export const fr = {
         image: 'chat_8.png'
       }
     },
+    searchPlaceholder: 'Recherche...',
     search: {
       title: 'Comment utiliser la fonctionnalité de recherche ?',
       step1: {
