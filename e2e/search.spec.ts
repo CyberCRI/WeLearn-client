@@ -1,19 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 test.describe('search', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('**/**/search/**', async (route) => {
-      if (route.request().url().includes('collections')) {
-        const json = [{ name: 'fake-collections', id: 21 }];
-        await route.fulfill({ json });
-      } else if (route.request().url().includes('nb_docs')) {
-        await route.fulfill({ json: { nb_docs: 10 } });
-      }
-    });
-
     await page.goto('/search');
-    // close welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
   });
 
   // See here how to get started:

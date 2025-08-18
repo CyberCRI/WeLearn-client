@@ -1,16 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 test.describe('Tutor', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('**/**/search/**', async (route) => {
-      if (route.request().url().includes('collections')) {
-        const json = [{ name: 'fake-collections', id: 21 }];
-        await route.fulfill({ json });
-      } else if (route.request().url().includes('nb_docs')) {
-        await route.fulfill({ json: { nb_docs: 10 } });
-      }
-    });
-
     await page.route('**/**/tutor/**', async (route) => {
       if (route.request().url().includes('syllabus')) {
         const json = {
@@ -171,8 +162,6 @@ test.describe('Tutor', () => {
       }
     });
     await page.goto('/tutor');
-    // close welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
   });
 
   test('should display input type file', async ({ page }) => {

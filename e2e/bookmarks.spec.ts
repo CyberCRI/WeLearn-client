@@ -1,11 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 import { docs } from './data.ts';
 
 test.describe('bookmarks', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/bookmarks');
-    // close welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
   });
   // test that page is empty
   test('page is empty', async ({ page }) => {
