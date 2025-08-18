@@ -1,5 +1,4 @@
 import { test, expect } from './base';
-// import { docs } from './data.ts';
 
 test.describe('select bookmark', () => {
   test('click on select a bookmark', async ({ page }) => {
@@ -7,7 +6,9 @@ test.describe('select bookmark', () => {
 
     await page.fill('textarea', 'this is a longer text for testing');
     await page.getByLabel('Recherche', { exact: true }).click();
-    await expect(page.getByText('Document one test').first()).toBeVisible();
+    await page.waitForLoadState();
+
+    await expect(page.getByText('Document one test')).toBeVisible();
 
     await page
       .locator('header')
