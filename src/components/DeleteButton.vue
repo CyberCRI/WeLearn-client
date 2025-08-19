@@ -9,7 +9,7 @@ defineProps<{ action: () => void; delText: string; toLeft?: boolean }>();
     @click="action"
     data-testid="clear-bookmark"
     :aria-label="delText"
-    class="delete-button button is-outlined is-danger"
+    class="delete-button"
     :class="{ 'to-left': toLeft }"
   >
     <TrashIcon class="trash-icon" />
@@ -24,18 +24,12 @@ defineProps<{ action: () => void; delText: string; toLeft?: boolean }>();
   & > .tltip {
     display: none;
   }
+  color: var(--tertiary);
 }
 
 .delete-button:hover {
   & > .tltip {
     display: block;
   }
-}
-
-.button.is-outlined.is-danger {
-  border-color: var(--tertiary);
-  color: var(--tertiary);
-  background-color: transparent;
-  --bulma-button-border-width: max(1px, 0.0625em);
 }
 </style>

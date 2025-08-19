@@ -1,4 +1,5 @@
 export const fr = {
+  ':': ' :',
   adaptedTo: 'Adapté à :',
   addBookmark: 'Ajouter aux favoris',
   bookmarks: 'Favoris',
@@ -16,6 +17,7 @@ export const fr = {
   clearBookmarks: 'Effacer les favoris',
   clearChat: 'Effacer la conversation',
   clearSearch: 'Effacer la recherche',
+  closeSidebar: 'Fermer la barre latérale',
   copied: 'Copié !',
   copy: 'Copier',
   corpus: {
@@ -220,7 +222,9 @@ export const fr = {
   },
   next: 'Suivant',
   noBookmarks: 'Pas de favoris pour le moment.',
+  noFiltersSelected: 'Aucun filtre sélectionné',
   noResults: "Je n'ai aucun résultat pour cette recherche",
+  openSidebar: 'Ouvrir la barre latérale',
   onboarding: {
     welcome: {
       title: 'Bienvenue sur WeLearn !',
@@ -231,9 +235,12 @@ export const fr = {
     }
   },
   reload: 'Recharger',
+  removeAll: 'Effacer tout',
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
   rephrase: 'Reformuler',
+  searchBarPlaceholder: 'Recherche...',
+  sdgsAcronym: 'ODD',
   sdgs: {
     1: 'Pas de pauvreté',
     2: 'Faim "zéro"',
@@ -254,6 +261,7 @@ export const fr = {
     17: 'Partenariats pour la réalisation des objectifs'
   },
   search: 'Recherche',
+  searchFilters: 'Filtres de recherche',
   searchPlaceholder:
     'Entrez ou collez un texte ici.\nPlus le texte est long, meilleurs seront les résultats.',
   search_sdgs_in_query: 'ODD dans la requête',

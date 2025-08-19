@@ -37,7 +37,6 @@ export interface ReducedCorpus {
   name: string;
   model: string;
   corpus: string;
-  lang: string[];
 }
 
 export interface ErrorDetails {

@@ -55,7 +55,7 @@ const handleModalOpen = () => {
           </p>
           <div class="is-flex is-align-items-center">
             <div class="is-6 mr-2">
-              {{ $t('SDGs') }}
+              {{ $t('sdgsAcronym') }}
             </div>
             <Pill
               class="footer-element mx-1"

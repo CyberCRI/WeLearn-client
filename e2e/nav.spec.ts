@@ -1,16 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 test.describe('nav', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/q-and-a');
-    // close welcome modal
-
-    await page.getByRole('button', { name: 'close' }).click();
-
-    await page.route('**/**/search/collections', async (route) => {
-      const json = [{ name: 'fake-collections', id: 21 }];
-      await route.fulfill({ json });
-    });
   });
   test('click on search', async ({ page }) => {
     await page.getByTestId('nav-search').click();

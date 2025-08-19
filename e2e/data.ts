@@ -6,7 +6,7 @@ export const docs = [
       document_url: 'documentonetest.com',
       document_corpus: 'doc_one_corpus',
       document_sdg: [1],
-      document_desc: 'document one test description',
+      document_desc: 'document description',
       document_details: {}
     }
   },

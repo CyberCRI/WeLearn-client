@@ -6,6 +6,7 @@ import ChatComponent from '@/components/ChatComponent.vue';
 import SourcesListComponentVue from '@/components/SourcesListComponent.vue';
 import ReformulatedQuery from '@/components/ReformulatedQuery.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
+import FiltersComponent from '@/components/FiltersComponent.vue';
 
 const chatstore = useChatStore();
 const computedStatus = computed(() => chatstore.chatStatus);
@@ -16,7 +17,8 @@ const computedStatus = computed(() => chatstore.chatStatus);
     <template #left-panel>
       <ChatComponent />
     </template>
-    <template #rigth-panel>
+    <template #right-panel>
+      <FiltersComponent />
       <ReformulatedQuery v-if="chatstore.reformulatedQuery" :query="chatstore.reformulatedQuery" />
       <SourcesListComponentVue
         v-if="chatstore.sourcesList.length"
@@ -32,7 +34,7 @@ const computedStatus = computed(() => chatstore.chatStatus);
         :noResults="computedStatus === CHAT_STATUS.NO_RESULTS"
         errorCode="UNKNOWN_ERROR"
       />
-      <details v-if="computedStatus === CHAT_STATUS.DONE && chatstore.sourcesList.length > 7">
+      <details open v-if="computedStatus === CHAT_STATUS.DONE && chatstore.sourcesList.length > 7">
         <summary>{{ $t('moreDocuments') }} ({{ chatstore.sourcesList.length - 7 }})</summary>
         <SourcesListComponentVue
           cardType="simple"

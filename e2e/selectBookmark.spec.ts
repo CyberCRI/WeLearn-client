@@ -1,29 +1,13 @@
-import { test, expect } from '@playwright/test';
-import { docs } from './data.ts';
+import { test, expect } from './base';
 
 test.describe('select bookmark', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.route('**/**/search/**', async (route) => {
-      if (route.request().url().includes('collections')) {
-        const json = [{ name: 'fake-collections', id: 21 }];
-        await route.fulfill({ json });
-      } else if (route.request().url().includes('nb_docs')) {
-        await route.fulfill({ json: { nb_docs: 10 } });
-      }
-    });
-  });
   test('click on select a bookmark', async ({ page }) => {
-    await page.route('**/**/search/by_document?nb_results**', async (route) => {
-      await route.fulfill({ status: 200, body: JSON.stringify(docs) });
-    });
-
     await page.goto('/search');
-    // close welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
 
     await page.fill('textarea', 'this is a longer text for testing');
     await page.getByLabel('Recherche', { exact: true }).click();
-    await expect(page.getByText('Document one test').first()).toBeVisible();
+
+    await expect(page.getByText('Document one test')).toBeVisible();
 
     await page
       .locator('header')

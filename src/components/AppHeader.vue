@@ -30,7 +30,7 @@
 @media screen and (min-width: 992px) {
   .app-header {
     margin-left: 2rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0rem;
   }
 }
 </style>

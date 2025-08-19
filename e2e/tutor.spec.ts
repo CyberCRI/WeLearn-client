@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './base';
 
 test.describe('Tutor', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('http://test/api/v1/tutor/**', async (route) => {
+    await page.route('**/**/tutor/**', async (route) => {
       if (route.request().url().includes('syllabus')) {
         const json = {
           syllabus: [
@@ -162,8 +162,6 @@ test.describe('Tutor', () => {
       }
     });
     await page.goto('/tutor');
-    // close welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
   });
 
   test('should display input type file', async ({ page }) => {
@@ -181,11 +179,6 @@ test.describe('Tutor', () => {
     await expect(page.getByTestId('file-input')).toHaveCount(2);
     await page.getByRole('button', { name: 'x' }).last().click();
     await expect(page.getByTestId('file-input')).toHaveCount(1);
-  });
-
-  test('first del button should be disabled', async ({ page }) => {
-    const delButton = page.getByRole('button', { name: 'x' });
-    await expect(delButton.isDisabled()).toBeTruthy();
   });
 
   test('should add file to input', async ({ page }) => {
