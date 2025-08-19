@@ -4,10 +4,6 @@ import { docs } from './data.ts';
 
 export const test = base.extend({
   page: async ({ page }, use) => {
-    await page.goto('/');
-    // Close the welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
-
     await page.route('**/**/search/**', async (route) => {
       if (route.request().url().includes('collections')) {
         const json = [{ name: 'fake-collections', id: 21 }];
@@ -19,6 +15,11 @@ export const test = base.extend({
         await page.waitForLoadState();
       }
     });
+    await page.goto('/');
+    // Close the welcome modal
+    await page.getByRole('button', { name: 'close' }).click();
+    await page.waitForLoadState();
+
     await use(page);
   }
 });
