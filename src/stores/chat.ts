@@ -22,11 +22,6 @@ export const CHAT_STATUS = {
   DONE: 'DONE'
 };
 
-const other_language_mapping = {
-  EN: 'FR',
-  FR: 'EN'
-};
-
 type CHAT_STATUSES_TYPE = keyof typeof CHAT_STATUS;
 
 export const useChatStore = defineStore('chat', () => {
@@ -132,15 +127,7 @@ export const useChatStore = defineStore('chat', () => {
 
       shouldFetchNewDocuments.value = true;
 
-      const default_lang = ['EN', 'FR'].includes(data['USER_LANGUAGE'].toUpperCase())
-        ? data['USER_LANGUAGE'].toUpperCase()
-        : 'EN';
-
-      const userLang = data['USER_LANGUAGE'].toUpperCase();
-      const reformulatedQuery =
-        reformulate.data[`STANDALONE_QUESTION_${userLang}`] ||
-        reformulate.data[`STANDALONE_QUESTION_${default_lang}`];
-      const otherLang = data[`STANDALONE_QUESTION_${other_language_mapping[default_lang]}`];
+      const reformulatedQuery = reformulate.data.STANDALONE_QUESTION;
 
       if (!reformulatedQuery) {
         // add error message
@@ -148,7 +135,7 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       setReformulatedQuery(reformulatedQuery);
-      setQueriesToSearch([reformulatedQuery, otherLang]);
+      setQueriesToSearch([reformulatedQuery]);
       chatStatus.value = CHAT_STATUS.REFORMULATED;
     } catch (error: unknown) {
       chatStatus.value = CHAT_STATUS.ERROR;
