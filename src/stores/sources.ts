@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { getAxios } from '@/utils/fetch';
 import { type Ref, ref } from 'vue';
 import type { Corpus, ReducedCorpus } from '@/types';
+import i18n from '@/localisation/i18n';
 
 export const useSourcesStore = defineStore('sources', () => {
   const sourcesList = ref<ReducedCorpus[]>([]);
@@ -32,14 +33,15 @@ export const useSourcesStore = defineStore('sources', () => {
     }
   }
 
-  const totalDocs: Ref<number | undefined> = ref(undefined);
+  const totalDocs: Ref<number> = ref(0);
 
   const getNbDocsInBase = async () => {
-    if (totalDocs.value) {
+    if (totalDocs.value > 0) {
       return;
     }
     const response = await getAxios('/search/nb_docs');
-    totalDocs.value = Math.floor(response.nb_docs / 100) * 100;
+    const flooredNb = Math.floor(response.nb_docs / 100) * 100;
+    totalDocs.value = new Intl.NumberFormat(i18n.global.locale.value).format(flooredNb);
   };
   return { totalDocs, getNbDocsInBase, getSourcesList, sourcesList };
 });
