@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, watch, ref } from 'vue';
 import ColumnTemplate from '@/components/ColumnTemplate.vue';
 import { useChatStore, CHAT_STATUS } from '@/stores/chat';
+import { useFiltersStore } from '@/stores/filters';
 import ChatComponent from '@/components/ChatComponent.vue';
 import SourcesListComponentVue from '@/components/SourcesListComponent.vue';
 import ReformulatedQuery from '@/components/ReformulatedQuery.vue';
@@ -10,6 +11,17 @@ import FiltersComponent from '@/components/FiltersComponent.vue';
 
 const chatstore = useChatStore();
 const computedStatus = computed(() => chatstore.chatStatus);
+const filters = useFiltersStore();
+const filteredSources = ref(chatstore.sourcesList);
+
+watch(filters, () => {
+  filteredSources.value = chatstore.sourcesList.filter(
+    (source) =>
+      filters.sourcesFilters.includes(source.payload.document_corpus) ||
+      source.payload.document_sdg.some((r) => filters.sdgFilters.includes(r)),
+    { immediate: true, deep: true }
+  );
+});
 </script>
 <template>
   <ErrorComponent v-if="chatstore.hasError" />
@@ -26,7 +38,7 @@ const computedStatus = computed(() => chatstore.chatStatus);
         :shouldDisplayScore="!!chatstore.shouldDisplayScore"
         :sourcesList="
           [CHAT_STATUS.DONE, CHAT_STATUS.FORMULATING_ANSWER].includes(computedStatus) &&
-          chatstore.sourcesList.slice(0, 7)
+          filteredSources.slice(0, 7)
         "
         :isSourcesError="computedStatus === CHAT_STATUS.ERROR"
         :isFetchingSources="computedStatus === CHAT_STATUS.SEARCHING"

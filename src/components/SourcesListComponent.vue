@@ -4,11 +4,13 @@ import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
 import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import { useSourcesStore } from '@/stores/sources';
+import { useFiltersStore } from '@/stores/filters';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 
 const sourcesStore = useSourcesStore();
 const store = useBookmarksStore();
+const filters = useFiltersStore();
 
 const props = defineProps<{
   hideSteps?: boolean;
