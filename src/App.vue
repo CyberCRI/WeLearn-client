@@ -14,6 +14,7 @@ const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
+    console.log('here to test the ci')
     await getSourcesList();
     await getNbDocsInBase();
   } catch (error) {
