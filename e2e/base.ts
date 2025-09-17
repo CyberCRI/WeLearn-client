@@ -1,20 +1,34 @@
 import { test as base } from '@playwright/test';
 
-import { docs } from './data.ts';
+import { docs } from './data';
 
 export const test = base.extend({
   page: async ({ page }, use) => {
-    await page.route('**/**/search/**', async (route) => {
-      if (route.request().url().includes('collections')) {
-        const json = [{ name: 'fake-collections', id: 21 }];
-        await route.fulfill({ json });
-      } else if (route.request().url().includes('nb_docs')) {
-        await route.fulfill({ json: { nb_docs: 10 } });
-      } else if (route.request().url().includes('by_document')) {
-        await route.fulfill({ status: 200, body: JSON.stringify(docs) });
-        await page.waitForLoadState();
+    // Mock auth/session calls from App.vue
+    await page.route('**/**/user/**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('user/user')) {
+        await route.fulfill({ status: 200, body: JSON.stringify({ user_id: 'fake_user_id' }) });
+      } else if (url.includes('session')) {
+        await route.fulfill({ status: 200, body: JSON.stringify({ session_id: 'fake_session_id' }) });
       }
     });
+
+    // Mock search-related calls
+    await page.route('**/**/search/**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('collections')) {
+        const json = [{ name: 'fake-collections', id: 21 }];
+        await route.fulfill({ json });
+      } else if (url.includes('nb_docs')) {
+        await route.fulfill({ json: { nb_docs: 10 } });
+      } else if (url.includes('by_document')) {
+        await route.fulfill({ status: 200, body: JSON.stringify(docs) });
+      } else {
+        await route.continue();
+      }
+    });
+
     await page.goto('/');
     // Close the welcome modal
     await page.getByRole('button', { name: 'close' }).click();
