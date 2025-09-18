@@ -2,7 +2,7 @@ export const en = {
   ':': ':',
   adaptedTo: 'Adapted to:',
   addBookmark: 'Add to bookmarks',
-  bookmarks: 'Bookmarks',
+  bookmarks: 'Bookmarkss',
   cardArticle: {
     seeDetails: 'See details',
     openArticle: 'Open article',
