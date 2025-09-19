@@ -360,5 +360,8 @@ export const fr = {
       giveFeedback: 'Donner un retour sur le syllabus généré',
       sendFeedback: 'Envoyer le retour'
     }
+  },
+  microlearning: {
+    mainTitle: 'Cliquez pour sélectionner un ODD et en apprendre plus !'
   }
 };
