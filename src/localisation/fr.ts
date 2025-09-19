@@ -353,5 +353,8 @@ export const fr = {
       giveFeedback: 'Donner un feedback',
       sendFeedback: 'Envoyer le feedback'
     }
+  },
+  microlearning: {
+    mainTitle: 'Cliquez pour sélectionner un ODD et en apprendre plus !'
   }
 };
