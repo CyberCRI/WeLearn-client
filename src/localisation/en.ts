@@ -218,7 +218,8 @@ export const en = {
     bookmarks: 'Bookmarks',
     syllabus: 'Create a syllabus',
     about: 'About',
-    help: 'Help'
+    help: 'Help',
+    microlearning: 'Micro-learning'
   },
 
   next: 'Next',
