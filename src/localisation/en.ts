@@ -211,6 +211,7 @@ export const en = {
     bookmarks: 'Bookmarks',
     syllabus: 'Create a syllabus',
     about: 'About',
+    microlearning: 'Micro-learning',
     help: 'Help ?'
   },
 

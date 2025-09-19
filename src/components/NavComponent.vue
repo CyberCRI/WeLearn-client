@@ -2,6 +2,7 @@
 import HamburgerMenu from '@/components/icons/HamburgerMenu.vue';
 import SearchIcon from '@/components/icons/SearchIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
+import LinesLeaningIcon from '@/components/icons/LinesLeaningIcon.vue';
 import QnAIcon from '@/components/icons/QnAIcon.vue';
 import HelpComponent from '@/components/HelpComponent.vue';
 import { ref } from 'vue';
@@ -55,6 +56,23 @@ const handle_nav_bookmarks = () => {
           }}</span>
         </router-link>
       </div>
+
+      <div class="link-wrapper" v-if="isFeatureEnabled">
+        <router-link
+          class="router-link"
+          to="/microlearning"
+          @click="isNavOpened = false"
+          data-testid="nav-microlearning"
+        >
+          <div class="icon mr-2">
+            <LinesLeaningIcon />
+          </div>
+          <span class="item-name" :class="isNavOpened && 'visible-name'">{{
+            $t('nav.microlearning')
+          }}</span>
+        </router-link>
+      </div>
+
       <div class="link-wrapper">
         <router-link
           class="router-link"

@@ -218,7 +218,8 @@ export const fr = {
     bookmarks: 'Favoris',
     syllabus: 'Créer un syllabus',
     about: 'À propos',
-    help: 'Aide ?'
+    help: 'Aide ?',
+    microlearning: 'Micro-learning'
   },
   next: 'Suivant',
   noBookmarks: 'Pas de favoris pour le moment.',
