@@ -4,7 +4,7 @@ export const en = {
   addBookmark: 'Add to bookmarks',
   bookmarks: 'Bookmarkss',
   cardArticle: {
-    seeDetails: 'See details.',
+    seeDetails: 'See details',
     openArticle: 'Open article',
     addBookmark: 'Add to bookmarks',
     removeBookmark: 'Remove from bookmark'
