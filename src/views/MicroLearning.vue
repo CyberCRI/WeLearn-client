@@ -1,39 +1,132 @@
 <script setup lang="ts">
 import FullpageTemplate from '@/components/FullpageTemplate.vue';
 import SdgTile from '@/components/SdgTile.vue';
-import { useMicroLearningStore} from '@/stores/microlearning';
+import { ref } from 'vue';
+import { getAxios } from '@/utils/fetch';
+import SourcesListComponent from '@/components/SourcesListComponent.vue';
+import SelectSubject from '@/components/dropdowns/SubjectSelector.vue';
+import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 
-const store = useMicroLearningStore();
+const toggleSdgSpecific = ref(false);
+const goalToShow = ref<null | number>(null)
+const introJsonJourney = ref<null | Record<any, any>>(null)
+const targetsJsonJourney = ref<null | Record<any, any>>(null)
+const selectedSubject = ref<string | null>(null)
 
+const selectSubject_ = (subject: string) => {
+  selectedSubject.value = subject
+  console.log(subject)
+}
+
+const clearSubject = () => {
+  selectedSubject.value = null
+}
+
+const changePageController = (goal: number) => {
+  goalToShow.value = goal;
+  toggleSdgSpecific.value = !toggleSdgSpecific.value;
+  introJsonJourney.value=null;
+  targetsJsonJourney.value=null;
+}
+
+const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) => {
+  const response = await getAxios('/micro_learning/full_journey?lang=fr&sdg='+goal+'&subject='+subject);
+  introJsonJourney.value = response.introduction
+  targetsJsonJourney.value = response.target
+  console.log(response.introduction)
+};
 </script>
 
 
-
 <template>
-  <div class="first step" v-if=true>
+  <div class="first step"  v-if="!toggleSdgSpecific">
     <FullpageTemplate>
       <template #top>
         <h2 class="title is-6 mt-4">
           {{ $t('microlearning.mainTitle') }}
         </h2>
+        <div>
+          <SelectSubject :selectSubject="selectSubject_" :clearSubject="clearSubject" :storedSubject="selectedSubject"></SelectSubject>
+        </div>
       </template>
       <template #main>
-        <div class="content-centered-wrapper">
+        <div class="content-centered-wrapper" >
+          <h2 class="title is-6 mt-4" v-if="selectedSubject">
+            {{ $t('microlearning.chooseSdg') }}
+          </h2>
           <div class="layout-flex">
-            <div class="flex-wrap">
-              <SdgTile v-for="n in 17" :key="n" :goal="n" size="200"/>
+            <div class="flex-wrap" v-if="selectedSubject">
+              <SdgTile v-for="n in 17" :key="n" :goal="n" size=200
+                       @click="() => {changePageController(n); fetchMicroLearningForSpecificSDG(goalToShow, selectedSubject);}"/>
             </div>
           </div>
         </div>
       </template>
     </FullpageTemplate>
   </div>
+
+  <div class="second step" v-if="toggleSdgSpecific">
+    <button class="button" @click="() => changePageController(null)">
+      {{ $t('previous') }}
+    </button>
+    <div class="top-content-centered-wrapper" v-if='targetsJsonJourney'>
+      <StepsIndicator
+        :step=0
+        :setStep=5
+        :advancement="0"
+        :stepsLength="targetsJsonJourney.length + 1"
+      />
+    </div>
+
+    <FullpageTemplate>
+      <template #top>
+        <h2>{{introJsonJourney && introJsonJourney[0].title}}</h2>
+
+      </template>
+      <template #main>
+        <SourcesListComponent
+          v-if='introJsonJourney'
+          False
+          :sourcesList="introJsonJourney[0].documents"
+          :isSourcesError="false"
+          :isFetchingSources="false"
+          :shouldDisplayScore="true"
+          :errorCode="null"
+          :noResults="null"
+        />
+        <!--<div v-for="target in targetsJsonJourney" :key="target">-->
+        <!--  <h2>{{ target.content }}</h2>-->
+        <!--  <SourcesListComponent-->
+        <!--    False-->
+        <!--    :sourcesList="target.documents"-->
+        <!--    :isSourcesError="false"-->
+        <!--    :isFetchingSources="false"-->
+        <!--    :shouldDisplayScore="true"-->
+        <!--    :errorCode="null"-->
+        <!--    :noResults="null"-->
+        <!--  />-->
+        <!--</div>-->
+      </template>
+    </FullpageTemplate>
+  </div>
 </template>
 
 <style scoped>
+.content-centered-wrapper {
+  height: 100vh;
+}
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;   /* permet le retour à la ligne */
   gap: 12px;         /* espace entre les tuiles */
+}
+
+.top-content-centered-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 2rem;
+  height: 100%;
+  overflow: hidden;
 }
 </style>
