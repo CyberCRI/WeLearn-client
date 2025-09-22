@@ -354,5 +354,11 @@ export const en = {
       giveFeedback: 'Provide feedback on the generated syllabus',
       sendFeedback: 'Submit feedback'
     }
-  }
+  },
+  microlearning: {
+    mainTitle: 'Choose a subject :',
+    chooseSdg: 'Choose an SDG :'
+  },
+  previous: "Previous"
+
 };

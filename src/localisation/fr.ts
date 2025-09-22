@@ -362,6 +362,8 @@ export const fr = {
     }
   },
   microlearning: {
-    mainTitle: 'Cliquez pour sélectionner un ODD et en apprendre plus !'
-  }
+    mainTitle: 'Choisissez un sujet :',
+    chooseSdg: 'Choissisez l\'ODD qui vous intéresse'
+  },
+  previous: "Précédent"
 };
