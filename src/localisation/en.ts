@@ -345,5 +345,11 @@ export const en = {
       giveFeedback: 'Give feedback',
       sendFeedback: 'Send feedback'
     }
-  }
+  },
+  microlearning: {
+    mainTitle: 'Choose a subject :',
+    chooseSdg: 'Choose an SDG :'
+  },
+  previous: "Previous"
+
 };
