@@ -28,6 +28,7 @@ export const postAxios = async (
   const enhancedConfig = {
     ...config,
     headers: {
+      'X-Session-id': localStorage.getItem('sessionId') || null,
       'X-API-Key': WL_API_KEY
     }
   };
