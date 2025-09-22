@@ -1,15 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 
-/**
- * SdgTile.vue — Affiche UN SEUL ODD (SDG) sous forme de carré coloré.
- *
- * ➜ Utilisez-le 17 fois dans une boucle pour afficher toute la grille côté parent.
- * ➜ Couleur, libellé et (optionnel) icône officielle.
- */
-
-type Lang = 'fr' | 'en'
-
 const props = withDefaults(defineProps<{
   goal: number               // 1..17
   size?: number              // taille du carré (px)
@@ -44,7 +35,6 @@ const color = computed(() => SDG_COLORS[props.goal] || '#999999')
       backgroundColor: color
     }"
     role="button"
-    :aria-label="`ODD ${goal} – ${label}`"
     @click="!to"
   >
     <div class="content">
