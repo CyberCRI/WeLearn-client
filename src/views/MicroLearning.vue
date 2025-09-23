@@ -9,9 +9,10 @@ import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 
 const toggleSdgSpecific = ref(false);
 const goalToShow = ref<null | number>(null)
-const introJsonJourney = ref<null | Record<any, any>>(null)
-const targetsJsonJourney = ref<null | Record<any, any>>(null)
+const introJsonJourney = ref<null | Array<Record<any, any>>>(null)
+const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null)
 const selectedSubject = ref<string | null>(null)
+const pageNum = ref<number>(0)
 
 const selectSubject_ = (subject: string) => {
   selectedSubject.value = subject
@@ -33,7 +34,6 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
   const response = await getAxios('/micro_learning/full_journey?lang=fr&sdg='+goal+'&subject='+subject);
   introJsonJourney.value = response.introduction
   targetsJsonJourney.value = response.target
-  console.log(response.introduction)
 };
 </script>
 
@@ -69,13 +69,23 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
     <button class="button" @click="() => changePageController(null)">
       {{ $t('previous') }}
     </button>
+    {{ pageNum}}
     <div class="top-content-centered-wrapper" v-if='targetsJsonJourney'>
-      <StepsIndicator
-        :step=0
+      <button class="button" @click="pageNum--">
+        {{ $t('previous_page') }}
+      </button>
+      <StepsIndicator v-if='targetsJsonJourney && pageNum > 0'
+        :step=pageNum
         :setStep=5
         :advancement="0"
         :stepsLength="targetsJsonJourney.length + 1"
       />
+      <h1>
+        Introduction 
+      </h1>
+      <button class="button" @click="pageNum++">
+        {{ $t('next_page') }}
+      </button>
     </div>
 
     <FullpageTemplate>
@@ -85,7 +95,7 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
       </template>
       <template #main>
         <SourcesListComponent
-          v-if='introJsonJourney'
+          v-if='introJsonJourney && pageNum == 0'
           False
           :sourcesList="introJsonJourney[0].documents"
           :isSourcesError="false"
@@ -94,18 +104,18 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
           :errorCode="null"
           :noResults="null"
         />
-        <!--<div v-for="target in targetsJsonJourney" :key="target">-->
-        <!--  <h2>{{ target.content }}</h2>-->
-        <!--  <SourcesListComponent-->
-        <!--    False-->
-        <!--    :sourcesList="target.documents"-->
-        <!--    :isSourcesError="false"-->
-        <!--    :isFetchingSources="false"-->
-        <!--    :shouldDisplayScore="true"-->
-        <!--    :errorCode="null"-->
-        <!--    :noResults="null"-->
-        <!--  />-->
-        <!--</div>-->
+        <div v-if='targetsJsonJourney && pageNum > 0'>
+          <h2>{{ targetsJsonJourney[pageNum - 1].content }}</h2>
+          <SourcesListComponent
+            False
+            :sourcesList="targetsJsonJourney[pageNum - 1].documents"
+            :isSourcesError="false"
+            :isFetchingSources="false"
+            :shouldDisplayScore="true"
+            :errorCode="null"
+            :noResults="null"
+          />
+        </div>
       </template>
     </FullpageTemplate>
   </div>
