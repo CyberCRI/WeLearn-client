@@ -10,194 +10,203 @@ export const fr = {
     removeBookmark: 'Retirer des favoris'
   },
   chat: 'Chat',
-  chatInputPlaceholder: 'Posez une question',
+  chatInputPlaceholder: 'Poser une question',
   chatNoResults:
-    "Aucun résultat ne correspond à vos filtres actuels. Veuillez essayer de modifier votre requête ou d'élargir vos critères de recherche pour trouver des documents pertinents.",
-  chatProvideValidQuestion: 'Veuillez fournir une question valide, pour obtenir une réponse.',
-  clearBookmarks: 'Effacer les favoris',
+    'Aucun résultat avec les filtres actuels. Essayez d’ajuster votre recherche ou de retirer certains filtres.',
+  chatProvideValidQuestion: 'Veuillez saisir une question valide.',
+  clearBookmarks: 'Supprimer tous les favoris',
   clearChat: 'Effacer la conversation',
   clearSearch: 'Effacer la recherche',
-  closeSidebar: 'Fermer la barre latérale',
+  closeSidebar: 'Masquer la barre latérale',
   copied: 'Copié !',
   copy: 'Copier',
   corpus: {
     conversation: 'The Conversation',
+    hal: 'HAL',
+    ipbes: 'IPBES',
     ipcc: 'GIEC',
+    oapen: 'OAPEN',
+    // open-edition-books: 'OpenEdition Books',
+    openalex: 'OpenAlex',
     peerj: 'PeerJ',
     plos: 'PLOS',
-    ipbes: 'IPBES'
+    // press-books: 'Pressbooks',
+    ted: 'TED',
+    uved: 'UVED',
+    wikipedia: 'Wikipedia'
   },
   defaultQueues: [
-    'Le changement climatique est-il aggravé par l’activité humaine ?',
-    'Quel est l’impact du changement climatique sur l’économie ?'
+    'Quels ODD sont liés à un module de niveau Licence sur l’économie circulaire ?',
+    'Compare la tarification du carbone et le système « cap-and-trade » : fonctionnement, avantages et limites.'
   ],
   description:
-    'Explorez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
-  emptyChatAction: 'Voici quelques exemples de questions que vous pouvez me poser :',
-  emptyChatPresentation:
-    'Bonjour ! Je suis WeLearn, votre expert ODD alimenté par l’IA. Comment puis-je vous aider ?',
+    'Découvrez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
+  emptyChatAction: 'Besoin d’inspiration ? Essayez :',
+  emptyChatPresentation: 'Bonjour ! Je suis WeLearn, votre assistant IA pour les ODD. En quoi puis-je vous aider ?',
   error: {
     UNKNOWN_ERROR: {
-      title: 'Oops !',
-      description: 'Quelque chose s’est mal passé. Veuillez réessayer plus tard.'
+      title: 'Oups !',
+      description: 'Un problème est survenu. Veuillez réessayer.'
     },
     COLL_NOT_FOUND: {
-      title: 'Oops !',
+      title: 'Oups !',
       description:
-        'La collection actuelle n’est pas encore disponible avec la langue utilisée pour la recherche.'
+        'Cette collection n’est pas encore disponible dans la langue de votre recherche.'
     },
     LANG_NOT_SUPPORTED: {
-      title: 'Pardon !',
+      title: 'Désolé !',
       description: 'Cette langue n’est pas encore prise en charge.'
     }
   },
   errorModalGeneric: {
-    title: 'Désolé ! Quelque chose s’est mal passé.',
-    message: 'Veuillez réessayer plus tard.',
+    title: 'Désolé, un problème est survenu.',
+    message: 'Veuillez réessayer ou recharger la page.',
     action: 'Recharger la page'
   },
-  extract: 'extrait',
+  extract: 'Extrait pertinent',
   filterBySource: 'Filtrer par source',
   filterSDG: 'Filtrer par ODD',
-  filteredBySDG: 'Filtré par ODD : | Filtré par ODD :',
-  goToSources: 'Voire les sources',
-  goToTop: 'Revenir en haut',
+  filteredBySDG: 'Filtré par l’ODD : | Filtré par les ODD :',
+  goToSources: 'Voir les sources',
+  goToTop: 'Retour en haut',
   gotIt: 'Compris !',
 
   helpUser: {
     'q&a': {
-      title: 'Comment utiliser la fonctionnalité Chat ?',
+      title: 'Utiliser le Chat',
       step1: {
         description:
-          'Bienvenue sur le chat WeLearn ! Ici, vous pouvez discuter avec un agent expert en ODDs qui répond à vos questions sur le développement durable. Toutes les réponses sont sourcées à partir de documents fiables pour vous garantir des informations précises et vérifiables.'
+          'Le Chat WeLearn est un assistant IA spécialisé sur les ODD. Posez-lui vos questions pour obtenir des réponses qui s’appuient sur des sources fiables et vérifiables.'
       },
       step2: {
         description:
-          'La fonctionnalité Chat vous permet de poser librement des questions ou d’utiliser les suggestions.',
+          'Saisissez une question ou choisissez une suggestion.',
         image: 'chat_2.png'
       },
       step3: {
-        description: 'Vous verrez alors apparaître la réponse à votre question.',
+        description: 
+          'La réponse s’affiche dans le chat.',
         image: 'chat_3.png'
       },
       step4: {
         description:
-          'Vous pourrez copier la réponse dans votre presse-papiers ou demander à ce qu’elle soit reformulée.',
+          'Copiez la réponse, ou demandez une reformulation.',
         image: 'chat_4.png'
       },
       step5: {
         description:
-          'Toutes les réponses proviennent des documents de la base de données WeLearn. Pour chaque question, WeLearn effectue une recherche sémantique afin de trouver les documents les plus pertinents et d’y répondre.'
+          'Pour formuler des réponses sourcées à vos questions, WeLearn effectue une recherche sémantique dans sa base afin d’identifier les ressources les plus pertinentes.'
       },
       step6: {
         description:
-          'Vous avez accès aux sources référencées dans la réponse. Vous pouvez cliquer sur la source pour l’ouvrir dans un nouvel onglet.',
+          'Les ressources utilisées pour formuler la réponse s’affichent dans la barre latérale. Vous pouvez ouvrir une ressource dans un nouvel onglet.',
         image: 'chat_6.png'
       },
       step7: {
-        description:
-          'Vous pouvez également ajouter un signet pour sauvegarder la réponse pour une utilisation ultérieure.',
+        description: 
+          'Ajoutez une ressource à vos favoris pour la retrouver facilement.',
         image: 'chat_7.png'
       },
       step8: {
         description:
-          'Pour finir, vous pouvew choisir de filtrer les documents résultants de la recherche en choisissant les ODD et/ou les sources qui vous interessent.',
+          'Filtrez les ressources par ODD et/ou par source pour affiner vos résultats.',
         image: 'chat_8.png'
       }
     },
     search: {
-      title: 'Comment utiliser la fonctionnalité de recherche ?',
+      title: 'Utiliser la fonctionnalité Recherche',
       step1: {
         description:
-          'Bienvenue sur la recherche WeLearn ! Ici, vous pouvez rechercher des ressources éducatives sur les Objectifs de Développement Durable (ODD). La recherche utilise un moteur sémantique, donc plus votre requête est détaillée, meilleurs seront les résultats. Vous pouvez trouver plus d’informations sur nos sources et la façon dont nous les sélectionnons dans la section À propos.'
+          'Bienvenue sur la recherche WeLearn ! Trouvez des ressources éducatives sur les Objectifs de développement durable (ODD). Le moteur utilise une recherche sémantique : plus votre requête est longue, meilleurs seront les résultats. Pour en savoir plus sur nos sources et nos critères de sélection, consultez la section À propos.'
       },
       step2: {
         description:
-          'La fonctionnalité de recherche vous permet de trouver des ressources éducatives sur les Objectifs de Développement Durable (ODD).'
+          'Saisissez votre requête ou collez du texte pour trouver des documents pertinents.'
       },
       step3: {
         description:
-          'Vous pouvez filtrer la recherche en sélectionnant les ODD et/ou les sources souhaités.'
+          'Affinez les résultats en filtrant par ODD et/ou par source.'
       }
     },
     syllabus: {
-      title: 'Comment utiliser la fonctionnalité Créer un syllabus ?',
+      title: 'Utiliser la fonctionnalité Génération de Syllabus',
       step1: {
         description:
-          'Bienvenue sur le syllabus WeLearn ! Ici, vous pouvez créer un syllabus pour votre cours. Le syllabus est généré à partir des documents que vous téléchargez et de ceux que vous sélectionnez dans les résultats de recherche. Vous pouvez ajouter des informations sur le cours pour améliorer les résultats. Enfin, vous pourrez encore améliorer les résultats en ajoutant un retour.'
+          'Bienvenue sur la Génération de Syllabus sur WeLearn ! Créez un syllabus pour votre cours à partir de vos documents importés et des ressources WeLearn pertinentes. Vous pouvez ajouter des informations sur le cours pour personaliser le syllabus, et affiner le syllabus généré en donnant un retour.'
       },
       step2: {
         description:
-          'Vous pouvez ajouter un ou plusieurs documents. Ces documents seront utilisés pour générer un syllabus.'
+          'Ajoutez un ou plusieurs documents. Ils serviront à générer le syllabus.'
       },
       step3: {
         description:
-          'Vous pouvez ajouter des informations sur le cours pour améliorer les résultats.'
+          'Ajoutez des informations sur le cours pour adapter le syllabus à votre contexte.'
       },
       step4: {
         description:
-          'Vous pouvez sélectionner des documents parmi les résultats de recherche. Ces documents seront utilisés pour générer un syllabus. Si aucun n’est sélectionné, le syllabus sera basé uniquement sur vos documents.'
+          'Sélectionnez des documents parmi les résultats de WeLearn. Si aucun n’est sélectionné, le syllabus sera basé uniquement sur vos documents importés.'
       },
       step5: {
-        description: 'Vous pouvez ajouter un retour pour améliorer les résultats.'
+        description: 
+          'Donnez un retour pour affiner et améliorer le syllabus.'
       }
     },
     bookmarks: {
-      title: 'Comment utiliser la fonctionnalité Favoris ?',
+      title: 'Utiliser la fonctionnalité Favoris',
       step1: {
         description:
-          'Bienvenue sur les favoris WeLearn ! Ici, vous pouvez retrouver les documents enregistrés depuis les résultats de recherche.'
+          'Bienvenue dans les Favoris WeLearn ! Retrouvez les éléments enregistrés depuis vos résultats.'
       },
       step2: {
         description:
-          'Vous pouvez cliquer sur l’icône de favori pour enregistrer un résultat ; une fois enregistré, l’icône sera remplie.'
+          'Cliquez sur l’icône de favori pour enregistrer un résultat ; une fois enregistré, l’icône se remplit.'
       },
       step3: {
-        description: 'Vous pouvez supprimer un favori en cliquant à nouveau sur l’icône de favori.'
+        description: 'Cliquez de nouveau sur l’icône de favori pour supprimer le favori.'
       },
       step4: {
         description:
-          'Vous pouvez supprimer tous les favoris d’un coup en cliquant sur l’icône de corbeille.'
+          'Supprimez tous les favoris d’un coup en cliquant sur l’icône de corbeille.'
       }
     }
   },
-  hideAuthors: 'Cacher les auteurs',
-  hideFilters: 'Cacher les filtres',
-  hideSources: 'Cacher les sources',
+  hideAuthors: 'Masquer les auteurs',
+  hideFilters: 'Masquer les filtres',
+  hideSources: 'Masquer les sources',
   lang: {
     fr: 'Français',
     en: 'Anglais'
   },
   landing: {
-    slogan: 'L’éducation à la durabilité facilitée',
+    slogan: 'L’éducation à la durabilité, facilitée',
     description:
       'Explorez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
-    aboutTitle: 'A propos de WeLearn',
+    aboutTitle: 'À propos de WeLearn',
     aboutDescription:
-      'WeLearn est une plateforme d’apprentissage innovante, alimentée par l’intelligence artificielle, conçue pour accompagner les enseignants dans la création de contenus pédagogiques percutants, centrés sur les Objectifs de Développement Durable (ODD). Notre mission est de faciliter l’intégration de la durabilité dans les contenus éducatifs de manière fluide et intuitive. En s’appuyant sur des technologies d’IA avancées, WeLearn enrichit l’expérience d’enseignement en sélectionnant et en indexant des ressources ouvertes de haute qualité, issues de bases de données fiables telles que Wikipedia, The Conversation ou encore HAL.',
-    partnership: 'Un partenariat entre :',
+      'WeLearn est une plateforme d’apprentissage innovante, alimentée par l’intelligence artificielle, conçue pour accompagner les enseignants dans la création de contenus pédagogiques percutants centrés sur les Objectifs de Développement Durable (ODD). Notre mission est de rendre l’intégration de la durabilité dans les contenus éducatifs fluide et intuitive. En s’appuyant sur des technologies d’IA avancées, WeLearn augmente l’apprentissage et l’enseignement en sélectionnant et en indexant des ressources ouvertes de haute qualité, issues de bases de données fiables, qui servent de socle de référence à des fonctionnalités pédagogiques innovantes.',
+    partnership: 'WeLearn est développé par le Learning Planet Institute dans le cadre du projet « Transition Écologique pour un Développement Soutenable » (TEDS). Financé par l’Agence Nationale de la Recherche, au titre de « France 2030 » (référence ANR-17-NCUN-0016) et l’appel à projets « Nouveaux Cursus à l’Université », le projet TEDS est porté conjointement par le Learning Planet Institute, la Fondation UVED et CY Cergy Paris Université.',
     horizontal: {
       section_one: {
         title: 'Connaissances sur la durabilité',
         content:
-          'WeLearn est un moteur de recherche qui vous aide à trouver des ressources éducatives sur les Objectifs de développement durable (ODD).'
+          'Sélectionnés avec soin parmi plus de 10 millions de ressources, WeLearn propose des contenus ouverts et fiables liés aux Objectifs de développement durable (ODD).'
       },
       section_two: {
         title: 'Trouver ce qui compte, rapidement',
         content:
-          'Plungez dans des sujets de durabilité et trouvez les bonnes ressources rapidement et facilement grâce au moteur de recherche sémantique de WeLearn.'
+          'Plongez dans des sujets de durabilité et trouvez les bonnes ressources rapidement et facilement grâce au moteur de recherche sémantique de WeLearn.'
       },
       section_three: {
-        title: 'Réponses sourcées, adaptées à vous',
+        title: 'Des réponses sourcées, adaptées à vous',
         content:
-          'Récupérez des réponses précises et sourcées adaptées à votre contexte en discutant avec l’assistant virtuel WeLearn.'
+          'Obtenez des réponses précises et référencées, adaptées à votre contexte, grâce à l’assistant virtuel de WeLearn.'
       }
     },
     vertical: {
       section_one: {
         title: 'Soutenir la durabilité avec l’IA',
         content:
-          'Nous plaçons la durabilité au cœur de notre mission, en utilisant la technologie pour soutenir un avenir responsable.'
+          'Nous plaçons la durabilité au cœur de notre mission et utilisons la technologie pour soutenir un avenir responsable.'
       },
       section_two: {
         title: 'Simplifier l’éducation à la durabilité',
@@ -205,41 +214,42 @@ export const fr = {
           'Nous nous engageons à donner aux éducateurs du monde entier les moyens d’apprendre et d’enseigner la durabilité.'
       },
       section_three: {
-        title: 'Respect des principes de l’IA responsable',
+        title: 'Des principes d’IA responsable',
         content:
-          'Nous nous engageons à une utilisation transparente et respectueuse de l’environnement de l’intelligence artificielle.'
+          'Nous nous engageons pour une utilisation de l’intelligence artificielle transparente et respectueuse de l’environnement'
       }
     }
   },
-  moreDocuments: 'Explorer plus de documents',
+  moreDocuments: 'Explorer d’autres ressources',
   nav: {
     chat: 'Chat',
     search: 'Recherche',
     bookmarks: 'Favoris',
     syllabus: 'Créer un syllabus',
     about: 'À propos',
-    help: 'Aide ?'
+    help: 'Aide'
   },
+
   next: 'Suivant',
-  noBookmarks: 'Pas de favoris pour le moment.',
+  noBookmarks: 'Aucun favori pour le moment',
   noFiltersSelected: 'Aucun filtre sélectionné',
-  noResults: "Je n'ai aucun résultat pour cette recherche",
-  openSidebar: 'Ouvrir la barre latérale',
+  noResults: "Aucun résultat pour cette recherche",
+  openSidebar: 'Afficher la barre latérale',
   onboarding: {
     welcome: {
       title: 'Bienvenue sur WeLearn !',
       description:
-        "Nous sommes ravis de vous accueillir parmi nous. WeLearn est votre plateforme d'apprentissage alimentée par l'IA, conçue pour aider les éducateurs à intégrer la durabilité dans leurs programmes.</br>Notre plateforme vous aide à découvrir et à sélectionner des ressources de haute qualité liées aux <strong>Objectifs de Développement Durable (ODD)</strong>, en vous fournissant tout ce dont vous avez besoin pour créer des leçons percutantes et soucieuses de l'environnement.",
-      help: 'Vous pouvez en apprendre plus sur les fonctionnalités de WeLearn dans la section <strong>Aide</strong> sur la barre de navigation.',
-      action: 'Commençons !'
+        "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.</br></br>Êtes-vous prêt à découvrir des ressources de haute qualité liées aux <strong>Objectifs de développement durable</strong>, et à les transformer en cours percutants et soucieux de l’environnement ?",
+      help: 'Pour en savoir plus sur chaque fonctionnalité de WeLearn, consultez sa rubrique <strong>Aide</strong> dédiée.',
+      action: 'Commencer'
     }
   },
   reload: 'Recharger',
-  removeAll: 'Effacer tout',
+  removeAll: 'Tout effacer',
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
   rephrase: 'Reformuler',
-  searchBarPlaceholder: 'Recherche...',
+  searchBarPlaceholder: 'Rechercher...',
   sdgsAcronym: 'ODD',
   sdgs: {
     1: 'Pas de pauvreté',
@@ -263,33 +273,33 @@ export const fr = {
   search: 'Recherche',
   searchFilters: 'Filtres de recherche',
   searchPlaceholder:
-    'Entrez ou collez un texte ici.\nPlus le texte est long, meilleurs seront les résultats.',
+    'Saisissez ou collez un texte ici pour trouver des ressources similaires.\nUn texte plus long donnera de meilleurs résultats.',
   search_sdgs_in_query: 'ODD dans la requête',
   selectAll: 'Tout sélectionner',
-  selectSubject: 'Sélectionnez un sujet',
-  selectSubjectInfo: 'Sélectionnez un sujet pour adapter les résultats à votre domaine d’étude.',
+  selectSubject: 'Choisir une discipline',
+  selectSubjectInfo: 'Sélectionnez une discipline pour adapter les résultats à votre domaine.',
   selectedSource: 'Filtré par source : | Filtré par sources :',
   showFilters: 'Afficher les filtres',
-  showMoreAuthors: 'Voir plus d’auteurs',
+  showMoreAuthors: 'Afficher plus',
   showSources: 'Afficher les sources',
   smallScreenPage: {
-    title: 'Oups ! Votre écran est trop petit pour pouvoir voir correctement cette application.',
+    title: 'Oups ! Votre écran est trop petit.',
     subtitle:
-      'Pour une meilleure expérience, veuillez utiliser un appareil avec un écran plus grand. Merci !'
+      'Pour une expérience optimale, utilisez un appareil avec un écran plus grand.'
   },
   sources: 'Sources',
   sourcesList: {
-    fetching: 'Recherche dans plus de {docs_nb} documents...',
-    formulatingAnswer: 'Formulation de la réponse...'
+    fetching: 'Recherche parmi {docs_nb} documents...',
+    formulatingAnswer: 'Préparation de votre réponse...'
   },
   subjects: {
     anthropology: 'Anthropologie',
     arts: 'Arts',
     biology: 'Biologie',
-    business: 'Business',
+    business: 'Gestion',
     chemistry: 'Chimie',
     cs: 'Informatique',
-    earth: 'Sciences de la terre',
+    earth: 'Sciences de la Terre',
     economics: 'Économie',
     engineering: 'Ingénierie',
     geography: 'Géographie',
@@ -305,52 +315,52 @@ export const fr = {
     space: 'Science de l’espace',
     theology: 'Théologie'
   },
-  textLengthFeedback: 'Veuillez fournir un texte plus long pour la recherche',
+  textLengthFeedback: 'Veuillez ajouter davantage de texte pour lancer la recherche.',
   tutor: {
-    BIG_FILE: 'Le fichier dépasse les 5MB',
+    BIG_FILE: 'La taille du fichier dépasse 5 Mo.',
     BAD_EXTENSION:
-      'Le type de fichier n’est pas pris en charge. Types pris en charge pour le moment : PDF, TXT, DOCX',
+      'Type de fichier non pris en charge. Seuls les fichiers PDF, TXT et DOCX sont acceptés.',
     loading: {
-      wait: 'Veuillez patienter :',
+      wait: 'Veuillez patienter',
       search: {
-        title: 'Recherche de documents connexes',
-        description: 'Chargement de vos documents et recherche de documents connexes en cours.'
+        title: 'Recherche de ressources associées',
+        description: 'Traitement de vos documents et recherche de ressources pertinentes dans la base de données WeLearn.'
       },
       syllabus: {
         title: 'Génération du syllabus',
-        description: 'Génération de votre syllabus en cours.'
+        description: 'WeLearn génère votre syllabus à partir des documents fournis. Cette étape peut prendre quelques minutes.'
       }
     },
     firstStep: {
       acceptedFiles: 'Types de fichiers acceptés : PDF, TXT, DOCX',
       searchError: 'Aucun résultat trouvé pour le document fourni.',
-      title: 'Ajoutez des documents en lien avec votre cours',
+      title: 'Ajoutez des documents',
       description:
-        'Vous puvez ajouter un ou plusieurs documents pour commencer. Ces documents seront utilisés pour générer un syllabus.',
-      cursusDescriptionTitle: 'Quelques informations sur le cours',
-      cursusTitleLabel: 'Titre du cours',
-      cursusTitlePlaceholder: 'Sociolinguistique 101',
-      cursusLevelLabel: 'Niveau du cours',
-      cursusLevelPlaceholder: 'Licence, Master, etc.',
-      cursusDurationLabel: 'Durée du cours',
-      cursusDurationPlaceholder: '1 semestre, 6 semaines, etc.',
-      cursusDescriptionLabel: 'Ajoutez une courte description pour créer un meilleur syllabus',
+        'Pour commencer, importez un ou plusieurs documents de référence sur lesquels s’appuie votre cours. Ils serviront à générer votre syllabus.',
+      cursusDescriptionTitle: 'Informations sur le cours',
+      cursusTitleLabel: 'Titre',
+      cursusTitlePlaceholder: 'Introduction à la sociolinguistique',
+      cursusLevelLabel: 'Niveau d’études',
+      cursusLevelPlaceholder: 'Licence',
+      cursusDurationLabel: 'Durée',
+      cursusDurationPlaceholder: '6 semaines',
+      cursusDescriptionLabel: 'Ajoutez une brève description pour améliorer le syllabus',
       cursusDescriptionPlaceholder:
-        'Ce cours couvrira les bases de la sociolinguistique, y compris les concepts et théories clés.'
+        'Ce cours couvre les fondamentaux de la sociolinguistique, notamment les concepts et théories clés.'
     },
     secondStep: {
-      title: 'Sélectionnez plus de sources',
+      title: 'Sélectionnez des ressources additionnelles',
       description:
-        "Cliquez pour sélectionner des sources supplémentaires afin d'améliorer les résultats. Les sources ci-dessous sont catégorisées comme étant liées aux Objectifs de développement durable (ODD). Si aucune source n'est sélectionnée, le syllabus sera basé uniquement sur vos documents.",
-      noSources: "Aucune source en lien avec votre document n'a été trouvé.",
+        "Les ressources ci-dessous sont liées aux Objectifs de développement durable (ODD), et seront utilisées pour intégrer la durabilité dans votre cours. Si aucune ressource additionnelle n'est sélectionnée, le syllabus sera basé uniquement sur vos documents.",
+      noSources: "Aucune ressource en lien avec vos documents n’a été trouvée.",
       noSourcesDescription:
-        "Vous pouvez choisir de passer à l'étape suivante et seulement vos documents seront pris en compte. \n Pour ajouter de nouvelles sources, vous pouvez revenir à l'étape précédente."
+        "Vous pouvez poursuivre uniquement avec vos documents importés, mais l’intégration de la durabilité dans votre syllabus pourrait être limitée.\nPour parcourir des ressources additionnelles différentes, revenez à l’étape précédente pour modifier vos documents importés."
     },
     thirdStep: {
-      title: 'Syllabus',
-      description: 'Vous pouvez éditer et télécharger le syllabus ci-dessous.',
-      giveFeedback: 'Donner un feedback',
-      sendFeedback: 'Envoyer le feedback'
+      title: 'Votre syllabus',
+      description: 'Vous pouvez modifier directement cette page, télécharger une copie et envoyer un retour que WeLearn utilisera pour régénérer le syllabus — dans l’ordre de votre choix, autant de fois que nécessaire.',
+      giveFeedback: 'Donner un retour sur le syllabus généré',
+      sendFeedback: 'Envoyer le retour'
     }
   }
 };

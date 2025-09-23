@@ -7,150 +7,166 @@ export const en = {
     seeDetails: 'See details',
     openArticle: 'Open article',
     addBookmark: 'Add to bookmarks',
-    removeBookmark: 'Remove from bookmark'
+    removeBookmark: 'Remove from bookmarks'
   },
   chat: 'Chat',
   chatInputPlaceholder: 'Ask a question',
   chatNoResults:
-    'Your current filters did not return any results. Please try modifying your query or broadening your search criteria to explore relevant documents.',
-  chatProvideValidQuestion: 'Please provide a valid question to get a response.',
+    'No results with the current filters. Try adjusting your search or removing some filters.',
+  chatProvideValidQuestion: 'Please enter a valid question.',
   clearBookmarks: 'Clear bookmarks',
-  clearChat: 'Clear the conversation',
-  clearSearch: 'Clear the search',
-  closeSidebar: 'Close sidebar',
+  clearChat: 'Clear chat',
+  clearSearch: 'Clear search',
+  closeSidebar: 'Hide sidebar',
   copied: 'Copied!',
   copy: 'Copy',
   corpus: {
     conversation: 'The Conversation',
+    hal: 'HAL',
+    ipbes: 'IPBES',
     ipcc: 'IPCC',
+    oapen: 'OAPEN',
+    // open-edition-books: 'OpenEdition Books',
+    openalex: 'OpenAlex',
     peerj: 'PeerJ',
     plos: 'PLOS',
-    ipbes: 'IPBES'
+    // press-books: 'Pressbooks',
+    ted: 'TED',
+    uved: 'UVED',
+    wikipedia: 'Wikipedia'
   },
   defaultQueues: [
-    'Is climate change aggravated by human activity?',
-    'What is the impact of climate change on the economy?'
+    'Which SDGs align with a module on circular economy for undergraduates?',
+    'Compare carbon pricing and cap-and-trade: how do they work, and what are their pros and cons?'
   ],
   description:
     'Explore resources, learn, and boost sustainability integration in your courses with AI.',
-  emptyChatAction: 'Here are some examples of what you can ask me:',
-  emptyChatPresentation: 'Hello! I am WeLearn, your AI-powered SDG expert. How can I help?',
+  emptyChatAction: 'Try asking me:',
+  emptyChatPresentation: 'Hello! I’m WeLearn, your AI assistant for the SDGs. How can I help?',
   error: {
     UNKNOWN_ERROR: {
       title: 'Oops!',
-      description: 'Something went wrong. Please try again later.'
+      description: 'Something went wrong. Please try again.'
     },
     COLL_NOT_FOUND: {
       title: 'Oops!',
       description:
-        'The current collection is not yet available in the language used for the search.'
+        'This collection isn’t available in the language of your search yet.'
     },
     LANG_NOT_SUPPORTED: {
       title: 'Sorry!',
-      description: 'This language is not supported yet.'
+      description: 'This language isn’t supported yet.'
     }
   },
   errorModalGeneric: {
-    title: 'Sorry! Something went wrong.',
-    message: 'Please try again later.',
-    action: 'Reload the page'
+    title: 'Sorry, something went wrong.',
+    message: 'Please try again or reload the page.',
+    action: 'Reload page'
   },
-  extract: 'extract',
+  extract: 'Relevant excerpt',
   filterBySource: 'Filter by source',
   filterSDG: 'Filter by SDG',
   filteredBySDG: 'Filtered by SDG: | Filtered by SDGs:',
-  goToSources: 'Go to source',
-  goToTop: 'Go to top',
+  goToSources: 'View sources',
+  goToTop: 'Back to top',
   gotIt: 'Got it!',
+
   helpUser: {
     'q&a': {
-      title: 'How to use the Chat feature?',
+      title: 'Using the Chat feature',
       step1: {
         description:
-          'Welcome to the WeLearn chat! Here, you can talk with an SDG expert agent who answers your questions about sustainable development. All answers are sourced from reliable documents to ensure you receive accurate and verifiable information.'
+          'Welcome to WeLearn Chat! Ask our SDG-focused AI assistant about sustainable development. Answers are grounded in curated, reliable sources.'
       },
       step2: {
-        description: 'The Chat feature allows you to freely ask questions or use the sugg',
+        description: 
+          'Type your own question or choose a suggested question.',
         image: 'chat_2.png'
       },
       step3: {
-        description: "You'll then see appear the answer to your question.",
+        description: 
+          'Your answer will appear in the chat.',
         image: 'chat_3.png'
       },
       step4: {
         description:
-          "You'll be able to copy the answer to your clipboard or ask for it to be rephrased.",
+          'Copy the answer or have it rephrased.',
         image: 'chat_4.png'
       },
       step5: {
         description:
-          'All answers are sourced from the documents in the WeLearn database. For each question WeLearn makes a semantic search to find the most relevant documents and answer your question.'
+          'For each question, WeLearn runs a semantic search to find the most relevant documents in our database and generate a sourced answer.'
       },
       step6: {
         description:
-          'You have acces to the sources referenced in the answer. You can click on the source to open it in a new tab.',
+          'You have access to the cited sources. Click any source to open it in a new tab.',
         image: 'chat_6.png'
       },
       step7: {
-        description: 'You can also add a bookmark to save the answer for later use.',
+        description: 
+          'You can also add a bookmark to save the answer for later.',
         image: 'chat_7.png'
       },
       step8: {
         description:
-          'Finally, you can filter the search by selecting the desired SDGs and/or sources.',
+          'Filter results by SDGs and/or sources to refine your search.',
         image: 'chat_8.png'
       }
     },
     search: {
-      title: 'How to use the Search feature?',
+      title: 'Using the Search feature',
       step1: {
         description:
-          'Welcome to the WeLearn search! Here, you can search for educational resources on the Sustainable Development Goals (SDGs). The search uses a semantic engine, so the more detailed your query, the better the results will be. You can find more information about our sources and how we select them in the About section.'
+          'Welcome to WeLearn Search! Find educational resources on the Sustainable Development Goals (SDGs). The search uses a semantic engine; the longer your query, the better the results. Learn more about our sources and selection criteria in the About section.'
       },
       step2: {
         description:
-          'The Search feature allows you to search for educational resources on the Sustainable Development Goals (SDGs).'
+          'Type your query or paste some text to find relevant documents.'
       },
       step3: {
-        description: 'You can filter the search by selecting the desired SDGs and/or sources.'
+        description: 
+          'Refine results by filtering by SDGs and/or sources.'
       }
     },
     syllabus: {
-      title: 'How to use the Create a syllabus feature?',
+      title: 'Using the Syllabus Generation feature',
       step1: {
         description:
-          'Welcome to the WeLearn syllabus! Here, you can create a syllabus for your course. The syllabus is generated based on the documents you upload and the documents you select from the search results. You can add some information about the course to improve the results. Finally, you will be able to improve the results by adding a feedback.'
+          'Welcome to WeLearn Syllabus Generation! Create a syllabus for your course based on your uploaded documents and relevant documents from WeLearn’s resources. You can add course details to personalise the syllabus, and refine the generated syllabus by providing feedback.'
       },
       step2: {
         description:
-          'You can add one or more documents. Those documents will be used to generate a syllabus.'
+          'Add one or more documents. These will be used to generate the syllabus.'
       },
       step3: {
-        description: 'You can add some information about the course to improve the results.'
+        description: 
+          'Add course details to personalise the generated syllabus to your context.'
       },
       step4: {
         description:
-          'You can select documents from the search results. Those documents will be used to generate a syllabus. If none is selected, the syllabus will be based only on your documents.'
+          'Select documents from the WeLearn results to include. If none are selected, the syllabus will be based only on your uploaded documents.'
       },
       step5: {
-        description: 'You can add a feedback to improve the results.'
+        description: 
+          'Provide feedback to refine and improve the syllabus.'
       }
     },
     bookmarks: {
-      title: 'How to use the Bookmarks feature?',
+      title: 'Using the Bookmarks feature',
       step1: {
         description:
-          'Welcome to the WeLearn bookmarks! Here, you revisit the documents saved from the search results.'
+          'Welcome to WeLearn Bookmarks! Revisit items you saved from previous results.'
       },
       step2: {
         description:
-          'You can click on the bookmark icon to save a result, when savec the icon will be filled.'
+          'Click the bookmark icon to save a result; once saved, the icon appears filled.'
       },
       step3: {
-        description: 'You can remove a bookmark by clicking on the bookmark icon.'
+        description: 'Click the bookmark icon again to remove a bookmark.'
       },
       step4: {
-        description: 'You can remove all bookmarks at once by clicking on the bin icon.'
+        description: 
+        'Remove all bookmarks at once by clicking the trash icon.'
       }
     }
   },
@@ -167,11 +183,11 @@ export const en = {
       'Explore resources, learn, and boost sustainability integration in your courses with AI.',
     aboutTitle: 'About WeLearn',
     aboutDescription:
-      'WeLearn is a cutting-edge AI-powered learning platform designed to support educators in creating impactful, SDG-focused curricula. Our mission is to make the integration of sustainability into educational content seamless and intuitive. By leveraging advanced AI technologies, WeLearn enhances the teaching experience by curating and indexing high-quality, open resources from trusted databases, such as Wikipedia, The Conversation, and HAL.',
-    partnership: 'A partnership between:',
+      'WeLearn is a cutting-edge AI-powered learning platform designed to support educators in creating impactful, SDG-focused curricula. Our mission is to make the integration of sustainability into educational content seamless and intuitive. By leveraging advanced AI technologies, WeLearn supports the learning and teaching experience by curating and indexing high-quality, open resources from trusted databases, and using them as grounding for innovative pedagogical features.',
+    partnership: 'WeLearn is developed by the Learning Planet Institute as part of the “Ecological Transition for Sustainable Development” (TEDS) project. Funded by the French National Research Agency under "France 2030“ (reference: ANR-17-NCUN-0016) and the call for projects ”New University Curricula", the TEDS project is jointly led by the Learning Planet Institute, the UVED Foundation, and CY Cergy Paris University.',
     horizontal: {
       section_one: {
-        title: 'Curated Knowledge About Sustainability',
+        title: 'Curated Knowledge on Sustainability',
         content:
           'Carefully selected from over 10 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
       },
@@ -211,26 +227,26 @@ export const en = {
     bookmarks: 'Bookmarks',
     syllabus: 'Create a syllabus',
     about: 'About',
-    help: 'Help ?'
+    help: 'Help'
   },
 
   next: 'Next',
-  noBookmarks: 'No bookmarks yet.',
+  noBookmarks: 'No bookmarks yet',
   noFiltersSelected: 'No filters selected',
-  noResults: 'I have no results for this search',
+  noResults: 'No results for this search',
   openSidebar: 'Open sidebar',
   onboarding: {
     welcome: {
       title: 'Welcome to WeLearn!',
       description:
-        "We're excited to have you on board. WeLearn is your AI-powered learning platform designed to support educators in integrating sustainability into their curricula. </br>Our platform helps you discover and curate high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, providing everything you need to create impactful and environmentally-conscious lessons.",
-      help: "You can learn more about WeLearn's features in the <strong>Help</strong> section in the navigation bar.",
-      action: 'Got it!'
+        "We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses. </br>Our platform helps you discover high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, and transform them into impactful and environmentally-conscious lessons.",
+      help: "You can learn more about WeLearn's features in the <strong>Help</strong> section of the navigation bar.",
+      action: 'Let’s start!'
     }
   },
   reload: 'Reload',
-  removeAll: 'Remove all',
-  removeBookmark: 'Remove from bookmark',
+  removeAll: 'Clear all',
+  removeBookmark: 'Remove bookmark',
   removeSelection: 'Clear',
   rephrase: 'Rephrase',
   searchBarPlaceholder: 'Search...',
@@ -256,23 +272,23 @@ export const en = {
   },
   search: 'Search',
   searchFilters: 'Search filters',
-  searchPlaceholder: 'Type or paste a text here.\nLonger text, better results.',
+  searchPlaceholder: 'Enter or paste text here.\nLonger texts yield better results.',
   search_sdgs_in_query: 'SDGs in query',
   selectAll: 'Select all',
-  selectSubject: 'Adapt to subject',
-  selectSubjectInfo: 'Select a subject to adapt the results to your field of study.',
+  selectSubject: 'Choose a discipline',
+  selectSubjectInfo: 'Select a discipline to tailor results to your field.',
   selectedSource: 'Filtered by source: | Filtered by sources:',
   showFilters: 'Show filters',
   showMoreAuthors: 'Show more',
   showSources: 'Show sources',
   smallScreenPage: {
-    title: 'Oops! Your screen is too small to properly view this app.',
-    subtitle: 'For the best experience, please use a device with a larger screen. Thank you!'
+    title: 'Oops! Screen size too small.',
+    subtitle: 'For the best experience, please use a device with a larger screen.'
   },
   sources: 'Sources',
   sourcesList: {
-    fetching: 'Searching over {docs_nb} documents...',
-    formulatingAnswer: 'Formulating answer...'
+    fetching: 'Searching across {docs_nb} documents...',
+    formulatingAnswer: 'Preparing your answer...'
   },
   subjects: {
     anthropology: 'Anthropology',
@@ -297,52 +313,52 @@ export const en = {
     space: 'Space Science',
     theology: 'Theology'
   },
-  textLengthFeedback: 'Please provide a longer text for the search',
+  textLengthFeedback: 'Please add more text to improve search results.',
   tutor: {
-    BIG_FILE: 'File size exceeds 5MB',
-    BAD_EXTENSION: 'File extension not supported. Only PDF, TXT and DOCX files are allowed.',
+    BIG_FILE: 'File size exceeds 5 MB.',
+    BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
     loading: {
-      wait: 'Please wait:',
+      wait: 'Please wait',
       search: {
-        title: 'Searching for related documents',
-        description: 'We are loading your documents and searching for related documents.'
+        title: 'Finding related resources',
+        description: 'Processing your documents and searching for relevant resources in the WeLearn database.'
       },
       syllabus: {
         title: 'Generating syllabus',
         description:
-          'WeLearn is generating the syllabus based on the documents. This step may take a few minutes.'
+          'WeLearn is generating your syllabus from the documents provided. This step may take a few minutes.'
       }
     },
     firstStep: {
       acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',
-      searchError: 'No results found for the provided document.',
-      title: 'Add documents related to your course',
+      searchError: 'No results were found for the provided document.',
+      title: 'Add documents',
       description:
-        'You can add one or more documents to start. Those documents will be used to generate a syllabus.',
-      cursusDescriptionTitle: 'Some information about the course',
-      cursusTitleLabel: 'Cursus title',
+        'To get started, upload one or more reference documents your course is based on. They will be used to generate your syllabus.',
+      cursusDescriptionTitle: 'Course information',
+      cursusTitleLabel: 'Title',
       cursusTitlePlaceholder: 'Sociolinguistics 101',
-      cursusLevelLabel: 'Cursus level',
-      cursusLevelPlaceholder: 'Undergraduate, Graduate, etc.',
-      cursusDurationLabel: 'Cursus duration',
-      cursusDurationPlaceholder: '1 semester, 6 weeks, etc.',
-      cursusDescriptionLabel: 'Add a short description to create a better syllabus',
+      cursusLevelLabel: 'Level of study',
+      cursusLevelPlaceholder: 'Undergraduate',
+      cursusDurationLabel: 'Duration',
+      cursusDurationPlaceholder: '6 weeks',
+      cursusDescriptionLabel: 'Brief description of the course',
       cursusDescriptionPlaceholder:
-        'This course will cover the basics of sociolinguistics, including key concepts and theories.'
+        'This course covers the fundamentals of sociolinguistics, mainly key concepts and theories.'
     },
     secondStep: {
-      title: 'Select more source',
+      title: 'Select additional resources',
       description:
-        'Click to select additional sources to improve the results. The sources below are categorized as being related to Sustainable Development Goals (SDGs). If no source is selected, the syllabus will be based only on your documents.',
-      noSources: 'No sources related to your documents were found.',
+        'The resources below relate to the Sustainable Development Goals (SDGs), and will be used to integrate sustainability into your course. If no additional resources are selected, the syllabus will be generated based on your reference documents only.',
+      noSources: 'No resources related to your documents were found.',
       noSourcesDescription:
-        'You can still proceed with the documents you uploaded, but the results may be limited. \n To add new sources, go back to the first step and upload more documents.'
+        'You can proceed with your uploaded documents only, but sustainability integration in the generated syllabus may be limited.\nTo explore more resources, return to the previous step to modify your uploaded documents.'
     },
     thirdStep: {
-      title: 'Syllabus',
-      description: 'You can edit and download the syllabus below.',
-      giveFeedback: 'Give feedback',
-      sendFeedback: 'Send feedback'
+      title: 'Your syllabus',
+      description: 'You can edit directly on this page, download a copy, and submit feedback that WeLearn will use to regenerate the syllabus — in any order, and as many times as you like.',
+      giveFeedback: 'Provide feedback on the generated syllabus',
+      sendFeedback: 'Submit feedback'
     }
   }
 };
