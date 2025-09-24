@@ -23,7 +23,7 @@ const clearSubject = () => {
   selectedSubject.value = null
 }
 
-const changePageController = (goal: number) => {
+const changePageController = (goal: number | null) => {
   goalToShow.value = goal;
   toggleSdgSpecific.value = !toggleSdgSpecific.value;
   introJsonJourney.value=null;
@@ -69,7 +69,6 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
     <button class="button" @click="() => changePageController(null)">
       {{ $t('previous') }}
     </button>
-    {{ pageNum}}
     <div class="top-content-centered-wrapper" v-if='targetsJsonJourney'>
       <button class="button" @click="pageNum--">
         {{ $t('previous_page') }}
@@ -78,9 +77,9 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
         :step=pageNum
         :setStep=5
         :advancement="0"
-        :stepsLength="targetsJsonJourney.length + 1"
+        :stepsLength="targetsJsonJourney.length"
       />
-      <h1>
+      <h1 v-if = 'pageNum == 0' class="title is-4">
         Introduction 
       </h1>
       <button class="button" @click="pageNum++">
@@ -88,36 +87,43 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
       </button>
     </div>
 
-    <FullpageTemplate>
-      <template #top>
-        <h2>{{introJsonJourney && introJsonJourney[0].title}}</h2>
-
-      </template>
-      <template #main>
-        <SourcesListComponent
-          v-if='introJsonJourney && pageNum == 0'
-          False
-          :sourcesList="introJsonJourney[0].documents"
-          :isSourcesError="false"
-          :isFetchingSources="false"
-          :shouldDisplayScore="true"
-          :errorCode="null"
-          :noResults="null"
-        />
-        <div v-if='targetsJsonJourney && pageNum > 0'>
-          <h2>{{ targetsJsonJourney[pageNum - 1].content }}</h2>
+    <div class="introduction" v-if='introJsonJourney && pageNum == 0'>
+      <FullpageTemplate>
+        <template #top>
+          <h2 class="subtitle is-6">Introduction ODD {{goalToShow}}</h2>
+        </template>
+        <template #main>
           <SourcesListComponent
             False
-            :sourcesList="targetsJsonJourney[pageNum - 1].documents"
+            :sourcesList="introJsonJourney[0].documents"
             :isSourcesError="false"
             :isFetchingSources="false"
             :shouldDisplayScore="true"
             :errorCode="null"
             :noResults="null"
           />
-        </div>
-      </template>
-    </FullpageTemplate>
+        </template>
+      </FullpageTemplate>
+    </div>
+
+    <div class="targets" v-if='targetsJsonJourney && pageNum > 0'>
+      <FullpageTemplate>
+        <template #top>
+          <h2 class="subtitle is-6">{{ targetsJsonJourney[pageNum - 1].content }}</h2>
+        </template>
+        <template #main>
+            <SourcesListComponent
+              False
+              :sourcesList="targetsJsonJourney[pageNum - 1].documents"
+              :isSourcesError="false"
+              :isFetchingSources="false"
+              :shouldDisplayScore="true"
+              :errorCode="null"
+              :noResults="null"
+            />
+        </template>
+      </FullpageTemplate>
+    </div>
   </div>
 </template>
 
@@ -134,6 +140,7 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
 .top-content-centered-wrapper {
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   padding: 1rem 2rem;
   height: 100%;
