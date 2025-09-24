@@ -49,7 +49,11 @@ const store = useSearchStore();
             </div>
           </template>
         </SearchWrapper>
-        <p v-if="store.searchInput && store.isSearchDisabled" class="text-length-feedback">
+        <p
+          data-testid="lengthErrorFeedback"
+          v-if="store.searchInput && store.isSearchDisabled"
+          class="text-length-feedback"
+        >
           {{ $t('textLengthFeedback') }}
         </p>
 

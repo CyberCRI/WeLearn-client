@@ -26,7 +26,7 @@ const store = useBookmarksStore();
       :noResults="false"
     />
   </div>
-  <div v-else class="empty">
+  <div v-else class="empty" data-testid="noBookmarks">
     <h1 class="title is-1">{{ $t('noBookmarks') }}</h1>
   </div>
 </template>

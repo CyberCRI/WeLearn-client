@@ -20,7 +20,7 @@ const toggleFeedback = async () => {
 </script>
 <template>
   <div class="wrapper" :class="{ visible: visible }">
-    <h1 class="title is-4">{{ $t('tutor.thirdStep.title') }}</h1>
+    <h1 data-testid="thirdStepTitle" class="title is-4">{{ $t('tutor.thirdStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.thirdStep.description') }}</p>
     <!-- syllabus -->
     <p

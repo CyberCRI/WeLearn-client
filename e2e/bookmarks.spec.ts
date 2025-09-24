@@ -7,7 +7,7 @@ test.describe('bookmarks', () => {
   });
   // test that page is empty
   test('page is empty', async ({ page }) => {
-    await expect(page.getByText('Pas de favoris pour le moment.')).toBeVisible();
+    await expect(page.getByTestId('noBookmarks')).toBeVisible();
   });
 
   test('delete-button is not visible', async ({ page }) => {
@@ -40,7 +40,7 @@ test.describe('bookmarks', () => {
     //remove all bookmarks
     test('removes all bookmarks', async ({ page }) => {
       await page.getByTestId('clear-bookmark').click();
-      await expect(page.getByText('Pas de favoris pour le moment.')).toBeVisible();
+      await expect(page.getByTestId('noBookmarks')).toBeVisible();
     });
   });
 });

@@ -15,9 +15,7 @@ test.describe('search', () => {
     test('show error if text length is less than 5', async ({ page }) => {
       await page.fill('textarea', 'abcd');
       // expect message to show
-      await expect(
-        page.getByText('Veuillez fournir un texte plus long pour la recherche')
-      ).toBeVisible();
+      await expect(page.getByTestId('lengthErrorFeedback')).toBeVisible();
       // expect search button to be disabled
       await expect(page.getByLabel('Recherche', { exact: true })).toBeDisabled();
     });

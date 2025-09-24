@@ -235,6 +235,7 @@ exports[`TutorPage > renders properly 1`] = `
     >
       <h1
         class="title is-4"
+        data-testid="thirdStepTitle"
         data-v-7bf7679d=""
       >
         tutor.thirdStep.title
