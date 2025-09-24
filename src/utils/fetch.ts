@@ -82,12 +82,7 @@ export const getSearch = async (
 ) => {
   const result = await postAxios(
     `/search/by_document?nb_results=${nbResults}${subject ? `&subject=${subject}` : ''}`,
-    options,
-    {
-      headers: {
-        'X-API-Key': WL_API_KEY
-      }
-    }
+    options
   );
 
   if (!result) throw new Error('oopss');
