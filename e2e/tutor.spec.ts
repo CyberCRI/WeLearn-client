@@ -186,9 +186,9 @@ test.describe('Tutor', () => {
     await fileInput.click();
     await fileInput.setInputFiles('./e2e/files/test_tutor.pdf');
     await page.getByRole('button', { name: 'suivant' }).click();
-    await expect(page.getByRole('heading', { name: 'Sélectionnez plus de sources' })).toBeVisible();
+    await expect(page.getByTestId('secondStepTitle')).toBeVisible();
 
     await page.getByRole('button', { name: 'suivant' }).click();
-    await expect(page.getByRole('heading', { name: 'Syllabus', exact: true })).toBeVisible();
+    await expect(page.getByTestId('thirdStepTitle')).toBeVisible();
   });
 });

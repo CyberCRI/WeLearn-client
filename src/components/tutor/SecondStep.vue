@@ -14,7 +14,7 @@ defineProps<{
 <template>
   <div class="wrapper" :class="{ disabled: disabled, visible: visible }">
     <div class="sources-wrapper" v-if="sources && sources.length">
-      <h1 class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
+      <h1 data-testId="secondStepTitle" class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
       <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>
       <div class="sources">
         <div

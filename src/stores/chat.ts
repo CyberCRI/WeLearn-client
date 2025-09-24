@@ -132,9 +132,15 @@ export const useChatStore = defineStore('chat', () => {
 
       shouldFetchNewDocuments.value = true;
 
+      const default_lang = ['EN', 'FR'].includes(data['USER_LANGUAGE'].toUpperCase())
+        ? data['USER_LANGUAGE'].toUpperCase()
+        : 'EN';
+
       const userLang = data['USER_LANGUAGE'].toUpperCase();
-      const reformulatedQuery = reformulate.data[`STANDALONE_QUESTION_${userLang}`];
-      const otherLang = data[`STANDALONE_QUESTION_${other_language_mapping[userLang]}`];
+      const reformulatedQuery =
+        reformulate.data[`STANDALONE_QUESTION_${userLang}`] ||
+        reformulate.data[`STANDALONE_QUESTION_${default_lang}`];
+      const otherLang = data[`STANDALONE_QUESTION_${other_language_mapping[default_lang]}`];
 
       if (!reformulatedQuery) {
         // add error message
