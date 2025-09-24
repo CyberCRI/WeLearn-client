@@ -50,8 +50,7 @@ export const en = {
     },
     COLL_NOT_FOUND: {
       title: 'Oops!',
-      description:
-        'This collection isn’t available in the language of your search yet.'
+      description: 'This collection isn’t available in the language of your search yet.'
     },
     LANG_NOT_SUPPORTED: {
       title: 'Sorry!',
@@ -79,18 +78,15 @@ export const en = {
           'Welcome to WeLearn Chat! Ask our SDG-focused AI assistant about sustainable development. Answers are grounded in curated, reliable sources.'
       },
       step2: {
-        description: 
-          'Type your own question or choose a suggested question.',
+        description: 'Type your own question or choose a suggested question.',
         image: 'chat_2.png'
       },
       step3: {
-        description: 
-          'Your answer will appear in the chat.',
+        description: 'Your answer will appear in the chat.',
         image: 'chat_3.png'
       },
       step4: {
-        description:
-          'Copy the answer or have it rephrased.',
+        description: 'Copy the answer or have it rephrased.',
         image: 'chat_4.png'
       },
       step5: {
@@ -103,13 +99,11 @@ export const en = {
         image: 'chat_6.png'
       },
       step7: {
-        description: 
-          'You can also add a bookmark to save the answer for later.',
+        description: 'You can also add a bookmark to save the answer for later.',
         image: 'chat_7.png'
       },
       step8: {
-        description:
-          'Filter results by SDGs and/or sources to refine your search.',
+        description: 'Filter results by SDGs and/or sources to refine your search.',
         image: 'chat_8.png'
       }
     },
@@ -120,12 +114,10 @@ export const en = {
           'Welcome to WeLearn Search! Find educational resources on the Sustainable Development Goals (SDGs). The search uses a semantic engine; the longer your query, the better the results. Learn more about our sources and selection criteria in the About section.'
       },
       step2: {
-        description:
-          'Type your query or paste some text to find relevant documents.'
+        description: 'Type your query or paste some text to find relevant documents.'
       },
       step3: {
-        description: 
-          'Refine results by filtering by SDGs and/or sources.'
+        description: 'Refine results by filtering by SDGs and/or sources.'
       }
     },
     syllabus: {
@@ -135,27 +127,23 @@ export const en = {
           'Welcome to WeLearn Syllabus Generation! Create a syllabus for your course based on your uploaded documents and relevant documents from WeLearn’s resources. You can add course details to personalise the syllabus, and refine the generated syllabus by providing feedback.'
       },
       step2: {
-        description:
-          'Add one or more documents. These will be used to generate the syllabus.'
+        description: 'Add one or more documents. These will be used to generate the syllabus.'
       },
       step3: {
-        description: 
-          'Add course details to personalise the generated syllabus to your context.'
+        description: 'Add course details to personalise the generated syllabus to your context.'
       },
       step4: {
         description:
           'Select documents from the WeLearn results to include. If none are selected, the syllabus will be based only on your uploaded documents.'
       },
       step5: {
-        description: 
-          'Provide feedback to refine and improve the syllabus.'
+        description: 'Provide feedback to refine and improve the syllabus.'
       }
     },
     bookmarks: {
       title: 'Using the Bookmarks feature',
       step1: {
-        description:
-          'Welcome to WeLearn Bookmarks! Revisit items you saved from previous results.'
+        description: 'Welcome to WeLearn Bookmarks! Revisit items you saved from previous results.'
       },
       step2: {
         description:
@@ -165,8 +153,7 @@ export const en = {
         description: 'Click the bookmark icon again to remove a bookmark.'
       },
       step4: {
-        description: 
-        'Remove all bookmarks at once by clicking the trash icon.'
+        description: 'Remove all bookmarks at once by clicking the trash icon.'
       }
     }
   },
@@ -184,7 +171,8 @@ export const en = {
     aboutTitle: 'About WeLearn',
     aboutDescription:
       'WeLearn is a cutting-edge AI-powered learning platform designed to support educators in creating impactful, SDG-focused curricula. Our mission is to make the integration of sustainability into educational content seamless and intuitive. By leveraging advanced AI technologies, WeLearn supports the learning and teaching experience by curating and indexing high-quality, open resources from trusted databases, and using them as grounding for innovative pedagogical features.',
-    partnership: 'WeLearn is developed by the Learning Planet Institute as part of the “Ecological Transition for Sustainable Development” (TEDS) project. Funded by the French National Research Agency under "France 2030“ (reference: ANR-17-NCUN-0016) and the call for projects ”New University Curricula", the TEDS project is jointly led by the Learning Planet Institute, the UVED Foundation, and CY Cergy Paris University.',
+    partnership:
+      'WeLearn is developed by the Learning Planet Institute as part of the “Ecological Transition for Sustainable Development” (TEDS) project. Funded by the French National Research Agency under "France 2030“ (reference: ANR-17-NCUN-0016) and the call for projects ”New University Curricula", the TEDS project is jointly led by the Learning Planet Institute, the UVED Foundation, and CY Cergy Paris University.',
     horizontal: {
       section_one: {
         title: 'Curated Knowledge on Sustainability',
@@ -239,7 +227,7 @@ export const en = {
     welcome: {
       title: 'Welcome to WeLearn!',
       description:
-        "We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses. </br>Our platform helps you discover high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, and transform them into impactful and environmentally-conscious lessons.",
+        'We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses. </br>Our platform helps you discover high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, and transform them into impactful and environmentally-conscious lessons.',
       help: "You can learn more about WeLearn's features in the <strong>Help</strong> section of the navigation bar.",
       action: 'Let’s start!'
     }
@@ -321,7 +309,8 @@ export const en = {
       wait: 'Please wait',
       search: {
         title: 'Finding related resources',
-        description: 'Processing your documents and searching for relevant resources in the WeLearn database.'
+        description:
+          'Processing your documents and searching for relevant resources in the WeLearn database.'
       },
       syllabus: {
         title: 'Generating syllabus',
@@ -356,7 +345,8 @@ export const en = {
     },
     thirdStep: {
       title: 'Your syllabus',
-      description: 'You can edit directly on this page, download a copy, and submit feedback that WeLearn will use to regenerate the syllabus — in any order, and as many times as you like.',
+      description:
+        'You can edit directly on this page, download a copy, and submit feedback that WeLearn will use to regenerate the syllabus — in any order, and as many times as you like.',
       giveFeedback: 'Provide feedback on the generated syllabus',
       sendFeedback: 'Submit feedback'
     }
