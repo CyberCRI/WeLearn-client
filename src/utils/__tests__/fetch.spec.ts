@@ -22,7 +22,7 @@ describe('fetch', () => {
         expect(axios.post).toHaveBeenCalledWith(
           `${API_BASE}/api/v1/endpoint`,
           {},
-          { headers: { 'X-API-Key': WL_API_KEY } }
+          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-id': null } }
         );
       });
 
@@ -34,7 +34,7 @@ describe('fetch', () => {
           {
             filter: 'i am a filter'
           },
-          { headers: { 'X-API-Key': WL_API_KEY } }
+          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-id': null } }
         );
       });
     });
