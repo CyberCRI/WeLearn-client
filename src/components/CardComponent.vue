@@ -101,14 +101,14 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
           {{ displayedDescription }}
         </div>
         <details v-if="slice" class="mt-2 is-clickable" @click.stop>
-          <summary class="is-capitalized">{{ $t('extract') }}</summary>
+          <summary>{{ $t('extract') }}</summary>
           <blockquote class="is-italic">{{ slice }}</blockquote>
         </details>
       </div>
     </div>
 
     <footer class="card-footer" v-if="(sdg || []).length">
-      <div class="subtitle is-6 footer-element">{{ $t('SDGs') }}</div>
+      <div class="subtitle is-6 footer-element">{{ $t('sdgsAcronym') }}</div>
       <Pill class="footer-element" v-for="item in sdg" :key="item" :content="item.toString()" />
     </footer>
   </div>

@@ -2,6 +2,7 @@ export const fr = {
   ':': ' :',
   adaptedTo: 'Adapté à :',
   addBookmark: 'Ajouter aux favoris',
+  back: 'Retour',
   bookmarks: 'Favoris',
   cardArticle: {
     seeDetails: 'Voir les détails',
@@ -35,6 +36,7 @@ export const fr = {
     uved: 'UVED',
     wikipedia: 'Wikipedia'
   },
+  download: 'Télécharger',
   defaultQueues: [
     'Quels ODD sont liés à un module de niveau Licence sur l’économie circulaire ?',
     'Compare la tarification du carbone et le système « cap-and-trade » : fonctionnement, avantages et limites.'
@@ -67,6 +69,7 @@ export const fr = {
   filterBySource: 'Filtrer par source',
   filterSDG: 'Filtrer par ODD',
   filteredBySDG: 'Filtré par l’ODD : | Filtré par les ODD :',
+  genSyllabus: 'Générer le syllabus',
   goToSources: 'Voir les sources',
   goToTop: 'Retour en haut',
   gotIt: 'Compris !',
