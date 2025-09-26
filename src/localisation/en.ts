@@ -359,6 +359,5 @@ export const en = {
     mainTitle: 'Choose a subject :',
     chooseSdg: 'Choose an SDG :'
   },
-  previous: "Previous"
-
+  previous: 'Previous'
 };

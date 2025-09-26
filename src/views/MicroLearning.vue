@@ -8,56 +8,75 @@ import SelectSubject from '@/components/dropdowns/SubjectSelector.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 
 const toggleSdgSpecific = ref(false);
-const goalToShow = ref<undefined | number>(undefined)
-const introJsonJourney = ref<null | Array<Record<any, any>>>(null)
-const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null)
-const selectedSubject = ref<string | undefined>(undefined)
-const pageNum = ref<number>(0)
+const goalToShow = ref<undefined | number>(undefined);
+const introJsonJourney = ref<null | Array<Record<any, any>>>(null);
+const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null);
+const selectedSubject = ref<string | undefined>(undefined);
+const pageNum = ref<number>(0);
 
 const selectSubject_ = (subject: string) => {
-  selectedSubject.value = subject
-  console.log(subject)
-}
+  selectedSubject.value = subject;
+  console.log(subject);
+};
 
 const clearSubject = () => {
-  selectedSubject.value = undefined
-}
+  selectedSubject.value = undefined;
+};
 
 const changePageController = (goal: number | undefined) => {
   goalToShow.value = goal;
   toggleSdgSpecific.value = !toggleSdgSpecific.value;
-  introJsonJourney.value=null;
-  targetsJsonJourney.value=null;
-}
+  introJsonJourney.value = null;
+  targetsJsonJourney.value = null;
+};
 
-const fetchMicroLearningForSpecificSDG = async (goal: number | undefined, subject: string | undefined) => {
-  const response = await getAxios('/micro_learning/full_journey?lang=fr&sdg='+goal+'&subject='+subject);
-  introJsonJourney.value = response.introduction
-  targetsJsonJourney.value = response.target
+const fetchMicroLearningForSpecificSDG = async (
+  goal: number | undefined,
+  subject: string | undefined
+) => {
+  const response = await getAxios(
+    '/micro_learning/full_journey?lang=fr&sdg=' + goal + '&subject=' + subject
+  );
+  introJsonJourney.value = response.introduction;
+  targetsJsonJourney.value = response.target;
 };
 </script>
 
-
 <template>
-  <div class="first step"  v-if="!toggleSdgSpecific">
+  <div class="first step" v-if="!toggleSdgSpecific">
     <FullpageTemplate>
       <template #top>
         <h2 class="title is-6 mt-4">
           {{ $t('microlearning.mainTitle') }}
         </h2>
         <div>
-          <SelectSubject :selectSubject="selectSubject_" :clearSubject="clearSubject" :storedSubject="selectedSubject"></SelectSubject>
+          <SelectSubject
+            :selectSubject="selectSubject_"
+            :clearSubject="clearSubject"
+            :storedSubject="selectedSubject"
+          ></SelectSubject>
         </div>
       </template>
       <template #main>
-        <div class="content-centered-wrapper" >
+        <div class="content-centered-wrapper">
           <h2 class="title is-6 mt-4" v-if="selectedSubject">
             {{ $t('microlearning.chooseSdg') }}
           </h2>
           <div class="layout-flex">
             <div class="flex-wrap" v-if="selectedSubject">
-              <SdgTile v-for="n in 17" :key="n" :goal="n" size="200" rounded="16"
-                       @click="() => {changePageController(n); fetchMicroLearningForSpecificSDG(goalToShow, selectedSubject);}"/>
+              <SdgTile
+                v-for="n in 17"
+                :key="n"
+                :goal="n"
+                size="200"
+                rounded="16"
+                @click="
+                  () => {
+                    changePageController(n);
+                    fetchMicroLearningForSpecificSDG(goalToShow, selectedSubject);
+                  }
+                "
+              />
             </div>
           </div>
         </div>
@@ -69,28 +88,27 @@ const fetchMicroLearningForSpecificSDG = async (goal: number | undefined, subjec
     <button class="button" @click="() => changePageController(undefined)">
       {{ $t('previous') }}
     </button>
-    <div class="top-content-centered-wrapper" v-if='targetsJsonJourney'>
+    <div class="top-content-centered-wrapper" v-if="targetsJsonJourney">
       <button class="button" @click="pageNum--">
         {{ $t('previous_page') }}
       </button>
-      <StepsIndicator v-if='targetsJsonJourney && pageNum > 0'
-        :step=pageNum
-        :setStep=5
+      <StepsIndicator
+        v-if="targetsJsonJourney && pageNum > 0"
+        :step="pageNum"
+        :setStep="5"
         :advancement="0"
         :stepsLength="targetsJsonJourney.length"
       />
-      <h1 v-if = 'pageNum == 0' class="title is-4">
-        Introduction 
-      </h1>
+      <h1 v-if="pageNum == 0" class="title is-4">Introduction</h1>
       <button class="button" @click="pageNum++">
         {{ $t('next_page') }}
       </button>
     </div>
 
-    <div class="introduction" v-if='introJsonJourney && pageNum == 0'>
+    <div class="introduction" v-if="introJsonJourney && pageNum == 0">
       <FullpageTemplate>
         <template #top>
-          <h2 class="subtitle is-6">Introduction ODD {{goalToShow}}</h2>
+          <h2 class="subtitle is-6">Introduction ODD {{ goalToShow }}</h2>
         </template>
         <template #main>
           <SourcesListComponent
@@ -106,21 +124,21 @@ const fetchMicroLearningForSpecificSDG = async (goal: number | undefined, subjec
       </FullpageTemplate>
     </div>
 
-    <div class="targets" v-if='targetsJsonJourney && pageNum > 0'>
+    <div class="targets" v-if="targetsJsonJourney && pageNum > 0">
       <FullpageTemplate>
         <template #top>
           <h2 class="subtitle is-6">{{ targetsJsonJourney[pageNum - 1].content }}</h2>
         </template>
         <template #main>
-            <SourcesListComponent
-              False
-              :sourcesList="targetsJsonJourney[pageNum - 1].documents"
-              :isSourcesError="false"
-              :isFetchingSources="false"
-              :shouldDisplayScore="true"
-              :errorCode="null"
-              :noResults="null"
-            />
+          <SourcesListComponent
+            False
+            :sourcesList="targetsJsonJourney[pageNum - 1].documents"
+            :isSourcesError="false"
+            :isFetchingSources="false"
+            :shouldDisplayScore="true"
+            :errorCode="null"
+            :noResults="null"
+          />
         </template>
       </FullpageTemplate>
     </div>
@@ -133,8 +151,8 @@ const fetchMicroLearningForSpecificSDG = async (goal: number | undefined, subjec
 }
 .flex-wrap {
   display: flex;
-  flex-wrap: wrap;   /* permet le retour à la ligne */
-  gap: 12px;         /* espace entre les tuiles */
+  flex-wrap: wrap; /* permet le retour à la ligne */
+  gap: 12px; /* espace entre les tuiles */
 }
 
 .top-content-centered-wrapper {

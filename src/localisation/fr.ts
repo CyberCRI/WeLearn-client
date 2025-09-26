@@ -363,7 +363,7 @@ export const fr = {
   },
   microlearning: {
     mainTitle: 'Choisissez un sujet :',
-    chooseSdg: 'Choissisez l\'ODD qui vous intéresse'
+    chooseSdg: "Choissisez l'ODD qui vous intéresse"
   },
-  previous: "Précédent"
+  previous: 'Précédent'
 };
