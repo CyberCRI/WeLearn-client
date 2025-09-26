@@ -8,10 +8,10 @@ import SelectSubject from '@/components/dropdowns/SubjectSelector.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 
 const toggleSdgSpecific = ref(false);
-const goalToShow = ref<null | number>(null)
+const goalToShow = ref<undefined | number>(undefined)
 const introJsonJourney = ref<null | Array<Record<any, any>>>(null)
 const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null)
-const selectedSubject = ref<string | null>(null)
+const selectedSubject = ref<string | undefined>(undefined)
 const pageNum = ref<number>(0)
 
 const selectSubject_ = (subject: string) => {
@@ -20,17 +20,17 @@ const selectSubject_ = (subject: string) => {
 }
 
 const clearSubject = () => {
-  selectedSubject.value = null
+  selectedSubject.value = undefined
 }
 
-const changePageController = (goal: number | null) => {
+const changePageController = (goal: number | undefined) => {
   goalToShow.value = goal;
   toggleSdgSpecific.value = !toggleSdgSpecific.value;
   introJsonJourney.value=null;
   targetsJsonJourney.value=null;
 }
 
-const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) => {
+const fetchMicroLearningForSpecificSDG = async (goal: number | undefined, subject: string | undefined) => {
   const response = await getAxios('/micro_learning/full_journey?lang=fr&sdg='+goal+'&subject='+subject);
   introJsonJourney.value = response.introduction
   targetsJsonJourney.value = response.target
@@ -56,7 +56,7 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
           </h2>
           <div class="layout-flex">
             <div class="flex-wrap" v-if="selectedSubject">
-              <SdgTile v-for="n in 17" :key="n" :goal="n" size=200
+              <SdgTile v-for="n in 17" :key="n" :goal="n" size="200" rounded="16"
                        @click="() => {changePageController(n); fetchMicroLearningForSpecificSDG(goalToShow, selectedSubject);}"/>
             </div>
           </div>
@@ -66,7 +66,7 @@ const fetchMicroLearningForSpecificSDG = async (goal: number, subject: string) =
   </div>
 
   <div class="second step" v-if="toggleSdgSpecific">
-    <button class="button" @click="() => changePageController(null)">
+    <button class="button" @click="() => changePageController(undefined)">
       {{ $t('previous') }}
     </button>
     <div class="top-content-centered-wrapper" v-if='targetsJsonJourney'>
