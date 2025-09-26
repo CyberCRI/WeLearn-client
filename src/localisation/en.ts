@@ -2,6 +2,7 @@ export const en = {
   ':': ':',
   adaptedTo: 'Adapted to:',
   addBookmark: 'Add to bookmarks',
+  back: 'Back',
   bookmarks: 'Bookmarks',
   cardArticle: {
     seeDetails: 'See details',
@@ -35,6 +36,7 @@ export const en = {
     uved: 'UVED',
     wikipedia: 'Wikipedia'
   },
+  download: 'Download',
   defaultQueues: [
     'Which SDGs align with a module on circular economy for undergraduates?',
     'Compare carbon pricing and cap-and-trade: how do they work, and what are their pros and cons?'
@@ -66,6 +68,7 @@ export const en = {
   filterBySource: 'Filter by source',
   filterSDG: 'Filter by SDG',
   filteredBySDG: 'Filtered by SDG: | Filtered by SDGs:',
+  genSyllabus: 'Generate syllabus',
   goToSources: 'View sources',
   goToTop: 'Back to top',
   gotIt: 'Got it!',

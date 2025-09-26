@@ -23,6 +23,8 @@ const getI18nText = computed(() => {
   };
 });
 
+const nextButtonText = ['next', 'genSyllabus', 'download'];
+
 const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
   1: store.handleSearch,
   2: store.handleCreateSyllabus,
@@ -84,14 +86,14 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
     </div>
     <div class="actions">
       <button class="button" v-if="store.step > 1" @click="store.goBack">
-        {{ $t('previous') }}
+        {{ $t('back') }}
       </button>
       <button
         class="button"
         v-if="store.step <= 3"
         @click="stepToAction[store.step as 1 | 2 | 3]()"
       >
-        {{ store.step < 3 ? $t('next') : $t('download') }}
+        {{ $t(nextButtonText[store.step - 1]) }}
       </button>
     </div>
   </div>
