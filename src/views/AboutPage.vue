@@ -9,22 +9,24 @@
           {{ $t('landing.description') }}
         </p>
 
-        <div class="is-flex mb-6 is-justify-content-space-around is-align-items-center">
-          <p class="is-size-5 has-text-weight-semibold">+ 500 000 Documents</p>
-          <p class="is-size-5 has-text-weight-semibold">+ 500 000 Documents</p>
-          <p class="is-size-5 has-text-weight-semibold">+ 500 000 Documents</p>
-        </div>
+        <!-- <div class="is-flex mb-6 is-justify-content-space-around is-align-items-center"> -->
+        <!--   <p class="is-size-5 has-text-weight-semibold">+ 5 000 000 documents traités</p> -->
+        <!--   <p class="is-size-5 has-text-weight-semibold">+ {{ totalDocs }} documents retenus</p> -->
+        <!--   <p class="is-size-5 has-text-weight-semibold"> -->
+        <!--     À partir de{{ sourcesList.length }} corpus -->
+        <!--   </p> -->
+        <!-- </div> -->
       </div>
     </div>
 
     <div class="has-text-centered partnership">
-      <h1 class="mb-4">{{ $t('landing.partnership') }}</h1>
       <div class="is-flex my-4 is-justify-content-space-between is-align-items-center">
         <img alt="logo" class="partner-logo mx-4" src="@/assets/lpi_logo.png" />
         <img alt="logo" class="partner-logo mx-4" src="@/assets/uved.png" />
         <img alt="logo" class="partner-logo mx-4" src="@/assets/cy_logo.png" />
         <img alt="logo" class="partner-logo mx-4" src="@/assets/france2030.png" />
       </div>
+      <h1 class="subtitle is-6 mt-6">{{ $t('landing.partnership') }}</h1>
     </div>
 
     <div class="product-description has-text-centered">
@@ -73,6 +75,28 @@
         </div>
       </div>
     </div>
+    <div class="section mx-6 mb-6 pb-6">
+      <div class="is-flex mx-6">
+        <div class="mx-4">
+          <p class="subtitle has-text-weight-bold">
+            {{ $t('landing.vertical.section_one.title') }}
+          </p>
+          <p class="subtitle">{{ $t('landing.vertical.section_one.content') }}</p>
+        </div>
+        <div class="mx-4">
+          <p class="subtitle has-text-weight-bold">
+            {{ $t('landing.vertical.section_two.title') }}
+          </p>
+          <p class="subtitle">{{ $t('landing.vertical.section_two.content') }}</p>
+        </div>
+        <div class="mx-4">
+          <p class="subtitle has-text-weight-bold">
+            {{ $t('landing.vertical.section_three.title') }}
+          </p>
+          <p class="subtitle">{{ $t('landing.vertical.section_three.content') }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -85,13 +109,11 @@
   width: 60%;
   height: 100%;
   margin: auto;
-  margin-top: 2%;
 }
 
 .partnership {
-  width: 40%;
+  width: 45%;
   margin: auto;
-  margin-top: 8px;
 }
 
 .partner-logo {
