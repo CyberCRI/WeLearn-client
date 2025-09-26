@@ -11,10 +11,10 @@ defineProps<{
   isUp?: boolean;
 }>();
 
-const subjects = ref<null | Array<string>>(null)
+const subjects = ref<null | Array<string>>(null);
 
 const fetchAvailableSubjects = async () => {
-  subjects.value = await getAxios('/micro_learning/subject_list')
+  subjects.value = await getAxios('/micro_learning/subject_list');
 };
 
 onMounted(async () => {
