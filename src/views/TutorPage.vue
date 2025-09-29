@@ -85,11 +85,17 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
       />
     </div>
     <div class="actions">
-      <button class="button" v-if="store.step > 1" @click="store.goBack">
+      <button
+        data-testid="tutor-back-button"
+        class="button"
+        v-if="store.step > 1"
+        @click="store.goBack"
+      >
         {{ $t('back') }}
       </button>
       <button
         class="button"
+        data-testid="tutor-next-button"
         v-if="store.step <= 3"
         @click="stepToAction[store.step as 1 | 2 | 3]()"
       >

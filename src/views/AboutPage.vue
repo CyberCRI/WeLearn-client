@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper py-6">
     <div class="presentation is-flex is-fullwidth is-justify-content-center is-align-items-center">
       <div class="call-to-action is-flex is-flex-direction-column is-justify-content-space-between">
         <div class="is-size-1 has-text-weight-bold has-text-centered is-uppercase">
@@ -39,7 +39,7 @@
     <div class="section mt-6">
       <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
-          <p class="subtitle has-text-weight-bold mb-2 is-clickable">
+          <p class="subtitle has-text-weight-bold mb-2">
             {{ $t('landing.horizontal.section_one.title') }}
             <span class="is-size-4 ml-4">></span>
           </p>
@@ -52,7 +52,7 @@
     <div class="section">
       <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
-          <p class="subtitle has-text-weight-bold mb-2 is-clickable">
+          <p class="subtitle has-text-weight-bold mb-2">
             {{ $t('landing.horizontal.section_two.title') }}
             <span class="is-size-4 ml-4">></span>
           </p>
@@ -65,7 +65,7 @@
     <div class="section">
       <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
-          <p class="subtitle has-text-weight-bold mb-2 is-clickable">
+          <p class="subtitle has-text-weight-bold mb-2">
             {{ $t('landing.horizontal.section_three.title') }}
             <span class="is-size-4 ml-4">></span>
           </p>
@@ -75,21 +75,21 @@
         </div>
       </div>
     </div>
-    <div class="section mx-6 mb-6 pb-6">
+    <div class="section px-6 pb-6">
       <div class="is-flex mx-6">
-        <div class="mx-4">
+        <div class="px-4">
           <p class="subtitle has-text-weight-bold">
             {{ $t('landing.vertical.section_one.title') }}
           </p>
           <p class="subtitle">{{ $t('landing.vertical.section_one.content') }}</p>
         </div>
-        <div class="mx-4">
+        <div class="px-6">
           <p class="subtitle has-text-weight-bold">
             {{ $t('landing.vertical.section_two.title') }}
           </p>
           <p class="subtitle">{{ $t('landing.vertical.section_two.content') }}</p>
         </div>
-        <div class="mx-4">
+        <div class="px-6">
           <p class="subtitle has-text-weight-bold">
             {{ $t('landing.vertical.section_three.title') }}
           </p>
