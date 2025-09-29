@@ -27,11 +27,11 @@ export const en = {
     ipbes: 'IPBES',
     ipcc: 'IPCC',
     oapen: 'OAPEN',
-    // open-edition-books: 'OpenEdition Books',
+    'open-edition-books': 'OpenEdition Books',
     openalex: 'OpenAlex',
     peerj: 'PeerJ',
     plos: 'PLOS',
-    // press-books: 'Pressbooks',
+    'press-books': 'Pressbooks',
     ted: 'TED',
     uved: 'UVED',
     wikipedia: 'Wikipedia'
