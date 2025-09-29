@@ -1,4 +1,4 @@
-FROM bitnami/node:20 AS builder
+FROM node:20 AS builder
 
 ARG VITE_API_BASE
 ARG VITE_ENVIRONMENT
