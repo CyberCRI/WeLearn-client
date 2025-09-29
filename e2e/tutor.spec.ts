@@ -185,10 +185,10 @@ test.describe('Tutor', () => {
     const fileInput = page.getByTestId('file-input');
     await fileInput.click();
     await fileInput.setInputFiles('./e2e/files/test_tutor.pdf');
-    await page.getByRole('button', { name: 'suivant' }).click();
+    await page.getByTestId('tutor-next-button').click();
     await expect(page.getByTestId('secondStepTitle')).toBeVisible();
 
-    await page.getByRole('button', { name: 'suivant' }).click();
+    await page.getByTestId('tutor-next-button').click();
     await expect(page.getByTestId('thirdStepTitle')).toBeVisible();
   });
 });

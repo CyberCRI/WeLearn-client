@@ -264,6 +264,7 @@ exports[`TutorPage > renders properly 1`] = `
     <!--v-if-->
     <button
       class="button"
+      data-testid="tutor-next-button"
       data-v-8a8621cb=""
     >
       next
