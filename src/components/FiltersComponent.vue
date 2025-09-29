@@ -37,7 +37,7 @@ const clearFilters = () => {
           bgColor="primary"
           :key="filter"
           v-for="filter in filters.sourcesFilters"
-          :content="`${$t(`corpus.${filter.replace('-', ' ')}`, `${filter.replace('-', ' ')}`)}`"
+          :content="`${$t(`corpus.${filter}`, `${filter.replace('-', ' ')}`)}`"
         >
           <template #actions>
             <span class="is-clickable" @click="filters.handleSourcesFilterChange(filter)"> x </span>
