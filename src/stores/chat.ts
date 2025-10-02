@@ -30,7 +30,7 @@ export const useChatStore = defineStore('chat', () => {
   const questionQueues: Ref<string[] | null> = ref(getFromStorage('questionQueues'));
   const sourcesList: Ref<Document[] | null> = ref(getFromStorage('chatSources') || []);
   const reformulatedQuery: Ref<string | null> = ref(getFromStorage('reformulatedQuery'));
-  const queriesToSearch: Ref<string[]> = ref([]);
+  const queryToSearch: Ref<string | null> = ref(null);
 
   const isChatEmpty: ComputedRef<Boolean> = computed(() => chatMessagesList.value.length === 0);
   const chatStatus: Ref<CHAT_STATUSES_TYPE> = ref(
@@ -81,8 +81,8 @@ export const useChatStore = defineStore('chat', () => {
     saveToStorage('reformulatedQuery', query);
   };
 
-  const setQueriesToSearch = (queries: string[]): void => {
-    queriesToSearch.value = queries;
+  const setQueryToSearch = (queries: string): void => {
+    queryToSearch.value = queries;
   };
 
   function setQuestionQueues(messages: string[]): void {
@@ -135,7 +135,7 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       setReformulatedQuery(reformulatedQuery);
-      setQueriesToSearch([reformulatedQuery]);
+      setQueryToSearch(reformulatedQuery);
       chatStatus.value = CHAT_STATUS.REFORMULATED;
     } catch (error: unknown) {
       chatStatus.value = CHAT_STATUS.ERROR;
@@ -173,11 +173,11 @@ export const useChatStore = defineStore('chat', () => {
     try {
       chatStatus.value = CHAT_STATUS.SEARCHING;
       const sourcesResp: AxiosResponse<Document[]> = await postAxios(
-        `/search/multiple_by_slices?nb_results=10${
+        `/search/by_slices?nb_results=10${
           storedSubject.value ? `&subject=${storedSubject.value}` : ''
         }`,
         {
-          query: queriesToSearch.value,
+          query: queryToSearch.value,
           relevance_factor: RELEVANCE_FACTOR,
           sdg_filter: sdgFilters,
           corpora: selectedCorpus
