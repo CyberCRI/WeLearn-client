@@ -14,6 +14,13 @@ const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null);
 const selectedSubject = ref<string | null>(null);
 const pageNum = ref<number>(0);
 
+const setPageNum = (newPageNum: number) => {
+  if (targetsJsonJourney.value !== null && newPageNum >= 0 && newPageNum <= targetsJsonJourney.value.length){
+    pageNum.value = newPageNum;
+  }
+};
+
+
 const selectSubject_ = (subject: string) => {
   selectedSubject.value = subject;
   console.log(subject);
@@ -28,6 +35,7 @@ const changePageController = (goal: number | undefined) => {
   toggleSdgSpecific.value = !toggleSdgSpecific.value;
   introJsonJourney.value = null;
   targetsJsonJourney.value = null;
+  pageNum.value = 0;
 };
 
 const fetchMicroLearningForSpecificSDG = async (
@@ -89,18 +97,18 @@ const fetchMicroLearningForSpecificSDG = async (
       {{ $t('previous') }}
     </button>
     <div class="top-content-centered-wrapper" v-if="targetsJsonJourney">
-      <button class="button" @click="pageNum--">
+      <button class="button" @click="setPageNum(pageNum-1)">
         {{ $t('previous_page') }}
       </button>
       <StepsIndicator
         v-if="targetsJsonJourney && pageNum > 0"
         :step="pageNum"
-        :setStep="5"
-        :advancement="0"
+        :setStep="setPageNum"
+        :advancement="pageNum"
         :stepsLength="targetsJsonJourney.length"
       />
       <h1 v-if="pageNum == 0" class="title is-4">Introduction</h1>
-      <button class="button" @click="pageNum++">
+      <button class="button" @click="setPageNum(pageNum+ 1)">
         {{ $t('next_page') }}
       </button>
     </div>
@@ -117,8 +125,7 @@ const fetchMicroLearningForSpecificSDG = async (
             :isSourcesError="false"
             :isFetchingSources="false"
             :shouldDisplayScore="true"
-            :errorCode="null"
-            :noResults="null"
+            :noResults="false"
           />
         </template>
       </FullpageTemplate>
@@ -136,8 +143,7 @@ const fetchMicroLearningForSpecificSDG = async (
             :isSourcesError="false"
             :isFetchingSources="false"
             :shouldDisplayScore="true"
-            :errorCode="null"
-            :noResults="null"
+            :noResults="false"
           />
         </template>
       </FullpageTemplate>
