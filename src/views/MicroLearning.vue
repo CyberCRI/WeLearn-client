@@ -8,7 +8,7 @@ import SelectSubject from '@/components/dropdowns/SubjectSelector.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 
 const toggleSdgSpecific = ref(false);
-const goalToShow = ref<undefined | number>(undefined);
+const goalToShow = ref<null | number>(null);
 const introJsonJourney = ref<null | Array<Record<any, any>>>(null);
 const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null);
 const selectedSubject = ref<string | undefined>(undefined);
