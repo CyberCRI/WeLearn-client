@@ -42,7 +42,7 @@ const fetchMicroLearningForSpecificSDG = async (
   subject: string | undefined
 ) => {
   const response = await getAxios(
-    '/micro_learning/full_journey?lang=fr&sdg=' + goal + '&subject=' + subject
+    `/micro_learning/full_journey?lang=fr&sdg=${goal}&subject=${subject}`
   );
   introJsonJourney.value = response.introduction;
   targetsJsonJourney.value = response.target;
