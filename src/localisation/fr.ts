@@ -222,7 +222,8 @@ export const fr = {
     bookmarks: 'Favoris',
     syllabus: 'Créer un syllabus',
     about: 'À propos',
-    help: 'Aide'
+    help: 'Aide',
+    microlearning: 'Micro-learning'
   },
 
   next: 'Suivant',
@@ -359,5 +360,10 @@ export const fr = {
       giveFeedback: 'Donner un retour sur le syllabus généré',
       sendFeedback: 'Envoyer le retour'
     }
-  }
+  },
+  microlearning: {
+    mainTitle: 'Choisissez un sujet :',
+    chooseSdg: "Choissisez l'ODD qui vous intéresse"
+  },
+  previous: 'Précédent'
 };
