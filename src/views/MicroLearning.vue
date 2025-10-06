@@ -29,7 +29,7 @@ const clearSubject = () => {
   selectedSubject.value = null;
 };
 
-const changePageController = (goal: number | undefined) => {
+const changePageController = (goal: number) => {
   goalToShow.value = goal;
   toggleSdgSpecific.value = !toggleSdgSpecific.value;
   introJsonJourney.value = null;
