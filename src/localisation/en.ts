@@ -347,8 +347,8 @@ export const en = {
     }
   },
   microlearning: {
-    mainTitle: 'Choose a subject :',
-    chooseSdg: 'Choose an SDG :'
+    mainTitle: 'Choose a subject:',
+    chooseSdg: 'Choose an SDG:'
   },
   previous: 'Previous'
 };
