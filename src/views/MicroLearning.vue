@@ -11,7 +11,7 @@ const toggleSdgSpecific = ref(false);
 const goalToShow = ref<null | number>(null);
 const introJsonJourney = ref<null | Array<Record<any, any>>>(null);
 const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null);
-const selectedSubject = ref<string | null>(null);
+const selectedSubject = ref<string | undefined>(undefined);
 const pageNum = ref<number>(0);
 
 const setPageNum = (newPageNum: number) => {
@@ -26,10 +26,10 @@ const selectSubject_ = (subject: string) => {
 };
 
 const clearSubject = () => {
-  selectedSubject.value = null;
+  selectedSubject.value = undefined;
 };
 
-const changePageController = (goal: number) => {
+const changePageController = (goal: number | null) => {
   goalToShow.value = goal;
   toggleSdgSpecific.value = !toggleSdgSpecific.value;
   introJsonJourney.value = null;
@@ -38,7 +38,7 @@ const changePageController = (goal: number) => {
 };
 
 const fetchMicroLearningForSpecificSDG = async (
-  goal: number | undefined,
+  goal: number | null,
   subject: string | undefined
 ) => {
   const response = await getAxios(
@@ -92,7 +92,7 @@ const fetchMicroLearningForSpecificSDG = async (
   </div>
 
   <div class="second step" v-if="toggleSdgSpecific">
-    <button class="button" @click="() => changePageController(undefined)">
+    <button class="button" @click="() => changePageController(null)">
       {{ $t('previous') }}
     </button>
     <div class="top-content-centered-wrapper" v-if="targetsJsonJourney">
