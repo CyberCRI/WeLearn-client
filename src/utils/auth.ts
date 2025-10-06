@@ -1,18 +1,25 @@
 import { postAxios } from '@/utils/fetch';
 
-export const getUserAndSession = async () => {
+export const getUserAndSession = async (userId?: string, sessionId?: string) => {
   try {
-    const userID = localStorage.getItem('userId');
-    const sessionID = localStorage.getItem('sessionId');
+    if (userId && sessionId) return;
 
-    const newUserId = await postAxios(`/user/user${userID ? `?user_id=${userID}` : ''}`);
-    localStorage.setItem('userId', newUserId.data.user_id);
-    if (newUserId.data.user_id) {
-      const newSessionId = await postAxios(
-        `/user/session?user_id=${newUserId.data.user_id}${sessionID ? `&session_id=${sessionID}` : ''}`
-      );
-      localStorage.setItem('sessionId', newSessionId.data.session_id);
+    if (!userId && sessionId) {
+      localStorage.removeItem('sessionId');
     }
+
+    if (!userId) {
+      const newUserId = await postAxios(`/user/user${userId ? `?user_id=${userId}` : ''}`);
+      userId = newUserId.data.user_id;
+    }
+
+    if (userId) {
+      const newSessionId = await postAxios(`/user/session?user_id=${userId}`);
+      sessionId = newSessionId.data.session_id;
+    }
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('sessionId', sessionId);
+    return { userId, sessionId };
   } catch (error) {
     console.warn('Failed to get user and session:', error);
   }

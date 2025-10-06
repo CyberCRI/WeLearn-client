@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import SourcesListComponent from '@/components/SourcesListComponent.vue';
 import DeleteButton from '@/components/DeleteButton.vue';
 
 const store = useBookmarksStore();
+onMounted(() => {
+  store.getBookmarks();
+});
 </script>
 
 <template>

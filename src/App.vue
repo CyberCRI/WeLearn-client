@@ -7,15 +7,16 @@ import AppLayout from '@/components/AppLayout.vue';
 import SmallScreenPage from '@/views/SmallScreenPage.vue';
 import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
+import { useUserStore } from '@/stores/user';
 import ErrorComponent from '@/components/ErrorComponent.vue';
-import { getUserAndSession } from '@/utils/auth';
 
 const { getNbDocsInBase, getSourcesList } = useSourcesStore();
+const userStore = useUserStore();
 const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
-    await getUserAndSession();
+    await userStore.setUserIdAndSessionId();
     await getSourcesList();
     await getNbDocsInBase();
   } catch (error) {

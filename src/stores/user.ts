@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref } from 'vue';
 import { getFromStorage, saveToStorage } from '@/utils/storage';
+import { getUserAndSession } from '@/utils/auth';
 
 type OnboardingState = {
   hasSeenWelcome: boolean;
@@ -11,6 +12,14 @@ const defaultOnboardingState: OnboardingState = {
 };
 
 export const useUserStore = defineStore('user', () => {
+  const userId: Ref<string | null> = ref(localStorage.getItem('userId'));
+  const sessionId: Ref<string | null> = ref(localStorage.getItem('sessionId'));
+
+  const setUserIdAndSessionId = async () => {
+    const userAndSession = await getUserAndSession(userId.value, sessionId.value);
+    // saveToStorage('userId', userAndSession?.userId || '');
+    // saveToStorage('sessionId', userAndSession?.sessionId || '');
+  };
   const onboardingState = ref<Ref<OnboardingState>>(
     getFromStorage('onboardingState') || defaultOnboardingState
   );
@@ -22,6 +31,9 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     onboardingState,
-    setHasSeenWelcome
+    setHasSeenWelcome,
+    setUserIdAndSessionId,
+    userId,
+    sessionId
   };
 });
