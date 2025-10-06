@@ -26,7 +26,7 @@ const selectSubject_ = (subject: string) => {
 };
 
 const clearSubject = () => {
-  selectedSubject.value = undefined;
+  selectedSubject.value = null;
 };
 
 const changePageController = (goal: number | undefined) => {
