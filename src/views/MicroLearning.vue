@@ -15,11 +15,14 @@ const selectedSubject = ref<string | undefined>(undefined);
 const pageNum = ref<number>(0);
 
 const setPageNum = (newPageNum: number) => {
-  if (targetsJsonJourney.value !== null && newPageNum >= 0 && newPageNum <= targetsJsonJourney.value.length){
+  if (
+    targetsJsonJourney.value !== null &&
+    newPageNum >= 0 &&
+    newPageNum <= targetsJsonJourney.value.length
+  ) {
     pageNum.value = newPageNum;
   }
 };
-
 
 const selectSubject_ = (subject: string) => {
   selectedSubject.value = subject;
@@ -96,7 +99,7 @@ const fetchMicroLearningForSpecificSDG = async (
       {{ $t('previous') }}
     </button>
     <div class="top-content-centered-wrapper" v-if="targetsJsonJourney">
-      <button class="button" @click="setPageNum(pageNum-1)">
+      <button class="button" @click="setPageNum(pageNum - 1)">
         {{ $t('previous_page') }}
       </button>
       <StepsIndicator
@@ -107,7 +110,7 @@ const fetchMicroLearningForSpecificSDG = async (
         :stepsLength="targetsJsonJourney.length"
       />
       <h1 v-if="pageNum == 0" class="title is-4">Introduction</h1>
-      <button class="button" @click="setPageNum(pageNum+ 1)">
+      <button class="button" @click="setPageNum(pageNum + 1)">
         {{ $t('next_page') }}
       </button>
     </div>
