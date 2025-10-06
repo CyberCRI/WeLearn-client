@@ -11,7 +11,7 @@ const toggleSdgSpecific = ref(false);
 const goalToShow = ref<null | number>(null);
 const introJsonJourney = ref<null | Array<Record<any, any>>>(null);
 const targetsJsonJourney = ref<null | Array<Record<any, any>>>(null);
-const selectedSubject = ref<string | undefined>(undefined);
+const selectedSubject = ref<string | null>(null);
 const pageNum = ref<number>(0);
 
 const selectSubject_ = (subject: string) => {
