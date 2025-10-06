@@ -23,7 +23,6 @@ const setPageNum = (newPageNum: number) => {
 
 const selectSubject_ = (subject: string) => {
   selectedSubject.value = subject;
-  console.log(subject);
 };
 
 const clearSubject = () => {
