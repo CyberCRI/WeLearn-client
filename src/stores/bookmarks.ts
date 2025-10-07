@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref, computed } from 'vue';
-import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import type { Document } from '@/types';
 import { useUserStore } from '@/stores/user';
 import {
@@ -11,7 +10,7 @@ import {
 } from '@/utils/fetch';
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
-  const sourcesBookmarked: Ref<Document[]> = ref(getFromStorage('bookmarkedSources') || []);
+  const sourcesBookmarked: Ref<Document[]> = ref([]);
   const hasChanged: Ref<boolean> = ref(false);
   const idsBookmarked: Ref<string[]> = ref(
     sourcesBookmarked.value.map((source) => source.payload.document_id)

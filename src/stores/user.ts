@@ -17,8 +17,8 @@ export const useUserStore = defineStore('user', () => {
 
   const setUserIdAndSessionId = async () => {
     const userAndSession = await getUserAndSession(userId.value, sessionId.value);
-    // saveToStorage('userId', userAndSession?.userId || '');
-    // saveToStorage('sessionId', userAndSession?.sessionId || '');
+    localStorage.setItem('userId', userAndSession?.userId || '');
+    localStorage.setItem('sessionId', userAndSession?.sessionId || '');
   };
   const onboardingState = ref<Ref<OnboardingState>>(
     getFromStorage('onboardingState') || defaultOnboardingState
