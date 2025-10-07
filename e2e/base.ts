@@ -10,7 +10,15 @@ export const test = base.extend({
       if (url.includes('user/user')) {
         await route.fulfill({ status: 200, body: JSON.stringify({ user_id: 'fake_user_id' }) });
       } else if (url.includes('session')) {
-        await route.fulfill({ status: 200, body: JSON.stringify({ session_id: 'fake_session_id' }) });
+        await route.fulfill({
+          status: 200,
+          body: JSON.stringify({ session_id: 'fake_session_id' })
+        });
+      } else if (url.includes('/:user_id/bookmarks?user_id=')) {
+        await route.fulfill({
+          status: 200,
+          body: JSON.stringify({ bookmarks: [{ document_id: '2121256453' }] })
+        });
       }
     });
 
@@ -23,6 +31,8 @@ export const test = base.extend({
       } else if (url.includes('nb_docs')) {
         await route.fulfill({ json: { nb_docs: 10 } });
       } else if (url.includes('by_document')) {
+        await route.fulfill({ status: 200, body: JSON.stringify(docs) });
+      } else if (url.includes('by_ids')) {
         await route.fulfill({ status: 200, body: JSON.stringify(docs) });
       } else {
         await route.continue();

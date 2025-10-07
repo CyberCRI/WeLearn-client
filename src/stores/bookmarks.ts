@@ -1,26 +1,48 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref, computed } from 'vue';
-import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import type { Document } from '@/types';
+import { useUserStore } from '@/stores/user';
+import {
+  postBookmark,
+  deleteBookmark,
+  getBookmarks as getAllBookmarks,
+  deleteAllBookmarks
+} from '@/utils/fetch';
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
-  const sourcesBookmarked: Ref<Document[]> = ref(getFromStorage('bookmarkedSources') || []);
+  const sourcesBookmarked: Ref<Document[]> = ref([]);
+  const hasChanged: Ref<boolean> = ref(false);
   const idsBookmarked: Ref<string[]> = ref(
     sourcesBookmarked.value.map((source) => source.payload.document_id)
   );
 
-  const addBookmark = (source: Document) => {
-    sourcesBookmarked.value.push(source);
-    idsBookmarked.value.push(source.payload.document_id);
-    saveToStorage('bookmarkedSources', sourcesBookmarked.value);
+  const addBookmark = async (source: Document) => {
+    try {
+      await postBookmark(useUserStore().userId, source.payload.document_id);
+      idsBookmarked.value.push(source.payload.document_id);
+      hasChanged.value = true;
+    } catch (error) {
+      console.error('Failed to add bookmark:', error);
+      return;
+    }
   };
 
-  const removeBookmark = (sourceId: string) => {
+  const removeBookmark = async (sourceId: string) => {
     sourcesBookmarked.value = sourcesBookmarked.value.filter(
       ({ payload }) => payload.document_id !== sourceId
     );
     idsBookmarked.value = idsBookmarked.value.filter((id) => id !== sourceId);
-    saveToStorage('bookmarkedSources', sourcesBookmarked.value);
+    await deleteBookmark(useUserStore().userId, sourceId);
+    hasChanged.value = true;
+  };
+
+  const getBookmarks = async () => {
+    if (!hasChanged.value && sourcesBookmarked.value.length) return;
+
+    const bookmarks = await getAllBookmarks(useUserStore().userId);
+    sourcesBookmarked.value = bookmarks.data;
+    idsBookmarked.value = sourcesBookmarked.value.map((bookmark) => bookmark.payload.document_id);
+    hasChanged.value = false;
   };
 
   const toggleBookmark = (source: Document) => {
@@ -34,10 +56,11 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
   const isBookmarked = (id: string) => idsBookmarked.value.includes(id);
 
-  const resetBookmarks = () => {
+  const resetBookmarks = async () => {
     sourcesBookmarked.value = [];
     idsBookmarked.value = [];
-    clearFromStorage('bookmarkedSources');
+    await deleteAllBookmarks(useUserStore().userId);
+    hasChanged.value = true;
   };
 
   const bookmarkedLength = computed(() => sourcesBookmarked.value.length);
@@ -46,6 +69,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     sourcesBookmarked,
     addBookmark,
     removeBookmark,
+    getBookmarks,
     resetBookmarks,
     toggleBookmark,
     isBookmarked,

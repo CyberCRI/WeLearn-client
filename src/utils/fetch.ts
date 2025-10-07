@@ -110,3 +110,40 @@ export const fetchStream = async (
 
   return response.body;
 };
+
+export const postBookmark = async (userId: string, documentId: string) => {
+  const resp = await postAxios(
+    `/user/:user_id/bookmarks/:document_id?user_id=${userId}&document_id=${documentId}`
+  );
+  return resp;
+};
+
+export const deleteBookmark = async (userId: string, documentId: string) => {
+  const resp = await axios.delete(
+    `${API_BASE}${API_VERSION}/user/:user_id/bookmarks/:document_id?user_id=${userId}&document_id=${documentId}`,
+    {
+      headers: {
+        'X-API-Key': WL_API_KEY
+      }
+    }
+  );
+  return resp;
+};
+
+export const deleteAllBookmarks = async (userId: string) => {
+  await axios.delete(`${API_BASE}${API_VERSION}/user/:user_id/bookmarks?user_id=${userId}`, {
+    headers: {
+      'X-API-Key': WL_API_KEY
+    }
+  });
+};
+
+export const getBookmarks = async (userId: string) => {
+  const bookmarksIds = await getAxios(`/user/:user_id/bookmarks?user_id=${userId}`);
+  const ids = bookmarksIds.bookmarks.reduce((acc: string[], curr: { document_id: string }) => {
+    acc.push(curr.document_id);
+    return acc;
+  }, []);
+  const docsPayloads = await postAxios('/search/documents/by_ids', ids);
+  return docsPayloads;
+};
