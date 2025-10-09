@@ -365,5 +365,7 @@ export const fr = {
     mainTitle: 'Choisissez un sujet :',
     chooseSdg: "Choissisez l'ODD qui vous intéresse"
   },
-  previous: 'Précédent'
+  previous: 'Précédent',
+  previous_page: 'Page précédente',
+  next_page: 'Page suivante'
 };

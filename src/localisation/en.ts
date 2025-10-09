@@ -359,5 +359,7 @@ export const en = {
     mainTitle: 'Choose a subject:',
     chooseSdg: 'Choose an SDG:'
   },
-  previous: 'Previous'
+  previous: 'Previous',
+  previous_page: 'Previous page',
+  next_page: 'Next page'
 };
