@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { subjects } from '@/utils/constants';
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue';
 import ClickableText from '@/components/ClickableText.vue';
+import { onMounted, ref } from 'vue';
+import { getAxios } from '@/utils/fetch';
 
 defineProps<{
   storedSubject?: string;
@@ -9,6 +10,16 @@ defineProps<{
   clearSubject: () => void;
   isUp?: boolean;
 }>();
+
+const subjects = ref<null | Array<string>>(null);
+
+const fetchAvailableSubjects = async () => {
+  subjects.value = await getAxios('/micro_learning/subject_list');
+};
+
+onMounted(async () => {
+  await fetchAvailableSubjects();
+});
 </script>
 
 <template>

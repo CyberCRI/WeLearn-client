@@ -218,7 +218,8 @@ export const en = {
     bookmarks: 'Bookmarks',
     syllabus: 'Create a syllabus',
     about: 'About',
-    help: 'Help'
+    help: 'Help',
+    microlearning: 'Micro-learning'
   },
 
   next: 'Next',
@@ -353,5 +354,10 @@ export const en = {
       giveFeedback: 'Provide feedback on the generated syllabus',
       sendFeedback: 'Submit feedback'
     }
-  }
+  },
+  microlearning: {
+    mainTitle: 'Choose a subject:',
+    chooseSdg: 'Choose an SDG:'
+  },
+  previous: 'Previous'
 };
