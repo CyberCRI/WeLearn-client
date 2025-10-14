@@ -6,11 +6,21 @@ import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
 import SDGSelector from '@/components/dropdowns/SDGSelector.vue';
 import SourcesSelector from '@/components/dropdowns/SourcesSelector.vue';
 import { useFiltersStore } from '@/stores/filters';
-import { ref } from 'vue';
+import { ref, watch, toRefs } from 'vue';
 
-const visibleFilters = ref(true);
+const props = defineProps<{
+  shouldClose?: boolean;
+}>();
+
+const { shouldClose } = toRefs(props);
+const hideFilters = ref(false);
+watch(shouldClose, (close) => {
+  if (close) {
+    hideFilters.value = close;
+  }
+});
 const filters = useFiltersStore();
-const toggleFilters = () => (visibleFilters.value = !visibleFilters.value);
+const toggleFilters = () => (hideFilters.value = !hideFilters.value);
 
 const clearFilters = () => {
   filters.handleResetFilters();
@@ -24,7 +34,7 @@ const clearFilters = () => {
     <FilterSettingIcon class="mr-4" />
     <span class="is-flex is-align-items-center is-size-6">{{ $t('searchFilters') }}</span>
     <div class="chevron-icon">
-      <ChevronUpIcon class="ml-2" v-if="visibleFilters" />
+      <ChevronUpIcon class="ml-2" v-if="!hideFilters" />
       <ChevronDownIcon class="ml-2" v-else />
     </div>
   </div>
@@ -64,7 +74,7 @@ const clearFilters = () => {
   <p v-else>
     <span class="has-text-grey">{{ $t('noFiltersSelected') }}</span>
   </p>
-  <div :class="{ hide: !visibleFilters }" class="pr-5 filters">
+  <div :class="{ hide: hideFilters }" class="pr-5 filters">
     <input class="input" type="text" :placeholder="$t('searchBarPlaceholder')" />
 
     <details class="filter-section" open>
