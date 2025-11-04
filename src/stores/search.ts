@@ -24,7 +24,9 @@ export const useSearchStore = defineStore('search', () => {
   const shouldDisplaySubjects = computed(() => i18n.global.locale.value == 'en');
   const shouldDisplayScore = computed(() => getQueryParamValue('score') === 'true');
 
-  const isSearchDisabled = computed(() => searchInput.value.split(/(\s)/).length <= 5);
+  const isSearchDisabled =
+    computed(() => searchInput.value.split(/(\s)/).length <= 5) ||
+    searchInput.value.split('').length <= 50;
 
   const fetchSources = async () => {
     if (isSearchDisabled.value || isFetchingSources.value) {
