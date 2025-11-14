@@ -82,7 +82,9 @@ export const useTutorStore = defineStore('tutor', () => {
     };
   };
 
-  const retrieveTutorSearch = async (arg: File[]) => {
+  const summaries = ref<record<string, [string]>>({});
+
+  const getFilesContent = async (arg: File[]) => {
     isLoading.value = true;
     shouldRetryAction.value = false;
     const formData = new FormData();
@@ -91,11 +93,23 @@ export const useTutorStore = defineStore('tutor', () => {
         formData.append('files', file);
       }
     });
-
     try {
-      const resp = await postAxios('/tutor/search', formData, {
+      const resp = await postAxios('/tutor/files/content', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
+      summaries.value = resp.data;
+    } catch (error: any) {
+      console.error('Error during tutor search:', error);
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  const retrieveTutorSearch = async (arg: File[]) => {
+    isLoading.value = true;
+
+    try {
+      const resp = await postAxios('/tutor/search', summaries);
       if (resp.status === 204) {
         shouldRetryAction.value = true;
       } else {
@@ -126,6 +140,28 @@ export const useTutorStore = defineStore('tutor', () => {
     } else {
       selectedSources.value = selectedSources.value.filter((s) => s.id !== source.id);
     }
+  };
+
+  const handleSummaryFiles = async () => {
+    reloadError.value = false;
+    selectedSources.value = [];
+    const arg = Object.values(newFilesToSearch.value).filter((e) => e);
+    if (!arg.length) {
+      console.error('No files selected');
+      return;
+    }
+
+    if (_isequal(searchedFiles.value, arg)) {
+      hasNewSearch.value = false;
+      goNext();
+      return;
+    }
+
+    tutorSearch.value = undefined;
+    await getFilesContent(arg);
+    hasNewSearch.value = true;
+
+    goNext();
   };
 
   const handleSearch = async () => {
@@ -256,7 +292,16 @@ export const useTutorStore = defineStore('tutor', () => {
     selectedSources,
     level,
     duration,
+<<<<<<< HEAD
     shouldRetryAction,
     description
+||||||| parent of 3cf4dbb (feat(syllabus): adds interactive summaries)
+    description
+=======
+    description,
+    handleSummaryFiles,
+    summaries,
+    newFilesToSearch
+>>>>>>> 3cf4dbb (feat(syllabus): adds interactive summaries)
   };
 });

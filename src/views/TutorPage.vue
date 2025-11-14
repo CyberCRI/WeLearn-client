@@ -26,10 +26,11 @@ const getI18nText = computed(() => {
 
 const nextButtonText = ['next', 'genSyllabus', 'download'];
 
-const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
-  1: store.handleSearch,
-  2: store.handleCreateSyllabus,
-  3: store.handleDownloadSyllabus
+const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
+  1: store.handleSummaryFiles,
+  2: store.handleSearch,
+  3: store.handleCreateSyllabus,
+  4: store.handleDownloadSyllabus
 };
 </script>
 <template>
@@ -86,14 +87,40 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
           v-model:description="store.description"
           data-test="fist-step"
           :disabled="store.step > 1"
-          v-if="store.step >= 1"
+          v-if="store.step === 1"
           :addFile="store.addFile"
           :removeFile="store.removeFile"
         />
+        <div class="summaries-section" v-if="store.step >= 2">
+          <h2 class="title is-4 mt-4">
+            {{ $t('tutor.secondStep.summariesTitle') }}
+          </h2>
+          <p class="subtitle is-6">
+            {{ $t('tutor.secondStep.summariesDescription') }}
+          </p>
+          <div class="box" :key="index" v-for="(summary, index) in store.summaries.summaries">
+            <h2 class="title is-6 mt-4">
+              {{
+                Object.values(store.newFilesToSearch)[index].name ||
+                $t('tutor.secondStep.noFileName')
+              }}
+            </h2>
+            <textarea class="input summary" v-model="store.summaries.summaries[index]" />
+          </div>
+          <div class="box" :key="index" v-for="(summary, index) in store.summaries.summaries">
+            <h2 class="title is-6 mt-4">
+              {{
+                Object.values(store.newFilesToSearch)[index].name ||
+                $t('tutor.secondStep.noFileName')
+              }}
+            </h2>
+            <textarea class="input summary" v-model="store.summaries.summaries[index]" />
+          </div>
+        </div>
         <SecondStep
           data-test="second-step"
-          :disabled="store.step > 2"
-          :visible="store.step >= 2 && !!store.tutorSearch"
+          :disabled="store.step > 3"
+          :visible="store.step >= 3 && !!store.tutorSearch"
           :sources="store.tutorSearch?.documents"
           :appendSource="store.appendSource"
           :selectedSources="store.selectedSources"
@@ -101,7 +128,7 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
       </div>
       <ThirdStep
         data-test="third-step"
-        :visible="store.step >= 3 && !!store.syllabi?.content"
+        :visible="store.step >= 4 && !!store.syllabi?.content"
         :syllabus="store.syllabi"
         :giveFeedback="store.giveFeedback"
       />
@@ -135,6 +162,29 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
   padding: 1rem 2rem;
   height: 100%;
   overflow: hidden;
+}
+
+.box {
+  overflow: auto;
+  width: 1000px;
+  margin: auto;
+}
+.summaries-section {
+  height: 70vh;
+  overflow-y: scroll;
+}
+
+.summary {
+  width: 100%;
+  min-height: 400px;
+  height: auto;
+  resize: none;
+  margin-top: 0.5rem;
+}
+
+.content {
+  height: 100%;
+  width: 80%;
 }
 
 .actions {
