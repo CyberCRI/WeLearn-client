@@ -6,6 +6,8 @@ import Tutor from '@/views/TutorPage.vue';
 import NotFound from '@/views/NotFound.vue';
 import MicroLearning from '@/views/MicroLearning.vue';
 
+const isDevEnvironment = import.meta.env.VITE_ENVIRONMENT === 'dev';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,9 +36,11 @@ const router = createRouter({
       component: Tutor
     },
     {
-      path: '/microlearning',
-      name: 'micro-learning',
-      component: MicroLearning
+      ...(isDevEnvironment && {
+        path: '/microlearning',
+        name: 'micro-learning',
+        component: MicroLearning
+      })
     },
     {
       path: '/about',

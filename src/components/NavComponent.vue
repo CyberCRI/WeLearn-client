@@ -13,6 +13,7 @@ import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 const featureFlip = useFeatureFlipStore();
 const isFeatureEnabled = featureFlip.isFeatureEnabled('tutor');
+const isFeatureEnabledMicrolearning = featureFlip.isFeatureEnabled('microlearning');
 
 const isNavOpened = ref<boolean>(false);
 
@@ -57,7 +58,7 @@ const handle_nav_bookmarks = () => {
         </router-link>
       </div>
 
-      <div class="link-wrapper" v-if="isFeatureEnabled">
+      <div class="link-wrapper" v-if="isFeatureEnabledMicrolearning">
         <router-link
           class="router-link"
           to="/microlearning"
