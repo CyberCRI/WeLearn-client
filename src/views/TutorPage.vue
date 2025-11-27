@@ -7,9 +7,14 @@ import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import ErrorDocumentIcon from '@/components/icons/ErrorDocumentIcon.vue';
+import CheckIcon from '@/components/icons/CheckIcon.vue';
 import { useTutorStore } from '@/stores/tutor';
 
 const store = useTutorStore();
+
+const vFocus = {
+  mounted: (el) => el.focus()
+};
 
 const getI18nText = computed(() => {
   if (store.step === 1) {
@@ -32,6 +37,20 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
   3: store.handleCreateSyllabus,
   4: store.handleDownloadSyllabus
 };
+
+const handleValidate = (index: number) => {
+  const summary = document.getElementsByTagName('textarea')[index];
+  summary.disabled = !summary.disabled;
+  summary.style.backgroundColor = summary.disabled ? 'var(--neutral-10)' : 'var(--neutral-0)';
+  const action = summary.nextSibling.getElementsByTagName('button')[0];
+  action.style.color = summary.disabled ? 'green' : 'black';
+};
+
+// TODO: use button to make summary editable
+// TODO: use button to validate summary --> make it required to go to the next step
+// TODO: send edited summaries to the search request
+// TODO: Move summary step to a independent component
+// figma URL : https://www.figma.com/design/VU4kFsVKJDOMt3PXwn6Jtj/welearn?node-id=452-2032&t=UKKyq5sAsGyr5Qe0-4
 </script>
 <template>
   <div class="content-centered-wrapper">
@@ -98,23 +117,29 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
           <p class="subtitle is-6">
             {{ $t('tutor.secondStep.summariesDescription') }}
           </p>
-          <div class="box" :key="index" v-for="(summary, index) in store.summaries.summaries">
+          <div
+            id="summaries"
+            class="box"
+            :key="index"
+            v-for="(summary, index) in store.summaries.summaries"
+          >
             <h2 class="title is-6 mt-4">
               {{
-                Object.values(store.newFilesToSearch)[index].name ||
+                Object.values(store.newFilesToSearch)[index]?.name ||
                 $t('tutor.secondStep.noFileName')
               }}
             </h2>
-            <textarea class="input summary" v-model="store.summaries.summaries[index]" />
-          </div>
-          <div class="box" :key="index" v-for="(summary, index) in store.summaries.summaries">
-            <h2 class="title is-6 mt-4">
-              {{
-                Object.values(store.newFilesToSearch)[index].name ||
-                $t('tutor.secondStep.noFileName')
-              }}
-            </h2>
-            <textarea class="input summary" v-model="store.summaries.summaries[index]" />
+            <div class="is-flex">
+              <textarea v-focus class="input summary" v-model="store.summaries.summaries[index]" />
+              <div class="mt-2 ml-2">
+                <button class="button is-white" @click="handleValidate(index)">
+                  <span class="icon is-small">
+                    <CheckIcon />
+                  </span>
+                  <span>validate</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <SecondStep
@@ -161,22 +186,24 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
   align-items: center;
   padding: 1rem 2rem;
   height: 100%;
+  width: 100%;
   overflow: hidden;
 }
 
 .box {
   overflow: auto;
-  width: 1000px;
+  width: 100%;
   margin: auto;
 }
 .summaries-section {
   height: 70vh;
   overflow-y: scroll;
+  width: 100%;
 }
 
 .summary {
-  width: 100%;
-  min-height: 400px;
+  width: 80%;
+  min-height: 200px;
   height: auto;
   resize: none;
   margin-top: 0.5rem;
