@@ -47,7 +47,7 @@ const handleModalOpen = () => {
       </div>
       <div class="is-flex">
         <div class="is-flex is-flex-direction-column">
-          <p v-if="corpus" class="corpus has-text-weight-normal is-italic is-capitalized">
+          <p v-if="corpus" class="corpus has-text-weight-normal is-italic">
             <span v-if="details.journal || details.publisher"
               >{{ details.journal || details.publisher }} via
             </span>
@@ -154,7 +154,7 @@ a {
 }
 
 .corpus {
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
 }
 .icon-wrapper {
   color: var(--neutral-80);
