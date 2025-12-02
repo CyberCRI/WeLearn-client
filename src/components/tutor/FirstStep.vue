@@ -84,7 +84,7 @@ const appendNewInputFile = () => {
 
 <template>
   <div class="wrapper" :class="{ disabled }">
-    <h1 class="title is-4">{{ $t('tutor.firstStep.title') }}</h1>
+    <h1 class="title is-4">1 - {{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
 
     <!-- File Input Section -->
@@ -187,11 +187,10 @@ const appendNewInputFile = () => {
 
 <style scoped>
 .wrapper {
+  padding: 5% 0;
+  height: 80%;
   display: flex;
   flex-direction: column;
-  flex-grow: 0.25;
-  flex-shrink: 0.25;
-  flex-basis: 30%;
   transition: all 1s;
   margin: 0 auto;
 }
@@ -201,13 +200,8 @@ const appendNewInputFile = () => {
 }
 
 .wrapper.disabled {
-  flex-basis: 25%;
   opacity: 0.5;
   pointer-events: none;
-  flex-grow: 0.25;
-  .description {
-    width: 100%;
-  }
 }
 
 .descriptions {

@@ -82,7 +82,16 @@ export const useTutorStore = defineStore('tutor', () => {
     };
   };
 
-  const summaries = ref<record<string, [string]>>({});
+  // const summaries = ref<[string]>([
+  //   "Global warming, a subset of climate change, refers to the long-term rise in the average temperature of the Earth's climate system, primarily caused by human activities such as fossil fuel burning, deforestation, and certain agricultural and industrial practices that release greenhouse gases. These gases trap heat in the lower atmosphere, leading to various environmental impacts like desert expansion, increased frequency of heat waves and wildfires, accelerated Arctic warming, glacier retreat, and sea ice decline. Climate change also affects biodiversity, forcing species to relocate or face extinction, and poses significant threats to human societies, including increased flooding, extreme heat, food and water scarcity, disease, economic loss, and potential human migration and conflict. Even with efforts to minimize future warming, some effects will persist for centuries, including ocean heating, acidification, and sea-level rise. The Paris Agreement aims to limit global warming to well below 2°C, but current pledges still project a rise of about 2.8°C by the end of the century. There is widespread support for climate action, with most countries aiming to stop emitting carbon dioxide. Strategies include phasing out fossil fuels, conserving energy, switching to clean energy sources, and removing carbon from the atmosphere through methods like reforestation and carbon-storing farming practices.",
+  //   "The article discusses the XL-Sum dataset, a large-scale multilingual abstractive summarization dataset containing 1 million professionally annotated article-summary pairs from BBC, covering 44 languages. The dataset is designed to address the lack of high-quality datasets for low-resource languages in abstractive summarization. XL-Sum introduces the first publicly available summarization dataset for many languages and achieves competitive results in both multilingual and low-resource summarization tasks. The dataset is created using a custom crawler and a set of heuristics to extract high-quality summaries from BBC articles. Evaluations show that the summaries are highly abstractive, concise, and of high quality, with minimal redundancy. The mT5 model fine-tuned on XL-Sum achieves state-of-the-art results, demonstrating the dataset's effectiveness in abstractive summarization across multiple languages."
+  // ]);
+
+  const summaries = ref<[string]>([]);
+
+  const updateSummary = (index, content) => {
+    summaries.value[index] = content;
+  };
 
   const getFilesContent = async (arg: File[]) => {
     isLoading.value = true;
@@ -97,7 +106,7 @@ export const useTutorStore = defineStore('tutor', () => {
       const resp = await postAxios('/tutor/files/content', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
-      summaries.value = resp.data;
+      summaries.value = resp.data.summaries;
     } catch (error: any) {
       console.error('Error during tutor search:', error);
     } finally {
@@ -109,6 +118,7 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading.value = true;
 
     try {
+<<<<<<< HEAD
       const resp = await postAxios('/tutor/search', summaries);
       if (resp.status === 204) {
         shouldRetryAction.value = true;
@@ -120,14 +130,23 @@ export const useTutorStore = defineStore('tutor', () => {
 
         goNext();
       }
+||||||| parent of 4780a21 (wip)
+      const resp = await postAxios('/tutor/search', summaries);
+      tutorSearch.value = resp.data;
+      hasSearchError.value = false;
+=======
+      const resp = await postAxios('/tutor/search_extracts', { summaries: summaries.value });
+      tutorSearch.value = resp.data;
+      hasSearchError.value = false;
+>>>>>>> 4780a21 (wip)
     } catch (error: any) {
       console.error('Error during tutor search:', error);
       hasSearchError.value = true;
       if (error.code === 'ERR_NETWORK') {
         reloadError.value = true;
       }
-      setStep(1);
     } finally {
+      setStep(3);
       searchedFiles.value = arg;
     }
   };
@@ -281,6 +300,7 @@ export const useTutorStore = defineStore('tutor', () => {
     tutorSearch,
     appendSource,
     retrieveSyllabus,
+    updateSummary,
     handleCreateSyllabus,
     hasSearchError,
     hasSyllabusError,

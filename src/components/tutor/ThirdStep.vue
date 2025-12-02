@@ -20,7 +20,7 @@ const toggleFeedback = async () => {
 </script>
 <template>
   <div class="wrapper" :class="{ visible: visible }">
-    <h1 data-testid="thirdStepTitle" class="title is-4">{{ $t('tutor.thirdStep.title') }}</h1>
+    <h1 data-testid="thirdStepTitle" class="title is-4">4 - {{ $t('tutor.thirdStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.thirdStep.description') }}</p>
     <!-- syllabus -->
     <p
@@ -40,12 +40,13 @@ const toggleFeedback = async () => {
 <style scoped>
 .wrapper {
   overflow: scroll;
-  height: 100%;
   display: flex;
+  height: 100%;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: 0;
   transition: flex-grow 0.3s;
+  padding: 5% 0;
 }
 
 .wrapper.visible {

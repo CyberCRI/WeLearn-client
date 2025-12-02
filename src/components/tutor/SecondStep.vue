@@ -14,7 +14,9 @@ defineProps<{
 <template>
   <div class="wrapper" :class="{ disabled: disabled, visible: visible }">
     <div class="sources-wrapper" v-if="sources && sources.length">
-      <h1 data-testId="secondStepTitle" class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
+      <h1 data-testId="secondStepTitle" class="title is-4">
+        3 - {{ $t('tutor.secondStep.title') }}
+      </h1>
       <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>
       <div class="sources">
         <div
@@ -71,10 +73,11 @@ defineProps<{
 
   flex-grow: 0;
   flex-basis: 0;
-  height: 100%;
+  height: 80%;
   transition: all 0.5s;
   margin-left: 2rem;
   overflow: hidden;
+  padding: 5% 0;
 }
 .wrapper.visible {
   flex-grow: 3;
