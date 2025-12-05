@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useUserStore } from '@/stores/user';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ErrorDetails, ChatMessage, ReformulateResponse } from '@/types';
 import { fetchStream, postAxios } from '@/utils/fetch';
@@ -208,33 +209,46 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  async function getNoStreamAnswer(userMsg: string) {
-    const bodyContent = {
-      sources: sourcesList.value || [],
-      history: getMessageHistory.value,
+  async function getAgentAnswer(userMsg: string) {
+    const body = {
       query: userMsg,
-      ...(storedSubject.value && { subject: storedSubject.value })
+      threadId: useUserStore().userId
     };
 
-    const respBody = await postAxios('/qna/chat/answer', bodyContent);
+    const { data } = await postAxios('/qna/chat/agent', body);
+    console.log(data);
 
-    console.log(respBody);
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-
-    chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
-    saveToStorage('chat', chatMessagesList.value);
-
-    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
-      '/qna/reformulate/questions',
-      {
-        history: getMessageHistory.value,
-        query: reformulatedQuery.value
-      }
-    );
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-
-    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
+    chatMessagesList.value.push({ role: 'assistant', content: data.content });
+    sourcesList.value = data.docs;
   }
+
+  // async function getNoStreamAnswer(userMsg: string) {
+  //   const bodyContent = {
+  //     sources: sourcesList.value || [],
+  //     history: getMessageHistory.value,
+  //     query: userMsg,
+  //     ...(storedSubject.value && { subject: storedSubject.value })
+  //   };
+
+  //   const respBody = await postAxios('/qna/chat/answer', bodyContent);
+
+  //   console.log(respBody);
+  //   chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+
+  //   chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
+  //   saveToStorage('chat', chatMessagesList.value);
+
+  //   const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+  //     '/qna/reformulate/questions',
+  //     {
+  //       history: getMessageHistory.value,
+  //       query: reformulatedQuery.value
+  //     }
+  //   );
+  //   chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+
+  //   setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
+  // }
 
   // async function fetchChatAnswer(userMsg: string) {
   //   if (chatStatus.value !== CHAT_STATUS.SEARCHED) return;
@@ -382,7 +396,8 @@ export const useChatStore = defineStore('chat', () => {
       try {
         // gets new questions & answer
         // await fetchChatAnswer(message);
-        await getNoStreamAnswer(message);
+        // await getNoStreamAnswer(message);
+        await getAgentAnswer(message);
       } catch (error) {
         chatStatus.value = CHAT_STATUS.ERROR;
         console.error(error);
