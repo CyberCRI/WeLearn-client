@@ -26,7 +26,7 @@ const computedStatus = computed(() => store.chatStatus);
       <template #message-list>
         <ChatEmptyContent
           :defaultMessages="[$t('defaultQueues[0]'), $t('defaultQueues[1]')]"
-          v-if="store.isChatEmpty"
+          v-if="computedStatus === CHAT_STATUS.EMPTY"
           :action="(content: string) => store.onSendMessage(content)"
         />
         <div class="bubbles-wrapper">
@@ -55,7 +55,17 @@ const computedStatus = computed(() => store.chatStatus);
         />
       </template>
       <template #queues>
-        <div class="queues">
+        <div
+          v-if="[CHAT_STATUS.EMPTY, CHAT_STATUS.DONE].includes(computedStatus)"
+          :shouldDisable="computedStatus === CHAT_STATUS.FORMULATING_ANSWER"
+          :messageList="store.questionQueues || [$t('defaultQueues[0]'), $t('defaultQueues[1]')]"
+          :action="(content: string) => store.onSendMessage(content)"
+          class="queues-wrapper"
+        >
+          <p v-if="CHAT_STATUS.DONE === computedStatus" class="subtitle is-6 ml-4">
+            {{ $t('hintForNewQuestions') }}
+          </p>
+
           <ChatQueuesPills
             v-if="[CHAT_STATUS.EMPTY, CHAT_STATUS.DONE].includes(computedStatus)"
             :shouldDisable="computedStatus === CHAT_STATUS.FORMULATING_ANSWER"
@@ -89,23 +99,6 @@ const computedStatus = computed(() => store.chatStatus);
   }
 }
 
-/* add transition between shown and hidden */
-
-.filters {
-  gap: 0.5rem;
-  width: 100%;
-  transition: all 0.5s;
-}
-
-.show-filters {
-  opacity: 1;
-  height: 3rem;
-}
-.hide-filters {
-  opacity: 0;
-  height: 0;
-}
-
 .chatIcon {
   height: 1.5rem;
 }
@@ -115,7 +108,7 @@ const computedStatus = computed(() => store.chatStatus);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
   padding-bottom: 0.1rem;
   height: 100%;
 }
@@ -146,7 +139,6 @@ const computedStatus = computed(() => store.chatStatus);
 
 .input-area {
   height: auto;
-  /* border: 1px solid var(--tertiary); */
   width: 80%;
   box-shadow: inset 0 0.0625em 0.125em hsla(221, 14%, 4%, 0.05);
   border-style: solid;
@@ -161,13 +153,6 @@ const computedStatus = computed(() => store.chatStatus);
 
 .input-area:has(div div textarea:focus) {
   border-color: var(--primary);
-}
-
-.queues {
-  display: none;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 @media screen and (min-width: 992px) {
@@ -190,11 +175,11 @@ const computedStatus = computed(() => store.chatStatus);
     background-color: transparent;
   }
 
-  .queues {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+  .queues-wrapper {
+    width: 80%;
+    display: block;
+    padding-top: 0.5rem;
+    margin: auto;
     margin-top: auto;
   }
 }

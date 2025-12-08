@@ -222,6 +222,8 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
 
     chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
+    saveToStorage('chat', chatMessagesList.value);
+
     const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
       '/qna/reformulate/questions',
       {

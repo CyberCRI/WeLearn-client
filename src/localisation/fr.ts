@@ -41,6 +41,7 @@ export const fr = {
     'Quels ODD sont liés à un module de niveau Licence sur l’économie circulaire ?',
     'Compare la tarification du carbone et le système « cap-and-trade » : fonctionnement, avantages et limites.'
   ],
+  hintForNewQuestions: 'Voici des questions supplémentaires pour approfondir ce sujet :',
   description:
     'Découvrez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
   emptyChatAction: 'Besoin d’inspiration ? Essayez :',

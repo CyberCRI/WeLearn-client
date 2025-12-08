@@ -31,13 +31,30 @@ exports[`QandA > renders properly 1`] = `
         <div
           class="chat-component hidden-scroll"
           data-v-69ac69ea=""
+          style="scroll-behavior: auto;"
         >
           <div
             class="chat-area-wrapper empty-chat"
             data-v-69ac69ea=""
           >
             
-            <!--v-if-->
+            <div
+              class="chat-default"
+              data-v-8765cc6e=""
+              data-v-c98dfe8d=""
+            >
+              <div
+                data-v-c98dfe8d=""
+              >
+                emptyChatPresentation
+              </div>
+              <div
+                class="mt-6"
+                data-v-c98dfe8d=""
+              >
+                emptyChatAction
+              </div>
+            </div>
             <div
               class="bubbles-wrapper"
               data-v-8765cc6e=""
@@ -61,9 +78,13 @@ exports[`QandA > renders properly 1`] = `
             </div>
             
             <div
-              class="queues"
+              action="(content) => $setup.store.onSendMessage(content)"
+              class="queues-wrapper"
               data-v-8765cc6e=""
+              messagelist="defaultQueues[0],defaultQueues[1]"
+              shoulddisable="false"
             >
+              <!--v-if-->
               <div
                 class="queues scroll"
                 data-v-8765cc6e=""
