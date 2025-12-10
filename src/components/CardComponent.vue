@@ -67,10 +67,7 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
             <i> via </i>
           </span>
 
-          <span
-            :class="corpusDetails ? 'is-italic' : 'has-text-weight-semibold'"
-            class="is-capitalized"
-          >
+          <span :class="corpusDetails ? 'is-italic' : 'has-text-weight-semibold'">
             {{ $t(`corpus.${corpus}`, corpus) }}</span
           >
         </p>

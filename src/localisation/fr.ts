@@ -22,6 +22,7 @@ export const fr = {
   copied: 'Copié !',
   copy: 'Copier',
   corpus: {
+    unccelearn: 'UN CC:e-Learn',
     conversation: 'The Conversation',
     hal: 'HAL',
     ipbes: 'IPBES',
