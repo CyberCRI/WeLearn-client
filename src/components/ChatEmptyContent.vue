@@ -7,20 +7,16 @@ defineProps<{
 <template>
   <div class="chat-default">
     <div>{{ $t('emptyChatPresentation') }}</div>
-    <div>{{ $t('emptyChatAction') }}</div>
+    <div class="mt-6">{{ $t('emptyChatAction') }}</div>
   </div>
 </template>
 <style scoped>
 .chat-default {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.25rem;
-  height: 100%;
+  margin-top: auto;
   text-align: center;
-  color: var(--neutral-90);
+  color: var(--neutral-80);
   margin-bottom: 2rem;
-  width: 75%;
+  width: 50%;
 }
 
 .chat-default li {
@@ -33,7 +29,7 @@ defineProps<{
 @media screen and (min-width: 576px) {
   .chat-default {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 }
 </style>

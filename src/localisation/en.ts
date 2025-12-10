@@ -42,6 +42,7 @@ export const en = {
     'Which SDGs align with a module on circular economy for undergraduates?',
     'Compare carbon pricing and cap-and-trade: how do they work, and what are their pros and cons?'
   ],
+  hintForNewQuestions: 'Here are some additional questions to explore this topic further:',
   description:
     'Explore resources, learn, and boost sustainability integration in your courses with AI.',
   emptyChatAction: 'Try asking me:',

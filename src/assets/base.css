@@ -77,6 +77,28 @@
     --bulma-input-focus-l: var(--neutral-100);
   }
 }
+table {
+  margin: 24px 0;
+}
+
+thead:first-of-type tr:first-child {
+  border-bottom: 1px solid var(--neutral-100);
+}
+
+thead > td,
+th {
+  padding: 4px 8px;
+}
+
+tbody {
+  td,
+  th {
+    padding: 4px 16px;
+  }
+  td {
+    text-align: left;
+  }
+}
 
 .scroller {
   --scrollbar-color-thumb: var(--neutral-50);

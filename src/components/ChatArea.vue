@@ -10,11 +10,12 @@ defineProps({
 });
 
 onUpdated(() => {
-  scrollToBottom();
+  setState();
 });
 
 onMounted(() => {
   setState();
+  scrollToBottom();
 });
 
 const scrollerRef = ref<VNodeRef | null>(null);
@@ -82,47 +83,27 @@ const handleOnWheel = () => {
 <style scoped>
 .bottom-wrapper {
   width: 100%;
-  margin-top: auto;
+  padding-bottom: 5rem;
 }
 
 .loading:has(#wave) {
   position: relative;
-  width: 100%;
-  padding-top: 1rem;
-  margin-top: auto;
-  margin-inline: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .chat-component {
-  display: flex;
   overflow-y: auto;
-  align-items: center;
-  flex-wrap: wrap;
   width: 100%;
-  /* height: 100%; */
-  scroll-behavior: auto;
-}
-
-.chat-component:has(.empty-chat) {
-  flex-direction: column;
+  height: 100%;
 }
 
 .chat-area-wrapper {
-  /* flex-grow: 1; */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
   overflow: hidden;
-  margin-bottom: auto;
-}
-
-.chat-area-wrapper.empty-chat {
-  margin-bottom: 0;
+  margin-top: auto;
 }
 
 .scroll-arrow {
@@ -152,6 +133,7 @@ const handleOnWheel = () => {
 .empty-chat {
   margin-top: auto;
   justify-content: center;
+  height: 50%;
   align-items: center;
 }
 
@@ -160,10 +142,14 @@ const handleOnWheel = () => {
     all: unset;
     position: absolute;
     bottom: 10%;
-    right: 0;
+    right: 50%;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
+    border: 1px solid;
+    padding: 4px;
+    color: var(--neutral-80);
+    background-color: rgba(255, 255, 255, 0.5);
 
     margin: 1rem;
     display: flex;

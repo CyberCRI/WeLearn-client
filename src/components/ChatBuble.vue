@@ -33,7 +33,7 @@ const copyMessage = (msg: string) => {
 };
 </script>
 <template>
-  <div v-if="message" class="chat-bubble" :class="isUSer ? 'user' : 'machine'">
+  <div v-if="message" class="chat-bubble" :class="{ 'last-message': isLast }">
     <div class="cahtAvatar">
       <UserAvatar v-if="isUSer" />
       <AssistantAvatar v-else />
@@ -90,6 +90,9 @@ const copyMessage = (msg: string) => {
   color: var(--neutral-80);
   padding: 1.25rem 1rem;
   text-align: justify;
+}
+.chat-bubble.last-message {
+  padding-bottom: 15rem;
 }
 
 .cahtAvatar {

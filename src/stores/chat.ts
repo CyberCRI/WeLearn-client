@@ -208,57 +208,85 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  async function fetchChatAnswer(userMsg: string) {
-    if (chatStatus.value !== CHAT_STATUS.SEARCHED) return;
+  async function getNoStreamAnswer(userMsg: string) {
+    const bodyContent = {
+      sources: sourcesList.value || [],
+      history: getMessageHistory.value,
+      query: userMsg,
+      ...(storedSubject.value && { subject: storedSubject.value })
+    };
 
-    try {
-      const bodyContent = JSON.stringify({
-        sources: sourcesList.value || [],
+    const respBody = await postAxios('/qna/chat/answer', bodyContent);
+
+    console.log(respBody);
+    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+
+    chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
+    saveToStorage('chat', chatMessagesList.value);
+
+    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+      '/qna/reformulate/questions',
+      {
         history: getMessageHistory.value,
-        query: userMsg,
-        ...(storedSubject.value && { subject: storedSubject.value })
-      });
-
-      const respBody = await fetchStream('/qna/stream', {
-        bodyContent
-      });
-
-      if (!respBody) {
-        return;
+        query: reformulatedQuery.value
       }
+    );
+    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
 
-      const reader = respBody.pipeThrough(new TextDecoderStream()).getReader();
-
-      chatMessagesList.value.push({ role: 'assistant', content: '' });
-      const assistantsAns = chatMessagesList.value.length - 1;
-
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-        const { value, done } = await reader.read();
-
-        if (done) {
-          const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
-            '/qna/reformulate/questions',
-            {
-              history: getMessageHistory.value,
-              query: reformulatedQuery.value
-            }
-          );
-          chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-
-          setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
-
-          saveToStorage('chat', chatMessagesList.value);
-          break;
-        }
-        chatMessagesList.value[assistantsAns].content += value;
-      }
-    } catch (error) {
-      console.error(error);
-      chatStatus.value = CHAT_STATUS.ERROR;
-    }
+    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
   }
+
+  // async function fetchChatAnswer(userMsg: string) {
+  //   if (chatStatus.value !== CHAT_STATUS.SEARCHED) return;
+
+  //   try {
+  //     const bodyContent = JSON.stringify({
+  //       sources: sourcesList.value || [],
+  //       history: getMessageHistory.value,
+  //       query: userMsg,
+  //       ...(storedSubject.value && { subject: storedSubject.value })
+  //     });
+
+  //     const respBody = await fetchStream('/qna/stream', {
+  //       bodyContent
+  //     });
+
+  //     if (!respBody) {
+  //       return;
+  //     }
+
+  //     const reader = respBody.pipeThrough(new TextDecoderStream()).getReader();
+
+  //     chatMessagesList.value.push({ role: 'assistant', content: '' });
+  //     const assistantsAns = chatMessagesList.value.length - 1;
+
+  //     // eslint-disable-next-line no-constant-condition
+  //     while (true) {
+  //       chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
+  //       const { value, done } = await reader.read();
+
+  //       if (done) {
+  //         const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+  //           '/qna/reformulate/questions',
+  //           {
+  //             history: getMessageHistory.value,
+  //             query: reformulatedQuery.value
+  //           }
+  //         );
+  //         chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+
+  //         setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
+
+  //         saveToStorage('chat', chatMessagesList.value);
+  //         break;
+  //       }
+  //       chatMessagesList.value[assistantsAns].content += value;
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     chatStatus.value = CHAT_STATUS.ERROR;
+  //   }
+  // }
 
   async function fetchRephraseStream(message: string) {
     if (!chatStatus.value === CHAT_STATUS.DONE) return;
@@ -353,7 +381,8 @@ export const useChatStore = defineStore('chat', () => {
     if (sourcesList.value?.length) {
       try {
         // gets new questions & answer
-        await fetchChatAnswer(message);
+        // await fetchChatAnswer(message);
+        await getNoStreamAnswer(message);
       } catch (error) {
         chatStatus.value = CHAT_STATUS.ERROR;
         console.error(error);

@@ -71,7 +71,7 @@ defineProps<{
     overflow-x: hidden;
     scrollbar-color: var(--neutral-50) var(--neutral-90);
     scrollbar-width: thin;
-    width: 100vw;
+    width: 100%;
     margin: 0.5rem 0rem;
   }
 
@@ -79,7 +79,7 @@ defineProps<{
     display: flex;
     align-self: center;
     align-items: flex-start;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem;
     margin: 0 10px 0 10px;
@@ -87,6 +87,7 @@ defineProps<{
     height: 100%;
     & > div {
       height: 100%;
+      width: 100%;
       justify-content: center;
       align-items: center;
       margin: 0;
