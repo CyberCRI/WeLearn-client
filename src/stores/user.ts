@@ -17,6 +17,8 @@ export const useUserStore = defineStore('user', () => {
 
   const setUserIdAndSessionId = async () => {
     const userAndSession = await getUserAndSession(userId.value, sessionId.value);
+    userId.value = userAndSession?.userId;
+    sessionId.value = userAndSession?.sessionId;
     localStorage.setItem('userId', userAndSession?.userId || '');
     localStorage.setItem('sessionId', userAndSession?.sessionId || '');
   };

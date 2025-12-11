@@ -38,8 +38,9 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
   const getBookmarks = async () => {
     if (!hasChanged.value && sourcesBookmarked.value.length) return;
+    const userId = useUserStore().userId;
 
-    const bookmarks = await getAllBookmarks(useUserStore().userId);
+    const bookmarks = await getAllBookmarks(userId);
     sourcesBookmarked.value = bookmarks.data;
     idsBookmarked.value = sourcesBookmarked.value.map((bookmark) => bookmark.payload.document_id);
     hasChanged.value = false;
