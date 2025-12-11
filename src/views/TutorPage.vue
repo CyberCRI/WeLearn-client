@@ -6,6 +6,7 @@ import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
+import ErrorDocumentIcon from '@/components/icons/ErrorDocumentIcon.vue';
 import { useTutorStore } from '@/stores/tutor';
 
 const store = useTutorStore();
@@ -42,7 +43,28 @@ const stepToAction: Record<1 | 2 | 3, () => Promise<void>> = {
     <ErrorComponent v-if="store.reloadError" />
 
     <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="() => {}">
-      <div class="box loading-modal">
+      <div v-if="store.shouldRetryAction" class="box">
+        <div
+          class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center"
+        >
+          <h1 class="title is-size-4 has-text-centered">
+            <span class="mr-4"><ErrorDocumentIcon /></span>
+            {{ $t('tutor.retry.title') }}
+          </h1>
+
+          <p class="loader-text is-title is-size-4 mx-6 px-6">
+            {{ $t('tutor.retry.description') }}
+          </p>
+          <button
+            data-testid="tutor-back-button"
+            class="button mt-6"
+            @click="stepToAction[store.step]()"
+          >
+            {{ $t('tutor.retry.button') }}
+          </button>
+        </div>
+      </div>
+      <div v-else class="box loading-modal">
         <h1 class="title is-size-4 has-text-centered">
           {{ $t(getI18nText.title) }}
         </h1>

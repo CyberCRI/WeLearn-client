@@ -25,6 +25,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const setStep = (newStep: number) => (step.value = newStep);
 
   // ERROR STATES
+  const shouldRetryAction: Ref<boolean> = ref(false);
   const hasSearchError: Ref<boolean> = ref(false);
   const reloadError: Ref<boolean> = ref(false);
   const hasSyllabusError: Ref<boolean> = ref(false);
@@ -83,6 +84,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
   const retrieveTutorSearch = async (arg: File[]) => {
     isLoading.value = true;
+    shouldRetryAction.value = false;
     const formData = new FormData();
     arg.forEach((file) => {
       if (file) {
@@ -94,8 +96,16 @@ export const useTutorStore = defineStore('tutor', () => {
       const resp = await postAxios('/tutor/search', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
-      tutorSearch.value = resp.data;
-      hasSearchError.value = false;
+      if (resp.status === 204) {
+        shouldRetryAction.value = true;
+      } else {
+        tutorSearch.value = resp.data;
+        hasSearchError.value = false;
+        isLoading.value = false;
+        shouldRetryAction.value = false;
+
+        goNext();
+      }
     } catch (error: any) {
       console.error('Error during tutor search:', error);
       hasSearchError.value = true;
@@ -105,7 +115,6 @@ export const useTutorStore = defineStore('tutor', () => {
       setStep(1);
     } finally {
       searchedFiles.value = arg;
-      isLoading.value = false;
     }
   };
 
@@ -128,7 +137,7 @@ export const useTutorStore = defineStore('tutor', () => {
       return;
     }
 
-    if (_isequal(searchedFiles.value, arg)) {
+    if (_isequal(searchedFiles.value, arg) && !shouldRetryAction.value) {
       hasNewSearch.value = false;
       goNext();
       return;
@@ -137,8 +146,6 @@ export const useTutorStore = defineStore('tutor', () => {
     tutorSearch.value = undefined;
     await retrieveTutorSearch(arg);
     hasNewSearch.value = true;
-
-    goNext();
   };
 
   const retrieveSyllabus = async () => {
@@ -249,6 +256,7 @@ export const useTutorStore = defineStore('tutor', () => {
     selectedSources,
     level,
     duration,
+    shouldRetryAction,
     description
   };
 });

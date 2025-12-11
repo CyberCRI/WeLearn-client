@@ -317,6 +317,12 @@ export const fr = {
     BIG_FILE: 'La taille du fichier dépasse 5 Mo.',
     BAD_EXTENSION:
       'Type de fichier non pris en charge. Seuls les fichiers PDF, TXT et DOCX sont acceptés.',
+    retry: {
+      title: 'Veuillez réessayer',
+      description:
+        "Un problème est survenu lors de l'extraction du contenu renseigné, veuillez relancer.",
+      button: 'relancer la requếte'
+    },
     loading: {
       wait: 'Veuillez patienter',
       search: {
