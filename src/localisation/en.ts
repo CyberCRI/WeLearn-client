@@ -311,6 +311,11 @@ export const en = {
   tutor: {
     BIG_FILE: 'File size exceeds 5 MB.',
     BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
+    retry: {
+      title: 'Please try again',
+      description: 'An issue occurred while extracting the provided content, please try again.',
+      button: 'retry'
+    },
     loading: {
       wait: 'Please wait',
       search: {
