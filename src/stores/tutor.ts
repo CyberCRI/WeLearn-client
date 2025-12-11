@@ -106,7 +106,15 @@ export const useTutorStore = defineStore('tutor', () => {
       const resp = await postAxios('/tutor/files/content', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
-      summaries.value = resp.data.summaries;
+      // if (resp.data.status === 204) {
+      //
+      // }
+      console.log(resp.data);
+      const summaries = resp.data.extracts.reduce((acc, curr) => {
+        acc = [...acc, curr.summary];
+      }, []);
+      console.log(summaries);
+      summaries.value = summaries;
     } catch (error: any) {
       console.error('Error during tutor search:', error);
     } finally {

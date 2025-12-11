@@ -24,7 +24,6 @@ export const postAxios = async (
   config?: AxiosRequestConfig
 ) => {
   if (!API_BASE) throw new Error('API_BASE not defined');
-  console.log(options);
 
   const enhancedConfig = {
     ...config,
