@@ -5,12 +5,16 @@
 // TODO: Move summary step to a independent component
 // figma URL : https://www.figma.com/design/VU4kFsVKJDOMt3PXwn6Jtj/welearn?node-id=452-2032&t=UKKyq5sAsGyr5Qe0-4
 import CheckIcon from '@/components/icons/CheckIcon.vue';
+import ChevronDown from '@/components/icons/ChevronDown.vue';
 import { ref } from 'vue';
 
 const props = defineProps<{
   summaries: [string];
   files: File;
   updateSummary: () => void;
+  action: () => void;
+  actionText?: string;
+  disabled: boolean;
 }>();
 
 const editableParagraphs = ref(props.summaries.map(() => true));
@@ -52,7 +56,7 @@ const handleTextEdit = (event, index) => {
 };
 </script>
 <template>
-  <div class="summaries-section">
+  <div id="target-2" class="summaries-section" :class="{ disabled: disabled }">
     <h2 class="title is-4 mt-4">2 - {{ $t('tutor.secondStep.summariesTitle') }}</h2>
     <p class="subtitle is-6">
       {{ $t('tutor.secondStep.summariesDescription') }}
@@ -87,13 +91,30 @@ const handleTextEdit = (event, index) => {
         </div>
       </div>
     </div>
+    <div class="is-flex is-justify-content-end mt-4">
+      <a class="button is-primary" href="#" @click="action()">
+        <ChevronDown />
+        {{ $t(`${actionText || 'next'}`) }}
+      </a>
+    </div>
   </div>
 </template>
 <style scoped>
+.button > svg {
+  height: 1rem;
+  padding-right: 1rem;
+}
 .summaries-section {
   margin: auto;
   height: 80%;
   padding: 5% 0;
+  width: 80%;
+}
+.summaries-section.disabled {
+  height: 10%;
+  & > * {
+    opacity: 50%;
+  }
 }
 
 button.validated {
@@ -105,7 +126,7 @@ p.validated {
 }
 
 .summary {
-  width: 80%;
+  width: 100%;
   height: auto;
   padding: 1rem;
   resize: none;

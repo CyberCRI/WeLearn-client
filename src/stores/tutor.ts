@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { scrollToAnchor } from '@/utils/navigation.ts';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';
@@ -93,6 +94,10 @@ export const useTutorStore = defineStore('tutor', () => {
     summaries.value[index] = content;
   };
 
+  const updateSyllabus = (index, content) => {
+    syllabi.value = content;
+  };
+
   const getFilesContent = async (arg: File[]) => {
     isLoading.value = true;
     shouldRetryAction.value = false;
@@ -106,28 +111,33 @@ export const useTutorStore = defineStore('tutor', () => {
       const resp = await postAxios('/tutor/files/content', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
-      // if (resp.data.status === 204) {
-      //
-      // }
-      console.log(resp.data);
-      const summaries = resp.data.extracts.reduce((acc, curr) => {
-        acc = [...acc, curr.summary];
-      }, []);
-      console.log(summaries);
-      summaries.value = summaries;
+      console.log(resp);
+      if (resp.status === 204) {
+        shouldRetryAction.value = true;
+        throw new Error('retry getFilesContent');
+      } else {
+        const red_summaries = resp.data.extracts.reduce((acc, curr) => {
+          acc = [...acc, curr.summary];
+          return acc;
+        }, []);
+        summaries.value = red_summaries;
+        goNext();
+        isLoading.value = false;
+      }
     } catch (error: any) {
-      console.error('Error during tutor search:', error);
-    } finally {
-      isLoading.value = false;
+      throw new Error(error);
     }
+  };
+
+  const stopAction = () => {
+    isLoading.value = false;
   };
 
   const retrieveTutorSearch = async (arg: File[]) => {
     isLoading.value = true;
 
     try {
-<<<<<<< HEAD
-      const resp = await postAxios('/tutor/search', summaries);
+      const resp = await postAxios('/tutor/search_extracts', { summaries: summaries.value });
       if (resp.status === 204) {
         shouldRetryAction.value = true;
       } else {
@@ -137,16 +147,8 @@ export const useTutorStore = defineStore('tutor', () => {
         shouldRetryAction.value = false;
 
         goNext();
+        scrollToAnchor('target-3');
       }
-||||||| parent of 4780a21 (wip)
-      const resp = await postAxios('/tutor/search', summaries);
-      tutorSearch.value = resp.data;
-      hasSearchError.value = false;
-=======
-      const resp = await postAxios('/tutor/search_extracts', { summaries: summaries.value });
-      tutorSearch.value = resp.data;
-      hasSearchError.value = false;
->>>>>>> 4780a21 (wip)
     } catch (error: any) {
       console.error('Error during tutor search:', error);
       hasSearchError.value = true;
@@ -185,10 +187,14 @@ export const useTutorStore = defineStore('tutor', () => {
     }
 
     tutorSearch.value = undefined;
-    await getFilesContent(arg);
-    hasNewSearch.value = true;
-
-    goNext();
+    try {
+      await getFilesContent(arg);
+      hasNewSearch.value = true;
+      scrollToAnchor('target-2');
+      // goNext();
+    } catch (error) {
+      console.log('get files content did not work');
+    }
   };
 
   const handleSearch = async () => {
@@ -234,6 +240,7 @@ export const useTutorStore = defineStore('tutor', () => {
         source.toLowerCase().includes('pedagogicalengineer')
       )[0];
       hasSyllabusError.value = false;
+      scrollToAnchor('target-4');
     } catch (error) {
       console.error('Error during syllabus retrieval:', error);
       hasSyllabusError.value = true;
@@ -320,16 +327,12 @@ export const useTutorStore = defineStore('tutor', () => {
     selectedSources,
     level,
     duration,
-<<<<<<< HEAD
     shouldRetryAction,
-    description
-||||||| parent of 3cf4dbb (feat(syllabus): adds interactive summaries)
-    description
-=======
     description,
     handleSummaryFiles,
     summaries,
-    newFilesToSearch
->>>>>>> 3cf4dbb (feat(syllabus): adds interactive summaries)
+    newFilesToSearch,
+    stopAction,
+    updateSyllabus
   };
 });

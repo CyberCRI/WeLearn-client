@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import ChevronDown from '@/components/icons/ChevronDown.vue';
 
 interface Props {
   disabled?: boolean;
@@ -11,6 +12,8 @@ interface Props {
   level: string;
   duration: string;
   description: string;
+  action: () => void;
+  actionText?: string;
 }
 
 const props = defineProps<Props>();
@@ -83,7 +86,7 @@ const appendNewInputFile = () => {
 </script>
 
 <template>
-  <div class="wrapper" :class="{ disabled }">
+  <div id="target-1" class="wrapper" :class="{ disabled }">
     <h1 class="title is-4">1 - {{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
 
@@ -182,13 +185,24 @@ const appendNewInputFile = () => {
       :value="description"
       @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
     />
+    <div class="is-flex is-justify-content-end mt-4">
+      <a class="button is-primary" href="#" @click="action()">
+        <ChevronDown />
+        {{ $t(`${actionText || 'next'}`) }}
+      </a>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.button > svg {
+  height: 1rem;
+  padding-right: 1rem;
+}
 .wrapper {
   padding: 5% 0;
   height: 80%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   transition: all 1s;

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ChevronDown from '@/components/icons/ChevronDown.vue';
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
@@ -9,10 +10,12 @@ defineProps<{
   visible?: boolean;
   appendSource: (source: Document) => void;
   selectedSources: Document[];
+  action: () => void;
+  actionText?: string;
 }>();
 </script>
 <template>
-  <div class="wrapper" :class="{ disabled: disabled, visible: visible }">
+  <div id="target-3" class="wrapper" :class="{ disabled: disabled, visible: visible }">
     <div class="sources-wrapper" v-if="sources && sources.length">
       <h1 data-testId="secondStepTitle" class="title is-4">
         3 - {{ $t('tutor.secondStep.title') }}
@@ -58,6 +61,12 @@ defineProps<{
           </CardSimpleComponent>
         </div>
       </div>
+      <div class="is-flex is-justify-content-end mt-4">
+        <a class="button is-primary" href="#" @click="action()">
+          <ChevronDown />
+          {{ $t(`${actionText || 'next'}`) }}
+        </a>
+      </div>
     </div>
     <div v-else class="has-text-centered mt-6">
       <p class="title is-4">{{ $t('tutor.secondStep.noSources') }}</p>
@@ -67,15 +76,20 @@ defineProps<{
   </div>
 </template>
 <style scoped>
+.button > svg {
+  height: 1rem;
+  padding-right: 1rem;
+}
 .wrapper {
   display: flex;
   flex-direction: column;
+  width: 80%;
 
   flex-grow: 0;
   flex-basis: 0;
-  height: 80%;
+  height: 90%;
   transition: all 0.5s;
-  margin-left: 2rem;
+  margin: auto;
   overflow: hidden;
   padding: 5% 0;
 }

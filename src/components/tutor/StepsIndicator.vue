@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { scrollToAnchor } from '@/utils/navigation';
 const props = defineProps<{
   step: number;
   stepsLength: number;
@@ -10,15 +11,16 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
 </script>
 <template>
   <div class="is-flex">
-    <p
+    <a
+      href="#"
       class="step-indicator"
       v-for="i in stepsLengthArray"
       :key="i"
       :class="{ active: i === step || advancement >= i, disabled: i > advancement }"
-      @click="setStep(i)"
+      @click="scrollToAnchor(`target-${i}`)"
     >
       {{ i }}
-    </p>
+    </a>
   </div>
 </template>
 <style scoped>
