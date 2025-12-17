@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { scrollToAnchor } from '@/utils/navigation.ts';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';
@@ -82,7 +83,22 @@ export const useTutorStore = defineStore('tutor', () => {
     };
   };
 
-  const retrieveTutorSearch = async (arg: File[]) => {
+  // const summaries = ref<[string]>([
+  //   "Global warming, a subset of climate change, refers to the long-term rise in the average temperature of the Earth's climate system, primarily caused by human activities such as fossil fuel burning, deforestation, and certain agricultural and industrial practices that release greenhouse gases. These gases trap heat in the lower atmosphere, leading to various environmental impacts like desert expansion, increased frequency of heat waves and wildfires, accelerated Arctic warming, glacier retreat, and sea ice decline. Climate change also affects biodiversity, forcing species to relocate or face extinction, and poses significant threats to human societies, including increased flooding, extreme heat, food and water scarcity, disease, economic loss, and potential human migration and conflict. Even with efforts to minimize future warming, some effects will persist for centuries, including ocean heating, acidification, and sea-level rise. The Paris Agreement aims to limit global warming to well below 2°C, but current pledges still project a rise of about 2.8°C by the end of the century. There is widespread support for climate action, with most countries aiming to stop emitting carbon dioxide. Strategies include phasing out fossil fuels, conserving energy, switching to clean energy sources, and removing carbon from the atmosphere through methods like reforestation and carbon-storing farming practices.",
+  //   "The article discusses the XL-Sum dataset, a large-scale multilingual abstractive summarization dataset containing 1 million professionally annotated article-summary pairs from BBC, covering 44 languages. The dataset is designed to address the lack of high-quality datasets for low-resource languages in abstractive summarization. XL-Sum introduces the first publicly available summarization dataset for many languages and achieves competitive results in both multilingual and low-resource summarization tasks. The dataset is created using a custom crawler and a set of heuristics to extract high-quality summaries from BBC articles. Evaluations show that the summaries are highly abstractive, concise, and of high quality, with minimal redundancy. The mT5 model fine-tuned on XL-Sum achieves state-of-the-art results, demonstrating the dataset's effectiveness in abstractive summarization across multiple languages."
+  // ]);
+
+  const summaries = ref<[string]>([]);
+
+  const updateSummary = (index, content) => {
+    summaries.value[index] = content;
+  };
+
+  const updateSyllabus = (index, content) => {
+    syllabi.value[index] = content;
+  };
+
+  const getFilesContent = async (arg: File[]) => {
     isLoading.value = true;
     shouldRetryAction.value = false;
     const formData = new FormData();
@@ -91,11 +107,37 @@ export const useTutorStore = defineStore('tutor', () => {
         formData.append('files', file);
       }
     });
-
     try {
-      const resp = await postAxios('/tutor/search', formData, {
+      const resp = await postAxios('/tutor/files/content', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
+      console.log(resp);
+      if (resp.status === 204) {
+        shouldRetryAction.value = true;
+        throw new Error('retry getFilesContent');
+      } else {
+        const red_summaries = resp.data.extracts.reduce((acc, curr) => {
+          acc = [...acc, curr.summary];
+          return acc;
+        }, []);
+        summaries.value = red_summaries;
+        goNext();
+        isLoading.value = false;
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  };
+
+  const stopAction = () => {
+    isLoading.value = false;
+  };
+
+  const retrieveTutorSearch = async (arg: File[]) => {
+    isLoading.value = true;
+
+    try {
+      const resp = await postAxios('/tutor/search_extracts', { summaries: summaries.value });
       if (resp.status === 204) {
         shouldRetryAction.value = true;
       } else {
@@ -105,6 +147,7 @@ export const useTutorStore = defineStore('tutor', () => {
         shouldRetryAction.value = false;
 
         goNext();
+        scrollToAnchor('target-3');
       }
     } catch (error: any) {
       console.error('Error during tutor search:', error);
@@ -112,8 +155,8 @@ export const useTutorStore = defineStore('tutor', () => {
       if (error.code === 'ERR_NETWORK') {
         reloadError.value = true;
       }
-      setStep(1);
     } finally {
+      setStep(3);
       searchedFiles.value = arg;
     }
   };
@@ -125,6 +168,32 @@ export const useTutorStore = defineStore('tutor', () => {
       selectedSources.value.push(source);
     } else {
       selectedSources.value = selectedSources.value.filter((s) => s.id !== source.id);
+    }
+  };
+
+  const handleSummaryFiles = async () => {
+    reloadError.value = false;
+    selectedSources.value = [];
+    const arg = Object.values(newFilesToSearch.value).filter((e) => e);
+    if (!arg.length) {
+      console.error('No files selected');
+      return;
+    }
+
+    if (_isequal(searchedFiles.value, arg)) {
+      hasNewSearch.value = false;
+      goNext();
+      return;
+    }
+
+    tutorSearch.value = undefined;
+    try {
+      await getFilesContent(arg);
+      hasNewSearch.value = true;
+      scrollToAnchor('target-2');
+      // goNext();
+    } catch (error) {
+      console.log('get files content did not work');
     }
   };
 
@@ -171,6 +240,7 @@ export const useTutorStore = defineStore('tutor', () => {
         source.toLowerCase().includes('pedagogicalengineer')
       )[0];
       hasSyllabusError.value = false;
+      scrollToAnchor('target-4');
     } catch (error) {
       console.error('Error during syllabus retrieval:', error);
       hasSyllabusError.value = true;
@@ -245,6 +315,7 @@ export const useTutorStore = defineStore('tutor', () => {
     tutorSearch,
     appendSource,
     retrieveSyllabus,
+    updateSummary,
     handleCreateSyllabus,
     hasSearchError,
     hasSyllabusError,
@@ -257,6 +328,11 @@ export const useTutorStore = defineStore('tutor', () => {
     level,
     duration,
     shouldRetryAction,
-    description
+    description,
+    handleSummaryFiles,
+    summaries,
+    newFilesToSearch,
+    stopAction,
+    updateSyllabus
   };
 });

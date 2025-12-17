@@ -314,7 +314,8 @@ export const en = {
     retry: {
       title: 'Please try again',
       description: 'An issue occurred while extracting the provided content, please try again.',
-      button: 'retry'
+      button: 'retry',
+      stop: 'cancel'
     },
     loading: {
       wait: 'Please wait',
@@ -329,6 +330,12 @@ export const en = {
           'WeLearn is generating your syllabus from the documents provided. This step may take a few minutes.'
       }
     },
+    summaries: {
+      noFileName: 'No file name provided',
+      title: 'Uploaded documents summaries',
+      description:
+        'WeLearn has extracted the following summaries from your uploaded documents. You can review them before proceeding to the next step.'
+    },
     firstStep: {
       acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',
       searchError: 'No results were found for the provided document.',
@@ -336,6 +343,8 @@ export const en = {
       description:
         'To get started, upload one or more reference documents your course is based on. They will be used to generate your syllabus.',
       cursusDescriptionTitle: 'Course information',
+      cursusDescriptionDescription:
+        'Fill in the information about your course. It will be used to generate a syllabus that adapts to your needs.',
       cursusTitleLabel: 'Title',
       cursusTitlePlaceholder: 'Sociolinguistics 101',
       cursusLevelLabel: 'Level of study',
@@ -368,5 +377,9 @@ export const en = {
   },
   previous: 'Previous',
   previous_page: 'Previous page',
-  next_page: 'Next page'
+  next_page: 'Next page',
+  validate: 'Validate',
+  validated: 'Validated',
+  edit: 'Edit',
+  save: 'Save'
 };

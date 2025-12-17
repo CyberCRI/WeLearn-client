@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import ChevronDown from '@/components/icons/ChevronDown.vue';
+
+// TODO: add info that default values will be used if not written down
+// TODO: make files required:w
 
 interface Props {
   disabled?: boolean;
@@ -11,6 +15,9 @@ interface Props {
   level: string;
   duration: string;
   description: string;
+  action: () => void;
+  actionText?: string;
+  addedFilesTitles: string[];
 }
 
 const props = defineProps<Props>();
@@ -83,8 +90,8 @@ const appendNewInputFile = () => {
 </script>
 
 <template>
-  <div class="wrapper" :class="{ disabled }">
-    <h1 class="title is-4">{{ $t('tutor.firstStep.title') }}</h1>
+  <div id="target-1" class="wrapper" :class="{ disabled }">
+    <h1 class="title is-4">1 - {{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
 
     <!-- File Input Section -->
@@ -129,11 +136,9 @@ const appendNewInputFile = () => {
     <h2 class="title is-6 mt-4">
       {{ $t('tutor.firstStep.cursusDescriptionTitle') }}
     </h2>
+    <p class="subtitle is-6">{{ $t('tutor.firstStep.cursusDescriptionDescription') }}</p>
 
-    <div
-      class="is-flex is-flex-wrap-wrap descriptions"
-      :class="{ 'is-flex-direction-column': disabled }"
-    >
+    <div class="is-flex is-flex-wrap-wrap descriptions">
       <div class="description">
         <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
         <input
@@ -182,16 +187,26 @@ const appendNewInputFile = () => {
       :value="description"
       @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
     />
+    <div class="is-flex is-justify-content-end mt-4">
+      <a data-testid="tutor-next-button" class="button is-primary" href="#" @click="action()">
+        <ChevronDown />
+        {{ $t(`${actionText || 'next'}`) }}
+      </a>
+    </div>
   </div>
 </template>
 
 <style scoped>
+.button > svg {
+  height: 1rem;
+  padding-right: 1rem;
+}
 .wrapper {
+  padding: 5% 0;
+  height: 80%;
+  width: 80%;
   display: flex;
   flex-direction: column;
-  flex-grow: 0.25;
-  flex-shrink: 0.25;
-  flex-basis: 30%;
   transition: all 1s;
   margin: 0 auto;
 }
@@ -201,13 +216,8 @@ const appendNewInputFile = () => {
 }
 
 .wrapper.disabled {
-  flex-basis: 25%;
   opacity: 0.5;
   pointer-events: none;
-  flex-grow: 0.25;
-  .description {
-    width: 100%;
-  }
 }
 
 .descriptions {

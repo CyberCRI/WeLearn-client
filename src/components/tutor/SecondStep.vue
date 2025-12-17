@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// TODO: make clear the number of selected sources
+import ChevronDown from '@/components/icons/ChevronDown.vue';
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
@@ -9,12 +11,16 @@ defineProps<{
   visible?: boolean;
   appendSource: (source: Document) => void;
   selectedSources: Document[];
+  action: () => void;
+  actionText?: string;
 }>();
 </script>
 <template>
-  <div class="wrapper" :class="{ disabled: disabled, visible: visible }">
+  <div id="target-3" class="wrapper" :class="{ disabled: disabled, visible: visible }">
     <div class="sources-wrapper" v-if="sources && sources.length">
-      <h1 data-testId="secondStepTitle" class="title is-4">{{ $t('tutor.secondStep.title') }}</h1>
+      <h1 data-testId="documents-list-title" class="title is-4">
+        3 - {{ $t('tutor.secondStep.title') }}
+      </h1>
       <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>
       <div class="sources">
         <div
@@ -56,6 +62,12 @@ defineProps<{
           </CardSimpleComponent>
         </div>
       </div>
+      <div class="is-flex is-justify-content-end mt-4">
+        <a class="button is-primary" href="#" @click="action()">
+          <ChevronDown />
+          {{ $t(`${actionText || 'next'}`) }}
+        </a>
+      </div>
     </div>
     <div v-else class="has-text-centered mt-6">
       <p class="title is-4">{{ $t('tutor.secondStep.noSources') }}</p>
@@ -65,16 +77,22 @@ defineProps<{
   </div>
 </template>
 <style scoped>
+.button > svg {
+  height: 1rem;
+  padding-right: 1rem;
+}
 .wrapper {
   display: flex;
   flex-direction: column;
+  width: 80%;
 
   flex-grow: 0;
   flex-basis: 0;
-  height: 100%;
+  height: 90%;
   transition: all 0.5s;
-  margin-left: 2rem;
+  margin: auto;
   overflow: hidden;
+  padding: 5% 0;
 }
 .wrapper.visible {
   flex-grow: 3;

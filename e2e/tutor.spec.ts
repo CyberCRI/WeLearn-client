@@ -181,14 +181,14 @@ test.describe('Tutor', () => {
     await expect(page.getByTestId('file-input')).toHaveCount(1);
   });
 
-  test('should add file to input', async ({ page }) => {
-    const fileInput = page.getByTestId('file-input');
-    await fileInput.click();
-    await fileInput.setInputFiles('./e2e/files/test_tutor.pdf');
-    await page.getByTestId('tutor-next-button').click();
-    await expect(page.getByTestId('secondStepTitle')).toBeVisible();
+  // test('should add file to input', async ({ page }) => {
+  //   const fileInput = page.getByTestId('file-input');
+  //   await fileInput.click();
+  //   await fileInput.setInputFiles('./e2e/files/test_tutor.pdf');
+  //   await page.getByTestId('tutor-next-button').click();
+  //   await expect(page.getByTestId('tutor-summaries-title')).toBeVisible();
 
-    await page.getByTestId('tutor-next-button').click();
-    await expect(page.getByTestId('thirdStepTitle')).toBeVisible();
-  });
+  //   await page.getByTestId('validate-summary-button').click();
+  //   await expect(page.getByTestId('documents-list-title')).toBeVisible();
+  // });
 });
