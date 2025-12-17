@@ -2,6 +2,9 @@
 import { ref, computed } from 'vue';
 import ChevronDown from '@/components/icons/ChevronDown.vue';
 
+// TODO: add info that default values will be used if not written down
+// TODO: make files required:w
+
 interface Props {
   disabled?: boolean;
   addFile: (e: Event, id: string) => void;
@@ -14,6 +17,7 @@ interface Props {
   description: string;
   action: () => void;
   actionText?: string;
+  addedFilesTitles: string[];
 }
 
 const props = defineProps<Props>();
@@ -132,11 +136,9 @@ const appendNewInputFile = () => {
     <h2 class="title is-6 mt-4">
       {{ $t('tutor.firstStep.cursusDescriptionTitle') }}
     </h2>
+    <p class="subtitle is-6">{{ $t('tutor.firstStep.cursusDescriptionDescription') }}</p>
 
-    <div
-      class="is-flex is-flex-wrap-wrap descriptions"
-      :class="{ 'is-flex-direction-column': disabled }"
-    >
+    <div class="is-flex is-flex-wrap-wrap descriptions">
       <div class="description">
         <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
         <input
@@ -186,7 +188,7 @@ const appendNewInputFile = () => {
       @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
     />
     <div class="is-flex is-justify-content-end mt-4">
-      <a class="button is-primary" href="#" @click="action()">
+      <a data-testid="tutor-next-button" class="button is-primary" href="#" @click="action()">
         <ChevronDown />
         {{ $t(`${actionText || 'next'}`) }}
       </a>

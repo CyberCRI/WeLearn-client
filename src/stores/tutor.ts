@@ -95,7 +95,7 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const updateSyllabus = (index, content) => {
-    syllabi.value = content;
+    syllabi.value[index] = content;
   };
 
   const getFilesContent = async (arg: File[]) => {

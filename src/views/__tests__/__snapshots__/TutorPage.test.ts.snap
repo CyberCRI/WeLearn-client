@@ -6,30 +6,51 @@ exports[`TutorPage > renders properly 1`] = `
   data-v-8a8621cb=""
 >
   <div
-    class="is-flex"
-    data-v-050e406a=""
+    class="is-flex is-justify-content-center is-align-items-center"
     data-v-8a8621cb=""
   >
-    
     <p
-      class="step-indicator active"
-      data-v-050e406a=""
+      class="subtitle has-text-weight-bold is-5 mr-4 my-auto"
+      data-v-8a8621cb=""
     >
-      1
+      Syllabus steps:
     </p>
-    <p
-      class="step-indicator disabled"
+    <div
+      class="is-flex"
       data-v-050e406a=""
+      data-v-8a8621cb=""
     >
-      2
-    </p>
-    <p
-      class="step-indicator disabled"
-      data-v-050e406a=""
-    >
-      3
-    </p>
-    
+      
+      <a
+        class="step-indicator active"
+        data-v-050e406a=""
+        href="#"
+      >
+        1
+      </a>
+      <a
+        class="step-indicator disabled"
+        data-v-050e406a=""
+        href="#"
+      >
+        2
+      </a>
+      <a
+        class="step-indicator disabled"
+        data-v-050e406a=""
+        href="#"
+      >
+        3
+      </a>
+      <a
+        class="step-indicator disabled"
+        data-v-050e406a=""
+        href="#"
+      >
+        4
+      </a>
+      
+    </div>
   </div>
   <!--v-if-->
   <!--v-if-->
@@ -38,237 +59,238 @@ exports[`TutorPage > renders properly 1`] = `
     data-v-8a8621cb=""
   >
     <div
-      class="flex-wrap"
+      class="wrapper"
+      data-test="fist-step"
       data-v-8a8621cb=""
+      data-v-e090ef8d=""
+      id="target-1"
     >
-      <div
-        class="wrapper"
-        data-test="fist-step"
-        data-v-8a8621cb=""
+      <h1
+        class="title is-4"
         data-v-e090ef8d=""
       >
-        <h1
-          class="title is-4"
-          data-v-e090ef8d=""
-        >
-          tutor.firstStep.title
-        </h1>
-        <p
-          class="subtitle is-6"
-          data-v-e090ef8d=""
-        >
-          tutor.firstStep.description
-        </p>
-        <!-- File Input Section -->
+        1 - tutor.firstStep.title
+      </h1>
+      <p
+        class="subtitle is-6"
+        data-v-e090ef8d=""
+      >
+        tutor.firstStep.description
+      </p>
+      <!-- File Input Section -->
+      <div
+        class="is-flex is-flex-direction-column"
+        data-v-e090ef8d=""
+      >
         <div
-          class="is-flex is-flex-direction-column"
+          class="input-group is-flex is-flex-direction-column"
           data-v-e090ef8d=""
         >
           <div
-            class="input-group is-flex is-flex-direction-column"
+            class="is-flex is-flex-direction-row mb-2"
             data-v-e090ef8d=""
+            id="file_0"
           >
-            <div
-              class="is-flex is-flex-direction-row mb-2"
+            <input
+              accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              class="input"
+              data-testid="file-input"
               data-v-e090ef8d=""
-              id="file_0"
-            >
-              <input
-                accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                class="input"
-                data-testid="file-input"
-                data-v-e090ef8d=""
-                placeholder="Enter the new file"
-                type="file"
-              />
-              <button
-                class="button"
-                data-v-e090ef8d=""
-                disabled=""
-              >
-                x
-              </button>
-            </div>
-          </div>
-          <!--v-if-->
-          <div
-            class="is-align-self-flex-end"
-            data-v-e090ef8d=""
-          >
-            <span
-              class="has-text-grey-light mr-2"
-              data-v-e090ef8d=""
-            >
-              tutor.firstStep.acceptedFiles
-            </span>
-            <!--v-if-->
+              placeholder="Enter the new file"
+              type="file"
+            />
             <button
               class="button"
               data-v-e090ef8d=""
+              disabled=""
             >
-              +
+              x
             </button>
           </div>
         </div>
         <!--v-if-->
-        <!-- Course Description Section -->
-        <h2
-          class="title is-6 mt-4"
-          data-v-e090ef8d=""
-        >
-          tutor.firstStep.cursusDescriptionTitle
-        </h2>
         <div
-          class="is-flex is-flex-wrap-wrap descriptions"
+          class="is-align-self-flex-end"
           data-v-e090ef8d=""
         >
-          <div
-            class="description"
+          <span
+            class="has-text-grey-light mr-2"
             data-v-e090ef8d=""
           >
-            <label
-              data-v-e090ef8d=""
-              for="cursus-title"
-            >
-              tutor.firstStep.cursusTitleLabel
-            </label>
-            <input
-              class="input"
-              data-v-e090ef8d=""
-              id="cursus-title"
-              placeholder="tutor.firstStep.cursusTitlePlaceholder"
-              type="text"
-              value=""
-            />
-          </div>
-          <div
-            class="description"
+            tutor.firstStep.acceptedFiles
+          </span>
+          <!--v-if-->
+          <button
+            class="button"
             data-v-e090ef8d=""
           >
-            <label
-              data-v-e090ef8d=""
-              for="cursus-level"
-            >
-              tutor.firstStep.cursusLevelLabel
-            </label>
-            <input
-              class="input"
-              data-v-e090ef8d=""
-              id="cursus-level"
-              placeholder="tutor.firstStep.cursusLevelPlaceholder"
-              type="text"
-              value=""
-            />
-          </div>
-          <div
-            class="description"
-            data-v-e090ef8d=""
-          >
-            <label
-              data-v-e090ef8d=""
-              for="cursus-duration"
-            >
-              tutor.firstStep.cursusDurationLabel
-            </label>
-            <input
-              class="input"
-              data-v-e090ef8d=""
-              id="cursus-duration"
-              placeholder="tutor.firstStep.cursusDurationPlaceholder"
-              type="text"
-              value=""
-            />
-          </div>
+            +
+          </button>
         </div>
-        <label
-          class="mt-4"
-          data-v-e090ef8d=""
-          for="cursus-description"
-        >
-          tutor.firstStep.cursusDescriptionLabel
-        </label>
-        <textarea
-          class="textarea mt-1"
-          data-v-e090ef8d=""
-          id="cursus-description"
-          placeholder="tutor.firstStep.cursusDescriptionPlaceholder"
-          rows="5"
-          value=""
-        />
       </div>
+      <!--v-if-->
+      <!-- Course Description Section -->
+      <h2
+        class="title is-6 mt-4"
+        data-v-e090ef8d=""
+      >
+        tutor.firstStep.cursusDescriptionTitle
+      </h2>
+      <p
+        class="subtitle is-6"
+        data-v-e090ef8d=""
+      >
+        tutor.firstStep.cursusDescriptionDescription
+      </p>
       <div
-        class="wrapper"
-        data-test="second-step"
-        data-v-8a8621cb=""
-        data-v-ebcfbade=""
+        class="is-flex is-flex-wrap-wrap descriptions"
+        data-v-e090ef8d=""
       >
         <div
-          class="has-text-centered mt-6"
-          data-v-ebcfbade=""
+          class="description"
+          data-v-e090ef8d=""
         >
-          <p
-            class="title is-4"
-            data-v-ebcfbade=""
+          <label
+            data-v-e090ef8d=""
+            for="cursus-title"
           >
-            tutor.secondStep.noSources
-          </p>
-          <p
-            class="subtitle is-6 mt-6"
-            data-v-ebcfbade=""
+            tutor.firstStep.cursusTitleLabel
+          </label>
+          <input
+            class="input"
+            data-v-e090ef8d=""
+            id="cursus-title"
+            placeholder="tutor.firstStep.cursusTitlePlaceholder"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="description"
+          data-v-e090ef8d=""
+        >
+          <label
+            data-v-e090ef8d=""
+            for="cursus-level"
           >
-            tutor.secondStep.noSourcesDescription
-          </p>
-          <img
-            alt="No sources found"
-            class="image"
-            data-v-ebcfbade=""
-            src="/src/assets/no-sources.svg"
+            tutor.firstStep.cursusLevelLabel
+          </label>
+          <input
+            class="input"
+            data-v-e090ef8d=""
+            id="cursus-level"
+            placeholder="tutor.firstStep.cursusLevelPlaceholder"
+            type="text"
+            value=""
+          />
+        </div>
+        <div
+          class="description"
+          data-v-e090ef8d=""
+        >
+          <label
+            data-v-e090ef8d=""
+            for="cursus-duration"
+          >
+            tutor.firstStep.cursusDurationLabel
+          </label>
+          <input
+            class="input"
+            data-v-e090ef8d=""
+            id="cursus-duration"
+            placeholder="tutor.firstStep.cursusDurationPlaceholder"
+            type="text"
+            value=""
           />
         </div>
       </div>
+      <label
+        class="mt-4"
+        data-v-e090ef8d=""
+        for="cursus-description"
+      >
+        tutor.firstStep.cursusDescriptionLabel
+      </label>
+      <textarea
+        class="textarea mt-1"
+        data-v-e090ef8d=""
+        id="cursus-description"
+        placeholder="tutor.firstStep.cursusDescriptionPlaceholder"
+        rows="5"
+        value=""
+      />
+      <div
+        class="is-flex is-justify-content-end mt-4"
+        data-v-e090ef8d=""
+      >
+        <a
+          class="button is-primary"
+          data-testid="tutor-next-button"
+          data-v-e090ef8d=""
+          href="#"
+        >
+          <svg
+            data-v-e090ef8d=""
+            viewBox="0 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path
+              d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+              fill="currentColor"
+            />
+          </svg>
+           next
+        </a>
+      </div>
     </div>
     <div
-      class="wrapper"
-      data-test="third-step"
-      data-v-7bf7679d=""
+      class="summaries-section disabled"
+      data-v-834edf8c=""
       data-v-8a8621cb=""
+      id="target-2"
     >
-      <h1
-        class="title is-4"
-        data-testid="thirdStepTitle"
-        data-v-7bf7679d=""
+      <h2
+        class="title is-4 mt-4"
+        data-testid="tutor-summaries-title"
+        data-v-834edf8c=""
       >
-        tutor.thirdStep.title
-      </h1>
+         2 - tutor.summaries.title
+      </h2>
       <p
         class="subtitle is-6"
-        data-v-7bf7679d=""
+        data-v-834edf8c=""
       >
-        tutor.thirdStep.description
+        tutor.summaries.description
       </p>
-      <!-- syllabus -->
-      <!--v-if-->
-      <!--v-if-->
-      <button
-        class="button"
-        data-v-7bf7679d=""
+      
+      
+      <div
+        class="is-flex is-justify-content-end mt-4"
+        data-v-834edf8c=""
       >
-        tutor.thirdStep.giveFeedback
-      </button>
+        <a
+          class="button is-primary"
+          data-v-834edf8c=""
+          href="#"
+        >
+          <svg
+            data-v-834edf8c=""
+            viewBox="0 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+            <path
+              d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+              fill="currentColor"
+            />
+          </svg>
+           search
+        </a>
+      </div>
     </div>
-  </div>
-  <div
-    class="actions"
-    data-v-8a8621cb=""
-  >
     <!--v-if-->
-    <button
-      class="button"
-      data-testid="tutor-next-button"
-      data-v-8a8621cb=""
-    >
-      next
-    </button>
+    <!--v-if-->
   </div>
 </div>
 `;

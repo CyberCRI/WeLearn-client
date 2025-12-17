@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import ColumnTemplate from '@/components/ColumnTemplate.vue';
 import CursusInfo from '@/components/tutor/FirstStep.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
@@ -26,8 +25,6 @@ const getI18nText = computed(() => {
     description: 'tutor.loading.syllabus.description'
   };
 });
-
-const nextButtonText = ['next', 'search', 'genSyllabus', 'download'];
 
 const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
   1: store.handleSummaryFiles,
@@ -63,16 +60,18 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
           <p class="loader-text is-title is-size-4 mx-6 px-6">
             {{ $t('tutor.retry.description') }}
           </p>
-          <button
-            data-testid="tutor-back-button"
-            class="button mt-6"
-            @click="stepToAction[store.step]()"
-          >
-            {{ $t('tutor.retry.button') }}
-          </button>
-          <button data-testid="tutor-back-button" class="button mt-6" @click="store.stopAction()">
-            {{ $t('tutor.retry.stop') }}
-          </button>
+          <div class="is-flex is-gap-4">
+            <button
+              data-testid="tutor-back-button"
+              class="button mt-6"
+              @click="stepToAction[store.step]()"
+            >
+              {{ $t('tutor.retry.button') }}
+            </button>
+            <button data-testid="tutor-back-button" class="button mt-6" @click="store.stopAction()">
+              {{ $t('tutor.retry.stop') }}
+            </button>
+          </div>
         </div>
       </div>
       <div v-else class="box loading-modal">

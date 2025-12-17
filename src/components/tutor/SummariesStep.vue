@@ -2,10 +2,9 @@
 // TODO: use button to make summary editable
 // TODO: use button to validate summary --> make it required to go to the next step
 // TODO: send edited summaries to the search request
-// TODO: Move summary step to a independent component
-// figma URL : https://www.figma.com/design/VU4kFsVKJDOMt3PXwn6Jtj/welearn?node-id=452-2032&t=UKKyq5sAsGyr5Qe0-4
 import CheckIcon from '@/components/icons/CheckIcon.vue';
 import ChevronDown from '@/components/icons/ChevronDown.vue';
+import EditIcon from '@/components/icons/EditIcon.vue';
 import { ref } from 'vue';
 
 const props = defineProps<{
@@ -19,8 +18,8 @@ const props = defineProps<{
 
 const editableParagraphs = ref(props.summaries.map(() => true));
 
-function toggleEdit(index) {
-  editableParagraphs.value[index] = !editableParagraphs.value[index];
+function toggleEdit(index, value) {
+  editableParagraphs.value[index] = value;
 
   if (editableParagraphs.value[index]) {
     requestAnimationFrame(() => {
@@ -57,13 +56,15 @@ const handleTextEdit = (event, index) => {
 </script>
 <template>
   <div id="target-2" class="summaries-section" :class="{ disabled: disabled }">
-    <h2 class="title is-4 mt-4">2 - {{ $t('tutor.secondStep.summariesTitle') }}</h2>
+    <h2 data-testid="tutor-summaries-title" class="title is-4 mt-4">
+      2 - {{ $t('tutor.summaries.title') }}
+    </h2>
     <p class="subtitle is-6">
-      {{ $t('tutor.secondStep.summariesDescription') }}
+      {{ $t('tutor.summaries.description') }}
     </p>
     <div id="summaries" :key="index" v-for="(summary, index) in summaries">
       <h2 class="title is-6 mt-4">
-        {{ Object.values(files)[index]?.name || $t('tutor.secondStep.noFileName') }}
+        {{ Object.values(files)[index]?.name || $t('tutor.summaries.noFileName') }}
       </h2>
       <div class="is-flex">
         <p
@@ -78,15 +79,22 @@ const handleTextEdit = (event, index) => {
           {{ summary }}
         </p>
         <div class="mt-2 ml-2">
+          <button class="button is-white mt-2" @click="toggleEdit(index, true)">
+            <span class="icon is-small">
+              <EditIcon />
+            </span>
+            <span>{{ $t('edit') }}</span>
+          </button>
           <button
+            data-testid="validate-summary-button"
             class="button is-white"
-            @click="toggleEdit(index)"
+            @click="toggleEdit(index, false)"
             :class="{ validated: !editableParagraphs[index] }"
           >
             <span class="icon is-small">
               <CheckIcon />
             </span>
-            <span>validate</span>
+            <span>{{ editableParagraphs[index] ? $t('validate') : $t('validated') }}</span>
           </button>
         </div>
       </div>

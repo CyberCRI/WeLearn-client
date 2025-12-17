@@ -1,6 +1,8 @@
 <script setup lang="ts">
+// TODO: add an "edit" button
 import { marked } from 'marked';
 import { ref, type Ref } from 'vue';
+import EditIcon from '@/components/icons/EditIcon.vue';
 const props = defineProps<{
   syllabus?: { content: string; source: string };
   giveFeedback: (feedback: string) => void;
@@ -33,15 +35,27 @@ const handleTextEdit = (event, index) => {
     <h1 data-testid="thirdStepTitle" class="title is-4">4 - {{ $t('tutor.thirdStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.thirdStep.description') }}</p>
     <!-- syllabus -->
-    <p
-      :contenteditable="isEditable"
-      id="syllabus"
-      class="syllabus content"
-      v-if="syllabus?.content"
-      v-html="marked.parse(syllabus?.content)"
-      @blur="handleTextEdit($event, index)"
-      @click="isEditable = true"
-    />
+
+    <div class="is-flex is-flex-direction-column">
+      <button class="button is-white ml-auto" @click="isEditable = !isEditable">
+        <span class="icon is-small mr-2">
+          <EditIcon />
+        </span>
+        {{ isEditable ? $t('save') : $t('edit') }}
+      </button>
+
+      <p
+        :contenteditable="isEditable"
+        :class="{ editable: isEditable }"
+        id="syllabus"
+        class="syllabus content"
+        v-if="syllabus?.content"
+        v-html="marked.parse(syllabus?.content)"
+        @blur="handleTextEdit($event, index)"
+        @click="isEditable = true"
+      />
+    </div>
+
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
 
     <div class="is-flex is-justify-content-end mt-4">
@@ -91,5 +105,9 @@ details:not([open]) {
   overflow-x: scroll;
   background-color: var(--neutral-10);
   cursor: text;
+}
+.editable {
+  border: 2px solid var(--primary);
+  background-color: var(--neutral-0);
 }
 </style>

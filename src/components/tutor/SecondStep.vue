@@ -1,4 +1,5 @@
 <script setup lang="ts">
+// TODO: make clear the number of selected sources
 import ChevronDown from '@/components/icons/ChevronDown.vue';
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
@@ -17,7 +18,7 @@ defineProps<{
 <template>
   <div id="target-3" class="wrapper" :class="{ disabled: disabled, visible: visible }">
     <div class="sources-wrapper" v-if="sources && sources.length">
-      <h1 data-testId="secondStepTitle" class="title is-4">
+      <h1 data-testId="documents-list-title" class="title is-4">
         3 - {{ $t('tutor.secondStep.title') }}
       </h1>
       <p class="subtitle is-6">{{ $t('tutor.secondStep.description') }}</p>

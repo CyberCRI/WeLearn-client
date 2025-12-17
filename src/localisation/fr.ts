@@ -321,7 +321,8 @@ export const fr = {
       title: 'Veuillez réessayer',
       description:
         "Un problème est survenu lors de l'extraction du contenu renseigné, veuillez relancer.",
-      button: 'relancer la requếte'
+      button: 'relancer la requête',
+      stop: 'annuler'
     },
     loading: {
       wait: 'Veuillez patienter',
@@ -336,6 +337,12 @@ export const fr = {
           'WeLearn génère votre syllabus à partir des documents fournis. Cette étape peut prendre quelques minutes.'
       }
     },
+    summaries: {
+      noFileName: 'Aucun nom de fichier fourni',
+      title: 'Résumés des documents importés',
+      description:
+        'WeLearn a extrait les points clés de vos documents importés pour générer le syllabus.'
+    },
     firstStep: {
       acceptedFiles: 'Types de fichiers acceptés : PDF, TXT, DOCX',
       searchError: 'Aucun résultat trouvé pour le document fourni.',
@@ -343,6 +350,8 @@ export const fr = {
       description:
         'Pour commencer, importez un ou plusieurs documents de référence sur lesquels s’appuie votre cours. Ils serviront à générer votre syllabus.',
       cursusDescriptionTitle: 'Informations sur le cours',
+      cursusDescriptionDescription:
+        "Renseignez les informations sur votre cours. Elle seront utilisées pour générer un syllabus qui s'adapte a vos besoins.",
       cursusTitleLabel: 'Titre',
       cursusTitlePlaceholder: 'Introduction à la sociolinguistique',
       cursusLevelLabel: 'Niveau d’études',
@@ -375,5 +384,9 @@ export const fr = {
   },
   previous: 'Précédent',
   previous_page: 'Page précédente',
-  next_page: 'Page suivante'
+  next_page: 'Page suivante',
+  validate: 'Valider',
+  validated: 'Validé',
+  edit: 'Modifier',
+  save: 'Enregistrer'
 };
