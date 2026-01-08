@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import { useSourcesStore } from '@/stores/sources';
+import { onBeforeMount } from 'vue';
+import i18n from '@/localisation/i18n';
+
+const sourcesStore = useSourcesStore();
+
+onBeforeMount(() => {
+  sourcesStore.getInfoPerCorpus();
+});
+</script>
 <template>
   <div class="wrapper py-6">
     <div class="presentation is-flex is-fullwidth is-justify-content-center is-align-items-center">
@@ -8,14 +19,6 @@
         <p class="subtitle has-text-centered mt-4 mb-6">
           {{ $t('landing.description') }}
         </p>
-
-        <!-- <div class="is-flex mb-6 is-justify-content-space-around is-align-items-center"> -->
-        <!--   <p class="is-size-5 has-text-weight-semibold">+ 5 000 000 documents traités</p> -->
-        <!--   <p class="is-size-5 has-text-weight-semibold">+ {{ totalDocs }} documents retenus</p> -->
-        <!--   <p class="is-size-5 has-text-weight-semibold"> -->
-        <!--     À partir de{{ sourcesList.length }} corpus -->
-        <!--   </p> -->
-        <!-- </div> -->
       </div>
     </div>
 
@@ -36,6 +39,42 @@
       </p>
     </div>
 
+    <div class="section mt-6" v-if="sourcesStore?.infoPerCorpus?.length > 0">
+      <div class="description mx-auto">
+        <h1 class="subtitle has-text-weight-bold mb-2">{{ $t('landing.sourcesTitle') }} ></h1>
+        <p class="subtitle is-size-6">
+          {{ $t('landing.sourcesDescription_1') }}
+        </p>
+        <p class="subtitle is-size-6">
+          {{ $t('landing.sourcesDescription_2') }}
+        </p>
+        <p class="subtitle is-size-6 pb-2">
+          {{ $t('landing.sourcesDescription_3') }}
+        </p>
+        <div class="table-wrapper">
+          <table class="sources-table">
+            <thead>
+              <tr>
+                <th>{{ $t('landing.sourceNameTitle') }}</th>
+                <th>{{ $t('landing.sourceUrlTitle') }}</th>
+                <th class="qty-sources">{{ $t('landing.sourceNumberTitle') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="source in sourcesStore.infoPerCorpus" :key="source.corpus">
+                <td>{{ $t(`corpus.${source.corpus}`, source.corpus) }}</td>
+                <td>
+                  <a target="_blanc" :href="source.url">{{ source.url }}</a>
+                </td>
+                <td class="qty-sources">
+                  {{ new Intl.NumberFormat(i18n.global.locale.value).format(source.qty_in_qdrant) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
     <div class="section mt-6">
       <div class="is-flex is-fullwidth is-justify-content-space-evenly">
         <div class="description">
@@ -101,6 +140,24 @@
 </template>
 
 <style scoped>
+.sources-table {
+  width: 100%;
+}
+
+.sources-table th {
+  text-align: left;
+  padding-left: 0;
+}
+
+.sources-table td {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sources-table .qty-sources {
+  text-align: right;
+}
+
 .wrapper {
   width: 100%;
 }

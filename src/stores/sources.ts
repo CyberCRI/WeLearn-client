@@ -6,6 +6,7 @@ import i18n from '@/localisation/i18n';
 
 export const useSourcesStore = defineStore('sources', () => {
   const sourcesList = ref<ReducedCorpus[]>([]);
+  const infoPerCorpus: Ref<[]> = ref([]);
   async function getSourcesList() {
     if (sourcesList.value.length > 0) {
       return;
@@ -35,6 +36,19 @@ export const useSourcesStore = defineStore('sources', () => {
 
   const totalDocs: Ref<number> = ref(0);
 
+  const getInfoPerCorpus = async () => {
+    if (infoPerCorpus.value.length > 0) {
+      return;
+    }
+    try {
+      const response = await getAxios('/metric/nb_docs_info_per_corpus');
+      infoPerCorpus.value = response;
+    } catch {
+      console.error('unable to get info per corpus');
+      infoPerCorpus.value = [];
+    }
+  };
+
   const getNbDocsInBase = async () => {
     if (totalDocs.value > 0) {
       return;
@@ -43,5 +57,12 @@ export const useSourcesStore = defineStore('sources', () => {
     const flooredNb = Math.floor(response.nb_docs / 100) * 100;
     totalDocs.value = new Intl.NumberFormat(i18n.global.locale.value).format(flooredNb);
   };
-  return { totalDocs, getNbDocsInBase, getSourcesList, sourcesList };
+  return {
+    infoPerCorpus,
+    getInfoPerCorpus,
+    totalDocs,
+    getNbDocsInBase,
+    getSourcesList,
+    sourcesList
+  };
 });

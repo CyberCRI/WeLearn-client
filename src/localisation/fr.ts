@@ -174,6 +174,16 @@ export const fr = {
     en: 'Anglais'
   },
   landing: {
+    sourceNameTitle: 'Nom de la resource',
+    sourceUrlTitle: 'Lien vers la resource',
+    sourceNumberTitle: 'Nombre de documents',
+    sourcesTitle: 'A propos de nos resources',
+    sourcesDescription_1:
+      'WeLearn rassemble des ressources ouvertes, fiables et de haute qualité, toutes liées aux Objectifs de développement durable (ODD), issues de l’analyse de plus de 16 millions de documents en ligne.',
+    sourcesDescription_2:
+      'Les ressources sont sélectionnées selon trois critères : l’ouverture (documents en libre accès), la fiabilité (collections reconnues) et la pertinence, grâce à un modèle de classification qui ne retient que les contenus liés à l’un des 17 ODD.',
+    sourcesDescription_3:
+      'Le tableau ci-dessous présente la répartition des documents par source :',
     slogan: 'L’éducation à la durabilité, facilitée',
     description:
       'Explorez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
