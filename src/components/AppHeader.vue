@@ -3,6 +3,7 @@
     <router-link to="/">
       <img alt="logo" class="logo" src="@/assets/logo.png" />
     </router-link>
+    <span class="is-title has-text-weight-semibold is-size-4 has-text-success ml-1">Beta</span>
   </div>
 </template>
 
@@ -29,6 +30,7 @@
 
 @media screen and (min-width: 992px) {
   .app-header {
+    display: flex;
     margin-left: 2rem;
     margin-bottom: 0rem;
   }

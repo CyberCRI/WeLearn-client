@@ -43,17 +43,18 @@ const handleTextEdit = (event, index) => {
         </span>
         {{ isEditable ? $t('save') : $t('edit') }}
       </button>
-
-      <p
-        :contenteditable="isEditable"
-        :class="{ editable: isEditable }"
-        id="syllabus"
-        class="syllabus content"
-        v-if="syllabus?.content"
-        v-html="marked.parse(syllabus?.content)"
-        @blur="handleTextEdit($event, index)"
-        @click="isEditable = true"
-      />
+      <div class="editable-syllabus-wrapper">
+        <p
+          :contenteditable="isEditable"
+          :class="{ editable: isEditable }"
+          id="syllabus"
+          class="syllabus content"
+          v-if="syllabus?.content"
+          v-html="marked.parse(syllabus?.content)"
+          @blur="handleTextEdit($event, index)"
+          @click="isEditable = true"
+        />
+      </div>
     </div>
 
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
@@ -64,7 +65,7 @@ const handleTextEdit = (event, index) => {
           enableFeedback ? $t('tutor.thirdStep.sendFeedback') : $t('tutor.thirdStep.giveFeedback')
         }}
       </button>
-      <button class="button is-primary ml-2" @click="action()">download</button>
+      <button class="button is-primary ml-2" @click="action()">{{ $t('download') }}</button>
     </div>
   </div>
 </template>
@@ -75,7 +76,6 @@ const handleTextEdit = (event, index) => {
   padding-right: 1rem;
 }
 .wrapper {
-  overflow: scroll;
   display: flex;
   height: 100%;
   flex-direction: column;
@@ -83,7 +83,7 @@ const handleTextEdit = (event, index) => {
   flex-basis: 0;
   transition: flex-grow 0.3s;
   padding: 5% 0;
-  width: 80%;
+  width: 100%;
   margin: auto;
 }
 
@@ -105,6 +105,12 @@ details:not([open]) {
   overflow-x: scroll;
   background-color: var(--neutral-10);
   cursor: text;
+}
+
+.editable-syllabus-wrapper {
+  height: 70vh;
+  overflow-y: scroll;
+  margin-bottom: 8px;
 }
 .editable {
   border: 2px solid var(--primary);

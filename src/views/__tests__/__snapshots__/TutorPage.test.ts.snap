@@ -13,7 +13,7 @@ exports[`TutorPage > renders properly 1`] = `
       class="subtitle has-text-weight-bold is-5 mr-4 my-auto"
       data-v-8a8621cb=""
     >
-      Syllabus steps:
+      tutor.syllabusSteps
     </p>
     <div
       class="is-flex"
@@ -61,47 +61,47 @@ exports[`TutorPage > renders properly 1`] = `
     <div
       class="wrapper"
       data-test="fist-step"
+      data-v-5582d651=""
       data-v-8a8621cb=""
-      data-v-e090ef8d=""
       id="target-1"
     >
       <h1
         class="title is-4"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         1 - tutor.firstStep.title
       </h1>
       <p
         class="subtitle is-6"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         tutor.firstStep.description
       </p>
       <!-- File Input Section -->
       <div
         class="is-flex is-flex-direction-column"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         <div
           class="input-group is-flex is-flex-direction-column"
-          data-v-e090ef8d=""
+          data-v-5582d651=""
         >
           <div
             class="is-flex is-flex-direction-row mb-2"
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             id="file_0"
           >
             <input
               accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
               class="input"
               data-testid="file-input"
-              data-v-e090ef8d=""
+              data-v-5582d651=""
               placeholder="Enter the new file"
               type="file"
             />
             <button
               class="button"
-              data-v-e090ef8d=""
+              data-v-5582d651=""
               disabled=""
             >
               x
@@ -111,18 +111,18 @@ exports[`TutorPage > renders properly 1`] = `
         <!--v-if-->
         <div
           class="is-align-self-flex-end"
-          data-v-e090ef8d=""
+          data-v-5582d651=""
         >
           <span
             class="has-text-grey-light mr-2"
-            data-v-e090ef8d=""
+            data-v-5582d651=""
           >
             tutor.firstStep.acceptedFiles
           </span>
           <!--v-if-->
           <button
             class="button"
-            data-v-e090ef8d=""
+            data-v-5582d651=""
           >
             +
           </button>
@@ -132,33 +132,33 @@ exports[`TutorPage > renders properly 1`] = `
       <!-- Course Description Section -->
       <h2
         class="title is-6 mt-4"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         tutor.firstStep.cursusDescriptionTitle
       </h2>
       <p
         class="subtitle is-6"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         tutor.firstStep.cursusDescriptionDescription
       </p>
       <div
         class="is-flex is-flex-wrap-wrap descriptions"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         <div
           class="description"
-          data-v-e090ef8d=""
+          data-v-5582d651=""
         >
           <label
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             for="cursus-title"
           >
             tutor.firstStep.cursusTitleLabel
           </label>
           <input
             class="input"
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             id="cursus-title"
             placeholder="tutor.firstStep.cursusTitlePlaceholder"
             type="text"
@@ -167,17 +167,17 @@ exports[`TutorPage > renders properly 1`] = `
         </div>
         <div
           class="description"
-          data-v-e090ef8d=""
+          data-v-5582d651=""
         >
           <label
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             for="cursus-level"
           >
             tutor.firstStep.cursusLevelLabel
           </label>
           <input
             class="input"
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             id="cursus-level"
             placeholder="tutor.firstStep.cursusLevelPlaceholder"
             type="text"
@@ -186,17 +186,17 @@ exports[`TutorPage > renders properly 1`] = `
         </div>
         <div
           class="description"
-          data-v-e090ef8d=""
+          data-v-5582d651=""
         >
           <label
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             for="cursus-duration"
           >
             tutor.firstStep.cursusDurationLabel
           </label>
           <input
             class="input"
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             id="cursus-duration"
             placeholder="tutor.firstStep.cursusDurationPlaceholder"
             type="text"
@@ -206,31 +206,30 @@ exports[`TutorPage > renders properly 1`] = `
       </div>
       <label
         class="mt-4"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
         for="cursus-description"
       >
         tutor.firstStep.cursusDescriptionLabel
       </label>
       <textarea
         class="textarea mt-1"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
         id="cursus-description"
         placeholder="tutor.firstStep.cursusDescriptionPlaceholder"
-        rows="5"
         value=""
       />
       <div
         class="is-flex is-justify-content-end mt-4"
-        data-v-e090ef8d=""
+        data-v-5582d651=""
       >
         <a
           class="button is-primary"
           data-testid="tutor-next-button"
-          data-v-e090ef8d=""
+          data-v-5582d651=""
           href="#"
         >
           <svg
-            data-v-e090ef8d=""
+            data-v-5582d651=""
             viewBox="0 0 448 512"
             xmlns="http://www.w3.org/2000/svg"
           >

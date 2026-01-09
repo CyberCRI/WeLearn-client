@@ -12,5 +12,11 @@ exports[`AppHeader > renders properly 1`] = `
     replace="false"
     to="/"
   />
+  <span
+    class="is-title has-text-weight-semibold is-size-4 has-text-success ml-1"
+    data-v-48a13218=""
+  >
+    Beta
+  </span>
 </div>
 `;

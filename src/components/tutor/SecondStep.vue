@@ -84,11 +84,11 @@ defineProps<{
 .wrapper {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
 
   flex-grow: 0;
   flex-basis: 0;
-  height: 90%;
+  height: 100%;
   transition: all 0.5s;
   margin: auto;
   overflow: hidden;
