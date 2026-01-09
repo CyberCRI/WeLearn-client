@@ -71,6 +71,18 @@ onBeforeMount(() => {
                 </td>
               </tr>
             </tbody>
+            <tfoot>
+              <tr>
+                <th colspan="2" scope="row">Total</th>
+                <th>
+                  {{
+                    new Intl.NumberFormat(i18n.global.locale.value).format(
+                      sourcesStore.totalInQdrant
+                    )
+                  }}
+                </th>
+              </tr>
+            </tfoot>
           </table>
         </div>
       </div>
@@ -140,10 +152,6 @@ onBeforeMount(() => {
 </template>
 
 <style scoped>
-.sources-table {
-  width: 100%;
-}
-
 .sources-table th {
   text-align: left;
   padding-left: 0;
@@ -156,6 +164,18 @@ onBeforeMount(() => {
 
 .sources-table .qty-sources {
   text-align: right;
+}
+
+.sources-table tfoot th {
+  padding-top: 1rem;
+  border-top: 1px solid black;
+  padding-left: 0;
+  padding-right: 0;
+  text-align: right;
+}
+
+.sources-table {
+  width: 100%;
 }
 
 .wrapper {

@@ -111,7 +111,6 @@ export const useTutorStore = defineStore('tutor', () => {
       const resp = await postAxios('/tutor/files/content', formData, {
         headers: { 'content-type': 'multipart/form-data' }
       });
-      console.log(resp);
       if (resp.status === 204) {
         shouldRetryAction.value = true;
         throw new Error('retry getFilesContent');
@@ -125,6 +124,7 @@ export const useTutorStore = defineStore('tutor', () => {
         isLoading.value = false;
       }
     } catch (error: any) {
+      shouldRetryAction.value = true;
       throw new Error(error);
     }
   };

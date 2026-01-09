@@ -196,7 +196,7 @@ export const fr = {
       section_one: {
         title: 'Connaissances sur la durabilité',
         content:
-          'Sélectionnés avec soin parmi plus de 10 millions de ressources, WeLearn propose des contenus ouverts et fiables liés aux Objectifs de développement durable (ODD).'
+          'Sélectionnés avec soin parmi plus de 16 millions de ressources, WeLearn propose des contenus ouverts et fiables liés aux Objectifs de développement durable (ODD).'
       },
       section_two: {
         title: 'Trouver ce qui compte, rapidement',

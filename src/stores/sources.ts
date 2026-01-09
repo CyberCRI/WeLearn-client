@@ -7,6 +7,7 @@ import i18n from '@/localisation/i18n';
 export const useSourcesStore = defineStore('sources', () => {
   const sourcesList = ref<ReducedCorpus[]>([]);
   const infoPerCorpus: Ref<[]> = ref([]);
+  const totalInQdrant: Ref<number> = ref(0);
   async function getSourcesList() {
     if (sourcesList.value.length > 0) {
       return;
@@ -43,6 +44,11 @@ export const useSourcesStore = defineStore('sources', () => {
     try {
       const response = await getAxios('/metric/nb_docs_info_per_corpus');
       infoPerCorpus.value = response;
+      const totalDocsInQdrant = response.reduce((acc, curr) => {
+        acc = acc + curr.qty_in_qdrant;
+        return acc;
+      }, 0);
+      totalInQdrant.value = totalDocsInQdrant;
     } catch {
       console.error('unable to get info per corpus');
       infoPerCorpus.value = [];
@@ -58,6 +64,7 @@ export const useSourcesStore = defineStore('sources', () => {
     totalDocs.value = new Intl.NumberFormat(i18n.global.locale.value).format(flooredNb);
   };
   return {
+    totalInQdrant,
     infoPerCorpus,
     getInfoPerCorpus,
     totalDocs,

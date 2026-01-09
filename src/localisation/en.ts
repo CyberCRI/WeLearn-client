@@ -192,7 +192,7 @@ export const en = {
       section_one: {
         title: 'Curated Knowledge on Sustainability',
         content:
-          'Carefully selected from over 10 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
+          'Carefully selected from over 16 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
       },
       section_two: {
         title: 'Find What Matters, Fast',
