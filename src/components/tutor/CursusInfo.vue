@@ -90,7 +90,7 @@ const appendNewInputFile = () => {
 </script>
 
 <template>
-  <div id="target-1" class="wrapper" :class="{ disabled }">
+  <div id="target-1" class="wrapper">
     <h1 class="title is-4">1 - {{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
 
@@ -183,7 +183,6 @@ const appendNewInputFile = () => {
       id="cursus-description"
       class="textarea mt-1"
       :placeholder="$t('tutor.firstStep.cursusDescriptionPlaceholder')"
-      rows="5"
       :value="description"
       @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
     />
@@ -203,8 +202,7 @@ const appendNewInputFile = () => {
 }
 .wrapper {
   padding: 5% 0;
-  height: 80%;
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   transition: all 1s;

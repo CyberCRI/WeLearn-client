@@ -114,9 +114,8 @@ const handleTextEdit = (event, index) => {
 }
 .summaries-section {
   margin: auto;
-  height: 80%;
   padding: 5% 0;
-  width: 80%;
+  width: 100%;
 }
 .summaries-section.disabled {
   height: 10%;

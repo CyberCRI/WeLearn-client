@@ -324,6 +324,7 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez ajouter davantage de texte pour lancer la recherche.',
   tutor: {
+    syllabusSteps: 'Étapes du syllabus :',
     BIG_FILE: 'La taille du fichier dépasse 5 Mo.',
     BAD_EXTENSION:
       'Type de fichier non pris en charge. Seuls les fichiers PDF, TXT et DOCX sont acceptés.',

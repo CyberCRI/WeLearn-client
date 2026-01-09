@@ -319,6 +319,7 @@ export const en = {
   },
   textLengthFeedback: 'Please add more text to improve search results.',
   tutor: {
+    syllabusSteps: 'Syllabus steps:',
     BIG_FILE: 'File size exceeds 5 MB.',
     BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
     retry: {
