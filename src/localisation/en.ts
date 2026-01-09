@@ -170,6 +170,16 @@ export const en = {
     en: 'English'
   },
   landing: {
+    sourceNameTitle: 'Resource Name',
+    sourceUrlTitle: 'Resource Link',
+    sourceNumberTitle: 'Number of Documents',
+    sourcesTitle: 'About Our Resources',
+    sourcesDescription_1:
+      'WeLearn brings together open, reliable, and high-quality resources, all related to the Sustainable Development Goals (SDGs), drawn from the analysis of over 16 million online documents.',
+    sourcesDescription_2:
+      'Resources are selected based on three criteria: openness (open-access documents), reliability (recognized collections), and relevance, using a classification model that retains only content linked to one of the 17 SDGs.',
+    sourcesDescription_3: 'The table below shows the distribution of documents by source:',
+
     slogan: 'Sustainability Education Made Easy',
     description:
       'Explore resources, learn, and boost sustainability integration in your courses with AI.',
@@ -182,7 +192,7 @@ export const en = {
       section_one: {
         title: 'Curated Knowledge on Sustainability',
         content:
-          'Carefully selected from over 10 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
+          'Carefully selected from over 16 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
       },
       section_two: {
         title: 'Find What Matters, Fast',
