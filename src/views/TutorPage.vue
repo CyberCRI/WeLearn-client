@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import CursusInfo from '@/components/tutor/FirstStep.vue';
+import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
@@ -8,7 +8,6 @@ import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import ErrorDocumentIcon from '@/components/icons/ErrorDocumentIcon.vue';
-// import CheckIcon from '@/components/icons/CheckIcon.vue';
 import { useTutorStore } from '@/stores/tutor';
 
 const store = useTutorStore();
@@ -36,7 +35,9 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
 <template>
   <div class="content-centered-wrapper">
     <div class="is-flex is-justify-content-center is-align-items-center">
-      <p class="subtitle has-text-weight-bold is-5 mr-4 my-auto">Syllabus steps:</p>
+      <p class="subtitle has-text-weight-bold is-5 mr-4 my-auto">
+        {{ $t('tutor.syllabusSteps') }}
+      </p>
 
       <StepsIndicator
         :step="store.step"
@@ -47,7 +48,7 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
     </div>
     <ErrorComponent v-if="store.reloadError" />
 
-    <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="() => {}">
+    <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="store.stopAction">
       <div v-if="store.shouldRetryAction" class="box">
         <div
           class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center"
