@@ -217,6 +217,11 @@ export const useTutorStore = defineStore('tutor', () => {
     hasNewSearch.value = true;
   };
 
+  const syllabusLanguage: Ref<string> = ref(i18n.global.locale.value);
+  const selectSyllabusLanguage = (lang: string) => {
+    syllabusLanguage.value = lang;
+  };
+
   const retrieveSyllabus = async () => {
     if (!tutorSearch.value) {
       throw new Error('Body is empty');
@@ -224,7 +229,7 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading.value = true;
     try {
       console.log(selectedSources.value.length);
-      const resp = await postAxios(`/tutor/syllabus?lang=${i18n.global.locale.value}`, {
+      const resp = await postAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
         ...tutorSearch.value,
         documents: selectedSources.value,
         ...(courseTitle.value && { course_title: courseTitle.value }),
@@ -301,6 +306,8 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   return {
+    syllabusLanguage,
+    selectSyllabusLanguage,
     step,
     goBack,
     goNext,

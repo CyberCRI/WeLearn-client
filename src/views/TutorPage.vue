@@ -88,6 +88,8 @@ const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
     </ModalWrapper>
     <div class="layout-flex">
       <CursusInfo
+        :selectLang="store.selectSyllabusLanguage"
+        :storedLanguage="store.syllabusLanguage"
         :searchError="store.hasSearchError"
         :fileError="store.fileError"
         v-model:courseTitle="store.courseTitle"

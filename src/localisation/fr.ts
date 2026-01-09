@@ -355,6 +355,7 @@ export const fr = {
         'WeLearn a extrait les points clés de vos documents importés pour générer le syllabus.'
     },
     firstStep: {
+      syllabusLanguage: 'Langue du syllabus',
       acceptedFiles: 'Types de fichiers acceptés : PDF, TXT, DOCX',
       searchError: 'Aucun résultat trouvé pour le document fourni.',
       title: 'Ajoutez des documents',

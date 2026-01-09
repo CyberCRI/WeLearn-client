@@ -348,6 +348,7 @@ export const en = {
         'WeLearn has extracted the following summaries from your uploaded documents. You can review them before proceeding to the next step.'
     },
     firstStep: {
+      syllabusLanguage: 'Syllabus language',
       acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',
       searchError: 'No results were found for the provided document.',
       title: 'Add documents',
