@@ -175,10 +175,10 @@ export const en = {
     sourceNumberTitle: 'Number of Documents',
     sourcesTitle: 'About Our Resources',
     sourcesDescription_1:
-      'WeLearn brings together open, reliable, and high-quality resources, all related to the Sustainable Development Goals (SDGs), drawn from the analysis of over 16 million online documents.',
+      'WeLearn provides access to a curated collection of open, reliable, and high-quality resources related to the Sustainable Development Goals (SDGs). These resources are identified through the large-scale analysis of more than 16 million online documents.',
     sourcesDescription_2:
-      'Resources are selected based on three criteria: openness (open-access documents), reliability (recognized collections), and relevance, using a classification model that retains only content linked to one of the 17 SDGs.',
-    sourcesDescription_3: 'The table below shows the distribution of documents by source:',
+      'All resources made available on the platform meet three core selection criteria: \nopenness, through the use of open-access documents;\nreliability, by drawing from recognized and trusted collections; and \nrelevance, ensured by a classification model that retains only content explicitly linked to one of the 17 SDGs.',
+    sourcesDescription_3: 'The table below presents the distribution of documents by source.',
 
     slogan: 'Sustainability Education Made Easy',
     description:
