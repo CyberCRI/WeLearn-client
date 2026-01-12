@@ -17,7 +17,7 @@ const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
-    await userStore.setUserIdAndSessionId(getQueryParamValue("referer"));
+    await userStore.setUserIdAndSessionId(getQueryParamValue('referer'));
     await getSourcesList();
     await getNbDocsInBase();
   } catch (error) {

@@ -26,7 +26,6 @@ export const useUserStore = defineStore('user', () => {
     getFromStorage('onboardingState') || defaultOnboardingState
   );
 
-
   const setHasSeenWelcome = (val: boolean) => {
     onboardingState.value.hasSeenWelcome = val;
     saveToStorage('onboardingState', onboardingState.value);

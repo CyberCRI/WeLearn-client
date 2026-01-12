@@ -32,7 +32,7 @@ export const getUserAndSession = async (
 
       const query = `?${parts.join('&')}`;
       const respSessionId = await postAxios(`/user/session${query}`);
-      
+
       newSessionId = respSessionId.data.session_id;
     }
     return { userId: newUserId, sessionId: newSessionId };
