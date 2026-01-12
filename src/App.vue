@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { RouterView, useRoute } from 'vue-router';
+import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/NavComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
@@ -9,15 +9,15 @@ import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useUserStore } from '@/stores/user';
 import ErrorComponent from '@/components/ErrorComponent.vue';
+import { getQueryParamValue } from '@/utils/urlsUtils';
 
 const { getNbDocsInBase, getSourcesList } = useSourcesStore();
 const userStore = useUserStore();
-const route = useRoute();
 const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
-    await userStore.setUserIdAndSessionId(route.params.referer);
+    await userStore.setUserIdAndSessionId(getQueryParamValue("referer"));
     await getSourcesList();
     await getNbDocsInBase();
   } catch (error) {
