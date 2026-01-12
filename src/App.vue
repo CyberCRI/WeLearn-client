@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/NavComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
@@ -12,11 +12,12 @@ import ErrorComponent from '@/components/ErrorComponent.vue';
 
 const { getNbDocsInBase, getSourcesList } = useSourcesStore();
 const userStore = useUserStore();
+const route = useRoute();
 const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
-    await userStore.setUserIdAndSessionId();
+    await userStore.setUserIdAndSessionId(route.params.referer);
     await getSourcesList();
     await getNbDocsInBase();
   } catch (error) {
