@@ -9,6 +9,7 @@ import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useUserStore } from '@/stores/user';
 import ErrorComponent from '@/components/ErrorComponent.vue';
+import { getQueryParamValue } from '@/utils/urlsUtils';
 
 const { getNbDocsInBase, getSourcesList } = useSourcesStore();
 const userStore = useUserStore();
@@ -16,7 +17,7 @@ const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
-    await userStore.setUserIdAndSessionId();
+    await userStore.setUserIdAndSessionId(getQueryParamValue('referer'));
     await getSourcesList();
     await getNbDocsInBase();
   } catch (error) {
