@@ -59,7 +59,7 @@ const handleTextEdit = (event, index) => {
 
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
 
-    <div class="is-flex is-justify-content-end mt-4">
+    <div class="is-flex is-justify-content-end mt-4 pb-6">
       <button class="button" @click="toggleFeedback">
         {{
           enableFeedback ? $t('tutor.thirdStep.sendFeedback') : $t('tutor.thirdStep.giveFeedback')
