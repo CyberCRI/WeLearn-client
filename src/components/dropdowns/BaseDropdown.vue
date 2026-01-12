@@ -141,7 +141,7 @@ defineProps<{
 }
 
 .dropdown-content {
-  height: 25rem;
+  height: auto;
   overflow-y: auto;
 }
 .dropdown-trigger {

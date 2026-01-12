@@ -10,7 +10,7 @@ import { ref } from 'vue';
 const props = defineProps<{
   summaries: [string];
   files: File;
-  updateSummary: () => void;
+  updateSummary: (index: number, content: string) => void;
   action: () => void;
   actionText?: string;
   disabled: boolean;
@@ -114,9 +114,8 @@ const handleTextEdit = (event, index) => {
 }
 .summaries-section {
   margin: auto;
-  height: 80%;
   padding: 5% 0;
-  width: 80%;
+  width: 100%;
 }
 .summaries-section.disabled {
   height: 10%;

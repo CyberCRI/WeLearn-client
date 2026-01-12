@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import ChevronDown from '@/components/icons/ChevronDown.vue';
+import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue';
 
 // TODO: add info that default values will be used if not written down
 // TODO: make files required:w
@@ -18,6 +19,8 @@ interface Props {
   action: () => void;
   actionText?: string;
   addedFilesTitles: string[];
+  storedLanguage: string;
+  selectLang: (string) => void;
 }
 
 const props = defineProps<Props>();
@@ -90,7 +93,7 @@ const appendNewInputFile = () => {
 </script>
 
 <template>
-  <div id="target-1" class="wrapper" :class="{ disabled }">
+  <div id="target-1" class="wrapper">
     <h1 class="title is-4">1 - {{ $t('tutor.firstStep.title') }}</h1>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
 
@@ -138,7 +141,7 @@ const appendNewInputFile = () => {
     </h2>
     <p class="subtitle is-6">{{ $t('tutor.firstStep.cursusDescriptionDescription') }}</p>
 
-    <div class="is-flex is-flex-wrap-wrap descriptions">
+    <div class="is-flex is-flex-wrap-wrap is-justify-content-space-between descriptions">
       <div class="description">
         <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
         <input
@@ -174,6 +177,32 @@ const appendNewInputFile = () => {
           :placeholder="$t('tutor.firstStep.cursusDurationPlaceholder')"
         />
       </div>
+      <div class="description">
+        <label for="cursus-lang">{{ $t('tutor.firstStep.syllabusLanguage') }}</label>
+        <BaseDropdown v-slot="slotProps" :isUp="isUp" :title="storedLanguage">
+          <ClickableText
+            class="dropdown-item"
+            :text="$t('removeSelection')"
+            :action="
+              () => {
+                slotProps.toggleVisibility();
+              }
+            "
+          />
+          <a
+            :key="lang"
+            @click="
+              selectLang(lang);
+              slotProps.toggleVisibility();
+            "
+            v-for="lang in ['fr', 'en']"
+            class="dropdown-item"
+            :class="storedLanguage === lang && 'is-active'"
+          >
+            {{ $t(`${lang}`) }}
+          </a>
+        </BaseDropdown>
+      </div>
     </div>
 
     <label for="cursus-description" class="mt-4">
@@ -183,7 +212,6 @@ const appendNewInputFile = () => {
       id="cursus-description"
       class="textarea mt-1"
       :placeholder="$t('tutor.firstStep.cursusDescriptionPlaceholder')"
-      rows="5"
       :value="description"
       @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
     />
@@ -203,8 +231,7 @@ const appendNewInputFile = () => {
 }
 .wrapper {
   padding: 5% 0;
-  height: 80%;
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   transition: all 1s;
@@ -212,7 +239,8 @@ const appendNewInputFile = () => {
 }
 
 .description {
-  width: 32%;
+  max-height: 2.5rem;
+  width: 24%;
 }
 
 .wrapper.disabled {
@@ -222,5 +250,6 @@ const appendNewInputFile = () => {
 
 .descriptions {
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 </style>

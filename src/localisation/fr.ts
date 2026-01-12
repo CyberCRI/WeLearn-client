@@ -324,6 +324,7 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez ajouter davantage de texte pour lancer la recherche.',
   tutor: {
+    syllabusSteps: 'Étapes du syllabus :',
     BIG_FILE: 'La taille du fichier dépasse 5 Mo.',
     BAD_EXTENSION:
       'Type de fichier non pris en charge. Seuls les fichiers PDF, TXT et DOCX sont acceptés.',
@@ -354,6 +355,7 @@ export const fr = {
         'WeLearn a extrait les points clés de vos documents importés pour générer le syllabus.'
     },
     firstStep: {
+      syllabusLanguage: 'Langue du syllabus',
       acceptedFiles: 'Types de fichiers acceptés : PDF, TXT, DOCX',
       searchError: 'Aucun résultat trouvé pour le document fourni.',
       title: 'Ajoutez des documents',

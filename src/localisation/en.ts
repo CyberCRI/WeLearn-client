@@ -319,6 +319,7 @@ export const en = {
   },
   textLengthFeedback: 'Please add more text to improve search results.',
   tutor: {
+    syllabusSteps: 'Syllabus steps:',
     BIG_FILE: 'File size exceeds 5 MB.',
     BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
     retry: {
@@ -347,6 +348,7 @@ export const en = {
         'WeLearn has extracted the following summaries from your uploaded documents. You can review them before proceeding to the next step.'
     },
     firstStep: {
+      syllabusLanguage: 'Syllabus language',
       acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',
       searchError: 'No results were found for the provided document.',
       title: 'Add documents',
