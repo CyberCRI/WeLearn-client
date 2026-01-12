@@ -10,7 +10,7 @@ import { ref } from 'vue';
 const props = defineProps<{
   summaries: [string];
   files: File;
-  updateSummary: () => void;
+  updateSummary: (index: number, content: string) => void;
   action: () => void;
   actionText?: string;
   disabled: boolean;

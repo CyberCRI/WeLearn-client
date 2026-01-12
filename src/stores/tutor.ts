@@ -83,19 +83,19 @@ export const useTutorStore = defineStore('tutor', () => {
     };
   };
 
-  // const summaries = ref<[string]>([
-  //   "Global warming, a subset of climate change, refers to the long-term rise in the average temperature of the Earth's climate system, primarily caused by human activities such as fossil fuel burning, deforestation, and certain agricultural and industrial practices that release greenhouse gases. These gases trap heat in the lower atmosphere, leading to various environmental impacts like desert expansion, increased frequency of heat waves and wildfires, accelerated Arctic warming, glacier retreat, and sea ice decline. Climate change also affects biodiversity, forcing species to relocate or face extinction, and poses significant threats to human societies, including increased flooding, extreme heat, food and water scarcity, disease, economic loss, and potential human migration and conflict. Even with efforts to minimize future warming, some effects will persist for centuries, including ocean heating, acidification, and sea-level rise. The Paris Agreement aims to limit global warming to well below 2°C, but current pledges still project a rise of about 2.8°C by the end of the century. There is widespread support for climate action, with most countries aiming to stop emitting carbon dioxide. Strategies include phasing out fossil fuels, conserving energy, switching to clean energy sources, and removing carbon from the atmosphere through methods like reforestation and carbon-storing farming practices.",
-  //   "The article discusses the XL-Sum dataset, a large-scale multilingual abstractive summarization dataset containing 1 million professionally annotated article-summary pairs from BBC, covering 44 languages. The dataset is designed to address the lack of high-quality datasets for low-resource languages in abstractive summarization. XL-Sum introduces the first publicly available summarization dataset for many languages and achieves competitive results in both multilingual and low-resource summarization tasks. The dataset is created using a custom crawler and a set of heuristics to extract high-quality summaries from BBC articles. Evaluations show that the summaries are highly abstractive, concise, and of high quality, with minimal redundancy. The mT5 model fine-tuned on XL-Sum achieves state-of-the-art results, demonstrating the dataset's effectiveness in abstractive summarization across multiple languages."
-  // ]);
-
   const summaries = ref<[string]>([]);
 
-  const updateSummary = (index, content) => {
+  const updateSummary = (index: number, content: string) => {
     summaries.value[index] = content;
   };
 
   const updateSyllabus = (index, content) => {
     syllabi.value[index] = content;
+  };
+
+  const syllabusLanguage: Ref<string> = ref(i18n.global.locale.value);
+  const selectSyllabusLanguage = (lang: string) => {
+    syllabusLanguage.value = lang;
   };
 
   const getFilesContent = async (arg: File[]) => {
@@ -108,17 +108,24 @@ export const useTutorStore = defineStore('tutor', () => {
       }
     });
     try {
-      const resp = await postAxios('/tutor/files/content', formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      });
+      const resp = await postAxios(
+        `/tutor/files/content?lang=${syllabusLanguage.value}`,
+        formData,
+        {
+          headers: { 'content-type': 'multipart/form-data' }
+        }
+      );
       if (resp.status === 204) {
         shouldRetryAction.value = true;
         throw new Error('retry getFilesContent');
       } else {
-        const red_summaries = resp.data.extracts.reduce((acc, curr) => {
-          acc = [...acc, curr.summary];
-          return acc;
-        }, []);
+        const red_summaries = resp.data.extracts.reduce(
+          (acc: string[], curr: { summary: string }) => {
+            acc = [...acc, curr.summary];
+            return acc;
+          },
+          []
+        );
         summaries.value = red_summaries;
         goNext();
         isLoading.value = false;
@@ -215,11 +222,6 @@ export const useTutorStore = defineStore('tutor', () => {
     tutorSearch.value = undefined;
     await retrieveTutorSearch(arg);
     hasNewSearch.value = true;
-  };
-
-  const syllabusLanguage: Ref<string> = ref(i18n.global.locale.value);
-  const selectSyllabusLanguage = (lang: string) => {
-    syllabusLanguage.value = lang;
   };
 
   const retrieveSyllabus = async () => {

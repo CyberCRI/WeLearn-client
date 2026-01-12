@@ -25,7 +25,7 @@ const getI18nText = computed(() => {
   };
 });
 
-const stepToAction: Record<0 | 1 | 2 | 3, () => Promise<void>> = {
+const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
   1: store.handleSummaryFiles,
   2: store.retrieveTutorSearch,
   3: store.handleCreateSyllabus,
