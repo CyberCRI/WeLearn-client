@@ -36,7 +36,7 @@ export const en = {
     wikipedia: 'Wikipedia'
   },
   defaultQueues: [
-    'Which SDGs align with a module on circular economy for undergraduates?',
+    'How can social justice be explained to engineering students by showing that their technical decisions can either reduce or reinforce social inequalities?',
     'Compare carbon pricing and cap-and-trade: how do they work, and what are their pros and cons?'
   ],
   description:
