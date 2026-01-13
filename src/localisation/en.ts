@@ -39,7 +39,7 @@ export const en = {
   },
   download: 'Download',
   defaultQueues: [
-    'Which SDGs align with a module on circular economy for undergraduates?',
+    'How can social justice be explained to engineering students by showing that their technical decisions can either reduce or reinforce social inequalities?',
     'Compare carbon pricing and cap-and-trade: how do they work, and what are their pros and cons?'
   ],
   hintForNewQuestions: 'Here are some additional questions to explore this topic further:',

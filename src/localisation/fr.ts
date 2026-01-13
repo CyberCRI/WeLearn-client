@@ -39,7 +39,7 @@ export const fr = {
   },
   download: 'Télécharger',
   defaultQueues: [
-    'Quels ODD sont liés à un module de niveau Licence sur l’économie circulaire ?',
+    'Comment expliquer la justice sociale à des étudiant·es en ingénierie en montrant que leurs décisions techniques peuvent soit réduire, soit renforcer les injustices sociales ?',
     'Compare la tarification du carbone et le système « cap-and-trade » : fonctionnement, avantages et limites.'
   ],
   hintForNewQuestions: 'Voici des questions supplémentaires pour approfondir ce sujet :',
