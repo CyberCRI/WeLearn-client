@@ -11,15 +11,15 @@ import { useUserStore } from '@/stores/user';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 
-const { getNbDocsInBase, getSourcesList } = useSourcesStore();
+const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const userStore = useUserStore();
 const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 onMounted(async () => {
   try {
+    await getInfoPerCorpus();
     await userStore.setUserIdAndSessionId(getQueryParamValue('referer'));
     await getSourcesList();
-    await getNbDocsInBase();
   } catch (error) {
     fetchError.value = true;
   }

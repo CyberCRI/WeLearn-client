@@ -6,6 +6,7 @@ import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import ModalWrapper from '@/components/ModalWrapper.vue';
+import i18n from '@/localisation/i18n';
 
 const sourcesStore = useSourcesStore();
 const store = useBookmarksStore();
@@ -37,7 +38,13 @@ const ChosenCard = Cards[props.cardType || 'default'];
     <div v-if="!hideSteps && !sourcesList?.length">
       <h2 v-if="noResults">{{ $t('noResults') }}</h2>
       <h2 v-if="isFetchingSources">
-        {{ $t('sourcesList.fetching', { docs_nb: sourcesStore.totalDocs }) }}
+        {{
+          $t('sourcesList.fetching', {
+            docs_nb: new Intl.NumberFormat(i18n.global.locale.value).format(
+              sourcesStore.totalInQdrant
+            )
+          })
+        }}
       </h2>
       <h2 v-else-if="fetchingAnswer">{{ $t('sourcesList.formulatingAnswer') }}</h2>
       <h2 v-else>...</h2>

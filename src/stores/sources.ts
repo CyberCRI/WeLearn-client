@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { getAxios } from '@/utils/fetch';
 import { type Ref, ref } from 'vue';
 import type { Corpus, ReducedCorpus } from '@/types';
-import i18n from '@/localisation/i18n';
 
 export const useSourcesStore = defineStore('sources', () => {
   const sourcesList = ref<ReducedCorpus[]>([]);
@@ -35,8 +34,6 @@ export const useSourcesStore = defineStore('sources', () => {
     }
   }
 
-  const totalDocs: Ref<number> = ref(0);
-
   const getInfoPerCorpus = async () => {
     if (infoPerCorpus.value.length > 0) {
       return;
@@ -55,20 +52,10 @@ export const useSourcesStore = defineStore('sources', () => {
     }
   };
 
-  const getNbDocsInBase = async () => {
-    if (totalDocs.value > 0) {
-      return;
-    }
-    const response = await getAxios('/search/nb_docs');
-    const flooredNb = Math.floor(response.nb_docs / 100) * 100;
-    totalDocs.value = new Intl.NumberFormat(i18n.global.locale.value).format(flooredNb);
-  };
   return {
     totalInQdrant,
     infoPerCorpus,
     getInfoPerCorpus,
-    totalDocs,
-    getNbDocsInBase,
     getSourcesList,
     sourcesList
   };

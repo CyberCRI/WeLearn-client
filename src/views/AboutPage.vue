@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { useSourcesStore } from '@/stores/sources';
-import { onBeforeMount } from 'vue';
 import i18n from '@/localisation/i18n';
 
 const sourcesStore = useSourcesStore();
-
-onBeforeMount(() => {
-  sourcesStore.getInfoPerCorpus();
-});
 </script>
 <template>
   <div class="wrapper py-6">
