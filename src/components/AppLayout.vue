@@ -33,6 +33,9 @@ const manageNavBarAnimations = () => {
       <slot name="sidebar"> </slot>
     </div>
     <div class="main" ref="content" @scroll="manageNavBarAnimations"><slot name="main"></slot></div>
+    <div class="wl-footer">
+      <slot name="footer"></slot>
+    </div>
   </div>
 </template>
 
@@ -75,5 +78,10 @@ const manageNavBarAnimations = () => {
   .appLayout {
     grid-template-rows: auto 1fr;
   }
+}
+
+.wl-footer {
+  background-color: var(--neutral-10);
+  padding: 0.5rem;
 }
 </style>

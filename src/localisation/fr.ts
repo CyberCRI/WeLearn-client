@@ -298,6 +298,8 @@ export const fr = {
     fetching: 'Recherche parmi {docs_nb} documents...',
     formulatingAnswer: 'Préparation de votre réponse...'
   },
+  terms: "Conditions d'utilisation",
+  giveFeedback: 'Donner un retour',
   subjects: {
     Anthropology: 'Anthropologie',
     Arts: 'Arts',

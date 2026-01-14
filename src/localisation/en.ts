@@ -294,6 +294,8 @@ export const en = {
     fetching: 'Searching across {docs_nb} documents...',
     formulatingAnswer: 'Preparing your answer...'
   },
+  terms: 'Terms and Conditions',
+  giveFeedback: 'Give Feedback',
   subjects: {
     Anthropology: 'Anthropology',
     Arts: 'Arts',
