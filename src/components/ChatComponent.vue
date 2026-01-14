@@ -35,7 +35,7 @@ const computedStatus = computed(() => store.chatStatus);
             v-for="({ content, role }, index) in store.chatMessagesList"
             :message="content"
             :isUSer="role === 'user'"
-            :rephrase="store.fetchRephraseStream"
+            :rephrase="store.fetchRephrase"
             :isLast="index === store.chatMessagesList.length - 1"
             :shouldDisable="computedStatus !== CHAT_STATUS.DONE"
           />

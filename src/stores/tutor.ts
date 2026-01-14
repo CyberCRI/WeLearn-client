@@ -20,6 +20,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const description: Ref<string> = ref('');
   const courseTitle: Ref<string> = ref('');
   const selectedSources: Ref<Document[]> = ref([]);
+  const extracts: Ref<string[]> = ref([]);
 
   const goBack = () => (step.value = step.value - 1);
   const goNext = () => (step.value = step.value + 1);
@@ -119,6 +120,7 @@ export const useTutorStore = defineStore('tutor', () => {
         shouldRetryAction.value = true;
         throw new Error('retry getFilesContent');
       } else {
+        extracts.value = resp.data.extracts;
         const red_summaries = resp.data.extracts.reduce(
           (acc: string[], curr: { summary: string }) => {
             acc = [...acc, curr.summary];
@@ -141,6 +143,7 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const retrieveTutorSearch = async (arg: File[]) => {
+    setStep(2);
     isLoading.value = true;
 
     try {
@@ -179,6 +182,7 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleSummaryFiles = async () => {
+    setStep(1);
     reloadError.value = false;
     selectedSources.value = [];
     const arg = Object.values(newFilesToSearch.value).filter((e) => e);
@@ -224,16 +228,32 @@ export const useTutorStore = defineStore('tutor', () => {
     hasNewSearch.value = true;
   };
 
+  const restart = () => {
+    setStep(1);
+    scrollToAnchor('target-1');
+
+    //reset all refs
+    tutorSearch.value = undefined;
+    selectedSources.value = [];
+    courseTitle.value = '';
+    level.value = '';
+    duration.value = '';
+    description.value = '';
+    newFilesToSearch.value = {};
+    searchedFiles.value = [];
+    extracts.value = [];
+  };
+
   const retrieveSyllabus = async () => {
     if (!tutorSearch.value) {
       throw new Error('Body is empty');
     }
     isLoading.value = true;
     try {
-      console.log(selectedSources.value.length);
       const resp = await postAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
         ...tutorSearch.value,
         documents: selectedSources.value,
+        extracts: extracts.value,
         ...(courseTitle.value && { course_title: courseTitle.value }),
         ...(level.value && { level: level.value }),
         ...(duration.value && { duration: duration.value }),
@@ -257,16 +277,12 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleCreateSyllabus = async () => {
+    setStep(3);
     if (
       !tutorSearch.value ||
       (!tutorSearch.value.documents.length && !searchedFiles.value.length)
     ) {
       console.error('No documents found');
-      return;
-    }
-
-    if (!hasNewSearch.value) {
-      goNext();
       return;
     }
 
@@ -318,6 +334,7 @@ export const useTutorStore = defineStore('tutor', () => {
     addFile,
     removeFile,
     fileError,
+    restart,
     reloadError,
     handleSearch,
     retrieveTutorSearch,

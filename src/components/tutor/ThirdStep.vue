@@ -10,6 +10,7 @@ const props = defineProps<{
   actionText?: string;
   disabled: boolean;
   updateSyllabus: () => void;
+  restart: () => void;
 }>();
 
 const isEditable: Ref<boolean> = ref(false);
@@ -60,6 +61,9 @@ const handleTextEdit = (event, index) => {
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
 
     <div class="is-flex is-justify-content-end mt-4 pb-6">
+      <button class="button mr-auto" @click="restart">
+        {{ $t('tutor.restartSyllabusCreation') }}
+      </button>
       <button class="button" @click="toggleFeedback">
         {{
           enableFeedback ? $t('tutor.thirdStep.sendFeedback') : $t('tutor.thirdStep.giveFeedback')
