@@ -9,6 +9,8 @@ export const subjects = [
 ];
 
 export const RELEVANCE_FACTOR = 0.75;
+export const WL_FEEDBACK_FORM_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSfL_zKY3aHMMKO-Hunm0LYo4Yp_fjbL87Ryi85qT_pbSqUX8g/viewform';
 
 export const HELP_USER = {
   'q-and-a': [

@@ -36,6 +36,11 @@ const router = createRouter({
       component: Tutor
     },
     {
+      path: '/terms',
+      name: 'terms',
+      component: () => import('@/views/TermsPage.vue')
+    },
+    {
       ...(isDevEnvironment && {
         path: '/microlearning',
         name: 'micro-learning',
