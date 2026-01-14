@@ -13,16 +13,29 @@ import { useTutorStore } from '@/stores/tutor';
 const store = useTutorStore();
 
 const getI18nText = computed(() => {
-  if (store.step === 1) {
-    return {
-      title: 'tutor.loading.search.title',
-      description: 'tutor.loading.search.description'
-    };
+  // switch case for step 1, 2, 3
+  switch (store.step) {
+    case 1:
+      return {
+        title: 'tutor.loading.extract.title',
+        description: 'tutor.loading.extract.description'
+      };
+    case 2:
+      return {
+        title: 'tutor.loading.search.title',
+        description: 'tutor.loading.search.description'
+      };
+    case 3:
+      return {
+        title: 'tutor.loading.syllabus.title',
+        description: 'tutor.loading.syllabus.description'
+      };
+    default:
+      return {
+        title: 'tutor.loading.default.title',
+        description: 'tutor.loading.default.description'
+      };
   }
-  return {
-    title: 'tutor.loading.syllabus.title',
-    description: 'tutor.loading.syllabus.description'
-  };
 });
 
 const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
@@ -128,6 +141,7 @@ const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
         :updateSyllabus="store.updateSyllabus"
         :giveFeedback="store.giveFeedback"
         :action="stepToAction[4]"
+        :restart="store.restart"
       />
     </div>
   </div>

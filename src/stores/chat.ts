@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ErrorDetails, ChatMessage, ReformulateResponse } from '@/types';
-import { fetchStream, postAxios } from '@/utils/fetch';
+import { postAxios } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { RELEVANCE_FACTOR } from '@/utils/constants';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
@@ -209,6 +209,7 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function getNoStreamAnswer(userMsg: string) {
+    chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
     const bodyContent = {
       sources: sourcesList.value || [],
       history: getMessageHistory.value,
@@ -218,7 +219,6 @@ export const useChatStore = defineStore('chat', () => {
 
     const respBody = await postAxios('/qna/chat/answer', bodyContent);
 
-    console.log(respBody);
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
 
     chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
@@ -236,106 +236,27 @@ export const useChatStore = defineStore('chat', () => {
     setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
   }
 
-  // async function fetchChatAnswer(userMsg: string) {
-  //   if (chatStatus.value !== CHAT_STATUS.SEARCHED) return;
-
-  //   try {
-  //     const bodyContent = JSON.stringify({
-  //       sources: sourcesList.value || [],
-  //       history: getMessageHistory.value,
-  //       query: userMsg,
-  //       ...(storedSubject.value && { subject: storedSubject.value })
-  //     });
-
-  //     const respBody = await fetchStream('/qna/stream', {
-  //       bodyContent
-  //     });
-
-  //     if (!respBody) {
-  //       return;
-  //     }
-
-  //     const reader = respBody.pipeThrough(new TextDecoderStream()).getReader();
-
-  //     chatMessagesList.value.push({ role: 'assistant', content: '' });
-  //     const assistantsAns = chatMessagesList.value.length - 1;
-
-  //     // eslint-disable-next-line no-constant-condition
-  //     while (true) {
-  //       chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-  //       const { value, done } = await reader.read();
-
-  //       if (done) {
-  //         const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
-  //           '/qna/reformulate/questions',
-  //           {
-  //             history: getMessageHistory.value,
-  //             query: reformulatedQuery.value
-  //           }
-  //         );
-  //         chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-
-  //         setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
-
-  //         saveToStorage('chat', chatMessagesList.value);
-  //         break;
-  //       }
-  //       chatMessagesList.value[assistantsAns].content += value;
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     chatStatus.value = CHAT_STATUS.ERROR;
-  //   }
-  // }
-
-  async function fetchRephraseStream(message: string) {
-    if (!chatStatus.value === CHAT_STATUS.DONE) return;
+  async function fetchRephrase() {
     chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-    try {
-      const lastAssistantsMessage =
-        message || chatMessagesList.value[chatMessagesList.value.length - 1].content;
+    // get the content of the message which the role is assistant
+    const lastAssistantMessage = [...chatMessagesList.value]
+      .reverse()
+      .find((msg) => msg.role === 'assistant')?.content;
 
-      const bodyContent = JSON.stringify({
-        sources: sourcesList.value,
-        history: getMessageHistory.value,
-        query: lastAssistantsMessage,
-        ...(storedSubject.value && { subject: storedSubject.value })
-      });
+    const bodyContent = {
+      sources: sourcesList.value,
+      history: getMessageHistory.value,
+      query: lastAssistantMessage,
+      ...(storedSubject.value && { subject: storedSubject.value })
+    };
 
-      let respBody;
-      try {
-        respBody = await fetchStream('/qna/chat/rephrase_stream', { bodyContent });
-      } catch (error) {
-        console.error(error);
-      }
+    const respBody = await postAxios('/qna/chat/rephrase', bodyContent);
 
-      if (!respBody) {
-        return;
-      }
+    chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
+    saveToStorage('chat', chatMessagesList.value);
 
-      const reader = respBody.pipeThrough(new TextDecoderStream()).getReader();
-
-      chatMessagesList.value.push({ role: 'assistant', content: '' });
-      const assistantsAns = chatMessagesList.value.length - 1;
-
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { value, done } = await reader.read();
-
-        if (done) {
-          chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-          isAnswerStreamed.value = true;
-
-          break;
-        }
-        chatMessagesList.value[assistantsAns].content += value;
-      }
-    } catch (error) {
-      chatStatus.value = CHAT_STATUS.ERROR;
-    } finally {
-      chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-      chatStatus.value = CHAT_STATUS.DONE;
-    }
+    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+    chatStatus.value = CHAT_STATUS.DONE;
   }
 
   const noResultsAnswer = () => {
@@ -417,7 +338,7 @@ export const useChatStore = defineStore('chat', () => {
     corpora,
     reformulatedQuery,
     onSendMessage,
-    fetchRephraseStream,
+    fetchRephrase,
     clearInput,
     setReformulatedQuery,
     shouldDisplayScore,

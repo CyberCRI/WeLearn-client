@@ -323,6 +323,7 @@ export const fr = {
   },
   textLengthFeedback: 'Veuillez ajouter davantage de texte pour lancer la recherche.',
   tutor: {
+    restartSyllabusCreation: 'Commencer un nouveau syllabus',
     syllabusSteps: 'Étapes du syllabus :',
     BIG_FILE: 'La taille du fichier dépasse 5 Mo.',
     BAD_EXTENSION:
@@ -336,6 +337,10 @@ export const fr = {
     },
     loading: {
       wait: 'Veuillez patienter',
+      extract: {
+        title: 'Extraction du contenu du document',
+        description: 'WeLearn extrait le contenu de vos documents pour générer un résumé.'
+      },
       search: {
         title: 'Recherche de ressources associées',
         description:
@@ -345,6 +350,10 @@ export const fr = {
         title: 'Génération du syllabus',
         description:
           'WeLearn génère votre syllabus à partir des documents fournis. Cette étape peut prendre quelques minutes.'
+      },
+      default: {
+        title: 'Chargement',
+        description: 'WeLearn se prépare pour la prochaine étape.'
       }
     },
     summaries: {

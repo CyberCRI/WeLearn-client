@@ -319,6 +319,7 @@ export const en = {
   },
   textLengthFeedback: 'Please add more text to improve search results.',
   tutor: {
+    restartSyllabusCreation: 'Start a new syllabus creation',
     syllabusSteps: 'Syllabus steps:',
     BIG_FILE: 'File size exceeds 5 MB.',
     BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
@@ -330,6 +331,10 @@ export const en = {
     },
     loading: {
       wait: 'Please wait',
+      extract: {
+        title: 'Document content extraction',
+        description: 'WeLearn extracts the content from your documents to generate a summary.'
+      },
       search: {
         title: 'Finding related resources',
         description:
@@ -339,6 +344,10 @@ export const en = {
         title: 'Generating syllabus',
         description:
           'WeLearn is generating your syllabus from the documents provided. This step may take a few minutes.'
+      },
+      default: {
+        title: 'Loading',
+        description: 'WeLearn is getting ready for the next step.'
       }
     },
     summaries: {

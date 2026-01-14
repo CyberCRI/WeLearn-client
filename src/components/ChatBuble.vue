@@ -17,7 +17,7 @@ defineProps<{
   isUSer: boolean;
   isLast: boolean;
   shouldDisable: boolean;
-  rephrase?: (msg: string) => void;
+  rephrase?: () => void;
 }>();
 
 const copyMessage = (msg: string) => {
@@ -55,7 +55,7 @@ const copyMessage = (msg: string) => {
         :aria-label="$t('rephrase')"
         isDiscreet
         v-if="!isUSer && isLast && !shouldDisable"
-        @click="rephrase && rephrase(message)"
+        @click="rephrase && rephrase()"
       >
         <ReloadIcon class="icon-action" />
         <TooltipComponent class="tltip" :tooltipText="$t('rephrase')" isRight />
