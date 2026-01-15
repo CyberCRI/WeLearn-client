@@ -171,3 +171,29 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.terms-page {
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin-top: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    nt-weight: 600;
+  }
+}
