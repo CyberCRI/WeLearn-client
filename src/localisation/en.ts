@@ -294,7 +294,7 @@ export const en = {
     fetching: 'Searching across {docs_nb} documents...',
     formulatingAnswer: 'Preparing your answer...'
   },
-  terms: 'Terms and Conditions',
+  terms: 'Privacy Policy',
   giveFeedback: 'Give Feedback',
   subjects: {
     Anthropology: 'Anthropology',
