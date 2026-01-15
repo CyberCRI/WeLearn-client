@@ -37,6 +37,7 @@ export interface ReducedCorpus {
   name: string;
   model: string;
   corpus: string;
+  is_allowed: boolean;
 }
 
 export interface ErrorDetails {
