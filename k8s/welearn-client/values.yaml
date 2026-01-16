@@ -30,3 +30,11 @@ resources:
     memory: 100Mi
 
 runOnGpu: false
+
+topologySpreadConstraints:
+  - topologyKey: kubernetes.io/hostname
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: welearn-client
+    maxSkew: 1
+    whenUnsatisfiable: ScheduleAnyway
