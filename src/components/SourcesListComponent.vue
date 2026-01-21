@@ -4,11 +4,13 @@ import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
 import ToasterComponentVue from '@/components/ToasterComponent.vue';
 import { useSourcesStore } from '@/stores/sources';
+import { useMetricsStore } from '@/stores/metrics';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import i18n from '@/localisation/i18n';
 
 const sourcesStore = useSourcesStore();
+const metricsStore = useMetricsStore();
 const store = useBookmarksStore();
 
 const props = defineProps<{
@@ -70,6 +72,8 @@ const ChosenCard = Cards[props.cardType || 'default'];
         :toggleBookmark="() => store.toggleBookmark(doc)"
         :isBookmarked="store.isBookmarked(doc.payload.document_id)"
         :slice="doc.payload.slice_content"
+        :id="doc.payload.document_id"
+        :docMetrics="metricsStore.recordClickedDocumentFromchat"
       >
         <template #modal="scope">
           <ModalWrapper :key="`modal-${doc.id}`" :isOpen="scope.isOpen" :onClose="scope.onClose">

@@ -12,6 +12,7 @@ defineProps<{
   title: string;
   corpus: string;
   url: string;
+  id?: string;
   sdg: number[];
   details: DocumentDetails;
   hideRefIndicator?: boolean;
@@ -19,6 +20,7 @@ defineProps<{
   score?: number;
   toggleBookmark?: () => void;
   isBookmarked?: boolean;
+  docMetrics?: (docId?: string | undefined) => Promise<void>;
 }>();
 
 const isModalActive = ref(false);
@@ -78,7 +80,13 @@ const handleModalOpen = () => {
             :isBookmarked="!!isBookmarked"
             :toggleBookmark="toggleBookmark"
           />
-          <a class="icon-wrapper" target="_blank" :href="url" @click.stop>
+          <a
+            class="icon-wrapper"
+            target="_blank"
+            :href="url"
+            @click.stop
+            @click="docMetrics && docMetrics(id)"
+          >
             <OpenUrlIcon class="icon is-small" />
             <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.openArticle')" isLeft />
           </a>

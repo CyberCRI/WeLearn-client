@@ -24,6 +24,8 @@ const props = defineProps<{
   isBookmarked: boolean;
   hasFullDescription?: boolean;
   slice?: string;
+  id?: string;
+  docMetrics?: (docId?: string | undefined) => Promise<void>;
 }>();
 
 const toggleShowMoreAuthors = () => {
@@ -49,7 +51,7 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
         <p class="doc-number">{{ number }}</p>
       </div>
       <p class="card-header-title">
-        <a target="_blank" :href="url">
+        <a target="_blank" :href="url" @click.stop @click="docMetrics && docMetrics(id)">
           {{ title }}
         </a>
       </p>

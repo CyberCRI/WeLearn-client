@@ -31,6 +31,8 @@ export const useChatStore = defineStore('chat', () => {
   const sourcesList: Ref<Document[] | null> = ref(getFromStorage('chatSources') || []);
   const reformulatedQuery: Ref<string | null> = ref(getFromStorage('reformulatedQuery'));
   const queryToSearch: Ref<string | null> = ref(null);
+  const storedConversationId: Ref<string | null> = ref(localStorage.getItem('chatConversationId'));
+  const storedMessageId: Ref<string | null> = ref(localStorage.getItem('chatMessageId'));
 
   const isChatEmpty: ComputedRef<Boolean> = computed(() => chatMessagesList.value.length === 0);
   const chatStatus: Ref<CHAT_STATUSES_TYPE> = ref(
@@ -208,9 +210,25 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  function storeConversationId(conversationId: string) {
+    if (conversationId !== storedConversationId.value) {
+      localStorage.setItem('chatConversationId', conversationId);
+      storedConversationId.value = conversationId;
+    }
+  }
+
+  function storeMessageId(messageId: string) {
+    if (messageId !== storedMessageId.value) {
+      console.log('Storing message ID:', messageId);
+      localStorage.setItem('chatMessageId', messageId);
+      storedMessageId.value = messageId;
+    }
+  }
+
   async function getNoStreamAnswer(userMsg: string) {
     chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
     const bodyContent = {
+      conversation_id: storedConversationId.value,
       sources: sourcesList.value || [],
       history: getMessageHistory.value,
       query: userMsg,
@@ -221,8 +239,10 @@ export const useChatStore = defineStore('chat', () => {
 
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
 
-    chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
+    chatMessagesList.value.push({ role: 'assistant', content: respBody.data.answer });
     saveToStorage('chat', chatMessagesList.value);
+    storeConversationId(respBody.data.conversation_id);
+    storeMessageId(respBody.data.message_id);
 
     const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
       '/qna/reformulate/questions',
@@ -322,11 +342,15 @@ export const useChatStore = defineStore('chat', () => {
     reformulatedQuery.value = null;
     shouldFetchNewDocuments.value = true;
     storedSubject.value = undefined;
+    storedConversationId.value = null;
+    storedMessageId.value = null;
     clearFromStorage('chat');
     clearFromStorage('chatSources');
     clearFromStorage('questionQueues');
     clearFromStorage('reformulatedQuery');
     clearFromStorage('chatSubject');
+    clearFromStorage('chatConversationId');
+    clearFromStorage('chatMessageId');
   }
 
   return {

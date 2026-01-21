@@ -6,3 +6,8 @@ export const getQueryParamValue = (query: string) => {
 export const getPagePath = () => {
   return window.location.pathname;
 };
+
+export const isInPage = (page: string) => {
+  const path = getPagePath();
+  return path.includes(page);
+};
