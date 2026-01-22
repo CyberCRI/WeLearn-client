@@ -234,7 +234,8 @@ export const fr = {
     syllabus: 'Créer un syllabus',
     about: 'À propos',
     help: 'Aide',
-    microlearning: 'Micro-learning'
+    microlearning: 'Micro-learning',
+    workshopForm: "Formulaire d'atelier"
   },
 
   next: 'Suivant',

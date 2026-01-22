@@ -10,10 +10,13 @@ import i18n from '@/localisation/i18n';
 import BookIcon from '@/components/icons/BookIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
+import { useMetricsStore } from '@/stores/metrics';
 
 const featureFlip = useFeatureFlipStore();
+const metricStore = useMetricsStore();
 const isFeatureEnabled = featureFlip.isFeatureEnabled('tutor');
 const isFeatureEnabledMicrolearning = featureFlip.isFeatureEnabled('microlearning');
+const isWorkshopFeatureEnabled = featureFlip.isWorkshopFeatureEnabled();
 
 const isNavOpened = ref<boolean>(false);
 
@@ -120,6 +123,17 @@ const handle_nav_bookmarks = () => {
           }}</span>
         </router-link>
       </div>
+      <a
+        class="mx-0 px-0"
+        v-if="isWorkshopFeatureEnabled"
+        target="_blank"
+        :href="metricStore.getWorkshopFormUrl"
+      >
+        <span class="item-name router-link-form has-text-success mx-1 px-1 pr-4 is-size-6">{{
+          $t('nav.workshopForm')
+        }}</span>
+      </a>
+
       <div class="nav-langs" :class="isNavOpened && 'open'">
         <a
           class="nav-lang"
@@ -228,10 +242,27 @@ const handle_nav_bookmarks = () => {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.5rem;
+  gap: 0.2rem;
   cursor: pointer;
   padding: 0.75rem 1rem;
   width: calc(100% - 2rem);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+.router-link-form {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.2rem;
+  cursor: pointer;
+  width: calc(100% - 2rem);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  &:hover {
+    background-color: var(--neutral-15);
+  }
 }
 
 .router-link-active {
@@ -244,6 +275,7 @@ const handle_nav_bookmarks = () => {
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
+  flex-wrap: nowrap;
 }
 
 .item-name.visible-name {
@@ -256,7 +288,7 @@ const handle_nav_bookmarks = () => {
 @media screen and (min-width: 992px) {
   .nav {
     flex-grow: 1;
-    gap: 0.75rem;
+    gap: 0.2rem;
     padding: 0rem;
     display: flex;
     flex-direction: row;
@@ -291,6 +323,8 @@ const handle_nav_bookmarks = () => {
     visibility: visible;
     opacity: 1;
     width: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
   }
 
   .link-wrapper {

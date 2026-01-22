@@ -13,8 +13,14 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
     return featureFlip[feature] || false;
   };
 
+  const isWorkshopFeatureEnabled = () => {
+    // it should be active if url includes 'workshop'
+    return isDevEnvironment || window.location.href.includes('workshop');
+  };
+
   return {
     featureFlip,
-    isFeatureEnabled
+    isFeatureEnabled,
+    isWorkshopFeatureEnabled
   };
 });
