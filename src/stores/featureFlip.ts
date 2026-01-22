@@ -15,6 +15,7 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
 
   const isWorkshopFeatureEnabled = () => {
     const isDevEnvironment = import.meta.env.VITE_ENVIRONMENT === 'dev';
+    console.log(import.meta.env.VITE_ENVIRONMENT);
 
     // it should be active if url includes 'workshop'
     console.log(window.location.href.includes('workshop'));
