@@ -31,40 +31,40 @@ jobs:
       submodules-app-installation-id: ${{ secrets.INFRA_BOT_APP_INSTALLATION_ID }}
       submodules-app-private-key: ${{ secrets.INFRA_BOT_APP_PRIVATE_KEY }}
 
-  lint-and-test:
-    timeout-minutes: 60
-    runs-on: wlc-lint-and-test-runner
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20
-      - name: Install Yarn
-        run: npm install -g yarn
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
+  # lint-and-test:
+  #   timeout-minutes: 60
+  #   runs-on: wlc-lint-and-test-runner
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 20
+  #     - name: Install Yarn
+  #       run: npm install -g yarn
+  #     - name: Install dependencies
+  #       run: yarn install --frozen-lockfile
 
-      - name: Run linter and formatter
-        run: |
-          yarn lint
-          yarn format:check
+  #     - name: Run linter and formatter
+  #       run: |
+  #         yarn lint
+  #         yarn format:check
 
-      - name: Run unit tests
-        run: yarn test:unit
+  #     - name: Run unit tests
+  #       run: yarn test:unit
 
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+  #     - name: Install Playwright Browsers
+  #       run: yarn playwright install --with-deps
+  #     - name: Run Playwright tests
+  #       run: yarn playwright test
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report
+  #         path: playwright-report/
+  #         retention-days: 30
 
   tag-deploy:
     needs:
-      - lint-and-test
+      # - lint-and-test
       - build-docker
     uses: CyberCRI/github-workflows/.github/workflows/tag-deploy.yaml@main

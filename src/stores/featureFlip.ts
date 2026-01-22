@@ -15,6 +15,10 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
 
   const isWorkshopFeatureEnabled = () => {
     // it should be active if url includes 'workshop'
+    console.log(window.location.href.includes('workshop'));
+    console.log(isDevEnvironment);
+    console.log(window.location.href);
+    console.log(isDevEnvironment || window.location.href.includes('workshop'));
     return isDevEnvironment || window.location.href.includes('workshop');
   };
 
