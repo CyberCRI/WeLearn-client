@@ -3,7 +3,7 @@ type FeatureFlip = {
   [key: string]: boolean;
 };
 export const useFeatureFlipStore = defineStore('featureFlip', () => {
-  const isDevEnvironment = import.meta.env.VITE_ENVIRONMENT === 'dev';
+  const isDevEnvironment = import.meta.env.VITE_ENVIRONMENT.trim().includes('dev');
   const featureFlip: FeatureFlip = {
     tutor: true,
     microlearning: isDevEnvironment
@@ -14,12 +14,6 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
   };
 
   const isWorkshopFeatureEnabled = () => {
-    const isDevEnvironment = import.meta.env.VITE_ENVIRONMENT.trim().includes('dev');
-    console.log(import.meta.env.VITE_ENVIRONMENT);
-
-    // it should be active if url includes 'workshop'
-    console.log(isDevEnvironment);
-    console.log(isDevEnvironment || window.location.href.includes('workshop'));
     return isDevEnvironment || window.location.href.includes('workshop');
   };
 
