@@ -1,25 +1,17 @@
 import { updateClickedDocument } from '@/utils/metrics';
-import { getQueryParamValue, isInPage } from '@/utils/urlsUtils';
-import { use } from 'marked';
+import { isInPage } from '@/utils/urlsUtils';
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { useUserStore } from './user';
+import { useUserStore } from '@/stores/user';
 
 export const useMetricsStore = defineStore('metrics', () => {
   const userId = ref<string | null>(localStorage.getItem('userId'));
 
   const getUserId = computed(() => userId.value);
 
-  const getWorkshopFormUrl = async () => {
+  const getWorkshopFormUrl = () => {
     const userStore = useUserStore();
-    let userId = userStore.userId;
-
-    if (!userId) {
-      const uidAndSession = await userStore.setUserIdAndSessionId(
-        getQueryParamValue('referer') || ''
-      );
-      userId = uidAndSession.userId;
-    }
+    const userId = userStore.userId;
 
     return `https://docs.google.com/forms/d/e/1FAIpQLSeUf3GQXt3LsZD24Z3fGkwUE-qhAXF2jkem9zbPnAbnOrReDQ/viewform?usp=pp_url&entry.736499817=${userId}`;
   };

@@ -122,7 +122,7 @@ const handle_nav_bookmarks = () => {
         class="mx-0 px-0"
         v-if="isWorkshopFeatureEnabled"
         target="_blank"
-        :href="metricStore.getWorkshopFormUrl"
+        :href="metricStore.getWorkshopFormUrl()"
       >
         <span class="item-name router-link-form has-text-success mx-1 px-1 pr-4 is-size-6">{{
           $t('nav.workshopForm')

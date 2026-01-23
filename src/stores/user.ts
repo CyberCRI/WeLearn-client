@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia';
-import { type Ref, ref, useId } from 'vue';
+import { type Ref, ref } from 'vue';
 import { getFromStorage, saveToStorage } from '@/utils/storage';
 import { getUserAndSession } from '@/utils/auth';
-import { use } from 'marked';
 
 type OnboardingState = {
   hasSeenWelcome: boolean;
