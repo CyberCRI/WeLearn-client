@@ -12,7 +12,7 @@ export const test = base.extend({
       } else if (url.includes('session')) {
         await route.fulfill({
           status: 200,
-          body: JSON.stringify({ session_id: 'fake_session_id' })
+          body: JSON.stringify({ session_id: 'fake_session_id', referer: 'toto' })
         });
       } else if (url.includes('/:user_id/bookmarks?user_id=')) {
         await route.fulfill({
@@ -36,6 +36,28 @@ export const test = base.extend({
         await route.fulfill({ status: 200, body: JSON.stringify(docs) });
       } else {
         await route.continue();
+      }
+    });
+
+    // Mock metrics-related calls
+    await page.route('**/**/metrics/**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('nb_docs_info_per_corpus')) {
+        const json = [
+          {
+            corpus: 'hal',
+            url: 'https://hal.science/',
+            qty_total: 558728,
+            qty_in_qdrant: 36408
+          },
+          {
+            corpus: 'ipbes',
+            url: 'https://www.ipbes.net/',
+            qty_total: 33,
+            qty_in_qdrant: 33
+          }
+        ];
+        await route.fulfill({ json });
       }
     });
 

@@ -21,6 +21,11 @@ export const useUserStore = defineStore('user', () => {
     sessionId.value = userAndSession?.sessionId;
     localStorage.setItem('userId', userAndSession?.userId || '');
     localStorage.setItem('sessionId', userAndSession?.sessionId || '');
+
+    return {
+      userId: userId.value,
+      sessionId: sessionId.value
+    };
   };
   const onboardingState = ref<Ref<OnboardingState>>(
     getFromStorage('onboardingState') || defaultOnboardingState

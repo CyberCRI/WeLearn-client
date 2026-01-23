@@ -18,11 +18,15 @@ const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 
 async function initCalls() {
-  await Promise.all([
-    getInfoPerCorpus(),
-    getSourcesList(),
-    userStore.setUserIdAndSessionId(getQueryParamValue('referer') || '')
-  ]);
+  try {
+    await Promise.all([
+      getInfoPerCorpus(),
+      getSourcesList(),
+      userStore.setUserIdAndSessionId(getQueryParamValue('referer') || '')
+    ]);
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 onMounted(async () => {

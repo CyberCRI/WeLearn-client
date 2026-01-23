@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import HamburgerMenu from '@/components/icons/HamburgerMenu.vue';
 import SearchIcon from '@/components/icons/SearchIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 import LinesLeaningIcon from '@/components/icons/LinesLeaningIcon.vue';
@@ -26,10 +25,6 @@ const handle_nav_bookmarks = () => {
 </script>
 <template>
   <div class="nav" :class="isNavOpened && 'open'">
-    <div class="toggler" @click="isNavOpened = !isNavOpened">
-      <HamburgerMenu />
-    </div>
-
     <div class="nav-items" :class="isNavOpened && 'open'">
       <div class="link-wrapper">
         <router-link
@@ -127,7 +122,7 @@ const handle_nav_bookmarks = () => {
         class="mx-0 px-0"
         v-if="isWorkshopFeatureEnabled"
         target="_blank"
-        :href="metricStore.getWorkshopFormUrl"
+        :href="metricStore.getWorkshopFormUrl()"
       >
         <span class="item-name router-link-form has-text-success mx-1 px-1 pr-4 is-size-6">{{
           $t('nav.workshopForm')
@@ -155,21 +150,12 @@ const handle_nav_bookmarks = () => {
 <style scoped>
 .nav {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   z-index: 2;
   border-bottom: 1px solid var(--neutral-20);
 }
 
 .icon {
   position: relative;
-}
-
-.toggler {
-  width: 100%;
-  text-align: center;
-  cursor: pointer;
 }
 
 .nav-langs {
@@ -209,31 +195,6 @@ const handle_nav_bookmarks = () => {
 
   & > * {
     display: none;
-  }
-}
-
-.nav-items.open {
-  opacity: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-top: 0.75rem;
-  padding: 2.5rem 0;
-  top: 3rem;
-  right: 1rem;
-  background-color: var(--neutral-0);
-  border: 1px solid var(--neutral-20);
-  z-index: 2;
-  width: 12rem;
-  height: 15.3875rem;
-  transition:
-    opacity 0.1s linear,
-    width 0.2s linear,
-    height 0.1s linear;
-
-  & > * {
-    display: flex;
   }
 }
 
@@ -287,15 +248,8 @@ const handle_nav_bookmarks = () => {
 
 @media screen and (min-width: 992px) {
   .nav {
-    flex-grow: 1;
-    gap: 0.2rem;
+    width: 100%;
     padding: 0rem;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 1rem;
-    margin-left: 2rem;
-    margin-right: 2rem;
   }
 
   .toggler {
@@ -347,6 +301,7 @@ const handle_nav_bookmarks = () => {
     border-radius: 4px;
     padding: 0.25rem 0.75rem;
     display: flex;
+    font-size: 0.9rem;
 
     gap: 0.5rem;
     cursor: pointer;

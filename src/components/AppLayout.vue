@@ -66,7 +66,6 @@ const manageNavBarAnimations = () => {
   overflow: auto;
   scroll-behavior: smooth;
 }
-
 @media screen and (min-width: 576px) {
   .appLayout {
     grid-template-rows: 7rem auto;
