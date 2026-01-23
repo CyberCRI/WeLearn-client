@@ -1,15 +1,28 @@
 import { updateClickedDocument } from '@/utils/metrics';
-import { isInPage } from '@/utils/urlsUtils';
+import { getQueryParamValue, isInPage } from '@/utils/urlsUtils';
+import { use } from 'marked';
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
+import { useUserStore } from './user';
 
 export const useMetricsStore = defineStore('metrics', () => {
   const userId = ref<string | null>(localStorage.getItem('userId'));
 
   const getUserId = computed(() => userId.value);
-  const getWorkshopFormUrl = computed(() => {
-    return `https://docs.google.com/forms/d/e/1FAIpQLSeUf3GQXt3LsZD24Z3fGkwUE-qhAXF2jkem9zbPnAbnOrReDQ/viewform?usp=pp_url&entry.736499817=${userId.value}`;
-  });
+
+  const getWorkshopFormUrl = async () => {
+    const userStore = useUserStore();
+    let userId = userStore.userId;
+
+    if (!userId) {
+      const uidAndSession = await userStore.setUserIdAndSessionId(
+        getQueryParamValue('referer') || ''
+      );
+      userId = uidAndSession.userId;
+    }
+
+    return `https://docs.google.com/forms/d/e/1FAIpQLSeUf3GQXt3LsZD24Z3fGkwUE-qhAXF2jkem9zbPnAbnOrReDQ/viewform?usp=pp_url&entry.736499817=${userId}`;
+  };
 
   const getCampaignStatus = async () => {
     // Logic to get campaign status
