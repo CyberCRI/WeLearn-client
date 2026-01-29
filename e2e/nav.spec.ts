@@ -19,11 +19,11 @@ test.describe('nav', () => {
     await expect(page).toHaveURL(/\/bookmarks/);
   });
 
-  test.describe('switch to french', () => {
-    test('switch to French', async ({ page }) => {
+  test.describe('switch to language', () => {
+    test('switch language', async ({ page }) => {
       expect(await page.getByText('Posez une question')).toBeTruthy();
-      await page.getByText('Anglais').click();
-      expect(await page.getByText('English')).toBeTruthy();
+      await page.getByRole('combobox').selectOption('EN');
+      expect(await page.getByText('EN')).toBeTruthy();
       expect(await page.getByText('Ask a question')).toBeTruthy();
     });
   });

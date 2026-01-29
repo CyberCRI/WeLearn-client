@@ -4,7 +4,7 @@
       class="router-link"
       :to="to"
       :class="{ 'router-link-not-active': neverActive }"
-      data-testid="nav-{{ name }}"
+      :data-testid="`nav-${name}`"
     >
       <div class="icon">
         <component :is="icon" />
