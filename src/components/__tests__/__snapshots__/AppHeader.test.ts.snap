@@ -1,22 +1,12 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`AppHeader > renders properly 1`] = `
-<div
-  class="app-header"
+<router-link-stub
+  ariacurrentvalue="page"
+  class="app-header-link"
+  custom="false"
   data-v-48a13218=""
->
-  <router-link-stub
-    ariacurrentvalue="page"
-    custom="false"
-    data-v-48a13218=""
-    replace="false"
-    to="/"
-  />
-  <span
-    class="is-title has-text-weight-semibold is-size-4 has-text-success ml-1"
-    data-v-48a13218=""
-  >
-    Beta
-  </span>
-</div>
+  replace="false"
+  to="/"
+/>
 `;

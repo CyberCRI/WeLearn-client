@@ -46,37 +46,20 @@ const manageNavBarAnimations = () => {
   overflow: hidden;
   margin: 0;
 
-  display: grid;
-  grid-template-rows: 6.5rem auto;
-  grid-template-areas:
-    'header '
-    'main ';
-  transition: grid-template-rows 0.5s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
 }
 
 .header {
-  grid-area: header;
   display: flex;
 }
 
 .main {
-  grid-area: main;
   width: 100%;
   height: 100%;
   overflow: auto;
   scroll-behavior: smooth;
-}
-@media screen and (min-width: 576px) {
-  .appLayout {
-    grid-template-rows: 7rem auto;
-    grid-gap: 0.05rem;
-  }
-}
-
-@media screen and (min-width: 768px) {
-  .appLayout {
-    grid-template-rows: auto 1fr;
-  }
 }
 
 .wl-footer {
