@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue';
 
+interface StepContent {
+  title: string;
+  description: string;
+  image?: string;
+}
+
 const props = defineProps<{
-  stepsContent?: Record<string, string>[];
+  stepsContent?: StepContent[];
   modalState: boolean;
   toggleModal: () => void;
 }>();

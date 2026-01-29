@@ -7,9 +7,12 @@ import { HELP_USER } from '@/utils/constants';
 import { useRoute } from 'vue-router';
 import BaseNavItem from './BaseNavItem.vue';
 
+type HelpUserKey = keyof typeof HELP_USER;
+type HelpUserValue = (typeof HELP_USER)[HelpUserKey];
+
 const route = useRoute();
 const openModal = ref(false);
-const instructions = ref([]);
+const instructions = ref<HelpUserValue>([]);
 const toggleModal = () => {
   if (!instructions.value.length) return;
   openModal.value = !openModal.value;
@@ -18,7 +21,7 @@ const toggleModal = () => {
 watch(
   () => route.path.split('/')[1],
   async (path) => {
-    instructions.value = HELP_USER[path] || [];
+    instructions.value = HELP_USER[path as HelpUserKey] || [];
   }
 );
 </script>
