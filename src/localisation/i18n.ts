@@ -10,7 +10,8 @@ const i18n = createI18n({
   globalInjection: true,
   legacy: false,
   sync: true,
-  missingWarn: import.meta.env.NODE_ENV === 'dev' ? true : false
+  missingWarn: false,
+  fallbackWarn: false
 });
 
 export default i18n;

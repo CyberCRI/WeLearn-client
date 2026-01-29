@@ -1,20 +1,18 @@
 <script setup lang="ts">
 import CheckboxCompnentVue from '@/components/CheckboxCompnent.vue';
-import { useSourcesStore } from '@/stores/sources';
 import { useFiltersStore } from '@/stores/filters';
 
-defineProps<{ isUp?: boolean; context?: string }>();
-const sources = useSourcesStore();
+defineProps<{ isUp?: boolean; context?: string; availableSources: Record<string, any>[] }>();
 const filters = useFiltersStore();
 </script>
 <template>
-  <div :key="source.name" class="my-2" v-for="source in sources.sourcesList">
+  <div :key="source.name" class="my-2" v-for="source in availableSources">
     <CheckboxCompnentVue
       :name="source.name"
       :id="source.name"
       v-model="filters.sourcesFilters"
       :value="source.name"
-      :label="`${$t(`corpus.${source.name}`, `${source.name.replace('-', ' ')}`)}`"
+      :label="source.translated"
       :checked="filters.sourcesFilters.includes(source.name)"
       isCapitalized
     >
