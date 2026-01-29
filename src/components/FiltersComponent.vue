@@ -6,19 +6,38 @@ import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
 import SDGSelector from '@/components/dropdowns/SDGSelector.vue';
 import SourcesSelector from '@/components/dropdowns/SourcesSelector.vue';
 import { useFiltersStore } from '@/stores/filters';
+import { useSourcesStore } from '@/stores/sources';
 import { ref, watch, toRefs } from 'vue';
 
 const props = defineProps<{
   shouldClose?: boolean;
 }>();
 
+const sourcesStore = useSourcesStore();
+const availableSources = ref(sourcesStore.sourcesList);
 const { shouldClose } = toRefs(props);
+
+const handleSearchFilters = (event: Event) => {
+  if (!(event.target instanceof HTMLInputElement))
+    availableSources.value = sourcesStore.sourcesList;
+  const target = event.target as HTMLInputElement;
+  const value = target.value;
+  availableSources.value = sourcesStore.sourcesList.filter((source) =>
+    source.translated.toLowerCase().includes(value.toLowerCase())
+  );
+};
+
 const hideFilters = ref(false);
 watch(shouldClose, (close) => {
   if (close) {
     hideFilters.value = close;
   }
 });
+
+watch(sourcesStore, () => {
+  availableSources.value = sourcesStore.sourcesList;
+});
+
 const filters = useFiltersStore();
 const toggleFilters = () => (hideFilters.value = !hideFilters.value);
 
@@ -61,7 +80,7 @@ const clearFilters = () => {
           bgColor="primary"
           :key="filter"
           v-for="filter in filters.sdgFilters"
-          :content="filter"
+          :content="filter.toString()"
         >
           <template #actions>
             <span class="is-clickable" @click="filters.handleSdgFilterChange(filter)"> x </span>
@@ -75,12 +94,17 @@ const clearFilters = () => {
     <span class="has-text-grey">{{ $t('noFiltersSelected') }}</span>
   </p>
   <div :class="{ hide: hideFilters }" class="pr-5 filters">
-    <input class="input" type="text" :placeholder="$t('searchBarPlaceholder')" />
+    <input
+      class="input"
+      type="text"
+      :placeholder="$t('searchBarPlaceholder')"
+      @keyup="handleSearchFilters"
+    />
 
     <details class="filter-section" open>
       <summary>{{ $t('sources') }}</summary>
       <div class="filter-options">
-        <SourcesSelector />
+        <SourcesSelector :availableSources="availableSources" />
       </div>
     </details>
     <details class="filter-section" open>

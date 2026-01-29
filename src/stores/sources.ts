@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { getAxios } from '@/utils/fetch';
 import { type Ref, ref } from 'vue';
 import type { Corpus, ReducedCorpus } from '@/types';
+import i18n from '@/localisation/i18n';
 
 export const useSourcesStore = defineStore('sources', () => {
   const sourcesList = ref<ReducedCorpus[]>([]);
@@ -20,7 +21,11 @@ export const useSourcesStore = defineStore('sources', () => {
         if (existingCorpus >= 0) {
           return acc;
         }
-        return [...acc, curr];
+        const translated = {
+          ...curr,
+          translated: i18n.global.t(`corpus.${curr.name}`, `${curr.name.replace('-', ' ')}`)
+        };
+        return [...acc, translated];
       }, [] as ReducedCorpus[]);
 
       mergedCorpusByLang.sort((a, b) => a.name.localeCompare(b.name));
