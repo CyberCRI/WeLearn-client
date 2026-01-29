@@ -6,6 +6,10 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
   const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
   const featureFlip: FeatureFlip = {
     tutor: true,
+    search: true,
+    bookmarks: true,
+    chat: true,
+    about: true,
     microlearning: isDevEnvironment
   };
 

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
-import NavComponent from '@/components/NavComponent.vue';
+import NavComponent from '@/components/nav/NavComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
 import SmallScreenPage from '@/views/SmallScreenPage.vue';
