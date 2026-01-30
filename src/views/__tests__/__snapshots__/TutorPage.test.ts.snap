@@ -6,17 +6,17 @@ exports[`TutorPage > renders properly 1`] = `
   data-v-8a8621cb=""
 >
   <div
-    class="is-flex is-justify-content-center is-align-items-center"
+    class="is-flex is-flex-wrap-wrap is-justify-content-center is-align-items-center mt-4"
     data-v-8a8621cb=""
   >
     <p
-      class="subtitle has-text-weight-bold is-5 mr-4 my-auto"
+      class="subtitle has-text-weight-bold is-5 is-size-6-mobile mr-4 my-auto"
       data-v-8a8621cb=""
     >
       tutor.syllabusSteps
     </p>
     <div
-      class="is-flex"
+      class="wrapper"
       data-v-050e406a=""
       data-v-8a8621cb=""
     >
@@ -66,13 +66,13 @@ exports[`TutorPage > renders properly 1`] = `
       id="target-1"
     >
       <h1
-        class="title is-4"
+        class="title is-4 is-size-5-mobile"
         data-v-5582d651=""
       >
         1 - tutor.firstStep.title
       </h1>
       <p
-        class="subtitle is-6"
+        class="subtitle is-6 is-size-6-mobile"
         data-v-5582d651=""
       >
         tutor.firstStep.description
@@ -131,19 +131,19 @@ exports[`TutorPage > renders properly 1`] = `
       <!--v-if-->
       <!-- Course Description Section -->
       <h2
-        class="title is-6 mt-4"
+        class="title is-6 mt-4 is-size-6-mobile"
         data-v-5582d651=""
       >
         tutor.firstStep.cursusDescriptionTitle
       </h2>
       <p
-        class="subtitle is-6"
+        class="subtitle is-6 is-size-6-mobile"
         data-v-5582d651=""
       >
         tutor.firstStep.cursusDescriptionDescription
       </p>
       <div
-        class="is-flex is-flex-wrap-wrap is-justify-content-space-between descriptions"
+        class="cursus-details"
         data-v-5582d651=""
       >
         <div
@@ -342,7 +342,7 @@ exports[`TutorPage > renders properly 1`] = `
       id="target-2"
     >
       <h2
-        class="title is-4 mt-4"
+        class="title is-4 is-size-5-mobile mt-4"
         data-testid="tutor-summaries-title"
         data-v-834edf8c=""
       >

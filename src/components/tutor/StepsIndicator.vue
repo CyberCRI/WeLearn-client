@@ -10,7 +10,7 @@ const props = defineProps<{
 const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i + 1);
 </script>
 <template>
-  <div class="is-flex">
+  <div class="wrapper">
     <a
       href="#"
       class="step-indicator"
@@ -24,6 +24,16 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
   </div>
 </template>
 <style scoped>
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  background-color: var(--neutral-10);
+  padding: 0.5rem;
+  border-radius: 1rem;
+}
+
 .step-indicator {
   margin: 0 0.5rem;
   padding: 0 0.5rem;
@@ -45,10 +55,10 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
   color: var(--neutral-50);
 }
 
-.is-flex {
-  gap: 5rem;
-  background-color: var(--neutral-10);
-  padding: 0.5rem;
-  border-radius: 1rem;
+@media screen and (max-width: 768px) {
+  .wrapper {
+    gap: 0.5rem;
+    padding: 0.2rem;
+  }
 }
 </style>

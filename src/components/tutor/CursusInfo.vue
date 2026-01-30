@@ -94,8 +94,8 @@ const appendNewInputFile = () => {
 
 <template>
   <div id="target-1" class="wrapper">
-    <h1 class="title is-4">1 - {{ $t('tutor.firstStep.title') }}</h1>
-    <p class="subtitle is-6">{{ $t('tutor.firstStep.description') }}</p>
+    <h1 class="title is-4 is-size-5-mobile">1 - {{ $t('tutor.firstStep.title') }}</h1>
+    <p class="subtitle is-6 is-size-6-mobile">{{ $t('tutor.firstStep.description') }}</p>
 
     <!-- File Input Section -->
     <div class="is-flex is-flex-direction-column">
@@ -136,12 +136,14 @@ const appendNewInputFile = () => {
     </p>
 
     <!-- Course Description Section -->
-    <h2 class="title is-6 mt-4">
+    <h2 class="title is-6 mt-4 is-size-6-mobile">
       {{ $t('tutor.firstStep.cursusDescriptionTitle') }}
     </h2>
-    <p class="subtitle is-6">{{ $t('tutor.firstStep.cursusDescriptionDescription') }}</p>
+    <p class="subtitle is-6 is-size-6-mobile">
+      {{ $t('tutor.firstStep.cursusDescriptionDescription') }}
+    </p>
 
-    <div class="is-flex is-flex-wrap-wrap is-justify-content-space-between descriptions">
+    <div class="cursus-details">
       <div class="description">
         <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
         <input
@@ -248,8 +250,25 @@ const appendNewInputFile = () => {
   pointer-events: none;
 }
 
-.descriptions {
+.cursus-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 0.5rem;
   margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .cursus-details {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .description {
+    width: 100%;
+    max-height: none;
+  }
 }
 </style>

@@ -5,10 +5,9 @@ import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
-import ModalWrapper from '@/components/ModalWrapper.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
-import ErrorDocumentIcon from '@/components/icons/ErrorDocumentIcon.vue';
 import { useTutorStore } from '@/stores/tutor';
+import StatusModal from '@/components/tutor/StatusModal.vue';
 
 const store = useTutorStore();
 
@@ -38,7 +37,7 @@ const getI18nText = computed(() => {
   }
 });
 
-const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
+const stepToAction: Record<1 | 2 | 3 | 4, (arg?: any) => Promise<void>> = {
   1: store.handleSummaryFiles,
   2: store.retrieveTutorSearch,
   3: store.handleCreateSyllabus,
@@ -47,8 +46,8 @@ const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
 </script>
 <template>
   <div class="content-centered-wrapper">
-    <div class="is-flex is-justify-content-center is-align-items-center">
-      <p class="subtitle has-text-weight-bold is-5 mr-4 my-auto">
+    <div class="is-flex is-flex-wrap-wrap is-justify-content-center is-align-items-center mt-4">
+      <p class="subtitle has-text-weight-bold is-5 is-size-6-mobile mr-4 my-auto">
         {{ $t('tutor.syllabusSteps') }}
       </p>
 
@@ -60,45 +59,15 @@ const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
       />
     </div>
     <ErrorComponent v-if="store.reloadError" />
+    <StatusModal
+      :isLoading="store.isLoading"
+      :shouldRetryAction="store.shouldRetryAction"
+      :action="stepToAction[store.step]"
+      :stopAction="store.stopAction"
+      :title="$t(getI18nText.title)"
+      :description="$t(getI18nText.description)"
+    />
 
-    <ModalWrapper v-if="store.isLoading" :isOpen="store.isLoading" :onClose="store.stopAction">
-      <div v-if="store.shouldRetryAction" class="box">
-        <div
-          class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center"
-        >
-          <h1 class="title is-size-4 has-text-centered">
-            <span class="mr-4"><ErrorDocumentIcon /></span>
-            {{ $t('tutor.retry.title') }}
-          </h1>
-
-          <p class="loader-text is-title is-size-4 mx-6 px-6">
-            {{ $t('tutor.retry.description') }}
-          </p>
-          <div class="is-flex is-gap-4">
-            <button
-              data-testid="tutor-back-button"
-              class="button mt-6"
-              @click="stepToAction[store.step]()"
-            >
-              {{ $t('tutor.retry.button') }}
-            </button>
-            <button data-testid="tutor-back-button" class="button mt-6" @click="store.stopAction()">
-              {{ $t('tutor.retry.stop') }}
-            </button>
-          </div>
-        </div>
-      </div>
-      <div v-else class="box loading-modal">
-        <h1 class="title is-size-4 has-text-centered">
-          {{ $t(getI18nText.title) }}
-        </h1>
-        <progress class="progress is-large is-primary mb-6" max="100">60%</progress>
-        <p class="loader-text is-title is-size-5">{{ $t('tutor.loading.wait') }}</p>
-        <p class="loader-text is-title is-size-5">
-          {{ $t(getI18nText.description) }}
-        </p>
-      </div>
-    </ModalWrapper>
     <div class="layout-flex">
       <CursusInfo
         :selectLang="store.selectSyllabusLanguage"
@@ -156,51 +125,21 @@ const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
   overflow: hidden;
 }
 
-.box {
-  overflow: auto;
-  width: 100%;
-  margin: auto;
-}
-
-.content {
-  height: 100%;
-  width: 80%;
-}
-
-.actions {
-  display: flex;
-  gap: 1rem;
-}
-
 .layout-flex {
   width: 100%;
   overflow-y: auto;
   padding: 1rem 20%;
 }
 
-.flex-wrap {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  height: 100%;
-}
-
-.flex-wrap.shrink {
-  flex-grow: 0.7;
-  flex-basis: 10%;
-  & > * {
-    flex-basis: 100%;
-    transition: flex-grow 0s;
+@media screen and (max-width: 1024px) {
+  .layout-flex {
+    padding-inline: 10%;
   }
 }
 
-.loading-modal {
-  padding: 2rem;
-  width: 100%;
-  height: 100%;
-}
-
-.loader-text {
-  text-align: center;
+@media screen and (max-width: 768px) {
+  .layout-flex {
+    padding-inline: 5%;
+  }
 }
 </style>

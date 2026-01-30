@@ -33,7 +33,9 @@ const handleTextEdit = (event, index) => {
 </script>
 <template>
   <div id="target-4" class="wrapper" :class="{ disabled: disabled }">
-    <h1 data-testid="thirdStepTitle" class="title is-4">4 - {{ $t('tutor.thirdStep.title') }}</h1>
+    <h1 data-testid="thirdStepTitle" class="title is-4 is-size-5-mobile">
+      4 - {{ $t('tutor.thirdStep.title') }}
+    </h1>
     <p class="subtitle is-6">{{ $t('tutor.thirdStep.description') }}</p>
     <!-- syllabus -->
 
@@ -60,25 +62,38 @@ const handleTextEdit = (event, index) => {
 
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
 
-    <div class="is-flex is-justify-content-end mt-4 pb-6">
-      <button class="button mr-auto" @click="restart">
-        {{ $t('tutor.restartSyllabusCreation') }}
-      </button>
-      <button class="button" @click="toggleFeedback">
+    <div class="actions">
+      <button class="button feedback" @click="toggleFeedback">
         {{
           enableFeedback ? $t('tutor.thirdStep.sendFeedback') : $t('tutor.thirdStep.giveFeedback')
         }}
       </button>
-      <button class="button is-primary ml-2" @click="action()">{{ $t('download') }}</button>
+      <button class="button is-primary" @click="action()">{{ $t('download') }}</button>
+      <button class="button" @click="restart">
+        {{ $t('tutor.restartSyllabusCreation') }}
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: end;
+  padding-bottom: 3rem;
+  gap: 1rem;
+}
+
+.button.feedback {
+  margin-right: auto;
+}
+
 .button > svg {
   height: 1rem;
   padding-right: 1rem;
 }
+
 .wrapper {
   display: flex;
   height: 100%;
@@ -119,5 +134,26 @@ details:not([open]) {
 .editable {
   border: 2px solid var(--primary);
   background-color: var(--neutral-0);
+}
+
+@media screen and (max-width: 1280px) {
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  .button.feedback {
+    margin-right: 0;
+  }
+
+  .syllabus {
+    padding: 1rem;
+  }
+
+  .content h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
 }
 </style>

@@ -56,7 +56,7 @@ const handleTextEdit = (event, index) => {
 </script>
 <template>
   <div id="target-2" class="summaries-section" :class="{ disabled: disabled }">
-    <h2 data-testid="tutor-summaries-title" class="title is-4 mt-4">
+    <h2 data-testid="tutor-summaries-title" class="title is-4 is-size-5-mobile mt-4">
       2 - {{ $t('tutor.summaries.title') }}
     </h2>
     <p class="subtitle is-6">
@@ -66,20 +66,9 @@ const handleTextEdit = (event, index) => {
       <h2 class="title is-6 mt-4">
         {{ Object.values(files)[index]?.name || $t('tutor.summaries.noFileName') }}
       </h2>
-      <div class="is-flex">
-        <p
-          :id="`summary_${index}`"
-          class="input summary"
-          :contenteditable="editableParagraphs[index]"
-          @keydown="preventLineBreaks"
-          @paste="sanitizePaste"
-          @blur="handleTextEdit($event, index)"
-          :class="{ validated: !editableParagraphs[index] }"
-        >
-          {{ summary }}
-        </p>
-        <div class="mt-2 ml-2">
-          <button class="button is-white mt-2" @click="toggleEdit(index, true)">
+      <div class="is-flex is-flex-wrap-wrap">
+        <div class="mt-2 ml-auto is-flex is-align-items-center">
+          <button class="button is-white" @click="toggleEdit(index, true)">
             <span class="icon is-small">
               <EditIcon />
             </span>
@@ -97,6 +86,17 @@ const handleTextEdit = (event, index) => {
             <span>{{ editableParagraphs[index] ? $t('validate') : $t('validated') }}</span>
           </button>
         </div>
+        <p
+          :id="`summary_${index}`"
+          class="input summary"
+          :contenteditable="editableParagraphs[index]"
+          @keydown="preventLineBreaks"
+          @paste="sanitizePaste"
+          @blur="handleTextEdit($event, index)"
+          :class="{ validated: !editableParagraphs[index] }"
+        >
+          {{ summary }}
+        </p>
       </div>
     </div>
     <div class="is-flex is-justify-content-end mt-4">

@@ -194,6 +194,27 @@ html {
     margin-bottom: 1rem;
     margin-bottom: 1rem;
     font-weight: 600;
-    nt-weight: 600;
+    font-weight: 600;
+  }
+
+  @media screen and (max-width: 1280px) {
+    h1 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
   }
 }
