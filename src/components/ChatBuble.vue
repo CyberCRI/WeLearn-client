@@ -84,11 +84,12 @@ const copyMessage = (msg: string) => {
 }
 .chat-bubble {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   height: auto;
   color: var(--neutral-80);
   padding: 1.25rem 1rem;
+  gap: 1rem;
   text-align: justify;
 }
 .chat-bubble.last-message {
@@ -105,24 +106,26 @@ const copyMessage = (msg: string) => {
   margin: auto 0;
   border-radius: 0;
   margin-left: 0.5rem;
+  width: 100%;
+  margin-left: 0;
   & > a {
     color: var(--primary);
   }
 }
 
-.details {
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+@media screen and (max-width: 576px) {
+  .chat-bubble-content {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
-@media screen and (min-width: 992px) {
+@media screen and (max-width: 992px) {
   .chat-bubble {
-    flex-direction: row;
+    font-size: 0.9em;
+    flex-direction: column;
     justify-content: center;
-    gap: 1rem;
-    padding: 1.25rem 0;
+    gap: 0.5rem;
   }
 
   .chat-bubble-content {
@@ -137,9 +140,13 @@ const copyMessage = (msg: string) => {
     align-self: flex-end;
     gap: 0.5rem;
 
-    flex-direction: column;
+    flex-direction: row;
     justify-content: flex-end;
     align-items: flex-end;
+  }
+
+  .chat-bubble.last-message {
+    padding-bottom: 5rem;
   }
 }
 </style>

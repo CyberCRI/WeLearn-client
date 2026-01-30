@@ -16,8 +16,7 @@
   align-items: center;
   padding: 0.25rem 0rem;
   border-radius: 50%;
+  max-width: 2rem;
   border: 2px solid var(--primary);
-}
-@media screen and (min-width: 576px) {
 }
 </style>
