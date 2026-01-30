@@ -108,14 +108,8 @@ const computedStatus = computed(() => store.chatStatus);
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: flex-end; */
-  padding-bottom: 0.1rem;
+  padding-bottom: 1rem;
   height: 100%;
-}
-
-.sourcesListLink {
-  height: 2rem;
-  color: var(--tertiary);
 }
 
 .delete-button-wrapper {
@@ -123,10 +117,6 @@ const computedStatus = computed(() => store.chatStatus);
   right: 10%;
   top: 1rem;
   z-index: 1;
-}
-
-.chat-delete-button:has(.trash-icon).phone {
-  opacity: 0.8;
 }
 
 .trash-icon {
@@ -154,33 +144,60 @@ const computedStatus = computed(() => store.chatStatus);
 .input-area:has(div div textarea:focus) {
   border-color: var(--primary);
 }
+.bubbles-wrapper {
+  width: 80%;
+  overflow-x: auto;
+}
 
-@media screen and (min-width: 992px) {
-  .phone {
+.phone {
+  display: none;
+
+  & > .trash-icon {
     display: none;
+  }
+}
+
+.chat-delete-button:has(.trash-icon) {
+  width: auto;
+  background-color: transparent;
+}
+
+.queues-wrapper {
+  width: 80%;
+  display: block;
+  padding-top: 0.5rem;
+  margin: auto;
+  margin-top: auto;
+}
+
+@media screen and (max-width: 950px) {
+  .delete-button-wrapper {
+    position: absolute;
+    right: 0.5rem;
+    top: auto;
+    bottom: 2rem;
+    z-index: 1;
+  }
+
+  .sourcesListLink {
+    height: 2rem;
+    color: var(--tertiary);
+  }
+
+  .phone {
+    display: inline-block;
 
     & > .trash-icon {
-      display: none;
+      display: inline-block;
     }
   }
-  .chat-template {
-    height: 100%;
-    padding-bottom: 1rem;
-  }
-  .bubbles-wrapper {
-    width: 80%;
-  }
-  .chat-delete-button:has(.trash-icon) {
-    width: auto;
-    background-color: transparent;
+
+  .chat-delete-button:has(.trash-icon).phone {
+    opacity: 0.8;
   }
 
-  .queues-wrapper {
-    width: 80%;
-    display: block;
-    padding-top: 0.5rem;
-    margin: auto;
-    margin-top: auto;
+  .bubbles-wrapper {
+    width: 100%;
   }
 }
 </style>

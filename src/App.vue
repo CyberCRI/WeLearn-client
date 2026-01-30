@@ -8,11 +8,13 @@ import AppLayout from '@/components/AppLayout.vue';
 import SmallScreenPage from '@/views/SmallScreenPage.vue';
 import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { useUserStore } from '@/stores/user';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
+const { isDevEnvironment } = useFeatureFlipStore();
 const userStore = useUserStore();
 const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
@@ -40,7 +42,7 @@ onMounted(async () => {
 
 <template>
   <ErrorComponent v-if="fetchError" />
-  <SmallScreenPage v-else-if="screenWidth < 995" />
+  <SmallScreenPage v-else-if="!isDevEnvironment && screenWidth < 995" />
   <div class="fullscreen" v-else>
     <ModalComponent />
 
