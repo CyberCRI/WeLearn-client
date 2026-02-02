@@ -24,6 +24,7 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
   return {
     featureFlip,
     isFeatureEnabled,
-    isWorkshopFeatureEnabled
+    isWorkshopFeatureEnabled,
+    isDevEnvironment
   };
 });
