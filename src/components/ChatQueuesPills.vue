@@ -69,6 +69,10 @@ defineProps<{
     margin: 0;
     font-size: 0.9rem;
   }
+
+  .card {
+    margin: 0rem 0rem;
+  }
 }
 
 @media screen and (min-width: 768px) {

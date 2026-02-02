@@ -179,6 +179,14 @@ const computedStatus = computed(() => store.chatStatus);
     z-index: 1;
   }
 
+  .queues-wrapper {
+    width: 95%;
+    display: block;
+    padding-top: 0.5rem;
+    margin: auto;
+    margin-top: auto;
+  }
+
   .input-area {
     width: 85%;
     padding: 0.25rem 0.25rem;
