@@ -15,7 +15,7 @@ defineProps<{
         @click="action(message)"
       >
         <div class="card-content">
-          {{ message }}
+          <p class="message">{{ message }}</p>
         </div>
       </div>
     </div>
@@ -59,6 +59,16 @@ defineProps<{
 /* Add a thumb */
 .queues::-webkit-scrollbar-thumb {
   background: var(--neutral-50);
+}
+
+@media screen and (max-width: 767px) {
+  .card-content {
+    padding: 0.5rem;
+  }
+  .message {
+    margin: 0;
+    font-size: 0.9rem;
+  }
 }
 
 @media screen and (min-width: 768px) {

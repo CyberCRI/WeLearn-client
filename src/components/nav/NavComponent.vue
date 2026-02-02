@@ -142,4 +142,12 @@ const navEntries = [
     white-space: nowrap;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .nav-items {
+    padding-top: 0.05rem;
+    width: 95%;
+    margin: 0 auto;
+  }
+}
 </style>

@@ -128,6 +128,9 @@ const handleOnWheel = () => {
   opacity: 0;
   cursor: default;
   transition: opacity 0.3s ease-in-out;
+  width: 0;
+  height: 0;
+  margin: 0;
 }
 
 .empty-chat {

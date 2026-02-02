@@ -26,6 +26,9 @@
 @media (max-width: 1600px) {
   .app-header-link {
     display: none;
+    & > * {
+      display: none;
+    }
   }
 }
 </style>

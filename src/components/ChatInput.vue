@@ -18,12 +18,11 @@ const onSend = (value: string) => {
 
 <template>
   <div class="chat-input-wrapper">
-    <div class="grow-wrap" ref="parent" :style="!store.chatInput.length && { height: '2.75rem' }">
+    <div class="grow-wrap" ref="parent">
       <textarea
         class="chat-input"
         auto-grow
         type="text-area"
-        :row="1"
         :placeholder="$t('chatInputPlaceholder')"
         v-model="store.chatInput"
         @keydown.enter.exact="[onSend(store.chatInput), $event.preventDefault()]"
@@ -42,6 +41,8 @@ const onSend = (value: string) => {
   display: flex;
 }
 .chat-input-wrapper {
+  display: flex;
+  align-items: center;
   background-color: var(--neutral-0);
   gap: 0.5rem;
 }
@@ -107,5 +108,27 @@ textarea:focus::-moz-placeholder {
 } /* FF 19+ */
 textarea:focus:-ms-input-placeholder {
   color: transparent;
+}
+
+@media screen and (max-width: 950px) {
+  .grow-wrap {
+    /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
+    padding-top: 0.25rem;
+    padding-left: 0.25rem;
+    display: grid;
+    width: 100%;
+  }
+
+  .grow-wrap > textarea,
+  .grow-wrap::after {
+    line-height: 1;
+    max-height: 200px;
+  }
+
+  .grow-wrap > textarea {
+    font-size: 0.95em;
+    color: var(--neutral-100);
+    line-height: 1;
+  }
 }
 </style>
