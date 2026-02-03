@@ -18,7 +18,12 @@ exports[`CheckboxCompnentVue > renders properly 1`] = `
         class="card-content"
         data-v-b972df67=""
       >
-        i am a question 1
+        <p
+          class="message"
+          data-v-b972df67=""
+        >
+          i am a question 1
+        </p>
       </div>
     </div>
     <div
@@ -29,7 +34,12 @@ exports[`CheckboxCompnentVue > renders properly 1`] = `
         class="card-content"
         data-v-b972df67=""
       >
-        i am a question 2
+        <p
+          class="message"
+          data-v-b972df67=""
+        >
+          i am a question 2
+        </p>
       </div>
     </div>
     

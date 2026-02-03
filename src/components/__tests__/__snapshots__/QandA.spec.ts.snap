@@ -103,7 +103,12 @@ exports[`QandA > renders properly 1`] = `
                       class="card-content"
                       data-v-b972df67=""
                     >
-                      defaultQueues[0]
+                      <p
+                        class="message"
+                        data-v-b972df67=""
+                      >
+                        defaultQueues[0]
+                      </p>
                     </div>
                   </div>
                   <div
@@ -114,7 +119,12 @@ exports[`QandA > renders properly 1`] = `
                       class="card-content"
                       data-v-b972df67=""
                     >
-                      defaultQueues[1]
+                      <p
+                        class="message"
+                        data-v-b972df67=""
+                      >
+                        defaultQueues[1]
+                      </p>
                     </div>
                   </div>
                   
@@ -149,7 +159,7 @@ exports[`QandA > renders properly 1`] = `
           goToSources
         </a>
         <div
-          class="input-area mx-6"
+          class="input-area"
           data-v-8765cc6e=""
         >
           <div
@@ -161,14 +171,12 @@ exports[`QandA > renders properly 1`] = `
             <div
               class="grow-wrap"
               data-v-4fef38d0=""
-              style="height: 2.75rem;"
             >
               <textarea
                 auto-grow=""
                 class="chat-input"
                 data-v-4fef38d0=""
                 placeholder="chatInputPlaceholder"
-                row="1"
                 type="text-area"
               />
             </div>
@@ -209,7 +217,7 @@ exports[`QandA > renders properly 1`] = `
       data-v-8fb8e834=""
     >
       <svg
-        class="primary"
+        class="primary toggle"
         data-v-8fb8e834=""
         fill="none"
         height="26"

@@ -122,20 +122,20 @@ const sourcesStore = useSourcesStore();
       </div>
     </div>
     <div class="section px-6 pb-6">
-      <div class="is-flex is-flex-wrap-wrap mx-6">
-        <div class="px-4">
+      <div class="bottom-section">
+        <div>
           <p class="subtitle is-size-6-mobile has-text-weight-bold">
             {{ $t('landing.vertical.section_one.title') }}
           </p>
           <p class="subtitle is-size-6-mobile">{{ $t('landing.vertical.section_one.content') }}</p>
         </div>
-        <div class="px-6">
+        <div>
           <p class="subtitle is-size-6-mobile has-text-weight-bold">
             {{ $t('landing.vertical.section_two.title') }}
           </p>
           <p class="subtitle is-size-6-mobile">{{ $t('landing.vertical.section_two.content') }}</p>
         </div>
-        <div class="px-6">
+        <div>
           <p class="subtitle is-size-6-mobile has-text-weight-bold">
             {{ $t('landing.vertical.section_three.title') }}
           </p>
@@ -226,6 +226,12 @@ const sourcesStore = useSourcesStore();
   font-size: 4rem;
 }
 
+.bottom-section {
+  display: flex;
+  margin-inline: 3rem;
+  gap: 3rem;
+}
+
 @media screen and (max-width: 767px) {
   .presentation {
     width: 90%;
@@ -269,6 +275,13 @@ const sourcesStore = useSourcesStore();
 
   .description {
     width: 100%;
+  }
+
+  .bottom-section {
+    display: flex;
+    flex-direction: column;
+    margin-inline: 0rem;
+    gap: 2rem;
   }
 }
 </style>
