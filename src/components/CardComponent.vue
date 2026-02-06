@@ -93,7 +93,7 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
           </span>
         </p>
 
-        <p class="subtitle is-6 is-flex" v-if="details?.duration">
+        <p class="reading-time" v-if="details?.duration">
           <ClockIcon class="clock-icon" /> {{ secondsToMinAndHours(details?.duration) }}
         </p>
         <div class="content">
@@ -136,5 +136,30 @@ a {
 .footer-element {
   margin-left: 0.5rem;
   margin-top: 0.5rem;
+}
+
+.reading-time {
+  font-size: 1.15em;
+  display: flex;
+  margin-bottom: 3rem;
+}
+
+@media screen and (max-width: 768px) {
+  .card-footer {
+    margin-left: 10px;
+  }
+
+  .content {
+    font-size: 0.875em;
+  }
+
+  .card-header-title {
+    font-size: 0.9em;
+  }
+
+  .reading-time {
+    font-size: 0.9em;
+    margin-bottom: 1rem;
+  }
 }
 </style>

@@ -68,6 +68,10 @@ const toggleOpen = () => {
     margin: auto;
     scroll-behavior: smooth;
   }
+
+  .left {
+    height: auto;
+  }
 }
 
 @media screen and (min-width: 992px) {
