@@ -82,7 +82,7 @@ const computedStatus = computed(() => store.chatStatus);
       >{{ $t('goToSources') }}</a
     >
 
-    <div class="input-area mx-6">
+    <div class="input-area">
       <ChatInput
         class="is-flex is-full-width is-flex-grow-1"
         type="text"
@@ -177,6 +177,24 @@ const computedStatus = computed(() => store.chatStatus);
     top: auto;
     bottom: 2rem;
     z-index: 1;
+  }
+
+  .queues-wrapper {
+    width: 95%;
+    display: block;
+    padding-top: 0.5rem;
+    margin: auto;
+    margin-top: auto;
+  }
+
+  .input-area {
+    width: 85%;
+    padding: 0.25rem 0.25rem;
+    border-radius: 0.375rem;
+    margin: 0 1.5rem 0 0;
+
+    line-height: 1;
+    height: fit-content;
   }
 
   .sourcesListLink {

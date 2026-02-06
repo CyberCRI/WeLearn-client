@@ -93,7 +93,7 @@ defineProps<{
 
 @media screen and (max-width: 450px) {
   .router-link {
-    padding-inline: 0.25rem;
+    padding-inline: 0.05rem;
   }
   .link-wrapper {
     padding-inline: 0rem;

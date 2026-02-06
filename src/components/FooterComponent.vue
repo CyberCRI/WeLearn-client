@@ -35,4 +35,17 @@ a:first-child {
 a:hover {
   text-decoration: underline;
 }
+
+@media screen and (max-width: 767px) {
+  .footer-wrapper {
+    padding: 0 1rem;
+    justify-content: center;
+    font-size: 0.8rem;
+  }
+
+  a:first-child {
+    margin-right: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
 </style>

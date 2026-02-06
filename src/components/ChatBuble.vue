@@ -126,6 +126,7 @@ const copyMessage = (msg: string) => {
     flex-direction: column;
     justify-content: center;
     gap: 0.5rem;
+    width: 100%;
   }
 
   .chat-bubble-content {

@@ -26,4 +26,11 @@ defineEmits(['update:modelValue']);
   border: none;
   padding: 2rem;
 }
+
+@media screen and (max-width: 768px) {
+  .textarea {
+    padding: 1rem;
+    font-size: 0.875em;
+  }
+}
 </style>

@@ -17,7 +17,7 @@ const toggleOpen = () => {
       <slot name="left-panel"></slot>
     </div>
     <div class="outer is-outline">
-      <SidePanelIcon class="primary" @click="toggleOpen" />
+      <SidePanelIcon class="primary toggle" @click="toggleOpen" />
       <TooltipComponent
         class="tltip"
         :tooltipText="isOpen ? $t('closeSidebar') : $t('openSidebar')"
@@ -57,13 +57,20 @@ const toggleOpen = () => {
   position: relative;
 }
 
-.toggle {
-  border: none;
-  position: absolute;
-  width: 2.4rem;
-  background: transparent;
-  & > * {
+@media screen and (max-width: 991px) {
+  .toggle {
     display: none;
+  }
+
+  .right {
+    grid-area: right;
+    width: 95%;
+    margin: auto;
+    scroll-behavior: smooth;
+  }
+
+  .left {
+    height: auto;
   }
 }
 

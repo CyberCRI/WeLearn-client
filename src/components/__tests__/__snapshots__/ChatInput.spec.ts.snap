@@ -8,14 +8,12 @@ exports[`ChatInput > renders properly 1`] = `
   <div
     class="grow-wrap"
     data-v-4fef38d0=""
-    style="height: 2.75rem;"
   >
     <textarea
       auto-grow=""
       class="chat-input"
       data-v-4fef38d0=""
       placeholder="chatInputPlaceholder"
-      row="1"
       type="text-area"
     />
   </div>

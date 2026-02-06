@@ -16,15 +16,15 @@ const store = useSearchStore();
 <template>
   <ColumnTemplate>
     <template #left-panel>
-      <div class="wrapper p-6">
+      <div class="wrapper">
         <SearchWrapper>
           <template #textArea>
             <div class="delete-button-wrapper" v-if="store.searchInput">
               <DeleteButton :action="store.$reset" :delText="$t('clearSearch')" />
             </div>
             <TextArea v-model="store.searchInput" />
-            <div class="is-flex is-justify-content-flex-end py-1" v-if="store.sdgsQuery.length">
-              <p class="is-subtitle has-text-grey is-italic mr-2">
+            <div class="sdgs-list" v-if="store.sdgsQuery.length">
+              <p class="sdg-list-title has-text-grey is-italic mr-2">
                 {{ $t('search_sdgs_in_query') }}
               </p>
               <Pill
@@ -36,6 +36,13 @@ const store = useSearchStore();
             </div>
           </template>
           <template #filters>
+            <p
+              data-testid="lengthErrorFeedback"
+              v-if="store.searchInput && store.isSearchDisabled"
+              class="text-length-feedback"
+            >
+              {{ $t('textLengthFeedback') }}
+            </p>
             <div class="ml-auto is-relative search-button">
               <Button
                 class="search-button"
@@ -49,13 +56,6 @@ const store = useSearchStore();
             </div>
           </template>
         </SearchWrapper>
-        <p
-          data-testid="lengthErrorFeedback"
-          v-if="store.searchInput && store.isSearchDisabled"
-          class="text-length-feedback"
-        >
-          {{ $t('textLengthFeedback') }}
-        </p>
 
         <SourcesListComponent
           v-if="
@@ -87,6 +87,7 @@ const store = useSearchStore();
   flex-direction: column;
   height: 100%;
   overflow-y: auto;
+  padding: 1rem 3rem 0rem 3rem;
 }
 .delete-button-wrapper {
   position: absolute;
@@ -101,10 +102,38 @@ const store = useSearchStore();
 }
 
 .text-length-feedback {
+  padding-left: 1rem;
+  padding-top: 1rem;
   color: var(--error-100);
 }
 
 .search-button {
   height: 100%;
+}
+
+.sdgs-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0.5rem 0;
+}
+
+.sdg-list-title {
+  font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .text-length-feedback {
+    font-size: 0.7em;
+    padding-left: 0.5rem;
+    padding-top: 0.25rem;
+  }
+  .wrapper {
+    padding: 0.25rem;
+    height: 100%;
+  }
+  .sdg-list-title {
+    font-size: 0.875em;
+  }
 }
 </style>

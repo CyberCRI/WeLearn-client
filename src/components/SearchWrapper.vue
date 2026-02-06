@@ -14,6 +14,7 @@
   border: 1px solid var(--neutral-50);
   border-radius: 0.5rem;
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .filters {
@@ -23,5 +24,11 @@
   justify-content: space-between;
   border-top: 1px solid var(--neutral-50);
   display: flex;
+}
+
+@media screen and (max-width: 768px) {
+  .filters {
+    height: 2.5rem;
+  }
 }
 </style>

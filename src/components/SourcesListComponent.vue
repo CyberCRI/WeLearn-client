@@ -111,5 +111,8 @@ const ChosenCard = Cards[props.cardType || 'default'];
 <style scoped>
 .sources-list {
   position: relative;
+  height: auto;
+  overflow-y: scroll;
+  padding: 0.5rem 0.5rem;
 }
 </style>
