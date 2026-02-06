@@ -31,7 +31,7 @@ onMounted(() => {
     />
   </div>
   <div v-else class="empty" data-testid="noBookmarks">
-    <h1 class="title is-1">{{ $t('noBookmarks') }}</h1>
+    <h1 class="title is-2 is-size-5-mobile">{{ $t('noBookmarks') }}</h1>
   </div>
 </template>
 
@@ -40,22 +40,30 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin: 0 3rem 0 1rem;
+  margin: 1rem auto;
+  width: 80%;
 }
 
 .empty {
+  margin-top: 2rem;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100%;
+  align-items: flex-start;
+  height: auto;
 }
 
 .clear {
   display: flex;
   align-self: flex-end;
-  width: 7em;
+  padding-right: 1rem;
   padding-top: 1rem;
   color: var(--tertiary);
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .bookmarks {
+    width: 100%;
+  }
 }
 </style>
