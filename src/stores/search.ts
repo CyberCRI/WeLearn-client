@@ -1,7 +1,7 @@
 import { getSearch, getSDGsFromQuery } from '@/utils/fetch';
 import { defineStore } from 'pinia';
 import { computed, ref, type Ref } from 'vue';
-import type { Document, Corpus, ReducedCorpus, ErrorDetails } from '@/types';
+import type { Document, Corpus, ErrorDetails } from '@/types';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { RELEVANCE_FACTOR } from '@/utils/constants';
 import i18n from '@/localisation/i18n';
@@ -9,7 +9,6 @@ import { useFiltersStore } from '@/stores/filters';
 
 export const useSearchStore = defineStore('search', () => {
   const allCorpus: Ref<Corpus['name'][]> = ref([]);
-  const corpora: Ref<ReducedCorpus[]> = ref([]);
   const hasPartialResult = ref(false);
   const hasSourcesError = ref(false);
   const isFetchingSources = ref(false);
@@ -97,7 +96,6 @@ export const useSearchStore = defineStore('search', () => {
   }
 
   return {
-    corpora,
     allCorpus,
     hasPartialResult,
     hasSourcesError,

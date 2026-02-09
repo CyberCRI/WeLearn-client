@@ -5,14 +5,12 @@ import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import ChatComponent from '@/components/ChatComponent.vue';
 import SourcesListComponentVue from '@/components/SourcesListComponent.vue';
 import ReformulatedQuery from '@/components/ReformulatedQuery.vue';
-import ErrorComponent from '@/components/ErrorComponent.vue';
 import FiltersComponent from '@/components/FiltersComponent.vue';
 
 const chatstore = useChatStore();
 const computedStatus = computed(() => chatstore.chatStatus);
 </script>
 <template>
-  <ErrorComponent v-if="chatstore.hasError" />
   <ColumnTemplate>
     <template #left-panel>
       <ChatComponent />
@@ -61,7 +59,7 @@ details {
   }
   div {
     padding-left: 1.25rem;
-    paddign-top: 0.5rem;
+    padding-top: 0.5rem;
   }
 
   &:hover {
