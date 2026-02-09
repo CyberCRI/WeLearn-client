@@ -225,36 +225,36 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  async function getNoStreamAnswer(userMsg: string) {
-    chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-    const bodyContent = {
-      conversation_id: storedConversationId.value,
-      sources: sourcesList.value || [],
-      history: getMessageHistory.value,
-      query: userMsg,
-      ...(storedSubject.value && { subject: storedSubject.value })
-    };
+  // async function getNoStreamAnswer(userMsg: string) {
+  //   chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
+  //   const bodyContent = {
+  //     conversation_id: storedConversationId.value,
+  //     sources: sourcesList.value || [],
+  //     history: getMessageHistory.value,
+  //     query: userMsg,
+  //     ...(storedSubject.value && { subject: storedSubject.value })
+  //   };
 
-    const respBody = await postAxios('/qna/chat/answer', bodyContent);
+  //   const respBody = await postAxios('/qna/chat/answer', bodyContent);
 
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+  //   chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
 
-    chatMessagesList.value.push({ role: 'assistant', content: respBody.data.answer });
-    saveToStorage('chat', chatMessagesList.value);
-    storeConversationId(respBody.data.conversation_id);
-    storeMessageId(respBody.data.message_id);
+  //   chatMessagesList.value.push({ role: 'assistant', content: respBody.data.answer });
+  //   saveToStorage('chat', chatMessagesList.value);
+  //   storeConversationId(respBody.data.conversation_id);
+  //   storeMessageId(respBody.data.message_id);
 
-    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
-      '/qna/reformulate/questions',
-      {
-        history: getMessageHistory.value,
-        query: reformulatedQuery.value
-      }
-    );
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+  //   const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+  //     '/qna/reformulate/questions',
+  //     {
+  //       history: getMessageHistory.value,
+  //       query: reformulatedQuery.value
+  //     }
+  //   );
+  //   chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
 
-    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
-  }
+  //   setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
+  // }
 
   async function fetchRephrase() {
     chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
@@ -285,6 +285,33 @@ export const useChatStore = defineStore('chat', () => {
       content: i18n.global.t('chatNoResults')
     });
   };
+
+  async function getAgentAnswer(userMsg: string) {
+    const body = {
+      query: userMsg,
+      threadId: storedConversationId.value
+    };
+
+    const { data } = await postAxios('/qna/chat/agent', body);
+
+    chatMessagesList.value.push({ role: 'assistant', content: data.content });
+    sourcesList.value = data.docs;
+
+    storeConversationId(data.conversation_id);
+    storeMessageId(data.message_id);
+
+    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+
+    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+      '/qna/reformulate/questions',
+      {
+        history: getMessageHistory.value,
+        query: userMsg
+      }
+    );
+
+    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
+  }
 
   async function onSendMessage(message: string): Promise<void> {
     // checks if can be sent
@@ -323,7 +350,7 @@ export const useChatStore = defineStore('chat', () => {
       try {
         // gets new questions & answer
         // await fetchChatAnswer(message);
-        await getNoStreamAnswer(message);
+        await getAgentAnswer(message);
       } catch (error) {
         chatStatus.value = CHAT_STATUS.ERROR;
         console.error(error);
