@@ -1,9 +1,8 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
-import type { Document, ErrorDetails, ChatMessage, ReformulateResponse } from '@/types';
+import type { Document, ChatMessage } from '@/types';
 import { postAxios } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
-import { RELEVANCE_FACTOR } from '@/utils/constants';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import i18n from '@/localisation/i18n';
 import type { AxiosResponse } from 'axios';
@@ -11,6 +10,7 @@ import { useFiltersStore } from '@/stores/filters';
 
 // CHAT STATUSES
 export const CHAT_STATUS = {
+  ERROR: 'ERROR',
   EMPTY: 'EMPTY',
   REFORMULATED: 'REFORMULATED',
   REFORMULATING: 'REFORMULATING',
@@ -28,14 +28,13 @@ export const useChatStore = defineStore('chat', () => {
   const chatInput: Ref<string> = ref('');
   const chatMessagesList: Ref<ChatMessage[]> = ref(getFromStorage('chat') || []);
   const questionQueues: Ref<string[] | null> = ref(getFromStorage('questionQueues'));
-  const sourcesList: Ref<Document[] | null> = ref(getFromStorage('chatSources') || []);
+  const sourcesList: Ref<Document[]> = ref(getFromStorage('chatSources') || []);
   const reformulatedQuery: Ref<string | null> = ref(getFromStorage('reformulatedQuery'));
-  const queryToSearch: Ref<string | null> = ref(null);
   const storedConversationId: Ref<string | null> = ref(localStorage.getItem('chatConversationId'));
   const storedMessageId: Ref<string | null> = ref(localStorage.getItem('chatMessageId'));
 
   const isChatEmpty: ComputedRef<Boolean> = computed(() => chatMessagesList.value.length === 0);
-  const chatStatus: Ref<CHAT_STATUSES_TYPE> = ref(
+  const chatStatus: Ref<(typeof CHAT_STATUS)[CHAT_STATUSES_TYPE]> = ref(
     isChatEmpty.value ? CHAT_STATUS.EMPTY : CHAT_STATUS.DONE
   );
 
@@ -43,8 +42,6 @@ export const useChatStore = defineStore('chat', () => {
   const subjectHasChanged: Ref<boolean> = ref(true);
 
   const storedSubject: Ref<string | undefined> = ref(getFromStorage('chatSubject') || undefined);
-
-  const corpora: Ref<ReducedCorpus[]> = ref([]);
 
   const clearSubject = (): void => {
     storedSubject.value = undefined;
@@ -83,10 +80,6 @@ export const useChatStore = defineStore('chat', () => {
     saveToStorage('reformulatedQuery', query);
   };
 
-  const setQueryToSearch = (queries: string): void => {
-    queryToSearch.value = queries;
-  };
-
   function setQuestionQueues(messages: string[]): void {
     questionQueues.value = messages;
     saveToStorage('questionQueues', messages);
@@ -94,120 +87,6 @@ export const useChatStore = defineStore('chat', () => {
 
   function clearInput(): void {
     chatInput.value = '';
-  }
-
-  async function reformulateQuestion(query: string) {
-    try {
-      chatStatus.value = CHAT_STATUS.REFORMULATING;
-      const bodyContent = {
-        history: getMessageHistory.value,
-        query: query
-      };
-
-      const reformulate: AxiosResponse<ReformulateResponse> = await postAxios(
-        '/qna/reformulate/query',
-        bodyContent
-      );
-
-      if (!reformulate || !reformulate.data) {
-        chatStatus.value = CHAT_STATUS.ERROR;
-        return;
-      }
-
-      const { data } = reformulate;
-
-      if (data.QUERY_STATUS === 'REF_TO_PAST') {
-        shouldFetchNewDocuments.value = false;
-        chatStatus.value = CHAT_STATUS.SEARCHED;
-        return;
-      }
-
-      if (data.QUERY_STATUS === 'INVALID') {
-        chatStatus.value = CHAT_STATUS.ERROR;
-        return;
-      }
-
-      shouldFetchNewDocuments.value = true;
-
-      const reformulatedQuery = reformulate.data.STANDALONE_QUESTION;
-
-      if (!reformulatedQuery) {
-        // add error message
-        return;
-      }
-
-      setReformulatedQuery(reformulatedQuery);
-      setQueryToSearch(reformulatedQuery);
-      chatStatus.value = CHAT_STATUS.REFORMULATED;
-    } catch (error: unknown) {
-      chatStatus.value = CHAT_STATUS.ERROR;
-      const { message, code } = (error as ErrorDetails).response.data.detail;
-
-      if (code === 'LANG_NOT_SUPPORTED') {
-        chatMessagesList.value.push({
-          role: 'assistant',
-          content: `${i18n.global.t('error.LANG_NOT_SUPPORTED.title')} ${i18n.global.t(
-            'error.LANG_NOT_SUPPORTED.description'
-          )}`
-        });
-      }
-
-      if (code === 'INVALID_QUESTION') {
-        chatMessagesList.value.push({
-          role: 'assistant',
-          content: message
-        });
-      }
-    }
-  }
-
-  async function fetchSources(): Promise<void> {
-    if (
-      (storedSubject.value && !subjectHasChanged.value) ||
-      !reformulatedQuery.value ||
-      !shouldFetchNewDocuments.value
-    ) {
-      return;
-    }
-
-    const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
-
-    try {
-      chatStatus.value = CHAT_STATUS.SEARCHING;
-      const sourcesResp: AxiosResponse<Document[]> = await postAxios(
-        `/search/by_slices?nb_results=10${
-          storedSubject.value ? `&subject=${storedSubject.value}` : ''
-        }`,
-        {
-          query: queryToSearch.value,
-          relevance_factor: RELEVANCE_FACTOR,
-          sdg_filter: sdgFilters,
-          corpora: selectedCorpus
-        }
-      );
-
-      subjectHasChanged.value = false;
-
-      const { data: sources, status: sourcesStatus } = sourcesResp;
-
-      if (sourcesStatus === 204) {
-        chatStatus.value = CHAT_STATUS.NO_RESULTS;
-        // no result
-        return;
-      }
-
-      if (sourcesStatus === 200 && sources === null) {
-        chatStatus.value = CHAT_STATUS.NO_RESULTS;
-        // no result
-        return;
-      }
-      chatStatus.value = CHAT_STATUS.SEARCHED;
-
-      sourcesList.value = sources;
-      saveToStorage('chatSources', sources);
-    } catch (error) {
-      chatStatus.value = CHAT_STATUS.ERROR;
-    }
   }
 
   function storeConversationId(conversationId: string) {
@@ -223,37 +102,6 @@ export const useChatStore = defineStore('chat', () => {
       localStorage.setItem('chatMessageId', messageId);
       storedMessageId.value = messageId;
     }
-  }
-
-  async function getNoStreamAnswer(userMsg: string) {
-    chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-    const bodyContent = {
-      conversation_id: storedConversationId.value,
-      sources: sourcesList.value || [],
-      history: getMessageHistory.value,
-      query: userMsg,
-      ...(storedSubject.value && { subject: storedSubject.value })
-    };
-
-    const respBody = await postAxios('/qna/chat/answer', bodyContent);
-
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-
-    chatMessagesList.value.push({ role: 'assistant', content: respBody.data.answer });
-    saveToStorage('chat', chatMessagesList.value);
-    storeConversationId(respBody.data.conversation_id);
-    storeMessageId(respBody.data.message_id);
-
-    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
-      '/qna/reformulate/questions',
-      {
-        history: getMessageHistory.value,
-        query: reformulatedQuery.value
-      }
-    );
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-
-    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
   }
 
   async function fetchRephrase() {
@@ -279,12 +127,37 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.DONE;
   }
 
-  const noResultsAnswer = () => {
-    chatMessagesList.value.push({
-      role: 'assistant',
-      content: i18n.global.t('chatNoResults')
-    });
-  };
+  async function getAgentAnswer(userMsg: string) {
+    const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
+    const body = {
+      query: userMsg,
+      threadId: storedConversationId.value,
+      corpora: selectedCorpus,
+      sdg_filter: sdgFilters
+    };
+
+    const { data } = await postAxios('/qna/chat/agent', body);
+
+    chatMessagesList.value.push({ role: 'assistant', content: data.content });
+    sourcesList.value = data.docs;
+
+    storeConversationId(data.conversation_id);
+    storeMessageId(data.message_id);
+
+    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+  }
+
+  async function getNewQuestions(userMsg: string) {
+    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+      '/qna/reformulate/questions',
+      {
+        history: getMessageHistory.value,
+        query: userMsg
+      }
+    );
+
+    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
+  }
 
   async function onSendMessage(message: string): Promise<void> {
     // checks if can be sent
@@ -295,41 +168,18 @@ export const useChatStore = defineStore('chat', () => {
       return;
     }
 
-    // adds message to history
     addToMessageList({ role: 'user', content: message });
 
     try {
-      // rephrases question
-      await reformulateQuestion(message);
-      if (chatStatus.value === CHAT_STATUS.ERROR) {
-        chatMessagesList.value.push({
-          role: 'assistant',
-          content: i18n.global.t('chatProvideValidQuestion')
-        });
-      }
-
-      // gets documents
-      await fetchSources();
+      chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
+      await getAgentAnswer(message);
+      await getNewQuestions(message);
     } catch (error) {
-      console.error(error);
       chatStatus.value = CHAT_STATUS.ERROR;
-    }
-    if (chatStatus.value === CHAT_STATUS.NO_RESULTS) {
-      noResultsAnswer();
+      console.error(error);
       return;
     }
 
-    if (sourcesList.value?.length) {
-      try {
-        // gets new questions & answer
-        // await fetchChatAnswer(message);
-        await getNoStreamAnswer(message);
-      } catch (error) {
-        chatStatus.value = CHAT_STATUS.ERROR;
-        console.error(error);
-        return;
-      }
-    }
     chatStatus.value = CHAT_STATUS.DONE;
   }
 
@@ -359,7 +209,6 @@ export const useChatStore = defineStore('chat', () => {
     chatMessagesList,
     questionQueues,
     sourcesList,
-    corpora,
     reformulatedQuery,
     onSendMessage,
     fetchRephrase,
