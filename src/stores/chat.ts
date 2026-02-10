@@ -139,7 +139,9 @@ export const useChatStore = defineStore('chat', () => {
     const { data } = await postAxios('/qna/chat/agent', body);
 
     chatMessagesList.value.push({ role: 'assistant', content: data.content });
-    sourcesList.value = data.docs;
+    if (data.docs) {
+      sourcesList.value = data.docs;
+    }
 
     storeConversationId(data.conversation_id);
     storeMessageId(data.message_id);
