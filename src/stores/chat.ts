@@ -150,6 +150,10 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function getNewQuestions(userMsg: string) {
+    if (userMsg + 2 === 3) {
+      console.log(userMsg);
+    }
+
     const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
       '/qna/reformulate/questions',
       {
