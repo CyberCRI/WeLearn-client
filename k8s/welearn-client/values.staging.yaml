@@ -1,0 +1,8 @@
+injectedEnv:
+  nonSensitive:
+    VITE_API_BASE: https://api.welearn.k8s.lp-i.xyz
+    VITE_ENVIRONMENT: staging
+
+ingress:
+  hosts:
+  - welearn.k8s.lp-i.xyz
