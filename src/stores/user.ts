@@ -12,15 +12,21 @@ const defaultOnboardingState: OnboardingState = {
 };
 
 export const useUserStore = defineStore('user', () => {
-  const userId: Ref<string | null> = ref(localStorage.getItem('userId'));
-  const sessionId: Ref<string | null> = ref(localStorage.getItem('sessionId'));
+  const userId: Ref<string | undefined> = ref(localStorage.getItem('userId') || undefined);
+  const sessionId: Ref<string | undefined> = ref(localStorage.getItem('sessionId') || undefined);
 
-  const setUserIdAndSessionId = async (referer: string | null) => {
+  const setUserIdAndSessionId = async (referer?: string) => {
     const userAndSession = await getUserAndSession(userId.value, sessionId.value, referer);
     userId.value = userAndSession?.userId;
     sessionId.value = userAndSession?.sessionId;
-    localStorage.setItem('userId', userAndSession?.userId || '');
-    localStorage.setItem('sessionId', userAndSession?.sessionId || '');
+
+    if (userId.value !== localStorage.getItem('userId')) {
+      localStorage.setItem('userId', userId.value || '');
+    }
+
+    if (sessionId.value !== localStorage.getItem('sessionId')) {
+      localStorage.setItem('sessionId', sessionId.value || '');
+    }
 
     return {
       userId: userId.value,
