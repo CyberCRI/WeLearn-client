@@ -25,10 +25,12 @@ export const getUserAndSession = async (
 };
 
 const getUserId = async (userId?: string, referer?: string): Promise<string> => {
-  let referer_url: string = '';
-  if (referer) referer_url = `?referer=${encodeURIComponent(referer)}`;
+  const parts: string[] = [];
 
-  const query = referer_url.length ? `?${referer_url}` : '';
+  if (userId) parts.push(`user_id=${encodeURIComponent(userId)}`);
+  if (referer) parts.push(`referer=${encodeURIComponent(referer)}`);
+
+  const query = parts.length ? `?${parts.join('&')}` : '';
   const respUserId = await postAxios(`/user/user${query}`);
   return respUserId.data.user_id;
 };
