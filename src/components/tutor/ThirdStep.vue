@@ -9,8 +9,9 @@ const props = defineProps<{
   action: () => {};
   actionText?: string;
   disabled: boolean;
-  updateSyllabus: () => void;
+  updateSyllabus: (content: string) => void;
   restart: () => void;
+  updateSyllabusInDB: () => void;
 }>();
 
 const isEditable: Ref<boolean> = ref(false);
@@ -26,9 +27,17 @@ const toggleFeedback = async () => {
   enableFeedback.value = !enableFeedback.value;
 };
 
-const handleTextEdit = (event, index) => {
+const handleTextEdit = (event) => {
   const newValue = event.target.innerText;
-  props.updateSyllabus(index, newValue);
+  props.updateSyllabus(newValue);
+};
+
+const handleSyllabusEdition = () => {
+  if (isEditable.value) {
+    // Save the edited syllabus
+    props.updateSyllabusInDB();
+  }
+  isEditable.value = !isEditable.value;
 };
 </script>
 <template>
@@ -40,7 +49,7 @@ const handleTextEdit = (event, index) => {
     <!-- syllabus -->
 
     <div class="is-flex is-flex-direction-column">
-      <button class="button is-white ml-auto" @click="isEditable = !isEditable">
+      <button class="button is-white ml-auto" @click="handleSyllabusEdition">
         <span class="icon is-small mr-2">
           <EditIcon />
         </span>
@@ -54,7 +63,7 @@ const handleTextEdit = (event, index) => {
           class="syllabus content"
           v-if="syllabus?.content"
           v-html="marked.parse(syllabus?.content)"
-          @blur="handleTextEdit($event, index)"
+          @blur="handleTextEdit($event)"
           @click="isEditable = true"
         />
       </div>
