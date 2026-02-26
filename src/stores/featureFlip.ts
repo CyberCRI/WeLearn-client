@@ -14,7 +14,7 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
   };
 
   const isWorkshopFeatureEnabled = () => {
-    return isDevEnvironment || window.location.href.includes('workshop');
+    return isDevEnvironment;
   };
 
   return {

@@ -90,8 +90,11 @@ export const useTutorStore = defineStore('tutor', () => {
     summaries.value[index] = content;
   };
 
-  const updateSyllabus = (index, content) => {
-    syllabi.value[index] = content;
+  const updateSyllabus = (content: string) => {
+    if (!syllabi.value) {
+      return;
+    }
+    syllabi.value = { ...syllabi.value, content };
   };
 
   const syllabusLanguage: Ref<string> = ref(i18n.global.locale.value);
@@ -321,6 +324,26 @@ export const useTutorStore = defineStore('tutor', () => {
     }
     const docxContent = await convertMarkdownToDocx(syllabi.value.content);
     downloadDocx(docxContent, 'syllabus.docx');
+    try {
+      await postAxios('/metric/syllabus_downloaded');
+    } catch (error) {
+      console.error('Error during metrics update:', error);
+    }
+  };
+
+  const updateSyllabusInDB = async () => {
+    if (!syllabi.value || !syllabi.value.content) {
+      console.error('No syllabi available for download');
+      return;
+    }
+
+    try {
+      await postAxios('/tutor/syllabus/user_update', {
+        syllabus: syllabi.value.content
+      });
+    } catch (error) {
+      console.error('Error during syllabus update:', error);
+    }
   };
 
   return {
@@ -359,6 +382,7 @@ export const useTutorStore = defineStore('tutor', () => {
     summaries,
     newFilesToSearch,
     stopAction,
-    updateSyllabus
+    updateSyllabus,
+    updateSyllabusInDB
   };
 });
