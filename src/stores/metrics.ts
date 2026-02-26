@@ -27,12 +27,24 @@ export const useMetricsStore = defineStore('metrics', () => {
       return;
     }
 
-    if (!isInPage('q-and-a')) {
+    let storageKey;
+
+    if (isInPage('q-and-a')) {
+      storageKey = 'chatMessageId';
+    }
+    if (isInPage('tutor')) {
+      storageKey = 'tutorMessageId';
+    }
+    if (isInPage('search')) {
+      storageKey = 'searchMessageId';
+    }
+
+    if (!storageKey) {
       return;
     }
-    // get message id from storage
-    const messageId = localStorage.getItem('chatMessageId');
 
+    // get message id from storage
+    const messageId = localStorage.getItem(storageKey);
     if (!messageId || !docId) {
       return;
     }

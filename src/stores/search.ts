@@ -46,10 +46,14 @@ export const useSearchStore = defineStore('search', () => {
       ];
       const [sdgsFromQuery, { data, status }] = await Promise.all(promises);
 
-      sdgsQuery.value = sdgsFromQuery;
+      sdgsQuery.value = sdgsFromQuery as string[];
 
       isFetchingSources.value = false;
-      searchResults.value = data;
+      searchResults.value = data.length ? data : data.docs;
+
+      if (data?.search_message_id) {
+        localStorage.setItem('searchMessageId', data.search_message_id);
+      }
 
       if (status === 206) {
         hasPartialResult.value = true;
