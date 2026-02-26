@@ -142,6 +142,7 @@ const stepToAction: Record<0 | 1 | 2 | 3 | 4, () => Promise<void>> = {
         :giveFeedback="store.giveFeedback"
         :action="stepToAction[4]"
         :restart="store.restart"
+        :updateSyllabusInDB="store.updateSyllabusInDB"
       />
     </div>
   </div>
