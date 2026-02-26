@@ -37,7 +37,7 @@ export const useSearchStore = defineStore('search', () => {
     try {
       const promises = [
         getSDGsFromQuery(searchInput.value),
-        getSearch(1, {
+        getSearch(100, {
           query: searchInput.value,
           sdg_filter: sdgFilters,
           corpora: sourcesFilters,
