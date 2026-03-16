@@ -32,6 +32,20 @@ const sourcesStore = useSourcesStore();
       <p class="subtitle is-size-6-mobile mt-4">
         {{ $t('landing.aboutDescription') }}
       </p>
+      <div class="video mt-6">
+        <h1 class="subtitle has-text-weight-bold mb-2">{{ $t('landing.toolPresentation') }}</h1>
+        <iframe
+          class="video"
+          title="vimeo-player"
+          src="https://player.vimeo.com/video/1155027283?h=afaa86b58d"
+          width="640"
+          height="360"
+          frameborder="0"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
 
     <div class="section mt-6" v-if="sourcesStore?.infoPerCorpus?.length > 0">
@@ -149,6 +163,14 @@ const sourcesStore = useSourcesStore();
 </template>
 
 <style scoped>
+.video {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
 .sources-table th {
   text-align: left;
   padding-left: 0;

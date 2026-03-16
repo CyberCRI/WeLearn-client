@@ -174,6 +174,7 @@ export const fr = {
     en: 'Anglais'
   },
   landing: {
+    toolPresentation: 'Présentation de l’outil',
     sourceNameTitle: 'Nom de la ressource',
     sourceUrlTitle: 'Lien vers la ressource',
     sourceNumberTitle: 'Nombre de documents',
