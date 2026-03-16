@@ -170,6 +170,7 @@ export const en = {
     en: 'English'
   },
   landing: {
+    toolPresentation: 'Tool presentation',
     sourceNameTitle: 'Resource Name',
     sourceUrlTitle: 'Resource Link',
     sourceNumberTitle: 'Number of Documents',
