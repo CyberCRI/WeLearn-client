@@ -339,6 +339,88 @@ exports[`QandA > renders properly 1`] = `
         <summary
           data-v-e843c1dd=""
         >
+          languages
+        </summary>
+        <div
+          class="filter-options"
+          data-v-e843c1dd=""
+        >
+          
+          <div
+            class="my-2"
+          >
+            <label
+              aria-label="en"
+              class="container"
+              data-v-7932c334=""
+            >
+              <div
+                class="checkbox-label"
+                data-v-7932c334=""
+              >
+                <p
+                  data-v-7932c334=""
+                >
+                  lang.en
+                </p>
+                
+                
+              </div>
+              <input
+                data-v-7932c334=""
+                id="en"
+                type="checkbox"
+                value="en"
+              />
+              <span
+                class="checkmark"
+                data-v-7932c334=""
+              />
+            </label>
+          </div>
+          <div
+            class="my-2"
+          >
+            <label
+              aria-label="fr"
+              class="container"
+              data-v-7932c334=""
+            >
+              <div
+                class="checkbox-label"
+                data-v-7932c334=""
+              >
+                <p
+                  data-v-7932c334=""
+                >
+                  lang.fr
+                </p>
+                
+                
+              </div>
+              <input
+                data-v-7932c334=""
+                id="fr"
+                type="checkbox"
+                value="fr"
+              />
+              <span
+                class="checkmark"
+                data-v-7932c334=""
+              />
+            </label>
+          </div>
+          
+        </div>
+      </details>
+      <details
+        class="filter-section"
+        data-v-e843c1dd=""
+        open=""
+      >
+        <summary
+          data-v-e843c1dd=""
+        >
           sources
         </summary>
         <div

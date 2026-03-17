@@ -173,6 +173,7 @@ export const fr = {
     fr: 'Français',
     en: 'Anglais'
   },
+  languages: 'Langues',
   landing: {
     toolPresentation: 'Présentation de l’outil',
     sourceNameTitle: 'Nom de la ressource',

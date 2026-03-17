@@ -5,6 +5,7 @@ import ChevronDownIcon from '@/components/icons/ChevronDown.vue';
 import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
 import SDGSelector from '@/components/dropdowns/SDGSelector.vue';
 import SourcesSelector from '@/components/dropdowns/SourcesSelector.vue';
+import LanguagesSelector from '@/components/dropdowns/LanguagesSelector.vue';
 import { useFiltersStore } from '@/stores/filters';
 import { useSourcesStore } from '@/stores/sources';
 import { ref, watch, toRefs } from 'vue';
@@ -59,6 +60,22 @@ const clearFilters = () => {
   </div>
   <div v-if="filters.hasFilters" class="is-flex">
     <div class="is-flex is-flex-direction-column">
+      <div class="is-flex flex-wrap selection mb-1" v-if="filters.languageFilters.length">
+        <p>{{ $t('languages') }}{{ $t(':') }}</p>
+        <GenericPillComponent
+          class="mx-1"
+          bgColor="primary"
+          :key="filter"
+          v-for="filter in filters.languageFilters"
+          :content="filter.toString()"
+        >
+          <template #actions>
+            <span class="is-clickable" @click="filters.handleLanguageFilterChange(filter)">
+              x
+            </span>
+          </template>
+        </GenericPillComponent>
+      </div>
       <div class="is-flex flex-wrap selection mb-1" v-if="filters.sourcesFilters.length">
         <p>{{ $t('sources') }}{{ $t(':') }}</p>
         <GenericPillComponent
@@ -101,6 +118,12 @@ const clearFilters = () => {
       @keyup="handleSearchFilters"
     />
 
+    <details class="filter-section" open>
+      <summary>{{ $t('languages') }}</summary>
+      <div class="filter-options">
+        <LanguagesSelector :availableLanguages="filters.languageList" />
+      </div>
+    </details>
     <details class="filter-section" open>
       <summary>{{ $t('sources') }}</summary>
       <div class="filter-options">
