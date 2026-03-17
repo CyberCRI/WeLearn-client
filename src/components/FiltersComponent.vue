@@ -67,7 +67,7 @@ const clearFilters = () => {
           bgColor="primary"
           :key="filter"
           v-for="filter in filters.languageFilters"
-          :content="filter.toString()"
+          :content="$t(`lang.${filter}`, `${filter}`)"
         >
           <template #actions>
             <span class="is-clickable" @click="filters.handleLanguageFilterChange(filter)">
