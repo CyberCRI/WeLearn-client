@@ -251,12 +251,7 @@ export const useTutorStore = defineStore('tutor', () => {
     if (!tutorSearch.value) {
       throw new Error('Body is empty');
     }
-    console.log(
-      'Retrieving syllabus with body:',
-      tutorSearch.value,
-      'and selected sources:',
-      selectedSources.value
-    );
+
     isLoading.value = true;
     try {
       const resp = await postAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
@@ -275,7 +270,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
       //keep only the syllabus from pedagogical engineer
       syllabi.value = data.syllabus.filter(({ source }) =>
-        source.toLowerCase().includes('description_agent')
+        source.toLowerCase().includes('pedagogicalengineer')
       )[0];
 
       hasSyllabusError.value = false;
