@@ -31,7 +31,7 @@ export const useSearchStore = defineStore('search', () => {
     if (isSearchDisabled.value || isFetchingSources.value) {
       return;
     }
-    const { sdgFilters, sourcesFilters } = useFiltersStore();
+    const { sdgFilters, sourcesFilters, languageFilters } = useFiltersStore();
     setFetchingSourcesState();
 
     try {
@@ -39,6 +39,7 @@ export const useSearchStore = defineStore('search', () => {
         getSDGsFromQuery(searchInput.value),
         getSearch(100, {
           query: searchInput.value,
+          lang: languageFilters,
           sdg_filter: sdgFilters,
           corpora: sourcesFilters,
           relevance_factor: RELEVANCE_FACTOR

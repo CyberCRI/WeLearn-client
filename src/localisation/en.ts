@@ -169,6 +169,7 @@ export const en = {
     fr: 'French',
     en: 'English'
   },
+  languages: 'Languages',
   landing: {
     toolPresentation: 'Tool presentation',
     sourceNameTitle: 'Resource Name',
