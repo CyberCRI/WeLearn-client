@@ -35,7 +35,7 @@ export const fr = {
     'press-books': 'Pressbooks',
     ted: 'TED',
     uved: 'UVED',
-    'fao-open-knowledge': 'Organisation des Nations unies pour l\'alimentation et l\'agriculture',
+    'fao-open-knowledge': "Organisation des Nations unies pour l'alimentation et l'agriculture",
     wikipedia: 'Wikipedia'
   },
   download: 'Télécharger',

@@ -12,7 +12,7 @@ const filters = useFiltersStore();
       :id="source.name"
       v-model="filters.sourcesFilters"
       :value="source.name"
-      :label="source.translated"
+      :label="$t(`corpus.${source.name}`, `${source.name.replace('-', ' ')}`)"
       :checked="filters.sourcesFilters.includes(source.name)"
       isCapitalized
     >
