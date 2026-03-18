@@ -4,7 +4,7 @@ defineProps<{ content: string; bgColor: string }>();
 
 <template>
   <div class="pill" :style="{ 'background-color': `var(--${bgColor})` }">
-    {{ content }}
+    {{ content.length > 20 ? content.slice(0, 17) + '...' : content }}
     <slot name="actions"> </slot>
   </div>
 </template>

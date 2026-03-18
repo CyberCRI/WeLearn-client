@@ -35,6 +35,7 @@ export const en = {
     'press-books': 'Pressbooks',
     ted: 'TED',
     uved: 'UVED',
+    'fao-open-knowledge': 'Food and Agriculture Organization of the United Nations',
     wikipedia: 'Wikipedia'
   },
   download: 'Download',

@@ -24,7 +24,7 @@ const handleSearchFilters = (event: Event) => {
   const target = event.target as HTMLInputElement;
   const value = target.value;
   availableSources.value = sourcesStore.sourcesList.filter((source) =>
-    source.translated.toLowerCase().includes(value.toLowerCase())
+    source.name.toLowerCase().includes(value.toLowerCase())
   );
 };
 
@@ -79,7 +79,7 @@ const clearFilters = () => {
       <div class="is-flex flex-wrap selection mb-1" v-if="filters.sourcesFilters.length">
         <p>{{ $t('sources') }}{{ $t(':') }}</p>
         <GenericPillComponent
-          class="mx-1 is-capitalized"
+          class="mx-1 is-capitalized mt-1"
           bgColor="primary"
           :key="filter"
           v-for="filter in filters.sourcesFilters"
@@ -93,7 +93,7 @@ const clearFilters = () => {
       <div class="is-flex flex-wrap selection mb-1" v-if="filters.sdgFilters.length">
         <p>{{ $t('sdgsAcronym') }}{{ $t(':') }}</p>
         <GenericPillComponent
-          class="mx-1"
+          class="mx-1 mt-1"
           bgColor="primary"
           :key="filter"
           v-for="filter in filters.sdgFilters"
