@@ -37,7 +37,7 @@ export const useSearchStore = defineStore('search', () => {
     try {
       const promises = [
         getSDGsFromQuery(searchInput.value),
-        getSearch(100, {
+        getSearch(1, {
           query: searchInput.value,
           lang: languageFilters,
           sdg_filter: sdgFilters,
