@@ -269,7 +269,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
       //keep only the syllabus from pedagogical engineer
       syllabi.value = data.syllabus.filter(({ source }) =>
-        source.toLowerCase().includes('pedagogicalengineer')
+        source.toLowerCase().includes('description_agent')
       )[0];
 
       hasSyllabusError.value = false;
