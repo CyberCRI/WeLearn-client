@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref, computed } from 'vue';
 import type { Document } from '@/types';
-import { useUserStore } from '@/stores/user';
 import {
   postBookmark,
   deleteBookmark,
@@ -18,7 +17,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
   const addBookmark = async (source: Document) => {
     try {
-      await postBookmark(useUserStore().userId, source.payload.document_id);
+      await postBookmark(source.payload.document_id);
       idsBookmarked.value.push(source.payload.document_id);
       hasChanged.value = true;
     } catch (error) {
@@ -32,15 +31,14 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       ({ payload }) => payload.document_id !== sourceId
     );
     idsBookmarked.value = idsBookmarked.value.filter((id) => id !== sourceId);
-    await deleteBookmark(useUserStore().userId, sourceId);
+    await deleteBookmark(sourceId);
     hasChanged.value = true;
   };
 
   const getBookmarks = async () => {
     if (!hasChanged.value && sourcesBookmarked.value.length) return;
-    const userId = useUserStore().userId;
 
-    const bookmarks = await getAllBookmarks(userId);
+    const bookmarks = await getAllBookmarks();
     sourcesBookmarked.value = bookmarks.data;
     idsBookmarked.value = sourcesBookmarked.value.map((bookmark) => bookmark.payload.document_id);
     hasChanged.value = false;
@@ -60,7 +58,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
   const resetBookmarks = async () => {
     sourcesBookmarked.value = [];
     idsBookmarked.value = [];
-    await deleteAllBookmarks(useUserStore().userId);
+    await deleteAllBookmarks();
     hasChanged.value = true;
   };
 

@@ -14,7 +14,7 @@ export const test = base.extend({
           status: 200,
           body: JSON.stringify({ session_id: 'fake_session_id', referer: 'toto' })
         });
-      } else if (url.includes('/:user_id/bookmarks?user_id=')) {
+      } else if (url.includes('/bookmarks')) {
         await route.fulfill({
           status: 200,
           body: JSON.stringify({ bookmarks: [{ document_id: '2121256453' }] })

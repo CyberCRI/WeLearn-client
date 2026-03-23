@@ -1,4 +1,4 @@
-import { postAxios } from '@/utils/fetch';
+import { basePostAxios } from '@/utils/fetch';
 
 export const updateClickedDocument = async (
   doc_id: string,
@@ -17,6 +17,6 @@ export const updateClickedDocument = async (
     message_id: message_id.trim()
   };
 
-  const res = await postAxios('/metric/clicked_document', body);
+  const res = await basePostAxios('/metric/clicked_document', body);
   return res.data;
 };

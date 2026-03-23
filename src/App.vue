@@ -9,13 +9,12 @@ import SmallScreenPage from '@/views/SmallScreenPage.vue';
 import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
-import { useUserStore } from '@/stores/user';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { getQueryParamValue } from '@/utils/urlsUtils';
+import { getUserAndSession } from '@/utils/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { isDevEnvironment } = useFeatureFlipStore();
-const userStore = useUserStore();
 const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 
@@ -24,7 +23,7 @@ async function initCalls() {
     await Promise.all([
       getInfoPerCorpus(),
       getSourcesList(),
-      userStore.setUserIdAndSessionId(getQueryParamValue('referer') || '')
+      getUserAndSession(getQueryParamValue('referer') || '')
     ]);
   } catch (err) {
     console.error(err);

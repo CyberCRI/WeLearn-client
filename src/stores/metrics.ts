@@ -1,26 +1,15 @@
 import { updateClickedDocument } from '@/utils/metrics';
 import { isInPage } from '@/utils/urlsUtils';
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
-import { useUserStore } from '@/stores/user';
 
 export const useMetricsStore = defineStore('metrics', () => {
-  const userId = ref<string | null>(localStorage.getItem('userId'));
-
-  const getUserId = computed(() => userId.value);
-
-  const getWorkshopFormUrl = () => {
-    const userStore = useUserStore();
-    const userId = userStore.userId;
-
-    return `https://docs.google.com/forms/d/e/1FAIpQLSeUf3GQXt3LsZD24Z3fGkwUE-qhAXF2jkem9zbPnAbnOrReDQ/viewform?usp=pp_url&entry.736499817=${userId}`;
-  };
-
+  // implement and move this to a utils file this does not use any state from the store and is only a wrapper around the updateClickedDocument util function
   const getCampaignStatus = async () => {
     // Logic to get campaign status
     return await true;
   };
 
+  // move this to a utils file this does not use any state from the store and is only a wrapper around the updateClickedDocument util function
   const recordClickedDocumentFromchat = async (docId: string) => {
     // check if in campaign
     if (await !getCampaignStatus()) {
@@ -54,8 +43,6 @@ export const useMetricsStore = defineStore('metrics', () => {
   };
 
   return {
-    getUserId,
-    recordClickedDocumentFromchat,
-    getWorkshopFormUrl
+    recordClickedDocumentFromchat
   };
 });
