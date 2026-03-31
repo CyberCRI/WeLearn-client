@@ -5,6 +5,7 @@ import Bookmarks from '@/views/BookmarkdSources.vue';
 import Tutor from '@/views/TutorPage.vue';
 import NotFound from '@/views/NotFound.vue';
 import MicroLearning from '@/views/MicroLearning.vue';
+import TestMAS from '@/views/TestMAS.vue';
 
 const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
 
@@ -34,6 +35,11 @@ const router = createRouter({
       path: '/tutor',
       name: 'tutor',
       component: Tutor
+    },
+    {
+      path: '/tutor_test',
+      name: 'tutor_test',
+      component: TestMAS
     },
     {
       path: '/terms',
