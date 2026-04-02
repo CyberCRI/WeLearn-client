@@ -168,6 +168,30 @@ body {
   scroll-behavior: smooth;
 }
 
+*[data-category='science_communication_and_outreach'] {
+  background-color: var(--tertiary-light);
+}
+
+*[data-category='expert_reports'] {
+  background-color: var(--tertiary);
+}
+
+*[data-category='academic_scientific_publications'] {
+  background-color: var(--secondary-light);
+}
+
+*[data-category='teaching_resources'] {
+  background-color: var(--primary-light);
+}
+
+*[data-category='collaborative_and_encyclopedic_knowledge'] {
+  background-color: var(--secondary);
+}
+
+*[data-category='null'] {
+  background-color: var(--neutral-10);
+}
+
 html {
   scroll-behavior: smooth;
 }

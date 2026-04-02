@@ -23,9 +23,19 @@ const handleSearchFilters = (event: Event) => {
     availableSources.value = sourcesStore.sourcesList;
   const target = event.target as HTMLInputElement;
   const value = target.value;
-  availableSources.value = sourcesStore.sourcesList.filter((source) =>
-    source.name.toLowerCase().includes(value.toLowerCase())
-  );
+  let temp = undefined;
+
+  for (const [category, sources] of Object.entries(sourcesStore.sourcesList)) {
+    const filteredSources = sources.filter((source) =>
+      source.name.toLowerCase().includes(value.toLowerCase())
+    );
+    if (filteredSources.length > 0) {
+      temp = temp || {};
+      temp[category] = filteredSources;
+    }
+  }
+
+  availableSources.value = temp || sourcesStore.sourcesList;
 };
 
 const hideFilters = ref(false);
@@ -156,7 +166,7 @@ const clearFilters = () => {
   white-space: nowrap;
 }
 .filters {
-  max-height: 75%;
+  max-height: 90%;
   transition:
     max-height 0.5s,
     opacity 0.5s;
@@ -183,11 +193,11 @@ summary {
 }
 
 .filter-section[open] {
-  max-height: 50%;
+  max-height: 100%;
 }
 
 details > .filter-options {
-  max-height: 25vh;
+  max-height: 100%;
   overflow-y: auto;
   padding-left: 1rem;
 }

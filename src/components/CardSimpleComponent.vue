@@ -8,6 +8,7 @@ import BookmarkComponent from './BookmarkComponent.vue';
 import type { DocumentDetails } from '@/types';
 
 defineProps<{
+  category?: string;
   number?: number;
   title: string;
   corpus: string;
@@ -40,7 +41,7 @@ const handleModalOpen = () => {
 
 <template>
   <div class="block is-flex is-fullwidth pt-1 py-1 px-1">
-    <div class="mr-2 is-size-7 has-text-weight-semibold has-background-light-grey px-1">
+    <div :data-category="category" class="mr-2 is-size-7 has-text-weight-semibold px-1">
       {{ number }}
     </div>
     <div class="is-flex-grow-1">

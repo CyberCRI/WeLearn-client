@@ -26,7 +26,7 @@ export const test = base.extend({
     await page.route('**/**/search/**', async (route) => {
       const url = route.request().url();
       if (url.includes('collections')) {
-        const json = [{ name: 'fake-collections', id: 21 }];
+        const json = [{ name: 'fake-collection', category: 'fake-category' }];
         await route.fulfill({ json });
       } else if (url.includes('nb_docs')) {
         await route.fulfill({ json: { nb_docs: 10 } });

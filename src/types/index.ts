@@ -27,16 +27,9 @@ export type DocumentDetails = {
 };
 
 export interface Corpus {
-  corpus: string;
+  is_active: boolean;
   name: string;
-  lang: string;
-  model: string;
-}
-
-export interface ReducedCorpus {
-  name: string;
-  model: string;
-  corpus: string;
+  category: string;
 }
 
 export interface ErrorDetails {
