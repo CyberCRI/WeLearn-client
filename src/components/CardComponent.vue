@@ -10,6 +10,7 @@ import BookmarkComponent from './BookmarkComponent.vue';
 const isMoreAuthorsHidden = ref(true);
 
 const props = defineProps<{
+  category?: string;
   number?: number;
   title: string;
   corpus: string;
@@ -46,7 +47,7 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
 
 <template>
   <div class="card">
-    <header class="card-header">
+    <header :data-category="category" class="card-header">
       <div v-if="number && !hideRefIndicator" class="card-header-icon">
         <p class="doc-number">{{ number }}</p>
       </div>

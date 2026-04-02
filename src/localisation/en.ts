@@ -21,7 +21,17 @@ export const en = {
   closeSidebar: 'Hide sidebar',
   copied: 'Copied!',
   copy: 'Copy',
+  categories: {
+    science_communication_and_outreach: 'Science Communication and Outreach',
+    expert_reports: 'Expert Reports',
+    academic_scientific_publications: 'Academic and Scientific Publications',
+    teaching_resources: 'Teaching Resources',
+    collaborative_and_encyclopedic_knowledge: 'Collaborative and Encyclopedic Knowledge',
+    null: 'Uncategorized'
+  },
   corpus: {
+    unesdoc: 'Unesdoc',
+    'ird-le-mag': 'IRD Le Mag',
     unccelearn: 'UN CC:e-Learn',
     conversation: 'The Conversation',
     hal: 'HAL',

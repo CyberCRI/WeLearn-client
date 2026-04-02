@@ -57,6 +57,7 @@ const ChosenCard = Cards[props.cardType || 'default'];
       <a id="sourcesAnchor"></a>
 
       <ChosenCard
+        :category="sourcesStore.sourceCategoryMap[doc.payload.document_corpus]"
         :shouldDisplayScore="shouldDisplayScore"
         :hideRefIndicator="hideRefIndicator"
         v-for="(doc, index) in sourcesList"
