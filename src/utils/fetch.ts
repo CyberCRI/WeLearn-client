@@ -4,10 +4,11 @@ export const API_BASE = import.meta.env.VITE_API_BASE;
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 export const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
 
-export const getAxios = async (endpoint: string) => {
+export const baseGetAxios = async (endpoint: string) => {
   if (!API_BASE) throw new Error('API_BASE not defined');
 
   const response = await axios.get(`${API_BASE}${API_VERSION}${endpoint}`, {
+    withCredentials: true,
     headers: {
       'X-API-Key': WL_API_KEY
     }
@@ -18,7 +19,7 @@ export const getAxios = async (endpoint: string) => {
   return response.data;
 };
 
-export const postAxios = async (
+export const basePostAxios = async (
   endpoint: string,
   options: Record<string, any> = {},
   config?: AxiosRequestConfig
@@ -27,8 +28,8 @@ export const postAxios = async (
 
   const enhancedConfig = {
     ...config,
+    withCredentials: true,
     headers: {
-      'X-Session-id': localStorage.getItem('sessionId') || null,
       'X-API-Key': WL_API_KEY
     }
   };
@@ -46,7 +47,32 @@ export const postAxios = async (
 
     return response;
   } catch (error) {
-    console.error('Error in postAxios:', error);
+    console.error('Error in basePostAxios:', error);
+    throw error;
+  }
+};
+
+export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestConfig) => {
+  if (!API_BASE) throw new Error('API_BASE not defined');
+
+  const enhancedConfig = {
+    ...config,
+    withCredentials: true,
+    headers: {
+      'X-API-Key': WL_API_KEY
+    }
+  };
+
+  try {
+    const response = await axios.delete(`${API_BASE}${API_VERSION}${endpoint}`, enhancedConfig);
+
+    if (!(response.status >= 200) && !(response.status <= 300)) {
+      throw new Error('Error deleting data');
+    }
+
+    return response;
+  } catch (error) {
+    console.error('Error in baseDeleteAxios:', error);
     throw error;
   }
 };
@@ -80,7 +106,7 @@ export const getSearch = async (
   options: Record<string, any>,
   subject?: string
 ) => {
-  const result = await postAxios(
+  const result = await basePostAxios(
     `/search/by_document?nb_results=${nbResults}${subject ? `&subject=${subject}` : ''}`,
     options
   );
@@ -99,6 +125,7 @@ export const fetchStream = async (
   const response = await fetch(`${API_BASE}${API_VERSION}${endpoint}`, {
     method: 'POST',
     body: body.bodyContent,
+    credentials: 'include',
     headers: {
       Accept: '*/*',
       'Content-Type': 'application/json',
@@ -111,17 +138,16 @@ export const fetchStream = async (
   return response.body;
 };
 
-export const postBookmark = async (userId: string, documentId: string) => {
-  const resp = await postAxios(
-    `/user/:user_id/bookmarks/:document_id?user_id=${userId}&document_id=${documentId}`
-  );
+export const postBookmark = async (documentId: string) => {
+  const resp = await basePostAxios(`/user/bookmarks/:document_id?document_id=${documentId}`);
   return resp;
 };
 
-export const deleteBookmark = async (userId: string, documentId: string) => {
+export const deleteBookmark = async (documentId: string) => {
   const resp = await axios.delete(
-    `${API_BASE}${API_VERSION}/user/:user_id/bookmarks/:document_id?user_id=${userId}&document_id=${documentId}`,
+    `${API_BASE}${API_VERSION}/user/bookmarks/:document_id?document_id=${documentId}`,
     {
+      withCredentials: true,
       headers: {
         'X-API-Key': WL_API_KEY
       }
@@ -130,20 +156,21 @@ export const deleteBookmark = async (userId: string, documentId: string) => {
   return resp;
 };
 
-export const deleteAllBookmarks = async (userId: string) => {
-  await axios.delete(`${API_BASE}${API_VERSION}/user/:user_id/bookmarks?user_id=${userId}`, {
+export const deleteAllBookmarks = async () => {
+  await axios.delete(`${API_BASE}${API_VERSION}/user/bookmarks`, {
+    withCredentials: true,
     headers: {
       'X-API-Key': WL_API_KEY
     }
   });
 };
 
-export const getBookmarks = async (userId: string) => {
-  const bookmarksIds = await getAxios(`/user/:user_id/bookmarks?user_id=${userId}`);
+export const getBookmarks = async () => {
+  const bookmarksIds = await baseGetAxios(`/user/bookmarks`);
   const ids = bookmarksIds.bookmarks.reduce((acc: string[], curr: { document_id: string }) => {
     acc.push(curr.document_id);
     return acc;
   }, []);
-  const docsPayloads = await postAxios('/search/documents/by_ids', ids);
+  const docsPayloads = await basePostAxios('/search/documents/by_ids', ids);
   return docsPayloads;
 };

@@ -8,14 +8,10 @@ import HelpComponent from '@/components/nav/HelpComponent.vue';
 import BookIcon from '@/components/icons/BookIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
-import { useMetricsStore } from '@/stores/metrics';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
 
 const featureFlip = useFeatureFlipStore();
-const metricStore = useMetricsStore();
-
-const isWorkshopFeatureEnabled = featureFlip.isWorkshopFeatureEnabled();
 
 const navEntries = [
   {
@@ -72,16 +68,6 @@ const navEntries = [
       </div>
 
       <HelpComponent />
-      <a
-        class="mx-0 px-0 ml-auto"
-        v-if="isWorkshopFeatureEnabled"
-        target="_blank"
-        :href="metricStore.getWorkshopFormUrl()"
-      >
-        <span class="item-name router-link-form has-text-success mx-1 px-1 pr-4 is-size-6">{{
-          $t('nav.workshopForm')
-        }}</span>
-      </a>
 
       <LanguageSelector />
     </div>

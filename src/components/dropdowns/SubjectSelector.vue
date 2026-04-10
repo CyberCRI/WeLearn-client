@@ -2,7 +2,7 @@
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue';
 import ClickableText from '@/components/ClickableText.vue';
 import { onMounted, ref } from 'vue';
-import { getAxios } from '@/utils/fetch';
+import { baseGetAxios } from '@/utils/fetch';
 
 defineProps<{
   storedSubject?: string;
@@ -14,7 +14,7 @@ defineProps<{
 const subjects = ref<null | Array<string>>(null);
 
 const fetchAvailableSubjects = async () => {
-  subjects.value = await getAxios('/micro_learning/subject_list');
+  subjects.value = await baseGetAxios('/micro_learning/subject_list');
 };
 
 onMounted(async () => {

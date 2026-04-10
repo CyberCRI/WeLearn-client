@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ChatMessage } from '@/types';
-import { postAxios } from '@/utils/fetch';
+import { basePostAxios } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import i18n from '@/localisation/i18n';
@@ -118,7 +118,7 @@ export const useChatStore = defineStore('chat', () => {
       ...(storedSubject.value && { subject: storedSubject.value })
     };
 
-    const respBody = await postAxios('/qna/chat/rephrase', bodyContent);
+    const respBody = await basePostAxios('/qna/chat/rephrase', bodyContent);
 
     chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
     saveToStorage('chat', chatMessagesList.value);
@@ -136,7 +136,7 @@ export const useChatStore = defineStore('chat', () => {
       sdg_filter: sdgFilters
     };
 
-    const { data } = await postAxios('/qna/chat/agent', body);
+    const { data } = await basePostAxios('/qna/chat/agent', body);
 
     chatMessagesList.value.push({ role: 'assistant', content: data.content });
     if (data.docs) {
@@ -150,7 +150,7 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   async function getNewQuestions(userMsg: string) {
-    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await postAxios(
+    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await basePostAxios(
       '/qna/reformulate/questions',
       {
         history: getMessageHistory.value,

@@ -2,7 +2,7 @@
 import FullpageTemplate from '@/components/FullpageTemplate.vue';
 import SdgTile from '@/components/SdgTile.vue';
 import { ref } from 'vue';
-import { getAxios } from '@/utils/fetch';
+import { baseGetAxios } from '@/utils/fetch';
 import SourcesListComponent from '@/components/SourcesListComponent.vue';
 import SelectSubject from '@/components/dropdowns/SubjectSelector.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
@@ -44,7 +44,9 @@ const fetchMicroLearningForSpecificSDG = async (
   goal: number | null,
   subject: string | undefined
 ) => {
-  const response = await getAxios(`/micro_learning/full_journey?sdg=${goal}&subject=${subject}`);
+  const response = await baseGetAxios(
+    `/micro_learning/full_journey?sdg=${goal}&subject=${subject}`
+  );
   introJsonJourney.value = response.introduction;
   targetsJsonJourney.value = response.target;
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { getAxios, postAxios, API_BASE, WL_API_KEY } from '../fetch';
+import { baseGetAxios, basePostAxios, API_BASE, WL_API_KEY } from '../fetch';
 
 const mockResolved = {
   status: 200
@@ -17,24 +17,24 @@ describe('fetch', () => {
       });
 
       it('should call axios.post', async () => {
-        await postAxios('/endpoint');
+        await basePostAxios('/endpoint');
         expect(axios.post).toHaveBeenCalledTimes(1);
         expect(axios.post).toHaveBeenCalledWith(
           `${API_BASE}/api/v1/endpoint`,
           {},
-          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-id': null } }
+          { headers: { 'X-API-Key': WL_API_KEY }, withCredentials: true }
         );
       });
 
       it('should call axios.post with filter', async () => {
-        await postAxios('/endpoint', { filter: 'i am a filter' });
+        await basePostAxios('/endpoint', { filter: 'i am a filter' });
 
         expect(axios.post).toHaveBeenCalledWith(
           `${API_BASE}/api/v1/endpoint`,
           {
             filter: 'i am a filter'
           },
-          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-id': null } }
+          { headers: { 'X-API-Key': WL_API_KEY }, withCredentials: true }
         );
       });
     });
@@ -45,7 +45,7 @@ describe('fetch', () => {
       });
 
       it('should throw an error', async () => {
-        await expect(postAxios('/endpoint')).rejects.toThrow('Error fetching data');
+        await expect(basePostAxios('/endpoint')).rejects.toThrow('Error fetching data');
       });
     });
   });
@@ -56,10 +56,11 @@ describe('fetch', () => {
         vi.spyOn(axios, 'get').mockResolvedValue(mockResolved);
       });
       it('should call window.fetch', async () => {
-        await getAxios('/endpoint');
+        await baseGetAxios('/endpoint');
         expect(axios.get).toHaveBeenCalledTimes(1);
         expect(axios.get).toHaveBeenCalledWith(`${API_BASE}/api/v1/endpoint`, {
-          headers: { 'X-API-Key': WL_API_KEY }
+          headers: { 'X-API-Key': WL_API_KEY },
+          withCredentials: true
         });
       });
     });
@@ -70,7 +71,7 @@ describe('fetch', () => {
       });
 
       it('should throw an error', async () => {
-        await expect(getAxios('/endpoint')).rejects.toThrow('Error fetching data');
+        await expect(baseGetAxios('/endpoint')).rejects.toThrow('Error fetching data');
       });
     });
   });

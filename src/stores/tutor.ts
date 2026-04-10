@@ -4,7 +4,7 @@ import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';
 import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
-import { postAxios } from '@/utils/fetch';
+import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 
 export const useTutorStore = defineStore('tutor', () => {
@@ -112,7 +112,7 @@ export const useTutorStore = defineStore('tutor', () => {
       }
     });
     try {
-      const resp = await postAxios(
+      const resp = await basePostAxios(
         `/tutor/files/content?lang=${syllabusLanguage.value}`,
         formData,
         {
@@ -150,7 +150,7 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading.value = true;
 
     try {
-      const resp = await postAxios('/tutor/search_extracts', { summaries: summaries.value });
+      const resp = await basePostAxios('/tutor/search_extracts', { summaries: summaries.value });
       if (resp.status === 204) {
         shouldRetryAction.value = true;
       } else {
@@ -254,7 +254,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
     isLoading.value = true;
     try {
-      const resp = await postAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
+      const resp = await basePostAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
         ...tutorSearch.value,
         documents: selectedSources.value.length
           ? selectedSources.value
@@ -306,7 +306,7 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading.value = true;
 
     try {
-      const resp = await postAxios('/tutor/syllabus/feedback', {
+      const resp = await basePostAxios('/tutor/syllabus/feedback', {
         feedback: feedback,
         syllabus: [syllabi.value],
         ...tutorSearch.value,
@@ -329,7 +329,7 @@ export const useTutorStore = defineStore('tutor', () => {
     const docxContent = await convertMarkdownToDocx(syllabi.value.content);
     downloadDocx(docxContent, 'syllabus.docx');
     try {
-      await postAxios('/metric/syllabus_downloaded');
+      await basePostAxios('/metric/syllabus_downloaded');
     } catch (error) {
       console.error('Error during metrics update:', error);
     }
@@ -342,7 +342,7 @@ export const useTutorStore = defineStore('tutor', () => {
     }
 
     try {
-      await postAxios('/tutor/syllabus/user_update', {
+      await basePostAxios('/tutor/syllabus/user_update', {
         syllabus: syllabi.value.content
       });
     } catch (error) {

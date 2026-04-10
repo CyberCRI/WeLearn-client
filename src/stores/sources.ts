@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { getAxios } from '@/utils/fetch';
+import { baseGetAxios } from '@/utils/fetch';
 import { type Ref, ref } from 'vue';
 import type { Corpus } from '@/types';
 
@@ -14,7 +14,7 @@ export const useSourcesStore = defineStore('sources', () => {
     }
 
     try {
-      const fetchedCorpus = await getAxios('/search/collections');
+      const fetchedCorpus = await baseGetAxios('/search/collections');
       fetchedCorpus.sort((a: Corpus, b: Corpus) => a.name.localeCompare(b.name));
 
       const corpusByCategory: Record<string, Corpus[]> = fetchedCorpus.reduce(
@@ -50,7 +50,7 @@ export const useSourcesStore = defineStore('sources', () => {
       return;
     }
     try {
-      const response = await getAxios('/metric/nb_docs_info_per_corpus');
+      const response = await baseGetAxios('/metric/nb_docs_info_per_corpus');
       infoPerCorpus.value = response;
       const totalDocsInQdrant = response.reduce((acc, curr) => {
         acc = acc + curr.qty_in_qdrant;
