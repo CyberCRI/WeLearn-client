@@ -22,16 +22,16 @@ export const fr = {
   copied: 'Copié !',
   copy: 'Copier',
   categories: {
-    science_communication_and_outreach: 'Communication et Vulgarisation Scientifique',
-    expert_reports: 'Rapports d’experts',
-    academic_scientific_publications: 'Publications scientifiques et académiques',
+    science_communication_and_outreach: 'Vulgarisation scientifique',
+    expert_reports: 'Rapports institutionnels',
+    academic_scientific_publications: 'Publications scientifiques',
     teaching_resources: 'Ressources pédagogiques',
     collaborative_and_encyclopedic_knowledge: 'Connaissances collaboratives et encyclopédiques',
     null: 'Non catégorisé'
   },
   corpus: {
     unesdoc: 'Unesdoc',
-    'ird-le-mag': 'IRD Le Mag',
+    'ird-le-mag': "IRD Le Mag'",
     unccelearn: 'UN CC:e-Learn',
     conversation: 'The Conversation',
     hal: 'HAL',
