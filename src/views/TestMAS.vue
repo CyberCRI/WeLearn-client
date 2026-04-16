@@ -92,29 +92,43 @@ const handdleSearch = async () => {
 const handleCreateDescription = async () => {
   // Logic to create a course description
   const response = await postAxios('/tutor/syllabus/description', {
-    course_title,
-    discipline,
-    level,
-    duration,
-    description: course_description,
-    nb_results: 5,
-    documents: searchResults.value,
-    extracts: extracts.value
+    course_metadata: {
+      topic: course_title,
+      discipline,
+      level,
+      num_sessions: 12,
+      session_duration: 50,
+      user_description: course_description,
+
+      session_type: 'cours magistral',
+      class_size: 30,
+      session_mode: 'PRESENTIEL',
+      output_language: 'fr'
+    },
+    context_text: extracts.value[0].summary,
+    mode: 'new syllabus'
   });
-  description.value = response.data.syllabus[0].content;
+  description.value = response.data.text;
 };
 
 const handleCreateLearningObjectives = async () => {
   // Logic to create learning objectives
   const response = await postAxios('/tutor/syllabus/learning_objectives', {
-    course_title,
-    discipline,
-    level,
-    duration,
-    nb_results: 5,
-    documents: [],
+    course_metadata: {
+      topic: course_title,
+      discipline,
+      level,
+      num_sessions: 12,
+      session_duration: 50,
+      user_description: course_description,
+      session_type: 'cours magistral',
+      class_size: 30,
+      session_mode: 'PRESENTIEL',
+      output_language: 'fr'
+    },
+    context_text: extracts.value[0].summary,
     description: description.value,
-    extracts: extracts.value
+    mode: 'new syllabus'
   });
 
   learningObjectives.value = response.data;
