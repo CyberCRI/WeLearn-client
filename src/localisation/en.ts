@@ -299,10 +299,7 @@ export const en = {
   showFilters: 'Show filters',
   showMoreAuthors: 'Show more',
   showSources: 'Show sources',
-  smallScreenPage: {
-    title: 'Oops! Screen size too small.',
-    subtitle: 'For the best experience, please use a device with a larger screen.'
-  },
+
   sources: 'Sources',
   sourcesList: {
     fetching: 'Searching across {docs_nb} documents...',

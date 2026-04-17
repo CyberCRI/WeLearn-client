@@ -303,10 +303,7 @@ export const fr = {
   showFilters: 'Afficher les filtres',
   showMoreAuthors: 'Afficher plus',
   showSources: 'Afficher les sources',
-  smallScreenPage: {
-    title: 'Oups ! Votre écran est trop petit.',
-    subtitle: 'Pour une expérience optimale, utilisez un appareil avec un écran plus grand.'
-  },
+
   sources: 'Sources',
   sourcesList: {
     fetching: 'Recherche parmi {docs_nb} documents...',
