@@ -1,21 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/nav/NavComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
-import SmallScreenPage from '@/views/SmallScreenPage.vue';
 import ModalComponent from '@/components/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
-import { useFeatureFlipStore } from '@/stores/featureFlip';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
-const { isDevEnvironment } = useFeatureFlipStore();
-const screenWidth = computed(() => window.innerWidth);
 const fetchError = ref(false);
 
 async function initCalls() {
@@ -41,7 +37,6 @@ onMounted(async () => {
 
 <template>
   <ErrorComponent v-if="fetchError" />
-  <SmallScreenPage v-else-if="!isDevEnvironment && screenWidth < 995" />
   <div class="fullscreen" v-else>
     <ModalComponent />
 
