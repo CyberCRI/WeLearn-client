@@ -16,6 +16,7 @@ const manageNavBarAnimations = () => {
   if (!header) return;
 
   if (scrollTop > 0) {
+    if (!appHeaderName || !appHeader) return;
     appHeaderName.style.display = 'flex';
     appHeader.style.display = 'none';
     header.style.gridTemplateRows = '3rem auto';
