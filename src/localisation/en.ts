@@ -25,7 +25,7 @@ export const en = {
     science_communication_and_outreach: 'Science Communication',
     expert_reports: 'Institutional Reports',
     academic_scientific_publications: 'Scientific Publications',
-    teaching_resources: 'Pedagogical Resources',
+    teaching_resources: 'Educational Resources',
     collaborative_and_encyclopedic_knowledge: 'Collaborative and Encyclopedic Knowledge',
     null: 'Uncategorized'
   },
