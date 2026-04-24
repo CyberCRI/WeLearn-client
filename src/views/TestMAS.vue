@@ -46,6 +46,8 @@ const extracts: Ref<string[]> = ref([
 const newFilesToSearch: Ref<Record<string, File>> = ref({});
 const learningObjectives: Ref<Record<string, string>[]> = ref([]);
 const searchResults: Ref<Document[]> = ref([]);
+const docsToSend: Ref<Record<string, string>[]> = ref([]);
+const competencies: Ref<Record<string, any>[]> = ref([]);
 
 const getFilesContent = async () => {
   const files = Object.values(newFilesToSearch.value).filter((e) => e);
@@ -84,6 +86,19 @@ const handdleSearch = async () => {
   const response = await basePostAxios('/tutor/search_extracts', {
     summaries: [extracts.value[0].summary]
   });
+
+  const docs = response.data.documents.map((doc) => ({
+    metadata: {
+      title: doc.payload.document_title,
+      url: doc.payload.document_url,
+      description: doc.payload.document_desc,
+      source: doc.payload.document_corpus
+    },
+    text: doc.payload.slice_content,
+    relevance_score: doc.score
+  }));
+
+  docsToSend.value = docs;
 
   searchResults.value = response.data.documents;
 
@@ -138,15 +153,9 @@ const handleCreateLearningObjectives = async () => {
 };
 
 const handleIntegrateSustainability = async () => {
-  const docs = searchResults.value.map((doc) => ({
-    metadata: doc,
-    text: doc.payload.slice_content,
-    relevance_score: doc.score
-  }));
-
   const payload = {
     description: description.value,
-    sdg_resources: docs,
+    sdg_resources: docsToSend.value,
     course_metadata: {
       topic: course_title,
       discipline,
@@ -159,55 +168,58 @@ const handleIntegrateSustainability = async () => {
       session_mode: 'PRESENTIEL',
       output_language: 'fr'
     },
-    objectives: { objectives: learningObjectives.value }
+    objectives: { objectives: learningObjectives.value },
+    mode: 'new syllabus'
   };
 
   console.log('Payload for sustainability integration:', payload);
   // Logic to integrate sustainability
   const response = await basePostAxios('/tutor/syllabus/sustainability_integration', payload);
 
-  sustainability_map.value = response.data.sustainability_map;
+  sustainability_map.value = response.data;
 
   console.log(response.data);
 };
 
 const handleCreateLearningOutcomes = async () => {
-  // Logic to create learning outcomes
-  const response = await basePostAxios('/tutor/syllabus/learning_outcomes', {
-    body: {
-      course_title,
+  const payload = {
+    description: description.value,
+    sdg_resources: docsToSend.value,
+    course_metadata: {
+      topic: course_title,
       discipline,
       level,
-      duration,
-      nb_results: 5,
-      documents: searchResults.value,
-      description: description.value,
-      extracts: extracts.value
+      num_sessions: 12,
+      session_duration: 50,
+      user_description: course_description,
+      session_type: 'cours magistral',
+      class_size: 30,
+      session_mode: 'PRESENTIEL',
+      output_language: 'fr'
     },
-    objectives: learningObjectives.value,
+    objectives: { objectives: learningObjectives.value },
+    mode: 'new syllabus',
     sustainability_map: sustainability_map.value
-  });
+  };
 
-  outcomes.value = response.data.learning_outcomes;
+  console.log('Payload for learning outcomes creation:', payload);
+  // Logic to create learning outcomes
+  const response = await basePostAxios('/tutor/syllabus/learning_outcomes', payload);
+
+  outcomes.value = response.data.outcomes;
 
   console.log(response.data);
 };
 
 const handleCompetencyMapping = async () => {
+  const payload = {
+    outcomes: outcomes.value,
+    output_language: 'fr'
+  };
   // Logic to create learning outcomes
-  const response = await basePostAxios('/tutor/syllabus/competency_map', {
-    body: {
-      course_title,
-      discipline,
-      level,
-      duration,
-      nb_results: 5,
-      documents: searchResults.value,
-      description: description.value,
-      extracts: extracts.value
-    },
-    outcomes: outcomes.value
-  });
+  const response = await basePostAxios('/tutor/syllabus/competency_map', payload);
+
+  competencies.value = response.data.mappings;
 
   console.log(response.data);
 };
@@ -251,11 +263,50 @@ const handleCompetencyMapping = async () => {
       :selectedSources="[]"
       :action="() => {}"
     />
-    <p v-if="description" class="mt-4">Course Description: {{ description }}</p>
+
+    <p v-if="description" class="mt-4"></p>
+    <p>----- description -----</p>
+    <p>Course Description: {{ description }}</p>
+
     <ol v-if="learningObjectives.length > 0" class="mt-4">
+      ----- learning objectives -----
       <li class="my-2" :key="obj.number" v-for="obj in learningObjectives">
         <p>objective : {{ obj.text }}</p>
-        <p>bloom level: {{ obj.bloom_level }}</p>
+        <p v-if="obj.bloom_level">bloom level: {{ obj.bloom_level }}</p>
+      </li>
+    </ol>
+
+    <ol
+      v-if="sustainability_map.connections && sustainability_map.connections.length > 0"
+      class="mt-4"
+    >
+      ----- sustainability connections -----
+        <li class="my-2" :key="obj.objective_number" v-for="obj in sustainability_map.connections">
+          <p>explanation : {{ obj.connection_explanation }}</p>
+          <li v-if="obj.sdg_themes && obj.sdg_themes.length > 0">
+            ---- SDG themes -------
+          <p v-for="sdg in obj.sdg_themes" :key="sdg">- {{ sdg }}</p>
+        </li>
+        >>>>>>>>>>>>>>>>
+      </li>
+
+      
+    </ol>
+
+    <ol v-if="outcomes.length > 0" class="mt-4">
+      <li class="my-2" :key="obj.number" v-for="obj in outcomes">
+        <p>outcome : {{ obj.text }}</p>
+        <p>related objectives: {{ obj.related_objectives }}</p>
+        <p>assessement method: {{ obj.assessment_method }}</p>
+      </li>
+    </ol>
+
+    <ol v-if="competencies.length > 0" class="mt-4">
+      ----- competencies mapping -----
+      <li class="my-2" :key="obj.number" v-for="obj in competencies">
+        <p>outcome number : {{ obj.outcome_number }}</p>
+        <p>greencomp competency: {{ obj.greencomp_competencies }}</p>
+        <p>rationale: {{ obj.rationale }}</p>
       </li>
     </ol>
   </div>
