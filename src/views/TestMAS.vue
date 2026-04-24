@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { postAxios } from '@/utils/fetch';
+import { basePostAxios } from '@/utils/fetch';
 import { ref, type Ref } from 'vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
 import { type Document } from '@/types';
+import { text } from 'stream/consumers';
 
 const course_title = 'Psychology';
 const discipline = 'Psychology';
@@ -56,7 +57,7 @@ const getFilesContent = async () => {
     }
   });
   try {
-    const resp = await postAxios(`/tutor/files/content?lang=fr}`, formData, {
+    const resp = await basePostAxios(`/tutor/files/content?lang=fr}`, formData, {
       headers: { 'content-type': 'multipart/form-data' }
     });
     if (resp.status === 204) {
@@ -80,7 +81,7 @@ const addFile = (e: any, input_id: string) => {
 
 const handdleSearch = async () => {
   // Logic to search for relevant documents
-  const response = await postAxios('/tutor/search_extracts', {
+  const response = await basePostAxios('/tutor/search_extracts', {
     summaries: [extracts.value[0].summary]
   });
 
@@ -91,7 +92,7 @@ const handdleSearch = async () => {
 
 const handleCreateDescription = async () => {
   // Logic to create a course description
-  const response = await postAxios('/tutor/syllabus/description', {
+  const response = await basePostAxios('/tutor/syllabus/description', {
     course_metadata: {
       topic: course_title,
       discipline,
@@ -113,7 +114,7 @@ const handleCreateDescription = async () => {
 
 const handleCreateLearningObjectives = async () => {
   // Logic to create learning objectives
-  const response = await postAxios('/tutor/syllabus/learning_objectives', {
+  const response = await basePostAxios('/tutor/syllabus/learning_objectives', {
     course_metadata: {
       topic: course_title,
       discipline,
@@ -131,26 +132,39 @@ const handleCreateLearningObjectives = async () => {
     mode: 'new syllabus'
   });
 
-  learningObjectives.value = response.data;
+  learningObjectives.value = response.data.objectives;
 
   console.log(response.data);
 };
 
 const handleIntegrateSustainability = async () => {
-  // Logic to integrate sustainability
-  const response = await postAxios('/tutor/syllabus/sustainability_integration', {
-    body: {
-      course_title,
+  const docs = searchResults.value.map((doc) => ({
+    metadata: doc,
+    text: doc.payload.slice_content,
+    relevance_score: doc.score
+  }));
+
+  const payload = {
+    description: description.value,
+    sdg_resources: docs,
+    course_metadata: {
+      topic: course_title,
       discipline,
       level,
-      duration,
-      nb_results: 5,
-      documents: searchResults.value,
-      description: description.value,
-      extracts: extracts.value
+      num_sessions: 12,
+      session_duration: 50,
+      user_description: course_description,
+      session_type: 'cours magistral',
+      class_size: 30,
+      session_mode: 'PRESENTIEL',
+      output_language: 'fr'
     },
-    objectives: learningObjectives.value
-  });
+    objectives: { objectives: learningObjectives.value }
+  };
+
+  console.log('Payload for sustainability integration:', payload);
+  // Logic to integrate sustainability
+  const response = await basePostAxios('/tutor/syllabus/sustainability_integration', payload);
 
   sustainability_map.value = response.data.sustainability_map;
 
@@ -159,7 +173,7 @@ const handleIntegrateSustainability = async () => {
 
 const handleCreateLearningOutcomes = async () => {
   // Logic to create learning outcomes
-  const response = await postAxios('/tutor/syllabus/learning_outcomes', {
+  const response = await basePostAxios('/tutor/syllabus/learning_outcomes', {
     body: {
       course_title,
       discipline,
@@ -181,7 +195,7 @@ const handleCreateLearningOutcomes = async () => {
 
 const handleCompetencyMapping = async () => {
   // Logic to create learning outcomes
-  const response = await postAxios('/tutor/syllabus/competency_map', {
+  const response = await basePostAxios('/tutor/syllabus/competency_map', {
     body: {
       course_title,
       discipline,
