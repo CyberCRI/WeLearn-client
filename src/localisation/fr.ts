@@ -25,7 +25,7 @@ export const fr = {
     science_communication_and_outreach: 'Vulgarisation scientifique',
     expert_reports: 'Rapports institutionnels',
     academic_scientific_publications: 'Publications scientifiques',
-    teaching_resources: 'Ressources pédagogiques',
+    teaching_resources: 'Ressources éducatives',
     collaborative_and_encyclopedic_knowledge: 'Connaissances collaboratives et encyclopédiques',
     null: 'Non catégorisé'
   },

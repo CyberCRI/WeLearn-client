@@ -10,6 +10,8 @@
   --neutral-90: #222325;
   --neutral-100: #000000;
 
+  --lpi-yellow: #ffcc00;
+  --lpi-violet: #d6a2ff;
   --primary-light: #b2f4e4;
   --primary: #00dba7;
   --primary-hover: #03b188;
@@ -169,7 +171,7 @@ body {
 }
 
 *[data-category='science_communication_and_outreach'] {
-  background-color: var(--tertiary-light);
+  background-color: var(--lpi-yellow);
 }
 
 *[data-category='expert_reports'] {
@@ -177,15 +179,11 @@ body {
 }
 
 *[data-category='academic_scientific_publications'] {
-  background-color: var(--secondary-light);
+  background-color: var(--lpi-violet);
 }
 
 *[data-category='teaching_resources'] {
-  background-color: var(--primary-light);
-}
-
-*[data-category='collaborative_and_encyclopedic_knowledge'] {
-  background-color: var(--secondary);
+  background-color: var(--primary);
 }
 
 *[data-category='null'] {
