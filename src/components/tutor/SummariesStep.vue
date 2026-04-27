@@ -8,6 +8,7 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import { ref } from 'vue';
 
 const props = defineProps<{
+  id_number: number;
   summaries: [string];
   files: File;
   updateSummary: (index: number, content: string) => void;
@@ -55,7 +56,7 @@ const handleTextEdit = (event, index) => {
 };
 </script>
 <template>
-  <div id="target-2" class="summaries-section" :class="{ disabled: disabled }">
+  <div :id="`target-${id_number || 2}`" class="summaries-section" :class="{ disabled: disabled }">
     <h2 data-testid="tutor-summaries-title" class="title is-4 is-size-5-mobile mt-4">
       2 - {{ $t('tutor.summaries.title') }}
     </h2>

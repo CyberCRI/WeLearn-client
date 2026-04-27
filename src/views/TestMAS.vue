@@ -3,51 +3,61 @@ import { basePostAxios } from '@/utils/fetch';
 import { ref, type Ref } from 'vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
 import { type Document } from '@/types';
-import { text } from 'stream/consumers';
+import UserInputMas from '@/components/MAS_tutor/userInputMas.vue';
+import FeaturePresentation from '@/components/MAS_tutor/featurePresentation.vue';
+import SummariesStep from '@/components/tutor/SummariesStep.vue';
+import { scrollToAnchor } from '@/utils/navigation';
 
-const course_title = 'Psychology';
-const discipline = 'Psychology';
-const level = 'master';
-const duration = '6 months';
-const course_description =
-  'This course provides an in-depth understanding of psychological theories and practices.';
 
-const description: Ref<string> = ref('');
+const mode: Ref<'1'| '2'| '3'| '4'> = ref('1')
+
+const tutorDescription: Ref<string> = ref('');
 const sustainability_map: Ref<Record<string, string>> = ref({});
 const outcomes: Ref<Record<string, string>[]> = ref([]);
-const extracts: Ref<string[]> = ref([
-  {
-    summary:
-      "Le féminisme désigne un ensemble de mouvements et d'idéologies sociopolitiques visant à instaurer l'égalité politique, économique, personnelle et sociale entre les sexes. Il part du principe que les sociétés modernes sont patriarcales et que les femmes y subissent des injustices. Depuis la fin du XVIIIᵉ siècle, les luttes féministes ont obtenu le droit de vote, l'accès à l'éducation, le travail, l'égalité salariale, la propriété, le droit à la contraception, à l'avortement et à la protection contre les violences sexuelles. Le féminisme s’est diversifié en plusieurs courants (libéral, socialiste, radical, intersectionnel, etc.) et a suscité des critiques quant à la prise en compte exclusive de perspectives blanches, hétérosexuelles et de classe moyenne, menant à la création de formes plus inclusives comme le féminisme noir et intersectionnel.",
-    themes: [
-      {
-        theme: 'Égalité des sexes et lutte contre le patriarcat',
-        reason:
-          "Le texte souligne que le féminisme vise à établir l'égalité entre hommes et femmes et critique la domination masculine dans les sociétés modernes."
-      },
-      {
-        theme: 'Droits et libertés des femmes',
-        reason:
-          'Il détaille les conquêtes historiques du féminisme : droit de vote, éducation, travail, salaire égal, propriété, contraception, avortement et protection contre les violences.'
-      },
-      {
-        theme: 'Évolution et diversité des courants féministes',
-        reason:
-          'Le passage décrit les différentes vagues (première, deuxième, etc.) et les courants (libéral, socialiste, radical) ainsi que les nouvelles formes comme le féminisme intersectionnel.'
-      },
-      {
-        theme: 'Critiques et inclusion intersectionnelle',
-        reason:
-          'Le texte mentionne les critiques du féminisme blanc et la naissance de mouvements spécifiques (féminisme noir, intersectionnel) pour intégrer les perspectives raciales, de classe et de genre.'
-      }
-    ]
-  }
+const summaries: Ref<string[]> = ref([
+  
+      "Le féminisme désigne un ensemble de mouvements et d'idéologies sociopolitiques visant à instaurer l'égalité politique, économique, personnelle et sociale entre les sexes. Il part du principe que les sociétés modernes sont patriarcales et que les femmes y subissent des injustices. Depuis la fin du XVIIIᵉ siècle, les luttes féministes ont obtenu le droit de vote, l'accès à l'éducation, le travail, l'égalité salariale, la propriété, le droit à la contraception, à l'avortement et à la protection contre les violences sexuelles. Le féminisme s’est diversifié en plusieurs courants (libéral, socialiste, radical, intersectionnel, etc.) et a suscité des critiques quant à la prise en compte exclusive de perspectives blanches, hétérosexuelles et de classe moyenne, menant à la création de formes plus inclusives comme le féminisme noir et intersectionnel."
 ]);
 const newFilesToSearch: Ref<Record<string, File>> = ref({});
 const learningObjectives: Ref<Record<string, string>[]> = ref([]);
 const searchResults: Ref<Document[]> = ref([]);
 const docsToSend: Ref<Record<string, string>[]> = ref([]);
 const competencies: Ref<Record<string, any>[]> = ref([]);
+
+
+export interface CourseMetadata {
+topic?: string
+discipline?: string
+level?: string
+num_sessions?: number
+session_duration?: number
+user_description?: string
+session_type?: string
+class_size?: number
+session_mode?: 'in person' | 'remote' | 'hybrid'
+output_language: 'french' | 'english'
+}
+
+const courseMetadaRef: Ref<CourseMetadata> = ref({
+  topic: undefined,
+  discipline: undefined,
+  level: undefined,
+  num_sessions: undefined,
+  session_duration: 1,
+  user_description: undefined,
+  session_type: undefined,
+  class_size: undefined,
+  session_mode: 'in person',
+  output_language: 'french'
+})
+
+const filesRef: Ref<File[]> = ref([]);
+
+
+const setCourseMetadata = (args: CourseMetadata): undefined => {
+  courseMetadaRef.value = {...args}
+}
+
 
 const getFilesContent = async () => {
   const files = Object.values(newFilesToSearch.value).filter((e) => e);
@@ -56,6 +66,7 @@ const getFilesContent = async () => {
   files.forEach((file) => {
     if (file) {
       formData.append('files', file);
+      filesRef.value.push(file);
     }
   });
   try {
@@ -65,7 +76,15 @@ const getFilesContent = async () => {
     if (resp.status === 204) {
       throw new Error('retry getFilesContent');
     } else {
-      extracts.value = resp.data.extracts;
+      const red_summaries = resp.data.extracts.reduce(
+          (acc: string[], curr: { summary: string }) => {
+            acc = [...acc, curr.summary];
+            return acc;
+          },
+          []
+        );
+      summaries.value = red_summaries;
+      scrollToAnchor(`target-${2 + 1}`);
     }
   } catch (error: any) {
     throw new Error(error);
@@ -79,72 +98,50 @@ const addFile = (e: any, input_id: string) => {
     ...newFilesToSearch.value,
     [input_id]: targetFile
   };
+  filesRef.value.push(targetFile);
 };
+
+ const updateSummary = (index: number, content: string) => {
+    summaries.value[index] = content;
+  };
 
 const handdleSearch = async () => {
   // Logic to search for relevant documents
   const response = await basePostAxios('/tutor/search_extracts', {
-    summaries: [extracts.value[0].summary]
+    summaries: [summaries.value[0]]
   });
 
   const docs = response.data.documents.map((doc) => ({
-    metadata: {
-      title: doc.payload.document_title,
-      url: doc.payload.document_url,
-      description: doc.payload.document_desc,
-      source: doc.payload.document_corpus
-    },
+    metadata: courseMetadaRef.value,
     text: doc.payload.slice_content,
     relevance_score: doc.score
   }));
+
+  scrollToAnchor(`target-${3 + 1}`);
 
   docsToSend.value = docs;
 
   searchResults.value = response.data.documents;
 
-  console.log(response.data);
 };
 
 const handleCreateDescription = async () => {
   // Logic to create a course description
   const response = await basePostAxios('/tutor/syllabus/description', {
-    course_metadata: {
-      topic: course_title,
-      discipline,
-      level,
-      num_sessions: 12,
-      session_duration: 50,
-      user_description: course_description,
-
-      session_type: 'cours magistral',
-      class_size: 30,
-      session_mode: 'PRESENTIEL',
-      output_language: 'fr'
-    },
-    context_text: extracts.value[0].summary,
-    mode: 'new syllabus'
+    course_metadata: courseMetadaRef.value,
+    context_text: summaries.value[0],
+    mode: mode.value
   });
-  description.value = response.data.text;
+  tutorDescription.value = response.data.text;
 };
 
 const handleCreateLearningObjectives = async () => {
   // Logic to create learning objectives
   const response = await basePostAxios('/tutor/syllabus/learning_objectives', {
-    course_metadata: {
-      topic: course_title,
-      discipline,
-      level,
-      num_sessions: 12,
-      session_duration: 50,
-      user_description: course_description,
-      session_type: 'cours magistral',
-      class_size: 30,
-      session_mode: 'PRESENTIEL',
-      output_language: 'fr'
-    },
-    context_text: extracts.value[0].summary,
-    description: description.value,
-    mode: 'new syllabus'
+    course_metadata: courseMetadaRef.value,
+    context_text: summaries.value[0],
+    description: tutorDescription.value,
+    mode: mode.value
   });
 
   learningObjectives.value = response.data.objectives;
@@ -154,25 +151,13 @@ const handleCreateLearningObjectives = async () => {
 
 const handleIntegrateSustainability = async () => {
   const payload = {
-    description: description.value,
+    description: tutorDescription.value,
     sdg_resources: docsToSend.value,
-    course_metadata: {
-      topic: course_title,
-      discipline,
-      level,
-      num_sessions: 12,
-      session_duration: 50,
-      user_description: course_description,
-      session_type: 'cours magistral',
-      class_size: 30,
-      session_mode: 'PRESENTIEL',
-      output_language: 'fr'
-    },
+    course_metadata: courseMetadaRef.value,
     objectives: { objectives: learningObjectives.value },
-    mode: 'new syllabus'
+    mode: mode.value
   };
 
-  console.log('Payload for sustainability integration:', payload);
   // Logic to integrate sustainability
   const response = await basePostAxios('/tutor/syllabus/sustainability_integration', payload);
 
@@ -183,26 +168,13 @@ const handleIntegrateSustainability = async () => {
 
 const handleCreateLearningOutcomes = async () => {
   const payload = {
-    description: description.value,
+    description: tutorDescription.value,
     sdg_resources: docsToSend.value,
-    course_metadata: {
-      topic: course_title,
-      discipline,
-      level,
-      num_sessions: 12,
-      session_duration: 50,
-      user_description: course_description,
-      session_type: 'cours magistral',
-      class_size: 30,
-      session_mode: 'PRESENTIEL',
-      output_language: 'fr'
-    },
+    course_metadata: courseMetadaRef.value,
     objectives: { objectives: learningObjectives.value },
-    mode: 'new syllabus',
+    mode: mode.value,
     sustainability_map: sustainability_map.value
   };
-
-  console.log('Payload for learning outcomes creation:', payload);
   // Logic to create learning outcomes
   const response = await basePostAxios('/tutor/syllabus/learning_outcomes', payload);
 
@@ -214,7 +186,7 @@ const handleCreateLearningOutcomes = async () => {
 const handleCompetencyMapping = async () => {
   const payload = {
     outcomes: outcomes.value,
-    output_language: 'fr'
+    output_language: courseMetadaRef.value.output_language,
   };
   // Logic to create learning outcomes
   const response = await basePostAxios('/tutor/syllabus/competency_map', payload);
@@ -223,23 +195,54 @@ const handleCompetencyMapping = async () => {
 
   console.log(response.data);
 };
+
 </script>
 
 <template>
   <div class="test-mas">
-    <h1>Test MAS</h1>
-    <p>This is a test page for the MAS component.</p>
-    <input
-      ref="fileInputRef"
-      class="input"
-      type="file"
-      accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      placeholder="Enter the new file"
-      data-testid="file-input"
-      @change="(e) => addFile(e, 'file_0')"
+    <FeaturePresentation :id_number="0" />
+    <UserInputMas :id_number="1" @submit="setCourseMetadata" />
+
+    <div id="target-2" class="file-section">
+      <h2 class="title is-4 is-size-5-mobile">File Upload and Content Extraction</h2>
+      <input
+        ref="fileInputRef"
+        class="input"
+        type="file"
+        accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        placeholder="Enter the new file"
+        data-testid="file-input"
+        @change="(e) => addFile(e, 'file_0')"
+      />
+      <div class="action-button">
+
+        <button class="button is-primary" @click="getFilesContent">Get Files Content</button>
+      </div>
+    </div>
+
+    <SummariesStep
+        :id_number="3"
+        :updateSummary="updateSummary"
+        :summaries="summaries"
+        :files="filesRef"
+        :action="handdleSearch"
+        actionText="search"
+      />
+
+
+    
+
+    <SourcesList
+      :id_number="4"
+      v-if="searchResults.length > 0"
+      data-test="second-step"
+      :sources="searchResults"
+      actionText="genSyllabus"
+      :appendSource="(arg: Document) => {}"
+      :selectedSources="[]"
+      :action="() => {}"
     />
-    <button class="button is-primary" @click="getFilesContent">Get Files Content</button>
-    <button class="button is-secondary" @click="handdleSearch">search</button>
+
     <button class="button is-secondary" @click="handleCreateDescription">create description</button>
     <button class="button is-tertiary" @click="handleCreateLearningObjectives">
       create learning objectives
@@ -251,22 +254,10 @@ const handleCompetencyMapping = async () => {
       create learning outcomes
     </button>
     <button class="button is-tertiary" @click="handleCompetencyMapping">competency mapping</button>
-    <p v-if="extracts.length > 0" v-for="extract in extracts" :key="extract">
-      Extracts: {{ extract.summary }}
-    </p>
-    <SourcesList
-      v-if="searchResults.length > 0"
-      data-test="second-step"
-      :sources="searchResults"
-      actionText="genSyllabus"
-      :appendSource="(arg: Document) => {}"
-      :selectedSources="[]"
-      :action="() => {}"
-    />
 
-    <p v-if="description" class="mt-4"></p>
+    <p v-if="tutorDescription" class="mt-4"></p>
     <p>----- description -----</p>
-    <p>Course Description: {{ description }}</p>
+    <p>Course Description: {{ tutorDescription }}</p>
 
     <ol v-if="learningObjectives.length > 0" class="mt-4">
       ----- learning objectives -----
@@ -311,3 +302,23 @@ const handleCompetencyMapping = async () => {
     </ol>
   </div>
 </template>
+
+
+<style lang="css" scoped>
+.test-mas {
+  padding: 3rem;
+}
+.file-section {
+  margin: 2rem 0;
+  width: 100%;
+  
+  padding: 10rem 0rem
+}
+
+.action-button {
+  margin-top: 1rem;
+  margin-left: auto;
+  display: flex;
+  justify-content: flex-end;
+}
+</style>
