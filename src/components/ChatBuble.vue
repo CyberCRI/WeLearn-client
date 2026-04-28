@@ -93,7 +93,7 @@ const copyMessage = (msg: string) => {
   text-align: justify;
 }
 .chat-bubble.last-message {
-  padding-bottom: 15rem;
+  padding-bottom: 5rem;
 }
 
 .cahtAvatar {
