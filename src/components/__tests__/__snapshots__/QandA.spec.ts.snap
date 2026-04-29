@@ -44,7 +44,7 @@ exports[`QandA > renders properly 1`] = `
               emptyChatPresentation
             </div>
             <div
-              class="mt-6"
+              class="mt-3"
               data-v-c98dfe8d=""
             >
               emptyChatAction
