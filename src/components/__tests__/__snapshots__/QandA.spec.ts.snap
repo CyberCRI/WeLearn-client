@@ -1001,7 +1001,23 @@ exports[`QandA > renders properly 1`] = `
     </div>
     
     <!--v-if-->
-    <!--v-if-->
+    <div
+      class="sources-list"
+      data-v-dbbc9003=""
+      data-v-eedbfc9b=""
+    >
+      <!-- fetching -->
+      <div
+        data-v-eedbfc9b=""
+      >
+        <!--v-if-->
+        <!--v-if-->
+      </div>
+      <!-- results -->
+      <!--v-if-->
+      <!-- error  -->
+      <!--v-if-->
+    </div>
     <!--v-if-->
     
   </div>

@@ -19,11 +19,14 @@ const computedStatus = computed(() => chatstore.chatStatus);
       <FiltersComponent :shouldClose="computedStatus === CHAT_STATUS.FORMULATING_ANSWER" />
       <ReformulatedQuery v-if="chatstore.reformulatedQuery" :query="chatstore.reformulatedQuery" />
       <SourcesListComponentVue
-        v-if="chatstore.sourcesList.length"
         cardType="simple"
         :shouldDisplayScore="!!chatstore.shouldDisplayScore"
         :sourcesList="
-          [CHAT_STATUS.DONE, CHAT_STATUS.FORMULATING_ANSWER].includes(computedStatus)
+          [
+            CHAT_STATUS.DONE,
+            CHAT_STATUS.FORMULATING_ANSWER,
+            CHAT_STATUS.FORMULATED_ANSWER
+          ].includes(computedStatus)
             ? chatstore.sourcesList.slice(0, 7)
             : []
         "
