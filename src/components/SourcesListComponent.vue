@@ -15,7 +15,7 @@ const store = useBookmarksStore();
 
 const props = defineProps<{
   hideSteps?: boolean;
-  sourcesList: Document[] | null;
+  sourcesList: Document[] | [];
   isSourcesError: boolean;
   isFetchingSources: boolean;
   fetchingAnswer?: boolean;
@@ -49,7 +49,6 @@ const ChosenCard = Cards[props.cardType || 'default'];
         }}
       </h2>
       <h2 v-else-if="fetchingAnswer">{{ $t('sourcesList.formulatingAnswer') }}</h2>
-      <h2 v-else>...</h2>
     </div>
     <!-- results -->
 

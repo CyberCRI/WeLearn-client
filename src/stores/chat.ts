@@ -28,7 +28,7 @@ export const useChatStore = defineStore('chat', () => {
   const chatInput: Ref<string> = ref('');
   const chatMessagesList: Ref<ChatMessage[]> = ref(getFromStorage('chat') || []);
   const questionQueues: Ref<string[] | null> = ref(getFromStorage('questionQueues'));
-  const sourcesList: Ref<Document[]> = ref(getFromStorage('chatSources') || []);
+  const sourcesList: Ref<Document[] | []> = ref(getFromStorage('chatSources') || []);
   const reformulatedQuery: Ref<string | null> = ref(getFromStorage('reformulatedQuery'));
   const storedThreadId: Ref<string | null> = ref(localStorage.getItem('chatThreadId'));
   const storedMessageId: Ref<string | null> = ref(localStorage.getItem('chatMessageId'));
