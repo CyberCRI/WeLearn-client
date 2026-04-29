@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
@@ -8,6 +8,7 @@ import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';
+import { scrollToAnchor } from '@/utils/navigation';
 
 const store = useTutorStore();
 
@@ -43,6 +44,10 @@ const stepToAction: Record<1 | 2 | 3 | 4, (arg?: any) => Promise<void>> = {
   3: store.handleCreateSyllabus,
   4: store.handleDownloadSyllabus
 };
+
+onMounted(() => {
+  scrollToAnchor(`target-${store.step}`);
+});
 </script>
 <template>
   <div class="content-centered-wrapper">
