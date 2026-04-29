@@ -65,7 +65,7 @@ const store = useSearchStore();
             store.displayNoResult
           "
           hideRefIndicator
-          :sourcesList="store.searchResults"
+          :sourcesList="store.searchResults || []"
           :isSourcesError="store.hasSourcesError"
           :isFetchingSources="store.isFetchingSources"
           :shouldDisplayScore="store.shouldDisplayScore"
@@ -89,6 +89,7 @@ const store = useSearchStore();
   overflow-y: auto;
   padding: 1rem 3rem 0rem 3rem;
 }
+
 .delete-button-wrapper {
   position: absolute;
   top: 0;
