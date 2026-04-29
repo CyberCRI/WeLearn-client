@@ -7,7 +7,7 @@ defineProps<{
 <template>
   <div class="chat-default">
     <div>{{ $t('emptyChatPresentation') }}</div>
-    <div class="mt-6">{{ $t('emptyChatAction') }}</div>
+    <div class="mt-3">{{ $t('emptyChatAction') }}</div>
   </div>
 </template>
 <style scoped>
@@ -24,6 +24,16 @@ defineProps<{
   cursor: pointer;
   margin-bottom: 0.5rem;
   text-align: left;
+}
+
+@media screen and (min-width: 1300) {
+  .chat-default {
+    text-align: center;
+    & > * {
+      text-align: center;
+      font-size: 0.5rem;
+    }
+  }
 }
 
 @media screen and (min-width: 576px) {

@@ -24,13 +24,8 @@ defineEmits(['update:modelValue']);
 <style scoped>
 .textarea {
   border: none;
-  height: 5em;
+  height: 100%;
   padding: 2rem;
-  transition: all 0.5s ease;
-}
-
-.textarea:focus {
-  height: 15em;
 }
 
 @media screen and (max-width: 768px) {

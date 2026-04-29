@@ -143,7 +143,7 @@ const handleOnWheel = () => {
 @media screen and (min-width: 768px) {
   .bottom-wrapper {
     width: 100%;
-    padding-bottom: 5rem;
+    padding-bottom: 1rem;
   }
   .scroll-arrow {
     all: unset;

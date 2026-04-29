@@ -17,6 +17,22 @@
   margin-bottom: 1rem;
 }
 
+.text-area {
+  transition: all 0.5s ease;
+}
+
+.search-container:hover {
+  & > .text-area {
+    height: 19em;
+  }
+}
+
+.search-container:not(:hover) {
+  & > .text-area:has(.textarea:not([value=''])) {
+    height: 5em;
+  }
+}
+
 .filters {
   position: relative;
   display: flex;

@@ -61,7 +61,7 @@ defineProps<{
   background: var(--neutral-50);
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1450px) {
   .card-content {
     padding: 0.5rem;
   }

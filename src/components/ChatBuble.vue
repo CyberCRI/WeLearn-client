@@ -113,6 +113,12 @@ const copyMessage = (msg: string) => {
   }
 }
 
+@media screen and (max-width: 1450px) {
+  .chat-bubble.last-message {
+    padding-bottom: 1rem;
+  }
+}
+
 @media screen and (max-width: 576px) {
   .chat-bubble-content {
     display: flex;
