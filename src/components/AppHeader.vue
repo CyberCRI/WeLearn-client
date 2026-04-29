@@ -23,7 +23,7 @@
   max-height: clamp(24px, 5vw, 3.5em);
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 1330px) {
   .app-header-link {
     display: none;
     & > * {

@@ -67,15 +67,26 @@ defineProps<{
 }
 
 @media screen and (max-width: 1450px) {
+  .link-wrapper {
+    padding-inline: 0.25rem;
+  }
+  router-link {
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    font-size: 0.5rem;
+
+    gap: 0rem;
+    margin: 0 0.05rem;
+  }
+}
+
+@media screen and (max-width: 1100px) {
   .item-name {
     display: none;
     visibility: hidden;
     opacity: 0;
     width: 0rem;
     white-space: nowrap;
-  }
-  .router-link {
-    gap: 0;
   }
 }
 
