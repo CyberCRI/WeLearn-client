@@ -131,7 +131,7 @@ export const useChatStore = defineStore('chat', () => {
     const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
     const body = {
       query: userMsg,
-      threadId: storedConversationId.value,
+      ...(storedConversationId.value && { thread_id: storedConversationId.value }),
       corpora: selectedCorpus,
       sdg_filter: sdgFilters
     };
@@ -143,7 +143,7 @@ export const useChatStore = defineStore('chat', () => {
       sourcesList.value = data.docs;
     }
 
-    storeConversationId(data.conversation_id);
+    storeConversationId(data.thread_id);
     storeMessageId(data.message_id);
 
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
