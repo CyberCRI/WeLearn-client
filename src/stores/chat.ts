@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ChatMessage } from '@/types';
-import { basePostAxios } from '@/utils/fetch';
+import { baseGetAxios, basePostAxios } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import i18n from '@/localisation/i18n';
@@ -30,13 +30,26 @@ export const useChatStore = defineStore('chat', () => {
   const questionQueues: Ref<string[] | null> = ref(getFromStorage('questionQueues'));
   const sourcesList: Ref<Document[]> = ref(getFromStorage('chatSources') || []);
   const reformulatedQuery: Ref<string | null> = ref(getFromStorage('reformulatedQuery'));
-  const storedConversationId: Ref<string | null> = ref(localStorage.getItem('chatConversationId'));
+  const storedThreadId: Ref<string | null> = ref(localStorage.getItem('chatThreadId'));
   const storedMessageId: Ref<string | null> = ref(localStorage.getItem('chatMessageId'));
 
   const isChatEmpty: ComputedRef<Boolean> = computed(() => chatMessagesList.value.length === 0);
   const chatStatus: Ref<(typeof CHAT_STATUS)[CHAT_STATUSES_TYPE]> = ref(
     isChatEmpty.value ? CHAT_STATUS.EMPTY : CHAT_STATUS.DONE
   );
+  const initializeChat = async () => {
+    if (!storedThreadId.value) {
+      return;
+    }
+    const chatThread = await baseGetAxios(`/qna/chat/history?thread_id=${storedThreadId.value}`);
+
+    if (chatThread.length > 0) {
+      chatStatus.value = CHAT_STATUS.DONE;
+      isChatEmpty.value = false;
+    }
+
+    chatMessagesList.value = chatThread;
+  };
 
   const shouldFetchNewDocuments: Ref<boolean> = ref(true);
   const subjectHasChanged: Ref<boolean> = ref(true);
@@ -89,10 +102,10 @@ export const useChatStore = defineStore('chat', () => {
     chatInput.value = '';
   }
 
-  function storeConversationId(conversationId: string) {
-    if (conversationId !== storedConversationId.value) {
-      localStorage.setItem('chatConversationId', conversationId);
-      storedConversationId.value = conversationId;
+  function storeThreadId(threadId: string) {
+    if (threadId !== storedThreadId.value) {
+      localStorage.setItem('chatThreadId', threadId);
+      storedThreadId.value = threadId;
     }
   }
 
@@ -131,7 +144,7 @@ export const useChatStore = defineStore('chat', () => {
     const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
     const body = {
       query: userMsg,
-      threadId: storedConversationId.value,
+      ...(storedThreadId.value && { thread_id: storedThreadId.value }),
       corpora: selectedCorpus,
       sdg_filter: sdgFilters
     };
@@ -143,7 +156,7 @@ export const useChatStore = defineStore('chat', () => {
       sourcesList.value = data.docs;
     }
 
-    storeConversationId(data.conversation_id);
+    storeThreadId(data.thread_id);
     storeMessageId(data.message_id);
 
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
@@ -175,11 +188,16 @@ export const useChatStore = defineStore('chat', () => {
     try {
       chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
       await getAgentAnswer(message);
-      await getNewQuestions(message);
     } catch (error) {
       chatStatus.value = CHAT_STATUS.ERROR;
       console.error(error);
       return;
+    }
+
+    try {
+      await getNewQuestions(message);
+    } catch (error) {
+      console.error('Failed to fetch new questions:', error);
     }
 
     chatStatus.value = CHAT_STATUS.DONE;
@@ -194,19 +212,20 @@ export const useChatStore = defineStore('chat', () => {
     reformulatedQuery.value = null;
     shouldFetchNewDocuments.value = true;
     storedSubject.value = undefined;
-    storedConversationId.value = null;
+    storedThreadId.value = null;
     storedMessageId.value = null;
     clearFromStorage('chat');
     clearFromStorage('chatSources');
     clearFromStorage('questionQueues');
     clearFromStorage('reformulatedQuery');
     clearFromStorage('chatSubject');
-    clearFromStorage('chatConversationId');
+    clearFromStorage('chatThreadId');
     clearFromStorage('chatMessageId');
   }
 
   return {
     chatStatus,
+    initializeChat,
     chatInput,
     chatMessagesList,
     questionQueues,
