@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import ColumnTemplate from '@/components/ColumnTemplate.vue';
 import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import ChatComponent from '@/components/ChatComponent.vue';
@@ -9,6 +9,10 @@ import FiltersComponent from '@/components/FiltersComponent.vue';
 
 const chatstore = useChatStore();
 const computedStatus = computed(() => chatstore.chatStatus);
+
+onBeforeMount(() => {
+  chatstore.initializeChat();
+});
 </script>
 <template>
   <ColumnTemplate>
