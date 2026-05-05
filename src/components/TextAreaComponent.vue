@@ -24,6 +24,7 @@ defineEmits(['update:modelValue']);
 <style scoped>
 .textarea {
   border: none;
+  height: 100%;
   padding: 2rem;
 }
 

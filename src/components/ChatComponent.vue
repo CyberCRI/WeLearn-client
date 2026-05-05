@@ -62,7 +62,7 @@ const computedStatus = computed(() => store.chatStatus);
           :action="(content: string) => store.onSendMessage(content)"
           class="queues-wrapper"
         >
-          <p v-if="CHAT_STATUS.DONE === computedStatus" class="subtitle is-6 ml-4">
+          <p v-if="CHAT_STATUS.DONE === computedStatus" class="subtitle is-6 ml-4 mb-2">
             {{ $t('hintForNewQuestions') }}
           </p>
 
