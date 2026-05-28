@@ -23,7 +23,11 @@ export const test = base.extend({
     });
 
     // Mock search-related calls
+
     await page.route('**/**/search/**', async (route) => {
+      await page.evaluate(() =>
+        localStorage.setItem('sessionId', JSON.stringify('fake_session_id'))
+      );
       const url = route.request().url();
       if (url.includes('collections')) {
         const json = [{ name: 'fake-collection', category: 'fake-category' }];

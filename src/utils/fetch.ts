@@ -4,13 +4,24 @@ export const API_BASE = import.meta.env.VITE_API_BASE;
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 export const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
 
+const getSessionIdFromStorage = () => {
+  try {
+    const sessionId = localStorage.getItem('sessionId');
+    return sessionId ? JSON.parse(sessionId) : '';
+  } catch (error) {
+    console.error('Error parsing sessionId from localStorage:', error);
+    return '';
+  }
+};
+
 export const baseGetAxios = async (endpoint: string) => {
   if (!API_BASE) throw new Error('API_BASE not defined');
 
   const response = await axios.get(`${API_BASE}${API_VERSION}${endpoint}`, {
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   });
 
@@ -30,7 +41,8 @@ export const basePostAxios = async (
     ...config,
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   };
 
@@ -59,7 +71,8 @@ export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestCon
     ...config,
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   };
 
@@ -129,7 +142,8 @@ export const fetchStream = async (
     headers: {
       Accept: '*/*',
       'Content-Type': 'application/json',
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   });
 
@@ -149,7 +163,8 @@ export const deleteBookmark = async (documentId: string) => {
     {
       withCredentials: true,
       headers: {
-        'X-API-Key': WL_API_KEY
+        'X-API-Key': WL_API_KEY,
+        'X-Session-Id': getSessionIdFromStorage()
       }
     }
   );
@@ -160,7 +175,8 @@ export const deleteAllBookmarks = async () => {
   await axios.delete(`${API_BASE}${API_VERSION}/user/bookmarks`, {
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   });
 };

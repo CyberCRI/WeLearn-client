@@ -22,7 +22,7 @@ describe('fetch', () => {
         expect(axios.post).toHaveBeenCalledWith(
           `${API_BASE}/api/v1/endpoint`,
           {},
-          { headers: { 'X-API-Key': WL_API_KEY }, withCredentials: true }
+          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' }, withCredentials: true }
         );
       });
 
@@ -34,7 +34,7 @@ describe('fetch', () => {
           {
             filter: 'i am a filter'
           },
-          { headers: { 'X-API-Key': WL_API_KEY }, withCredentials: true }
+          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' }, withCredentials: true }
         );
       });
     });
@@ -59,7 +59,7 @@ describe('fetch', () => {
         await baseGetAxios('/endpoint');
         expect(axios.get).toHaveBeenCalledTimes(1);
         expect(axios.get).toHaveBeenCalledWith(`${API_BASE}/api/v1/endpoint`, {
-          headers: { 'X-API-Key': WL_API_KEY },
+          headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' },
           withCredentials: true
         });
       });
