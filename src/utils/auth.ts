@@ -17,6 +17,7 @@ const handleUserAndSessionPost = async (referer?: string): Promise<string> => {
 
   const query = parts.length ? `?${parts.join('&')}` : '';
   const response = await basePostAxios(`/user/user_and_session${query}`);
+  localStorage.setItem('sessionId', JSON.stringify(response.data.session_id));
 
   if (!response || !response.data) {
     throw new Error('Invalid response from server');
