@@ -95,9 +95,8 @@ const handleTextEdit = (event, index) => {
           @paste="sanitizePaste"
           @blur="handleTextEdit($event, index)"
           :class="{ validated: !editableParagraphs[index] }"
-        >
-          {{ summary }}
-        </p>
+          v-html="summary"
+        />
       </div>
     </div>
     <div class="is-flex is-justify-content-end mt-4">
