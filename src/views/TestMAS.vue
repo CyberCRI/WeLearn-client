@@ -160,6 +160,22 @@ const handleIntegrateSustainability = async () => {
   console.log(response.data);
 };
 
+const handleGenerateSyllabus = async () => {
+  const payload = {
+    provided_description: courseMetadaRef.value.user_description,
+    rag_resources: docsToSend.value,
+    course_metadata: courseMetadaRef.value,
+    mode: mode.value,
+    provided_objectives: undefined
+  };
+  // Logic to generate syllabus
+  const response = await basePostAxios('/tutor/api/generate', payload);
+
+  data.value = response.data;
+
+  console.log(response.data);
+};
+
 const handleCreateLearningOutcomes = async () => {
   const payload = {
     description: tutorDescription.value,
@@ -188,6 +204,62 @@ const handleCompetencyMapping = async () => {
   competencies.value = response.data.mappings;
 
   console.log(response.data);
+};
+
+const tabs = [
+  {
+    label: '📚 Objectives',
+    value: 'objectives'
+  },
+  {
+    label: '🌍 Sustainability',
+    value: 'sustainability'
+  },
+  {
+    label: '🎯 Outcomes',
+    value: 'outcomes'
+  },
+  {
+    label: '💡 Competencies',
+    value: 'competencies'
+  },
+  {
+    label: '✅ Validation',
+    value: 'validation'
+  }
+];
+
+const data = ref(undefined) as any; // to avoid TS errors, will be passed as prop in the actual use case
+
+const activeTab = ref('objectives');
+
+const openAccordions = ref({});
+
+// const editedObjectivesText = ref(
+//   data.value.objectives.objectives.map((obj) => `${obj.number}. ${obj.text}`).join('\n')
+// );
+
+// const editedOutcomesText = ref(
+//   data.value.outcomes.outcomes.map((out) => `${out.number}. ${out.text}`).join('\n')
+// );
+const editedObjectivesText = ref('');
+const editedOutcomesText = ref('');
+const feedbackText = ref('');
+
+const toggleAccordion = (key) => {
+  openAccordions.value[key] = !openAccordions.value[key];
+};
+
+const isOriginalObjective = (text) => {
+  return props.originalObjectives.includes(text);
+};
+
+const getConnection = (objectiveNumber) => {
+  return data.sustainability.connections.find((c) => c.objective_number === objectiveNumber);
+};
+
+const findDocument = (resourceRef) => {
+  return data.sustainability.resources_used?.find((doc) => doc.reference === resourceRef);
 };
 </script>
 
@@ -232,73 +304,322 @@ const handleCompetencyMapping = async () => {
       :action="() => {}"
     />
 
-    <button class="button is-secondary" @click="handleCreateDescription">create description</button>
-    <button class="button is-tertiary" @click="handleCreateLearningObjectives">
-      create learning objectives
-    </button>
-    <button class="button is-tertiary" @click="handleIntegrateSustainability">
-      integrate sustainability
-    </button>
-    <button class="button is-tertiary" @click="handleCreateLearningOutcomes">
-      create learning outcomes
-    </button>
-    <button class="button is-tertiary" @click="handleCompetencyMapping">competency mapping</button>
+    <button class="button is-secondary" @click="handleGenerateSyllabus">Generate Syllabus</button>
 
-    <p v-if="tutorDescription" class="mt-4"></p>
-    <p>----- description -----</p>
-    <SummariesStep
-      :id_number="3"
-      :updateSummary="updateSummary"
-      :summaries="tutorDescription ? [tutorDescription] : []"
-      :files="filesRef"
-      :action="handdleSearch"
-      actionText="search"
-    />
+    <div class="framework-tabs" v-if="data">
+      <!-- Tabs -->
+      <div class="tabs-header">
+        <button
+          v-for="tab in tabs"
+          :key="tab.value"
+          :class="['tab-btn', activeTab === tab.value ? 'active' : '']"
+          @click="activeTab = tab.value"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
 
-    ----- learning objectives -----
-    <SummariesStep
-      :id_number="3"
-      :updateSummary="updateSummary"
-      :summaries="learningObjectives.length > 0 ? learningObjectives : []"
-      :files="filesRef"
-      :action="handdleSearch"
-      actionText="search"
-    />
+      <!-- OBJECTIVES -->
+      <div v-if="activeTab === 'objectives'" class="tab-content">
+        <h2>Learning Objectives</h2>
 
-    ----- sustainability connections -----
-    <SummariesStep
-      v-if="sustainability_map?.connections?.length > 0"
-      :id_number="3"
-      :updateSummary="updateSummary"
-      :summaries="sustainability_map.connections"
-      :files="filesRef"
-      :action="handdleSearch"
-      actionText="search"
-    />
+        <div v-if="originalObjectives.length" class="info-box">
+          <strong>Note:</strong>
+          Objectives in <strong>bold</strong> are your original objectives.
+        </div>
 
-    <SummariesStep
-      v-if="outcomes.length > 0"
-      :id_number="3"
-      :updateSummary="updateSummary"
-      :summaries="outcomes"
-      :files="filesRef"
-      :action="handdleSearch"
-      actionText="search"
-    />
+        <div v-for="obj in data.objectives.objectives" :key="obj.number" class="accordion">
+          <div class="accordion-header" @click="toggleAccordion(`objective-${obj.number}`)">
+            <div>
+              <strong v-if="isOriginalObjective(obj.text)">
+                📚 {{ obj.number }}. {{ obj.text }}
+              </strong>
 
-    <SummariesStep
-      v-if="competencies.length > 0"
-      :id_number="3"
-      :updateSummary="updateSummary"
-      :summaries="competencies"
-      :files="filesRef"
-      :action="handdleSearch"
-      actionText="search"
-    />
+              <span v-else> 📚 {{ obj.number }}. {{ obj.text }} </span>
+            </div>
+
+            <span>
+              {{ openAccordions[`objective-${obj.number}`] ? '−' : '+' }}
+            </span>
+          </div>
+
+          <div v-if="openAccordions[`objective-${obj.number}`]" class="accordion-content">
+            <template v-if="getConnection(obj.number)">
+              <h3>🌍 Sustainability Integration</h3>
+
+              <p>
+                <strong>SDG Themes:</strong>
+                {{ getConnection(obj.number).sdg_themes.join(', ') }}
+              </p>
+
+              <p>
+                <strong>Connection:</strong>
+                {{ getConnection(obj.number).connection_explanation }}
+              </p>
+
+              <div v-if="getConnection(obj.number).key_resources?.length">
+                <h4>📚 Resources Used</h4>
+
+                <div
+                  v-for="resourceRef in getConnection(obj.number).key_resources"
+                  :key="resourceRef"
+                  class="resource-item"
+                >
+                  <template v-if="findDocument(resourceRef)">
+                    <a
+                      v-if="findDocument(resourceRef).url"
+                      :href="findDocument(resourceRef).url"
+                      target="_blank"
+                    >
+                      {{
+                        findDocument(resourceRef).metadata?.document_title ||
+                        findDocument(resourceRef).text?.slice(0, 50)
+                      }}
+                    </a>
+
+                    <span v-else>
+                      {{
+                        findDocument(resourceRef).metadata?.document_title ||
+                        findDocument(resourceRef).text?.slice(0, 50)
+                      }}
+                    </span>
+
+                    <small>
+                      This resource provides examples and evidence for sustainability integration.
+                    </small>
+                  </template>
+
+                  <span v-else>{{ resourceRef }}</span>
+                </div>
+              </div>
+            </template>
+
+            <div v-else class="info-box">No sustainability integration available yet.</div>
+          </div>
+        </div>
+
+        <!-- Edit objectives -->
+        <div class="editor-section">
+          <label>
+            <strong>Edit all objectives:</strong>
+          </label>
+
+          <textarea v-model="editedObjectivesText" rows="10" class="textarea" />
+        </div>
+      </div>
+
+      <!-- SUSTAINABILITY -->
+      <div v-if="activeTab === 'sustainability'" class="tab-content">
+        <h2>Sustainability Integration</h2>
+
+        <div
+          v-for="conn in data.sustainability.connections"
+          :key="conn.objective_number"
+          class="accordion"
+        >
+          <div
+            class="accordion-header"
+            @click="toggleAccordion(`sustain-${conn.objective_number}`)"
+          >
+            <div>🎯 Objective {{ conn.objective_number }}</div>
+
+            <span>
+              {{ openAccordions[`sustain-${conn.objective_number}`] ? '−' : '+' }}
+            </span>
+          </div>
+
+          <div v-if="openAccordions[`sustain-${conn.objective_number}`]" class="accordion-content">
+            <p>
+              <strong>SDG Themes:</strong>
+              {{ conn.sdg_themes.join(', ') }}
+            </p>
+
+            <p>
+              <strong>Connection:</strong>
+              {{ conn.connection_explanation }}
+            </p>
+
+            <div v-if="conn.key_resources?.length">
+              <h4>📚 Sources Used</h4>
+
+              <div
+                v-for="resourceRef in conn.key_resources"
+                :key="resourceRef"
+                class="resource-item"
+              >
+                <template v-if="findDocument(resourceRef)">
+                  <a
+                    v-if="findDocument(resourceRef).url"
+                    :href="findDocument(resourceRef).url"
+                    target="_blank"
+                  >
+                    {{
+                      findDocument(resourceRef).metadata?.title ||
+                      findDocument(resourceRef).text?.slice(0, 50)
+                    }}
+                  </a>
+
+                  <span v-else>
+                    {{
+                      findDocument(resourceRef).metadata?.title ||
+                      findDocument(resourceRef).text?.slice(0, 50)
+                    }}
+                  </span>
+
+                  <small>
+                    Author:
+                    {{ findDocument(resourceRef).metadata?.author || 'N/A' }}
+                  </small>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTCOMES -->
+      <div v-if="activeTab === 'outcomes'" class="tab-content">
+        <h2>Learning Outcomes</h2>
+
+        <textarea v-model="editedOutcomesText" rows="12" class="textarea" />
+      </div>
+
+      <!-- COMPETENCIES -->
+      <div v-if="activeTab === 'competencies'" class="tab-content">
+        <h2>GreenComp Competencies</h2>
+
+        <div
+          v-for="mapping in data.competencies.mappings"
+          :key="mapping.outcome_number"
+          class="card"
+        >
+          <h3>Outcome {{ mapping.outcome_number }}</h3>
+
+          <p>• {{ mapping.greencomp_competencies.join(', ') }}</p>
+
+          <small>{{ mapping.rationale }}</small>
+        </div>
+      </div>
+
+      <!-- VALIDATION -->
+      <div v-if="activeTab === 'validation'" class="tab-content">
+        <h2>Pedagogical Validation</h2>
+
+        <div v-if="data.validation.passed" class="success-box">✅ Framework passed validation</div>
+
+        <div v-else class="warning-box">
+          ⚠️ Validation completed with some issues ({{ data.validation.severity }})
+        </div>
+
+        <!-- Major Issues -->
+        <div v-if="data.validation.major_issues?.length">
+          <h3>🔴 Major Issues</h3>
+
+          <div v-for="issue in data.validation.major_issues" :key="issue.description" class="card">
+            <p>
+              <strong>{{ issue.description }}</strong>
+            </p>
+
+            <p v-if="issue.fix_applied">
+              Fix applied:
+              {{ issue.fix_applied }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Minor Issues -->
+        <div v-if="data.validation.minor_issues?.length">
+          <h3>🟡 Minor Issues</h3>
+
+          <div v-for="issue in data.validation.minor_issues" :key="issue.description" class="card">
+            <p>
+              <strong>{{ issue.description }}</strong>
+            </p>
+
+            <p v-if="issue.fix_applied">
+              Fix applied:
+              {{ issue.fix_applied }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Suggestions -->
+        <div v-if="data.validation.suggestions?.length">
+          <h3>💡 Suggestions</h3>
+
+          <div v-for="suggestion in data.validation.suggestions" :key="suggestion" class="info-box">
+            {{ suggestion }}
+          </div>
+        </div>
+      </div>
+
+      <!-- FEEDBACK -->
+      <div class="feedback-section">
+        <h2>💬 Provide Feedback</h2>
+
+        <textarea
+          v-model="feedbackText"
+          rows="5"
+          class="textarea"
+          placeholder="Describe what you'd like to change..."
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="css" scoped>
+.framework-tabs {
+  padding: 1rem;
+}
+
+.info-box,
+.success-box,
+.warning-box {
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1rem 0;
+}
+
+.info-box {
+  background: #eef5ff;
+}
+
+.success-box {
+  background: #e9f9ee;
+}
+
+.warning-box {
+  background: #fff5e6;
+}
+
+.resource-item {
+  margin: 1rem 0;
+}
+
+.resource-item small {
+  display: block;
+  color: #666;
+  margin-top: 0.3rem;
+}
+
+.editor-section,
+.feedback-section {
+  margin-top: 2rem;
+}
+
+.competency-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.caption {
+  color: #777;
+  margin-bottom: 1rem;
+}
+
 .test-mas {
   padding: 3rem;
 }
