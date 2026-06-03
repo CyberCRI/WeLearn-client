@@ -260,6 +260,15 @@ export const en = {
         'We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses. </br>Our platform helps you discover high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, and transform them into impactful and environmentally-conscious lessons.',
       help: "You can learn more about WeLearn's features in the <strong>Help</strong> section of the navigation bar.",
       action: 'Let’s start!'
+    },
+    metricsData: {
+      explanation:
+        'Share your institution and position to help us better understand our community. This information is optional and will only be used for statistical purposes.',
+      institutionLabel: 'Institution (optional)',
+      institutionPlaceholder: 'University of Bordeaux',
+      roleLabel: 'Role (optional)',
+      rolePlaceholder: 'Professor',
+      consentLabel: 'I consent to this data being used for statistical purposes.'
     }
   },
   reload: 'Reload',

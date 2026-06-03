@@ -263,6 +263,15 @@ export const fr = {
         "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.</br></br>Êtes-vous prêt à découvrir des ressources de haute qualité liées aux <strong>Objectifs de développement durable</strong>, et à les transformer en cours percutants et soucieux de l’environnement ?",
       help: 'Pour en savoir plus sur chaque fonctionnalité de WeLearn, consultez sa rubrique <strong>Aide</strong> dédiée.',
       action: 'Commencer'
+    },
+    metricsData: {
+      explanation:
+        'Partagez le nom de votre institution et votre poste pour nous aider à mieux comprendre notre communauté. Ces informations sont optionnelles et resteront utilisées uniquement à des fins statistiques.',
+      institutionLabel: 'Institution (facultatif)',
+      institutionPlaceholder: 'Université de Bordeaux',
+      roleLabel: 'Rôle (facultatif)',
+      rolePlaceholder: 'Professeur',
+      consentLabel: 'Je consens à ce que ces données soient utilisées à des fins statistiques.'
     }
   },
   reload: 'Recharger',
