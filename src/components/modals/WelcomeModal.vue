@@ -18,6 +18,15 @@ const modalActions = async () => {
   });
 };
 
+const onCheckboxChange = () => {
+  consentRefused.value = !consentRefused.value;
+  console.log('Consent refused:', consentRefused.value);
+  if (consentRefused.value) {
+    institution.value = '';
+    role.value = '';
+  }
+};
+
 const isDisabledCloseModal = computed(() => {
   if (consentRefused.value) {
     return false;
@@ -35,13 +44,13 @@ const isDisabledCloseModal = computed(() => {
     :title="$t('onboarding.welcome.title')"
     :message="$t('onboarding.welcome.description')"
     :isOpen="true"
-    :onClose="modalActions"
-    :disableCloseOnBackground="isDisabledCloseModal"
   >
     <template #extraInfo>
       <div class="user-metrics-wrapper mb-5">
-        <p class="mb-4 subtitle is-size-6">
-          {{ $t('onboarding.metricsData.explanation') }}
+        <p class="metrics-explanation mb-4 subtitle is-size-6">
+          {{ $t('onboarding.metricsData.explanation.1') }}
+          <strong>{{ $t('onboarding.metricsData.explanation.2') }}</strong>
+          {{ $t('onboarding.metricsData.explanation.3') }}
         </p>
         <label for="institution" class="label i"
           >{{ $t('onboarding.metricsData.institutionLabel') }}
@@ -66,7 +75,7 @@ const isDisabledCloseModal = computed(() => {
           <input
             data-testid="consent-checkbox"
             type="checkbox"
-            v-model="consentRefused"
+            @change="onCheckboxChange"
             id="consent"
           />
           {{ $t('onboarding.metricsData.consentLabel') }}
@@ -76,6 +85,7 @@ const isDisabledCloseModal = computed(() => {
     <template #actions>
       <button
         class="button is-primary is-medium"
+        data-testid="welcome-action"
         :disabled="isDisabledCloseModal"
         @click="modalActions"
       >

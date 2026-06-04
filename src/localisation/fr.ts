@@ -265,13 +265,16 @@ export const fr = {
       action: 'Commencer'
     },
     metricsData: {
-      explanation:
-        'Aidez-nous à mieux connaître notre communauté en partageant votre institution et votre rôle. Ces informations sont facultatives et utilisées uniquement à des fins statistiques.',
+      explanation: {
+        1: 'Aidez-nous à mieux connaître notre communauté en partageant votre institution et votre rôle. Ces informations sont',
+        2: ' facultatives',
+        3: ' et utilisées uniquement à des fins statistiques.'
+      },
       institutionLabel: 'Institution (université, école, organisation, etc.)',
       institutionPlaceholder: 'Université de Bordeaux',
       roleLabel: 'Rôle (professeur, étudiant, ingénieur pédagogique, etc.)',
       rolePlaceholder: 'Professeur',
-      consentLabel: 'Je ne souhaite pas que mes données soient utilisées à des fins statistiques.'
+      consentLabel: 'Je ne souhaite pas communiquer ces informations.'
     }
   },
   reload: 'Recharger',

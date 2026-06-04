@@ -6,7 +6,6 @@ const props = defineProps<{
   message?: string;
   isOpen: boolean;
   onClose?: () => void;
-  disableCloseOnBackground?: boolean;
 }>();
 
 const state = ref<boolean>(props.isOpen);
@@ -20,11 +19,7 @@ const handleModalClose = () => {
 </script>
 
 <template>
-  <ModalWrapper
-    :isOpen="state"
-    :onClose="handleModalClose"
-    :disableCloseOnBackground="props.disableCloseOnBackground"
-  >
+  <ModalWrapper :isOpen="state" :onClose="onClose && handleModalClose">
     <div class="box">
       <div
         class="is-flex is-flex-direction-column is-justify-content-space-between is-align-items-center"

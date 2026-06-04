@@ -262,13 +262,16 @@ export const en = {
       action: 'Let’s start!'
     },
     metricsData: {
-      explanation:
-        'Help us better understand our community by sharing your institution and role. This information is optional and used for statistical purposes only.',
+      explanation: {
+        1: 'Help us better understand our community by sharing your institution and role. This information is',
+        2: ' optional',
+        3: ' and used for statistical purposes only.'
+      },
       institutionLabel: 'Institution (university, organization, etc.)',
       institutionPlaceholder: 'University of Bordeaux',
       roleLabel: 'Role (professor, student, etc.)',
       rolePlaceholder: 'Professor',
-      consentLabel: 'I do not wish to share this information for statistical purposes.'
+      consentLabel: 'I do not wish to share this information.'
     }
   },
   reload: 'Reload',

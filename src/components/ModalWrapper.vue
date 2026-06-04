@@ -3,7 +3,6 @@ import { computed } from 'vue';
 const props = defineProps<{
   isOpen: boolean;
   onClose?: () => void;
-  disableCloseOnBackground?: boolean;
 }>();
 
 const computedState = computed(() => props.isOpen);
@@ -18,10 +17,7 @@ const handleModalClose = () => {
 
 <template>
   <div class="modal" :class="{ 'is-active': computedState }">
-    <div
-      class="modal-background"
-      @click="!disableCloseOnBackground ? handleModalClose() : null"
-    ></div>
+    <div class="modal-background" @click="onClose ? handleModalClose() : null"></div>
     <div class="modal-content">
       <slot></slot>
     </div>
@@ -30,7 +26,7 @@ const handleModalClose = () => {
       class="modal-close is-large"
       aria-label="close"
       v-if="onClose"
-      @click="!disableCloseOnBackground ? handleModalClose() : null"
+      @click="handleModalClose()"
     ></button>
   </div>
 </template>
