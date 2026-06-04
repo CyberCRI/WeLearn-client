@@ -260,18 +260,18 @@ export const fr = {
     welcome: {
       title: 'Bienvenue sur WeLearn !',
       description:
-        "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.</br></br>Êtes-vous prêt à découvrir des ressources de haute qualité liées aux <strong>Objectifs de développement durable</strong>, et à les transformer en cours percutants et soucieux de l’environnement ?",
+        "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.",
       help: 'Pour en savoir plus sur chaque fonctionnalité de WeLearn, consultez sa rubrique <strong>Aide</strong> dédiée.',
       action: 'Commencer'
     },
     metricsData: {
       explanation:
-        'Partagez le nom de votre institution et votre poste pour nous aider à mieux comprendre notre communauté. Ces informations sont optionnelles et resteront utilisées uniquement à des fins statistiques.',
-      institutionLabel: 'Institution (facultatif)',
+        'Aidez-nous à mieux connaître notre communauté en partageant votre institution et votre rôle. Ces informations sont facultatives et utilisées uniquement à des fins statistiques.',
+      institutionLabel: 'Institution (université, école, organisation, etc.)',
       institutionPlaceholder: 'Université de Bordeaux',
-      roleLabel: 'Rôle (facultatif)',
+      roleLabel: 'Rôle (professeur, étudiant, ingénieur pédagogique, etc.)',
       rolePlaceholder: 'Professeur',
-      consentLabel: 'Je consens à ce que ces données soient utilisées à des fins statistiques.'
+      consentLabel: 'Je ne souhaite pas que mes données soient utilisées à des fins statistiques.'
     }
   },
   reload: 'Recharger',

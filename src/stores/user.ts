@@ -20,12 +20,12 @@ export const useUserStore = defineStore('user', () => {
 
   const userMetricsDataAction = async (
     val: boolean,
-    userData?: { institution: string; role: string; consentGiven: boolean }
+    userData?: { institution: string; role: string; consentRefused: boolean }
   ) => {
     onboardingState.value.hasSeenMetricsData = val;
     saveToStorage('onboardingState', onboardingState.value);
 
-    if (userData && userData.consentGiven) {
+    if (userData && !userData.consentRefused) {
       saveToStorage('userMetricsData', userData);
       try {
         await basePostAxios('/user/institution-data', {

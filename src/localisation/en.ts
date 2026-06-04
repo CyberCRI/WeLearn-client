@@ -257,18 +257,18 @@ export const en = {
     welcome: {
       title: 'Welcome to WeLearn!',
       description:
-        'We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses. </br>Our platform helps you discover high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, and transform them into impactful and environmentally-conscious lessons.',
+        'We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses.',
       help: "You can learn more about WeLearn's features in the <strong>Help</strong> section of the navigation bar.",
       action: 'Let’s start!'
     },
     metricsData: {
       explanation:
-        'Share your institution and position to help us better understand our community. This information is optional and will only be used for statistical purposes.',
-      institutionLabel: 'Institution (optional)',
+        'Help us better understand our community by sharing your institution and role. This information is optional and used for statistical purposes only.',
+      institutionLabel: 'Institution (university, organization, etc.)',
       institutionPlaceholder: 'University of Bordeaux',
-      roleLabel: 'Role (optional)',
+      roleLabel: 'Role (professor, student, etc.)',
       rolePlaceholder: 'Professor',
-      consentLabel: 'I consent to this data being used for statistical purposes.'
+      consentLabel: 'I do not wish to share this information for statistical purposes.'
     }
   },
   reload: 'Reload',
