@@ -8,14 +8,16 @@ const props = defineProps<{
 const computedState = computed(() => props.isOpen);
 
 const handleModalClose = () => {
-  props.onClose();
+  if (props.onClose) {
+    props.onClose();
+  }
   computedState.value = false;
 };
 </script>
 
 <template>
   <div class="modal" :class="{ 'is-active': computedState }">
-    <div class="modal-background" @click="handleModalClose"></div>
+    <div class="modal-background" @click="onClose ? handleModalClose() : null"></div>
     <div class="modal-content">
       <slot></slot>
     </div>
@@ -24,7 +26,7 @@ const handleModalClose = () => {
       class="modal-close is-large"
       aria-label="close"
       v-if="onClose"
-      @click="handleModalClose"
+      @click="handleModalClose()"
     ></button>
   </div>
 </template>
