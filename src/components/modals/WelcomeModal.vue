@@ -63,7 +63,12 @@ const isDisabledCloseModal = computed(() => {
           />
         </label>
         <label for="consent" class="checkbox mt-4 mb-4">
-          <input type="checkbox" v-model="consentRefused" id="consent" />
+          <input
+            data-testid="consent-checkbox"
+            type="checkbox"
+            v-model="consentRefused"
+            id="consent"
+          />
           {{ $t('onboarding.metricsData.consentLabel') }}
         </label>
       </div>

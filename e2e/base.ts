@@ -67,6 +67,7 @@ export const test = base.extend({
 
     await page.goto('/');
     // Close the welcome modal
+    await page.getByTestId('consent-checkbox').check();
     await page.getByRole('button', { name: 'close' }).click();
     await page.waitForLoadState();
 
