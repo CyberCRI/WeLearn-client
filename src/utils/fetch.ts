@@ -4,10 +4,26 @@ export const API_BASE = import.meta.env.VITE_API_BASE;
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 export const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
 
-export const baseGetAxios = async (endpoint: string) => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
+const DEV_PROXY_BASE = '/__welearn_api_proxy__';
+const isLocalApiBase =
+  typeof API_BASE === 'string' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(API_BASE);
 
-  const response = await axios.get(`${API_BASE}${API_VERSION}${endpoint}`, {
+const getApiRoot = () => {
+  if (import.meta.env.DEV && isLocalApiBase) {
+    return `${DEV_PROXY_BASE}${API_VERSION}`;
+  }
+
+  if (!API_BASE) {
+    throw new Error('API_BASE not defined');
+  }
+
+  return `${API_BASE}${API_VERSION}`;
+};
+
+const buildApiUrl = (endpoint: string) => `${getApiRoot()}${endpoint}`;
+
+export const baseGetAxios = async (endpoint: string) => {
+  const response = await axios.get(buildApiUrl(endpoint), {
     withCredentials: true,
     headers: {
       'X-API-Key': WL_API_KEY
@@ -24,8 +40,6 @@ export const basePostAxios = async (
   options: Record<string, any> = {},
   config?: AxiosRequestConfig
 ) => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
-
   const enhancedConfig = {
     ...config,
     withCredentials: true,
@@ -35,11 +49,7 @@ export const basePostAxios = async (
   };
 
   try {
-    const response = await axios.post(
-      `${API_BASE}${API_VERSION}${endpoint}`,
-      options,
-      enhancedConfig
-    );
+    const response = await axios.post(buildApiUrl(endpoint), options, enhancedConfig);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error fetching data');
@@ -53,8 +63,6 @@ export const basePostAxios = async (
 };
 
 export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestConfig) => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
-
   const enhancedConfig = {
     ...config,
     withCredentials: true,
@@ -64,7 +72,7 @@ export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestCon
   };
 
   try {
-    const response = await axios.delete(`${API_BASE}${API_VERSION}${endpoint}`, enhancedConfig);
+    const response = await axios.delete(buildApiUrl(endpoint), enhancedConfig);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error deleting data');
@@ -120,9 +128,7 @@ export const fetchStream = async (
   endpoint: string,
   body: { bodyContent: string }
 ): Promise<Response['body']> => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
-
-  const response = await fetch(`${API_BASE}${API_VERSION}${endpoint}`, {
+  const response = await fetch(buildApiUrl(endpoint), {
     method: 'POST',
     body: body.bodyContent,
     credentials: 'include',
@@ -145,7 +151,7 @@ export const postBookmark = async (documentId: string) => {
 
 export const deleteBookmark = async (documentId: string) => {
   const resp = await axios.delete(
-    `${API_BASE}${API_VERSION}/user/bookmarks/:document_id?document_id=${documentId}`,
+    buildApiUrl(`/user/bookmarks/:document_id?document_id=${documentId}`),
     {
       withCredentials: true,
       headers: {
@@ -157,7 +163,7 @@ export const deleteBookmark = async (documentId: string) => {
 };
 
 export const deleteAllBookmarks = async () => {
-  await axios.delete(`${API_BASE}${API_VERSION}/user/bookmarks`, {
+  await axios.delete(buildApiUrl('/user/bookmarks'), {
     withCredentials: true,
     headers: {
       'X-API-Key': WL_API_KEY

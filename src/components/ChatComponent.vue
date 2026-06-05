@@ -31,7 +31,7 @@ const computedStatus = computed(() => store.chatStatus);
         />
         <div class="bubbles-wrapper">
           <ChatBuble
-            :key="JSON.stringify(content)"
+            :key="`${index}-${role}`"
             v-for="({ content, role }, index) in store.chatMessagesList"
             :message="content"
             :isUSer="role === 'user'"
@@ -52,6 +52,7 @@ const computedStatus = computed(() => store.chatStatus);
               CHAT_STATUS.FORMULATING_ANSWER
             ].includes(computedStatus)
           "
+          :label="store.processingStatusLabel"
         />
       </template>
       <template #queues>

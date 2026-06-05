@@ -304,6 +304,12 @@ export const fr = {
   showMoreAuthors: 'Afficher plus',
   showSources: 'Afficher les sources',
 
+  chatProcessingSteps: {
+    fetching_resources: 'Recuperation des ressources depuis la base WeLearn',
+    analyzing_resources: 'Analyse des ressources pertinentes',
+    generating_answer: 'Generation de votre reponse'
+  },
+
   sources: 'Sources',
   sourcesList: {
     fetching: 'Recherche parmi {docs_nb} documents...',
