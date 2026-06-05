@@ -33,7 +33,10 @@ const normalizeProcessingStep = (value: unknown): string | undefined => {
     return undefined;
   }
 
-  const normalized = value.trim().toLowerCase().replace(/[-\s]+/g, '_');
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[-\s]+/g, '_');
   if (!normalized) {
     return undefined;
   }
@@ -50,9 +53,11 @@ const toProcessingMetadata = (value: unknown): ChatProcessingMetadata | null => 
     return null;
   }
 
-  const rawStatus = typeof value.status === 'string' ? value.status.trim().toLowerCase() : undefined;
+  const rawStatus =
+    typeof value.status === 'string' ? value.status.trim().toLowerCase() : undefined;
   const statusAsStep = normalizeProcessingStep(rawStatus);
-  const step = normalizeProcessingStep(value.step) ?? (rawStatus === 'processing' ? undefined : statusAsStep);
+  const step =
+    normalizeProcessingStep(value.step) ?? (rawStatus === 'processing' ? undefined : statusAsStep);
   const label = typeof value.label === 'string' ? value.label : undefined;
 
   const isProcessingEvent = rawStatus === 'processing' || Boolean(step);
