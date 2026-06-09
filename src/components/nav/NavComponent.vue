@@ -7,6 +7,7 @@ import HelpComponent from '@/components/nav/HelpComponent.vue';
 
 import BookIcon from '@/components/icons/BookIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
+import EditIcon from '@/components/icons/EditIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
@@ -39,6 +40,12 @@ const navEntries = [
     to: '/bookmarks',
     icon: NavBookmarkIcon,
     isFeatureEnabled: featureFlip.isFeatureEnabled('bookmarks')
+  },
+  {
+    name: 'activity',
+    to: '/activity',
+    icon: EditIcon,
+    isFeatureEnabled: featureFlip.isFeatureEnabled('activity')
   },
   {
     name: 'microlearning',

@@ -4,6 +4,7 @@ export const fr = {
   addBookmark: 'Ajouter aux favoris',
   back: 'Retour',
   bookmarks: 'Favoris',
+  bookmarkSingular: 'Favori',
   cardArticle: {
     seeDetails: 'Voir les détails',
     openArticle: 'Ouvrir l’article',
@@ -248,7 +249,8 @@ export const fr = {
     about: 'À propos',
     help: 'Aide',
     microlearning: 'Micro-learning',
-    workshopForm: "Formulaire d'atelier"
+    workshopForm: "Formulaire d'atelier",
+    activity: 'Activités'
   },
 
   next: 'Suivant',
@@ -421,6 +423,47 @@ export const fr = {
         'Vous pouvez modifier directement cette page, télécharger une copie et envoyer un retour que WeLearn utilisera pour régénérer le syllabus — dans l’ordre de votre choix, autant de fois que nécessaire.',
       giveFeedback: 'Donner un retour sur le syllabus généré',
       sendFeedback: 'Envoyer le retour'
+    }
+  },
+  activity: {
+    title: "Générateur d'activités pédagogiques",
+    description:
+      "Décrivez votre contexte d'enseignement et WeLearn génèrera un guide d'activité pas-à-pas, ancré dans des ressources alignées sur les ODD.",
+    subjectLabel: 'Sujet ou thématique',
+    subjectPlaceholder: 'ex. Politique climatique, Biodiversité urbaine, Santé mondiale...',
+    activityTypeLabel: "Type d'activité",
+    levelLabel: 'Niveau de la classe',
+    studentsLabel: "Nombre d'étudiant·es",
+    durationLabel: 'Durée',
+    generateButton: "Générer l'activité",
+    generatingStatus1: 'Recherche dans la base WeLearn...',
+    generatingStatus2: "Génération du guide d'activité...",
+    sourcesTitle: 'Ressources WeLearn utilisées',
+    levels: {
+      secondary: 'Secondaire (lycée)',
+      undergraduate: 'Licence',
+      graduate: 'Master / Doctorat'
+    },
+    activityTypes: {
+      debate: 'Débat structuré',
+      case_study: 'Étude de cas',
+      role_play: 'Jeu de rôle',
+      think_pair_share: 'Think-Pair-Share',
+      jigsaw: 'Jigsaw',
+      project_based: 'Apprentissage par projet',
+      flipped: 'Classe inversée'
+    },
+    studentCounts: {
+      small: '1–10 étudiant·es',
+      medium: '11–25 étudiant·es',
+      large: '26–40 étudiant·es',
+      xlarge: '40+ étudiant·es'
+    },
+    durations: {
+      '30min': '30 minutes',
+      '1h': '1 heure',
+      '2h': '2 heures',
+      '3h': '3 heures'
     }
   },
   microlearning: {

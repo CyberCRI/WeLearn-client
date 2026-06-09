@@ -4,6 +4,7 @@ export const en = {
   addBookmark: 'Add to bookmarks',
   back: 'Back',
   bookmarks: 'Bookmarks',
+  bookmarkSingular: 'Bookmark',
   cardArticle: {
     seeDetails: 'See details',
     openArticle: 'Open article',
@@ -46,7 +47,7 @@ export const en = {
     ted: 'TED',
     uved: 'UVED',
     'fao-open-knowledge': 'Food and Agriculture Organization of the United Nations',
-    'world-bank-open-knowledge-repository': "World Bank",
+    'world-bank-open-knowledge-repository': 'World Bank',
     wikipedia: 'Wikipedia'
   },
   download: 'Download',
@@ -246,7 +247,8 @@ export const en = {
     about: 'About',
     help: 'Help',
     microlearning: 'Micro-learning',
-    workshopForm: 'Workshop Form'
+    workshopForm: 'Workshop Form',
+    activity: 'Activities'
   },
 
   next: 'Next',
@@ -416,6 +418,47 @@ export const en = {
         'You can edit directly on this page, download a copy, and submit feedback that WeLearn will use to regenerate the syllabus — in any order, and as many times as you like.',
       giveFeedback: 'Provide feedback on the generated syllabus',
       sendFeedback: 'Submit feedback'
+    }
+  },
+  activity: {
+    title: 'Pedagogical Activity Generator',
+    description:
+      'Describe your teaching context and WeLearn will generate a step-by-step activity guide grounded in SDG-aligned resources.',
+    subjectLabel: 'Subject or topic',
+    subjectPlaceholder: 'e.g. Climate policy, Urban biodiversity, Global health...',
+    activityTypeLabel: 'Activity type',
+    levelLabel: 'Class level',
+    studentsLabel: 'Number of students',
+    durationLabel: 'Duration',
+    generateButton: 'Generate activity',
+    generatingStatus1: 'Searching WeLearn database for relevant resources...',
+    generatingStatus2: 'Generating activity guide...',
+    sourcesTitle: 'WeLearn resources used',
+    levels: {
+      secondary: 'Secondary (high school)',
+      undergraduate: 'Undergraduate',
+      graduate: "Graduate (master's / PhD)"
+    },
+    activityTypes: {
+      debate: 'Structured Debate',
+      case_study: 'Case Study',
+      role_play: 'Role Play',
+      think_pair_share: 'Think-Pair-Share',
+      jigsaw: 'Jigsaw',
+      project_based: 'Project-Based Learning',
+      flipped: 'Flipped Classroom'
+    },
+    studentCounts: {
+      small: '1–10 students',
+      medium: '11–25 students',
+      large: '26–40 students',
+      xlarge: '40+ students'
+    },
+    durations: {
+      '30min': '30 minutes',
+      '1h': '1 hour',
+      '2h': '2 hours',
+      '3h': '3 hours'
     }
   },
   microlearning: {
