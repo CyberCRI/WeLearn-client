@@ -46,6 +46,7 @@ export const fr = {
     ted: 'TED',
     uved: 'UVED',
     'fao-open-knowledge': "Organisation des Nations unies pour l'alimentation et l'agriculture",
+    'world-bank-open-knowledge-repository': 'Banque Mondiale',
     wikipedia: 'Wikipedia'
   },
   download: 'Télécharger',
