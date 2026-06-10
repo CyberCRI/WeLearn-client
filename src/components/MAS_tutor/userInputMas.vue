@@ -31,23 +31,20 @@ function submitForm() {
 
 <template>
   <div id="target-1" class="course-info-section">
-    <h2 class="title is-4 is-size-5-mobile has-text-centered">Course information</h2>
+    <h2 class="title is-4 is-size-5-mobile has-text-centered">{{ $t('courseInformation') }}</h2>
     <form @submit.prevent="submitForm" class="user-form">
       <div class="field">
-        <label class="label">{{ $t('topic') }}</label>
-        <div class="control">
-          <input
-            class="input"
-            type="text"
-            v-model="form.topic"
-            :placeholder="$t('Microeconomics')"
-          />
+        <label class="label is-capitalized">{{ $t('inputMode') }}</label>
+        <div class="select is-primary">
+          <select v-model="form.session_mode">
+            <option value="PRESENTIEL">{{ $t('In Person') }}</option>
+            <option value="DISTANCIEL">{{ $t('Remote') }}</option>
+            <option value="HYBRIDE">{{ $t('Hybrid') }}</option>
+          </select>
         </div>
-        <p class="help">{{ $t('e.g., Microeconomics, Cell Biology') }}</p>
       </div>
-
       <div class="field">
-        <label class="label">{{ $t('discipline') }}</label>
+        <label class="label is-capitalized">{{ $t('discipline') }}</label>
         <div class="control">
           <input
             class="input"
@@ -56,19 +53,31 @@ function submitForm() {
             :placeholder="$t('Economics')"
           />
         </div>
-        <p class="help">Discipline (e.g., Economics, Biology)</p>
+        <p class="help">{{ $t('disciplineExample') }}</p>
+      </div>
+      <div class="field">
+        <label class="label is-capitalized">{{ $t('topic') }}</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            v-model="form.topic"
+            :placeholder="$t('Microeconomics')"
+          />
+        </div>
+        <p class="help">{{ $t('topicExample') }}</p>
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('level') }}</label>
+        <label class="label is-capitalized">{{ $t('level') }}</label>
         <div class="control">
           <input class="input" type="text" v-model="form.level" :placeholder="$t('Level')" />
         </div>
-        <p class="help">(e.g., L1, L2, L3)</p>
+        <p class="help">{{ $t('levelExample') }}</p>
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('number of sessions') }}</label>
+        <label class="label is-capitalized">{{ $t('number of sessions') }}</label>
         <div class="control">
           <input
             class="input"
@@ -77,11 +86,11 @@ function submitForm() {
             :placeholder="$t('Number of sessions')"
           />
         </div>
-        <p class="help">(e.g., 10, 20)</p>
+        <p class="help">{{ $t('numberOfSessionsExample') }}</p>
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('sessions durations') }}</label>
+        <label class="label is-capitalized">{{ $t('sessions durations') }}</label>
         <div class="control">
           <input
             class="input"
@@ -90,11 +99,11 @@ function submitForm() {
             :placeholder="$t('Sessions durations')"
           />
         </div>
-        <p class="help">(e.g., 1 hour, 2 hours)</p>
+        <p class="help">{{ $t('sessionDurationExample') }}</p>
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('session type') }}</label>
+        <label class="label is-capitalized">{{ $t('session type') }}</label>
         <div class="control">
           <input
             class="input"
@@ -103,11 +112,11 @@ function submitForm() {
             :placeholder="$t('Lecture')"
           />
         </div>
-        <p class="help">(e.g., Lecture, Seminar)</p>
+        <p class="help">{{ $t('sessionTypeExample') }}</p>
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('class size') }}</label>
+        <label class="label is-capitalized">{{ $t('class size') }}</label>
         <div class="control">
           <input
             class="input"
@@ -116,11 +125,11 @@ function submitForm() {
             :placeholder="$t('Number of students')"
           />
         </div>
-        <p class="help">{{ $t('Number of students in the class') }}</p>
+        <p class="help">{{ $t('numberOfStudentsInClass') }}</p>
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('session mode') }}</label>
+        <label class="label is-capitalized">{{ $t('session mode') }}</label>
         <div class="select is-primary">
           <select v-model="form.session_mode">
             <option value="PRESENTIEL">{{ $t('In Person') }}</option>
@@ -131,7 +140,7 @@ function submitForm() {
       </div>
 
       <div class="field">
-        <label class="label">{{ $t('output language') }}</label>
+        <label class="label is-capitalized">{{ $t('output language') }}</label>
         <div class="select is-primary">
           <select v-model="form.output_language">
             <option value="french">{{ $t('French') }}</option>
@@ -141,7 +150,7 @@ function submitForm() {
       </div>
 
       <div class="field course-description">
-        <label class="label">{{ $t('course description') }}</label>
+        <label class="label is-capitalized">{{ $t('course description') }}</label>
         <div class="control">
           <textarea
             class="textarea"
@@ -150,7 +159,7 @@ function submitForm() {
             :placeholder="$t('Course description')"
           />
         </div>
-        <p class="help">{{ $t('e.g., This course covers the basics of Microeconomics') }}</p>
+        <p class="help">{{ $t('descriptionExample') }}</p>
       </div>
 
       <div class="field submit-button">
@@ -170,11 +179,15 @@ function submitForm() {
 </template>
 <style lang="css" scoped>
 .user-form {
+  height: 100%;
+  overflow-y: auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
+  gap: 0.2rem;
   width: 100%;
-  padding: 1rem 0rem;
+  padding: 0rem;
+  padding-left: 1rem;
+  padding-right: 0.5rem;
 }
 
 .submit-button {
