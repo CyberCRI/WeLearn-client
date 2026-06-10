@@ -46,7 +46,7 @@ export const en = {
     ted: 'TED',
     uved: 'UVED',
     'fao-open-knowledge': 'Food and Agriculture Organization of the United Nations',
-    'world-bank-open-knowledge-repository': "World Bank",
+    'world-bank-open-knowledge-repository': 'World Bank',
     wikipedia: 'Wikipedia'
   },
   download: 'Download',
