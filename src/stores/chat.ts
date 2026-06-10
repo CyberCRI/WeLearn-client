@@ -154,6 +154,7 @@ export const useChatStore = defineStore('chat', () => {
     chatMessagesList.value.push({ role: 'assistant', content: data.content });
     if (data.docs) {
       sourcesList.value = data.docs;
+      saveToStorage('chatSources', data.docs);
     }
 
     storeThreadId(data.thread_id);
