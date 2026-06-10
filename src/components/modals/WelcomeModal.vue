@@ -44,6 +44,7 @@ const isDisabledCloseModal = computed(() => {
     :title="$t('onboarding.welcome.title')"
     :message="$t('onboarding.welcome.description')"
     :isOpen="true"
+    displayLang
   >
     <template #extraInfo>
       <div class="user-metrics-wrapper mb-5">
