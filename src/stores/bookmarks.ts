@@ -5,8 +5,7 @@ import {
   postBookmark,
   deleteBookmark,
   getBookmarks as getAllBookmarks,
-  deleteAllBookmarks,
-  baseGetAxios
+  deleteAllBookmarks
 } from '@/utils/fetch';
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
@@ -34,17 +33,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     idsBookmarked.value = idsBookmarked.value.filter((id) => id !== sourceId);
     await deleteBookmark(sourceId);
     hasChanged.value = true;
-  };
-
-  const fetchBookmarkIds = async () => {
-    try {
-      const result = await baseGetAxios('/user/bookmarks');
-      idsBookmarked.value = (result.bookmarks ?? []).map(
-        (b: { document_id: string }) => b.document_id
-      );
-    } catch (error) {
-      console.error('Failed to fetch bookmark IDs:', error);
-    }
   };
 
   const getBookmarks = async () => {
@@ -85,7 +73,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     sourcesBookmarked,
     addBookmark,
     removeBookmark,
-    fetchBookmarkIds,
     getBookmarks,
     resetBookmarks,
     toggleBookmark,

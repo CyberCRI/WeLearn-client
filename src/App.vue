@@ -12,7 +12,7 @@ import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
-const { fetchBookmarkIds } = useBookmarksStore();
+const { getBookmarks } = useBookmarksStore();
 const fetchError = ref(false);
 
 async function initCalls() {
@@ -21,7 +21,7 @@ async function initCalls() {
       getInfoPerCorpus(),
       getSourcesList(),
       getUserAndSession(getQueryParamValue('referer') || ''),
-      fetchBookmarkIds()
+      getBookmarks()
     ]);
   } catch (err) {
     console.error(err);
