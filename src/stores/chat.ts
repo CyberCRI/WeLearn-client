@@ -58,21 +58,19 @@ const toProcessingMetadata = (value: unknown): ChatProcessingMetadata | null => 
   const statusAsStep = normalizeProcessingStep(rawStatus);
   const step =
     normalizeProcessingStep(value.step) ?? (rawStatus === 'processing' ? undefined : statusAsStep);
-  const label = typeof value.label === 'string' ? value.label : undefined;
 
   const isProcessingEvent = rawStatus === 'processing' || Boolean(step);
   if (!isProcessingEvent) {
     return null;
   }
 
-  if (!step && !label) {
+  if (!step) {
     return null;
   }
 
   return {
     status: 'processing',
     step,
-    label
   };
 };
 
@@ -106,11 +104,6 @@ export const useChatStore = defineStore('chat', () => {
 
   const processingStatusLabel: ComputedRef<string> = computed(() => {
     const metadata = processingMetadata.value;
-    const customLabel = metadata?.label?.trim();
-
-    if (customLabel) {
-      return customLabel;
-    }
 
     const stepTranslationMap: Record<string, string> = {
       fetching_resources: 'chatProcessingSteps.fetching_resources',
