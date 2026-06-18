@@ -7,10 +7,12 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
 import WelcomeModal from '@/components/modals/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
+import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
+const { getBookmarks } = useBookmarksStore();
 const fetchError = ref(false);
 
 async function initCalls() {
@@ -18,7 +20,8 @@ async function initCalls() {
     await Promise.all([
       getInfoPerCorpus(),
       getSourcesList(),
-      getUserAndSession(getQueryParamValue('referer') || '')
+      getUserAndSession(getQueryParamValue('referer') || ''),
+      getBookmarks()
     ]);
   } catch (err) {
     console.error(err);
