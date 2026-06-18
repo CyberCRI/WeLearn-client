@@ -4,6 +4,7 @@ import type { Document, ChatMessage, ChatProcessingMetadata } from '@/types';
 import { baseGetAxios, basePostAxios, fetchStream } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
+import { extractProcessingMetadata } from '@/utils/chatProcessing';
 import i18n from '@/localisation/i18n';
 import type { AxiosResponse } from 'axios';
 import { useFiltersStore } from '@/stores/filters';
@@ -23,69 +24,6 @@ export const CHAT_STATUS = {
 };
 
 type CHAT_STATUSES_TYPE = keyof typeof CHAT_STATUS;
-
-const isRecord = (value: unknown): value is Record<string, unknown> => {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-};
-
-const normalizeProcessingStep = (value: unknown): string | undefined => {
-  if (typeof value !== 'string') {
-    return undefined;
-  }
-
-  const normalized = value
-    .trim()
-    .toLowerCase()
-    .replace(/[-\s]+/g, '_');
-  if (!normalized) {
-    return undefined;
-  }
-
-  if (['fetching_resources', 'analyzing_resources', 'generating_answer'].includes(normalized)) {
-    return normalized;
-  }
-
-  return undefined;
-};
-
-const toProcessingMetadata = (value: unknown): ChatProcessingMetadata | null => {
-  if (!isRecord(value)) {
-    return null;
-  }
-
-  const rawStatus =
-    typeof value.status === 'string' ? value.status.trim().toLowerCase() : undefined;
-  const statusAsStep = normalizeProcessingStep(rawStatus);
-  const step =
-    normalizeProcessingStep(value.step) ?? (rawStatus === 'processing' ? undefined : statusAsStep);
-
-  const isProcessingEvent = rawStatus === 'processing' || Boolean(step);
-  if (!isProcessingEvent) {
-    return null;
-  }
-
-  if (!step) {
-    return null;
-  }
-
-  return {
-    status: 'processing',
-    step,
-  };
-};
-
-const extractProcessingMetadata = (parsed: unknown): ChatProcessingMetadata | null => {
-  if (!isRecord(parsed)) {
-    return null;
-  }
-
-  return (
-    toProcessingMetadata(parsed) ??
-    toProcessingMetadata(parsed.data) ??
-    toProcessingMetadata(parsed.meta) ??
-    toProcessingMetadata(parsed.metadata)
-  );
-};
 
 export const useChatStore = defineStore('chat', () => {
   const chatInput: Ref<string> = ref('');
