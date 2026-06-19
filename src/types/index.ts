@@ -49,6 +49,12 @@ export interface ChatMessage {
   content: string;
 }
 
+export interface ChatProcessingMetadata {
+  status: 'processing';
+  step?: string;
+  label?: string;
+}
+
 export type ReformulateResponse = {
   STANDALONE_QUESTION_EN: string;
   STANDALONE_QUESTION_FR: string;

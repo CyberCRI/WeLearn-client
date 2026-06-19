@@ -313,6 +313,12 @@ export const en = {
   showMoreAuthors: 'Show more',
   showSources: 'Show sources',
 
+  chatProcessingSteps: {
+    fetching_resources: 'Getting resources from WeLearn database',
+    analyzing_resources: 'Analyzing relevant resources',
+    generating_answer: 'Generating your answer'
+  },
+
   sources: 'Sources',
   sourcesList: {
     fetching: 'Searching across {docs_nb} documents...',

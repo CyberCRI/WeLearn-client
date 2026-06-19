@@ -1,18 +1,36 @@
+<script setup lang="ts">
+defineProps<{
+  label?: string;
+}>();
+</script>
+
 <template>
-  <div id="wave">
-    <span class="dot"></span>
-    <span class="dot dot2"></span>
-    <span class="dot dot3"></span>
+  <div class="loading-wrapper">
+    <div id="wave">
+      <span class="dot"></span>
+      <span class="dot dot2"></span>
+      <span class="dot dot3"></span>
+    </div>
+    <p v-if="label" class="loading-label">{{ label }}</p>
   </div>
 </template>
 <style scoped>
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.loading-label {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--neutral-80);
+  text-align: center;
+}
+
 #wave {
-  position: absolute;
-  bottom: 0rem;
-  left: 50%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 0.625rem;
+  margin: 0;
 }
 
 .dot {

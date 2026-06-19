@@ -11,6 +11,7 @@ defineProps({
 
 onUpdated(() => {
   setState();
+  scrollToBottom();
 });
 
 onMounted(() => {
