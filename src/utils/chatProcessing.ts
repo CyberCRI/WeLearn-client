@@ -46,7 +46,7 @@ const toProcessingMetadata = (value: unknown): ChatProcessingMetadata | null => 
 
   return {
     status: 'processing',
-    step,
+    step
   };
 };
 
