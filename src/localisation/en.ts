@@ -46,6 +46,7 @@ export const en = {
     ted: 'TED',
     uved: 'UVED',
     'fao-open-knowledge': 'Food and Agriculture Organization of the United Nations',
+    'world-bank-open-knowledge-repository': 'World Bank',
     wikipedia: 'Wikipedia'
   },
   download: 'Download',
@@ -257,9 +258,21 @@ export const en = {
     welcome: {
       title: 'Welcome to WeLearn!',
       description:
-        'We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses. </br>Our platform helps you discover high-quality resources related to the <strong>Sustainable Development Goals (SDGs)</strong>, and transform them into impactful and environmentally-conscious lessons.',
+        'We’re excited to have you on board. WeLearn is your AI-powered learning platform designed to support you in integrating sustainability into your courses.',
       help: "You can learn more about WeLearn's features in the <strong>Help</strong> section of the navigation bar.",
       action: 'Let’s start!'
+    },
+    metricsData: {
+      explanation: {
+        1: 'Help us better understand our community by sharing your institution and role. This information is',
+        2: ' optional',
+        3: ' and used for statistical purposes only.'
+      },
+      institutionLabel: 'Institution (university, organization, etc.)',
+      institutionPlaceholder: 'University of Bordeaux',
+      roleLabel: 'Role (professor, student, etc.)',
+      rolePlaceholder: 'Professor',
+      consentLabel: 'I do not wish to share this information.'
     }
   },
   reload: 'Reload',

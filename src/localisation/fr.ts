@@ -46,6 +46,7 @@ export const fr = {
     ted: 'TED',
     uved: 'UVED',
     'fao-open-knowledge': "Organisation des Nations unies pour l'alimentation et l'agriculture",
+    'world-bank-open-knowledge-repository': 'Banque Mondiale',
     wikipedia: 'Wikipedia'
   },
   download: 'Télécharger',
@@ -260,9 +261,21 @@ export const fr = {
     welcome: {
       title: 'Bienvenue sur WeLearn !',
       description:
-        "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.</br></br>Êtes-vous prêt à découvrir des ressources de haute qualité liées aux <strong>Objectifs de développement durable</strong>, et à les transformer en cours percutants et soucieux de l’environnement ?",
+        "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.",
       help: 'Pour en savoir plus sur chaque fonctionnalité de WeLearn, consultez sa rubrique <strong>Aide</strong> dédiée.',
       action: 'Commencer'
+    },
+    metricsData: {
+      explanation: {
+        1: 'Aidez-nous à mieux connaître notre communauté en partageant votre institution et votre rôle. Ces informations sont',
+        2: ' facultatives',
+        3: ' et utilisées uniquement à des fins statistiques.'
+      },
+      institutionLabel: 'Institution (université, école, organisation, etc.)',
+      institutionPlaceholder: 'Université de Bordeaux',
+      roleLabel: 'Rôle (professeur, étudiant, ingénieur pédagogique, etc.)',
+      rolePlaceholder: 'Professeur',
+      consentLabel: 'Je ne souhaite pas communiquer ces informations.'
     }
   },
   reload: 'Recharger',

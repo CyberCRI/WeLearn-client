@@ -38,10 +38,15 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
   const getBookmarks = async () => {
     if (!hasChanged.value && sourcesBookmarked.value.length) return;
 
-    const bookmarks = await getAllBookmarks();
-    sourcesBookmarked.value = bookmarks.data;
-    idsBookmarked.value = sourcesBookmarked.value.map((bookmark) => bookmark.payload.document_id);
-    hasChanged.value = false;
+    try {
+      const bookmarks = await getAllBookmarks();
+      const data = bookmarks.data;
+      sourcesBookmarked.value = Array.isArray(data) ? data : (data?.docs ?? []);
+      idsBookmarked.value = sourcesBookmarked.value.map((bookmark) => bookmark.payload.document_id);
+      hasChanged.value = false;
+    } catch (error) {
+      console.error('Failed to fetch bookmarks:', error);
+    }
   };
 
   const toggleBookmark = (source: Document) => {

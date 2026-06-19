@@ -6,6 +6,7 @@ import { getQueryParamValue } from '@/utils/urlsUtils';
 import { RELEVANCE_FACTOR } from '@/utils/constants';
 import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
+import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 
 export const useSearchStore = defineStore('search', () => {
   const allCorpus: Ref<Corpus['name'][]> = ref([]);
@@ -13,10 +14,10 @@ export const useSearchStore = defineStore('search', () => {
   const hasSourcesError = ref(false);
   const isFetchingSources = ref(false);
   const sdgsQuery: Ref<string[]> = ref([]);
-  const searchInput: Ref<string> = ref('');
+  const searchInput: Ref<string> = ref(getFromStorage('searchInput') || '');
   const displayNoResult: Ref<boolean> = ref(false);
   const errorCode: Ref<string> = ref('');
-  const searchResults: Ref<Document[] | null> = ref(null);
+  const searchResults: Ref<Document[] | null> = ref(getFromStorage('searchResults') || null);
 
   const hasError = computed(() => hasSourcesError.value);
 
@@ -51,6 +52,8 @@ export const useSearchStore = defineStore('search', () => {
 
       isFetchingSources.value = false;
       searchResults.value = data.length ? data : data.docs;
+      saveToStorage('searchInput', searchInput.value);
+      saveToStorage('searchResults', searchResults.value);
 
       if (data?.search_message_id) {
         localStorage.setItem('searchMessageId', data.search_message_id);
@@ -98,6 +101,8 @@ export const useSearchStore = defineStore('search', () => {
     hasSourcesError.value = false;
     isFetchingSources.value = false;
     sdgsQuery.value = [];
+    clearFromStorage('searchInput');
+    clearFromStorage('searchResults');
   }
 
   return {

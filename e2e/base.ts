@@ -23,7 +23,11 @@ export const test = base.extend({
     });
 
     // Mock search-related calls
+
     await page.route('**/**/search/**', async (route) => {
+      await page.evaluate(() =>
+        localStorage.setItem('sessionId', JSON.stringify('fake_session_id'))
+      );
       const url = route.request().url();
       if (url.includes('collections')) {
         const json = [{ name: 'fake-collection', category: 'fake-category' }];
@@ -63,7 +67,8 @@ export const test = base.extend({
 
     await page.goto('/');
     // Close the welcome modal
-    await page.getByRole('button', { name: 'close' }).click();
+    await page.getByTestId('consent-checkbox').check();
+    await page.getByTestId('welcome-action').click();
     await page.waitForLoadState();
 
     await use(page);

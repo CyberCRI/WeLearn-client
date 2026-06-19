@@ -23,6 +23,8 @@ const store = useSearchStore();
               <DeleteButton :action="store.$reset" :delText="$t('clearSearch')" />
             </div>
             <TextArea v-model="store.searchInput" />
+          </template>
+          <template #sdgsList>
             <div class="sdgs-list" v-if="store.sdgsQuery.length">
               <p class="sdg-list-title has-text-grey is-italic mr-2">
                 {{ $t('search_sdgs_in_query') }}

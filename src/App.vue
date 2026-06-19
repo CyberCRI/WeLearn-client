@@ -5,13 +5,14 @@ import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/nav/NavComponent.vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
-import ModalComponent from '@/components/WelcomeModal.vue';
+import WelcomeModal from '@/components/modals/WelcomeModal.vue';
 import { useSourcesStore } from '@/stores/sources';
-import ErrorComponent from '@/components/ErrorComponent.vue';
+import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
+const { getBookmarks } = useBookmarksStore();
 const fetchError = ref(false);
 
 async function initCalls() {
@@ -19,7 +20,8 @@ async function initCalls() {
     await Promise.all([
       getInfoPerCorpus(),
       getSourcesList(),
-      getUserAndSession(getQueryParamValue('referer') || '')
+      getUserAndSession(getQueryParamValue('referer') || ''),
+      getBookmarks()
     ]);
   } catch (err) {
     console.error(err);
@@ -38,7 +40,7 @@ onMounted(async () => {
 <template>
   <ErrorComponent v-if="fetchError" />
   <div class="fullscreen" v-else>
-    <ModalComponent />
+    <WelcomeModal />
 
     <AppLayout>
       <template #header v-if="!$route.meta.hideTemplate">
