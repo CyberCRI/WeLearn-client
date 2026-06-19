@@ -269,6 +269,22 @@ export const useChatStore = defineStore('chat', () => {
       return '';
     };
 
+    const extractDocs = (parsed: any): Document[] | null => {
+      if (!parsed || typeof parsed !== 'object') {
+        return null;
+      }
+
+      if (Array.isArray(parsed?.docs)) {
+        return parsed.docs;
+      }
+
+      if (Array.isArray(parsed?.data?.docs)) {
+        return parsed.data.docs;
+      }
+
+      return null;
+    };
+
     const handleStreamPayload = (payload: string) => {
       if (!payload || payload === '[DONE]') {
         return;
@@ -295,10 +311,11 @@ export const useChatStore = defineStore('chat', () => {
           appendToAssistantMessage(contentChunk);
         }
 
-        if (Array.isArray(parsed?.docs)) {
-          sourcesList.value = parsed.docs;
-          saveToStorage('chatSources', sourcesList.value);
-          if (parsed.docs.length > 0) {
+        const docs = extractDocs(parsed);
+        if (docs) {
+          sourcesList.value = docs;
+          saveToStorage('chatSources', docs);
+          if (docs.length > 0) {
             chatStatus.value = CHAT_STATUS.SEARCHED;
           }
         }
