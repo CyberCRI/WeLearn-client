@@ -4,29 +4,24 @@ export const API_BASE = import.meta.env.VITE_API_BASE;
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 export const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
 
-const DEV_PROXY_BASE = '/__welearn_api_proxy__';
-const isLocalApiBase =
-  typeof API_BASE === 'string' && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(API_BASE);
-
-const getApiRoot = () => {
-  if (import.meta.env.DEV && isLocalApiBase) {
-    return `${DEV_PROXY_BASE}${API_VERSION}`;
+const getSessionIdFromStorage = () => {
+  try {
+    const sessionId = localStorage.getItem('sessionId');
+    return sessionId ? JSON.parse(sessionId) : '';
+  } catch (error) {
+    console.error('Error parsing sessionId from localStorage:', error);
+    return '';
   }
-
-  if (!API_BASE) {
-    throw new Error('API_BASE not defined');
-  }
-
-  return `${API_BASE}${API_VERSION}`;
 };
 
-const buildApiUrl = (endpoint: string) => `${getApiRoot()}${endpoint}`;
-
 export const baseGetAxios = async (endpoint: string) => {
-  const response = await axios.get(buildApiUrl(endpoint), {
+  if (!API_BASE) throw new Error('API_BASE not defined');
+
+  const response = await axios.get(`${API_BASE}${API_VERSION}${endpoint}`, {
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   });
 
@@ -40,16 +35,23 @@ export const basePostAxios = async (
   options: Record<string, any> = {},
   config?: AxiosRequestConfig
 ) => {
+  if (!API_BASE) throw new Error('API_BASE not defined');
+
   const enhancedConfig = {
     ...config,
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   };
 
   try {
-    const response = await axios.post(buildApiUrl(endpoint), options, enhancedConfig);
+    const response = await axios.post(
+      `${API_BASE}${API_VERSION}${endpoint}`,
+      options,
+      enhancedConfig
+    );
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error fetching data');
@@ -63,16 +65,19 @@ export const basePostAxios = async (
 };
 
 export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestConfig) => {
+  if (!API_BASE) throw new Error('API_BASE not defined');
+
   const enhancedConfig = {
     ...config,
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   };
 
   try {
-    const response = await axios.delete(buildApiUrl(endpoint), enhancedConfig);
+    const response = await axios.delete(`${API_BASE}${API_VERSION}${endpoint}`, enhancedConfig);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error deleting data');
@@ -128,14 +133,17 @@ export const fetchStream = async (
   endpoint: string,
   body: { bodyContent: string }
 ): Promise<Response['body']> => {
-  const response = await fetch(buildApiUrl(endpoint), {
+  if (!API_BASE) throw new Error('API_BASE not defined');
+
+  const response = await fetch(`${API_BASE}${API_VERSION}${endpoint}`, {
     method: 'POST',
     body: body.bodyContent,
     credentials: 'include',
     headers: {
       Accept: '*/*',
       'Content-Type': 'application/json',
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   });
 
@@ -151,11 +159,12 @@ export const postBookmark = async (documentId: string) => {
 
 export const deleteBookmark = async (documentId: string) => {
   const resp = await axios.delete(
-    buildApiUrl(`/user/bookmarks/:document_id?document_id=${documentId}`),
+    `${API_BASE}${API_VERSION}/user/bookmarks/:document_id?document_id=${documentId}`,
     {
       withCredentials: true,
       headers: {
-        'X-API-Key': WL_API_KEY
+        'X-API-Key': WL_API_KEY,
+        'X-Session-Id': getSessionIdFromStorage()
       }
     }
   );
@@ -163,10 +172,11 @@ export const deleteBookmark = async (documentId: string) => {
 };
 
 export const deleteAllBookmarks = async () => {
-  await axios.delete(buildApiUrl('/user/bookmarks'), {
+  await axios.delete(`${API_BASE}${API_VERSION}/user/bookmarks`, {
     withCredentials: true,
     headers: {
-      'X-API-Key': WL_API_KEY
+      'X-API-Key': WL_API_KEY,
+      'X-Session-Id': getSessionIdFromStorage()
     }
   });
 };
