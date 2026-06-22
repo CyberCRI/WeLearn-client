@@ -5,7 +5,8 @@ import Bookmarks from '@/views/BookmarkdSources.vue';
 import Tutor from '@/views/TutorPage.vue';
 import NotFound from '@/views/NotFound.vue';
 import MicroLearning from '@/views/MicroLearning.vue';
-import i18n from '@/localisation/i18n';
+
+const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,9 +41,11 @@ const router = createRouter({
       component: () => import('@/views/TermsPage.vue')
     },
     {
-      path: '/microlearning',
-      name: 'micro-learning',
-      component: MicroLearning
+      ...(isDevEnvironment && {
+        path: '/microlearning',
+        name: 'micro-learning',
+        component: MicroLearning
+      })
     },
     {
       path: '/about',

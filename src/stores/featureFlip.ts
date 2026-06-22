@@ -10,7 +10,7 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
     bookmarks: true,
     chat: true,
     about: true,
-    microlearning: true
+    microlearning: isDevEnvironment
   };
 
   const isFeatureEnabled = (feature: string) => {
