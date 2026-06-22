@@ -16,12 +16,12 @@ L'analyse de François Grosse met en lumière les conditions mathématiques stri
 
 L'équation de Yoishi Kaya offre un cadre mathématique pour identifier les leviers d'action sur les émissions de dioxyde de carbone.<sup>[[3]](https://www.uved.fr/fiche/ressource/lequation-de-kaya)</sup> L'égalité décompose les émissions de CO2 en quatre paramètres : le contenu en CO2 de l'énergie (nuisance de l'énergie), l'intensité énergétique du PIB, le PIB par habitant (pouvoir d'achat) et la population totale. Cette approche permet de visualiser l'ampleur du défi climatique pour 2050. Si l'objectif est de diviser les émissions par trois alors que la population et le pouvoir d'achat continuent de croître, les facteurs techniques liés à l'intensité et à la nuisance énergétiques doivent être divisés par un facteur dix. Sébastien Menecier souligne que nous ne sommes actuellement pas dans cette dynamique, car « la nuisance de l'énergie depuis les années 1970 stagne ». Pour atteindre les objectifs, il est impératif d'infléchir radicalement ces courbes en modifiant le mix énergétique et en développant la sobriété.
 
-| Paramètre de l'équation de Kaya | Représentation et unité | Signification écologique |
-| --- | --- | --- |
-| CO2 / Tep | Taux d'émission par unité d'énergie | Nuisance carbone du mix énergétique |
-| Tep / PIB | Énergie consommée par unité de richesse | Intensité énergétique de l'économie |
-| PIB / Population | Richesse par habitant | Niveau de pouvoir d'achat et de consommation |
-| Population | Nombre d'habitants | Facteur démographique global |
+| Paramètre de l'équation de Kaya | Représentation et unité                 | Signification écologique                     |
+| ------------------------------- | --------------------------------------- | -------------------------------------------- |
+| CO2 / Tep                       | Taux d'émission par unité d'énergie     | Nuisance carbone du mix énergétique          |
+| Tep / PIB                       | Énergie consommée par unité de richesse | Intensité énergétique de l'économie          |
+| PIB / Population                | Richesse par habitant                   | Niveau de pouvoir d'achat et de consommation |
+| Population                      | Nombre d'habitants                      | Facteur démographique global                 |
 
 ### Impact de la transition sur la discipline et l'enseignement
 
@@ -48,10 +48,10 @@ La transition écologique n'est pas seulement un champ d'application pour les ma
 
 ## Ressources
 
-- [[Aligning the Energy Transition with the Sustainable Development Goals]](https://library.oapen.org/handle/20.500.12657/92320) - **Springer Nature** *via OAPEN*
-- [[Socio-technical transition in the palm oil sector: analysis from a multilevel perspective in Colombia’s municipality of Tibú]](https://openalex.org/W4387992257) - **Brazilian Society of Economy, Administration and Rural Sociology** *via OpenAlex*
+- [[Aligning the Energy Transition with the Sustainable Development Goals]](https://library.oapen.org/handle/20.500.12657/92320) - **Springer Nature** _via OAPEN_
+- [[Socio-technical transition in the palm oil sector: analysis from a multilevel perspective in Colombia’s municipality of Tibú]](https://openalex.org/W4387992257) - **Brazilian Society of Economy, Administration and Rural Sociology** _via OpenAlex_
 - [[The energy transition can be fair, just and inclusive – but the window of opportunity is closing fast]](https://theconversation.com/the-energy-transition-can-be-fair-just-and-inclusive-but-the-window-of-opportunity-is-closing-fast-222324) - **The Conversation**
-- [[INVESTIGATING A GREEN ECONOMY TRANSITION OF THE ELECTRICITY SECTOR IN THE WESTERN CAPE PROVINCE OF SOUTH AFRICA: A SYSTEM DYNAMICS APPROACH]](https://openalex.org/W2559825182) - **Stellenbosch University** *via OpenAlex*
+- [[INVESTIGATING A GREEN ECONOMY TRANSITION OF THE ELECTRICITY SECTOR IN THE WESTERN CAPE PROVINCE OF SOUTH AFRICA: A SYSTEM DYNAMICS APPROACH]](https://openalex.org/W2559825182) - **Stellenbosch University** _via OpenAlex_
 - [[Réussir la transition énergétique]](https://hal.science/hal-01166725) - **HAL**
 - [[Modelling long-run scenarios in a second-best world : application to climate policies]](https://pastel.hal.science/pastel-00004809) - **HAL**
 - [[Décarboner, mais à quel prix ? La transition énergétique face aux droits autochtones]](https://theconversation.com/decarboner-mais-a-quel-prix-la-transition-energetique-face-aux-droits-autochtones-275160) - **The Conversation**

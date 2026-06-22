@@ -16,7 +16,7 @@ Cette perspective temporelle est radicalisée par Hans Jonas dans son ouvrage Le
 
 ### L'épistémologie face à la complexité et au relativisme
 
-La question de la production de connaissances dans un contexte d'incertitude est cruciale. Margherita Arcangeli explore le paradoxe des expériences de pensée.<sup>[[5]](https://rpn.univ-lorraine.fr/UVED/TROIS_QUESTIONS_CLEFS_EN_PHILOSOPHIES_DES_SCIENCES/co/comment_produire.html)</sup> Ces outils épistémiques utilisent l'imagination pour fournir des intuitions sur le réel sans contact direct avec le monde. Alors que John Norton y voit de simples arguments logiques, James Brown considère que certaines permettent de « voir » les lois de la nature de façon *a priori*.
+La question de la production de connaissances dans un contexte d'incertitude est cruciale. Margherita Arcangeli explore le paradoxe des expériences de pensée.<sup>[[5]](https://rpn.univ-lorraine.fr/UVED/TROIS_QUESTIONS_CLEFS_EN_PHILOSOPHIES_DES_SCIENCES/co/comment_produire.html)</sup> Ces outils épistémiques utilisent l'imagination pour fournir des intuitions sur le réel sans contact direct avec le monde. Alors que John Norton y voit de simples arguments logiques, James Brown considère que certaines permettent de « voir » les lois de la nature de façon _a priori_.
 
 Le débat sur la nature de la science est également marqué par la question du relativisme. On distingue un relativisme faible, reconnaissant que le réel est connu via des médiations (comme les structures a priori de Kant), d'un relativisme fort.<sup>[[5]](https://rpn.univ-lorraine.fr/UVED/TROIS_QUESTIONS_CLEFS_EN_PHILOSOPHIES_DES_SCIENCES/co/definition.html)</sup> Ce dernier affirme l'égale validité de tous les systèmes de croyance, ce qui, poussé à l'extrême, « conduit à faire de la science un discours parmi d'autre sans spécificité par rapport à la question de la vérité ».
 
@@ -75,12 +75,12 @@ Enfin, la TEDS appelle à une nouvelle forme de citoyenneté scientifique. On d�
 ## Ressources
 
 - [Débat : La personnalisation de la nature en vue de mieux la protéger, cette fausse bonne idée](https://theconversation.com/debat-la-personnalisation-de-la-nature-en-vue-de-mieux-la-proteger-cette-fausse-bonne-idee-194463) - **The Conversation**
-- [Social after pandemic distortion: Towards thinking in planetary terms](https://openalex.org/W3093771333) - **Sociological Society of Serbia, Belgrade** *via OpenAlex*
-- [A BIOTECNOLOGIA E OS IMPACTOS BIOÉTICOS NA SAÚDE](https://openalex.org/W1998909928) - **Universidade Federal de Goiás** *via OpenAlex*
-- [Biodiversity and environmental education: A contradiction?](https://openalex.org/W2049487405) - **Scriber Editorial Systems** *via OpenAlex*
-- [Environmental and Climate Crises as a Factor in the Development of Modern Constitutionalism and Environmental Security](https://openalex.org/W4313416013) - **National University “Yaroslav the Wise Law Academy of Ukraine”** *via OpenAlex*
-- [Neither right nor wrong? Ethics of collaboration in transformative research for sustainable futures](https://openalex.org/W4399011479) - **Palgrave Macmillan** *via OpenAlex*
+- [Social after pandemic distortion: Towards thinking in planetary terms](https://openalex.org/W3093771333) - **Sociological Society of Serbia, Belgrade** _via OpenAlex_
+- [A BIOTECNOLOGIA E OS IMPACTOS BIOÉTICOS NA SAÚDE](https://openalex.org/W1998909928) - **Universidade Federal de Goiás** _via OpenAlex_
+- [Biodiversity and environmental education: A contradiction?](https://openalex.org/W2049487405) - **Scriber Editorial Systems** _via OpenAlex_
+- [Environmental and Climate Crises as a Factor in the Development of Modern Constitutionalism and Environmental Security](https://openalex.org/W4313416013) - **National University “Yaroslav the Wise Law Academy of Ukraine”** _via OpenAlex_
+- [Neither right nor wrong? Ethics of collaboration in transformative research for sustainable futures](https://openalex.org/W4399011479) - **Palgrave Macmillan** _via OpenAlex_
 - [Plaidoyer pour une éducation à la « condition terrestre »](https://theconversation.com/plaidoyer-pour-une-education-a-la-condition-terrestre-123731) - **The Conversation**
-- [Urban Planning During Socialism](https://library.oapen.org/handle/20.500.12657/77176) - **Taylor & Francis** *via OAPEN*
-- [AMBIGUOUS JANUS OF MODERN DEMOCRACY](https://openalex.org/W2471203805) - **Dnipropetrovsk National University of Railway Transport named after academician V. Lazaryan** *via OpenAlex*
-- [Permanent global crisis, biopolitics, and twenty-first century ethico-political turn](https://openalex.org/W4400807928) - **Sociological Society of Serbia, Belgrade** *via OpenAlex*
+- [Urban Planning During Socialism](https://library.oapen.org/handle/20.500.12657/77176) - **Taylor & Francis** _via OAPEN_
+- [AMBIGUOUS JANUS OF MODERN DEMOCRACY](https://openalex.org/W2471203805) - **Dnipropetrovsk National University of Railway Transport named after academician V. Lazaryan** _via OpenAlex_
+- [Permanent global crisis, biopolitics, and twenty-first century ethico-political turn](https://openalex.org/W4400807928) - **Sociological Society of Serbia, Belgrade** _via OpenAlex_

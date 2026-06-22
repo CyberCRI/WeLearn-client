@@ -22,7 +22,7 @@ const TOPIC_MENU_LABEL_OVERRIDES: Record<string, string> = {
   histoire: 'Histoire',
   mathematiques: 'Mathématiques',
   philosophie: 'Philosophie',
-  psychologie: 'Psychologie',
+  psychologie: 'Psychologie'
 };
 
 const TAB_TO_SECTION: Record<MicrolearningTabKey, string> = {
@@ -177,7 +177,9 @@ const onTopicChange = () => {
       <section class="microlearning-shell">
         <section class="microlearning-header">
           <h1 class="title is-4 is-size-5-mobile">{{ $t('microlearning.mainTitle') }}</h1>
-          <p class="subtitle is-6 is-size-6-mobile topic-label">{{ $t('microlearning.topicLabel') }}</p>
+          <p class="subtitle is-6 is-size-6-mobile topic-label">
+            {{ $t('microlearning.topicLabel') }}
+          </p>
           <select
             id="topic-selector"
             v-model="selectedTopicKey"
@@ -226,7 +228,11 @@ const onTopicChange = () => {
             <h3 class="subtitle has-text-weight-bold is-5 is-size-6-mobile">
               {{ selectedSectionHeading }}
             </h3>
-            <div v-if="selectedSectionContent" class="markdown-content" v-html="renderedActiveSection"></div>
+            <div
+              v-if="selectedSectionContent"
+              class="markdown-content"
+              v-html="renderedActiveSection"
+            ></div>
             <p v-else class="empty-state">{{ $t('microlearning.emptySection') }}</p>
           </article>
         </section>

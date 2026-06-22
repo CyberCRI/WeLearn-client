@@ -28,13 +28,13 @@ La prise de conscience environnementale moderne s'est structurée autour de mome
 
 Le tableau suivant récapitule les étapes majeures de la construction conceptuelle du développement durable au XXe siècle :
 
-| Année | Événement / Concept | Acteurs clés | Apport principal |
-| --- | --- | --- | --- |
-| 1972 | Rapport Meadows | Club de Rome | Identification des limites physiques à la croissance et risque d'effondrement vers 2020-2030. |
-| 1972 | Conférence de Stockholm | Maurice Strong, Ignacy Sachs | Émergence de l'écodéveloppement conciliant justice sociale et prudence écologique. |
-| 1987 | Rapport Brundtland | ONU | Marginalisation de l'écodéveloppement au profit du concept de développement durable. |
-| 2000 | Déclaration du Millénaire | ONU | Lancement des Objectifs du Millénaire pour le Développement (OMD) centrés sur les pays pauvres. |
-| 2015 | Objectifs de Développement Durable | ONU | Passage à un agenda universel incluant la croissance inclusive et la responsabilité de tous les pays. |
+| Année | Événement / Concept                | Acteurs clés                 | Apport principal                                                                                      |
+| ----- | ---------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------- |
+| 1972  | Rapport Meadows                    | Club de Rome                 | Identification des limites physiques à la croissance et risque d'effondrement vers 2020-2030.         |
+| 1972  | Conférence de Stockholm            | Maurice Strong, Ignacy Sachs | Émergence de l'écodéveloppement conciliant justice sociale et prudence écologique.                    |
+| 1987  | Rapport Brundtland                 | ONU                          | Marginalisation de l'écodéveloppement au profit du concept de développement durable.                  |
+| 2000  | Déclaration du Millénaire          | ONU                          | Lancement des Objectifs du Millénaire pour le Développement (OMD) centrés sur les pays pauvres.       |
+| 2015  | Objectifs de Développement Durable | ONU                          | Passage à un agenda universel incluant la croissance inclusive et la responsabilité de tous les pays. |
 
 Eric Berr précise que l'écodéveloppement reposait sur trois piliers : la self-reliance (autonomie des décisions), la satisfaction équitable des besoins essentiels et la prudence écologique.<sup>[[5]](https://www.uved.fr/fiche/ressource/origine-et-histoire-du-concept-decodeveloppement)</sup> Ce concept a été supplanté par le développement durable, jugé moins subversif par les pays développés. Jean-Michel Severino souligne que les ODD représentent aujourd'hui une "transformation du paradigme" où l'environnement est intégré au cœur de la croissance économique globale.<sup>[[6]](https://www.uved.fr/fiche/ressource/une-introduction-historique-aux-odd)</sup>
 
@@ -64,12 +64,12 @@ Le concept d'"anthroposystème", introduit dans les années 1990, permet d'étud
 ## Ressources
 
 - [Face à la crise écologique, le défi lancé par les jeunes générations aux écoles et aux universités](http://theconversation.com/face-a-la-crise-ecologique-le-defi-lance-par-les-jeunes-generations-aux-ecoles-et-aux-universites-191088) - **The Conversation**
-- [L’école écologique : s’ajuster ou transformer ?](https://books.openedition.org/enseditions/63096) - **ENS Éditions** *via OpenEdition Books*
+- [L’école écologique : s’ajuster ou transformer ?](https://books.openedition.org/enseditions/63096) - **ENS Éditions** _via OpenEdition Books_
 - [Course: Intégration du changement climatique dans les politiques nationale, sectorielle et locale | One UN Climate Change Learning Partnership](https://unccelearn.org/course/view.php?id=121&page=overview&lang=en) - **UN CC:e-Learn**
 - [Responses of economic systems to environmental changes: past experiences](https://shs.hal.science/halshs-00647279) - **HAL**
-- [Attempts to (re)capture the school history curriculum? Reflections on the history ministerial task team's report](https://openalex.org/W4386262249) - **North-West University** *via OpenAlex*
-- [The Impact of Historical Consciousness and Literacy on Heritage Conservation: A Quantitative Study of High School Students in Ambarawa, Indonesia](https://openalex.org/W4394934489) - **State University of Semarang** *via OpenAlex*
+- [Attempts to (re)capture the school history curriculum? Reflections on the history ministerial task team's report](https://openalex.org/W4386262249) - **North-West University** _via OpenAlex_
+- [The Impact of Historical Consciousness and Literacy on Heritage Conservation: A Quantitative Study of High School Students in Ambarawa, Indonesia](https://openalex.org/W4394934489) - **State University of Semarang** _via OpenAlex_
 - [Face à l’urgence écologique, comment transformer les programmes des écoles et universités ?](https://theconversation.com/face-a-lurgence-ecologique-comment-transformer-les-programmes-des-ecoles-et-universites-190090) - **The Conversation**
-- [Teaching history in primary schools in Mauritius: Reflections on history teachers' pedagogical practices](https://openalex.org/W4320806532) - **North-West University** *via OpenAlex* 
+- [Teaching history in primary schools in Mauritius: Reflections on history teachers' pedagogical practices](https://openalex.org/W4320806532) - **North-West University** _via OpenAlex_
 - [Mesurer le développement durable, est-ce possible ?](http://theconversation.com/mesurer-le-developpement-durable-est-ce-possible-195992) - **The Conversation**
-- [Humanités environnementales](https://books.openedition.org/psorbonne/84270) - **Éditions de la Sorbonne** *via OpenEdition Books*
+- [Humanités environnementales](https://books.openedition.org/psorbonne/84270) - **Éditions de la Sorbonne** _via OpenEdition Books_

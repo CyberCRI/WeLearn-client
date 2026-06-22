@@ -22,12 +22,12 @@ Sarah Marniesse et Jeanne Henin explorent le concept d'acrasie : « comment est-
 
 Le tableau suivant synthétise les principaux apports de la psychologie à la transition écologique :
 
-| Facteur | Description |
-| --- | --- |
-| **Croyances et valeurs** | Ce que l'individu sait ou croit savoir, incluant son rapport naturaliste à la nature (l'homme séparé de la nature). |
-| **Facteurs extérieurs** | Les incitations, les normes sociales et la pression des lobbies de consommation. |
-| **Limites personnelles** | Les capacités de l'individu et sa confiance en soi. |
-| **Comportements routiniers** | Ce qui régit l'action de manière inconsciente. |
+| Facteur                      | Description                                                                                                         |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Croyances et valeurs**     | Ce que l'individu sait ou croit savoir, incluant son rapport naturaliste à la nature (l'homme séparé de la nature). |
+| **Facteurs extérieurs**      | Les incitations, les normes sociales et la pression des lobbies de consommation.                                    |
+| **Limites personnelles**     | Les capacités de l'individu et sa confiance en soi.                                                                 |
+| **Comportements routiniers** | Ce qui régit l'action de manière inconsciente.                                                                      |
 
 Ce modèle démontre que le savoir pur ne tient qu'une place minime dans la décision d'agir.
 
@@ -91,13 +91,13 @@ Les compétences essentielles à transmettre aux étudiants sont la pensée comp
 
 ## Ressources
 
-- [Climate actions on the neighbourhood level—Individual, collective, cultural, and socio-structural factors](https://journals.plos.org/climate/article?id=10.1371/journal.pclm.0000424) - **PLOS Climate** *via PLOS*
-- [Achieving Global Open Access](https://library.oapen.org/handle/20.500.12657/91151) - **Taylor & Francis** *via OAPEN*
+- [Climate actions on the neighbourhood level—Individual, collective, cultural, and socio-structural factors](https://journals.plos.org/climate/article?id=10.1371/journal.pclm.0000424) - **PLOS Climate** _via PLOS_
+- [Achieving Global Open Access](https://library.oapen.org/handle/20.500.12657/91151) - **Taylor & Francis** _via OAPEN_
 - [Les personnes qui défendent la hiérarchie et le conformisme sont plus vulnérables au stress](https://theconversation.com/les-personnes-qui-defendent-la-hierarchie-et-le-conformisme-sont-plus-vulnerables-au-stress-149835) - **The Conversation**
-- [Developing a Citizen Social Science approach to understand urban stress and promote wellbeing in urban communities](https://openalex.org/W3023593704) - **Palgrave Macmillan** *via OpenAlex*
-- [Conformisme ou dissidence ? Les implications psychologiques de l’incongruence entre les attitudes personnelles et la norme collective](https://theses.hal.science/tel-03354677) - **HAL** 
+- [Developing a Citizen Social Science approach to understand urban stress and promote wellbeing in urban communities](https://openalex.org/W3023593704) - **Palgrave Macmillan** _via OpenAlex_
+- [Conformisme ou dissidence ? Les implications psychologiques de l’incongruence entre les attitudes personnelles et la norme collective](https://theses.hal.science/tel-03354677) - **HAL**
 - [Radicalité et émotions: comment se mobilisent les militants pour le climat](https://theconversation.com/radicalite-et-emotions-comment-se-mobilisent-les-militants-pour-le-climat-181502) - **The Conversation**
-- [Exploring the relationship between nursing students’ knowledge and attitudes towards climate change and their psychological distress: a cross-national investigation](https://openalex.org/W4396239425) - **BioMed Central** *via OpenAlex*
+- [Exploring the relationship between nursing students’ knowledge and attitudes towards climate change and their psychological distress: a cross-national investigation](https://openalex.org/W4396239425) - **BioMed Central** _via OpenAlex_
 - [Marcas corporais: a dimensão da letra](https://univ-rennes2.hal.science/hal-01701932) - **HAL**
-- [Sustainability Teaching for Impact](https://library.oapen.org/handle/20.500.12657/97921) - **Taylor & Francis** *via OAPEN*
+- [Sustainability Teaching for Impact](https://library.oapen.org/handle/20.500.12657/97921) - **Taylor & Francis** _via OAPEN_
 - [Le changement en psychologie sociale](https://hal.univ-lorraine.fr/hal-03015033) - **HAL**

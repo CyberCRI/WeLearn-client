@@ -65,13 +65,13 @@ Toutefois, cette participation nécessite une vigilance constante pour éviter l
 
 ## Ressources
 
-- [Public International Law](https://library.oapen.org/handle/20.500.12657/88272) - **Taylor & Francis** *via OAPEN*
-- [Environmental and Climate Crises as a Factor in the Development of Modern Constitutionalism and Environmental Security](https://openalex.org/W4313416013) - **National University “Yaroslav the Wise Law Academy of Ukraine”** *via OpenAlex*
-- [Des choses de la nature et de leurs droits](https://books.openedition.org/quae/41762) - **Éditions Quæ** *via OpenEdition Books*
-- [Poluição atmosférica veicular e o direito tributário ambiental no Brasil: proposta de reestruturação tributária para o desenvolvimento sustentável](https://openalex.org/W2583820960) - **Instituto de Pesquisas Ambientais em Bacias Hidrográficas (IPABHi)** *via OpenAlex*
+- [Public International Law](https://library.oapen.org/handle/20.500.12657/88272) - **Taylor & Francis** _via OAPEN_
+- [Environmental and Climate Crises as a Factor in the Development of Modern Constitutionalism and Environmental Security](https://openalex.org/W4313416013) - **National University “Yaroslav the Wise Law Academy of Ukraine”** _via OpenAlex_
+- [Des choses de la nature et de leurs droits](https://books.openedition.org/quae/41762) - **Éditions Quæ** _via OpenEdition Books_
+- [Poluição atmosférica veicular e o direito tributário ambiental no Brasil: proposta de reestruturação tributária para o desenvolvimento sustentável](https://openalex.org/W2583820960) - **Instituto de Pesquisas Ambientais em Bacias Hidrográficas (IPABHi)** _via OpenAlex_
 - [Evolving Jurisprudence of Environmental Law: A Doctrinal Analysis](https://openalex.org/W4390275277) **OpenAlex**
-- [Environmental Stewardship: Confluence of Law and Religion?](https://openalex.org/W4312820734) **North-West University** *via OpenAlex*
-- [Compensation écologique](https://books.openedition.org/puam/1883) **Presses universitaires d’Aix-Marseille** via *OpenEdition Books*
+- [Environmental Stewardship: Confluence of Law and Religion?](https://openalex.org/W4312820734) **North-West University** _via OpenAlex_
+- [Compensation écologique](https://books.openedition.org/puam/1883) **Presses universitaires d’Aix-Marseille** via _OpenEdition Books_
 - [14. Human Rights and the Environment](https://openalex.org/W4387398169) - **OpenAlex**
-- [Toward transformative youth climate justice: Why youth agency is important and six critical areas for transformative youth activism, policy, and research](https://journals.plos.org/climate/article?id=10.1371/journal.pclm.0000472) - **PLOS Climate** *via PLOS*
+- [Toward transformative youth climate justice: Why youth agency is important and six critical areas for transformative youth activism, policy, and research](https://journals.plos.org/climate/article?id=10.1371/journal.pclm.0000472) - **PLOS Climate** _via PLOS_
 - [Après la COP15 de Montréal, où en est l’action en faveur de la biodiversité ?](http://theconversation.com/apres-la-cop15-de-montreal-ou-en-est-laction-en-faveur-de-la-biodiversite-198750) - **The Conversation**

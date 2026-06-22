@@ -5,8 +5,7 @@ import Bookmarks from '@/views/BookmarkdSources.vue';
 import Tutor from '@/views/TutorPage.vue';
 import NotFound from '@/views/NotFound.vue';
 import MicroLearning from '@/views/MicroLearning.vue';
-
-const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
+import i18n from '@/localisation/i18n';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,11 +40,9 @@ const router = createRouter({
       component: () => import('@/views/TermsPage.vue')
     },
     {
-      ...(isDevEnvironment && {
-        path: '/microlearning',
-        name: 'micro-learning',
-        component: MicroLearning
-      })
+      path: '/microlearning',
+      name: 'micro-learning',
+      component: MicroLearning
     },
     {
       path: '/about',
@@ -61,6 +58,11 @@ function hasQueryParams(route: RouteLocationNormalized) {
 }
 
 router.beforeEach((to, from, next) => {
+  if (to.name === 'micro-learning' && i18n.global.locale.value !== 'fr') {
+    next({ name: 'q-and-a', query: to.query });
+    return;
+  }
+
   if (!hasQueryParams(to) && hasQueryParams(from)) {
     next({ name: to.name as string, query: from.query });
   } else {
