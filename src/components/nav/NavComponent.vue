@@ -8,12 +8,15 @@ import HelpComponent from '@/components/nav/HelpComponent.vue';
 import BookIcon from '@/components/icons/BookIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
+import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
 
 const featureFlip = useFeatureFlipStore();
+const { locale } = useI18n();
 
-const navEntries = [
+const navEntries = computed(() => [
   {
     name: 'chat',
     to: '/q-and-a',
@@ -45,7 +48,7 @@ const navEntries = [
     to: '/microlearning',
     icon: LinesLeaningIcon,
     featureFlag: 'microlearning',
-    isFeatureEnabled: featureFlip.isFeatureEnabled('microlearning')
+    isFeatureEnabled: featureFlip.isFeatureEnabled('microlearning') && locale.value === 'fr'
   },
   {
     name: 'about',
@@ -53,7 +56,7 @@ const navEntries = [
     icon: AboutIcon,
     isFeatureEnabled: featureFlip.isFeatureEnabled('about')
   }
-];
+]);
 </script>
 <template>
   <div class="nav">
