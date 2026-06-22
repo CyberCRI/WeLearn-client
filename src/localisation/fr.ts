@@ -431,8 +431,15 @@ export const fr = {
     }
   },
   microlearning: {
-    mainTitle: 'Choisissez un sujet :',
-    chooseSdg: "Choissisez l'ODD qui vous intéresse"
+    mainTitle: 'Micro-learning',
+    topicLabel: 'Choisissez un sujet',
+    noTopicAvailable: 'Aucun contenu de micro-learning disponible pour le moment.',
+    emptySection: 'Cette section est vide pour ce sujet.',
+    tabs: {
+      summary: 'Synthèse',
+      bibliography: 'Bibliographie (UVED)',
+      resources: 'Ressources complémentaires (WeLearn)'
+    }
   },
   previous: 'Précédent',
   previous_page: 'Page précédente',

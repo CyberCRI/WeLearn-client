@@ -425,8 +425,15 @@ export const en = {
     }
   },
   microlearning: {
-    mainTitle: 'Choose a subject:',
-    chooseSdg: 'Choose an SDG:'
+    mainTitle: 'Micro-learning',
+    topicLabel: 'Choose a topic',
+    noTopicAvailable: 'No micro-learning content is available yet.',
+    emptySection: 'This section is empty for this topic.',
+    tabs: {
+      summary: 'Synthesis',
+      bibliography: 'Bibliography (UVED)',
+      resources: 'Additional Resources (WeLearn)'
+    }
   },
   previous: 'Previous',
   previous_page: 'Previous page',
