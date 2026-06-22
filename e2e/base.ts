@@ -43,6 +43,25 @@ export const test = base.extend({
       }
     });
 
+    // Mock external SDG classifier to keep tests deterministic and fast in CI.
+    await page.route('https://aurora-sdg.labs.vu.nl/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        body: JSON.stringify({
+          predictions: [
+            {
+              prediction: 0.9,
+              sdg: { code: '1' }
+            },
+            {
+              prediction: 0.6,
+              sdg: { code: '4' }
+            }
+          ]
+        })
+      });
+    });
+
     // Mock metrics-related calls
     await page.route('**/**/metrics/**', async (route) => {
       const url = route.request().url();
