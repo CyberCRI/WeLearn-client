@@ -4,6 +4,6 @@ import { en } from '../en';
 
 describe('localisation', () => {
   it('should have the same number of keys in fr and en', () => {
-    expect(Object.keys(fr).length).toEqual(Object.keys(en).length);
+    expect(Object.keys(fr).sort()).toEqual(Object.keys(en).sort());
   });
 });
