@@ -438,6 +438,9 @@ export const en = {
   courseInformation: 'Course information',
   inputMode: 'Input mode',
   inputFile: 'Input file',
+  courseMetadataOnly: 'Course metadata only',
+  courseMetadataAndDocument: 'Course metadata and document',
+  existingSyllabus: 'Existing syllabus',
   discipline: 'Discipline',
   disciplinePlaceholder: 'Example: Sociology',
   disciplineExample: 'Example: Sociology',
@@ -454,11 +457,6 @@ export const en = {
   sessionDurationPlaceholder: 'Duration of a session in hours',
   sessionDurationExample: 'Example: 1.5',
   syllabus_mode: 'Syllabus input mode',
-  syllabusModePlaceholder: 'Choose a syllabus input mode',
-  syllabusModeExample: 'Example: Course metadata and document',
-  courseMetadataOnly: 'Course metadata only',
-  courseMetadataAndDocument: 'Course metadata and document',
-  existingSyllabus: 'Existing syllabus',
   session_type: 'Session type',
   sessionTypePlaceholder: 'Lecture, Tutorial, Lab, etc.',
   sessionTypeExample: 'Example: Lecture',
@@ -478,5 +476,18 @@ export const en = {
   user_description: 'Course description',
   courseDescriptionPlaceholder: 'Add a brief description to improve the generated syllabus.',
   descriptionExample:
-    'Example: This course covers the fundamentals of sociolinguistics, including key concepts and theories.'
+    'Example: This course covers the fundamentals of sociolinguistics, including key concepts and theories.',
+  learningObjectives: 'Learning objectives',
+  learningObjectivesSubtitle:
+    'Learning objectives are specific statements that describe what students should be able to demonstrate or accomplish by the end of a course or lesson. They are measurable and observable, allowing instructors to assess whether the learning goals have been achieved.',
+  sustainabilityIntegration: 'Sustainability integration',
+  sustainabilityIntegrationSubtitle:
+    'Integrating sustainability into a course involves incorporating concepts, practices, and perspectives related to sustainable development into the course content, activities, and assessments. This may include exploring environmental, social, and economic issues, as well as promoting critical thinking and responsibility towards future generations.',
+  learningOutcomes: 'Learning outcomes',
+  learningOutcomesSubtitle:
+    'Learning outcomes are specific statements that describe what students should be able to demonstrate or accomplish by the end of a course or lesson. They are measurable and observable, allowing instructors to assess whether the learning goals have been achieved.',
+  competencies: 'Competencies',
+  competenciesSubtitle:
+    'Competencies are a set of knowledge, skills, and attitudes that an individual develops and uses to perform tasks, solve problems, and adapt to different situations. They can be technical, cognitive, social, or emotional, and are essential for success in professional and personal life.',
+  greencompCompetencies: 'GreenComp Competencies'
 };
