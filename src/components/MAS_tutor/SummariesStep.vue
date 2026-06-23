@@ -8,7 +8,8 @@ import EditIcon from '@/components/icons/EditIcon.vue';
 import { ref } from 'vue';
 
 const props = defineProps<{
-  summaries: [string];
+  id_number: number;
+  summaries: string[];
   files: File;
   updateSummary: (index: number, content: string) => void;
   action: () => void;
@@ -55,7 +56,7 @@ const handleTextEdit = (event, index) => {
 };
 </script>
 <template>
-  <div id="target-2" class="summaries-section" :class="{ disabled: disabled }">
+  <div class="summaries-section" :class="{ disabled: disabled }">
     <h2 data-testid="tutor-summaries-title" class="title is-4 is-size-5-mobile mt-4">
       2 - {{ $t('tutor.summaries.title') }}
     </h2>
@@ -66,9 +67,9 @@ const handleTextEdit = (event, index) => {
       <h2 class="title is-6 mt-4">
         {{ Object.values(files)[index]?.name || $t('tutor.summaries.noFileName') }}
       </h2>
-      <div class="is-flex is-flex-wrap-wrap">
+      <div class="is-flex is-flex-wrap-wrap flex-direction-column">
         <div class="mt-2 ml-auto is-flex is-align-items-center">
-          <button class="button is-white" @click="toggleEdit(index, true)">
+          <button class="button is-white mr-1" @click="toggleEdit(index, true)">
             <span class="icon is-small">
               <EditIcon />
             </span>
@@ -94,9 +95,8 @@ const handleTextEdit = (event, index) => {
           @paste="sanitizePaste"
           @blur="handleTextEdit($event, index)"
           :class="{ validated: !editableParagraphs[index] }"
-        >
-          {{ summary }}
-        </p>
+          v-html="summary"
+        />
       </div>
     </div>
     <div class="is-flex is-justify-content-end mt-4">
@@ -114,7 +114,6 @@ const handleTextEdit = (event, index) => {
 }
 .summaries-section {
   margin: auto;
-  padding: 5% 0;
   width: 100%;
 }
 .summaries-section.disabled {

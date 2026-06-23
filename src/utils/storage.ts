@@ -9,7 +9,12 @@ export const getFromStorage = function (key: string) {
     return null;
   }
 
-  return JSON.parse(localStorage.getItem(key) || '');
+  try {
+    return JSON.parse(localStorage.getItem(key) || '');
+  } catch (error) {
+    console.error('Error parsing JSON from localStorage for key:', key, error);
+    return null;
+  }
 };
 
 // function to clear key from local storage

@@ -4,5 +4,7 @@ export const scrollToAnchor = (id: string) => {
     return;
   }
 
-  document?.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  document
+    ?.getElementById(id)
+    ?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
 };
