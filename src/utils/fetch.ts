@@ -9,7 +9,6 @@ const getSessionIdFromStorage = () => {
     const sessionId = localStorage.getItem('sessionId');
     return sessionId ? JSON.parse(sessionId) : '';
   } catch (error) {
-    console.error('Error parsing sessionId from localStorage:', error);
     return '';
   }
 };

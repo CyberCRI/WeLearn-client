@@ -11,17 +11,6 @@
       or workshop, our tool is designed to help you create an engaging and informative syllabus that
       meets your specific requirements.
     </p>
-    <div class="is-flex is-justify-content-end mt-4">
-      <a
-        data-testid="tutor-next-button"
-        class="button is-primary"
-        href="#"
-        @click="scrollToAnchor(`target-${id_number + 1}`)"
-      >
-        <ChevronDown />
-        {{ $t(`${actionText || 'start'}`) }}
-      </a>
-    </div>
   </div>
 </template>
 
@@ -35,11 +24,7 @@
 </style>
 
 <script setup lang="ts">
-import ChevronDown from '@/components/icons/ChevronDown.vue';
-import { scrollToAnchor } from '@/utils/navigation';
-
 defineProps<{
   id_number: number;
-  actionText?: string;
 }>();
 </script>
