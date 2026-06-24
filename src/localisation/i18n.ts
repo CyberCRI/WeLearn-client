@@ -2,7 +2,7 @@ import { createI18n } from 'vue-i18n';
 import { messages } from './messages';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 
-const lang = getQueryParamValue('lang');
+const lang = getQueryParamValue('lang') || localStorage.getItem('language');
 
 const i18n = createI18n({
   locale: lang ?? 'fr',

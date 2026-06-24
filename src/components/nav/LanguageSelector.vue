@@ -1,6 +1,6 @@
 <template>
   <div class="language-selector">
-    <select v-model="$i18n.locale">
+    <select v-model="$i18n.locale" @change="storeLanguage">
       <option
         class="nav-lang"
         v-for="locale in $i18n.availableLocales"
@@ -13,7 +13,11 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const storeLanguage = (e: Event) => {
+  localStorage.setItem('language', (e.target as HTMLSelectElement).value);
+};
+</script>
 
 <style scoped>
 .language-selector {
