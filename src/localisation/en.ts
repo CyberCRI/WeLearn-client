@@ -325,7 +325,7 @@ export const en = {
     formulatingAnswer: 'Preparing your answer...'
   },
   terms: 'Privacy Policy',
-  giveFeedback: 'Give Feedback',
+  giveFeedback: 'Feedback Form',
   subjects: {
     Anthropology: 'Anthropology',
     Arts: 'Arts',

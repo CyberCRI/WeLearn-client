@@ -4,10 +4,15 @@ import { WL_FEEDBACK_FORM_URL } from '@/utils/constants';
 
 <template>
   <div class="footer-wrapper">
-    <a target="_blank" :href="WL_FEEDBACK_FORM_URL">{{ $t('giveFeedback') }}</a>
-    <router-link class="terms" to="/terms">
-      <span class="item-name">{{ $t('terms') }}</span>
-    </router-link>
+    <div>
+      <a href="mailto:welearn@learningplanetinstitute.org">welearn@learningplanetinstitute.org</a>
+    </div>
+    <div>
+      <a target="_blank" :href="WL_FEEDBACK_FORM_URL">{{ $t('giveFeedback') }}</a>
+      <router-link class="terms" to="/terms">
+        <span class="item-name">{{ $t('terms') }}</span>
+      </router-link>
+    </div>
   </div>
 </template>
 

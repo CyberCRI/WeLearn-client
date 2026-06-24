@@ -329,7 +329,7 @@ export const fr = {
     formulatingAnswer: 'Préparation de votre réponse...'
   },
   terms: 'Politique de confidentialité',
-  giveFeedback: 'Faire un retour',
+  giveFeedback: 'Formulaire de retour',
   subjects: {
     Anthropology: 'Anthropologie',
     Arts: 'Arts',
