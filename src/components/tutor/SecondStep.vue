@@ -12,7 +12,7 @@ defineProps<{
   visible?: boolean;
   appendSource: (source: Document) => void;
   selectedSources: Document[];
-  action: () => void;
+  action: () => Promise<void>;
   actionText?: string;
 }>();
 </script>
@@ -68,7 +68,7 @@ defineProps<{
         </div>
       </div>
       <div class="is-flex is-justify-content-end mt-4">
-        <a class="button is-primary" href="#" @click="action()">
+        <a class="button is-primary" href="#" @click="action">
           <ChevronDown />
           {{ $t(`${actionText || 'next'}`) }}
         </a>

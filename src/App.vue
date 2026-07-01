@@ -38,8 +38,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <ErrorComponent v-if="fetchError" />
-  <div class="fullscreen" v-else>
+  <div class="fullscreen">
     <WelcomeModal />
 
     <AppLayout>

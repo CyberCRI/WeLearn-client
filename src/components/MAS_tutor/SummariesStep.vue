@@ -100,7 +100,7 @@ const handleTextEdit = (event, index) => {
       </div>
     </div>
     <div class="is-flex is-justify-content-end mt-4">
-      <a class="button is-primary" href="#" @click="action()">
+      <a class="button is-primary" href="#" @click="action">
         <ChevronDown />
         {{ $t(`${actionText || 'next'}`) }}
       </a>
