@@ -483,17 +483,21 @@ export const fr = {
   courseDescriptionPlaceholder: 'Ajoutez une brève description pour améliorer le syllabus généré.',
   descriptionExample:
     'Exemple : Ce cours couvre les fondamentaux de la sociolinguistique, notamment les concepts et théories clés.',
+  courseDescription: 'Description',
   learningObjectives: 'Objectifs d’apprentissage',
   learningObjectivesSubtitle:
     'Les objectifs d’apprentissage sont des énoncés clairs et concis qui décrivent ce que les étudiant·es devraient savoir, comprendre ou être capable de faire à la fin d’un cours ou d’une leçon.',
   sustainabilityIntegration: 'Intégration de la durabilité',
   sustainabilityIntegrationSubtitle:
     "L'intégration de la durabilité dans un cours consiste à incorporer des concepts, des pratiques et des perspectives liés au développement durable dans le contenu, les activités et les évaluations du cours. Cela peut inclure l'exploration des enjeux environnementaux, sociaux et économiques, ainsi que la promotion de la pensée critique et de la responsabilité envers les générations futures.",
+  resourcesUsed: 'Resources utilisées',
   learningOutcomes: 'Résultats d’apprentissage',
   learningOutcomesSubtitle:
     'Les résultats d’apprentissage sont des énoncés spécifiques qui décrivent ce que les étudiant·es devraient être capable de démontrer ou d’accomplir à la fin d’un cours ou d’une leçon. Ils sont mesurables et observables, permettant aux enseignant·es d’évaluer si les objectifs d’apprentissage ont été atteints.',
   competencies: 'Compétences',
   competenciesSubtitle:
     'Les compétences sont un ensemble de connaissances, de savoir-faire et d’attitudes qu’un individu développe et utilise pour accomplir des tâches, résoudre des problèmes et s’adapter à différentes situations. Elles peuvent être techniques, cognitives, sociales ou émotionnelles, et sont essentielles pour réussir dans la vie professionnelle et personnelle.',
-  greencompCompetencies: 'Compétences GreenComp'
+  greencompCompetencies: 'Compétences GreenComp',
+  provideFeedback: 'Faites un retours',
+  seeConnectionExplanation: "Voir l'explication"
 };

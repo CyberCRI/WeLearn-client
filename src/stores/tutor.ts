@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { scrollToAnchor } from '@/utils/navigation.ts';
+import { scrollToAnchor } from '@/utils/navigation';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';

@@ -18,7 +18,7 @@ defineProps<{
   summaries: Array<string>;
   filesRef: Array<File>;
   hasUserInputData: boolean;
-  nextAction: () => void;
+  nextAction: () => Promise<void>;
   updateSummary: (index: number, summary: string) => void;
 }>();
 
@@ -29,7 +29,7 @@ const syllabusModeMapping = {
 };
 </script>
 <template>
-  <div id="target-2">
+  <div>
     <div
       class="user-input-section"
       v-if="hasUserInputData && Object.keys(courseMetadaRef).length > 0"
@@ -80,8 +80,8 @@ const syllabusModeMapping = {
         :updateSummary="updateSummary"
         :summaries="summaries"
         :files="filesRef"
-        :action="nextAction"
         actionText="Chercher des documents en lien"
+        :action="nextAction"
       />
     </div>
   </div>

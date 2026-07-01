@@ -45,7 +45,7 @@ const activeTab: Ref<string> = ref('objectives');
 const feedbackText: Ref<string> = ref('');
 </script>
 <template>
-  <div id="target-5" v-if="syllabusData" class="syllabus-section">
+  <div v-if="syllabusData" class="syllabus-section">
     <h1 class="title is-4 is-size-5-mobile">
       {{ $t('syllabus') }}
     </h1>
@@ -141,24 +141,9 @@ const feedbackText: Ref<string> = ref('');
                         :key="resourceRef.url"
                         class="resource-item"
                       >
-                        <div v-if="resourceRef">
-                          <a v-if="resourceRef.url" :href="resourceRef.url" target="_blank">
-                            {{
-                              resourceRef.metadata?.document_title || resourceRef.text?.slice(0, 50)
-                            }}
-                          </a>
-
-                          <span v-else>
-                            {{
-                              resourceRef.metadata?.document_title || resourceRef.text?.slice(0, 50)
-                            }}
-                          </span>
-
-                          <small>
-                            This resource provides examples and evidence for sustainability
-                            integration.
-                          </small>
-                        </div>
+                        <a :href="resourceRef.url" target="_blanl">
+                          <span>{{ resourceRef.corpus }} : {{ resourceRef.title }}</span>
+                        </a>
                       </div>
                     </div>
                   </details>
@@ -234,14 +219,15 @@ const feedbackText: Ref<string> = ref('');
 </template>
 <style lang="css" scoped>
 .syllabus-section {
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 .syllabus-section-content {
   height: 100%;
   margin-top: 2rem;
   gap: 2rem;
   display: flex;
-  overflow-y: auto;
+  overflow-y: hidden;
   margin: auto;
 }
 
@@ -253,6 +239,8 @@ const feedbackText: Ref<string> = ref('');
   padding: 2rem;
   padding-top: 5%;
   background-color: var(--neutral-10);
+  height: 100%;
+  overflow: hidden;
 }
 
 .syllabus-part {
@@ -268,8 +256,10 @@ const feedbackText: Ref<string> = ref('');
 
 .col {
   overflow-y: auto;
+  overflow-x: hidden;
   flex: 6;
   padding: 1rem 1rem;
+  height: 100%;
 }
 
 /* Light styling for presentation */

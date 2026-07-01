@@ -7,7 +7,7 @@ import App from './App.vue';
 import router from './router';
 import i18n from './localisation/i18n';
 //Import Mixpanel SDK (only required for npm and yarn)
-import mixpanel from 'mixpanel-browser';
+// import mixpanel from 'mixpanel-browser';
 
 // mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN, {
 //   debug: import.meta.env.VITE_ENVIRONMENT === 'dev', // Enable debug mode for development

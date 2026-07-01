@@ -91,10 +91,8 @@ export interface SyllabusData {
       key_resources: {
         url: string;
         text?: string;
-        metadata?: {
-          document_title: string;
-          text: string;
-        };
+        title: string;
+        corpus: string;
       }[];
     }[];
   };
@@ -125,4 +123,9 @@ export interface CourseMetadata {
   class_size?: number;
   session_mode?: 'PRESENTIEL' | 'REMOTE' | 'HYBRID';
   output_language?: 'french' | 'english';
+}
+
+export enum CreateSyllabusStepsId {
+  search = 'search',
+  syllabus = 'syllabus'
 }

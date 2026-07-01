@@ -30,7 +30,6 @@ const form: CourseMetadata = reactive(
 );
 
 function submitForm() {
-  console.log('submitForm', form);
   emit('submit', { ...form });
 }
 </script>
@@ -41,7 +40,7 @@ function submitForm() {
       <div class="field submit-button">
         <h2 class="title is-4 is-size-5-mobile has-text-centered">{{ $t('courseInformation') }}</h2>
         <div class="control">
-          <button class="button is-primary" type="submit" @click="action && action()">
+          <button class="button is-primary" type="submit">
             <ChevronDown />
             {{ $t(`${actionText || 'start'}`) }}
           </button>

@@ -477,6 +477,7 @@ export const en = {
   courseDescriptionPlaceholder: 'Add a brief description to improve the generated syllabus.',
   descriptionExample:
     'Example: This course covers the fundamentals of sociolinguistics, including key concepts and theories.',
+  courseDescription: 'Description',
   learningObjectives: 'Learning objectives',
   learningObjectivesSubtitle:
     'Learning objectives are specific statements that describe what students should be able to demonstrate or accomplish by the end of a course or lesson. They are measurable and observable, allowing instructors to assess whether the learning goals have been achieved.',
@@ -489,5 +490,8 @@ export const en = {
   competencies: 'Competencies',
   competenciesSubtitle:
     'Competencies are a set of knowledge, skills, and attitudes that an individual develops and uses to perform tasks, solve problems, and adapt to different situations. They can be technical, cognitive, social, or emotional, and are essential for success in professional and personal life.',
-  greencompCompetencies: 'GreenComp Competencies'
+  greencompCompetencies: 'GreenComp Competencies',
+  provideFeedback: 'Provide a feedback',
+  resourcesUsed: 'Resources used',
+  seeConnectionExplanation: 'Connection explanation'
 };
