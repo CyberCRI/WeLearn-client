@@ -1,0 +1,1 @@
+<template>activity card</template>
