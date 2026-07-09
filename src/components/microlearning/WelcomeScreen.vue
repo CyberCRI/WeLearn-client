@@ -1,9 +1,7 @@
 <template>
   <section class="welcome-screen">
     <div class="welcome-inner">
-      <span class="badge">Microlearning</span>
-
-      <h1 class="title">Votre discipline contribue déjà à la transition écologique.</h1>
+      <h1 class="title is-size-3">Votre discipline contribue déjà à la transition écologique.</h1>
 
       <p class="subtitle">
         Un parcours d'apprentissage pour les enseignants du supérieur. Choisissez votre domaine et
@@ -47,7 +45,7 @@ export interface Discipline {
   icon: string;
 }
 
-const props = defineProps<{
+defineProps<{
   disciplines: Discipline[];
 }>();
 
@@ -73,47 +71,30 @@ function start() {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   padding: 3rem 1.5rem;
-  background: #fafaf8;
 }
 
 .welcome-inner {
   width: 100%;
-  max-width: 680px;
+  max-width: 50%;
   text-align: center;
 }
 
-.badge {
-  display: inline-block;
-  padding: 4px 12px;
-  margin-bottom: 1.5rem;
-  border-radius: 999px;
-  background: #e8faf6;
-  color: #2ec4a0;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
 .title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.2;
   margin-bottom: 1rem;
 }
 
 .subtitle {
-  max-width: 520px;
+  max-width: 80%;
   margin: auto;
   margin-bottom: 2.5rem;
   line-height: 1.7;
-  color: #666;
+  color: var(--neutral-80);
 }
 
 .label {
   text-align: left;
   margin-bottom: 0.75rem;
-  font-weight: 500;
 }
 
 .discipline-grid {
@@ -124,9 +105,9 @@ function start() {
 }
 
 .discipline-card {
-  border: 1px solid #ddd;
+  border: 1px solid var(--neutral-10);
   border-radius: 12px;
-  background: white;
+  background: var(neutral-0);
   padding: 1rem;
   cursor: pointer;
   transition: 0.2s;
@@ -136,13 +117,13 @@ function start() {
 }
 
 .discipline-card:hover {
-  border-color: #2ec4a0;
+  border-color: var(--primary-hover);
   transform: translateY(-2px);
 }
 
 .discipline-card.selected {
-  background: #e8faf6;
-  border-color: #2ec4a0;
+  background: var(--primary-light);
+  border-color: var(--primary-hover);
 }
 
 .icon {
@@ -152,15 +133,14 @@ function start() {
 
 .name {
   font-size: 0.9rem;
-  font-weight: 500;
 }
 
 .btn-primary {
   padding: 0.9rem 2rem;
   border: none;
   border-radius: 10px;
-  background: #2ec4a0;
-  color: white;
+  background: var(--primary-hover);
+  color: var(--neutral-0);
   font-size: 0.95rem;
   cursor: pointer;
 }
@@ -172,7 +152,7 @@ function start() {
 
 .hint {
   margin-top: 1rem;
-  color: #888;
+  color: var(--neutral-80);
   font-size: 0.8rem;
 }
 

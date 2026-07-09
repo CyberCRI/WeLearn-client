@@ -1,21 +1,41 @@
-import { ref, computed, type Ref } from 'vue';
-import { DISC_META, type DiscValue } from '@/types/microlearning';
+import { ref, computed, type ComputedRef } from 'vue';
+import type { DiscValue, Discipline, DisciplineMeta } from '@/types/microlearning';
+import { ScreensEnum } from '@/types/microlearning';
 import { DATA } from '@/stores/microlearning/data';
 
 export function useMicrolearning() {
   // =====================
   // STATE GLOBAL
   // =====================
-  const screen = ref<'welcome' | 'briefing' | 'trail' | 'complete'>('welcome');
+  const screen = ref<ScreensEnum>(ScreensEnum.welcome);
 
   const disc = ref<DiscValue | null>(null);
+  const current_disc = ref<DisciplineMeta | null>(null);
   const step = ref(0);
   const actChoice = ref<string | null>(null);
+
+  const DISC_META: Record<string, DisciplineMeta> = {
+    math: { name: 'Mathématiques', icon: '📐' },
+    history: { name: 'Histoire', icon: '🏛' },
+    economics: { name: 'Économie', icon: '📊' },
+    law: { name: 'Droit', icon: '⚖️' },
+    philosophy: { name: 'Philosophie', icon: '💭' },
+    psychology: { name: 'Psychologie', icon: '🧠' }
+  };
+
+  const DISC_LIST = [
+    { id: 'math', name: 'Mathématiques', icon: '📐' },
+    { id: 'history', name: 'Histoire', icon: '🏛' },
+    { id: 'economics', name: 'Économie', icon: '📊' },
+    { id: 'law', name: 'Droit', icon: '⚖️' },
+    { id: 'philosophy', name: 'Philosophie', icon: '💭' },
+    { id: 'psychology', name: 'Psychologie', icon: '🧠' }
+  ];
 
   // =====================
   // DERIVED STATE
   // =====================
-  const currentData = computed(() => {
+  const currentData: ComputedRef<Discipline | null> = computed(() => {
     if (!disc.value) return null;
     return DATA[disc.value];
   });
@@ -42,25 +62,27 @@ export function useMicrolearning() {
   // ACTIONS
   // =====================
 
-  function selectDiscipline(key: DiscValue) {
-    disc.value = key;
+  function selectDiscipline(key: string) {
+    disc.value = key as DiscValue;
+    current_disc.value = DISC_META[disc.value];
+    goToBriefing();
   }
 
   function goToBriefing() {
-    screen.value = 'briefing';
+    screen.value = ScreensEnum.briefing;
   }
 
   function startTrail() {
     step.value = 0;
     actChoice.value = null;
-    screen.value = 'trail';
+    screen.value = ScreensEnum.trail;
   }
 
   function nextStep() {
     if (!currentData.value) return;
 
     if (isLastStep.value) {
-      screen.value = 'complete';
+      screen.value = ScreensEnum.complete;
     } else {
       step.value++;
       actChoice.value = null;
@@ -72,7 +94,8 @@ export function useMicrolearning() {
   }
 
   function restart() {
-    screen.value = 'welcome';
+    console.log('>>>>>>>>>>>>>>');
+    screen.value = ScreensEnum.welcome;
     disc.value = null;
     step.value = 0;
     actChoice.value = null;
@@ -89,6 +112,9 @@ export function useMicrolearning() {
     // state
     screen,
     disc,
+    current_disc,
+    DISC_META,
+    DISC_LIST,
     step,
     actChoice,
 

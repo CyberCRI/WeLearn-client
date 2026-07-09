@@ -1,13 +1,9 @@
 <template>
-  <div class="flip-card" :class="{ flipped }" @click="flip">
+  <div class="flip-card" :class="{ flipped, [card.color]: card.color }" @click="flip">
     <div class="inner">
       <div class="front">
-        <div class="icon">
-          {{ card.icon }}
-        </div>
-
         <h3>
-          {{ card.title }}
+          {{ card.verb }}
         </h3>
 
         <small> Cliquez pour découvrir </small>
@@ -15,11 +11,11 @@
 
       <div class="back">
         <h3>
-          {{ card.title }}
+          {{ card.verb }}
         </h3>
 
         <p>
-          {{ card.explanation }}
+          {{ card.text }}
         </p>
       </div>
     </div>
@@ -27,20 +23,11 @@
 </template>
 
 <script setup lang="ts">
+import type { FlipCard } from '@/types/microlearning';
 import { ref } from 'vue';
 
-interface FlipCardModel {
-  id: number;
-
-  title: string;
-
-  icon: string;
-
-  explanation: string;
-}
-
-const props = defineProps<{
-  card: FlipCardModel;
+defineProps<{
+  card: FlipCard;
 }>();
 
 const emit = defineEmits<{
@@ -53,7 +40,6 @@ function flip() {
   if (flipped.value) return;
 
   flipped.value = true;
-
   emit('flip');
 }
 </script>
@@ -61,19 +47,17 @@ function flip() {
 <style scoped>
 .flip-card {
   cursor: pointer;
-
-  height: 240px;
-
+  height: 200px;
   perspective: 1000px;
+  border-radius: 16px;
+  background-color: var(--primary-hover);
+  color: var(--neutral-0);
 }
 
 .inner {
   position: relative;
-
   height: 100%;
-
   transition: transform 0.6s;
-
   transform-style: preserve-3d;
 }
 
@@ -81,32 +65,39 @@ function flip() {
   transform: rotateY(180deg);
 }
 
+.flipped {
+  color: var(--neutral-100);
+}
+
+.ct.flipped {
+  background-color: var(--primary-lighter);
+}
+
+.cp.flipped {
+  background-color: var(--secondary-lighter);
+}
+
+.cy.flipped {
+  background-color: var(--lpi-yellow-lighter);
+}
+
+.ck.flipped {
+  background-color: var(--tertiary-lighter);
+}
+
 .front,
 .back {
   position: absolute;
-
   inset: 0;
-
   backface-visibility: hidden;
-
   border-radius: 16px;
-
   padding: 1.5rem;
-
   display: flex;
-
   flex-direction: column;
-
   justify-content: center;
-
   align-items: center;
-
   text-align: center;
-
-  background: white;
-
-  border: 1px solid #ddd;
-
+  border: 1px solid VAR(--neutral-20);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
 }
 
@@ -115,17 +106,7 @@ function flip() {
 }
 
 .back {
-  background: #41825a;
-
-  color: white;
-
   transform: rotateY(180deg);
-}
-
-.icon {
-  font-size: 3rem;
-
-  margin-bottom: 1rem;
 }
 
 h3 {

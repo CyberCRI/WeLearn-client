@@ -5,7 +5,7 @@
     </div>
 
     <div class="steps">
-      <div v-for="(step, index) in steps" :key="index" class="step" :class="stepClass(index)">
+      <div v-for="(step, index) in STEP_LABELS" :key="index" class="step" :class="stepClass(index)">
         <div class="circle">
           <svg v-if="index < currentStep" class="check" viewBox="0 0 24 24">
             <path
@@ -24,7 +24,7 @@
         </div>
 
         <span class="label">
-          {{ step.label }}
+          {{ step }}
         </span>
       </div>
     </div>
@@ -34,21 +34,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-interface ProgressStep {
-  label: string;
-}
+const STEP_LABELS = ['Les apports', 'Les compétences', 'Une activité', 'À votre tour'];
 
 const props = defineProps<{
-  steps: ProgressStep[];
   currentStep: number;
 }>();
 
 const progressWidth = computed(() => {
-  if (props.steps.length <= 1) {
-    return '0%';
-  }
-
-  return `${(props.currentStep / (props.steps.length - 1)) * 100}%`;
+  return `${(props.currentStep / (STEP_LABELS.length - 1)) * 100}%`;
 });
 
 function stepClass(index: number) {
@@ -61,21 +54,21 @@ function stepClass(index: number) {
 
 <style scoped>
 .progress-wrapper {
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 }
 
 .progress-track {
   position: relative;
   width: 100%;
   height: 4px;
-  background: #e4e4e4;
+  background: var(--neutral-20);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background: #2ec4a0;
+  background: var(--primary-hover);
   transition: width 0.35s ease;
 }
 

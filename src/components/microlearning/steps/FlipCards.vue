@@ -1,21 +1,11 @@
 <template>
   <section class="flip-cards">
-    <header class="header">
-      <span class="badge"> Étape {{ stepNumber }} </span>
-
-      <h2>{{ step.title }}</h2>
-
-      <p>
-        {{ step.description }}
-      </p>
-    </header>
-
     <div class="cards">
       <FlipCard
-        v-for="card in step.cards"
-        :key="card.id"
+        v-for="(card, index) in step.cards"
+        :key="index"
         :card="card"
-        @flip="markFlipped(card.id)"
+        @flip="markFlipped(index)"
       />
     </div>
 
@@ -32,25 +22,10 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import FlipCard from './FlipCard.vue';
-
-interface FlipCardModel {
-  id: number;
-  title: string;
-  icon: string;
-  explanation: string;
-}
-
-interface FlipStep {
-  title: string;
-
-  description: string;
-
-  cards: FlipCardModel[];
-}
+import type { FlipStep } from '@/types/microlearning/index.js';
 
 const props = defineProps<{
   step: FlipStep;
-
   stepNumber?: number;
 }>();
 
@@ -83,53 +58,36 @@ function markFlipped(id: number) {
 <style scoped>
 .flip-cards {
   display: flex;
-
   flex-direction: column;
-
   gap: 2rem;
+  width: 100%;
+  height: 100%;
 }
 
 .header {
   text-align: center;
-
-  max-width: 700px;
-
   margin: auto;
 }
 
 .badge {
   display: inline-flex;
-
-  padding: 0.35rem 0.8rem;
-
-  background: #eef7f2;
-
   border-radius: 999px;
-
-  font-size: 0.8rem;
-
-  font-weight: 600;
-
   margin-bottom: 1rem;
 }
 
 .cards {
   display: grid;
 
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: 1fr 1fr;
 
   gap: 1.5rem;
 }
 
 .success {
   padding: 1.5rem;
-
   background: #eef9f4;
-
   border-radius: 12px;
-
   text-align: center;
-
   border: 1px solid #8cbe87;
 }
 

@@ -309,7 +309,7 @@ export const DATA: Data = {
         resource: {
           label: 'Ressource UVED',
           title: 'Histoire et Transition Écologique et au Développement Soutenable',
-          href: '#'
+          href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Histoire_et_TEDS.pdf'
         }
       }
     ]
@@ -462,7 +462,7 @@ export const DATA: Data = {
         resource: {
           label: 'Ressource UVED',
           title: 'Économie et Transition Écologique et au Développement Soutenable',
-          href: '#'
+          href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Economie_et_TEDS.pdf'
         }
       }
     ]
@@ -617,7 +617,7 @@ export const DATA: Data = {
         resource: {
           label: 'Ressource UVED',
           title: 'Droit et Transition Écologique et au Développement Soutenable',
-          href: '#'
+          href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Droit_et_TEDS.pdf'
         }
       }
     ]
@@ -772,7 +772,7 @@ export const DATA: Data = {
         resource: {
           label: 'Ressource UVED',
           title: 'Philosophie et Transition Écologique et au Développement Soutenable',
-          href: '#'
+          href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Philosophie_et_TEDS.pdf'
         }
       }
     ]
@@ -926,7 +926,7 @@ export const DATA: Data = {
         resource: {
           label: 'Ressource UVED',
           title: 'Psychologie et Transition Écologique et au Développement Soutenable',
-          href: '#'
+          href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Psychologie_et_TEDS.pdf'
         }
       }
     ]

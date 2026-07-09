@@ -14,7 +14,7 @@
       <p class="intro">En quelques minutes, vous allez :</p>
 
       <div class="objectives">
-        <article v-for="(objective, index) in discipline.objectives" :key="index" class="objective">
+        <article v-for="(objective, index) in obj" :key="index" class="objective">
           <span class="number">
             {{ String(index + 1).padStart(2, '0') }}
           </span>
@@ -27,14 +27,8 @@
 
       <div class="meta">
         <span>4 étapes</span>
-
         <span>•</span>
-
         <span>environ 5 minutes</span>
-
-        <span>•</span>
-
-        <span>aucune inscription</span>
       </div>
 
       <button class="btn-primary" @click="$emit('start')">Commencer</button>
@@ -45,23 +39,19 @@
 </template>
 
 <script setup lang="ts">
-export interface Discipline {
-  id: string;
+import type { DisciplineMeta } from '@/types/microlearning';
 
-  name: string;
-
-  icon: string;
-
-  objectives: string[];
-}
-
+const obj = [
+  'Comprendre comment votre discipline contribue à la transition écologique et au développement soutenable',
+  'Identifier les compétences que vos étudiant·es développent lorsque vous reliez votre discipline à la TEDS',
+  'Découvrir des activités concrètes à intégrer dans une séance existante'
+];
 defineProps<{
-  discipline: Discipline;
+  discipline: DisciplineMeta;
 }>();
 
 defineEmits<{
   (e: 'start'): void;
-
   (e: 'back'): void;
 }>();
 </script>
@@ -71,9 +61,8 @@ defineEmits<{
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 3rem 1.5rem;
-  background: #fafaf8;
+  min-height: 100%;
+  padding: 1rem 1rem;
 }
 
 .briefing-inner {
@@ -83,16 +72,15 @@ defineEmits<{
 }
 
 .discipline-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
 }
 
 .badge {
   display: inline-block;
-  padding: 4px 12px;
-  border-radius: 999px;
-  background: #e8faf6;
-  color: #2ec4a0;
+  padding: 2px 12px;
+  border-radius: 8px;
+  background: var(--primary-lighter);
+  color: var(--primary-hover);
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -100,20 +88,19 @@ defineEmits<{
 }
 
 h2 {
-  margin-bottom: 0.75rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .intro {
   color: #666;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .objectives {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .objective {
@@ -121,14 +108,13 @@ h2 {
   align-items: flex-start;
   gap: 1rem;
   padding: 1rem;
-  background: white;
-  border: 1px solid #e5e5e5;
+  border: 1px solid var(--neutral-20);
   border-radius: 12px;
   text-align: left;
 }
 
 .number {
-  color: #2ec4a0;
+  color: var(--primary-hover);
   font-weight: 700;
   min-width: 24px;
 }
@@ -142,9 +128,9 @@ h2 {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
-  color: #888;
+  color: var(--neutral-70);
   font-size: 0.85rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .btn-primary {
@@ -152,7 +138,7 @@ h2 {
   padding: 0.9rem;
   border: none;
   border-radius: 10px;
-  background: #2ec4a0;
+  background: var(--primary-hover);
   color: white;
   cursor: pointer;
   font-size: 1rem;
@@ -160,17 +146,17 @@ h2 {
 }
 
 .btn-primary:hover {
-  background: #24b18f;
+  background: var(--primary-dark);
 }
 
 .btn-ghost {
   border: none;
   background: transparent;
-  color: #666;
+  color: var(--neutral-80);
   cursor: pointer;
 }
 
 .btn-ghost:hover {
-  color: black;
+  color: var(--neutral-100);
 }
 </style>

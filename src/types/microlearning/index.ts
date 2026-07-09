@@ -1,6 +1,15 @@
 export type StepType = 'flip' | 'competences' | 'activities' | 'votretour';
 export type DiscValue = 'math' | 'history' | 'economics' | 'law' | 'philosophy' | 'psychology';
 
+export type Screens = 'welcome' | 'briefing' | 'trail' | 'complete';
+
+export enum ScreensEnum {
+  welcome = 'welcome',
+  briefing = 'briefing',
+  trail = 'trail',
+  complete = 'complete'
+}
+
 export interface DisciplineMeta {
   name: string;
   icon: string;
@@ -93,12 +102,3 @@ export type Step = FlipStep | CompetencesStep | ActivitiesStep | VotretourStep;
 export interface Discipline {
   steps: Step[];
 }
-
-export const DISC_META: Record<string, DisciplineMeta> = {
-  math: { name: 'Mathématiques', icon: '📐' },
-  history: { name: 'Histoire', icon: '🏛' },
-  economics: { name: 'Économie', icon: '📊' },
-  law: { name: 'Droit', icon: '⚖️' },
-  philosophy: { name: 'Philosophie', icon: '💭' },
-  psychology: { name: 'Psychologie', icon: '🧠' }
-};

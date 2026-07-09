@@ -1,14 +1,14 @@
 <template>
-  <section class="trail-screen">
+  <section class="trail-screen" id="steps-focus">
     <TrailHeader
-      :discipline="discipline"
+      :discipline="disciplineMeta"
       :current-step="currentStepIndex"
       :total-steps="discipline.steps.length"
       @restart="$emit('restart')"
     />
 
     <main class="trail-body">
-      <ProgressBar :steps="discipline.steps" :current-step="currentStepIndex" />
+      <ProgressBar :current-step="currentStepIndex" />
 
       <div class="content-panel">
         <Transition name="fade" mode="out-in">
@@ -44,9 +44,11 @@ import CompetenceCards from './steps/CompetenceCards.vue';
 import ActivityCards from './steps/ActivityCards.vue';
 import ReflectionStep from './steps/ReflectionStep.vue';
 
-import type { Discipline, Step } from '@/types/microlearning';
+import type { Discipline, DisciplineMeta, Step } from '@/types/microlearning';
+import { scrollToAnchor } from '@/utils/navigation.js';
 
 const props = defineProps<{
+  disciplineMeta: DisciplineMeta | null;
   discipline: Discipline;
   step: number;
 }>();
@@ -57,29 +59,22 @@ const emit = defineEmits<{
   (e: 'finish'): void;
   (e: 'restart'): void;
 }>();
+const currentStepIndex = computed(() => props.step);
 
 const stepCompleted = ref(false);
+const currentStep = computed<Step>(() => {
+  return props.discipline.steps[currentStepIndex.value];
+});
+
+const requiresInteraction = ['flip', 'activities'];
 
 watch(
   () => props.step,
   () => {
-    stepCompleted.value = false;
-
-    // Competence step never blocks navigation
-    if (currentStep.value.type === 'competences') {
-      stepCompleted.value = true;
-    }
+    stepCompleted.value = !requiresInteraction.includes(currentStep.value.type);
   },
-  {
-    immediate: true
-  }
+  { immediate: true }
 );
-
-const currentStepIndex = computed(() => props.step);
-
-const currentStep = computed<Step>(() => {
-  return props.discipline.steps[currentStepIndex.value];
-});
 
 const isLastStep = computed(() => {
   return currentStepIndex.value === props.discipline.steps.length - 1;
@@ -113,12 +108,8 @@ function next() {
     return;
   }
 
-  if (isLastStep.value) {
-    emit('finish');
-    return;
-  }
-
   emit('next');
+  scrollToAnchor('steps-focus');
 }
 </script>
 
@@ -126,26 +117,18 @@ function next() {
 .trail-screen {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  background: #fafaf8;
+  height: 100%;
 }
 
 .trail-body {
   flex: 1;
-  width: 100%;
-  max-width: 900px;
+  width: 50%;
   margin: 0 auto;
-  padding: 2rem 1.5rem;
+  padding: 0rem 1.5rem;
 }
 
 .content-panel {
-  margin-top: 2rem;
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e6e6e6;
-  padding: 2rem;
-  min-height: 420px;
-
+  padding: 1rem;
   display: flex;
   flex-direction: column;
 }
