@@ -1,4 +1,7 @@
+import { microLearning } from './microLearning/en';
+
 export const en = {
+  microLearning,
   ':': ':',
   adaptedTo: 'Adapted to:',
   addBookmark: 'Add to bookmarks',
@@ -434,5 +437,6 @@ export const en = {
   validate: 'Validate',
   validated: 'Validated',
   edit: 'Edit',
-  save: 'Save'
+  save: 'Save',
+  finish: 'Finish'
 };

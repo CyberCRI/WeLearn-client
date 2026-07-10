@@ -4,7 +4,7 @@ import QandA from '@/views/QandA.vue';
 import Bookmarks from '@/views/BookmarkdSources.vue';
 import Tutor from '@/views/TutorPage.vue';
 import NotFound from '@/views/NotFound.vue';
-import MicroLearning from '@/views/MicroLearning.vue';
+import MicrolearningModule from '@/views/MicrolearningModule.vue';
 
 const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
 
@@ -44,7 +44,7 @@ const router = createRouter({
       ...(isDevEnvironment && {
         path: '/microlearning',
         name: 'micro-learning',
-        component: MicroLearning
+        component: MicrolearningModule
       })
     },
     {

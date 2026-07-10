@@ -1,0 +1,107 @@
+export type StepType = 'flip' | 'competences' | 'activities' | 'votretour';
+export type DiscValue = 'math' | 'history' | 'economics' | 'law' | 'philosophy' | 'psychology';
+
+export type Screens = 'welcome' | 'briefing' | 'trail' | 'complete';
+
+export enum ScreensEnum {
+  welcome = 'welcome',
+  briefing = 'briefing',
+  trail = 'trail',
+  complete = 'complete'
+}
+
+export interface DisciplineMeta {
+  id: string;
+  name: string;
+  icon: string;
+}
+
+export interface FlipCard {
+  verb: string;
+  text: string;
+  color: string;
+}
+
+export interface Competence {
+  name: string;
+  tag: 'transversal' | 'disciplinaire';
+  concrete: string;
+}
+
+export interface Activity {
+  title: string;
+  desc: string;
+}
+
+export interface Apport {
+  label: string;
+  color: string;
+  acts: Activity[];
+}
+
+export interface StepBase {
+  type: StepType;
+}
+
+export interface FlipStep extends StepBase {
+  type: 'flip';
+  statement: string;
+  hint: string;
+  cards: FlipCard[];
+  closing: string;
+}
+
+export interface CompetencesStep extends StepBase {
+  type: 'competences';
+  intro: string;
+  featured: Competence[];
+  also: string[];
+}
+
+export interface ActivitiesStep extends StepBase {
+  type: 'activities';
+  intro: string;
+  apports: Apport[];
+  feedback: string;
+}
+
+export interface VotretourStep extends StepBase {
+  type: 'votretour';
+  statement: string;
+  sub: string;
+  prompts: { q: string; placeholder: string }[];
+  resource: {
+    label: string;
+    title: string;
+    href: string;
+  };
+}
+
+export interface Data {
+  math: {
+    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
+  };
+  history: {
+    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
+  };
+  economics: {
+    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
+  };
+  law: {
+    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
+  };
+  philosophy: {
+    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
+  };
+  psychology: {
+    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
+  };
+}
+
+export type DataByLang = Record<'fr' | 'en', Data>;
+
+export type Step = FlipStep | CompetencesStep | ActivitiesStep | VotretourStep;
+
+export interface Discipline {
+  steps: Step[];
+}

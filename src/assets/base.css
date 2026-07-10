@@ -12,13 +12,21 @@
 
   --lpi-yellow: #ffcc00;
   --lpi-violet: #d6a2ff;
+
+  --lpi-yellow-lighter: #fdf4ce;
+  --lpi-violet-lighter: #f0e1fc;
+
+  --primary-lighter: #e0f5f0;
   --primary-light: #b2f4e4;
   --primary: #00dba7;
   --primary-hover: #03b188;
   --primary-dark: #007055;
   --secondary-light: #c4eeff;
+  --secondary-lighter: #dfeff5;
   --secondary: #6dd5ff;
   --tertiary-light: #ffd4c7;
+  --tertiary-lighter: #fce8e2;
+
   --tertiary: #ff9473;
   --tertiary-hover: #d37558;
   --info-10: #e7f3ff;
