@@ -6,7 +6,7 @@
           {{ card.verb }}
         </h3>
 
-        <small> Cliquez pour découvrir </small>
+        <small> {{ $t('microLearning.flipCards.clickToDiscover') }} </small>
       </div>
 
       <div class="back">

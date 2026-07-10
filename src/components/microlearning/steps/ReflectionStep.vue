@@ -36,7 +36,7 @@
         </h3>
 
         <a :href="step.resource.href" target="_blank" rel="noopener noreferrer">
-          Consulter la ressource →
+          {{ $t('microLearning.reflection.ctaSource') }}
         </a>
       </div>
     </aside>

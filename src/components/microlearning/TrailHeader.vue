@@ -2,7 +2,7 @@
   <header class="trail-header">
     <div class="left">
       <button class="back-button" @click="$emit('restart')">
-        <span class="'is-flex'">← </span>Recommencer
+        <span class="'is-flex'">← </span>{{ $t('microLearning.restart') }}
       </button>
     </div>
 
@@ -10,13 +10,15 @@
       <div v-if="discipline?.icon" class="discipline-icon">
         {{ discipline?.icon }}
         <h1 class="title">
-          {{ discipline?.name }}
+          {{ $t(`microLearning.disciplineNames.${discipline.id}`) }}
         </h1>
       </div>
     </div>
 
     <div class="right">
-      <div class="step-indicator">Étape {{ currentStep + 1 }} / {{ totalSteps }}</div>
+      <div class="step-indicator">
+        {{ $t('microLearning.step') }} {{ currentStep + 1 }} / {{ totalSteps }}
+      </div>
     </div>
   </header>
 </template>

@@ -1,11 +1,13 @@
 <template>
   <footer class="trail-navigation">
-    <button v-if="showBack" class="btn btn-secondary" @click="$emit('back')">← Précédent</button>
+    <button v-if="showBack" class="btn btn-secondary" @click="$emit('back')">
+      ← {{ $t('previous') }}
+    </button>
 
     <div class="spacer" />
 
     <button class="btn btn-primary" @click="$emit('next')">
-      {{ nextLabel }}
+      {{ $t(nextLabel) }}
     </button>
   </footer>
 </template>
@@ -25,7 +27,7 @@ defineEmits<{
 }>();
 
 const nextLabel = computed(() => {
-  return props.isLast ? 'Terminer' : 'Suivant →';
+  return props.isLast ? 'finish' : 'next';
 });
 </script>
 

@@ -11,6 +11,7 @@ export enum ScreensEnum {
 }
 
 export interface DisciplineMeta {
+  id: string;
   name: string;
   icon: string;
 }
@@ -96,6 +97,8 @@ export interface Data {
     steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
   };
 }
+
+export type DataByLang = Record<'fr' | 'en', Data>;
 
 export type Step = FlipStep | CompetencesStep | ActivitiesStep | VotretourStep;
 

@@ -1,15 +1,13 @@
 <template>
   <section class="welcome-screen">
     <div class="welcome-inner">
-      <h1 class="title is-size-3">Votre discipline contribue déjà à la transition écologique.</h1>
+      <h1 class="title is-size-3">{{ $t('microLearning.welcomeScreen.title') }}</h1>
 
       <p class="subtitle">
-        Un parcours d'apprentissage pour les enseignants du supérieur. Choisissez votre domaine et
-        découvrez comment la transition écologique et le développement soutenable s'intègrent
-        naturellement à ce que vous enseignez déjà.
+        {{ $t('microLearning.welcomeScreen.subtitle') }}
       </p>
 
-      <p class="label">Choisissez votre discipline</p>
+      <p class="label">{{ $t('microLearning.welcomeScreen.label') }}</p>
 
       <div class="discipline-grid">
         <button
@@ -24,29 +22,26 @@
           </span>
 
           <span class="name">
-            {{ discipline.name }}
+            {{ $t(`microLearning.disciplineNames.${discipline.id}`) }}
           </span>
         </button>
       </div>
 
-      <button class="btn-primary" :disabled="!selected" @click="start">Voir le parcours</button>
+      <button class="btn-primary" :disabled="!selected" @click="start">
+        {{ $t('microLearning.welcomeScreen.primaryButton') }}
+      </button>
 
-      <p class="hint">4 étapes · environ 5 minutes</p>
+      <p class="hint">{{ $t('microLearning.hint') }}</p>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import type { DisciplineMeta } from '@/types/microlearning';
 import { ref } from 'vue';
 
-export interface Discipline {
-  id: string;
-  name: string;
-  icon: string;
-}
-
 defineProps<{
-  disciplines: Discipline[];
+  disciplines: DisciplineMeta[];
 }>();
 
 const emit = defineEmits<{

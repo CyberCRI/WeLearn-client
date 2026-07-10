@@ -2,6 +2,7 @@ import { ref, computed, type ComputedRef } from 'vue';
 import type { DiscValue, Discipline, DisciplineMeta } from '@/types/microlearning';
 import { ScreensEnum } from '@/types/microlearning';
 import { DATA } from '@/stores/microlearning/data';
+import i18n from '@/localisation/i18n';
 
 export function useMicrolearning() {
   // =====================
@@ -15,29 +16,30 @@ export function useMicrolearning() {
   const actChoice = ref<string | null>(null);
 
   const DISC_META: Record<string, DisciplineMeta> = {
-    math: { name: 'Mathématiques', icon: '📐' },
-    history: { name: 'Histoire', icon: '🏛' },
-    economics: { name: 'Économie', icon: '📊' },
-    law: { name: 'Droit', icon: '⚖️' },
-    philosophy: { name: 'Philosophie', icon: '💭' },
-    psychology: { name: 'Psychologie', icon: '🧠' }
+    math: { id: 'math', name: 'Mathématiques', icon: '📐' },
+    history: { id: 'history', name: 'Histoire', icon: '🏛' },
+    economics: { id: 'economics', name: 'Économie', icon: '📊' },
+    law: { id: 'law', name: 'Droit', icon: '⚖️' },
+    philosophy: { id: 'philosophy', name: 'Philosophie', icon: '💭' },
+    psychology: { id: 'psychology', name: 'Psychologie', icon: '🧠' }
   };
 
-  const DISC_LIST = [
-    { id: 'math', name: 'Mathématiques', icon: '📐' },
-    { id: 'history', name: 'Histoire', icon: '🏛' },
-    { id: 'economics', name: 'Économie', icon: '📊' },
-    { id: 'law', name: 'Droit', icon: '⚖️' },
-    { id: 'philosophy', name: 'Philosophie', icon: '💭' },
-    { id: 'psychology', name: 'Psychologie', icon: '🧠' }
-  ];
+  const DISC_LIST: DisciplineMeta[] = Object.values(DISC_META);
+  // [
+  //   { id: 'math', name: 'Mathématiques', icon: '📐' },
+  //   { id: 'history', name: 'Histoire', icon: '🏛' },
+  //   { id: 'economics', name: 'Économie', icon: '📊' },
+  //   { id: 'law', name: 'Droit', icon: '⚖️' },
+  //   { id: 'philosophy', name: 'Philosophie', icon: '💭' },
+  //   { id: 'psychology', name: 'Psychologie', icon: '🧠' }
+  // ];
 
   // =====================
   // DERIVED STATE
   // =====================
   const currentData: ComputedRef<Discipline | null> = computed(() => {
     if (!disc.value) return null;
-    return DATA[disc.value];
+    return DATA[i18n.global.locale.value][disc.value];
   });
 
   const currentStep = computed(() => {
@@ -94,7 +96,6 @@ export function useMicrolearning() {
   }
 
   function restart() {
-    console.log('>>>>>>>>>>>>>>');
     screen.value = ScreensEnum.welcome;
     disc.value = null;
     step.value = 0;

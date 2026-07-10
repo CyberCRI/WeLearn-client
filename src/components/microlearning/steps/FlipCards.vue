@@ -11,9 +11,9 @@
 
     <Transition name="fade">
       <div v-if="completed" class="success">
-        <h3>✓ Bravo !</h3>
+        <h3>{{ $t('microLearning.flipCards.bravo') }}</h3>
 
-        <p>Vous avez découvert tous les apports de cette discipline.</p>
+        <p>{{ $t('microLearning.flipCards.completed') }}</p>
       </div>
     </Transition>
   </section>

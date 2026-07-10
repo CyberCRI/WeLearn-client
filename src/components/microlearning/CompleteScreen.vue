@@ -3,21 +3,22 @@
     <div class="complete-inner">
       <div class="complete-icon">🌱</div>
 
-      <h1 class="title">Parcours terminé.</h1>
+      <h1 class="title">{{ $t('microLearning.completeScreen.title') }}</h1>
 
       <p class="subtitle">
-        Vous avez exploré les liens entre votre discipline et la transition écologique.
+        {{ $t('microLearning.completeScreen.subtitle') }}
       </p>
 
       <p class="description">
-        La prochaine étape se passe désormais dans votre salle de cours. Choisissez une activité,
-        adaptez un exemple ou ouvrez la ressource proposée pour aller plus loin.
+        {{ $t('microLearning.completeScreen.description') }}
       </p>
 
       <div class="actions">
-        <router-link class="btn-primary" to="/tutor"> Creer un syllabus avec WeLearn </router-link>
+        <router-link class="btn-primary" to="/tutor">
+          {{ $t('microLearning.completeScreen.primaryButton') }}</router-link
+        >
         <button class="btn-secondary" @click="$emit('restart')">
-          Explorer une autre discipline
+          {{ $t('microLearning.completeScreen.secondaryButton') }}
         </button>
       </div>
     </div>

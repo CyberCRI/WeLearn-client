@@ -24,7 +24,7 @@
         </div>
 
         <span class="label">
-          {{ step }}
+          {{ $t(`microLearning.progressBarLabels.${step}`) }}
         </span>
       </div>
     </div>
@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
-const STEP_LABELS = ['Les apports', 'Les compétences', 'Une activité', 'À votre tour'];
+const STEP_LABELS = ['contribution', 'skills', 'activity', 'yourTurn'];
 
 const props = defineProps<{
   currentStep: number;

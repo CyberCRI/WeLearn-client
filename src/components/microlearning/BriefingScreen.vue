@@ -9,9 +9,9 @@
         {{ discipline.name }}
       </span>
 
-      <h2>Votre parcours est prêt.</h2>
+      <h2>{{ $t('microLearning.briefingScreen.title') }}</h2>
 
-      <p class="intro">En quelques minutes, vous allez :</p>
+      <p class="intro">{{ $t('microLearning.briefingScreen.intro') }}</p>
 
       <div class="objectives">
         <article v-for="(objective, index) in obj" :key="index" class="objective">
@@ -20,20 +20,22 @@
           </span>
 
           <span class="text">
-            {{ objective }}
+            {{ $t(`microLearning.briefingScreen.objectives.${objective}`) }}
           </span>
         </article>
       </div>
 
       <div class="meta">
-        <span>4 étapes</span>
-        <span>•</span>
-        <span>environ 5 minutes</span>
+        {{ $t('microLearning.hint') }}
       </div>
 
-      <button class="btn-primary" @click="$emit('start')">Commencer</button>
+      <button class="btn-primary" @click="$emit('start')">
+        {{ $t('microLearning.briefingScreen.primaryButton') }}
+      </button>
 
-      <button class="btn-ghost" @click="$emit('back')">Changer de discipline</button>
+      <button class="btn-ghost" @click="$emit('back')">
+        {{ $t('microLearning.briefingScreen.ghostButton') }}
+      </button>
     </div>
   </section>
 </template>
@@ -41,11 +43,7 @@
 <script setup lang="ts">
 import type { DisciplineMeta } from '@/types/microlearning';
 
-const obj = [
-  'Comprendre comment votre discipline contribue à la transition écologique et au développement soutenable',
-  'Identifier les compétences que vos étudiant·es développent lorsque vous reliez votre discipline à la TEDS',
-  'Découvrir des activités concrètes à intégrer dans une séance existante'
-];
+const obj = ['understand', 'identify', 'discover'];
 defineProps<{
   discipline: DisciplineMeta;
 }>();

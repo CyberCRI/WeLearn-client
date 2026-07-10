@@ -1,7 +1,7 @@
 <template>
   <section class="competence-step">
     <header class="step-header">
-      <h2 class="step-title">Les compétences que vos étudiant·es développent</h2>
+      <h2 class="step-title">{{ $t('microLearning.competence.title') }}</h2>
 
       <p class="step-intro">
         {{ step.intro }}
