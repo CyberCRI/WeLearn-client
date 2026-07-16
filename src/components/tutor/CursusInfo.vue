@@ -118,7 +118,7 @@ const appendNewInputFile = () => {
       <a
         id="articleToAdd"
         class="link is-small"
-        href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0206282"
+        href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
         target="_blank"
         ><span class="mr-2 is-small">{{ $t('tutor.articleToAddExample') }}</span>
         <OpenUrlIcon class="icon is-small mt-2"
