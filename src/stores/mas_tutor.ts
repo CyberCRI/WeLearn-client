@@ -4,6 +4,18 @@ import { computed, ref, type Ref } from 'vue';
 import { type CourseMetadata, type Document, type SyllabusData } from '@/types';
 import { scrollToAnchor } from '@/utils/navigation';
 import { saveToStorage } from '@/utils/storage';
+import type { AxiosResponse } from 'axios';
+
+interface MAS_FILES {
+  detected_document_type: string;
+  confidence: number;
+
+  summary?: string;
+  description?: string;
+  objectives: string[];
+
+  reasoning?: string;
+}
 
 export const useMAsTutorStore = defineStore('masTutor', () => {
   const mode: Ref<'1' | '2' | '3' | '4'> = ref('1');
@@ -11,6 +23,7 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
   const summaries: Ref<string[]> = ref([]);
   const newFilesToSearch: Ref<Record<string, File>> = ref({});
   const searchResults: Ref<Document[]> = ref([]);
+  const summaryData: Ref<MAS_FILES | undefined> = ref(undefined);
 
   const courseMetadaRef: Ref<CourseMetadata> = ref({
     discipline: undefined,
@@ -37,7 +50,7 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     hasUserInputData.value = true;
 
     saveToStorage('courseMetadaRef', courseMetadaRef.value);
-    if (courseMetadaRef.value.syllabus_mode === 'two') {
+    if (courseMetadaRef.value.syllabus_mode !== 'one') {
       if (filesRef.value.length === 0) {
         window.alert('Please upload a syllabus file before proceeding.');
         return;
@@ -62,20 +75,29 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
       }
     });
     try {
-      const resp = await basePostAxios(`/tutor/files/content?lang=fr}`, formData, {
-        headers: { 'content-type': 'multipart/form-data' }
-      });
+      const resp: AxiosResponse<MAS_FILES, any, {}> = await basePostAxios(
+        `/tutor/mas_files/content?lang=${courseMetadaRef.value.output_language}&mode=${courseMetadaRef.value.syllabus_mode}`,
+        formData,
+        {
+          headers: { 'content-type': 'multipart/form-data' }
+        }
+      );
       if (resp.status === 204) {
         throw new Error('retry getFilesContent');
       } else {
-        const red_summaries = resp.data.extracts.reduce(
-          (acc: string[], curr: { summary: string }) => {
-            acc = [...acc, curr.summary];
-            return acc;
-          },
-          []
-        );
-        summaries.value = red_summaries;
+        const data = resp.data;
+        summaryData.value = data;
+        if (data.summary) {
+          summaries.value = [data.summary];
+        }
+
+        if (data.description) {
+          summaries.value = [data.description];
+
+          if (data.objectives) {
+            summaries.value.push(`Objectives: ${data.objectives.join('; ')}`);
+          }
+        }
       }
     } catch (error: any) {
       throw new Error(error);
@@ -109,7 +131,7 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
   const handleSearch = async () => {
     // Logic to search for relevant documents
     const response = await basePostAxios('/tutor/search_extracts', {
-      summaries: [summaries.value[0]]
+      summaries: summaries.value
     });
 
     scrollToAnchor('target-3');
@@ -141,7 +163,8 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
       rag_resources: transformDocsToSend(),
       course_metadata: courseMetadaRef.value,
       mode: mode.value,
-      provided_objectives: undefined
+      provided_objectives: undefined,
+      context: summaryData.value
     };
     // Logic to generate syllabus
     const response = await basePostAxios('/tutor/api/generate', payload);

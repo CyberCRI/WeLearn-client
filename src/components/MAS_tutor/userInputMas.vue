@@ -58,7 +58,7 @@ function submitForm() {
             </select>
           </div>
         </div>
-        <div class="" v-if="form.syllabus_mode === 'two'">
+        <div class="" v-if="['two', 'three'].includes(form.syllabus_mode || '')">
           <p class="label">{{ $t('inputFile') }}</p>
           <input
             class="input"
