@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue';
 import ChevronDown from '@/components/icons/ChevronDown.vue';
 import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue';
+import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
 
 // TODO: add info that default values will be used if not written down
 // TODO: make files required:w
@@ -113,6 +114,15 @@ const appendNewInputFile = () => {
           <button ref="deleteButtonRef" disabled class="button">x</button>
         </div>
       </div>
+      <p class="mr-2 is-italic">{{ $t('tutor.typeDoc') }}</p>
+      <a
+        id="articleToAdd"
+        class="link is-small"
+        href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0206282"
+        target="_blank"
+        ><span class="mr-2 is-small">{{ $t('tutor.articleToAddExample') }}</span>
+        <OpenUrlIcon class="icon is-small mt-2"
+      /></a>
 
       <p v-if="fileError.state" class="has-text-danger">
         {{ $t(`tutor.${fileError.reason}`) }}
