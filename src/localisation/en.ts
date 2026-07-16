@@ -354,6 +354,9 @@ export const en = {
   },
   textLengthFeedback: 'Please add more text to improve search results.',
   tutor: {
+    typeDoc:
+      'This feature is currently under development. For the best results, we recommend using scientific articles or book chapters',
+    articleToAddExample: 'Click to view an example document',
     restartSyllabusCreation: 'Start a new syllabus creation',
     syllabusSteps: 'Syllabus steps:',
     BIG_FILE: 'File size exceeds 5 MB.',
