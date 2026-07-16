@@ -358,7 +358,7 @@ export const fr = {
   textLengthFeedback: 'Veuillez ajouter davantage de texte pour lancer la recherche.',
   tutor: {
     typeDoc:
-      "Cette fonctionnalité est actuellement en cours de développement. Pour obtenir les meilleurs résultats, nous recommandons d'utiliser des articles scientifiques ou des chapitres d'ouvrages",
+      "Cette fonctionnalité est actuellement en cours de développement. Pour obtenir les meilleurs résultats, nous recommandons d'utiliser des articles scientifiques ou des chapitres d'ouvrages.",
     articleToAddExample: 'Consulter un exemple de document',
     restartSyllabusCreation: 'Commencer un nouveau syllabus',
     syllabusSteps: 'Étapes du syllabus :',
