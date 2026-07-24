@@ -190,3 +190,14 @@ export const getBookmarks = async () => {
   const docsPayloads = await basePostAxios('/search/documents/by_ids', ids);
   return docsPayloads;
 };
+
+export const exportBibliography = async (documentsIds: string[]) => {
+  if (!documentsIds.length) throw new Error('No document ids provided');
+
+  return basePostAxios(
+    '/bibliography/export_bibliography',
+    { documents_ids: documentsIds },
+    { responseType: 'blob' }
+  );
+};
+
