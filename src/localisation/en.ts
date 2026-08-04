@@ -394,6 +394,13 @@ export const en = {
       description:
         'WeLearn has extracted the following summaries from your uploaded documents. You can review them before proceeding to the next step.'
     },
+    openDatasetsIdeas: {
+      title: '[Optional] Suggested open datasets',
+      description:
+        'Open datasets to use for SDG-oriented course activities.',
+      openOnDataGouv: 'Open on data.gouv.fr',
+      useCaseLabel: 'Potential use case:'
+    },
     firstStep: {
       syllabusLanguage: 'Syllabus language',
       acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',

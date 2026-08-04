@@ -1,16 +1,30 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
+import OpenDatasetsIdeas from '@/components/tutor/OpenDatasetsIdeas.vue';
 import SourcesList from '@/components/tutor/SecondStep.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
 import StepsIndicator from '@/components/tutor/StepsIndicator.vue';
+import ChevronDown from '@/components/icons/ChevronDown.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 
 const store = useTutorStore();
+const selectedSuggestionIds = ref<string[]>([]);
+
+const toggleSuggestionSelection = (datasetId: string) => {
+  const isAlreadySelected = selectedSuggestionIds.value.includes(datasetId);
+
+  if (isAlreadySelected) {
+    selectedSuggestionIds.value = selectedSuggestionIds.value.filter((id) => id !== datasetId);
+    return;
+  }
+
+  selectedSuggestionIds.value = [...selectedSuggestionIds.value, datasetId];
+};
 
 const getI18nText = computed(() => {
   // switch case for step 1, 2, 3
@@ -104,9 +118,19 @@ onMounted(() => {
         :sources="store.tutorSearch?.documents"
         :appendSource="store.appendSource"
         :selectedSources="store.selectedSources"
-        :action="stepToAction[3]"
-        actionText="genSyllabus"
       />
+      <OpenDatasetsIdeas
+        v-if="store.step >= 3"
+        :summaries="store.summaries"
+        :selectedSuggestionIds="selectedSuggestionIds"
+        :toggleSuggestionSelection="toggleSuggestionSelection"
+      />
+      <div v-if="store.step === 3" class="is-flex is-justify-content-end mt-4">
+        <a class="button is-primary" href="#" @click="stepToAction[3]()">
+          <ChevronDown />
+          {{ $t('genSyllabus') }}
+        </a>
+      </div>
       <EditableSyllabus
         v-if="store.step >= 3"
         :disabled="store.step < 4"

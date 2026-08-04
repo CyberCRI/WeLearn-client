@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // TODO: make clear the number of selected sources
-import ChevronDown from '@/components/icons/ChevronDown.vue';
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
@@ -11,8 +10,6 @@ defineProps<{
   visible?: boolean;
   appendSource: (source: Document) => void;
   selectedSources: Document[];
-  action: () => void;
-  actionText?: string;
 }>();
 </script>
 <template>
@@ -61,12 +58,6 @@ defineProps<{
             </template>
           </CardSimpleComponent>
         </div>
-      </div>
-      <div class="is-flex is-justify-content-end mt-4">
-        <a class="button is-primary" href="#" @click="action()">
-          <ChevronDown />
-          {{ $t(`${actionText || 'next'}`) }}
-        </a>
       </div>
     </div>
     <div v-else class="has-text-centered mt-6">
