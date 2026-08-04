@@ -11,9 +11,18 @@ describe('TutorPage', () => {
     setActivePinia(createPinia());
   });
 
-  it('renders properly', () => {
+  it('renders initial tutor flow content', () => {
     const wrapper = mount(TutorPage);
-    expect(wrapper.element).toMatchSnapshot();
+
+    expect(wrapper.text()).toContain('tutor.syllabusSteps');
+    expect(wrapper.text()).toContain('tutor.firstStep.title');
+    expect(wrapper.text()).toContain('tutor.summaries.title');
+
+    expect(wrapper.find('[data-testid="file-input"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="tutor-summaries-title"]').exists()).toBe(true);
+
+    expect(wrapper.text()).not.toContain('tutor.secondStep.title');
+    expect(wrapper.text()).not.toContain('tutor.openDatasetsIdeas.title');
   });
 
   it('shows resource selection and dataset suggestions at step 3 with datasets below resources', async () => {
