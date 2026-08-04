@@ -70,7 +70,7 @@ const suggestionsCatalog: DatasetSuggestion[] = [
     id: 'fr-saison-balneaire',
     title: 'Données de rapportage de la saison balnéaire',
     description:
-      'Informations de rapportage sur la saison balnéaire pour analyser qualité de l\'eau, risques sanitaires et gestion littorale.',
+      "Informations de rapportage sur la saison balnéaire pour analyser qualité de l'eau, risques sanitaires et gestion littorale.",
     url: 'https://www.data.gouv.fr/datasets/donnees-de-rapportage-de-la-saison-balneaire-1',
     keywords: [
       'water',
@@ -84,17 +84,14 @@ const suggestionsCatalog: DatasetSuggestion[] = [
       'littoral'
     ],
     useCase:
-      'Monter un projet d\'investigation sur qualité des eaux de baignade, prévention des risques et adaptation au changement climatique.'
+      "Monter un projet d'investigation sur qualité des eaux de baignade, prévention des risques et adaptation au changement climatique."
   }
 ];
 
 const fallbackDatasets = suggestionsCatalog.slice(0, 3);
 
 const summariesText = computed(() =>
-  (props.summaries || [])
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase()
+  (props.summaries || []).filter(Boolean).join(' ').toLowerCase()
 );
 
 const rankedSuggestions = computed<RankedSuggestion[]>(() => {
@@ -104,7 +101,9 @@ const rankedSuggestions = computed<RankedSuggestion[]>(() => {
 
   return suggestionsCatalog
     .map((dataset) => {
-      const matchedKeywords = dataset.keywords.filter((keyword) => summariesText.value.includes(keyword));
+      const matchedKeywords = dataset.keywords.filter((keyword) =>
+        summariesText.value.includes(keyword)
+      );
 
       return {
         dataset,
@@ -166,10 +165,11 @@ const displayedSuggestions = computed(() => {
         <p class="dataset-description">{{ suggestion.dataset.description }}</p>
 
         <p class="dataset-use-case">
-          <span class="has-text-weight-semibold">{{ $t('tutor.openDatasetsIdeas.useCaseLabel') }}</span>
+          <span class="has-text-weight-semibold">{{
+            $t('tutor.openDatasetsIdeas.useCaseLabel')
+          }}</span>
           {{ suggestion.dataset.useCase }}
         </p>
-
       </article>
     </div>
   </section>

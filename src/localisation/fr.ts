@@ -404,7 +404,7 @@ export const fr = {
       description:
         'Suggestions de jeux de données liées aux ODD à exploiter dans les activités pédagogiques.',
       openOnDataGouv: 'Ouvrir sur data.gouv.fr',
-      useCaseLabel: 'Cas d\'usage potentiel :'
+      useCaseLabel: "Cas d'usage potentiel :"
     },
     firstStep: {
       syllabusLanguage: 'Langue du syllabus',

@@ -396,8 +396,7 @@ export const en = {
     },
     openDatasetsIdeas: {
       title: '[Optional] Suggested open datasets',
-      description:
-        'Open datasets to use for SDG-oriented course activities.',
+      description: 'Open datasets to use for SDG-oriented course activities.',
       openOnDataGouv: 'Open on data.gouv.fr',
       useCaseLabel: 'Potential use case:'
     },
