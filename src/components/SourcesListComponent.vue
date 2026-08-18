@@ -46,7 +46,6 @@ const documentIds = computed(() => {
   return [...new Set(ids)];
 });
 
-
 const downloadBlob = (blob: Blob, fileName: string) => {
   const objectUrl = window.URL.createObjectURL(blob);
   const anchor = document.createElement('a');
@@ -65,7 +64,7 @@ const handleBibliographyExport = async () => {
 
   try {
     const response = await exportBibliography(documentIds.value);
-    const fileName = "welearn_bilbiography_export.ris";
+    const fileName = 'welearn_bibliography_export.ris';
     const fileBlob =
       response.data instanceof Blob
         ? response.data

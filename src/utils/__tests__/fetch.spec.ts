@@ -82,7 +82,10 @@ describe('fetch', () => {
     });
 
     it('should send documents_ids to the bibliography endpoint', async () => {
-      const documentsIds = ['a4a8911f-007f-4353-a362-a25b6673f738', 'a4eeeba0-a965-4edf-8fe7-ee4c7fa01338'];
+      const documentsIds = [
+        'a4a8911f-007f-4353-a362-a25b6673f738',
+        'a4eeeba0-a965-4edf-8fe7-ee4c7fa01338'
+      ];
 
       await exportBibliography(documentsIds);
 

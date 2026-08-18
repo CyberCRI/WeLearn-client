@@ -200,4 +200,3 @@ export const exportBibliography = async (documentsIds: string[]) => {
     { responseType: 'blob' }
   );
 };
-
