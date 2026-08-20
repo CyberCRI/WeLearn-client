@@ -328,7 +328,9 @@ export const fr = {
   sources: 'Sources',
   sourcesList: {
     fetching: 'Recherche parmi {docs_nb} documents...',
-    formulatingAnswer: 'Préparation de votre réponse...'
+    formulatingAnswer: 'Préparation de votre réponse...',
+    exportBibliography: 'Exporter la bibliographie',
+    exportingBibliography: 'Export en cours...'
   },
   terms: 'Politique de confidentialité',
   giveFeedback: 'Formulaire de retour',

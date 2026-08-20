@@ -55,6 +55,20 @@ const ChosenCard = Cards[props.cardType || 'default'];
     <div v-if="sourcesList?.length">
       <a id="sourcesAnchor"></a>
 
+      <div class="sources-list__actions">
+        <button
+          class="button is-small is-primary"
+          :disabled="sourcesStore.isExportingBibliography"
+          @click="sourcesStore.handleBibliographyExport(sourcesList)"
+        >
+          {{
+            sourcesStore.isExportingBibliography
+              ? $t('sourcesList.exportingBibliography')
+              : $t('sourcesList.exportBibliography')
+          }}
+        </button>
+      </div>
+
       <ChosenCard
         :category="sourcesStore.sourceCategoryMap[doc.payload.document_corpus]"
         :shouldDisplayScore="shouldDisplayScore"
@@ -114,5 +128,11 @@ const ChosenCard = Cards[props.cardType || 'default'];
   height: auto;
   overflow-y: scroll;
   padding: 0.5rem 0.5rem;
+}
+
+.sources-list__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
 }
 </style>

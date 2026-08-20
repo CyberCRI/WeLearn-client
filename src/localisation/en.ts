@@ -325,7 +325,9 @@ export const en = {
   sources: 'Sources',
   sourcesList: {
     fetching: 'Searching across {docs_nb} documents...',
-    formulatingAnswer: 'Preparing your answer...'
+    formulatingAnswer: 'Preparing your answer...',
+    exportBibliography: 'Export bibliography',
+    exportingBibliography: 'Exporting...'
   },
   terms: 'Privacy Policy',
   giveFeedback: 'Feedback Form',
