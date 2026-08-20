@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
 import type { Document } from '@/types';
 import Card from '@/components/CardComponent.vue';
 import SimpleCard from '@/components/CardSimpleComponent.vue';
