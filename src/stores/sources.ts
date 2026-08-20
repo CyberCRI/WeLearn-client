@@ -1,13 +1,16 @@
 import { defineStore } from 'pinia';
 import { baseGetAxios } from '@/utils/fetch';
 import { type Ref, ref } from 'vue';
-import type { Corpus } from '@/types';
+import type { Corpus, Document } from '@/types';
+import { exportBibliography } from '@/utils/fetch';
 
 export const useSourcesStore = defineStore('sources', () => {
   const categorySourceMap = ref<Record<string, Corpus[]> | null>(null);
   const sourceCategoryMap: Ref<Record<string, string>> = ref({});
   const infoPerCorpus: Ref<[]> = ref([]);
   const totalInQdrant: Ref<number> = ref(0);
+  const isExportingBibliography = ref(false);
+
   async function getSourcesList() {
     if (categorySourceMap.value && Object.keys(categorySourceMap.value).length > 0) {
       return;
@@ -63,12 +66,55 @@ export const useSourcesStore = defineStore('sources', () => {
     }
   };
 
+  const documentIds = (sourcesList: Document[]) => {
+    const ids = sourcesList
+      .map((doc) => doc.payload.document_id)
+      .filter((id): id is string => Boolean(id));
+
+    return [...new Set(ids)];
+  };
+
+  const downloadBlob = (blob: Blob, fileName: string) => {
+    const objectUrl = window.URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = objectUrl;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(objectUrl);
+  };
+
+  const handleBibliographyExport = async (sourcesList: Document[]) => {
+    const ids = documentIds(sourcesList);
+    if (!ids.length || isExportingBibliography.value) return;
+
+    isExportingBibliography.value = true;
+
+    try {
+      const response = await exportBibliography(ids);
+      const fileName = 'welearn_bibliography_export.ris';
+      const fileBlob =
+        response.data instanceof Blob
+          ? response.data
+          : new Blob([response.data], { type: response.headers['content-type'] });
+
+      downloadBlob(fileBlob, fileName);
+    } catch (error) {
+      console.error('Unable to export bibliography:', error);
+    } finally {
+      isExportingBibliography.value = false;
+    }
+  };
+
   return {
     totalInQdrant,
     infoPerCorpus,
     getInfoPerCorpus,
     getSourcesList,
     sourcesList: categorySourceMap,
-    sourceCategoryMap
+    sourceCategoryMap,
+    handleBibliographyExport,
+    isExportingBibliography
   };
 });
