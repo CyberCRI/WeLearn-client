@@ -25,7 +25,7 @@ const form: CourseMetadata = reactive(
     class_size: undefined,
     session_mode: 'PRESENTIEL',
     output_language: i18n.global.locale.value === 'fr' ? 'french' : 'english',
-    syllabus_mode: 'one'
+    syllabus_mode: 'mode_1'
   }
 );
 
@@ -52,13 +52,13 @@ function submitForm() {
           <label class="label">{{ $t('inputMode') }}</label>
           <div class="select is-primary">
             <select v-model="form.syllabus_mode">
-              <option value="one">{{ $t('courseMetadataOnly') }}</option>
-              <option value="two">{{ $t('courseMetadataAndDocument') }}</option>
-              <option value="three">{{ $t('existingSyllabus') }}</option>
+              <option value="mode_1">{{ $t('courseMetadataAndDocument') }}</option>
+              <option value="mode_2">{{ $t('existingSyllabus') }}</option>
+              <option value="mode_3">{{ $t('courseMetadataOnly') }}</option>
             </select>
           </div>
         </div>
-        <div class="" v-if="['two', 'three'].includes(form.syllabus_mode || '')">
+        <div class="" v-if="['mode_1', 'mode_2'].includes(form.syllabus_mode || '')">
           <p class="label">{{ $t('inputFile') }}</p>
           <input
             class="input"

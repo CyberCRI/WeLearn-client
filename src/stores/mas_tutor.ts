@@ -46,11 +46,12 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
   const hasSummaries = computed(() => summaries.value.length);
 
   const setCourseMetadata = async (args: CourseMetadata): Promise<void> => {
+    resetSyllabusSteps();
     courseMetadaRef.value = { ...args };
     hasUserInputData.value = true;
 
     saveToStorage('courseMetadaRef', courseMetadaRef.value);
-    if (courseMetadaRef.value.syllabus_mode !== 'one') {
+    if (courseMetadaRef.value.syllabus_mode !== 'mode_3') {
       if (filesRef.value.length === 0) {
         window.alert('Please upload a syllabus file before proceeding.');
         return;
@@ -162,7 +163,7 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
       provided_description: courseMetadaRef.value.user_description,
       rag_resources: transformDocsToSend(),
       course_metadata: courseMetadaRef.value,
-      mode: mode.value,
+      mode: courseMetadaRef.value.syllabus_mode,
       provided_objectives: undefined,
       context: summaryData.value
     };
@@ -183,6 +184,25 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     await action();
 
     isLoading.value = false;
+  };
+
+  const resetSyllabusSteps = () => {
+    syllabus.value = undefined;
+    searchResults.value = [];
+    summaries.value = [];
+    courseMetadaRef.value = {
+      discipline: undefined,
+      topic: undefined,
+      level: undefined,
+      num_sessions: undefined,
+      session_duration: undefined,
+      user_description: undefined,
+      session_type: undefined,
+      class_size: undefined,
+      session_mode: undefined,
+      output_language: undefined,
+      syllabus_mode: undefined
+    };
   };
 
   return {

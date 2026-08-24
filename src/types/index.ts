@@ -117,7 +117,7 @@ export interface CourseMetadata {
   level?: string;
   num_sessions?: number;
   session_duration?: number;
-  syllabus_mode?: 'one' | 'two' | 'three';
+  syllabus_mode?: 'mode_1' | 'mode_2' | 'mode_3';
   user_description?: string;
   session_type?: string;
   class_size?: number;

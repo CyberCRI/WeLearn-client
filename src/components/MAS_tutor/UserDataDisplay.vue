@@ -23,9 +23,9 @@ defineProps<{
 }>();
 
 const syllabusModeMapping = {
-  one: 'courseMetadataOnly',
-  two: 'courseMetadataAndDocument',
-  three: 'existingSyllabus'
+  mode_1: 'courseMetadataAndDocument',
+  mode_2: 'existingSyllabus',
+  mode_3: 'courseMetadataOnly'
 };
 </script>
 <template>
@@ -67,7 +67,7 @@ const syllabusModeMapping = {
       <div>
         <button
           class="button is-primary action-button"
-          v-if="courseMetadaRef.syllabus_mode !== 'two'"
+          v-if="courseMetadaRef.syllabus_mode !== 'mode_2'"
           @click="nextAction"
         >
           generate syllabus
