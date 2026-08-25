@@ -526,9 +526,9 @@ export const fr = {
   learningOutcomesSubtitle:
     'Les résultats d’apprentissage sont des énoncés spécifiques qui décrivent ce que les étudiant·es devraient être capable de démontrer ou d’accomplir à la fin d’un cours ou d’une leçon. Ils sont mesurables et observables, permettant aux enseignant·es d’évaluer si les objectifs d’apprentissage ont été atteints.',
   competencies: 'Compétences',
-  competenciesSubtitle:
+  greenCompCompetenciesSubtitle:
     'Les compétences sont un ensemble de connaissances, de savoir-faire et d’attitudes qu’un individu développe et utilise pour accomplir des tâches, résoudre des problèmes et s’adapter à différentes situations. Elles peuvent être techniques, cognitives, sociales ou émotionnelles, et sont essentielles pour réussir dans la vie professionnelle et personnelle.',
-  greencompCompetencies: 'Compétences GreenComp',
+  greenCompCompetencies: 'Compétences GreenComp',
   provideFeedback: 'Faites un retours',
   seeConnectionExplanation: "Voir l'explication"
 };

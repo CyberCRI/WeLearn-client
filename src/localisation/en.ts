@@ -522,9 +522,9 @@ export const en = {
   learningOutcomesSubtitle:
     'Learning outcomes are specific statements that describe what students should be able to demonstrate or accomplish by the end of a course or lesson. They are measurable and observable, allowing instructors to assess whether the learning goals have been achieved.',
   competencies: 'Competencies',
-  competenciesSubtitle:
+  greenCompCompetenciesSubtitle:
     'Competencies are a set of knowledge, skills, and attitudes that an individual develops and uses to perform tasks, solve problems, and adapt to different situations. They can be technical, cognitive, social, or emotional, and are essential for success in professional and personal life.',
-  greencompCompetencies: 'GreenComp Competencies',
+  greenCompCompetencies: 'GreenComp Competencies',
   provideFeedback: 'Provide a feedback',
   resourcesUsed: 'Resources used',
   seeConnectionExplanation: 'Connection explanation'
