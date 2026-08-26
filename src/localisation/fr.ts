@@ -441,6 +441,14 @@ export const fr = {
     mainTitle: 'Choisissez un sujet :',
     chooseSdg: "Choissisez l'ODD qui vous intéresse"
   },
+  autoEvaluation: {
+    notAtAll: 'pas vraiment',
+    tottally: 'complètement',
+    start: {
+      firstQuestion: 'Je vois clairement le lien entre {discipline} et la transition écologique',
+      secondQuestion: "Je me sens capable d'intégrer ce sujet dans mon enseignement"
+    }
+  },
   previous: 'Précédent',
   previous_page: 'Page précédente',
   next_page: 'Page suivante',
