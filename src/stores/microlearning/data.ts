@@ -1398,7 +1398,7 @@ export const DATA: DataByLang = {
         }
       ]
     },
-    lettres: {
+    letters: {
       steps: [
         {
           type: 'flip',

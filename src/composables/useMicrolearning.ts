@@ -25,7 +25,7 @@ export function useMicrolearning() {
     geography: { id: 'geography', name: 'Géographie', icon: '🗺' },
     health: { id: 'health', name: 'Santé', icon: '🏥' },
     staps: { id: 'staps', name: 'STAPS', icon: '🏃' },
-    lettres: { id: 'lettres', name: 'Lettres', icon: '📖' },
+    letters: { id: 'letters', name: 'Lettres', icon: '📖' },
     ecology: { id: 'ecology', name: 'Écologie', icon: '🌿' },
     art: { id: 'art', name: 'Art', icon: '🎨' },
     polsci: { id: 'polsci', name: 'Science politique', icon: '🏛️' }

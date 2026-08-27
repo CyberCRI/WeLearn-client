@@ -1,17 +1,18 @@
 <template>
   <div class="fullPageEvaluation">
-    <p class="abadge">Avant de commencer</p>
-    <p class="title is-4">Une dernière chose</p>
+    <p class="abadge">{{ $t('autoEvaluation.start.badge') }}</p>
+    <p class="title is-4">{{ $t('autoEvaluation.start.title') }}</p>
     <p class="subtitle is-6">
-      30 secondes, ça nous aide à savoir si ce parcours répond à un vrai besoin.
+      {{ $t('autoEvaluation.start.subtitle') }}
     </p>
-    <QuestionComponent
-      :question="$t('autoEvaluation.start.firstQuestion', { discipline: discipline })"
-    />
-    <QuestionComponent :question="$t('autoEvaluation.start.firstQuestion')" />
-    <button class="btn-primary" @click="$emit('start')">
-      {{ $t('microLearning.briefingScreen.primaryButton') }}
-    </button>
+    <QuestionComponent :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })" />
+    <QuestionComponent :question="$t('autoEvaluation.secondQuestion')" />
+    <div class="buttons">
+      <button class="btn-primary" @click="$emit('start')">
+        {{ $t('microLearning.briefingScreen.primaryButton') }}
+      </button>
+      <a @click="$emit('start')">{{ $t('skip') }}</a>
+    </div>
   </div>
 </template>
 
@@ -37,6 +38,12 @@ defineEmits<{
   gap: 2rem;
   height: 100%;
   width: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn-primary {

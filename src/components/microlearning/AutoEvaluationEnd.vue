@@ -6,12 +6,18 @@
       30 secondes, ça nous aide à savoir si ce parcours répond à un vrai besoin.
     </p>
     <QuestionComponent
-      :question="$t('autoEvaluation.start.firstQuestion', { discipline: discipline })"
+      type="likert"
+      :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })"
     />
-    <QuestionComponent :question="$t('autoEvaluation.start.firstQuestion')" />
-    <button class="btn-primary" @click="$emit('start')">
-      {{ $t('microLearning.briefingScreen.primaryButton') }}
-    </button>
+    <QuestionComponent type="likert" :question="$t('autoEvaluation.secondQuestion')" />
+    <QuestionComponent type="yesMaybeNot" :question="$t('autoEvaluation.willUse')" />
+    <QuestionComponent type="openDialogue" :question="$t('autoEvaluation.feedback')" />
+    <div class="buttons">
+      <button class="btn-primary" @click="$emit('start')">
+        {{ $t('finish') }}
+      </button>
+      <a @click="$emit('start')">{{ $t('skip') }}</a>
+    </div>
   </div>
 </template>
 
@@ -29,14 +35,20 @@ defineEmits<{
 
 <style lang="css" scoped>
 .fullPageEvaluation {
-  padding-top: 5%;
+  padding-top: 1%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   height: 100%;
   width: 100%;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .btn-primary {

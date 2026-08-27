@@ -13,7 +13,14 @@ export const microLearning = {
     economics: 'Économie',
     law: 'Droit',
     philosophy: 'Philosophie',
-    psychology: 'Psychologie'
+    psychology: 'Psychologie',
+    geography: 'Geographie',
+    health: 'Santé',
+    staps: 'STAPS',
+    letters: 'Lettres',
+    ecology: 'Ecologie',
+    art: 'Arts',
+    polsci: 'Sciences Politiques'
   },
   briefingScreen: {
     title: 'Votre parcours est prêt.',
