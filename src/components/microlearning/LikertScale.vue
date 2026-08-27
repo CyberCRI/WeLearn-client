@@ -17,7 +17,6 @@ const scale = [1, 2, 3, 4, 5];
 const selected: Ref<number | undefined> = ref(undefined);
 
 const selectValue = (val: number) => {
-  console.log('here', val);
   selected.value = val;
 };
 </script>

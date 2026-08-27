@@ -18,7 +18,6 @@ const scale = ['yes', 'maybe', 'notForNow'];
 const selected: Ref<string | undefined> = ref(undefined);
 
 const selectValue = (val: string) => {
-  console.log('here', val);
   selected.value = val;
 };
 </script>
