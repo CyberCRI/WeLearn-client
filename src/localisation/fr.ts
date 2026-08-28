@@ -441,6 +441,24 @@ export const fr = {
     mainTitle: 'Choisissez un sujet :',
     chooseSdg: "Choissisez l'ODD qui vous intéresse"
   },
+  autoEvaluation: {
+    notAtAll: 'pas vraiment',
+    tottally: 'complètement',
+    start: {
+      badge: 'Avant de commencer',
+      title: 'Une dernière chose',
+      subtitle: '30 secondes, ça nous aide à savoir si ce parcours répond à un vrai besoin.'
+    },
+    end: {
+      badge: 'Avant de conclure',
+      title: 'Une dernière mot ?',
+      subtitle: "Mêmes questions qu'au départ, pour voir ce qui a changé. Toujours 30 secondes."
+    },
+    firstQuestion: 'Je vois clairement le lien entre {discipline} et la transition écologique',
+    secondQuestion: "Je me sens capable d'intégrer ce sujet dans mon enseignement",
+    willUse: 'Comptez-vous utiliser ce que vous venez de voir dans un prochain cours ?',
+    feedback: 'Une remarque à nous partager ?'
+  },
   previous: 'Précédent',
   previous_page: 'Page précédente',
   next_page: 'Page suivante',
@@ -448,5 +466,10 @@ export const fr = {
   validated: 'Validé',
   edit: 'Modifier',
   save: 'Enregistrer',
-  finish: 'Terminer'
+  finish: 'Terminer',
+  skip: 'passer cette étape',
+  yes: 'Oui',
+  maybe: 'Peut-être',
+  notForNow: "Pas pour l'instant",
+  typeHere: 'Écrivez ici'
 };

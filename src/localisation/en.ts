@@ -436,6 +436,26 @@ export const en = {
     mainTitle: 'Choose a subject:',
     chooseSdg: 'Choose an SDG:'
   },
+  autoEvaluation: {
+    notAtAll: 'not really',
+    tottally: 'completely',
+    start: {
+      badge: 'Before you begin',
+      title: 'One last thing',
+      subtitle: '30 seconds — it helps us know whether this journey addresses a real need.'
+    },
+    end: {
+      badge: 'Before we conclude',
+      title: 'One last thing?',
+      subtitle:
+        'The same questions as at the start, to see what has changed. Still just 30 seconds.'
+    },
+    firstQuestion:
+      'I clearly see the connection between {discipline} and the ecological transition',
+    secondQuestion: 'I feel capable of integrating this topic into my teaching',
+    willUse: 'Do you plan to use what you just learned in an upcoming class?',
+    feedback: 'Do you have any feedback to share with us?'
+  },
   previous: 'Previous',
   previous_page: 'Previous page',
   next_page: 'Next page',
@@ -443,5 +463,10 @@ export const en = {
   validated: 'Validated',
   edit: 'Edit',
   save: 'Save',
-  finish: 'Finish'
+  finish: 'Finish',
+  skip: 'Skip',
+  yes: 'Yes',
+  maybe: 'Maybe',
+  notForNow: 'Not for now',
+  typeHere: 'Type here'
 };

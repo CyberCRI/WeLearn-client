@@ -10,7 +10,12 @@
         v-else-if="ml.screen.value === ScreensEnum.briefing && ml.current_disc.value"
         :discipline="ml.current_disc.value"
         @back="ml.restart"
+        @start="ml.goToautoEvalStart"
+      />
+      <AutoEvaluationStart
+        v-else-if="ml.screen.value == ScreensEnum.autoEvalStart"
         @start="ml.startTrail"
+        :discipline="$t(`microLearning.disciplineNames.${$t(ml?.current_disc?.value?.id || '')}`)"
       />
       <TrailScreen
         v-else-if="ml.screen.value === ScreensEnum.trail && ml.currentData.value"
@@ -20,6 +25,11 @@
         @previous="ml.prevStep"
         @next="ml.nextStep"
         @restart="ml.restart"
+      />
+      <AutoEvaluationEnd
+        v-else-if="ml.screen.value == ScreensEnum.autoEvalEnd"
+        @start="ml.goToComplete"
+        :discipline="$t(`microLearning.disciplineNames.${$t(ml?.current_disc?.value?.id || '')}`)"
       />
 
       <CompleteScreen
@@ -39,6 +49,8 @@ import WelcomeScreen from '@/components/microlearning/WelcomeScreen.vue';
 import BriefingScreen from '@/components/microlearning/BriefingScreen.vue';
 import TrailScreen from '@/components/microlearning/TrailScreen.vue';
 import CompleteScreen from '@/components/microlearning/CompleteScreen.vue';
+import AutoEvaluationStart from '@/components/microlearning/AutoEvaluationStart.vue';
+import AutoEvaluationEnd from '@/components/microlearning/AutoEvaluationEnd.vue';
 
 const ml = useMicrolearning();
 </script>

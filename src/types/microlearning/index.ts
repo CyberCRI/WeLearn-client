@@ -1,11 +1,19 @@
 export type StepType = 'flip' | 'competences' | 'activities' | 'votretour';
 export type DiscValue = 'math' | 'history' | 'economics' | 'law' | 'philosophy' | 'psychology';
 
-export type Screens = 'welcome' | 'briefing' | 'trail' | 'complete';
+export type Screens =
+  | 'welcome'
+  | 'briefing'
+  | 'autoEvalStart'
+  | 'autoEvalEnd'
+  | 'trail'
+  | 'complete';
 
 export enum ScreensEnum {
   welcome = 'welcome',
   briefing = 'briefing',
+  autoEvalStart = 'autoEvalStart',
+  autoEvalEnd = 'autoEvalEnd',
   trail = 'trail',
   complete = 'complete'
 }

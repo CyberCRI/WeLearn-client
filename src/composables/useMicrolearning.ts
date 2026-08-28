@@ -21,18 +21,17 @@ export function useMicrolearning() {
     economics: { id: 'economics', name: 'Économie', icon: '📊' },
     law: { id: 'law', name: 'Droit', icon: '⚖️' },
     philosophy: { id: 'philosophy', name: 'Philosophie', icon: '💭' },
-    psychology: { id: 'psychology', name: 'Psychologie', icon: '🧠' }
+    psychology: { id: 'psychology', name: 'Psychologie', icon: '🧠' },
+    geography: { id: 'geography', name: 'Géographie', icon: '🗺' },
+    health: { id: 'health', name: 'Santé', icon: '🏥' },
+    staps: { id: 'staps', name: 'STAPS', icon: '🏃' },
+    letters: { id: 'letters', name: 'Lettres', icon: '📖' },
+    ecology: { id: 'ecology', name: 'Écologie', icon: '🌿' },
+    art: { id: 'art', name: 'Art', icon: '🎨' },
+    polsci: { id: 'polsci', name: 'Science politique', icon: '🏛️' }
   };
 
   const DISC_LIST: DisciplineMeta[] = Object.values(DISC_META);
-  // [
-  //   { id: 'math', name: 'Mathématiques', icon: '📐' },
-  //   { id: 'history', name: 'Histoire', icon: '🏛' },
-  //   { id: 'economics', name: 'Économie', icon: '📊' },
-  //   { id: 'law', name: 'Droit', icon: '⚖️' },
-  //   { id: 'philosophy', name: 'Philosophie', icon: '💭' },
-  //   { id: 'psychology', name: 'Psychologie', icon: '🧠' }
-  // ];
 
   // =====================
   // DERIVED STATE
@@ -74,6 +73,10 @@ export function useMicrolearning() {
     screen.value = ScreensEnum.briefing;
   }
 
+  function goToautoEvalStart() {
+    screen.value = ScreensEnum.autoEvalStart;
+  }
+
   function startTrail() {
     step.value = 0;
     actChoice.value = null;
@@ -84,11 +87,15 @@ export function useMicrolearning() {
     if (!currentData.value) return;
 
     if (isLastStep.value) {
-      screen.value = ScreensEnum.complete;
+      screen.value = ScreensEnum.autoEvalEnd;
     } else {
       step.value++;
       actChoice.value = null;
     }
+  }
+
+  function goToComplete() {
+    screen.value = ScreensEnum.complete;
   }
 
   function prevStep() {
@@ -130,8 +137,10 @@ export function useMicrolearning() {
     selectDiscipline,
     goToBriefing,
     startTrail,
+    goToautoEvalStart,
     nextStep,
     prevStep,
+    goToComplete,
     restart,
     chooseActivity
   };
