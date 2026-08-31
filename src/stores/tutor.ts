@@ -207,7 +207,7 @@ export const useTutorStore = defineStore('tutor', () => {
       scrollToAnchor('target-2');
       // goNext();
     } catch (error) {
-      console.log('get files content did not work');
+      console.error('get files content did not work');
     }
   };
 

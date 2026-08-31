@@ -30,6 +30,11 @@ const form: CourseMetadata = reactive(
 );
 
 function submitForm() {
+  if (Object.keys(form).length !== Object.values(form).filter((x) => x).length) {
+    window.alert('please fill all entries');
+    return;
+  }
+
   emit('submit', { ...form });
 }
 </script>
@@ -51,7 +56,7 @@ function submitForm() {
         <div>
           <label class="label">{{ $t('inputMode') }}</label>
           <div class="select is-primary">
-            <select v-model="form.syllabus_mode">
+            <select v-model="form.syllabus_mode" required>
               <option value="mode_1">{{ $t('courseMetadataAndDocument') }}</option>
               <option value="mode_2">{{ $t('existingSyllabus') }}</option>
               <option value="mode_3">{{ $t('courseMetadataOnly') }}</option>
@@ -65,6 +70,7 @@ function submitForm() {
             type="file"
             accept=".txt,.pdf,.docx"
             @change="(e) => fileHandler && fileHandler(e, 'syllabus')"
+            required
           />
         </div>
       </div>
@@ -77,6 +83,7 @@ function submitForm() {
             type="text"
             v-model="form.discipline"
             :placeholder="$t('Economics')"
+            required
           />
         </div>
         <p class="help">{{ $t('disciplineExample') }}</p>
@@ -89,6 +96,7 @@ function submitForm() {
             type="text"
             v-model="form.topic"
             :placeholder="$t('Microeconomics')"
+            required
           />
         </div>
         <p class="help">{{ $t('topicExample') }}</p>
@@ -97,7 +105,13 @@ function submitForm() {
       <div class="field">
         <label class="label">{{ $t('level') }}</label>
         <div class="control">
-          <input class="input" type="text" v-model="form.level" :placeholder="$t('Level')" />
+          <input
+            class="input"
+            type="text"
+            v-model="form.level"
+            :placeholder="$t('Level')"
+            required
+          />
         </div>
         <p class="help">{{ $t('levelExample') }}</p>
       </div>
@@ -110,6 +124,7 @@ function submitForm() {
             type="number"
             v-model="form.num_sessions"
             :placeholder="$t('num_sessions_placeholder')"
+            required
           />
         </div>
         <p class="help">{{ $t('numSessionsExample') }}</p>
@@ -120,9 +135,10 @@ function submitForm() {
         <div class="control">
           <input
             class="input"
-            type="text"
+            type="number"
             v-model="form.session_duration"
             :placeholder="$t('sessionDurationPlaceholder')"
+            required
           />
         </div>
         <p class="help">{{ $t('sessionDurationExample') }}</p>
@@ -136,6 +152,7 @@ function submitForm() {
             type="text"
             v-model="form.session_type"
             :placeholder="$t('sessionTypePlaceholder')"
+            required
           />
         </div>
         <p class="help">{{ $t('sessionTypeExample') }}</p>
@@ -149,6 +166,7 @@ function submitForm() {
             type="number"
             v-model="form.class_size"
             :placeholder="$t('classSizePlaceholder')"
+            required
           />
         </div>
         <p class="help">{{ $t('classSizeExample') }}</p>
@@ -157,7 +175,7 @@ function submitForm() {
       <div class="field">
         <label class="label">{{ $t('session_mode') }}</label>
         <div class="select is-primary">
-          <select v-model="form.session_mode">
+          <select v-model="form.session_mode" required>
             <option value="PRESENTIEL">{{ $t('inPerson') }}</option>
             <option value="DISTANCIEL">{{ $t('remote') }}</option>
             <option value="HYBRIDE">{{ $t('hybrid') }}</option>
@@ -168,7 +186,7 @@ function submitForm() {
       <div class="field">
         <label class="label">{{ $t('output_language') }}</label>
         <div class="select is-primary">
-          <select v-model="form.output_language">
+          <select v-model="form.output_language" required>
             <option value="french">{{ $t('french') }}</option>
             <option value="english">{{ $t('english') }}</option>
           </select>
@@ -183,6 +201,7 @@ function submitForm() {
             type="text"
             v-model="form.user_description"
             :placeholder="$t('courseDescriptionPlaceholder')"
+            required
           />
         </div>
         <p class="help">{{ $t('descriptionExample') }}</p>

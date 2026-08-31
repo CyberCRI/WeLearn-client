@@ -20,7 +20,6 @@ const modalActions = async () => {
 
 const onCheckboxChange = () => {
   consentRefused.value = !consentRefused.value;
-  console.log('Consent refused:', consentRefused.value);
   if (consentRefused.value) {
     institution.value = '';
     role.value = '';
