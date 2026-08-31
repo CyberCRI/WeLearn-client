@@ -147,7 +147,6 @@ export const useChatStore = defineStore('chat', () => {
 
   function storeMessageId(messageId: string) {
     if (messageId !== storedMessageId.value) {
-      console.log('Storing message ID:', messageId);
       localStorage.setItem('chatMessageId', messageId);
       storedMessageId.value = messageId;
     }
