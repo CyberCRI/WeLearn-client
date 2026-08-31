@@ -35,3 +35,5 @@ test.yaml
 
 .env
 .env.local
+
+**/__temp/*

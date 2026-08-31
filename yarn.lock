@@ -2551,6 +2551,11 @@ imurmurhash@^0.1.4:
   resolved "https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz"
   integrity sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==
 
+indento@^1.1.13:
+  version "1.1.14"
+  resolved "https://registry.yarnpkg.com/indento/-/indento-1.1.14.tgz#95cb2c91850ddf472d5604ae245712261e301b48"
+  integrity sha512-K4cK97v4M/ucCAbe3LUpg994folYL0WnEiCFxHXAIowKLbBb/Ahiazkz3Ao5gRar4i9pDr3imcpq4suOu0FbNw==
+
 inflight@^1.0.4:
   version "1.0.6"
   resolved "https://registry.npmjs.org/inflight/-/inflight-1.0.6.tgz"
@@ -2885,6 +2890,13 @@ json-stable-stringify-without-jsonify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz"
   integrity sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==
+
+json2md@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/json2md/-/json2md-2.0.3.tgz#f03eecb9a6e19de9c63a4744bab9cccf7b416cec"
+  integrity sha512-ZPzh6Djvqz8grJMxKllfCHo0p+p7BsbZ1J95KcCJgvvfdoy7myuKrrkUp80Kpy+wGauykC0dYljLqLY0kENaOw==
+  dependencies:
+    indento "^1.1.13"
 
 json5@^2.2.3:
   version "2.2.3"

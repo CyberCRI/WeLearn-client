@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { scrollToAnchor } from '@/utils/navigation.ts';
+import { scrollToAnchor } from '@/utils/navigation';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';
@@ -251,7 +251,6 @@ export const useTutorStore = defineStore('tutor', () => {
     if (!tutorSearch.value) {
       throw new Error('Body is empty');
     }
-
     isLoading.value = true;
     try {
       const resp = await basePostAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
@@ -270,7 +269,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
       //keep only the syllabus from pedagogical engineer
       syllabi.value = data.syllabus.filter(({ source }) =>
-        source.toLowerCase().includes('pedagogicalengineer')
+        source.toLowerCase().includes('description_agent')
       )[0];
 
       hasSyllabusError.value = false;

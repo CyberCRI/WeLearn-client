@@ -6,17 +6,22 @@ import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 defineProps<{
+  id_number?: number;
   sources?: Document[];
   disabled?: boolean;
   visible?: boolean;
   appendSource: (source: Document) => void;
   selectedSources: Document[];
-  action: () => void;
+  action: () => Promise<void>;
   actionText?: string;
 }>();
 </script>
 <template>
-  <div id="target-3" class="wrapper" :class="{ disabled: disabled, visible: visible }">
+  <div
+    :id="`target-${id_number || 3}`"
+    class="wrapper"
+    :class="{ disabled: disabled, visible: visible }"
+  >
     <div class="sources-wrapper" v-if="sources && sources.length">
       <h1 data-testId="documents-list-title" class="title is-4 is-size-5-mobile mt-4">
         3 - {{ $t('tutor.secondStep.title') }}
@@ -63,7 +68,7 @@ defineProps<{
         </div>
       </div>
       <div class="is-flex is-justify-content-end mt-4">
-        <a class="button is-primary" href="#" @click="action()">
+        <a class="button is-primary" href="#" @click="action">
           <ChevronDown />
           {{ $t(`${actionText || 'next'}`) }}
         </a>
