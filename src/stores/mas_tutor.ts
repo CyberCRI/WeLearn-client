@@ -6,6 +6,11 @@ import { scrollToAnchor } from '@/utils/navigation';
 import { saveToStorage } from '@/utils/storage';
 import type { AxiosResponse } from 'axios';
 
+interface USER_FLOW {
+  fromScratch: ['introduction', 'courseInformation', 'search', 'newSyllabus'];
+  fromSyllabus: ['introduction', 'addFile', 'syllabusData', 'search', 'newSyllabus'];
+}
+
 interface MAS_FILES {
   detected_document_type: string;
   confidence: number;
@@ -38,6 +43,51 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     output_language: undefined,
     syllabus_mode: undefined
   });
+
+  const userFlowObj: USER_FLOW = {
+    fromScratch: ['introduction', 'courseInformation', 'search', 'newSyllabus'],
+    fromSyllabus: ['introduction', 'addFile', 'syllabusData', 'search', 'newSyllabus']
+  };
+
+  const currentUserFlow: Ref<
+    | ['introduction', 'courseInformation', 'search', 'newSyllabus']
+    | ['introduction', 'addFile', 'syllabusData', 'search', 'newSyllabus']
+    | undefined
+  > = ref(undefined);
+
+  const currentStep: Ref<
+    'introduction' | 'courseInformation' | 'addFile' | 'syllabusData' | 'search' | 'newSyllabus'
+  > = ref('introduction');
+
+  const userFlowToApiRequestMapping = {
+    syllabuData: 'callApiData',
+    search: 'search',
+    newSyllabus: 'newSyllabus'
+  };
+
+  const getUserFlow = (flow: 'fromScratch' | 'fromSyllabus') => {
+    currentUserFlow.value = userFlowObj[flow];
+    nextStepOnFlow();
+  };
+
+  const currStepIndex = computed(() => {
+    if (currentUserFlow.value) {
+      return currentUserFlow.value?.findIndex((step) => step === currentStep.value);
+    }
+    return 0;
+  });
+
+  const nextStepOnFlow = () => {
+    if (!currentUserFlow.value) return;
+
+    currentStep.value = currentUserFlow.value[currStepIndex.value + 1];
+  };
+
+  const previousStepOnFlow = () => {
+    if (!currentUserFlow.value) return;
+
+    currentStep.value = currentUserFlow.value[currStepIndex.value - 1];
+  };
 
   const filesRef: Ref<File[]> = ref([]);
   const hasUserInputData: Ref<boolean> = ref(false);
@@ -222,6 +272,11 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     handleActionFromStep,
     hasSummaries,
     appendSource,
-    selectedSources
+    selectedSources,
+    getUserFlow,
+    currentUserFlow,
+    currentStep,
+    nextStepOnFlow,
+    previousStepOnFlow
   };
 });

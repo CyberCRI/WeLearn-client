@@ -530,5 +530,8 @@ export const fr = {
     'Les compétences sont un ensemble de connaissances, de savoir-faire et d’attitudes qu’un individu développe et utilise pour accomplir des tâches, résoudre des problèmes et s’adapter à différentes situations. Elles peuvent être techniques, cognitives, sociales ou émotionnelles, et sont essentielles pour réussir dans la vie professionnelle et personnelle.',
   greenCompCompetencies: 'Compétences GreenComp',
   provideFeedback: 'Faites un retours',
-  seeConnectionExplanation: "Voir l'explication"
+  seeConnectionExplanation: "Voir l'explication",
+  tutor_mas_title: 'Génératuer de syllabus',
+  tutor_mas_subtitle: "Cet outil va vous assister dans la création d'un syllabus pour votre cours",
+  tutor_mas_description: 'Partagez les infos'
 };

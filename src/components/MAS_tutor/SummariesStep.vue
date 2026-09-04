@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// TODO: use button to make summary editable
-// TODO: use button to validate summary --> make it required to go to the next step
-// TODO: send edited summaries to the search request
 import CheckIcon from '@/components/icons/CheckIcon.vue';
 import ChevronDown from '@/components/icons/ChevronDown.vue';
 import EditIcon from '@/components/icons/EditIcon.vue';

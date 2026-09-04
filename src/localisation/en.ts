@@ -527,5 +527,10 @@ export const en = {
   greenCompCompetencies: 'GreenComp Competencies',
   provideFeedback: 'Provide a feedback',
   resourcesUsed: 'Resources used',
-  seeConnectionExplanation: 'Connection explanation'
+  seeConnectionExplanation: 'Connection explanation',
+  tutor_mas_title: 'WeLearn Syllabus Generator',
+  tutor_mas_subtitle:
+    'This tool will assist you in creating a comprehensive syllabus for your course.',
+  tutor_mas_description:
+    "Please provide the necessary information about your course, and the syllabus generator will create a detailed syllabus tailored to your needs. Whether you're teaching a lecture, seminar, or workshop, our tool is designed to help you create an engaging and informative syllabus that meets your specific requirements."
 };

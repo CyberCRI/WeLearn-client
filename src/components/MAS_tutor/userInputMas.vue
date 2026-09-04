@@ -9,7 +9,6 @@ const emit = defineEmits(['submit']);
 
 defineProps<{
   actionText?: string;
-  fileHandler?: (file: any, type: string) => void;
   action?: () => void;
 }>();
 
@@ -24,8 +23,7 @@ const form: CourseMetadata = reactive(
     session_type: undefined,
     class_size: undefined,
     session_mode: 'PRESENTIEL',
-    output_language: i18n.global.locale.value === 'fr' ? 'french' : 'english',
-    syllabus_mode: 'mode_1'
+    output_language: i18n.global.locale.value === 'fr' ? 'french' : 'english'
   }
 );
 
@@ -41,40 +39,12 @@ function submitForm() {
 
 <template>
   <div class="course-info-section">
+    <h2 class="title is-4 is-size-5-mobile has-text-centered">{{ $t('courseInformation') }}</h2>
+    <h3 class="subtitle">
+      In order to create a syllabus from scratch, we need to collect some basic information, please
+      fill the following information.
+    </h3>
     <form @submit.prevent="submitForm" class="user-form">
-      <div class="field submit-button">
-        <h2 class="title is-4 is-size-5-mobile has-text-centered">{{ $t('courseInformation') }}</h2>
-        <div class="control">
-          <button class="button is-primary" type="submit">
-            <ChevronDown />
-            {{ $t(`${actionText || 'start'}`) }}
-          </button>
-        </div>
-      </div>
-
-      <div class="field syllabus-mode">
-        <div>
-          <label class="label">{{ $t('inputMode') }}</label>
-          <div class="select is-primary">
-            <select v-model="form.syllabus_mode" required>
-              <option value="mode_1">{{ $t('courseMetadataAndDocument') }}</option>
-              <option value="mode_2">{{ $t('existingSyllabus') }}</option>
-              <option value="mode_3">{{ $t('courseMetadataOnly') }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="" v-if="['mode_1', 'mode_2'].includes(form.syllabus_mode || '')">
-          <p class="label">{{ $t('inputFile') }}</p>
-          <input
-            class="input"
-            type="file"
-            accept=".txt,.pdf,.docx"
-            @change="(e) => fileHandler && fileHandler(e, 'syllabus')"
-            required
-          />
-        </div>
-      </div>
-
       <div class="field">
         <label class="label">{{ $t('discipline') }}</label>
         <div class="control">
@@ -114,6 +84,20 @@ function submitForm() {
           />
         </div>
         <p class="help">{{ $t('levelExample') }}</p>
+      </div>
+
+      <div class="field">
+        <label class="label is-capitalized">{{ $t('class_size') }}</label>
+        <div class="control">
+          <input
+            class="input"
+            type="number"
+            v-model="form.class_size"
+            :placeholder="$t('classSizePlaceholder')"
+            required
+          />
+        </div>
+        <p class="help">{{ $t('classSizeExample') }}</p>
       </div>
 
       <div class="field">
@@ -159,20 +143,6 @@ function submitForm() {
       </div>
 
       <div class="field">
-        <label class="label is-capitalized">{{ $t('class_size') }}</label>
-        <div class="control">
-          <input
-            class="input"
-            type="number"
-            v-model="form.class_size"
-            :placeholder="$t('classSizePlaceholder')"
-            required
-          />
-        </div>
-        <p class="help">{{ $t('classSizeExample') }}</p>
-      </div>
-
-      <div class="field">
         <label class="label">{{ $t('session_mode') }}</label>
         <div class="select is-primary">
           <select v-model="form.session_mode" required>
@@ -206,26 +176,47 @@ function submitForm() {
         </div>
         <p class="help">{{ $t('descriptionExample') }}</p>
       </div>
+      <div></div>
+      <div class="field submit-button">
+        <div class="control">
+          <button class="button is-primary" type="submit">
+            <ChevronDown />
+            {{ $t(`${actionText || 'start'}`) }}
+          </button>
+        </div>
+      </div>
     </form>
   </div>
 </template>
 <style lang="css" scoped>
 .course-info-section {
-  width: 100%;
+  margin: auto;
+  width: 50%;
   height: 100%;
 }
 
 .user-form {
   height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
   width: 100%;
   padding: 0rem;
   padding-left: 1rem;
   padding-right: 0.5rem;
   padding-bottom: 4rem;
+}
+
+.field {
+  width: 100%;
+}
+
+.select {
+  width: 100%;
+}
+
+select {
+  width: 100%;
 }
 
 .submit-button {
@@ -234,16 +225,10 @@ function submitForm() {
   background-color: var(--neutral-0);
   top: 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   gap: 0.5rem;
   margin-bottom: 1rem;
   padding: 1rem 0;
-}
-
-.syllabus-mode {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
 }
 
 .course-description {
