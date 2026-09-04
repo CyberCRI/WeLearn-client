@@ -1082,7 +1082,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'Géographie et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Geographie_et_TEDS.pdf'
           }
         }
       ]
@@ -1237,7 +1237,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'Santé et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Sante_et_TEDS.pdf'
           }
         }
       ]
@@ -1393,7 +1393,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'STAPS et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Staps_et_TEDS.pdf'
           }
         }
       ]
@@ -1548,7 +1548,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'Lettres et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Lettres_et_TEDS.pdf'
           }
         }
       ]
@@ -1706,7 +1706,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'Écologie et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Ecologie_et_TEDS.pdf'
           }
         }
       ]
@@ -1861,7 +1861,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'Art et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Art_et_TEDS.pdf'
           }
         }
       ]
@@ -2017,7 +2017,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'Ressource UVED',
             title: 'Science politique et Transition Écologique et au Développement Soutenable',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Science_politique_et_TEDS.pdf'
           }
         }
       ]
@@ -3103,7 +3103,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'Geography and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Geographie_et_TEDS.pdf'
           }
         }
       ]
@@ -3258,7 +3258,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'Health and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Sante_et_TEDS.pdf'
           }
         }
       ]
@@ -3414,7 +3414,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'STAPS and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_STAPS_et_TEDS.pdf'
           }
         }
       ]
@@ -3570,7 +3570,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'Literature and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Lettres_et_TEDS.pdf'
           }
         }
       ]
@@ -3724,7 +3724,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'Ecology and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Ecologie_et_TEDS.pdf'
           }
         }
       ]
@@ -3879,7 +3879,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'Art and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Art_et_TEDS.pdf'
           }
         }
       ]
@@ -4035,7 +4035,7 @@ export const DATA: DataByLang = {
           resource: {
             label: 'UVED Resource',
             title: 'Political Science and the Ecological and Sustainable Development Transition',
-            href: '#'
+            href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Science_politique_et_TEDS.pdf'
           }
         }
       ]
