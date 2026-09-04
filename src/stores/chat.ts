@@ -6,7 +6,6 @@ import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import { extractProcessingMetadata } from '@/utils/chatProcessing';
 import i18n from '@/localisation/i18n';
-import type { AxiosResponse } from 'axios';
 import { useFiltersStore } from '@/stores/filters';
 
 // CHAT STATUSES
@@ -26,7 +25,9 @@ export const CHAT_STATUS = {
 type CHAT_STATUSES_TYPE = keyof typeof CHAT_STATUS;
 
 export const useChatStore = defineStore('chat', () => {
+  const questionNumbers: Ref<number[] | undefined> = ref(undefined);
   const chatInput: Ref<string> = ref('');
+  const hasChatAnswerError: Ref<boolean> = ref(false);
   const chatMessagesList: Ref<ChatMessage[]> = ref(getFromStorage('chat') || []);
   const questionQueues: Ref<string[] | null> = ref(getFromStorage('questionQueues'));
   const sourcesList: Ref<Document[] | []> = ref(getFromStorage('chatSources') || []);
@@ -128,11 +129,6 @@ export const useChatStore = defineStore('chat', () => {
     reformulatedQuery.value = query;
     saveToStorage('reformulatedQuery', query);
   };
-
-  function setQuestionQueues(messages: string[]): void {
-    questionQueues.value = messages;
-    saveToStorage('questionQueues', messages);
-  }
 
   function clearInput(): void {
     chatInput.value = '';
@@ -387,18 +383,6 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
   }
 
-  async function getNewQuestions(userMsg: string) {
-    const newQuestions: AxiosResponse<{ NEW_QUESTIONS: string[] }> = await basePostAxios(
-      '/qna/reformulate/questions',
-      {
-        history: getMessageHistory.value,
-        query: userMsg
-      }
-    );
-
-    setQuestionQueues(newQuestions?.data['NEW_QUESTIONS']);
-  }
-
   async function onSendMessage(message: string): Promise<void> {
     // checks if can be sent
     if (
@@ -416,25 +400,30 @@ export const useChatStore = defineStore('chat', () => {
     } catch (error) {
       clearProcessingMetadata();
       chatStatus.value = CHAT_STATUS.ERROR;
+      hasChatAnswerError.value = true;
       console.error(error);
       return;
-    }
-
-    try {
-      await getNewQuestions(message);
-    } catch (error) {
-      console.error('Failed to fetch new questions:', error);
     }
 
     chatStatus.value = CHAT_STATUS.DONE;
   }
 
+  const getRandomQuestionNumber = () => {
+    const a = Math.floor(Math.random() * 10);
+    let b;
+    do {
+      b = Math.floor(Math.random() * 10);
+    } while (b === a);
+    questionNumbers.value = [a, b];
+  };
+
   function $reset() {
+    getRandomQuestionNumber();
     clearProcessingMetadata();
     chatStatus.value = CHAT_STATUS.EMPTY;
     chatInput.value = '';
     chatMessagesList.value = [];
-    questionQueues.value = null;
+    hasChatAnswerError.value = false;
     sourcesList.value = [];
     reformulatedQuery.value = null;
     shouldFetchNewDocuments.value = true;
@@ -451,6 +440,8 @@ export const useChatStore = defineStore('chat', () => {
   }
 
   return {
+    getRandomQuestionNumber,
+    questionNumbers,
     chatStatus,
     processingMetadata,
     processingStatusLabel,
@@ -469,6 +460,7 @@ export const useChatStore = defineStore('chat', () => {
     selectSubject,
     clearSubject,
     shouldDisplaySubjects,
+    hasChatAnswerError,
     $reset
   };
 });

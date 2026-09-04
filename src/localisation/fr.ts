@@ -53,8 +53,17 @@ export const fr = {
   },
   download: 'Télécharger',
   defaultQueues: [
-    'Comment expliquer la justice sociale à des étudiant·es en ingénierie en montrant que leurs décisions techniques peuvent soit réduire, soit renforcer les injustices sociales ?',
-    'Compare la tarification du carbone et le système « cap-and-trade » : fonctionnement, avantages et limites.'
+    "Le changement climatique est-il causé par l'homme ?",
+    "L'énergie nucléaire est-elle une solution durable ?",
+    'La technologie peut-elle à elle seule résoudre la crise climatique ?',
+    'La croissance économique est-elle compatible avec le développement durable ?',
+    "Comment l'ingénierie contribue-t-elle à la transition écologique ?",
+    "Comment l'architecture contribue-t-elle à la transition écologique ?",
+    'Comment les écoles de commerce peuvent-elles enseigner le développement durable sans tomber dans le « greenwashing » ?',
+    "Quel rôle joue l'IA dans la transition écologique ?",
+    "Taxe carbone ou système de plafonnement et d'échange : quelle est la solution la plus efficace ?",
+    'Décroissance ou croissance verte : quelle option est la plus pertinente ?',
+    'Nucléaire ou énergies renouvelables : quel est le véritable compromis ?'
   ],
   hintForNewQuestions: 'Voici des questions supplémentaires pour approfondir ce sujet :',
   description:

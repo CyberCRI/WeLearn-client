@@ -54,8 +54,17 @@ export const en = {
   },
   download: 'Download',
   defaultQueues: [
-    'How can social justice be explained to engineering students by showing that their technical decisions can either reduce or reinforce social inequalities?',
-    'Compare carbon pricing and cap-and-trade: how do they work, and what are their pros and cons?'
+    'Is nuclear energy a sustainable solution?',
+    'Is climate change caused by humans?',
+    'Can technology alone solve the climate crisis?',
+    'Is economic growth compatible with sustainability?',
+    'How does engineering contribute to the ecological transition?',
+    'How does architecture contribute to the ecological transition?',
+    'How can business schools teach sustainability without greenwashing?',
+    'What role does AI play in the ecological transition?',
+    'Carbon tax vs. cap-and-trade: which works better?',
+    ' Degrowth or green growth: which makes more sense?',
+    " Nuclear vs. renewables: what's the real trade-off?"
   ],
   hintForNewQuestions: 'Here are some additional questions to explore this topic further:',
   description:
