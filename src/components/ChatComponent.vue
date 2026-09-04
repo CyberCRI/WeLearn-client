@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import ChatArea from '@/components/ChatArea.vue';
 import ChatBuble from '@/components/ChatBuble.vue';
 import ChatInput from '@/components/ChatInput.vue';
@@ -11,6 +11,9 @@ import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import DeleteButton from '@/components/DeleteButton.vue';
 
 const store = useChatStore();
+
+onMounted(() => store.getRandomQuestionNumber());
+
 const computedStatus = computed(() => store.chatStatus);
 </script>
 <template>
@@ -57,20 +60,15 @@ const computedStatus = computed(() => store.chatStatus);
       </template>
       <template #queues>
         <div
-          v-if="[CHAT_STATUS.EMPTY, CHAT_STATUS.DONE].includes(computedStatus)"
-          :shouldDisable="computedStatus === CHAT_STATUS.FORMULATING_ANSWER"
-          :messageList="store.questionQueues || [$t('defaultQueues[0]'), $t('defaultQueues[1]')]"
-          :action="(content: string) => store.onSendMessage(content)"
+          v-if="CHAT_STATUS.EMPTY === computedStatus && store.questionNumbers"
           class="queues-wrapper"
         >
-          <p v-if="CHAT_STATUS.DONE === computedStatus" class="subtitle is-6 ml-4 mb-2">
-            {{ $t('hintForNewQuestions') }}
-          </p>
-
           <ChatQueuesPills
-            v-if="[CHAT_STATUS.EMPTY, CHAT_STATUS.DONE].includes(computedStatus)"
             :shouldDisable="computedStatus === CHAT_STATUS.FORMULATING_ANSWER"
-            :messageList="store.questionQueues || [$t('defaultQueues[0]'), $t('defaultQueues[1]')]"
+            :messageList="[
+              $t(`defaultQueues[${store.questionNumbers[0]}]`),
+              $t(`defaultQueues[${store.questionNumbers[1]}]`)
+            ]"
             :action="(content: string) => store.onSendMessage(content)"
           />
         </div>
@@ -93,17 +91,6 @@ const computedStatus = computed(() => store.chatStatus);
   </div>
 </template>
 <style scoped>
-.desktop {
-  display: none;
-  & > .trash-icon {
-    display: none;
-  }
-}
-
-.chatIcon {
-  height: 1.5rem;
-}
-
 .chat-template {
   position: relative;
   display: flex;

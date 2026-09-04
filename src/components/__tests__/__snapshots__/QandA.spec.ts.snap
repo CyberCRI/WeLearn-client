@@ -72,60 +72,6 @@ exports[`QandA > renders properly 1`] = `
             
           </div>
           
-          <div
-            action="(content) => $setup.store.onSendMessage(content)"
-            class="queues-wrapper"
-            data-v-8765cc6e=""
-            messagelist="defaultQueues[0],defaultQueues[1]"
-            shoulddisable="false"
-          >
-            <!--v-if-->
-            <div
-              class="queues scroll"
-              data-v-8765cc6e=""
-              data-v-b972df67=""
-            >
-              <div
-                class="flexy"
-                data-v-b972df67=""
-              >
-                
-                <div
-                  class="card cursor"
-                  data-v-b972df67=""
-                >
-                  <div
-                    class="card-content"
-                    data-v-b972df67=""
-                  >
-                    <p
-                      class="message"
-                      data-v-b972df67=""
-                    >
-                      defaultQueues[0]
-                    </p>
-                  </div>
-                </div>
-                <div
-                  class="card cursor"
-                  data-v-b972df67=""
-                >
-                  <div
-                    class="card-content"
-                    data-v-b972df67=""
-                  >
-                    <p
-                      class="message"
-                      data-v-b972df67=""
-                    >
-                      defaultQueues[1]
-                    </p>
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-          </div>
           
         </div>
       </div>
