@@ -47,7 +47,7 @@ function flip() {
 <style scoped>
 .flip-card {
   cursor: pointer;
-  height: 200px;
+  height: 15rem;
   perspective: 1000px;
   border-radius: 16px;
   background-color: var(--primary-hover);
@@ -67,6 +67,11 @@ function flip() {
 
 .flipped {
   color: var(--neutral-100);
+
+  .front {
+    opacity: 0;
+    transition: all 0.2s ease-in;
+  }
 }
 
 .ct.flipped {
@@ -87,6 +92,7 @@ function flip() {
 
 .front,
 .back {
+  opacity: 1;
   position: absolute;
   inset: 0;
   backface-visibility: hidden;
