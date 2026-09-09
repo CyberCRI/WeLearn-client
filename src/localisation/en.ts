@@ -1,6 +1,7 @@
 import { microLearning } from './microLearning/en';
-
+import { syllabus } from './syllabus/fr';
 export const en = {
+  syllabus,
   microLearning,
   ':': ':',
   adaptedTo: 'Adapted to:',
@@ -532,5 +533,6 @@ export const en = {
   tutor_mas_subtitle:
     'This tool will assist you in creating a comprehensive syllabus for your course.',
   tutor_mas_description:
-    "Please provide the necessary information about your course, and the syllabus generator will create a detailed syllabus tailored to your needs. Whether you're teaching a lecture, seminar, or workshop, our tool is designed to help you create an engaging and informative syllabus that meets your specific requirements."
+    "Please provide the necessary information about your course, and the syllabus generator will create a detailed syllabus tailored to your needs. Whether you're teaching a lecture, seminar, or workshop, our tool is designed to help you create an engaging and informative syllabus that meets your specific requirements.",
+  noFileUploaded: 'No file uploaded'
 };

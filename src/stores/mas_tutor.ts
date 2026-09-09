@@ -116,6 +116,7 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
   };
 
   const getFilesContent = async () => {
+    isLoading.value = true;
     const files = Object.values(newFilesToSearch.value).filter((e) => e);
 
     const formData = new FormData();
@@ -127,7 +128,7 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     });
     try {
       const resp: AxiosResponse<MAS_FILES, any, {}> = await basePostAxios(
-        `/tutor/mas_files/content?lang=${courseMetadaRef.value.output_language}&mode=${courseMetadaRef.value.syllabus_mode}`,
+        `/tutor/mas_files/content?lang=${courseMetadaRef.value.output_language}`,
         formData,
         {
           headers: { 'content-type': 'multipart/form-data' }
@@ -152,10 +153,12 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
       }
     } catch (error: any) {
       throw new Error(error);
+    } finally {
+      isLoading.value = false;
     }
   };
 
-  const addFile = (e: any, input_id: string) => {
+  const addFile = async (e: any, input_id: string) => {
     const targetFile = e.target.files[0];
 
     newFilesToSearch.value = {
@@ -277,6 +280,8 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     currentUserFlow,
     currentStep,
     nextStepOnFlow,
-    previousStepOnFlow
+    previousStepOnFlow,
+    getFilesContent,
+    summaryData
   };
 });

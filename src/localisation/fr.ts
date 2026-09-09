@@ -1,5 +1,7 @@
 import { microLearning } from './microLearning/fr';
+import { syllabus } from './syllabus/fr';
 export const fr = {
+  syllabus,
   microLearning,
   ':': ' :',
   adaptedTo: 'Adapté à :',
@@ -533,5 +535,6 @@ export const fr = {
   seeConnectionExplanation: "Voir l'explication",
   tutor_mas_title: 'Génératuer de syllabus',
   tutor_mas_subtitle: "Cet outil va vous assister dans la création d'un syllabus pour votre cours",
-  tutor_mas_description: 'Partagez les infos'
+  tutor_mas_description: 'Partagez les infos',
+  noFileUploaded: 'Aucun fichier téléchargé'
 };
