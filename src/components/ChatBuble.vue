@@ -3,7 +3,6 @@
 import AssistantAvatar from './AssistantAvatar.vue';
 import DescreteButton from './ButtonComponent.vue';
 import UserAvatar from './UserAvatar.vue';
-import ReloadIcon from './icons/ReloadIcon.vue';
 import CopyIcon from './icons/CopyIcon.vue';
 import TooltipComponent from './TooltipComponent.vue';
 import { marked } from 'marked';
@@ -17,8 +16,14 @@ defineProps<{
   isUSer: boolean;
   isLast: boolean;
   shouldDisable: boolean;
-  rephrase?: () => void;
 }>();
+
+const renderer = new marked.Renderer();
+const linkRenderer = renderer.link;
+renderer.link = (href, title, text) => {
+  const html = linkRenderer.call(renderer, href, title, text);
+  return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ');
+};
 
 const copyMessage = (msg: string) => {
   if (timeOut.value) {
@@ -38,7 +43,7 @@ const copyMessage = (msg: string) => {
       <UserAvatar v-if="isUSer" />
       <AssistantAvatar v-else />
     </div>
-    <p class="chat-bubble-content" v-html="marked.parse(message)" />
+    <p class="chat-bubble-content" v-html="marked.parse(message, { renderer })" />
     <div class="details">
       <DescreteButton
         class="detail-button"
@@ -49,16 +54,6 @@ const copyMessage = (msg: string) => {
       >
         <CopyIcon class="icon-action" />
         <TooltipComponent class="tltip" :tooltipText="copied ? $t('copied') : $t('copy')" isRight />
-      </DescreteButton>
-      <DescreteButton
-        class="detail-button"
-        :aria-label="$t('rephrase')"
-        isDiscreet
-        v-if="!isUSer && isLast && !shouldDisable"
-        @click="rephrase && rephrase()"
-      >
-        <ReloadIcon class="icon-action" />
-        <TooltipComponent class="tltip" :tooltipText="$t('rephrase')" isRight />
       </DescreteButton>
     </div>
   </div>

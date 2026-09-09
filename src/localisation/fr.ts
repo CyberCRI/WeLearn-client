@@ -293,7 +293,6 @@ export const fr = {
   removeAll: 'Tout effacer',
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
-  rephrase: 'Reformuler',
   searchBarPlaceholder: 'Rechercher...',
   sdgsAcronym: 'ODD',
   sdgs: {
