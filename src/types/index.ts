@@ -3,6 +3,7 @@ export type Document = {
   score: number;
   payload: {
     document_id: string;
+    document_external_id?: string;
     document_corpus: string;
     document_title: string;
     document_desc: string;

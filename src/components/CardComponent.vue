@@ -26,11 +26,30 @@ const props = defineProps<{
   hasFullDescription?: boolean;
   slice?: string;
   id?: string;
+  externalId?: string;
   docMetrics?: (docId?: string | undefined) => Promise<void>;
 }>();
 
 const toggleShowMoreAuthors = () => {
   isMoreAuthorsHidden.value = !isMoreAuthorsHidden.value;
+};
+
+const trackConversationExcerpt = (event: Event) => {
+  const excerpt = event.currentTarget as HTMLDetailsElement;
+
+  if (!excerpt.open || props.corpus !== 'conversation' || !props.externalId) {
+    return;
+  }
+
+  const tracker = document.createElement('script');
+  tracker.type = 'text/javascript';
+  tracker.src = 'https://theconversation.com/javascripts/lib/content_tracker_hook.js';
+  tracker.id = 'theconversation_tracker_hook';
+  tracker.dataset.counter = `https://counter.theconversation.com/content/${props.externalId}/count`;
+  tracker.async = true;
+  tracker.addEventListener('load', () => tracker.remove());
+  tracker.addEventListener('error', () => tracker.remove());
+  document.body.appendChild(tracker);
 };
 
 const displayedDescription = computed(() => {
@@ -100,7 +119,12 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
         <div class="content">
           {{ displayedDescription }}
         </div>
-        <details v-if="slice" class="mt-2 is-clickable" @click.stop>
+        <details
+          v-if="slice"
+          class="mt-2 is-clickable"
+          @click.stop
+          @toggle="trackConversationExcerpt"
+        >
           <summary>{{ $t('extract') }}</summary>
           <blockquote class="is-italic">{{ slice }}</blockquote>
         </details>

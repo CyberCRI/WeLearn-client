@@ -87,6 +87,7 @@ const ChosenCard = Cards[props.cardType || 'default'];
         :isBookmarked="store.isBookmarked(doc.payload.document_id)"
         :slice="doc.payload.slice_content"
         :id="doc.payload.document_id"
+        :externalId="doc.payload.document_external_id"
         :docMetrics="metricsStore.recordClickedDocumentFromchat"
       >
         <template #modal="scope">
@@ -105,6 +106,7 @@ const ChosenCard = Cards[props.cardType || 'default'];
               :toggleBookmark="() => store.toggleBookmark(doc)"
               :isBookmarked="store.isBookmarked(doc.payload.document_id)"
               :slice="doc.payload.slice_content"
+              :externalId="doc.payload.document_external_id"
               hasFullDescription
             />
           </ModalWrapper>
