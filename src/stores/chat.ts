@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ChatMessage, ChatProcessingMetadata } from '@/types';
-import { baseGetAxios, basePostAxios, fetchStream } from '@/utils/fetch';
+import { baseGetAxios, fetchStream } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import { extractProcessingMetadata } from '@/utils/chatProcessing';
@@ -113,10 +113,6 @@ export const useChatStore = defineStore('chat', () => {
     () => getQueryParamValue('score') === 'true'
   );
 
-  const getMessageHistory: ComputedRef<ChatMessage[]> = computed(() => {
-    return chatMessagesList.value.slice(0, -1);
-  });
-
   function addToMessageList(message: ChatMessage): void {
     if (!message.content.length) {
       return;
@@ -146,30 +142,6 @@ export const useChatStore = defineStore('chat', () => {
       localStorage.setItem('chatMessageId', messageId);
       storedMessageId.value = messageId;
     }
-  }
-
-  async function fetchRephrase() {
-    clearProcessingMetadata();
-    chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-    // get the content of the message which the role is assistant
-    const lastAssistantMessage = [...chatMessagesList.value]
-      .reverse()
-      .find((msg) => msg.role === 'assistant')?.content;
-
-    const bodyContent = {
-      sources: sourcesList.value,
-      history: getMessageHistory.value,
-      query: lastAssistantMessage,
-      ...(storedSubject.value && { subject: storedSubject.value })
-    };
-
-    const respBody = await basePostAxios('/qna/chat/rephrase', bodyContent);
-
-    chatMessagesList.value.push({ role: 'assistant', content: respBody.data });
-    saveToStorage('chat', chatMessagesList.value);
-
-    chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
-    chatStatus.value = CHAT_STATUS.DONE;
   }
 
   async function getAgentAnswer(userMsg: string) {
@@ -452,7 +424,6 @@ export const useChatStore = defineStore('chat', () => {
     sourcesList,
     reformulatedQuery,
     onSendMessage,
-    fetchRephrase,
     clearInput,
     setReformulatedQuery,
     shouldDisplayScore,
