@@ -19,7 +19,7 @@ const filters = useFiltersStore();
           :id="source.name"
           v-model="filters.sourcesFilters"
           :value="source.name"
-          :label="$t(`corpus.${source.name}`)"
+          :label="$t(`corpus.${source.name}`, source.name)"
           :checked="filters.sourcesFilters.includes(source.name)"
           isCapitalized
         >

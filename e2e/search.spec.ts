@@ -33,11 +33,11 @@ test.describe('search', () => {
 
   test.describe('sources', () => {
     test('should display list of sources in filtrer on click', async ({ page }) => {
-      await expect(page.getByText('corpus.fake-collection')).toBeVisible();
+      await expect(page.getByText('fake-collection')).toBeVisible();
     });
 
     test('should select a source', async ({ page }) => {
-      await page.getByText('Corpus.Fake-Collection').click();
+      await page.getByText('Fake-Collection').click();
       await expect(page.getByText('fake collection x')).toBeVisible();
       await expect(page.getByLabel('fake-collection').locator('span')).toBeChecked();
     });

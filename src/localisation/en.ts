@@ -33,6 +33,7 @@ export const en = {
     null: 'Uncategorized'
   },
   corpus: {
+    'notre-environnement': 'notre-environnement',
     unesdoc: 'Unesdoc',
     'ird-le-mag': "IRD Le Mag'",
     unccelearn: 'UN CC:e-Learn',
