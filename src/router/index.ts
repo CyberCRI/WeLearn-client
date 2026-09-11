@@ -7,8 +7,6 @@ import NotFound from '@/views/NotFound.vue';
 import MicrolearningModule from '@/views/MicrolearningModule.vue';
 import TestMAS from '@/views/TestMAS.vue';
 
-const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -47,11 +45,9 @@ const router = createRouter({
       component: () => import('@/views/TermsPage.vue')
     },
     {
-      ...(isDevEnvironment && {
-        path: '/microlearning',
-        name: 'micro-learning',
-        component: MicrolearningModule
-      })
+      path: '/microlearning',
+      name: 'micro-learning',
+      component: MicrolearningModule
     },
     {
       path: '/about',
