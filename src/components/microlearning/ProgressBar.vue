@@ -41,7 +41,7 @@ const props = defineProps<{
 }>();
 
 const progressWidth = computed(() => {
-  return `${(props.currentStep / (STEP_LABELS.length - 1)) * 100}%`;
+  return `${(props.currentStep / (STEP_LABELS.length - 1) + 0.05) * 100}%`;
 });
 
 function stepClass(index: number) {
