@@ -48,8 +48,14 @@ export const microLearning = {
     completed: 'You have discovered all the contributions of this discipline.',
     clickToDiscover: 'Click to discover'
   },
+  contributions: {
+    title: 'Contributions of Your Discipline',
+    subtitle:
+      'By teaching this discipline, you are already contributing to the ecological transition'
+  },
   competence: {
-    title: 'The skills your students develop'
+    title: 'The skills your students develop',
+    concretely: 'Concretely'
   },
   reflection: {
     ctaSource: 'View the resource →'

@@ -48,8 +48,13 @@ export const microLearning = {
     completed: 'Vous avez découvert tous les apports de cette discipline.',
     clickToDiscover: 'Cliquez pour découvrir'
   },
+  contributions: {
+    title: 'Les contributions de votre discipline',
+    subtitle: 'En enseignant cette discipline vous contritbuez déjà à la transition écologique'
+  },
   competence: {
-    title: 'Les compétences que vos étudiant·es développent'
+    title: 'Les compétences que vos étudiant·es développent',
+    concretely: 'Concrètement'
   },
   reflection: {
     ctaSource: 'Consulter la ressource →'
