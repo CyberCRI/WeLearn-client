@@ -519,7 +519,7 @@ export const en = {
   user_description: 'Course description',
   courseDescriptionPlaceholder: 'Add a brief description to improve the generated syllabus.',
   descriptionExample:
-    'Example: This course covers the fundamentals of sociolinguistics, including key concepts and theories.',
+    'Example: This course provides an introduction to key questions in sociolinguistics, exploring the relationship between language and society, language policies, language contact, and research methods. It introduces the main theories, basic terminology, and methodologies of fieldwork and sociolinguistic analysis.',
   courseDescription: 'Description',
   learningObjectives: 'Learning objectives',
   learningObjectivesSubtitle:
