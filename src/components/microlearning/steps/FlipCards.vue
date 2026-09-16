@@ -1,5 +1,9 @@
 <template>
   <section class="flip-cards">
+    <h2 class="step-title">{{ $t('microLearning.contributions.title') }}</h2>
+    <p class="step-intro">
+      {{ $t('microLearning.contributions.subtitle') }}
+    </p>
     <div class="cards">
       <FlipCard
         v-for="(card, index) in step.cards"
@@ -63,16 +67,19 @@ function markFlipped(id: number) {
   width: 100%;
   height: 100%;
 }
-
-.header {
+.step-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--neutral-100);
   text-align: center;
-  margin: auto;
 }
 
-.badge {
-  display: inline-flex;
-  border-radius: 999px;
-  margin-bottom: 1rem;
+.step-intro {
+  margin: 0;
+  color: var(--neutral-80);
+  line-height: 1.7;
+  text-align: center;
 }
 
 .cards {

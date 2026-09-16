@@ -19,7 +19,7 @@
         </h3>
 
         <div class="competence-content">
-          <strong>Concrètement</strong>
+          <strong>{{ $t('microLearning.competence.concretely') }}</strong>
 
           <p>
             {{ competence.concrete }}
