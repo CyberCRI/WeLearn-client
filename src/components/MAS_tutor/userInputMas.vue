@@ -122,6 +122,7 @@ function submitForm() {
           <input
             class="input"
             type="number"
+            min="0"
             v-model="form.num_sessions"
             :placeholder="$t('num_sessions_placeholder')"
             required
@@ -136,6 +137,8 @@ function submitForm() {
           <input
             class="input"
             type="number"
+            min="0"
+            step="0.5"
             v-model="form.session_duration"
             :placeholder="$t('sessionDurationPlaceholder')"
             required
@@ -164,6 +167,7 @@ function submitForm() {
           <input
             class="input"
             type="number"
+            min="0"
             v-model="form.class_size"
             :placeholder="$t('classSizePlaceholder')"
             required
