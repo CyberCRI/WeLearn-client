@@ -47,7 +47,7 @@ function flip() {
 <style scoped>
 .flip-card {
   cursor: pointer;
-  height: 15rem;
+  height: 18rem;
   perspective: 1000px;
   border-radius: 16px;
   background-color: var(--primary-hover);
@@ -103,7 +103,7 @@ function flip() {
   justify-content: center;
   align-items: center;
   text-align: center;
-  border: 1px solid VAR(--neutral-20);
+  border: 1px solid var(--neutral-20);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.06);
 }
 
@@ -116,14 +116,12 @@ function flip() {
 }
 
 h3 {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-small {
-  opacity: 0.7;
-}
-
-p {
-  line-height: 1.6;
+@media (max-width: 1400px) {
+  .flip-card .back {
+    font-size: 0.8em;
+  }
 }
 </style>
