@@ -5,6 +5,6 @@
 </template>
 
 <style scoped>
-@media screen and (min-width: 576px) {
+@media (min-width: 576px) {
 }
 </style>

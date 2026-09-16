@@ -110,7 +110,7 @@ textarea:focus:-ms-input-placeholder {
   color: transparent;
 }
 
-@media screen and (max-width: 950px) {
+@media (max-width: 950px) {
   .grow-wrap {
     /* easy way to plop the elements on top of each other and have them both sized based on the tallest one's height */
     padding-top: 0.25rem;

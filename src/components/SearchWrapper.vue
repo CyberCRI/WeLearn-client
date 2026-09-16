@@ -29,7 +29,7 @@
   display: flex;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .filters {
     height: 2.5rem;
   }

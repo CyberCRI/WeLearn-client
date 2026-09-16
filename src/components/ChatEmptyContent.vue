@@ -26,7 +26,7 @@ defineProps<{
   text-align: left;
 }
 
-@media screen and (min-width: 1300) {
+@media (min-width: 1300) {
   .chat-default {
     text-align: center;
     & > * {
@@ -36,7 +36,7 @@ defineProps<{
   }
 }
 
-@media screen and (min-width: 576px) {
+@media (min-width: 576px) {
   .chat-default {
     text-align: center;
     font-size: 1.2rem;

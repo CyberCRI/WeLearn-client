@@ -157,7 +157,7 @@ const computedStatus = computed(() => store.chatStatus);
   margin-top: auto;
 }
 
-@media screen and (max-width: 950px) {
+@media (max-width: 950px) {
   .delete-button-wrapper {
     position: absolute;
     right: 0.5rem;

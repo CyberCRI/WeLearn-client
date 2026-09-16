@@ -268,7 +268,7 @@ const appendNewInputFile = () => {
   margin-bottom: 1rem;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .cursus-details {
     width: 100%;
     display: flex;

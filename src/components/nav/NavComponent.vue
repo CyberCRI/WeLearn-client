@@ -119,7 +119,7 @@ const navEntries = [
   flex-wrap: nowrap;
 }
 
-@media screen and (max-width: 1450px) {
+@media (max-width: 1450px) {
   .item-name {
     display: none;
     visibility: hidden;
@@ -129,7 +129,7 @@ const navEntries = [
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .nav-items {
     padding-top: 0.05rem;
     width: 95%;

@@ -145,7 +145,7 @@ a {
   margin-bottom: 3rem;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .card-footer {
     margin-left: 10px;
   }

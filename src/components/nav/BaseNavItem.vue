@@ -66,7 +66,7 @@ defineProps<{
   flex-wrap: nowrap;
 }
 
-@media screen and (max-width: 1450px) {
+@media (max-width: 1450px) {
   .link-wrapper {
     padding-inline: 0.25rem;
   }
@@ -80,7 +80,7 @@ defineProps<{
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media (max-width: 1100px) {
   .item-name {
     display: none;
     visibility: hidden;
@@ -90,19 +90,19 @@ defineProps<{
   }
 }
 
-@media screen and (max-width: 750px) {
+@media (max-width: 750px) {
   .router-link {
     padding-inline: 0.5rem;
   }
 }
 
-@media screen and (max-width: 650px) {
+@media (max-width: 650px) {
   .link-wrapper {
     padding-inline: 0.25rem;
   }
 }
 
-@media screen and (max-width: 450px) {
+@media (max-width: 450px) {
   .router-link {
     padding-inline: 0.05rem;
   }

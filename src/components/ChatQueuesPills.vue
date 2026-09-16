@@ -61,7 +61,7 @@ defineProps<{
   background: var(--neutral-50);
 }
 
-@media screen and (max-width: 1450px) {
+@media (max-width: 1450px) {
   .card-content {
     padding: 0.5rem;
   }
@@ -75,7 +75,7 @@ defineProps<{
   }
 }
 
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
   .queues {
     display: flex;
     align-items: center;
