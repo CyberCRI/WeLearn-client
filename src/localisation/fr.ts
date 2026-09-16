@@ -522,7 +522,7 @@ export const fr = {
   user_description: 'Description du cours',
   courseDescriptionPlaceholder: 'Ajoutez une brève description pour améliorer le syllabus généré.',
   descriptionExample:
-    'Exemple : Ce cours couvre les fondamentaux de la sociolinguistique, notamment les concepts et théories clés.',
+    'Exemple : Ce cours propose une introduction aux grandes questions de la sociolinguistique, en étudiant les liens entre langage et société, les politiques linguistiques, le contact des langues et les méthodes de recherche. Il permet d’acquérir les principales théories, la terminologie de base et les méthodologies du travail de terrain et de l’analyse sociolinguistique.',
   courseDescription: 'Description',
   learningObjectives: 'Objectifs d’apprentissage',
   learningObjectivesSubtitle:
