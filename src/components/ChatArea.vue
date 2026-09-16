@@ -141,7 +141,7 @@ const handleOnWheel = () => {
   align-items: center;
 }
 
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
   .bottom-wrapper {
     width: 100%;
     padding-bottom: 1rem;

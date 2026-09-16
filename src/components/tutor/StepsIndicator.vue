@@ -55,7 +55,7 @@ const stepsLengthArray = Array.from({ length: props.stepsLength }, (_, i) => i +
   color: var(--neutral-50);
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .wrapper {
     gap: 0.5rem;
     padding: 0.2rem;

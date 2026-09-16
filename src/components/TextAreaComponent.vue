@@ -28,7 +28,7 @@ defineEmits(['update:modelValue']);
   padding: 2rem;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .textarea {
     padding: 1rem;
     font-size: 0.875em;

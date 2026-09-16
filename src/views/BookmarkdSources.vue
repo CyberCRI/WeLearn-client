@@ -61,7 +61,7 @@ onMounted(() => {
   cursor: pointer;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .bookmarks {
     width: 100%;
   }

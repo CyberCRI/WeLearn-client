@@ -254,7 +254,7 @@ const sourcesStore = useSourcesStore();
   gap: 3rem;
 }
 
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
   .presentation {
     width: 90%;
   }

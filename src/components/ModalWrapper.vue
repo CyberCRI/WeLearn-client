@@ -36,7 +36,7 @@ const handleModalClose = () => {
   --bulma-modal-content-width: 50%;
 }
 
-@media screen and (max-width: 1024px) {
+@media (max-width: 1024px) {
   .modal {
     --bulma-modal-content-width: 90%;
   }

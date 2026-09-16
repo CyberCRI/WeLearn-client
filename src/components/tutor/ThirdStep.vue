@@ -145,7 +145,7 @@ details:not([open]) {
   background-color: var(--neutral-0);
 }
 
-@media screen and (max-width: 1280px) {
+@media (max-width: 1280px) {
   .actions {
     flex-direction: column;
     align-items: stretch;

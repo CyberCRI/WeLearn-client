@@ -125,7 +125,7 @@ const store = useSearchStore();
   font-size: 14px;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .text-length-feedback {
     font-size: 0.7em;
     padding-left: 0.5rem;

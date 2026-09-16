@@ -42,7 +42,7 @@ defineProps<{ content: string; hasGrayScale?: boolean }>();
   opacity: 0.9;
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .pill {
     font-size: 0.75em;
     height: 1.25rem;

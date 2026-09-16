@@ -40,7 +40,7 @@ const { handleDisplayArrow, displayArrow } = useGoTo(container);
   padding: 0.75rem;
 }
 
-@media screen and (min-width: 992px) {
+@media (min-width: 992px) {
   .template-content {
     width: 100%;
     padding: 0;
@@ -61,7 +61,7 @@ const { handleDisplayArrow, displayArrow } = useGoTo(container);
   }
 }
 
-@media screen and (min-width: 1200px) {
+@media (min-width: 1200px) {
   .template-content {
     width: 70%;
     gap: 3.75rem;

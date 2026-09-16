@@ -248,7 +248,7 @@ const feedbackText: Ref<string> = ref('');
   padding: 1rem 1rem;
 }
 
-@media screen and (max-width: 1380px) {
+@media (max-width: 1380px) {
   .syllabus-part {
     gap: 2rem;
   }

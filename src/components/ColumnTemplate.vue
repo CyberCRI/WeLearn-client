@@ -57,7 +57,7 @@ const toggleOpen = () => {
   position: relative;
 }
 
-@media screen and (max-width: 991px) {
+@media (max-width: 991px) {
   .toggle {
     display: none;
   }
@@ -74,7 +74,7 @@ const toggleOpen = () => {
   }
 }
 
-@media screen and (min-width: 992px) {
+@media (min-width: 992px) {
   .gridy-template {
     flex-direction: row;
   }

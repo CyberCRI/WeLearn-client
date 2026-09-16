@@ -41,7 +41,7 @@ a:hover {
   text-decoration: underline;
 }
 
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
   .footer-wrapper {
     padding: 0 1rem;
     justify-content: center;

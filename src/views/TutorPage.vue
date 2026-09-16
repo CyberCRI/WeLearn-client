@@ -137,13 +137,13 @@ onMounted(() => {
   padding: 1rem 20%;
 }
 
-@media screen and (max-width: 1024px) {
+@media (max-width: 1024px) {
   .layout-flex {
     padding-inline: 10%;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .layout-flex {
     padding-inline: 5%;
   }
