@@ -6,6 +6,7 @@ import { secondsToMinAndHours } from '@/utils/time';
 import type { DocumentDetails } from '@/types';
 
 import BookmarkComponent from './BookmarkComponent.vue';
+import { theConversationTracker } from '@/utils/metrics.js';
 
 const isMoreAuthorsHidden = ref(true);
 
@@ -41,15 +42,7 @@ const trackConversationExcerpt = (event: Event) => {
     return;
   }
 
-  const tracker = document.createElement('script');
-  tracker.type = 'text/javascript';
-  tracker.src = 'https://theconversation.com/javascripts/lib/content_tracker_hook.js';
-  tracker.id = 'theconversation_tracker_hook';
-  tracker.dataset.counter = `https://counter.theconversation.com/content/${props.externalId}/count`;
-  tracker.async = true;
-  tracker.addEventListener('load', () => tracker.remove());
-  tracker.addEventListener('error', () => tracker.remove());
-  document.body.appendChild(tracker);
+  theConversationTracker(props.externalId);
 };
 
 const displayedDescription = computed(() => {
