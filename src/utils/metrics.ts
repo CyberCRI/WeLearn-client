@@ -21,14 +21,19 @@ export const updateClickedDocument = async (
   return res.data;
 };
 
-export const theConversationTracker = (externalId: string) => {
+export function addTheConversationTrackerScript(externalId: string): void {
   const tracker = document.createElement('script');
   tracker.type = 'text/javascript';
   tracker.src = 'https://theconversation.com/javascripts/lib/content_tracker_hook.js';
+
   tracker.id = 'theconversation_tracker_hook';
+
   tracker.dataset.counter = `https://counter.theconversation.com/content/${externalId}/count`;
+
   tracker.async = true;
-  tracker.addEventListener('load', () => tracker.remove());
-  tracker.addEventListener('error', () => tracker.remove());
+
+  tracker.addEventListener('load', () => tracker.remove(), { once: true });
+  tracker.addEventListener('error', () => tracker.remove(), { once: true });
+
   document.body.appendChild(tracker);
-};
+}

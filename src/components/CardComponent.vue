@@ -6,7 +6,7 @@ import { secondsToMinAndHours } from '@/utils/time';
 import type { DocumentDetails } from '@/types';
 
 import BookmarkComponent from './BookmarkComponent.vue';
-import { theConversationTracker } from '@/utils/metrics.js';
+import { addTheConversationTrackerScript } from '@/utils/metrics.js';
 
 const isMoreAuthorsHidden = ref(true);
 
@@ -42,7 +42,7 @@ const trackConversationExcerpt = (event: Event) => {
     return;
   }
 
-  theConversationTracker(props.externalId);
+  addTheConversationTrackerScript(props.externalId);
 };
 
 const displayedDescription = computed(() => {
