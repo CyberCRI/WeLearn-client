@@ -60,6 +60,7 @@ defineProps<{
                   :toggleBookmark="() => {}"
                   :isBookmarked="false"
                   :slice="source.payload.slice_content"
+                  :externalId="source.payload.document_external_id"
                   hasFullDescription
                 />
               </ModalWrapper>

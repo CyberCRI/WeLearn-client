@@ -6,6 +6,7 @@ import { secondsToMinAndHours } from '@/utils/time';
 import type { DocumentDetails } from '@/types';
 
 import BookmarkComponent from './BookmarkComponent.vue';
+import { addTheConversationTrackerScript } from '@/utils/metrics.js';
 
 const isMoreAuthorsHidden = ref(true);
 
@@ -26,11 +27,22 @@ const props = defineProps<{
   hasFullDescription?: boolean;
   slice?: string;
   id?: string;
+  externalId?: string;
   docMetrics?: (docId?: string | undefined) => Promise<void>;
 }>();
 
 const toggleShowMoreAuthors = () => {
   isMoreAuthorsHidden.value = !isMoreAuthorsHidden.value;
+};
+
+const trackConversationExcerpt = (event: Event) => {
+  const excerpt = event.currentTarget as HTMLDetailsElement;
+
+  if (!excerpt.open || props.corpus !== 'conversation' || !props.externalId) {
+    return;
+  }
+
+  addTheConversationTrackerScript(props.externalId);
 };
 
 const displayedDescription = computed(() => {
@@ -100,7 +112,12 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
         <div class="content">
           {{ displayedDescription }}
         </div>
-        <details v-if="slice" class="mt-2 is-clickable" @click.stop>
+        <details
+          v-if="slice"
+          class="mt-2 is-clickable"
+          @click.stop
+          @toggle="trackConversationExcerpt"
+        >
           <summary>{{ $t('extract') }}</summary>
           <blockquote class="is-italic">{{ slice }}</blockquote>
         </details>
