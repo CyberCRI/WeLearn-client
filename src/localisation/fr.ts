@@ -448,25 +448,27 @@ export const fr = {
   },
   microlearning: {
     mainTitle: 'Choisissez un sujet :',
-    chooseSdg: "Choissisez l'ODD qui vous intéresse"
+    chooseSdg: "Choisissez l'ODD qui vous intéresse :"
   },
   autoEvaluation: {
-    notAtAll: 'pas vraiment',
-    tottally: 'complètement',
+    notAtAll: 'Pas vraiment',
+    tottally: 'Complètement',
     start: {
       badge: 'Avant de commencer',
-      title: 'Une dernière chose',
-      subtitle: '30 secondes, ça nous aide à savoir si ce parcours répond à un vrai besoin.'
+      title: 'Deux petites questions',
+      subtitle: '30 secondes pour nous aider à savoir si ce parcours répond à un vrai besoin.'
     },
     end: {
-      badge: 'Avant de conclure',
-      title: 'Une dernière mot ?',
-      subtitle: "Mêmes questions qu'au départ, pour voir ce qui a changé. Toujours 30 secondes."
+      badge: 'Avant de partir',
+      title: 'Un dernier mot',
+      subtitle:
+        "Les mêmes questions qu'au départ, plus deux autres, pour voir ce qui a changé. Toujours 30 secondes."
     },
-    firstQuestion: 'Je vois clairement le lien entre {discipline} et la transition écologique',
+    firstQuestion:
+      'Je vois clairement le lien entre ma discipline ({discipline}) et la transition écologique',
     secondQuestion: "Je me sens capable d'intégrer ce sujet dans mon enseignement",
     willUse: 'Comptez-vous utiliser ce que vous venez de voir dans un prochain cours ?',
-    feedback: 'Une remarque à nous partager ?'
+    feedback: 'Une remarque à partager avec nous ?'
   },
   previous: 'Précédent',
   previous_page: 'Page précédente',
@@ -476,11 +478,11 @@ export const fr = {
   edit: 'Modifier',
   save: 'Enregistrer',
   finish: 'Terminer',
-  skip: 'passer cette étape',
+  skip: 'Passer cette étape',
   yes: 'Oui',
   maybe: 'Peut-être',
   notForNow: "Pas pour l'instant",
-  typeHere: 'Écrivez ici',
+  typeHere: 'Écrivez votre réponse ici',
   courseInformation: 'Informations sur le cours',
   inputMode: 'Mode de saisie',
   inputFile: 'Ajouter un fichier',
