@@ -3013,12 +3013,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Identify stakeholders and local dynamics',
-            'Analyze spatial dynamics',
-            'Work across different time and spatial scales',
-            'Build a case for a project',
-            'Use digital and mapping tools',
-            'Understand global issues and how they play out locally'
+            'Identifying stakeholders and local dynamics',
+            'Analyzing spatial dynamics',
+            'Working across different time and spatial scales',
+            'Building a case for a project',
+            'Using digital and mapping tools',
+            'Understanding global issues and how they play out locally'
           ]
         },
         {
@@ -3168,12 +3168,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Describe how environment and health interact',
-            'Analyze the ecological and social determinants of health',
-            'Understand environmental and health justice issues',
-            'Drive change in the health sector',
-            'Make recommendations on risk prevention',
-            'Contribute to public education and awareness'
+            'Describing how environment and health interact',
+            'Analyzing the ecological and social determinants of health',
+            'Understanding environmental and health justice issues',
+            'Driving change in the health sector',
+            'Making recommendations on risk prevention',
+            'Contributing to public education and awareness'
           ]
         },
         {
@@ -3324,12 +3324,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Define sustainability indicators for sporting events',
-            'Organize fair, responsible, low-impact sporting events',
-            'Design an optimized, sustainable nutrition plan',
-            'Explain how climate risks affect performance',
-            'Connect urban planning, mobility, and sport',
-            'Carry out integrated local assessments'
+            'Defining sustainability indicators for sporting events',
+            'Organizing fair, responsible, low-impact sporting events',
+            'Designing an optimized, sustainable nutrition plan',
+            'Explaining how climate risks affect performance',
+            'Connecting urban planning, mobility, and sport',
+            'Carrying out integrated local assessments'
           ]
         },
         {
@@ -3480,12 +3480,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Analyze a literary work or a speech',
-            'Write an essay or commentary set against sustainability issues',
-            'Write a comparative analysis of texts',
-            'Experiment with creative writing about the living world',
-            'Create new stories that can drive social change',
-            'Spot opportunities for interdisciplinary collaboration'
+            'Analyzing a literary work or a speech',
+            'Writing an essay or commentary set against sustainability issues',
+            'Writing a comparative analysis of texts',
+            'Experimenting with creative writing about the living world',
+            'Creating new stories that can drive social change',
+            'Spotting opportunities for interdisciplinary collaboration'
           ]
         },
         {
@@ -3635,12 +3635,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Explain what drives genetic and species diversity',
-            'Understand population and community ecology',
-            'Understand ecosystem services and nature-based solutions',
-            'Anticipate the consequences of biodiversity loss',
-            'Link ecology with other disciplines to describe social-ecological systems',
-            'Identify the most reliable sources of ecological information'
+            'Explaining what drives genetic and species diversity',
+            'Understanding population and community ecology',
+            'Understanding ecosystem services and nature-based solutions',
+            'Anticipating the consequences of biodiversity loss',
+            'Linking ecology with other disciplines to describe social-ecological systems',
+            'Identifying the most reliable sources of ecological information'
           ]
         },
         {
@@ -3790,12 +3790,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Represent the complexity of ecological issues',
-            'Imagine new ways of seeing and representing the world',
-            'Lead collective art projects that build engagement',
-            'Contribute to ecological awareness initiatives through the arts',
-            'Turn complex issues into sensory, accessible forms',
-            'Use art to rally people and share knowledge'
+            'Representing the complexity of ecological issues',
+            'Imagining new ways of seeing and representing the world',
+            'Leading collective art projects that build engagement',
+            'Contributing to ecological awareness initiatives through the arts',
+            'Turning complex issues into sensory, accessible forms',
+            'Using art to rally people and share knowledge'
           ]
         },
         {
@@ -3946,12 +3946,12 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Identify stakeholders in multi-level governance',
-            'Analyze power relations between political, economic, and social stakeholders',
-            'Understand how international negotiations work (COP, SDGs)',
-            'Connect environmental justice, social justice, and development',
-            'Study transitions through a Global North–South lens',
-            'Analyze sustainability policy instruments'
+            'Identifying stakeholders in multi-level governance',
+            'Analyzing power relations between political, economic, and social stakeholders',
+            'Understanding how international negotiations work (COP, SDGs)',
+            'Connecting environmental justice, social justice, and development',
+            'Studying transitions through a Global North–South lens',
+            'Analyzing sustainability policy instruments'
           ]
         },
         {
