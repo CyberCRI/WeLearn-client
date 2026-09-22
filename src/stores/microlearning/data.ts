@@ -2962,22 +2962,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Locate and map',
+              verb: 'Locating and mapping',
               text: 'You teach students to read spatial dynamics, which is exactly what it takes to map climate vulnerabilities, pollution flows, and environmental inequalities at different scales.',
               color: 'ct'
             },
             {
-              verb: 'Understand places',
+              verb: 'Understanding places',
               text: 'Geography examines how societies and their environments interact: how a coastal city adapts to rising sea levels, for example, or how a rural area manages the energy transition.',
               color: 'cp'
             },
             {
-              verb: 'Decode policies',
+              verb: 'Decoding policies',
               text: 'You teach students to analyze stakeholders and public decisions. The transition to sustainability demands exactly that: knowing who decides, at what level, and with what effects on local areas.',
               color: 'ck'
             },
             {
-              verb: 'Examine inequalities',
+              verb: 'Examining inequalities',
               text: 'Geography explores social and spatial inequalities, and the ecological crisis deepens them. Who is most vulnerable? Who has access to resources? Who bears the brunt of climate change?',
               color: 'cy'
             }
@@ -3026,7 +3026,7 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Locate and map',
+              label: 'Locating and mapping',
               color: 'ct',
               acts: [
                 {
@@ -3034,41 +3034,41 @@ export const DATA: DataByLang = {
                   desc: 'Students build a map of high-risk zones (flooding, drought, heatwaves) at the local or regional scale by combining climate and social data.'
                 },
                 {
-                  title: 'Compare ecological footprints across countries',
+                  title: 'Comparing ecological footprints across countries',
                   desc: 'Students compare national ecological footprints: who consumes the most, and who suffers the most? They then link the data to inequalities in development.'
                 }
               ]
             },
             {
-              label: 'Understand places',
+              label: 'Understanding places',
               color: 'cp',
               acts: [
                 {
-                  title: 'Study an eco-district or transition town project',
+                  title: 'Studying an eco-district or transition town project',
                   desc: 'Students analyze a real sustainable urban project (for example, the Confluence district in Lyon or Bottière-Chénaie in Nantes): its stakeholders, challenges, compromises, and limits.'
                 },
                 {
-                  title: 'Analyze how shrinking snow cover affects mountain tourism',
+                  title: 'Analyzing how shrinking snow cover affects mountain tourism',
                   desc: 'Students study a mountain area (the Alps, the Pyrenees) facing declining snowfall. How is the local economy diversifying? Where is there resistance? Who are the stakeholders?'
                 }
               ]
             },
             {
-              label: 'Decode policies',
+              label: 'Decoding policies',
               color: 'ck',
               acts: [
                 {
-                  title: 'Run a mock climate summit (COP) on a local resource',
+                  title: 'Running a mock climate summit (COP) on a local resource',
                   desc: 'Students play different stakeholders (national government, local authorities, NGOs, businesses, citizens) negotiating the sustainable management of a shared resource: water, forests, or coastline.'
                 },
                 {
-                  title: 'Analyze a sustainable land-use policy',
+                  title: 'Analyzing a sustainable land-use policy',
                   desc: 'Students examine a local land-use plan or regional planning framework through a sustainability lens. What are its goals? Where are the contradictions?'
                 }
               ]
             },
             {
-              label: 'Examine inequalities',
+              label: 'Examining inequalities',
               color: 'cy',
               acts: [
                 {
@@ -3117,22 +3117,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Identify risks',
+              verb: 'Identifying risks',
               text: 'You teach students to assess how environmental exposures affect health: excess deaths during heatwaves, for example, or respiratory diseases linked to air pollution.',
               color: 'ct'
             },
             {
-              verb: 'Analyze policies',
+              verb: 'Analyzing policies',
               text: 'Health sciences help measure the co-benefits of climate policy: eating less meat, for instance, improves health and cuts emissions. Your students learn to think in systems.',
               color: 'cp'
             },
             {
-              verb: 'Strengthen resilience',
+              verb: 'Strengthening resilience',
               text: 'Moving from treatment to prevention is one of the great challenges of environmental health, and a mindset students can build from the very start of their training.',
               color: 'ck'
             },
             {
-              verb: 'Reduce the footprint',
+              verb: 'Reducing the footprint',
               text: 'Healthcare itself is a source of emissions. Your students can design more sustainable medical practices: recycling reagents, eco-designing care, and improving energy efficiency.',
               color: 'cy'
             }
@@ -3181,7 +3181,7 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Identify risks',
+              label: 'Identifying risks',
               color: 'ct',
               acts: [
                 {
@@ -3189,17 +3189,17 @@ export const DATA: DataByLang = {
                   desc: 'Students analyze data from a real heatwave (deaths, hospital admissions, vulnerable groups) and identify health responses and ways to prevent harm.'
                 },
                 {
-                  title: 'Analyze an air pollution episode',
+                  title: 'Analyzing an air pollution episode',
                   desc: "Using real data (from the WHO or Airparif, the Paris region's air quality monitor), students assess the health effects of a pollution spike and how exposure varies across neighborhoods and populations."
                 }
               ]
             },
             {
-              label: 'Analyze policies',
+              label: 'Analyzing policies',
               color: 'cp',
               acts: [
                 {
-                  title: 'Assess the co-benefits of a climate policy',
+                  title: 'Assessing the co-benefits of a climate policy',
                   desc: 'Students analyze a sustainability policy (active mobility, lower meat consumption, urban greening) in terms of its health benefits and risks.'
                 },
                 {
@@ -3209,7 +3209,7 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Strengthen resilience',
+              label: 'Strengthening resilience',
               color: 'ck',
               acts: [
                 {
@@ -3223,11 +3223,11 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Reduce the footprint',
+              label: 'Reducing the footprint',
               color: 'cy',
               acts: [
                 {
-                  title: 'Design more sustainable medical practices',
+                  title: 'Designing more sustainable medical practices',
                   desc: 'Students come up with ways to reduce the environmental footprint of a hospital unit: recycling, energy efficiency, responsible purchasing, and eco-designed medical equipment.'
                 },
                 {
@@ -3273,22 +3273,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Understand climate impacts',
+              verb: 'Understanding climate impacts',
               text: 'Physical activity and sport depend heavily on environmental conditions. Your students learn how the body adapts to extreme heat, pollution, and extreme weather.',
               color: 'ct'
             },
             {
-              verb: 'Build resilience',
+              verb: 'Building resilience',
               text: "Better fitness can help people cope with some environmental stresses. Your students learn to design programs suited to today's climate conditions.",
               color: 'cp'
             },
             {
-              verb: 'Reduce the footprint',
+              verb: 'Reducing the footprint',
               text: 'Sport relies heavily on infrastructure, equipment, and travel. Your students can learn to design more sustainable and responsible ways of practicing sport.',
               color: 'ck'
             },
             {
-              verb: 'Educate for global health',
+              verb: 'Educating for global health',
               text: 'Sports science promotes respect, cooperation, and commitment. It offers a way to explore the links between human health and environmental health through a sustainability lens.',
               color: 'cy'
             }
@@ -3337,11 +3337,11 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Understand climate impacts',
+              label: 'Understanding climate impacts',
               color: 'ct',
               acts: [
                 {
-                  title: 'Analyze how heat affects sports performance',
+                  title: 'Analyzing how heat affects sports performance',
                   desc: "Students study real physiological data on heat adaptation and design training protocols suited to today's climate conditions."
                 },
                 {
@@ -3351,21 +3351,21 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Build resilience',
+              label: 'Building resilience',
               color: 'cp',
               acts: [
                 {
-                  title: 'Design a PE program adapted to climate conditions',
+                  title: 'Designing a PE program adapted to climate conditions',
                   desc: 'Students design a PE unit around a real environmental constraint (a heatwave, poor air quality), with learning objectives, adaptations, and monitoring indicators.'
                 },
                 {
-                  title: 'Analyze the health and climate co-benefits of active mobility',
+                  title: 'Analyzing the health and climate co-benefits of active mobility',
                   desc: 'Students calculate and compare the health effects and CO₂ emissions of different ways of getting to a sports facility. A hands-on exercise in systems analysis.'
                 }
               ]
             },
             {
-              label: 'Reduce the footprint',
+              label: 'Reducing the footprint',
               color: 'ck',
               acts: [
                 {
@@ -3373,13 +3373,13 @@ export const DATA: DataByLang = {
                   desc: 'Using official reports and real data, students assess the environmental footprint of the Olympic Games and propose indicators and ways to reduce it.'
                 },
                 {
-                  title: 'Design a low-impact sporting event',
+                  title: 'Designing a low-impact sporting event',
                   desc: 'Students plan a sporting event built around sustainability criteria (transportation, food, waste, accessibility) and define their own sustainability indicators.'
                 }
               ]
             },
             {
-              label: 'Educate for global health',
+              label: 'Educating for global health',
               color: 'cy',
               acts: [
                 {
@@ -3387,7 +3387,7 @@ export const DATA: DataByLang = {
                   desc: '“Is the pursuit of sports performance compatible with planetary boundaries?” Students argue different positions using economic, health, and environmental data.'
                 },
                 {
-                  title: 'Run an awareness campaign at a sports club',
+                  title: 'Running an awareness campaign at a sports club',
                   desc: 'Students design and run an awareness campaign on sustainability issues at a local sports club or association.'
                 }
               ]
@@ -3429,22 +3429,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Analyze worldviews',
+              verb: 'Analyzing worldviews',
               text: 'You teach students to read texts and discourse, which is exactly what it takes to understand the worldviews that led to the overexploitation of the planet, and to imagine other ways of living on Earth.',
               color: 'ct'
             },
             {
-              verb: 'Make sense of the crisis',
+              verb: 'Making sense of the crisis',
               text: 'The ecological crisis is hard to put into words. Literature helps us find ways to name, think about, and symbolize ecological upheaval, and to see through greenwashing.',
               color: 'cp'
             },
             {
-              verb: 'Imagine futures',
+              verb: 'Imagining futures',
               text: 'Through fiction, poetry, theater, and climate science fiction, literature helps us think about social change and craft new shared stories about how we live alongside other living things.',
               color: 'ck'
             },
             {
-              verb: 'Foster critical citizens',
+              verb: 'Fostering critical citizens',
               text: 'Your students learn to analyze how advertising, the media, and politicians talk about ecology, and to form their own informed views on these issues.',
               color: 'cy'
             }
@@ -3493,21 +3493,21 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Analyze worldviews',
+              label: 'Analyzing worldviews',
               color: 'ct',
               acts: [
                 {
-                  title: 'Analyze a body of literature about nature',
+                  title: 'Analyzing a body of literature about nature',
                   desc: 'Students study excerpts ranging from naturalist writing to climate fiction to trace how ideas of progress, the living world, and the planet have changed.'
                 },
                 {
-                  title: 'Decode how we talk about ecology',
+                  title: 'Decoding how we talk about ecology',
                   desc: 'Using examples from advertising, politics, and the media, students identify rhetorical strategies around sustainability, including greenwashing.'
                 }
               ]
             },
             {
-              label: 'Make sense of the crisis',
+              label: 'Making sense of the crisis',
               color: 'cp',
               acts: [
                 {
@@ -3515,13 +3515,13 @@ export const DATA: DataByLang = {
                   desc: 'Students rewrite an excerpt from a literary classic to add a contemporary ecological dimension. This stylistic exercise also questions the cultural assumptions of the original.'
                 },
                 {
-                  title: 'Explore ecopoetics in contemporary literature',
+                  title: 'Exploring ecopoetics in contemporary literature',
                   desc: 'Students study writers of ecological literature (Thoreau, Le Clézio, Tesson, Giono). How do language and style convey a relationship with nature? What new literary genres are emerging?'
                 }
               ]
             },
             {
-              label: 'Imagine futures',
+              label: 'Imagining futures',
               color: 'ck',
               acts: [
                 {
@@ -3535,11 +3535,11 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Foster critical citizens',
+              label: 'Fostering critical citizens',
               color: 'cy',
               acts: [
                 {
-                  title: 'Analyze a political speech on ecology',
+                  title: 'Analyzing a political speech on ecology',
                   desc: 'Students take apart a recent political speech on sustainability. What figures of speech, unstated assumptions, and framing does it use? A rhetorical and civic analysis.'
                 },
                 {
@@ -3584,22 +3584,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Describe and understand',
+              verb: 'Describing and understanding',
               text: 'Ecology studies how living organisms interact with their environment. You teach students how ecosystems are structured and how they function, whether heavily or only lightly shaped by human activity.',
               color: 'ct'
             },
             {
-              verb: 'Assess and predict',
+              verb: 'Assessing and predicting',
               text: 'Your students learn to assess how resilient or vulnerable environments are to human pressure, identify tipping points, and model how ecosystems change.',
               color: 'cp'
             },
             {
-              verb: 'Propose solutions',
+              verb: 'Proposing solutions',
               text: 'Ecology offers levers for change: agroecology, urban ecology, nature-based solutions, biomimicry. Your students learn to design concrete action plans.',
               color: 'ck'
             },
             {
-              verb: 'Inform decisions',
+              verb: 'Informing decisions',
               text: 'Ecological knowledge is essential to sound public policy. Your students learn to explain complex scientific data to decision-makers and non-specialists.',
               color: 'cy'
             }
@@ -3648,7 +3648,7 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Describe and understand',
+              label: 'Describing and understanding',
               color: 'ct',
               acts: [
                 {
@@ -3656,41 +3656,41 @@ export const DATA: DataByLang = {
                   desc: 'Students carry out an ecological assessment of a local site (a river, forest, soil, or grassland) using the observation and measurement methods covered in class.'
                 },
                 {
-                  title: 'Build a biodiversity atlas',
+                  title: 'Building a biodiversity atlas',
                   desc: 'Students survey biodiversity across their campus or neighborhood, map the species they observe, and analyze what influences their presence.'
                 }
               ]
             },
             {
-              label: 'Assess and predict',
+              label: 'Assessing and predicting',
               color: 'cp',
               acts: [
                 {
-                  title: 'Model the effects of a disturbance on an ecosystem',
+                  title: 'Modeling the effects of a disturbance on an ecosystem',
                   desc: 'Starting from a real-world scenario (road construction, river pollution, an invasive species), students model the cascading effects on the ecosystem.'
                 },
                 {
-                  title: 'Compare farming practices by their ecosystem benefits',
+                  title: 'Comparing farming practices by their ecosystem benefits',
                   desc: 'Students compare conventional farming and agroecology on criteria such as biodiversity, soil quality, and ecosystem services. A multi-criteria analysis.'
                 }
               ]
             },
             {
-              label: 'Propose solutions',
+              label: 'Proposing solutions',
               color: 'ck',
               acts: [
                 {
-                  title: 'Draft an action plan for a local area',
+                  title: 'Drafting an action plan for a local area',
                   desc: 'For an area under heavy pressure (urban sprawl, pollution, drought), students define an action plan and spell out the trade-offs involved.'
                 },
                 {
-                  title: 'Design a nature-based solution',
+                  title: 'Designing a nature-based solution',
                   desc: 'Students identify a local environmental problem (urban heat island, stormwater runoff, pollinator decline) and design a solution inspired by how ecosystems work.'
                 }
               ]
             },
             {
-              label: 'Inform decisions',
+              label: 'Informing decisions',
               color: 'cy',
               acts: [
                 {
@@ -3698,7 +3698,7 @@ export const DATA: DataByLang = {
                   desc: 'In a role-play, students use scientific data to debate how to manage a contested area or issue (wolf reintroduction, loss of open land to development, wetland management).'
                 },
                 {
-                  title: 'Analyze how a sector plan accounts for biodiversity',
+                  title: 'Analyzing how a sector plan accounts for biodiversity',
                   desc: 'Students analyze how biodiversity is (or is not) built into a real agricultural, energy, or urban planning scenario, and suggest improvements.'
                 }
               ]
@@ -3739,22 +3739,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Shift perspectives',
+              verb: 'Shifting perspectives',
               text: 'Art stirs emotions and helps us feel more deeply the beauty and fragility of nature, or the violence of environmental change. Your students learn to build ecological awareness through aesthetic experience.',
               color: 'ct'
             },
             {
-              verb: 'Create new stories',
+              verb: 'Creating new stories',
               text: 'Art invents stories, images, and symbols that inspire action and open up new possibilities. Your students learn to create works that reshape how we collectively imagine the world.',
               color: 'cp'
             },
             {
-              verb: 'Try new approaches',
+              verb: 'Trying new approaches',
               text: 'Art explores other ways of inhabiting a place, reusing materials, and working with living things. Your students can rethink their relationship with objects, waste, and technology.',
               color: 'ck'
             },
             {
-              verb: 'Encourage participation',
+              verb: 'Encouraging participation',
               text: 'Art brings people together and sparks reactions through collective projects such as murals, performances, and installations. Your students learn to create tools that rally people and open up dialogue around sustainability.',
               color: 'cy'
             }
@@ -3803,11 +3803,11 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Shift perspectives',
+              label: 'Shifting perspectives',
               color: 'ct',
               acts: [
                 {
-                  title: 'Analyze ecological artworks (eco-art, land art)',
+                  title: 'Analyzing ecological artworks (eco-art, land art)',
                   desc: 'Students analyze works by artists engaged with ecological issues (Andy Goldsworthy, Agnes Denes, Olafur Eliasson). How does each work challenge our relationship with nature?'
                 },
                 {
@@ -3817,11 +3817,11 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Create new stories',
+              label: 'Creating new stories',
               color: 'cp',
               acts: [
                 {
-                  title: 'Create comic pages about sustainability',
+                  title: 'Creating comic pages about sustainability',
                   desc: 'In multidisciplinary groups, students create comic pages as teaching materials on a sustainability issue, combining visual storytelling with scientific knowledge.'
                 },
                 {
@@ -3831,7 +3831,7 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Try new approaches',
+              label: 'Trying new approaches',
               color: 'ck',
               acts: [
                 {
@@ -3845,7 +3845,7 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Encourage participation',
+              label: 'Encouraging participation',
               color: 'cy',
               acts: [
                 {
@@ -3895,22 +3895,22 @@ export const DATA: DataByLang = {
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
-              verb: 'Understand governance',
+              verb: 'Understanding governance',
               text: 'Who decides, at what level, and how? You teach students to identify the levels of governance (local, national, international) and the stakeholders involved in sustainability decisions.',
               color: 'ct'
             },
             {
-              verb: 'Analyze power relations',
+              verb: 'Analyzing power relations',
               text: 'The transition to sustainability exposes conflicts of interest between economic, political, and social stakeholders. Your students learn to unpack the trade-offs around natural resources and environmental justice.',
               color: 'cp'
             },
             {
-              verb: 'Evaluate public policy',
+              verb: 'Evaluating public policy',
               text: 'Designing, evaluating, and comparing sustainability policies means asking which instruments to use (taxes, regulations, subsidies) and what works or fails in a given context. This is at the heart of your discipline.',
               color: 'ck'
             },
             {
-              verb: 'Analyze ecological democracy',
+              verb: 'Analyzing ecological democracy',
               text: 'Your students learn to distinguish and analyze the forms of democracy at play in the transition, such as participatory and deliberative democracy, and to understand the role of citizen movements and new forms of shared governance.',
               color: 'cy'
             }
@@ -3959,21 +3959,21 @@ export const DATA: DataByLang = {
           intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
-              label: 'Understand governance',
+              label: 'Understanding governance',
               color: 'ct',
               acts: [
                 {
-                  title: 'Simulate an international climate negotiation (COP)',
+                  title: 'Simulating an international climate negotiation (COP)',
                   desc: 'Students represent different countries in a climate negotiation. They experience the pull between cooperation and conflict firsthand and negotiate commitments based on their national interests.'
                 },
                 {
-                  title: 'Analyze the multi-level governance of a climate policy',
+                  title: 'Analyzing the multi-level governance of a climate policy',
                   desc: "Students examine how a climate policy (for example, France's Climate and Resilience Law) links European, national, and local levels, and identify the stakeholders, tensions, and room for maneuver."
                 }
               ]
             },
             {
-              label: 'Analyze power relations',
+              label: 'Analyzing power relations',
               color: 'cp',
               acts: [
                 {
@@ -3987,21 +3987,21 @@ export const DATA: DataByLang = {
               ]
             },
             {
-              label: 'Evaluate public policy',
+              label: 'Evaluating public policy',
               color: 'ck',
               acts: [
                 {
-                  title: 'Evaluate the effectiveness of a carbon tax',
+                  title: 'Evaluating the effectiveness of a carbon tax',
                   desc: "Using real cases (Sweden's carbon tax, the EU carbon market), students analyze what makes an economic sustainability instrument succeed or fail."
                 },
                 {
-                  title: 'Compare the same sustainability policy in two countries',
+                  title: 'Comparing the same sustainability policy in two countries',
                   desc: 'Students compare the same sustainability policy (building renovation, transportation, energy) in two countries: contexts, instruments, results, and lessons learned.'
                 }
               ]
             },
             {
-              label: 'Analyze ecological democracy',
+              label: 'Analyzing ecological democracy',
               color: 'cy',
               acts: [
                 {

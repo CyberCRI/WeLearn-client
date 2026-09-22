@@ -16,11 +16,11 @@ export const microLearning = {
     psychology: 'Psychology',
     geography: 'Geography',
     health: 'Health',
-    staps: 'Sports Science',
+    staps: 'Sports science',
     letters: 'Humanities',
     ecology: 'Ecology',
     art: 'Arts',
-    polsci: 'Political Science'
+    polsci: 'Political science'
   },
   briefingScreen: {
     title: 'Your learning journey is ready',
