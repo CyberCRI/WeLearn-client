@@ -16,12 +16,12 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Modéliser',
-              text: "Simuler l'évolution du climat ou prédire la dynamique des écosystèmes, ce sont des modèles mathématiques. Vous apprenez à vos étudiants à construire ce type de raisonnement. Par exemple, modéliser comment une ville évolue face à la hausse des températures et au risque d'inondation.",
+              text: "Simuler l'évolution du climat ou prédire la dynamique des écosystèmes repose sur des modèles mathématiques. Vous apprenez à vos étudiants à construire ce type de raisonnement. Par exemple, modéliser comment une ville évolue face à la hausse des températures et au risque d'inondation.",
               color: 'cp'
             },
             {
               verb: 'Optimiser',
-              text: "Optimiser les ressources et l'énergie est au cœur de la transition. Vous enseignez les outils pour résoudre ces problèmes. Par exemple, calculer comment distribuer l'électricité sur un smart grid pour minimiser les pertes.",
+              text: "Optimiser les ressources et l'énergie est au cœur de la transition. Vous enseignez les outils pour résoudre ces problèmes. Par exemple, calculer comment distribuer l'électricité sur un réseau électrique intelligent (smart grid) pour minimiser les pertes.",
               color: 'ck'
             },
             {
@@ -31,7 +31,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            "Ces contributions sont déjà intégrées dans votre discipline. Vous n'avez pas besoin d'ajouter de nouveaux contenus : il s'agit de rendre la connexion visible pour vos étudiants."
+            "Ces apports sont déjà intégrés dans votre discipline. Vous n'avez pas besoin d'ajouter de nouveaux contenus : il s'agit de rendre la connexion visible pour vos étudiants."
         },
         // STEP 2: COMPETENCES
         {
@@ -51,7 +51,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                "En croisant mathématiques et climatologie, vos étudiants comprennent pourquoi les marges d'incertitude du GIEC sont exprimées en probabilités et comment différentes disciplines collaborent pour produire une connaissance."
+                "En croisant mathématiques et climatologie, vos étudiants comprennent pourquoi les marges d'incertitude du GIEC sont exprimées en probabilités et comment différentes disciplines collaborent pour produire des connaissances."
             },
             {
               name: 'Responsabilité et éthique',
@@ -115,7 +115,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: "Calculer l'efficacité d'un système de transport durable",
-                  desc: "Comparer mathematiquement deux systèmes de transport (voiture individuelle vs transport en commun) sur des critères d'énergie, de temps et d'émissions. Un problème d'optimisation multi-critères."
+                  desc: "Comparer mathématiquement deux systèmes de transport (voiture individuelle ou transports en commun) selon des critères d'énergie, de temps et d'émissions. Un problème d'optimisation multicritère."
                 }
               ]
             },
@@ -129,7 +129,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Construire un indicateur de durabilité',
-                  desc: "Les étudiants conçoivent un indice simple pour évaluer la durabilité d'un territoire, en choisissant leurs variables et en justifiant leurs pondérations. Introduit la complexité des choix derrière tout indicateur."
+                  desc: "Les étudiants conçoivent un indice simple pour évaluer la durabilité d'un territoire, en choisissant leurs variables et en justifiant leurs pondérations. Ils découvrent ainsi la complexité des choix derrière tout indicateur."
                 }
               ]
             }
@@ -144,7 +144,7 @@ export const DATA: DataByLang = {
           sub: "Vous venez de découvrir comment les mathématiques s'inscrivent dans la transition écologique. Prenez un moment pour faire le lien avec votre propre cours.",
           prompts: [
             {
-              q: 'Quel concept enseignez-vous qui pourrait être connecté à la TEDS ?',
+              q: 'Quel concept que vous enseignez pourrait être relié à la transition écologique et au développement soutenable (TEDS) ?',
               placeholder:
                 "Ex : les fonctions exponentielles, les probabilités, l'analyse de données..."
             },
@@ -181,7 +181,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Éclairer',
-              text: 'Elle extrait des expériences passées des leçons pour guider les politiques actuelles.',
+              text: 'Elle tire des leçons des expériences passées pour guider les politiques actuelles.',
               color: 'ck'
             },
             {
@@ -225,7 +225,7 @@ export const DATA: DataByLang = {
             'Analyser des transformations socio-environnementales',
             "Délimiter des événements dans le temps et l'espace",
             'Comparer différentes périodes historiques',
-            'Capacité à proposer des solutions'
+            'Proposer des solutions'
           ]
         },
         {
@@ -238,7 +238,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Analyser des archives industrielles',
-                  desc: 'Les étudiants étudient des archives sur la révolution industrielle et ses impacts environnementaux à travers un prisme écologique.'
+                  desc: "Les étudiants examinent des archives de la révolution industrielle sous l'angle de ses impacts environnementaux."
                 },
                 {
                   title: 'Étudier une catastrophe écologique',
@@ -252,7 +252,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Étude de cas comparative',
-                  desc: 'Comparer deux sociétés face à la gestion de leurs ressources : Rome antique et la surexploitation agricole vs une société ayant réussi sa transition.'
+                  desc: 'Comparer la gestion des ressources dans deux sociétés : la Rome antique, confrontée à la surexploitation agricole, et une société ayant réussi sa transition.'
                 },
                 {
                   title: 'Débat historique',
@@ -270,7 +270,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Atelier prospectif',
-                  desc: "Rédiger un court récit de prospective en se basant sur des tendances historiques identifiées. Comprendre l'importance des récits collectifs."
+                  desc: "Rédiger un court récit prospectif à partir de tendances historiques identifiées, pour comprendre l'importance des récits collectifs."
                 }
               ]
             },
@@ -284,7 +284,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: "Analyser un ODD à travers l'histoire",
-                  desc: "Choisir un Objectif de Développement Durable et retracer ses racines historiques. Exercice d'introduction historique aux ODD."
+                  desc: 'Choisir un objectif de développement durable (ODD) et retracer ses racines historiques. Une introduction historique aux ODD.'
                 }
               ]
             }
@@ -375,7 +375,7 @@ export const DATA: DataByLang = {
           ],
           also: [
             'Analyse critique des modèles économiques',
-            'Évaluer les coûts sur le cycle de vie',
+            'Évaluer les coûts sur tout le cycle de vie',
             'Justice climatique et inégalités',
             'Modéliser les impacts de politiques publiques',
             'Évaluer les stratégies alternatives de régulation'
@@ -391,7 +391,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: "Calculer le coût de l'inaction climatique",
-                  desc: "Les étudiants utilisent les données du rapport Stern pour estimer le coût économique de l'inaction climatique versus le coût des politiques d'atténuation."
+                  desc: "Les étudiants utilisent les données du rapport Stern pour estimer le coût économique de l'inaction climatique et le comparer à celui des politiques d'atténuation."
                 },
                 {
                   title: "Analyser les externalités d'une industrie",
@@ -405,11 +405,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Débat sur la taxe carbone',
-                  desc: '"À quelles conditions une taxe carbone peut-elle être un outil juste et efficace ?" Les étudiants argumentent des positions en utilisant des données économiques et des critères d\'équité.'
+                  desc: '"À quelles conditions une taxe carbone peut-elle être un outil juste et efficace ?" Les étudiants défendent des positions en s\'appuyant sur des données économiques et des critères d\'équité.'
                 },
                 {
                   title: "Simulation d'une négociation climatique (COP)",
-                  desc: "Les étudiants représentent différents pays dans une négociation climatique, appliquant les concepts de biens publics, d'externalités et de compromis entre développement et atténuation."
+                  desc: "Les étudiants représentent différents pays dans une négociation climatique, en appliquant les concepts de biens publics, d'externalités et de compromis entre développement et atténuation."
                 }
               ]
             },
@@ -419,7 +419,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Modéliser une économie circulaire',
-                  desc: 'À partir des conditions mathématiques de François Grosse (taux de recyclage, taux de croissance), les étudiants testent dans quelles conditions une économie peut être réellement circulaire.'
+                  desc: 'À partir des conditions mathématiques de François Grosse (taux de recyclage, taux de croissance), les étudiants vérifient à quelles conditions une économie peut être réellement circulaire.'
                 },
                 {
                   title: 'Construire une trajectoire de neutralité carbone',
@@ -455,9 +455,9 @@ export const DATA: DataByLang = {
               placeholder: "Ex : les externalités, les biens publics, l'analyse coûts-bénéfices..."
             },
             {
-              q: 'Comment imaginez-vous enrichir un de vos cours existants avec une dimension TEDS ?',
+              q: "Comment imaginez-vous enrichir l'un de vos cours existants d'une dimension liée à la transition écologique et au développement soutenable ?",
               placeholder:
-                'Ex : remplacer un exemple générique par un cas de politique environnementale réelle...'
+                'Ex : remplacer un exemple générique par un cas réel de politique environnementale...'
             }
           ],
           resource: {
@@ -487,7 +487,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Responsabiliser',
-              text: "Il gère les litiges, sanctionne les atteintes à l'environnement et établit les régimes de responsabilité écologique.",
+              text: "Il règle les litiges, sanctionne les atteintes à l'environnement et établit les régimes de responsabilité écologique.",
               color: 'ck'
             },
             {
@@ -516,7 +516,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                "Les étudiants identifient le droit comme outil de transformation sociale et comprennent les liens entre droit de l'environnement et autres domaines juridiques."
+                "Les étudiants identifient le droit comme outil de transformation sociale et comprennent les liens entre le droit de l'environnement et les autres domaines juridiques."
             },
             {
               name: 'Action collective',
@@ -544,12 +544,12 @@ export const DATA: DataByLang = {
               color: 'ct',
               acts: [
                 {
-                  title: "Analyser la Charte de l'Environnement",
-                  desc: "Les étudiants étudient la Charte constitutionnelle de l'Environnement française : quels droits et devoirs crée-t-elle ? Quelles limites ? Quelle effectivité ?"
+                  title: "Analyser la Charte de l'environnement",
+                  desc: "Les étudiants examinent la Charte de l'environnement, texte à valeur constitutionnelle : quels droits et devoirs crée-t-elle ? Quelles limites ? Quelle effectivité ?"
                 },
                 {
                   title: 'Comparer les principes environnementaux en droit européen et national',
-                  desc: 'Identifier comment les principes de précaution et de pollueur-payeur se déclinent différemment selon les niveaux de gouvernance.'
+                  desc: 'Identifier comment les principes de précaution et du pollueur-payeur se déclinent différemment selon les niveaux de gouvernance.'
                 }
               ]
             },
@@ -577,7 +577,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: "Jeu de rôle : conflits d'usage",
-                  desc: 'Les étudiants incarnent différents acteurs face à une controverse environnementale (agriculteurs, ONG, collectivité, État) pour comprendre les tensions juridiques.'
+                  desc: 'Les étudiants incarnent différents acteurs (agriculteurs, ONG, collectivité, État) face à une controverse environnementale pour comprendre les tensions juridiques.'
                 }
               ]
             },
@@ -591,7 +591,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Rédiger un projet de loi fictif',
-                  desc: 'Les étudiants rédigent un projet de loi ou des amendements sur un sujet environnemental, découvrant ainsi le processus législatif et les compromis nécessaires.'
+                  desc: 'Les étudiants rédigent un projet de loi ou des amendements sur un sujet environnemental et découvrent ainsi le processus législatif et les compromis nécessaires.'
                 }
               ]
             }
@@ -637,7 +637,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Éthiquer',
-              text: 'Elle questionne les principes éthiques qui guident les choix individuels et collectifs, et éclaire la notion de responsabilité intergénérationnelle.',
+              text: 'Elle examine les principes éthiques qui guident les choix individuels et collectifs, et éclaire la notion de responsabilité intergénérationnelle.',
               color: 'cp'
             },
             {
@@ -704,7 +704,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: "Analyser un texte sur la modernité et l'environnement",
-                  desc: "Lire et commenter un extrait de Hans Jonas, Dominique Bourg ou Bruno Latour. Les étudiants développent l'analyse de texte sur des auteurs directement pertinents."
+                  desc: "Lire et commenter un extrait de Hans Jonas, Dominique Bourg ou Bruno Latour. Les étudiants s'exercent à l'analyse de texte avec des auteurs au cœur de ces enjeux."
                 }
               ]
             },
@@ -718,7 +718,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Élaborer une charte éthique',
-                  desc: "En groupes, les étudiants rédigent une charte éthique pour une institution (université, entreprise, ville) face à un défi écologique précis. Teste l'éthique appliquée."
+                  desc: "En groupes, les étudiants rédigent une charte éthique pour une institution (université, entreprise, ville) face à un défi écologique précis. Un exercice d'éthique appliquée."
                 }
               ]
             },
@@ -727,12 +727,12 @@ export const DATA: DataByLang = {
               color: 'ck',
               acts: [
                 {
-                  title: 'Étude du véganism comme cas philosophique',
-                  desc: 'Aborder le véganism non comme un choix de vie mais comme un test case philosophique : quels cadres éthiques remet-il en question ? Quels fondements moraux révèle-t-il ?'
+                  title: 'Étudier le véganisme comme cas philosophique',
+                  desc: "Aborder le véganisme non comme un choix de vie, mais comme un cas d'école philosophique : quels cadres éthiques remet-il en question ? Quels fondements moraux révèle-t-il ?"
                 },
                 {
                   title: 'Critiquer le dualisme nature/culture',
-                  desc: 'À partir de textes de Latour ou Descola, les étudiants déconstruisent la séparation nature/culture et explorent ses implications pour la crise écologique.'
+                  desc: 'À partir de textes de Latour ou de Descola, les étudiants déconstruisent la séparation nature/culture et explorent ses implications pour la crise écologique.'
                 }
               ]
             },
@@ -765,7 +765,7 @@ export const DATA: DataByLang = {
                 'Ex : la responsabilité, la justice, le progrès, la nature, le bien commun...'
             },
             {
-              q: 'Comment imaginez-vous introduire un exemple ou un texte lié à la TEDS dans votre prochaine séance ?',
+              q: 'Comment imaginez-vous introduire un exemple ou un texte lié à la transition écologique dans votre prochaine séance ?',
               placeholder:
                 'Ex : remplacer un exemple classique par une situation écologique contemporaine...'
             }
@@ -819,7 +819,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                "Les étudiants identifient les liens entre émotions, comportements pro-environnementaux et politiques de durabilité, comprenant la complexité des représentations liées à l'environnement."
+                "Les étudiants identifient les liens entre émotions, comportements pro-environnementaux et politiques de durabilité, et saisissent la complexité des représentations liées à l'environnement."
             },
             {
               name: 'Analyse critique',
@@ -854,7 +854,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Analyser la perception du risque climatique',
-                  desc: 'Les étudiants étudient comment différentes populations perçoivent le risque climatique à travers une perspective psychosociale, en identifiant les biais cognitifs et culturels.'
+                  desc: 'Les étudiants examinent, sous un angle psychosocial, comment différentes populations perçoivent le risque climatique, en identifiant les biais cognitifs et culturels.'
                 },
                 {
                   title: "Étude comparative de l'éco-anxiété",
@@ -868,7 +868,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: "Débat : l'éco-anxiété, pathologie ou réponse adaptée ?",
-                  desc: '"L\'éco-anxiété est-elle une pathologie à traiter ou un indicateur psychologique sain du changement climatique ?" Débat structuré avec des arguments scientifiques.'
+                  desc: '"L\'éco-anxiété est-elle une pathologie à traiter ou une réponse psychologique saine au changement climatique ?" Débat structuré avec des arguments scientifiques.'
                 },
                 {
                   title: "Analyser des mécanismes cognitifs liés à l'éco-anxiété",
@@ -882,7 +882,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Concevoir une campagne de nudges verts',
-                  desc: 'Les étudiants appliquent les théories psychologiques (normes sociales, comportement planifié) pour concevoir une campagne de sensibilisation sur le campus universitaire.'
+                  desc: 'Les étudiants appliquent les théories psychologiques (normes sociales, comportement planifié) pour concevoir une campagne de sensibilisation sur le campus.'
                 },
                 {
                   title: 'Observer et analyser des comportements écoresponsables',
@@ -914,7 +914,7 @@ export const DATA: DataByLang = {
           sub: "Vous venez de découvrir comment la psychologie s'inscrit dans la transition écologique. Faites le lien avec votre propre enseignement.",
           prompts: [
             {
-              q: "Quel concept psychologique de votre cours devient le plus vivant quand on l'applique à un comportement avec des enjeux écologiques ?",
+              q: "Quel concept psychologique de votre cours devient le plus parlant lorsqu'on l'applique à un comportement à fort enjeu écologique ?",
               placeholder:
                 'Ex : la théorie du comportement planifié, les biais cognitifs, les représentations sociales...'
             },
@@ -991,7 +991,7 @@ export const DATA: DataByLang = {
             }
           ],
           also: [
-            'Identifier des acteurs et logiques territoriales',
+            'Identifier des acteurs et des logiques territoriales',
             'Analyser des dynamiques spatiales',
             "Travailler à différentes échelles de temps et d'espace",
             "Construire une argumentation autour d'un projet",
@@ -1026,7 +1026,8 @@ export const DATA: DataByLang = {
                   desc: 'Les étudiants analysent un projet urbain durable réel (ex : quartier de la Confluence à Lyon, Bottière-Chénaie à Nantes) : acteurs, enjeux, compromis et limites.'
                 },
                 {
-                  title: 'Analyser les impacts du tourisme de montagne face au recul des neiges',
+                  title:
+                    "Analyser les impacts du tourisme de montagne face au recul de l'enneigement",
                   desc: "Étude de cas sur un territoire de montagne (Alpes, Pyrénées) confronté au recul de l'enneigement. Quelles reconversions ? Quelles résistances ? Quels acteurs ?"
                 }
               ]
@@ -1069,7 +1070,7 @@ export const DATA: DataByLang = {
           sub: "Vous venez de découvrir comment la géographie s'inscrit dans la transition écologique. Faites le lien avec votre propre enseignement.",
           prompts: [
             {
-              q: 'Quel territoire ou quelle dynamique spatiale de votre cours a la connexion la plus évidente avec la TEDS ?',
+              q: 'Quel territoire ou quelle dynamique spatiale de votre cours a le lien le plus évident avec la transition écologique ?',
               placeholder:
                 'Ex : les dynamiques urbaines, les espaces ruraux, les littoraux, les inégalités régionales...'
             },
@@ -1101,7 +1102,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Analyser les politiques',
-              text: "La santé permet d'évaluer les co-bénéfices des politiques climatiques : la baisse de la consommation de viande améliore à la fois la santé et réduit les émissions. Vos étudiants apprennent à raisonner en systèmes.",
+              text: "La santé permet d'évaluer les co-bénéfices des politiques climatiques : la baisse de la consommation de viande améliore la santé tout en réduisant les émissions. Vos étudiants apprennent à raisonner en systèmes.",
               color: 'cp'
             },
             {
@@ -1111,7 +1112,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: "Réduire l'empreinte",
-              text: 'Le secteur de la santé est lui-même un contributeur aux émissions. Vos étudiants peuvent concevoir des pratiques médicales plus sobres : recyclage des réactifs, éco-conception des soins, sobriété énergétique.',
+              text: 'Le secteur de la santé contribue lui-même aux émissions. Vos étudiants peuvent concevoir des pratiques médicales plus sobres : recyclage des réactifs, éco-conception des soins, sobriété énergétique.',
               color: 'cy'
             }
           ],
@@ -1151,7 +1152,7 @@ export const DATA: DataByLang = {
             'Comprendre les enjeux de justice environnementale et sanitaire',
             'Agir en acteur de la transition dans le champ de la santé',
             'Faire des recommandations pour la prévention des risques',
-            "Contribuer à l'éducation et la sensibilisation des citoyens"
+            "Contribuer à l'éducation et à la sensibilisation des citoyens"
           ]
         },
         {
@@ -1178,7 +1179,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: "Évaluer les co-bénéfices d'une politique climatique",
-                  desc: "Les étudiants analysent une politique de transition (mobilités douces, réduction de la consommation de viande, végétalisation urbaine) sous l'angle de ses bénéfices et risques sanitaires."
+                  desc: "Les étudiants analysent une politique de transition (mobilités douces, réduction de la consommation de viande, végétalisation urbaine) sous l'angle de ses bénéfices et de ses risques sanitaires."
                 },
                 {
                   title: 'Étudier le Plan national santé environnement',
@@ -1209,7 +1210,7 @@ export const DATA: DataByLang = {
                   desc: "Les étudiants imaginent des solutions pour réduire l'empreinte écologique d'un service de santé : recyclage, sobriété énergétique, achats responsables, éco-conception du matériel médical."
                 },
                 {
-                  title: 'Communication scientifique sur santé et transition',
+                  title: 'Communication scientifique sur la santé et la transition',
                   desc: 'En groupes, les étudiants créent une affiche, un podcast ou une vidéo pédagogique sur les liens entre un enjeu de santé et la transition écologique, destinée à un public non spécialiste.'
                 }
               ]
@@ -1252,7 +1253,7 @@ export const DATA: DataByLang = {
           cards: [
             {
               verb: 'Comprendre les effets du climat',
-              text: 'Les activités physiques et sportives dépendent fortement des conditions environnementales. Vos étudiants apprennent à comprendre les adaptations physiologiques aux fortes chaleurs, aux pollutions et aux événements climatiques extrêmes.',
+              text: 'Les activités physiques et sportives dépendent fortement des conditions environnementales. Vos étudiants apprennent à analyser les adaptations physiologiques aux fortes chaleurs, aux pollutions et aux événements climatiques extrêmes.',
               color: 'ct'
             },
             {
@@ -1262,7 +1263,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: "Atténuer l'empreinte",
-              text: 'Le secteur sportif a une forte dépendance aux infrastructures, aux équipements et aux mobilités. Vos étudiants peuvent apprendre à concevoir des pratiques sportives plus sobres et responsables.',
+              text: 'Le secteur sportif dépend fortement des infrastructures, des équipements et des mobilités. Vos étudiants peuvent apprendre à concevoir des pratiques sportives plus sobres et responsables.',
               color: 'ck'
             },
             {
@@ -1298,7 +1299,7 @@ export const DATA: DataByLang = {
               tag: 'disciplinaire',
               tagClass: 'disciplinaire',
               concrete:
-                "Les étudiants conçoivent un programme d'EPS ou d'entraînement tenant compte des aléas climatiques (canicule, qualité de l'air, inondation) et éco-responsable en ressources."
+                "Les étudiants conçoivent un programme d'EPS ou d'entraînement tenant compte des aléas climatiques (canicule, qualité de l'air, inondation) et économe en ressources."
             }
           ],
           also: [
@@ -1320,11 +1321,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Analyser les effets de la chaleur sur la performance sportive',
-                  desc: "Les étudiants étudient des données physiologiques réelles sur les adaptations à la chaleur et conçoivent des protocoles d'entraînement tenant compte des contraintes climatiques actuelles."
+                  desc: "Les étudiants examinent des données physiologiques réelles sur les adaptations à la chaleur et conçoivent des protocoles d'entraînement tenant compte des contraintes climatiques actuelles."
                 },
                 {
-                  title: 'Étude de cas : sport de montagne et recul des neiges',
-                  desc: "Analyser l'impact du changement climatique sur un sport de montagne (ski, alpinisme) : quelles adaptations des pratiques, des infrastructures, des business models ?"
+                  title: "Étude de cas : sport de montagne et recul de l'enneigement",
+                  desc: "Analyser l'impact du changement climatique sur un sport de montagne (ski, alpinisme) : quelles adaptations des pratiques, des infrastructures, des modèles économiques ?"
                 }
               ]
             },
@@ -1338,7 +1339,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Analyser les co-bénéfices santé/climat des mobilités actives',
-                  desc: "Comparer mathematiquement les effets sur la santé et les émissions de CO₂ de différents modes de transport vers un équipement sportif. Un cas concret d'analyse systémique."
+                  desc: "Quantifier et comparer les effets sur la santé et les émissions de CO₂ de différents modes de transport vers un équipement sportif. Un cas concret d'analyse systémique."
                 }
               ]
             },
@@ -1347,7 +1348,7 @@ export const DATA: DataByLang = {
               color: 'ck',
               acts: [
                 {
-                  title: 'TD Soutenabilité des Jeux Olympiques',
+                  title: 'TD : soutenabilité des Jeux olympiques',
                   desc: "À partir de rapports institutionnels et de données réelles, les étudiants évaluent l'empreinte écologique des JO et proposent des indicateurs et des leviers de réduction."
                 },
                 {
@@ -1362,7 +1363,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Débat : performance sportive et limites planétaires',
-                  desc: '"La logique de performance sportive est-elle compatible avec les limites planétaires ?" Les étudiants argumentent des positions à partir de données économiques, sanitaires et environnementales.'
+                  desc: '"La logique de performance sportive est-elle compatible avec les limites planétaires ?" Les étudiants défendent des positions à partir de données économiques, sanitaires et environnementales.'
                 },
                 {
                   title: 'Projet de sensibilisation dans un club sportif',
@@ -1446,7 +1447,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                "Les étudiants analysent les discours publicitaires et politiques sur l'écologie, distinguent ce qui relève de la rhétorique du greenwashing de ce qui est scientifiquement fondé."
+                "Les étudiants analysent les discours publicitaires et politiques sur l'écologie, et distinguent ce qui relève de la rhétorique du greenwashing de ce qui est scientifiquement fondé."
             },
             {
               name: 'Expression et créativité',
@@ -1458,7 +1459,7 @@ export const DATA: DataByLang = {
           ],
           also: [
             'Analyser une œuvre littéraire ou un discours',
-            'Faire une dissertation ou un commentaire avec en toile de fond les enjeux de durabilité',
+            "Rédiger une dissertation ou un commentaire sur fond d'enjeux de durabilité",
             'Produire une analyse comparative de textes',
             "Expérimenter des formes d'écriture créative sur les thèmes du vivant",
             "Produire de nouveaux récits susceptibles d'impulser des transformations sociales",
@@ -1492,7 +1493,7 @@ export const DATA: DataByLang = {
                   desc: "Les étudiants réécrivent un extrait littéraire classique en intégrant une dimension écologique contemporaine. Exercice de style qui interroge les présupposés culturels de l'œuvre originale."
                 },
                 {
-                  title: "Analyser l'éco-poétique dans la littérature contemporaine",
+                  title: "Analyser l'écopoétique dans la littérature contemporaine",
                   desc: "Étude d'auteurs de l'éco-littérature (Thoreau, Le Clézio, Tesson, Giono) : comment la langue et le style traduisent-ils un rapport à la nature ? Quels nouveaux genres littéraires émergent ?"
                 }
               ]
@@ -1503,7 +1504,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: "Atelier d'écriture : imaginer une société sobre ou dévastée",
-                  desc: 'Les étudiants rédigent une nouvelle courte se déroulant dans une société qui a réussi sa transition écologique, ou au contraire qui a échoué. Exercice de prospective par la fiction.'
+                  desc: 'Les étudiants rédigent une courte nouvelle se déroulant dans une société qui a réussi sa transition écologique, ou au contraire qui a échoué. Exercice de prospective par la fiction.'
                 },
                 {
                   title: 'Projet interdisciplinaire lettres et sciences',
@@ -1521,7 +1522,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Atelier de lecture en plein air',
-                  desc: "Lecture et discussion d'un texte littéraire en lien avec un espace naturel local. Relier la lecture à l'expérience sensible du milieu. Peut être couplé avec un partenariat culturel ou associatif."
+                  desc: "Lecture et discussion d'un texte littéraire en lien avec un espace naturel local. Relier la lecture à l'expérience sensible du milieu. Peut être couplé à un partenariat culturel ou associatif."
                 }
               ]
             }
@@ -1535,7 +1536,7 @@ export const DATA: DataByLang = {
           sub: "Vous venez de découvrir comment les lettres s'inscrivent dans la transition écologique. Faites le lien avec votre propre enseignement.",
           prompts: [
             {
-              q: 'Quelle œuvre ou quel auteur de votre cours a la connexion la plus directe avec les enjeux écologiques ?',
+              q: 'Quelle œuvre ou quel auteur de votre cours a le lien le plus direct avec les enjeux écologiques ?',
               placeholder:
                 "Ex : Zola et l'industrie, Le Clézio et le rapport à la nature, la dystopie climatique..."
             },
@@ -1578,7 +1579,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Éclairer les décisions',
-              text: 'Les connaissances écologiques sont indispensables pour éclairer les politiques publiques. Vos étudiants apprennent à communiquer des données scientifiques complexes à des décideurs et des non-spécialistes.',
+              text: 'Les connaissances écologiques sont indispensables pour éclairer les politiques publiques. Vos étudiants apprennent à communiquer des données scientifiques complexes à des décideurs et à des non-spécialistes.',
               color: 'cy'
             }
           ],
@@ -1588,7 +1589,7 @@ export const DATA: DataByLang = {
         {
           type: 'competences',
           intro:
-            "En étudiant la transition écologique à travers l'écologie scientifique, vos étudiants développent des compétences analytiques et d'action essentielles.",
+            "En étudiant la transition écologique à travers l'écologie scientifique, vos étudiants développent des compétences essentielles d'analyse et d'action.",
           featured: [
             {
               name: 'Analyse systémique',
@@ -1602,7 +1603,7 @@ export const DATA: DataByLang = {
               tag: 'disciplinaire',
               tagClass: 'disciplinaire',
               concrete:
-                'Les étudiants identifient les facteurs naturels et anthropiques responsables de la dynamique des écosystèmes, et connaissent les intérêts et limites des outils de collecte et de modélisation.'
+                "Les étudiants identifient les facteurs naturels et anthropiques responsables de la dynamique des écosystèmes, et connaissent l'intérêt et les limites des outils de collecte et de modélisation."
             },
             {
               name: 'Capacité à agir',
@@ -1615,7 +1616,7 @@ export const DATA: DataByLang = {
           also: [
             'Expliquer les forces déterminant la diversité génétique et spécifique',
             "Comprendre l'écologie des populations et des communautés",
-            'Comprendre les services écosystémiques et solutions fondées sur la nature',
+            'Comprendre les services écosystémiques et les solutions fondées sur la nature',
             "Anticiper les conséquences d'une perte de diversité du vivant",
             "Relier l'écologie à d'autres disciplines pour décrire les socio-écosystèmes",
             "Identifier les sources d'information les plus fiables en écologie"
@@ -1674,7 +1675,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: "Débat d'experts sur une controverse écologique",
-                  desc: "Jeu de rôle : les étudiants débattent de la gestion d'un territoire controversé (réintroduction du loup, artificialisation des terres, gestion des zones humides) en s'appuyant sur des données scientifiques."
+                  desc: "Jeu de rôle : les étudiants débattent d'une question controversée de gestion du territoire (réintroduction du loup, artificialisation des terres, gestion des zones humides) en s'appuyant sur des données scientifiques."
                 },
                 {
                   title:
@@ -1740,7 +1741,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            "Susciter des ressentis, transformer les imaginaires, questionner nos modes de vie, rassembler autour de récits et d'expériences : les contributions de l'art à la TEDS sont multiples et irremplaçables."
+            "Susciter des ressentis, transformer les imaginaires, questionner nos modes de vie, rassembler autour de récits et d'expériences : les apports de l'art à la transition écologique sont multiples et irremplaçables."
         },
         {
           type: 'competences',
@@ -1802,11 +1803,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Réaliser des planches de BD sur la transition',
-                  desc: 'En groupes pluridisciplinaires, les étudiants créent des planches de bande dessinée qui servent de supports pédagogiques sur un enjeu de la TEDS. Croisement entre narration visuelle et savoirs scientifiques.'
+                  desc: 'En groupes pluridisciplinaires, les étudiants créent des planches de bande dessinée qui servent de supports pédagogiques sur un enjeu de la transition écologique. Croisement entre narration visuelle et savoirs scientifiques.'
                 },
                 {
                   title: 'Slam et transmission scientifique',
-                  desc: 'Faire intervenir ou faire créer un slam sur un enjeu de la transition écologique. Les étudiants travaillent le passage de la connaissance scientifique à une restitution artistique collective.'
+                  desc: 'Faire intervenir un slameur ou faire créer un slam sur un enjeu de la transition écologique. Les étudiants travaillent le passage de la connaissance scientifique à une restitution artistique collective.'
                 }
               ]
             },
@@ -1820,7 +1821,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Pratiques écosomatiques et attention aux milieux',
-                  desc: 'Exercices corporels (danse, théâtre) qui invitent à sentir les vivants en soi et à développer une attention écologique au milieu. Approche intersectionnelle entre arts chorégraphiques et écologie.'
+                  desc: "Exercices corporels (danse, théâtre) qui invitent à sentir les vivants en soi et à développer une attention écologique au milieu. Approche à la croisée des arts chorégraphiques et de l'écologie."
                 }
               ]
             },
@@ -1830,11 +1831,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Théâtre-forum sur un enjeu de transition',
-                  desc: "Organisation d'un théâtre-forum à partir d'un scénario lié à la transition écologique. Les étudiants jouent puis les spectateurs interviennent. Méthode d'Augusto Boal, puissant outil de conscientisation."
+                  desc: "Organisation d'un théâtre-forum à partir d'un scénario lié à la transition écologique. Les étudiants jouent une scène, puis les spectateurs interviennent. Méthode d'Augusto Boal, puissant outil de conscientisation."
                 },
                 {
-                  title: 'Festival ou semaine écologique artistique',
-                  desc: "Organiser une semaine avec programmation collective : spectacles, projections, ateliers, expositions, conférences. Restitution artistique par groupes d'étudiants avec carte blanche sur le format."
+                  title: "Festival ou semaine artistique sur l'écologie",
+                  desc: "Organiser une semaine à la programmation collective : spectacles, projections, ateliers, expositions, conférences. Restitution artistique par groupes d'étudiants avec carte blanche sur le format."
                 }
               ]
             }
@@ -1876,7 +1877,7 @@ export const DATA: DataByLang = {
           cards: [
             {
               verb: 'Comprendre la gouvernance',
-              text: 'Qui décide, à quel niveau et comment ? Vous apprenez à vos étudiants à identifier les échelons de gouvernance multi-niveaux (local, national, international) et les acteurs impliqués dans les décisions de transition.',
+              text: 'Qui décide, à quel niveau et comment ? Vous apprenez à vos étudiants à identifier les différents échelons de gouvernance (local, national, international) et les acteurs impliqués dans les décisions de transition.',
               color: 'ct'
             },
             {
@@ -1944,7 +1945,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Simuler une négociation climatique internationale (COP)',
-                  desc: 'Les étudiants représentent différents États dans une négociation climatique. Ils appliquent les mécanismes de coopération et de conflit, et négocient des engagements selon leurs intérêts nationaux.'
+                  desc: 'Les étudiants représentent différents États dans une négociation climatique. Ils expérimentent les mécanismes de coopération et de conflit, et négocient des engagements selon leurs intérêts nationaux.'
                 },
                 {
                   title: "Analyser la gouvernance multi-niveaux d'une politique climatique",
@@ -1975,7 +1976,7 @@ export const DATA: DataByLang = {
                   desc: "À partir de cas réels (taxe carbone suédoise, marché carbone européen), les étudiants analysent les conditions de réussite et d'échec d'un instrument économique de transition."
                 },
                 {
-                  title: 'Comparer deux politiques de transition dans deux pays',
+                  title: 'Comparer une politique de transition dans deux pays',
                   desc: "Analyse comparative d'une même politique de transition (rénovation thermique, mobilités, énergie) dans deux pays différents : contextes, instruments, résultats, leçons à en tirer."
                 }
               ]
@@ -1985,8 +1986,8 @@ export const DATA: DataByLang = {
               color: 'cy',
               acts: [
                 {
-                  title: 'Analyser la Convention citoyenne pour le Climat',
-                  desc: 'Les étudiants étudient le processus et les résultats de la CCC française : comment une démocratie délibérative fonctionne-t-elle ? Quelles recommandations ont été retenues et pourquoi ?'
+                  title: 'Analyser la Convention citoyenne pour le climat',
+                  desc: 'Les étudiants étudient le processus et les résultats de la CCC française : comment fonctionne la démocratie délibérative ? Quelles recommandations ont été retenues et pourquoi ?'
                 },
                 {
                   title: 'Débat : démocratie et urgence climatique sont-elles compatibles ?',
@@ -2009,7 +2010,7 @@ export const DATA: DataByLang = {
                 'Ex : les politiques publiques, la démocratie participative, les relations internationales...'
             },
             {
-              q: 'Comment imaginez-vous introduire un cas de politique environnementale réelle dans votre prochain cours ?',
+              q: 'Comment imaginez-vous introduire un cas réel de politique environnementale dans votre prochain cours ?',
               placeholder:
                 'Ex : analyser une décision de politique climatique récente, simuler une négociation internationale...'
             }
@@ -2029,22 +2030,22 @@ export const DATA: DataByLang = {
         // STEP 1: FLIP CARDS (CONTRIBUTIONS)
         {
           type: 'flip',
-          statement: 'You are already teaching the tools of ecological transition.',
+          statement: 'You are already teaching the tools of the ecological transition.',
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Measuring and representing',
-              text: 'You teach your students how to read, analyze, and visualize data. This is exactly how issues such as climate change and biodiversity loss are monitored. For example, by analyzing the evolution of CO₂ emissions in France over several decades.',
+              text: 'You teach your students how to read, analyze, and visualize data. This is exactly how issues such as climate change and biodiversity loss are monitored. For example, analyzing how CO₂ emissions in France have changed over several decades.',
               color: 'ct'
             },
             {
               verb: 'Modeling',
-              text: 'Simulating climate evolution or predicting ecosystem dynamics relies on mathematical models. You teach your students how to develop this type of reasoning. For example, modeling how a city evolves in response to rising temperatures and flood risks.',
+              text: 'Simulating climate change or predicting ecosystem dynamics relies on mathematical models. You teach your students how to develop this type of reasoning. For example, modeling how a city evolves in response to rising temperatures and flood risks.',
               color: 'cp'
             },
             {
               verb: 'Optimizing',
-              text: 'Optimizing resources and energy use is at the heart of ecological transition. You teach the tools needed to solve these problems. For example, calculating how to distribute electricity across a smart grid to minimize losses.',
+              text: 'Optimizing resources and energy use is at the heart of the ecological transition. You teach the tools needed to solve these problems. For example, calculating how to distribute electricity across a smart grid to minimize losses.',
               color: 'ck'
             },
             {
@@ -2054,7 +2055,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            'These contributions are already integrated into your discipline. You do not need to add new content: the goal is to make the connection visible for your students.'
+            'These contributions are already part of your discipline. You do not need to add new content: the goal is to make the connection visible to your students.'
         },
 
         // STEP 2: SKILLS
@@ -2082,7 +2083,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Your students question what a model can and cannot tell us: the boundary between what is effective, probable, and desirable in the context of climate policies.'
+                'Your students question what a model can and cannot tell us: the boundary between what is actual, probable, and desirable in the context of climate policies.'
             }
           ],
           also: [
@@ -2126,7 +2127,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Simulating the spread of an invasive species',
-                  desc: 'Using real data about an invasive species, students use exponential or logistic functions to model and predict population growth.'
+                  desc: 'Working with real data on an invasive species, students use exponential or logistic functions to model and predict population growth.'
                 }
               ]
             },
@@ -2139,8 +2140,8 @@ export const DATA: DataByLang = {
                   desc: 'Students solve an optimization problem: how to distribute electricity produced by solar panels in a neighborhood while minimizing losses and costs.'
                 },
                 {
-                  title: 'Calculating the efficiency of a sustainable transport system',
-                  desc: 'Students mathematically compare two transport systems (private car vs public transport) based on energy, time, and emissions criteria. A multi-criteria optimization problem.'
+                  title: 'Calculating the efficiency of a sustainable transportation system',
+                  desc: 'Students mathematically compare two transportation systems (private car vs. public transportation) based on energy, time, and emissions criteria. A multi-criteria optimization problem.'
                 }
               ]
             },
@@ -2154,7 +2155,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Building a sustainability indicator',
-                  desc: 'Students design a simple index to assess the sustainability of a territory, choosing their variables and justifying their weighting choices. This introduces the complexity behind every indicator.'
+                  desc: 'Students design a simple index to assess the sustainability of a region, choosing their variables and justifying their weighting choices. This introduces the complexity behind every indicator.'
                 }
               ]
             }
@@ -2167,15 +2168,15 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how mathematics can contribute to ecological transition. Take a moment to connect this with your own teaching.',
+          sub: 'You have just discovered how mathematics can contribute to the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
-              q: 'Which concept do you teach that could be connected to ESDT?',
-              placeholder: 'E.g.: exponential functions, probabilities, data analysis...'
+              q: 'Which concept do you teach that could be connected to the ecological transition and sustainable development?',
+              placeholder: 'E.g., exponential functions, probability, data analysis...'
             },
             {
-              q: 'How could you imagine making this connection in your next lesson?',
-              placeholder: 'E.g.: replacing a generic example with real climate data...'
+              q: 'How could you make this connection in your next lesson?',
+              placeholder: 'E.g., replacing a generic example with real climate data...'
             }
           ],
           resource: {
@@ -2190,7 +2191,7 @@ export const DATA: DataByLang = {
       steps: [
         {
           type: 'flip',
-          statement: 'History already sheds light on the challenges of ecological transition.',
+          statement: 'History already sheds light on the challenges of the ecological transition.',
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
@@ -2215,7 +2216,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            'Your discipline provides a systemic, critical, and contextualized perspective on ecological transition.'
+            'Your discipline provides a systemic, critical, and contextualized perspective on the ecological transition.'
         },
         {
           type: 'competences',
@@ -2241,15 +2242,15 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students define their individual and collective responsibility regarding the transformations that need to be undertaken.'
+                'Students define their individual and collective responsibility for the transformations that need to be undertaken.'
             }
           ],
           also: [
             'Identifying sources in environmental history',
             'Analyzing socio-environmental transformations',
-            'Placing events within time and space',
+            'Placing events in time and space',
             'Comparing different historical periods',
-            'Ability to propose solutions'
+            'Proposing solutions'
           ]
         },
         {
@@ -2262,11 +2263,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Analyzing industrial archives',
-                  desc: 'Students study archives on the Industrial Revolution and its environmental impacts through an ecological perspective.'
+                  desc: 'Students study archives on the Industrial Revolution and its environmental impacts from an ecological perspective.'
                 },
                 {
                   title: 'Studying an ecological disaster',
-                  desc: 'Analyze a major disaster (oil spill, industrial accident) as a reflection of tensions between economy, politics, and the environment.'
+                  desc: 'Analyze a major disaster (oil spill, industrial accident) as a reflection of tensions between the economy, politics, and the environment.'
                 }
               ]
             },
@@ -2294,7 +2295,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Futures workshop',
-                  desc: 'Students write a short prospective narrative based on identified historical trends. Understanding the importance of collective narratives.'
+                  desc: 'Students write a short narrative about the future based on the historical trends they have identified. This shows the importance of collective narratives.'
                 }
               ]
             },
@@ -2304,7 +2305,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Timeline of anthropogenic pressures',
-                  desc: 'Students create a timeline showing the major stages in the increase of human pressures on the environment.'
+                  desc: 'Students create a timeline showing the major stages in the growth of human pressure on the environment.'
                 },
                 {
                   title: 'Analyzing an SDG through history',
@@ -2318,16 +2319,16 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how history connects with ecological transition. Take a moment to link this with your own teaching.',
+          sub: 'You have just discovered how history connects with the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which period or event in your course has the most visible environmental dimension?',
-              placeholder: 'E.g.: the Industrial Revolution, decolonization, major disasters...'
+              placeholder: 'E.g., the Industrial Revolution, decolonization, major disasters...'
             },
             {
-              q: 'How could you imagine introducing this dimension in your next lesson?',
+              q: 'How could you introduce this dimension in your next lesson?',
               placeholder:
-                'E.g.: adding a question about the environmental impacts of a studied event...'
+                'E.g., adding a question about the environmental impact of an event you study...'
             }
           ],
           resource: {
@@ -2342,7 +2343,7 @@ export const DATA: DataByLang = {
       steps: [
         {
           type: 'flip',
-          statement: 'You are already teaching the tools of ecological transition.',
+          statement: 'You are already teaching the tools of the ecological transition.',
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
@@ -2367,7 +2368,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            'Economics offers a diversity of approaches to connect sustainability, prosperity, and social justice.'
+            'Economics offers a range of approaches to connect sustainability, prosperity, and social justice.'
         },
         {
           type: 'competences',
@@ -2382,7 +2383,7 @@ export const DATA: DataByLang = {
                 'Students integrate planetary boundaries into economic analysis, adopting an interdisciplinary perspective that goes beyond standard models.'
             },
             {
-              name: 'Prospective analysis',
+              name: 'Foresight analysis',
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
@@ -2442,7 +2443,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Modeling a circular economy',
-                  desc: 'Based on François Grosse’s mathematical conditions (recycling rates, growth rates), students test under which conditions an economy can truly become circular.'
+                  desc: 'Based on François Grosse’s mathematical conditions (recycling rates, growth rates), students test the conditions under which an economy can truly become circular.'
                 },
                 {
                   title: 'Building a carbon neutrality pathway',
@@ -2456,11 +2457,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Cost-benefit analysis of a climate policy',
-                  desc: 'Assess the benefits and costs of an action aimed at reducing greenhouse gas emissions, using for example the Nordhaus model.'
+                  desc: 'Assess the benefits and costs of an action aimed at reducing greenhouse gas emissions, using, for example, the Nordhaus model.'
                 },
                 {
-                  title: 'Designing a sustainable territorial project',
-                  desc: 'Interdisciplinary project: design a sustainable territory by integrating ecological, social, and economic constraints. Students defend their choices.'
+                  title: 'Designing a sustainable local development project',
+                  desc: 'Interdisciplinary project: design a sustainable local area by integrating ecological, social, and economic constraints. Students defend their choices.'
                 }
               ]
             }
@@ -2471,16 +2472,16 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how economics connects with ecological transition. Make the link with your own teaching.',
+          sub: 'You have just discovered how economics connects with the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
-              q: 'Which economic concept from your course connects most naturally with ecological transition?',
-              placeholder: 'E.g.: externalities, public goods, cost-benefit analysis...'
+              q: 'Which economic concept from your course connects most naturally with the ecological transition?',
+              placeholder: 'E.g., externalities, public goods, cost-benefit analysis...'
             },
             {
-              q: 'How could you enrich one of your existing lessons with an ESDT dimension?',
+              q: 'How could you enrich one of your existing lessons with an ecological transition angle?',
               placeholder:
-                'E.g.: replacing a generic example with a real environmental policy case...'
+                'E.g., replacing a generic example with a real environmental policy case...'
             }
           ],
           resource: {
@@ -2495,7 +2496,7 @@ export const DATA: DataByLang = {
       steps: [
         {
           type: 'flip',
-          statement: 'Law is at the heart of ecological transition.',
+          statement: 'Law is at the heart of the ecological transition.',
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
@@ -2539,7 +2540,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students identify law as a tool for social transformation and understand the links between environmental law and other legal fields.'
+                'Students see law as a tool for social transformation and understand the links between environmental law and other legal fields.'
             },
             {
               name: 'Collective action',
@@ -2555,7 +2556,7 @@ export const DATA: DataByLang = {
             'Exploring environmental democracy',
             'Analyzing the constitutionality of projects',
             'Mastering legal methodology',
-            'Co-constructing a legal opinion'
+            'Building a legal opinion together'
           ]
         },
         {
@@ -2572,7 +2573,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Comparing environmental principles in European and national law',
-                  desc: 'Identify how the precautionary and polluter-pays principles are applied differently depending on levels of governance.'
+                  desc: 'Identify how the application of the precautionary and polluter-pays principles differs across levels of governance.'
                 }
               ]
             },
@@ -2581,7 +2582,7 @@ export const DATA: DataByLang = {
               color: 'cp',
               acts: [
                 {
-                  title: 'Case study: a project facing environmental law',
+                  title: 'Case study: a project tested against environmental law',
                   desc: 'Analyze the legality and constitutionality of a development project (wind farm, mine, highway) in light of environmental law.'
                 },
                 {
@@ -2599,7 +2600,7 @@ export const DATA: DataByLang = {
                   desc: 'Study a real case of ecological damage to understand how law addresses environmental harm and compensation.'
                 },
                 {
-                  title: 'Role play: conflicts of use',
+                  title: 'Role play: competing land uses',
                   desc: 'Students represent different stakeholders facing an environmental controversy (farmers, NGOs, local authorities, government) to understand legal tensions.'
                 }
               ]
@@ -2610,10 +2611,10 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Simulating a public environmental consultation',
-                  desc: 'Debate within a fictional dialogue forum around a project to confront opposing viewpoints and understand environmental democracy.'
+                  desc: 'Hold a debate on a project in a fictional public forum to weigh opposing viewpoints and understand environmental democracy.'
                 },
                 {
-                  title: 'Drafting a fictional law proposal',
+                  title: 'Drafting a mock bill',
                   desc: 'Students draft a bill or amendments on an environmental issue, discovering the legislative process and the compromises required.'
                 }
               ]
@@ -2625,16 +2626,16 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how law connects with ecological transition. Make the link with your own teaching.',
+          sub: 'You have just discovered how law connects with the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which legal principle from your course has the most direct environmental application?',
               placeholder:
-                'E.g.: civil liability, the precautionary principle, fundamental rights...'
+                'E.g., civil liability, the precautionary principle, fundamental rights...'
             },
             {
               q: 'How could you use a real environmental case in your next lesson?',
-              placeholder: 'E.g.: studying a recent court decision, analyzing a current law...'
+              placeholder: 'E.g., studying a recent court decision, analyzing a current law...'
             }
           ],
           resource: {
@@ -2649,7 +2650,7 @@ export const DATA: DataByLang = {
       steps: [
         {
           type: 'flip',
-          statement: 'Philosophy already addresses the challenges of ecological transition.',
+          statement: 'Philosophy already addresses the challenges of the ecological transition.',
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
@@ -2658,18 +2659,18 @@ export const DATA: DataByLang = {
               color: 'ct'
             },
             {
-              verb: 'Ethicizing',
-              text: 'It questions the ethical principles guiding individual and collective choices and sheds light on the notion of intergenerational responsibility.',
+              verb: 'Examining ethics',
+              text: 'It examines the ethical principles guiding individual and collective choices and sheds light on intergenerational responsibility.',
               color: 'cp'
             },
             {
               verb: 'Critiquing',
-              text: 'It critiques the dualisms between nature/culture and humans/non-humans, and explores the different values underlying our relationship with nature.',
+              text: 'It critiques the nature/culture and human/non-human dualisms, and explores the different values underlying our relationship with nature.',
               color: 'ck'
             },
             {
               verb: 'Imagining',
-              text: 'It defines the conditions of an ecological democracy and reflects on living together with other forms of life, human and non-human.',
+              text: 'It defines the conditions for an ecological democracy and reflects on living together with other forms of life, human and non-human.',
               color: 'cy'
             }
           ],
@@ -2693,7 +2694,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students distinguish knowledge from opinions and question assumptions, particularly major narratives of progress and growth.'
+                'Students distinguish knowledge from opinions and question assumptions, particularly the grand narratives of progress and growth.'
             },
             {
               name: 'Civic reflexivity',
@@ -2726,12 +2727,12 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Analyzing a text on modernity and the environment',
-                  desc: 'Read and comment on an excerpt from Hans Jonas, Dominique Bourg, or Bruno Latour. Students develop text analysis skills using authors directly relevant to ecological issues.'
+                  desc: 'Read and discuss an excerpt from Hans Jonas, Dominique Bourg, or Bruno Latour. Students develop text analysis skills using authors directly relevant to ecological issues.'
                 }
               ]
             },
             {
-              label: 'Ethicizing',
+              label: 'Examining ethics',
               color: 'cp',
               acts: [
                 {
@@ -2740,7 +2741,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Developing an ethical charter',
-                  desc: 'In groups, students write an ethical charter for an institution (university, company, city) facing a specific ecological challenge. This tests applied ethics.'
+                  desc: 'In groups, students write an ethical charter for an institution (university, company, city) facing a specific ecological challenge. An exercise in applied ethics.'
                 }
               ]
             },
@@ -2768,27 +2769,27 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Designing an ecological democracy',
-                  desc: 'Students define the conditions of a democracy that integrates planetary boundaries and representation of future generations. A political philosophy exercise.'
+                  desc: 'Students define the conditions for a democracy that integrates planetary boundaries and representation of future generations. A political philosophy exercise.'
                 }
               ]
             }
           ],
           feedback:
-            'Well chosen. This activity connects philosophy to questions that your students genuinely experience.'
+            'Well chosen. This activity connects philosophy to questions your students genuinely face.'
         },
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how philosophy connects with ecological transition. Make the link with your own teaching.',
+          sub: 'You have just discovered how philosophy connects with the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which concept from your course has the most direct connection with an ecological issue?',
-              placeholder: 'E.g.: responsibility, justice, progress, nature, the common good...'
+              placeholder: 'E.g., responsibility, justice, progress, nature, the common good...'
             },
             {
-              q: 'How could you introduce an example or text related to ESDT in your next lesson?',
+              q: 'How could you introduce an example or text related to the ecological transition in your next lesson?',
               placeholder:
-                'E.g.: replacing a classic example with a contemporary ecological situation...'
+                'E.g., replacing a classic example with a contemporary ecological situation...'
             }
           ],
           resource: {
@@ -2803,12 +2804,12 @@ export const DATA: DataByLang = {
       steps: [
         {
           type: 'flip',
-          statement: 'Psychology sheds light on the human dimensions of ecological transition.',
+          statement: 'Psychology sheds light on the human dimensions of the ecological transition.',
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understanding',
-              text: 'Analyzing perceptions and representations of environmental risks, and understanding our relationships with the different spaces affected by transition.',
+              text: 'Analyzing perceptions and representations of environmental risks, and understanding our relationships with the different places affected by the transition.',
               color: 'ct'
             },
             {
@@ -2828,7 +2829,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            'Psychology helps bridge the gap between knowledge and action by considering what humans perceive and feel in response to ecological challenges.'
+            'Psychology helps bridge the gap between knowledge and action by taking into account what people perceive and feel in response to ecological challenges.'
         },
         {
           type: 'competences',
@@ -2847,7 +2848,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students understand the foundations of environmental discourses and behaviors and identify their own position regarding these issues.'
+                'Students understand the foundations of environmental discourse and behaviors and identify their own position regarding these issues.'
             },
             {
               name: 'Capacity for transformation',
@@ -2902,12 +2903,12 @@ export const DATA: DataByLang = {
               color: 'ck',
               acts: [
                 {
-                  title: 'Designing a green nudges campaign',
+                  title: 'Designing a green nudge campaign',
                   desc: 'Students apply psychological theories (social norms, planned behavior) to design an awareness campaign on a university campus.'
                 },
                 {
                   title: 'Observing and analyzing eco-friendly behaviors',
-                  desc: 'Observe recycling behaviors or food choices in real contexts, interview people about their motivations, and apply psychosocial frameworks.'
+                  desc: 'Observe recycling behaviors or food choices in real-life settings, interview people about their motivations, and apply psychosocial frameworks.'
                 }
               ]
             },
@@ -2916,12 +2917,12 @@ export const DATA: DataByLang = {
               color: 'cy',
               acts: [
                 {
-                  title: 'Psychological support project facing the climate crisis',
+                  title: 'Psychological support project for the climate crisis',
                   desc: 'Build a psychological support campaign incorporating knowledge about eco-anxiety to help people affected by climate events.'
                 },
                 {
-                  title: 'Role play: persuading people facing cognitive vulnerability',
-                  desc: 'Students must convince a cognitively vulnerable group to engage in ecological transition, for example in response to rising sea levels in a coastal city.'
+                  title: 'Role play: persuading a cognitively vulnerable group',
+                  desc: 'Students must convince a cognitively vulnerable group to engage in the ecological transition, for example in response to rising sea levels in a coastal city.'
                 }
               ]
             }
@@ -2932,17 +2933,17 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how psychology connects with ecological transition. Make the link with your own teaching.',
+          sub: 'You have just discovered how psychology connects with the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
-              q: 'Which psychological concept from your course becomes most meaningful when applied to a behavior involving ecological issues?',
+              q: 'Which psychological concept from your course becomes most meaningful when applied to environmental behavior?',
               placeholder:
-                'E.g.: theory of planned behavior, cognitive biases, social representations...'
+                'E.g., theory of planned behavior, cognitive biases, social representations...'
             },
             {
               q: 'How could you make this connection in your next lesson?',
               placeholder:
-                'E.g.: applying a theoretical framework to a real environmental behavior observed by students...'
+                'E.g., applying a theoretical framework to a real environmental behavior observed by students...'
             }
           ],
           resource: {
@@ -2967,7 +2968,7 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Understand territories',
-              text: 'Geography analyzes interactions between societies and environments. For example, understanding how a coastal city is changing in response to rising sea levels, or how a rural area is managing the energy transition.',
+              text: 'Geography analyzes interactions between societies and environments. For example: how a coastal city is changing in response to rising sea levels, or how a rural area is managing the energy transition.',
               color: 'cp'
             },
             {
@@ -2982,7 +2983,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            'Without a geographical foundation and without taking into account the specific characteristics of spaces and societies, the ecological transition would be ineffective. Your discipline is essential.'
+            'Without a geographical foundation that takes into account the specific characteristics of places and societies, the ecological transition would be ineffective. Your discipline is essential.'
         },
         {
           type: 'competences',
@@ -2994,7 +2995,7 @@ export const DATA: DataByLang = {
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
-                'Students create a map of the climate vulnerabilities of a territory, identifying risk areas and populations exposed to extreme events.'
+                'Students map the climate vulnerabilities of an area, identifying risk zones and populations exposed to extreme events.'
             },
             {
               name: 'Critical thinking',
@@ -3029,12 +3030,12 @@ export const DATA: DataByLang = {
               color: 'ct',
               acts: [
                 {
-                  title: 'Mapping the climate vulnerabilities of a territory',
-                  desc: 'Students create a map of risk areas (flooding, drought, heatwaves) at the local or regional scale, cross-referencing climate data and social data.'
+                  title: 'Map the climate vulnerabilities of an area',
+                  desc: 'Students create a map of risk areas (flooding, drought, heatwaves) at the local or regional scale, cross-referencing climate and social data.'
                 },
                 {
                   title: 'Compare the ecological footprints of different countries',
-                  desc: 'Comparative analysis of national ecological footprints: who consumes the most, who suffers the most? Connect these data to development inequalities.'
+                  desc: 'Comparative analysis of national ecological footprints: who consumes the most, and who suffers the most? Connect this data to development inequalities.'
                 }
               ]
             },
@@ -3044,12 +3045,12 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Study an eco-district or transition city project',
-                  desc: 'Students analyze a real sustainable urban project (e.g. the Confluence district in Lyon, Bottière-Chénaie in Nantes): stakeholders, challenges, compromises, and limitations.'
+                  desc: 'Students analyze a real sustainable urban project (e.g., the Confluence district in Lyon, Bottière-Chénaie in Nantes): stakeholders, challenges, compromises, and limitations.'
                 },
                 {
                   title:
                     'Analyze the impacts of mountain tourism in the face of declining snow cover',
-                  desc: 'Case study of a mountain territory (Alps, Pyrenees) facing declining snowfall. What forms of reconversion? What resistance? Which stakeholders?'
+                  desc: 'Case study of a mountain area (Alps, Pyrenees) facing declining snowfall. What forms of economic diversification? What resistance? Which stakeholders?'
                 }
               ]
             },
@@ -3063,7 +3064,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Analyze a sustainable spatial planning policy',
-                  desc: 'Examine a local urban development plan (PLU) or territorial coherence scheme (SCoT) through the lens of the ecological transition: what objectives? What contradictions?'
+                  desc: 'Examine a local urban development plan (PLU) or territorial coherence scheme (SCoT) through the lens of the ecological transition: What objectives? What contradictions?'
                 }
               ]
             },
@@ -3088,16 +3089,16 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how geography fits into the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just discovered how geography fits into the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
-              q: 'Which territory or spatial dynamic in your course has the most obvious connection to the TEDS?',
-              placeholder: 'E.g.: urban dynamics, rural areas, coastlines, regional inequalities...'
+              q: 'Which place or spatial dynamic in your course has the most obvious connection to the ecological transition and sustainable development?',
+              placeholder: 'E.g., urban dynamics, rural areas, coastlines, regional inequalities...'
             },
             {
-              q: 'How do you imagine introducing a map or case study related to the transition in your next lesson?',
+              q: 'How could you introduce a map or case study related to the transition in your next lesson?',
               placeholder:
-                'E.g.: adding a map of climate vulnerabilities to an existing lesson on spatial planning...'
+                'E.g., adding a map of climate vulnerabilities to an existing lesson on spatial planning...'
             }
           ],
           resource: {
@@ -3117,27 +3118,27 @@ export const DATA: DataByLang = {
           cards: [
             {
               verb: 'Identify risks',
-              text: 'You teach your students to assess the effects of environmental exposures on health. For example, analyzing excess mortality linked to heatwaves or respiratory diseases associated with air pollution.',
+              text: 'You teach your students to assess the effects of environmental exposures on health. For example: excess mortality linked to heatwaves, or respiratory diseases associated with air pollution.',
               color: 'ct'
             },
             {
               verb: 'Analyze policies',
-              text: 'Health makes it possible to assess the co-benefits of climate policies: reducing meat consumption improves health while also reducing emissions. Your students learn to reason in systems.',
+              text: 'Health sciences help assess the co-benefits of climate policies: eating less meat improves health while also reducing emissions. Your students learn to think in systems.',
               color: 'cp'
             },
             {
               verb: 'Strengthen resilience',
-              text: 'Moving from a logic of repair to a logic of prevention: this is one of the major challenges of environmental health, and a way of thinking that students develop from the outset of their training.',
+              text: 'Shifting from treatment to prevention is one of the major challenges of environmental health, and a mindset students develop from the very start of their training.',
               color: 'ck'
             },
             {
               verb: 'Reduce the footprint',
-              text: 'The healthcare sector itself contributes to emissions. Your students can design more sustainable medical practices: recycling reagents, eco-design of care, energy efficiency.',
+              text: 'The healthcare sector itself contributes to emissions. Your students can design more sustainable medical practices: recycling reagents, eco-designing care, improving energy efficiency.',
               color: 'cy'
             }
           ],
           closing:
-            'Health is a common language between disciplines and a concrete entry point for discussing interdependence between humans and their environment.'
+            'Health is a common language across disciplines and a concrete entry point for discussing the interdependence between humans and their environment.'
         },
         {
           type: 'competences',
@@ -3149,10 +3150,10 @@ export const DATA: DataByLang = {
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
-                'Students learn to understand human health as connected to the health of ecosystems and other living beings. For example, analyzing the emergence of vector-borne diseases linked to global warming.'
+                'Students learn to see human health as connected to the health of ecosystems and other living beings, for example by analyzing the emergence of vector-borne diseases linked to global warming.'
             },
             {
-              name: 'Mobilize interdisciplinary knowledge',
+              name: 'Drawing on interdisciplinary knowledge',
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
@@ -3172,7 +3173,7 @@ export const DATA: DataByLang = {
             'Understand environmental and health justice issues',
             'Act as an agent of transition in the health sector',
             'Make recommendations for risk prevention',
-            'Contribute to citizen education and awareness'
+            'Contribute to public education and awareness'
           ]
         },
         {
@@ -3189,7 +3190,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Analyze an air pollution episode',
-                  desc: 'Using real data (Airparif, WHO), students assess the health effects of a pollution peak and inequalities in exposure according to territories and populations.'
+                  desc: 'Using real data (Airparif, WHO), students assess the health effects of a pollution spike and inequalities in exposure across areas and populations.'
                 }
               ]
             },
@@ -3203,7 +3204,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Study the National Environmental Health Plan',
-                  desc: 'Examine national and international strategies (PNSE, WHO, One Health): what objectives, what tools, what effectiveness in a context of ecological transition?'
+                  desc: 'Examine national and international strategies (PNSE, WHO, One Health): What are their objectives and tools, and how effective are they in the context of the ecological transition?'
                 }
               ]
             },
@@ -3212,7 +3213,7 @@ export const DATA: DataByLang = {
               color: 'ck',
               acts: [
                 {
-                  title: 'Multidisciplinary project: environmental health on a campus',
+                  title: 'Multidisciplinary project: environmental health on campus',
                   desc: 'Carry out an environmental health assessment on campus: air quality, access to green spaces, food, mobility. Connect the data to issues of environmental justice.'
                 },
                 {
@@ -3227,7 +3228,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Design more sustainable medical practices',
-                  desc: 'Students imagine solutions for reducing the ecological footprint of a healthcare department: recycling, energy efficiency, responsible purchasing, eco-design of medical equipment.'
+                  desc: 'Students come up with solutions to reduce the ecological footprint of a care unit: recycling, energy efficiency, responsible purchasing, eco-design of medical equipment.'
                 },
                 {
                   title: 'Scientific communication on health and transition',
@@ -3242,17 +3243,17 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how health sciences fit into the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just discovered how health sciences fit into the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'What connection between health and the environment could you introduce in your next lesson?',
               placeholder:
-                'E.g.: the effects of pollution on respiratory diseases, mental health and climate...'
+                'E.g., the effects of pollution on respiratory diseases, mental health and climate...'
             },
             {
-              q: 'How do you imagine making the ecological transition a learning context in your course?',
+              q: 'How could you use the ecological transition as a learning context in your course?',
               placeholder:
-                'E.g.: using epidemiological data related to climate change in a clinical case...'
+                'E.g., using epidemiological data related to climate change in a clinical case...'
             }
           ],
           resource: {
@@ -3268,12 +3269,12 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement:
-            'STAPS are at the heart of contemporary health, social, and environmental challenges.',
+            "Sports science is at the heart of today's health, social, and environmental challenges.",
           hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understand the effects of climate',
-              text: 'Physical and sports activities are highly dependent on environmental conditions. Your students learn to understand physiological adaptations to extreme heat, pollution, and extreme climate events.',
+              text: 'Physical activity and sport depend heavily on environmental conditions. Your students learn about physiological adaptations to extreme heat, pollution, and extreme weather events.',
               color: 'ct'
             },
             {
@@ -3283,22 +3284,22 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Reduce the footprint',
-              text: 'The sports sector is highly dependent on infrastructure, equipment, and mobility. Your students can learn to design more sustainable and responsible sports practices.',
+              text: 'The sports sector relies heavily on infrastructure, equipment, and travel. Your students can learn to design more sustainable and responsible sports practices.',
               color: 'ck'
             },
             {
               verb: 'Educate for global health',
-              text: 'STAPS promote values of respect, cooperation, and commitment. They make it possible to consider the links between human health and environmental health from a sustainability perspective.',
+              text: 'Sports science promotes values of respect, cooperation, and commitment. It offers a way to consider the links between human health and environmental health from a sustainability perspective.',
               color: 'cy'
             }
           ],
           closing:
-            'STAPS train professionals capable of adapting sports practices to ecological constraints, organizing more sustainable events, and supporting transitions within the sports sector.'
+            'Sports science trains professionals who can adapt sports practices to ecological constraints, organize more sustainable events, and support transitions within the sports sector.'
         },
         {
           type: 'competences',
           intro:
-            'By studying the ecological transition through STAPS, your students develop essential disciplinary and transversal skills.',
+            'By studying the ecological transition through sports science, your students develop essential disciplinary and transversal skills.',
           featured: [
             {
               name: 'Systems thinking',
@@ -3312,10 +3313,10 @@ export const DATA: DataByLang = {
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
-                'Students analyze a sports-related issue in the era of planetary boundaries: identify and interpret the environmental performance indicators of a sports facility or event.'
+                'Students analyze sports-related issues in the era of planetary boundaries, identifying and interpreting the environmental performance indicators of a sports facility or event.'
             },
             {
-              name: 'Ability to design',
+              name: 'Design skills',
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
@@ -3328,7 +3329,7 @@ export const DATA: DataByLang = {
             'Build an optimized and sustainable nutrition plan',
             'Explain the impact of climate risks on performance',
             'Connect urban planning, mobility, and sports practices',
-            'Develop integrated territorial assessments'
+            'Carry out integrated local assessments'
           ]
         },
         {
@@ -3345,7 +3346,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Case study: mountain sports and declining snow cover',
-                  desc: 'Analyze the impact of climate change on a mountain sport (skiing, mountaineering): what adaptations in practices, infrastructure, and business models?'
+                  desc: 'Analyze the impact of climate change on a mountain sport (skiing, mountaineering): What adaptations are needed in practices, infrastructure, and business models?'
                 }
               ]
             },
@@ -3355,11 +3356,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Design a PE program adapted to climate constraints',
-                  desc: 'Students design a PE sequence that takes a real environmental constraint (heatwave, air quality) into account: learning objectives, adaptations, and monitoring indicators.'
+                  desc: 'Students design a PE unit that takes a real environmental constraint (heatwave, air quality) into account: learning objectives, adaptations, and monitoring indicators.'
                 },
                 {
                   title: 'Analyze the health/climate co-benefits of active mobility',
-                  desc: 'Mathematically compare the health effects and CO₂ emissions of different modes of transport to a sports facility. A concrete case of systems analysis.'
+                  desc: 'Calculate and compare the health effects and CO₂ emissions of different modes of transport to a sports facility. A concrete case of systems analysis.'
                 }
               ]
             },
@@ -3368,7 +3369,7 @@ export const DATA: DataByLang = {
               color: 'ck',
               acts: [
                 {
-                  title: 'TD on the sustainability of the Olympic Games',
+                  title: 'Tutorial on the sustainability of the Olympic Games',
                   desc: 'Using institutional reports and real data, students assess the ecological footprint of the Olympic Games and propose indicators and reduction levers.'
                 },
                 {
@@ -3393,33 +3394,33 @@ export const DATA: DataByLang = {
             }
           ],
           feedback:
-            'Good point. This activity directly connects STAPS skills with concrete environmental challenges.'
+            'Good choice. This activity directly connects sports science skills with concrete environmental challenges.'
         },
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how STAPS fit into the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just discovered how sports science fits into the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which sports practice or lesson in your course could incorporate a sustainability dimension?',
               placeholder:
-                'E.g.: a PE session adapted to heat, analyzing the footprint of a sports facility...'
+                'E.g., a PE session adapted to heat, an analysis of the footprint of a sports facility...'
             },
             {
-              q: 'How do you imagine making the ecological transition a learning context in your course?',
+              q: 'How could you use the ecological transition as a learning context in your course?',
               placeholder:
-                'E.g.: using real data on a sporting event to work on disciplinary skills...'
+                'E.g., using real data on a sporting event to work on disciplinary skills...'
             }
           ],
           resource: {
             label: 'UVED Resource',
-            title: 'STAPS and the Ecological and Sustainable Development Transition',
+            title: 'Sports Science and the Ecological and Sustainable Development Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_STAPS_et_TEDS.pdf'
           }
         }
       ]
     },
-    lettres: {
+    letters: {
       steps: [
         {
           type: 'flip',
@@ -3429,27 +3430,27 @@ export const DATA: DataByLang = {
           cards: [
             {
               verb: 'Analyze imaginaries',
-              text: 'You teach your students to read works and discourses. This is exactly what is needed to understand the imaginaries that have led to the overexploitation of the world, or to invent other ways of inhabiting the Earth.',
+              text: 'You teach your students to read texts and discourse. This is exactly what is needed to understand the imaginaries that have led to the overexploitation of the planet, or to invent other ways of inhabiting the Earth.',
               color: 'ct'
             },
             {
               verb: 'Give meaning',
-              text: 'The ecological crisis lacks words. Literature makes it possible to identify the different ways of naming, thinking about, and symbolizing ecological upheavals, including deciphering greenwashing.',
+              text: 'The ecological crisis is hard to put into words. Literature helps identify the different ways of naming, thinking about, and symbolizing ecological upheaval, including seeing through greenwashing.',
               color: 'cp'
             },
             {
               verb: 'Imagine futures',
-              text: 'Through fiction, poetry, theatre, and ecological science fiction, literature makes it possible to think about social transformation and develop new collective narratives about living together with the living world.',
+              text: 'Through fiction, poetry, theater, and ecological science fiction, literature helps us think about social transformation and develop new collective narratives about how we live alongside other living beings.',
               color: 'ck'
             },
             {
               verb: 'Develop critical citizens',
-              text: 'Your students learn to analyze advertising, media, and political discourses about ecology. They develop an informed personal perspective on these issues.',
+              text: 'Your students learn to analyze advertising, media, and political discourse on ecology. They develop an informed personal perspective on these issues.',
               color: 'cy'
             }
           ],
           closing:
-            'Literature and the humanities train citizens who are capable of thinking, expressing, and telling the story of the world differently. This is an essential condition for transforming our ways of life.'
+            'Literature and the humanities train citizens who can think about, express, and tell the story of the world differently: an essential condition for transforming our ways of life.'
         },
         {
           type: 'competences',
@@ -3461,14 +3462,14 @@ export const DATA: DataByLang = {
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
-                'Students analyze the historical and social origins of a work related to nature, and clarify the values and ideologies associated with narratives about the environment.'
+                'Students analyze the historical and social context of a work about nature, and bring out the values and ideologies behind narratives about the environment.'
             },
             {
               name: 'Critical thinking',
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students analyze advertising and political discourses about ecology, distinguishing greenwashing rhetoric from scientifically grounded claims.'
+                'Students analyze advertising and political discourse on ecology, distinguishing greenwashing rhetoric from scientifically grounded claims.'
             },
             {
               name: 'Expression and creativity',
@@ -3483,7 +3484,7 @@ export const DATA: DataByLang = {
             'Write an essay or commentary with sustainability issues as a backdrop',
             'Produce a comparative analysis of texts',
             'Experiment with creative writing on themes related to the living world',
-            'Produce new narratives capable of driving social transformations',
+            'Produce new narratives capable of driving social transformation',
             'Identify opportunities for interdisciplinary collaboration'
           ]
         },
@@ -3500,8 +3501,8 @@ export const DATA: DataByLang = {
                   desc: 'Students study excerpts from works (from naturalist literature to climate speculative fiction) to analyze changing imaginaries of progress, the living world, and the planet.'
                 },
                 {
-                  title: 'Decode discourses about ecology',
-                  desc: 'Using advertising, political, or media examples, students identify discursive strategies related to the transition, including those involving greenwashing.'
+                  title: 'Decode discourse on ecology',
+                  desc: 'Using advertising, political, or media examples, students identify discursive strategies related to the transition, including greenwashing.'
                 }
               ]
             },
@@ -3538,8 +3539,8 @@ export const DATA: DataByLang = {
               color: 'cy',
               acts: [
                 {
-                  title: 'Read and analyze a political discourse on ecology',
-                  desc: 'Students dissect a recent political speech on the ecological transition: what figures of speech, implicit assumptions, and framing effects? Rhetorical and civic analysis.'
+                  title: 'Read and analyze a political speech on ecology',
+                  desc: 'Students dissect a recent political speech on the ecological transition: What figures of speech, implicit assumptions, and framing effects does it use? A rhetorical and civic analysis.'
                 },
                 {
                   title: 'Outdoor reading workshop',
@@ -3554,22 +3555,22 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how literature and the humanities fit into the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just discovered how literature and the humanities fit into the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which work or author in your course has the most direct connection with ecological issues?',
               placeholder:
-                'E.g.: Zola and industry, Le Clézio and the relationship with nature, climate dystopia...'
+                'E.g., Zola and industry, Le Clézio and the relationship with nature, climate dystopia...'
             },
             {
-              q: 'How do you imagine introducing an ecological dimension into your next literature lesson?',
+              q: 'How could you introduce an ecological dimension into your next literature lesson?',
               placeholder:
-                'E.g.: adding a question about imaginaries of nature to a work already on the syllabus...'
+                'E.g., adding a question about imaginaries of nature to a work already on the syllabus...'
             }
           ],
           resource: {
             label: 'UVED Resource',
-            title: 'Literature and the Ecological and Sustainable Development Transition',
+            title: 'Humanities and the Ecological and Sustainable Development Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Lettres_et_TEDS.pdf'
           }
         }
@@ -3626,7 +3627,7 @@ export const DATA: DataByLang = {
                 'Students identify the natural and human factors responsible for ecosystem dynamics and understand the strengths and limitations of data collection and modeling tools.'
             },
             {
-              name: 'Capacity to act',
+              name: 'Ability to act',
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
@@ -3670,7 +3671,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Compare agricultural practices according to their ecosystem benefits',
-                  desc: 'Students compare conventional agriculture and agroecology according to criteria such as biodiversity, soil quality, and ecosystem services. Multicriteria analysis.'
+                  desc: 'Students compare conventional agriculture and agroecology using criteria such as biodiversity, soil quality, and ecosystem services. A multi-criteria analysis.'
                 }
               ]
             },
@@ -3679,8 +3680,8 @@ export const DATA: DataByLang = {
               color: 'ck',
               acts: [
                 {
-                  title: 'Define guidelines for an action program for a territory',
-                  desc: 'For a given territory experiencing strong pressures (urbanization, pollution, drought), students define an action program and describe the necessary trade-offs.'
+                  title: 'Outline an action program for a local area',
+                  desc: 'For a given area under heavy pressure (urbanization, pollution, drought), students define an action program and describe the necessary trade-offs.'
                 },
                 {
                   title: 'Design a nature-based solution',
@@ -3694,7 +3695,7 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Expert debate on an ecological controversy',
-                  desc: 'Role-play: students debate the management of a controversial territory or issue (wolf reintroduction, land artificialization, wetland management) using scientific data.'
+                  desc: 'Role-play: students debate the management of a controversial area or issue (wolf reintroduction, land take, wetland management) using scientific data.'
                 },
                 {
                   title: 'Analyze how biodiversity is incorporated into a sectoral scenario',
@@ -3709,16 +3710,16 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just rediscovered how scientific ecology is at the heart of the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just rediscovered how scientific ecology is at the heart of the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which ecological concept from your course has the most direct application to a transition issue?',
-              placeholder: 'E.g.: ecosystem resilience, ecosystem services, population dynamics...'
+              placeholder: 'E.g., ecosystem resilience, ecosystem services, population dynamics...'
             },
             {
-              q: 'How do you imagine introducing fieldwork or a concrete case related to the transition in your next lesson?',
+              q: 'How could you introduce fieldwork or a concrete case related to the transition in your next lesson?',
               placeholder:
-                'E.g.: using a locally disturbed ecosystem as a case study for a modeling session...'
+                'E.g., using a disturbed local ecosystem as a case study for a modeling session...'
             }
           ],
           resource: {
@@ -3738,12 +3739,12 @@ export const DATA: DataByLang = {
           cards: [
             {
               verb: 'Change perspectives',
-              text: 'Art evokes emotions and helps us better feel the beauty and fragility of nature, or the violence of transformations in our environment. Your students learn to develop ecological awareness through aesthetic experience.',
+              text: 'Art stirs emotions and helps us feel more deeply the beauty and fragility of nature, or the violence of the changes to our environment. Your students learn to develop ecological awareness through aesthetic experience.',
               color: 'ct'
             },
             {
               verb: 'Create new narratives',
-              text: 'Art invents stories, images, and symbols that inspire action and open up the realm of possibilities. Your students learn to create works that transform collective imaginaries.',
+              text: 'Art invents stories, images, and symbols that inspire action and open up new possibilities. Your students learn to create works that transform collective imaginaries.',
               color: 'cp'
             },
             {
@@ -3758,7 +3759,7 @@ export const DATA: DataByLang = {
             }
           ],
           closing:
-            'Creating feelings, transforming imaginaries, questioning our ways of life, bringing people together around narratives and experiences: the contributions of art to the TEDS are multiple and irreplaceable.'
+            "Stirring emotions, transforming imaginaries, questioning our ways of life, bringing people together around shared narratives and experiences: art's contributions to the ecological transition are many and irreplaceable."
         },
         {
           type: 'competences',
@@ -3770,7 +3771,7 @@ export const DATA: DataByLang = {
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
-                'Students understand how artists address ecological issues in different cultural contexts and decode the evolution of artistic sensitivities toward nature and artificialization.'
+                'Students understand how artists address ecological issues in different cultural contexts and trace how artistic sensibilities toward nature and human-made environments have evolved.'
             },
             {
               name: 'Creativity and innovation',
@@ -3784,7 +3785,7 @@ export const DATA: DataByLang = {
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students analyze contradictions between art, consumer society, and ecological transition, and question the ecological impact of their own artistic practices (transport, exhibitions, dissemination).'
+                'Students analyze contradictions between art, consumer society, and the ecological transition, and question the ecological impact of their own artistic practices (transport, exhibitions, dissemination).'
             }
           ],
           also: [
@@ -3792,7 +3793,7 @@ export const DATA: DataByLang = {
             'Imagine new ways of thinking about and representing the world',
             'Carry out collective artistic projects that foster engagement',
             'Contribute to ecological awareness initiatives through the arts',
-            'Translate complex issues into forms that are sensitive and accessible',
+            'Translate complex issues into sensory, accessible forms',
             'Use art as a vehicle for mobilization and knowledge transmission'
           ]
         },
@@ -3810,7 +3811,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Listening practices and field recording',
-                  desc: 'Students record sounds in different locations, ranging from highly to minimally anthropized environments, and create a sound piece. An exercise in sensory attention to the environment and its transformations.'
+                  desc: 'Students record sounds in different locations, from heavily to barely human-altered environments, and create a sound piece. An exercise in sensory attention to the environment and how it changes.'
                 }
               ]
             },
@@ -3820,11 +3821,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Create comic-book pages about the transition',
-                  desc: 'In multidisciplinary groups, students create comic-book pages serving as educational materials on a TEDS issue. A combination of visual storytelling and scientific knowledge.'
+                  desc: 'In multidisciplinary groups, students create comic-book pages as educational materials on an ecological transition issue. A combination of visual storytelling and scientific knowledge.'
                 },
                 {
                   title: 'Slam poetry and scientific communication',
-                  desc: 'Invite or have students create a slam poem about an ecological transition issue. Students work on transforming scientific knowledge into a collective artistic presentation.'
+                  desc: 'Invite a slam poet, or have students write a slam poem, about an ecological transition issue. Students work on transforming scientific knowledge into a collective artistic performance.'
                 }
               ]
             },
@@ -3834,11 +3835,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Creative workshop using recycled materials',
-                  desc: 'Students create a visual artwork using only recovered or natural materials. The workshop questions the relationship to matter, waste, and resources in artistic practice.'
+                  desc: 'Students create a visual artwork using only salvaged or natural materials. The workshop explores our relationship with materials, waste, and resources in artistic practice.'
                 },
                 {
                   title: 'Ecosomatic practices and attention to environments',
-                  desc: 'Body-based exercises (dance, theatre) that invite students to sense living beings within themselves and develop ecological attention to their environment. An intersectional approach between dance/theatre arts and ecology.'
+                  desc: 'Body-based exercises (dance, theater) that invite students to sense the living world within themselves and develop ecological attention to their environment. An approach at the intersection of dance, theater, and ecology.'
                 }
               ]
             },
@@ -3847,12 +3848,12 @@ export const DATA: DataByLang = {
               color: 'cy',
               acts: [
                 {
-                  title: 'Forum theatre on a transition issue',
-                  desc: "Organize forum theatre around a scenario related to the ecological transition. Students perform and then spectators intervene. Augusto Boal's method is a powerful tool for raising awareness."
+                  title: 'Forum theater on a transition issue',
+                  desc: "Organize a forum theater session around a scenario related to the ecological transition. Students perform, then spectators step in. Augusto Boal's method is a powerful tool for raising awareness."
                 },
                 {
-                  title: 'Artistic ecological festival or week',
-                  desc: 'Organize a week with a collective program: performances, screenings, workshops, exhibitions, conferences. Groups of students produce an artistic outcome with a free choice of format.'
+                  title: 'Ecological arts festival or week',
+                  desc: 'Organize a week with a collective program: performances, screenings, workshops, exhibitions, talks. Student groups produce an artistic piece in the format of their choice.'
                 }
               ]
             }
@@ -3863,17 +3864,17 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how the arts fit into the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just discovered how the arts fit into the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which artistic form in your course could incorporate an ecological issue as material or subject?',
               placeholder:
-                'E.g.: a creative workshop on the theme of the living world, an analysis of ecological artworks...'
+                'E.g., a creative workshop on the theme of the living world, an analysis of ecological artworks...'
             },
             {
-              q: 'How do you imagine making the transition a context for artistic experimentation in your course?',
+              q: 'How could you make the transition a context for artistic experimentation in your course?',
               placeholder:
-                'E.g.: introducing a constraint requiring sustainable materials in a future creative workshop...'
+                'E.g., requiring sustainable materials in an upcoming creative workshop...'
             }
           ],
           resource: {
@@ -3894,7 +3895,7 @@ export const DATA: DataByLang = {
           cards: [
             {
               verb: 'Understand governance',
-              text: 'Who decides, at what level, and how? You teach your students to identify the different levels of multi-level governance (local, national, international) and the stakeholders involved in transition decisions.',
+              text: 'Who decides, at what level, and how? You teach your students to identify the levels of governance (local, national, international) and the stakeholders involved in transition decisions.',
               color: 'ct'
             },
             {
@@ -3904,17 +3905,17 @@ export const DATA: DataByLang = {
             },
             {
               verb: 'Evaluate public policies',
-              text: 'Design, evaluate, and compare transition policies: instruments used (taxes, regulations, subsidies), what works or fails depending on the context. This is at the heart of your discipline.',
+              text: 'Designing, evaluating, and comparing transition policies: which instruments to use (taxes, regulations, subsidies), and what works or fails depending on the context. This is at the heart of your discipline.',
               color: 'ck'
             },
             {
               verb: 'Analyze ecological democracy',
-              text: 'Distinguish and analyze forms of democracy mobilized for the transition: participatory and deliberative. Understand the role of citizen mobilizations and new forms of shared governance.',
+              text: 'Your students learn to distinguish and analyze the forms of democracy used in the transition, such as participatory and deliberative democracy, and to understand the role of citizen movements and new forms of shared governance.',
               color: 'cy'
             }
           ],
           closing:
-            'The ecological transition is above all a political issue because it concerns how societies organize themselves, make decisions, arbitrate, and transform. Your discipline is at the heart of these questions.'
+            'The ecological transition is above all a political issue, because it concerns how societies organize themselves, make decisions, settle trade-offs, and transform. Your discipline is at the heart of these questions.'
         },
         {
           type: 'competences',
@@ -3933,14 +3934,14 @@ export const DATA: DataByLang = {
               tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
-                'Students identify the narratives, beliefs, and ideologies mobilized in political decision-making on the transition (green growth versus degrowth) and analyze the visions guiding collective choices.'
+                'Students identify the narratives, beliefs, and ideologies that shape political decision-making on the transition (green growth versus degrowth) and analyze the visions guiding collective choices.'
             },
             {
               name: 'Citizenship and engagement',
               tag: 'transversal',
               tagClass: 'transversal',
               concrete:
-                'Students understand the role of citizen mobilizations and new forms of shared governance, and develop their ability to participate in democratic debates on ecological issues.'
+                'Students understand the role of citizen movements and new forms of shared governance, and develop their ability to participate in democratic debates on ecological issues.'
             }
           ],
           also: [
@@ -3962,11 +3963,11 @@ export const DATA: DataByLang = {
               acts: [
                 {
                   title: 'Simulate an international climate negotiation (COP)',
-                  desc: 'Students represent different countries in a climate negotiation. They apply mechanisms of cooperation and conflict and negotiate commitments according to their national interests.'
+                  desc: 'Students represent different countries in a climate negotiation. They experience the dynamics of cooperation and conflict and negotiate commitments based on their national interests.'
                 },
                 {
                   title: 'Analyze the multi-level governance of a climate policy',
-                  desc: 'Examine how a climate policy (e.g. the Climate and Resilience Law) connects European, national, and local levels. Identify stakeholders, tensions, and room for maneuver.'
+                  desc: 'Examine how a climate policy (e.g., the Climate and Resilience Law) connects European, national, and local levels. Identify stakeholders, tensions, and room for maneuver.'
                 }
               ]
             },
@@ -3980,7 +3981,7 @@ export const DATA: DataByLang = {
                 },
                 {
                   title: 'Debate: North/South climate justice',
-                  desc: '"Do developed countries have a particular responsibility for the global ecological transition?" Structured debate based on data concerning historical responsibilities and current vulnerabilities.'
+                  desc: '"Do developed countries have a particular responsibility for the global ecological transition?" A structured debate based on data on historical responsibilities and current vulnerabilities.'
                 }
               ]
             },
@@ -3993,8 +3994,8 @@ export const DATA: DataByLang = {
                   desc: 'Using real cases (Swedish carbon tax, European carbon market), students analyze the conditions for success and failure of an economic transition instrument.'
                 },
                 {
-                  title: 'Compare two transition policies in two countries',
-                  desc: 'Comparative analysis of the same transition policy (building renovation, mobility, energy) in two different countries: contexts, instruments, results, and lessons to be learned.'
+                  title: 'Compare the same transition policy in two countries',
+                  desc: 'Comparative analysis of the same transition policy (building renovation, mobility, energy) in two different countries: contexts, instruments, results, and lessons learned.'
                 }
               ]
             },
@@ -4019,17 +4020,17 @@ export const DATA: DataByLang = {
         {
           type: 'votretour',
           statement: 'Your turn.',
-          sub: 'You have just discovered how political science fits into the ecological transition. Make the connection with your own teaching.',
+          sub: 'You have just discovered how political science fits into the ecological transition. Now connect it to your own teaching.',
           prompts: [
             {
               q: 'Which concept or case from your course has the most direct connection to an ecological governance issue?',
               placeholder:
-                'E.g.: public policies, participatory democracy, international relations...'
+                'E.g., public policies, participatory democracy, international relations...'
             },
             {
-              q: 'How do you imagine introducing a real environmental policy case into your next lesson?',
+              q: 'How could you introduce a real environmental policy case into your next lesson?',
               placeholder:
-                'E.g.: analyzing a recent climate policy decision, simulating an international negotiation...'
+                'E.g., analyzing a recent climate policy decision, simulating an international negotiation...'
             }
           ],
           resource: {
