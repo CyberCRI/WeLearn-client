@@ -447,8 +447,8 @@ export const fr = {
     }
   },
   microlearning: {
-    mainTitle: 'Choisissez un sujet :',
-    chooseSdg: "Choisissez l'ODD qui vous intéresse :"
+    mainTitle: 'Choisissez un sujet :',
+    chooseSdg: "Choisissez l'ODD qui vous intéresse :"
   },
   autoEvaluation: {
     notAtAll: 'Pas vraiment',
@@ -456,19 +456,19 @@ export const fr = {
     start: {
       badge: 'Avant de commencer',
       title: 'Deux petites questions',
-      subtitle: '30 secondes pour nous aider à savoir si ce parcours répond à un vrai besoin.'
+      subtitle: "30 secondes pour nous aider à mesurer l'apport pédagogique de ce parcours."
     },
     end: {
       badge: 'Avant de partir',
       title: 'Un dernier mot',
       subtitle:
-        "Les mêmes questions qu'au départ, plus deux autres, pour voir ce qui a changé. Toujours 30 secondes."
+        "Les mêmes questions qu'au départ, plus deux autres, pour mesurer ce qui a évolué. Toujours 30 secondes."
     },
     firstQuestion:
-      'Je vois clairement le lien entre ma discipline ({discipline}) et la transition écologique',
-    secondQuestion: "Je me sens capable d'intégrer ce sujet dans mon enseignement",
-    willUse: 'Comptez-vous utiliser ce que vous venez de voir dans un prochain cours ?',
-    feedback: 'Une remarque à partager avec nous ?'
+      'Je vois clairement le lien entre ma discipline ({discipline}) et la transition écologique.',
+    secondQuestion: "Je me sens capable d'intégrer ce sujet dans mon enseignement.",
+    willUse: 'Comptez-vous utiliser ce que vous venez de voir dans un prochain cours ?',
+    feedback: 'Une remarque à partager avec nous ?'
   },
   previous: 'Précédent',
   previous_page: 'Page précédente',

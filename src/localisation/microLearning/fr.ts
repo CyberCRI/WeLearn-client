@@ -1,7 +1,7 @@
 export const microLearning = {
   hint: '4 étapes · environ 5 minutes',
   welcomeScreen: {
-    title: 'Votre discipline contribue déjà à la transition écologique.',
+    title: 'Votre discipline contribue déjà à la transition écologique',
     subtitle:
       "Un parcours d'apprentissage pour les enseignant·es du supérieur. Choisissez votre discipline et découvrez comment la transition écologique et le développement soutenable s'intègrent naturellement à ce que vous enseignez déjà.",
     label: 'Choisissez votre discipline',
@@ -23,8 +23,8 @@ export const microLearning = {
     polsci: 'Science politique'
   },
   briefingScreen: {
-    title: 'Votre parcours est prêt.',
-    intro: 'En quelques minutes, vous allez :',
+    title: 'Votre parcours est prêt',
+    intro: 'En quelques minutes, vous allez :',
     primaryButton: 'Commencer',
     ghostButton: 'Changer de discipline',
     objectives: {
@@ -44,7 +44,7 @@ export const microLearning = {
     yourTurn: 'À vous de jouer'
   },
   flipCards: {
-    bravo: '✓ Bravo !',
+    bravo: '✓ Bravo !',
     completed: 'Vous avez découvert tous les apports de cette discipline.',
     clickToDiscover: 'Cliquez pour découvrir'
   },
@@ -58,10 +58,11 @@ export const microLearning = {
     alsoTitle: 'Autres compétences développées'
   },
   reflection: {
-    ctaSource: 'Consulter la ressource →'
+    ctaSource: 'Consulter la ressource →',
+    resourceSubtitle: 'Apports croisés et impacts'
   },
   completeScreen: {
-    title: 'Parcours terminé !',
+    title: 'Parcours terminé !',
     subtitle: 'Vous avez exploré les liens entre votre discipline et la transition écologique.',
     description:
       'La prochaine étape se passe dans votre salle de cours. Choisissez une activité, adaptez un exemple ou consultez la ressource proposée pour aller plus loin.',

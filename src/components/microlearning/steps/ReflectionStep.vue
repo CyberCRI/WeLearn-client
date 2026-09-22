@@ -34,6 +34,7 @@
         <h3>
           {{ step.resource.title }}
         </h3>
+        <p class="resource-subtitle">{{ $t('microLearning.reflection.resourceSubtitle') }}</p>
 
         <a :href="step.resource.href" target="_blank" rel="noopener noreferrer">
           {{ $t('microLearning.reflection.ctaSource') }}
@@ -167,6 +168,12 @@ watch(
 
 .resource-content h3 {
   margin: 0.25rem;
+}
+
+.resource-subtitle {
+  margin: 0 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  opacity: 0.75;
 }
 
 .resource-content a {

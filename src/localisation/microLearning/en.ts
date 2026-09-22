@@ -1,11 +1,11 @@
 export const microLearning = {
   hint: '4 steps · about 5 minutes',
   welcomeScreen: {
-    title: 'Your discipline already contributes to the ecological transition.',
+    title: 'Sustainability is already part of what you teach',
     subtitle:
-      'A learning journey for higher education instructors. Choose your discipline and discover how the ecological transition and sustainable development connect naturally with what you already teach.',
+      'A short learning journey for university instructors. Pick your discipline to see how it already connects to sustainability, and how to bring that connection into your classes.',
     label: 'Choose your discipline',
-    primaryButton: 'See my learning journey'
+    primaryButton: 'Continue'
   },
   disciplineNames: {
     math: 'Mathematics',
@@ -23,16 +23,15 @@ export const microLearning = {
     polsci: 'Political Science'
   },
   briefingScreen: {
-    title: 'Your learning journey is ready.',
+    title: 'Your learning journey is ready',
     intro: 'In just a few minutes, you will:',
     primaryButton: 'Get started',
     ghostButton: 'Change discipline',
     objectives: {
-      understand:
-        'Understand how your discipline contributes to the ecological transition and sustainable development',
+      understand: 'See how your discipline contributes to sustainability',
       identify:
-        'Identify the skills your students develop when you connect your discipline to the ecological transition and sustainable development',
-      discover: 'Discover practical activities you can add to a class you already teach'
+        'Identify the skills your students build when you link your discipline to sustainability',
+      discover: 'Find practical activities you can add to a class you already teach'
     }
   },
   restart: 'Start over',
@@ -45,28 +44,27 @@ export const microLearning = {
   },
   flipCards: {
     bravo: '✓ Well done!',
-    completed: "You've discovered everything this discipline contributes.",
-    clickToDiscover: 'Click to reveal'
+    completed: "You've explored everything this discipline contributes.",
+    clickToDiscover: 'Click to flip'
   },
   contributions: {
     title: 'What your discipline contributes',
-    subtitle:
-      'By teaching this discipline, you are already contributing to the ecological transition.'
+    subtitle: 'By teaching this discipline, you are already contributing to sustainability.'
   },
   competence: {
-    title: 'The skills your students develop',
+    title: 'Skills your students develop',
     concretely: 'In practice',
     alsoTitle: 'Other skills developed'
   },
   reflection: {
-    ctaSource: 'View the resource →'
+    ctaSource: 'View the resource →',
+    resourceSubtitle: 'Mutual contributions and impacts'
   },
   completeScreen: {
     title: 'Journey complete!',
-    subtitle:
-      "You've explored the connections between your discipline and the ecological transition.",
+    subtitle: "You've explored how your discipline connects to sustainability.",
     description:
-      'The next step happens in your classroom. Choose an activity, adapt an example, or explore the suggested resource to go further.',
+      'Next, bring it into your classroom: pick an activity, adapt an example, or read the suggested resource to go further.',
     primaryButton: 'Create a syllabus with WeLearn',
     secondaryButton: 'Explore another discipline'
   }
