@@ -56,7 +56,7 @@ export const microLearning = {
   competence: {
     title: 'The skills your students develop',
     concretely: 'In practice',
-    alsoTitle: 'This discipline also helps develop'
+    alsoTitle: 'Other skills developed'
   },
   reflection: {
     ctaSource: 'View the resource →'
