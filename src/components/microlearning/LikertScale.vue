@@ -1,9 +1,15 @@
 <template>
   <div class="scaleWrapper">
     <div class="scaleLevel" :key="value" v-for="value in scale">
-      <div class="scaleValue" :class="{ selected: selected === value }" @click="selectValue(value)">
+      <button
+        type="button"
+        class="scaleValue"
+        :class="{ selected: selected === value }"
+        :disabled="disabled"
+        @click="selected = value"
+      >
         {{ value }}
-      </div>
+      </button>
       <span class="levelLegend" v-if="value === 1 || value == 5">{{
         value === 1 ? $t('autoEvaluation.notAtAll') : $t('autoEvaluation.tottally')
       }}</span>
@@ -12,13 +18,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
 const scale = [1, 2, 3, 4, 5];
-const selected: Ref<number | undefined> = ref(undefined);
-
-const selectValue = (val: number) => {
-  selected.value = val;
-};
+const selected = defineModel<number>();
+defineProps<{ disabled?: boolean }>();
 </script>
 
 <style lang="css" scoped>
@@ -36,9 +38,16 @@ const selectValue = (val: number) => {
   margin-top: 0.5rem;
   cursor: pointer;
   border: 1px solid var(--neutral-50);
+  font: inherit;
+  color: inherit;
+  width: 100%;
 }
 
-.scaleValue:hover {
+.scaleValue:disabled {
+  cursor: default;
+}
+
+.scaleValue:hover:not(:disabled) {
   border-color: var(--primary-hover);
   color: var(--primary-hover);
 }

@@ -1,8 +1,8 @@
 <template>
   <header class="trail-header">
     <div class="left">
-      <button class="back-button" @click="$emit('restart')">
-        <span class="'is-flex'">← </span>{{ $t('microLearning.restart') }}
+      <button class="back-button" @click="confirmRestart">
+        {{ $t('microLearning.briefingScreen.ghostButton') }}
       </button>
     </div>
 
@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import type { DisciplineMeta } from '@/types/microlearning';
+import i18n from '@/localisation/i18n';
 
 defineProps<{
   discipline: DisciplineMeta | null;
@@ -32,9 +33,13 @@ defineProps<{
   totalSteps: number;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
   (e: 'restart'): void;
 }>();
+
+function confirmRestart() {
+  if (window.confirm(i18n.global.t('microLearning.restartConfirm'))) emit('restart');
+}
 </script>
 
 <style scoped lang="css">

@@ -6,35 +6,39 @@
 
     <div class="spacer" />
 
-    <button class="btn btn-primary" @click="$emit('next')">
-      {{ $t(nextLabel) }}
-    </button>
+    <div class="next-group">
+      <button class="btn btn-primary" :disabled="!canNext" @click="$emit('next')">
+        {{ $t(nextLabel) }}
+      </button>
+      <p v-if="!canNext && hint" class="next-hint">{{ $t(hint) }}</p>
+      <a v-if="skippable" class="skip-link" @click="$emit('skip')">{{ $t('skip') }}</a>
+    </div>
   </footer>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
-const props = defineProps<{
-  showBack: boolean;
-  canNext: boolean;
-  isLast: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    showBack?: boolean;
+    canNext?: boolean;
+    nextLabel?: string;
+    hint?: string;
+    skippable?: boolean;
+  }>(),
+  { showBack: true, canNext: true, nextLabel: 'next' }
+);
 
 defineEmits<{
   (e: 'back'): void;
   (e: 'next'): void;
+  (e: 'skip'): void;
 }>();
-
-const nextLabel = computed(() => {
-  return props.isLast ? 'finish' : 'next';
-});
 </script>
 
 <style scoped>
 .trail-navigation {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   margin-top: 2rem;
   padding: 1.5rem 0.5rem;
@@ -43,6 +47,24 @@ const nextLabel = computed(() => {
 
 .spacer {
   flex: 1;
+}
+
+.next-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+.next-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--neutral-80);
+}
+
+.skip-link {
+  font-size: 0.85rem;
+  color: var(--neutral-80);
 }
 
 .btn {
@@ -90,6 +112,11 @@ const nextLabel = computed(() => {
 
   .btn {
     width: 100%;
+  }
+
+  .next-group {
+    align-items: stretch;
+    text-align: center;
   }
 }
 </style>

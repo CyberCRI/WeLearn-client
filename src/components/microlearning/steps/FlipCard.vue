@@ -1,5 +1,5 @@
 <template>
-  <div class="flip-card" :class="{ flipped, [card.color]: card.color }" @click="flip">
+  <div class="flip-card" :class="{ flipped, [card.color]: card.color }" @click="$emit('toggle')">
     <div class="inner">
       <div class="front">
         <h3>
@@ -24,39 +24,31 @@
 
 <script setup lang="ts">
 import type { FlipCard } from '@/types/microlearning';
-import { ref } from 'vue';
 
 defineProps<{
   card: FlipCard;
+  flipped: boolean;
 }>();
 
-const emit = defineEmits<{
-  (e: 'flip'): void;
+defineEmits<{
+  (e: 'toggle'): void;
 }>();
-
-const flipped = ref(false);
-
-function flip() {
-  if (flipped.value) return;
-
-  flipped.value = true;
-  emit('flip');
-}
 </script>
 
 <style scoped>
 .flip-card {
   cursor: pointer;
-  height: 18rem;
+  display: grid;
+  min-height: 18rem;
   perspective: 1000px;
   border-radius: 16px;
   background-color: var(--primary-hover);
   color: var(--neutral-0);
 }
 
+/* Both faces share one grid cell: the card grows to fit the longest face, no overflow */
 .inner {
-  position: relative;
-  height: 100%;
+  display: grid;
   transition: transform 0.6s;
   transform-style: preserve-3d;
 }
@@ -93,8 +85,7 @@ function flip() {
 .front,
 .back {
   opacity: 1;
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
   backface-visibility: hidden;
   border-radius: 16px;
   padding: 1.5rem;
@@ -117,11 +108,6 @@ function flip() {
 
 h3 {
   margin-bottom: 0.5rem;
-}
-
-@media (max-width: 1400px) {
-  .flip-card .back {
-    font-size: 0.8em;
-  }
+  font-weight: 700;
 }
 </style>
