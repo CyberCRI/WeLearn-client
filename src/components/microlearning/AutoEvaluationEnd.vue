@@ -1,9 +1,9 @@
 <template>
   <div class="fullPageEvaluation">
-    <p class="abadge">Avant de commencer</p>
-    <p class="title is-4">Une dernière chose</p>
+    <p class="abadge">{{ $t('autoEvaluation.end.badge') }}</p>
+    <p class="title is-4">{{ $t('autoEvaluation.end.title') }}</p>
     <p class="subtitle is-6">
-      30 secondes, ça nous aide à savoir si ce parcours répond à un vrai besoin.
+      {{ $t('autoEvaluation.end.subtitle') }}
     </p>
     <QuestionComponent
       type="likert"

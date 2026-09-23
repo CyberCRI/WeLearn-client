@@ -29,7 +29,7 @@
     </div>
 
     <aside v-if="step.also?.length" class="also-section">
-      <p class="also-title">Cette discipline contribue également à développer</p>
+      <p class="also-title">{{ $t('microLearning.competence.alsoTitle') }}</p>
 
       <div class="also-tags">
         <span v-for="tag in step.also" :key="tag" class="also-tag">

@@ -6,7 +6,7 @@
       </div>
 
       <span class="badge">
-        {{ discipline.name }}
+        {{ $t(`microLearning.disciplineNames.${discipline.id}`) }}
       </span>
 
       <h2>{{ $t('microLearning.briefingScreen.title') }}</h2>

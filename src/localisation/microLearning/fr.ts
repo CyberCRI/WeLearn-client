@@ -1,11 +1,11 @@
 export const microLearning = {
   hint: '4 étapes · environ 5 minutes',
   welcomeScreen: {
-    title: 'Votre discipline contribue déjà à la transition écologique.',
+    title: 'Votre discipline contribue déjà à la transition écologique',
     subtitle:
-      "Un parcours d'apprentissage pour les enseignants du supérieur. Choisissez votre domaine et découvrez comment la transition écologique et le développement soutenable s'intègrent naturellement à ce que vous enseignez déjà.",
+      "Un parcours d'apprentissage pour les enseignant·es du supérieur. Choisissez votre discipline et découvrez comment la transition écologique et le développement soutenable s'intègrent naturellement à ce que vous enseignez déjà.",
     label: 'Choisissez votre discipline',
-    primaryButton: 'Voir le parcours'
+    primaryButton: 'Voir mon parcours'
   },
   disciplineNames: {
     math: 'Mathématiques',
@@ -14,25 +14,25 @@ export const microLearning = {
     law: 'Droit',
     philosophy: 'Philosophie',
     psychology: 'Psychologie',
-    geography: 'Geographie',
+    geography: 'Géographie',
     health: 'Santé',
     staps: 'STAPS',
     letters: 'Lettres',
-    ecology: 'Ecologie',
+    ecology: 'Écologie',
     art: 'Arts',
-    polsci: 'Sciences Politiques'
+    polsci: 'Science politique'
   },
   briefingScreen: {
-    title: 'Votre parcours est prêt.',
-    intro: 'En quelques minutes, vous allez :',
+    title: 'Votre parcours est prêt',
+    intro: 'En quelques minutes, vous allez :',
     primaryButton: 'Commencer',
     ghostButton: 'Changer de discipline',
     objectives: {
       understand:
         'Comprendre comment votre discipline contribue à la transition écologique et au développement soutenable',
       identify:
-        'Identifier les compétences que vos étudiant·es développent lorsque vous reliez votre discipline à la TEDS',
-      discover: 'Découvrir des activités concrètes à intégrer dans une séance existante'
+        'Identifier les compétences que vos étudiant·es développent lorsque vous reliez votre discipline à la transition écologique et au développement soutenable',
+      discover: 'Découvrir des activités concrètes à intégrer dans un cours existant'
     }
   },
   restart: 'Recommencer',
@@ -41,30 +41,32 @@ export const microLearning = {
     contribution: 'Les apports',
     skills: 'Les compétences',
     activity: 'Une activité',
-    yourTurn: 'À votre tour'
+    yourTurn: 'À vous de jouer'
   },
   flipCards: {
-    bravo: '✓ Bravo !',
+    bravo: '✓ Bravo !',
     completed: 'Vous avez découvert tous les apports de cette discipline.',
     clickToDiscover: 'Cliquez pour découvrir'
   },
   contributions: {
-    title: 'Les contributions de votre discipline',
-    subtitle: 'En enseignant cette discipline vous contritbuez déjà à la transition écologique'
+    title: 'Les apports de votre discipline',
+    subtitle: 'En enseignant cette discipline, vous contribuez déjà à la transition écologique.'
   },
   competence: {
     title: 'Les compétences que vos étudiant·es développent',
-    concretely: 'Concrètement'
+    concretely: 'Concrètement',
+    alsoTitle: 'Autres compétences développées'
   },
   reflection: {
-    ctaSource: 'Consulter la ressource →'
+    ctaSource: 'Consulter la ressource →',
+    resourceSubtitle: 'Apports croisés et impacts'
   },
   completeScreen: {
-    title: 'Parcours terminé.',
+    title: 'Parcours terminé !',
     subtitle: 'Vous avez exploré les liens entre votre discipline et la transition écologique.',
-    decription:
-      'La prochaine étape se passe désormais dans votre salle de cours. Choisissez une activité, adaptez un exemple ou ouvrez la ressource proposée pour aller plus loin.',
-    primaryButton: 'Creer un syllabus avec WeLearn',
+    description:
+      'La prochaine étape se passe dans votre salle de cours. Choisissez une activité, adaptez un exemple ou consultez la ressource proposée pour aller plus loin.',
+    primaryButton: 'Créer un syllabus avec WeLearn',
     secondaryButton: 'Explorer une autre discipline'
   }
 };

@@ -446,24 +446,25 @@ export const en = {
     chooseSdg: 'Choose an SDG:'
   },
   autoEvaluation: {
-    notAtAll: 'not really',
-    tottally: 'completely',
+    notAtAll: 'Not really',
+    tottally: 'Completely',
     start: {
       badge: 'Before you begin',
-      title: 'One last thing',
-      subtitle: '30 seconds — it helps us know whether this journey addresses a real need.'
+      title: 'Two quick questions',
+      subtitle:
+        'This takes 30 seconds and helps us measure the educational impact of this learning journey.'
     },
     end: {
-      badge: 'Before we conclude',
-      title: 'One last thing?',
+      badge: 'Before you go',
+      title: 'One last thing',
       subtitle:
-        'The same questions as at the start, to see what has changed. Still just 30 seconds.'
+        'The same questions as at the start, plus two more, so we can see what has changed. It only takes 30 seconds.'
     },
     firstQuestion:
-      'I clearly see the connection between {discipline} and the ecological transition',
-    secondQuestion: 'I feel capable of integrating this topic into my teaching',
-    willUse: 'Do you plan to use what you just learned in an upcoming class?',
-    feedback: 'Do you have any feedback to share with us?'
+      'I clearly see the connection between my discipline ({discipline}) and sustainability.',
+    secondQuestion: 'I feel confident bringing this topic into my teaching.',
+    willUse: 'Do you plan to use what you have learned in an upcoming class?',
+    feedback: "Is there anything else you'd like to tell us?"
   },
   previous: 'Previous',
   previous_page: 'Previous page',
@@ -473,11 +474,11 @@ export const en = {
   edit: 'Edit',
   save: 'Save',
   finish: 'Finish',
-  skip: 'Skip',
+  skip: 'Skip this step',
   yes: 'Yes',
   maybe: 'Maybe',
   notForNow: 'Not for now',
-  typeHere: 'Type here',
+  typeHere: 'Type your answer here',
   courseInformation: 'Course information',
   inputMode: 'Input mode',
   inputFile: 'Input file',
