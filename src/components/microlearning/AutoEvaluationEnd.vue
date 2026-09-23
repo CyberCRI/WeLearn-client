@@ -6,30 +6,51 @@
       {{ $t('autoEvaluation.end.subtitle') }}
     </p>
     <QuestionComponent
+      v-model="answers.link"
       type="likert"
       :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })"
     />
-    <QuestionComponent type="likert" :question="$t('autoEvaluation.secondQuestion')" />
-    <QuestionComponent type="yesMaybeNot" :question="$t('autoEvaluation.willUse')" />
-    <QuestionComponent type="openDialogue" :question="$t('autoEvaluation.feedback')" />
-    <div class="buttons">
-      <button class="btn-primary" @click="$emit('start')">
-        {{ $t('finish') }}
-      </button>
-      <a @click="$emit('start')">{{ $t('skip') }}</a>
-    </div>
+    <QuestionComponent
+      v-model="answers.confidence"
+      type="likert"
+      :question="$t('autoEvaluation.secondQuestion')"
+    />
+    <QuestionComponent
+      v-model="answers.willUse"
+      type="yesMaybeNot"
+      :question="$t('autoEvaluation.willUse')"
+    />
+    <QuestionComponent
+      v-model="answers.feedback"
+      type="openDialogue"
+      :question="$t('autoEvaluation.feedback')"
+    />
+    <TrailNavigation
+      class="nav"
+      next-label="finish"
+      skippable
+      @back="$emit('back')"
+      @next="$emit('start')"
+      @skip="$emit('start')"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import QuestionComponent from '@/components/microlearning/QuestionComponent.vue';
+import TrailNavigation from '@/components/microlearning/TrailNavigation.vue';
+import type { EvalAnswers } from '@/composables/useMicrolearning';
 
 defineProps<{
   discipline?: string;
 }>();
 
+// reactive object owned by useMicrolearning, fields are filled in place
+const answers = defineModel<EvalAnswers>('answers', { required: true });
+
 defineEmits<{
   (e: 'start'): void;
+  (e: 'back'): void;
 }>();
 </script>
 
@@ -45,21 +66,14 @@ defineEmits<{
   width: 100%;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.subtitle {
+  max-width: 560px;
+  text-align: center;
 }
 
-.btn-primary {
-  padding: 0.9rem;
-  border: none;
-  border-radius: 10px;
-  background: var(--primary-hover);
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 1rem;
+.nav {
+  width: 100%;
+  max-width: 560px;
 }
 
 .abadge {

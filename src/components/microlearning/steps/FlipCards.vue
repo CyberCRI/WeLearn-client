@@ -9,7 +9,8 @@
         v-for="(card, index) in step.cards"
         :key="index"
         :card="card"
-        @flip="markFlipped(index)"
+        :flipped="flipped.includes(index)"
+        @toggle="$emit('toggle', index)"
       />
     </div>
 
@@ -24,39 +25,21 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
+import { computed } from 'vue';
 import FlipCard from './FlipCard.vue';
 import type { FlipStep } from '@/types/microlearning/index.js';
 
 const props = defineProps<{
   step: FlipStep;
   stepNumber?: number;
+  flipped: number[];
 }>();
 
-const emit = defineEmits<{
-  (e: 'completed'): void;
+defineEmits<{
+  (e: 'toggle', index: number): void;
 }>();
 
-const flipped = ref<Set<number>>(new Set());
-
-watch(
-  () => props.step,
-  () => {
-    flipped.value.clear();
-  }
-);
-
-const completed = computed(() => flipped.value.size === props.step.cards.length);
-
-watch(completed, (value) => {
-  if (value) {
-    emit('completed');
-  }
-});
-
-function markFlipped(id: number) {
-  flipped.value.add(id);
-}
+const completed = computed(() => props.flipped.length === props.step.cards.length);
 </script>
 
 <style scoped>
@@ -86,8 +69,14 @@ function markFlipped(id: number) {
   display: grid;
 
   grid-template-columns: 1fr 1fr;
-
+  grid-auto-rows: 1fr; /* every card as tall as the tallest one */
   gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 .success {

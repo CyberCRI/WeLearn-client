@@ -14,27 +14,39 @@
       />
       <AutoEvaluationStart
         v-else-if="ml.screen.value == ScreensEnum.autoEvalStart"
+        :answers="ml.preAnswers"
+        :locked="ml.preLocked.value"
+        @back="ml.goToBriefing"
         @start="ml.startTrail"
-        :discipline="$t(`microLearning.disciplineNames.${$t(ml?.current_disc?.value?.id || '')}`)"
+        :discipline="$t(`microLearning.disciplineNames.${ml.disc.value}`)"
       />
       <TrailScreen
         v-else-if="ml.screen.value === ScreensEnum.trail && ml.currentData.value"
         :discipline="ml.currentData.value"
         :step="ml.step.value"
         :disciplineMeta="ml.current_disc.value"
+        :flip-done="ml.flipDone.value"
+        :chosen-activity="ml.chosenActivity.value"
+        :reflection-answers="ml.reflectionAnswers"
+        :flipped-cards="ml.flippedCards.value"
+        @toggle-card="ml.toggleCard"
+        @choose-activity="ml.chooseActivity"
         @previous="ml.prevStep"
         @next="ml.nextStep"
         @restart="ml.restart"
       />
       <AutoEvaluationEnd
         v-else-if="ml.screen.value == ScreensEnum.autoEvalEnd"
+        :answers="ml.postAnswers"
+        @back="ml.backToTrail"
         @start="ml.goToComplete"
-        :discipline="$t(`microLearning.disciplineNames.${$t(ml?.current_disc?.value?.id || '')}`)"
+        :discipline="$t(`microLearning.disciplineNames.${ml.disc.value}`)"
       />
 
       <CompleteScreen
         v-else-if="ml.screen.value === ScreensEnum.complete && ml.currentData.value"
         :discipline="ml.currentData.value"
+        :chosen-activity="ml.chosenActivity.value"
         @restart="ml.restart"
       />
     </Transition>

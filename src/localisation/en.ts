@@ -452,7 +452,9 @@ export const en = {
       badge: 'Before you begin',
       title: 'Two quick questions',
       subtitle:
-        'This takes 30 seconds and helps us measure the educational impact of this learning journey.'
+        'This takes 30 seconds and helps us measure the educational impact of this learning journey.',
+      lockedNotice:
+        "You've started the journey, so these answers are now locked. They record where you started, which is how we measure what changed."
     },
     end: {
       badge: 'Before you go',

@@ -1,25 +1,23 @@
 <template>
   <div class="scaleWrapper">
-    <div
+    <button
+      type="button"
       class="scaleValue"
       :key="value"
       v-for="value in scale"
       :class="{ selected: selected === value }"
-      @click="selectValue(value)"
+      :disabled="disabled"
+      @click="selected = value"
     >
       {{ $t(value) }}
-    </div>
+    </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
 const scale = ['yes', 'maybe', 'notForNow'];
-const selected: Ref<string | undefined> = ref(undefined);
-
-const selectValue = (val: string) => {
-  selected.value = val;
-};
+const selected = defineModel<string>();
+defineProps<{ disabled?: boolean }>();
 </script>
 
 <style lang="css" scoped>
@@ -38,9 +36,15 @@ const selectValue = (val: string) => {
   margin-top: 0.5rem;
   cursor: pointer;
   border: 1px solid var(--neutral-50);
+  font: inherit;
+  color: inherit;
 }
 
-.scaleValue:hover {
+.scaleValue:disabled {
+  cursor: default;
+}
+
+.scaleValue:hover:not(:disabled) {
   border-color: var(--primary-hover);
   color: var(--primary-hover);
 }

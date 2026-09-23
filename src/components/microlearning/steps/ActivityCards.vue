@@ -1,10 +1,13 @@
 <template>
   <section class="activity-step">
-    <p class="step-intro">
-      {{ step.intro }}
-    </p>
+    <header class="step-header">
+      <p class="step-intro">
+        {{ step.intro }}
+      </p>
+      <p class="step-instruction">{{ $t('microLearning.activities.instruction') }}</p>
+    </header>
 
-    <section v-for="apport in step.apports" :key="apport.label" class="apport">
+    <section v-for="(apport, apportIndex) in step.apports" :key="apport.label" class="apport">
       <header class="apport-header">
         <span class="apport-badge" :class="apport.color">
           {{ apport.label }}
@@ -12,15 +15,26 @@
       </header>
 
       <div class="activity-grid">
-        <article
-          v-for="activity in apport.acts"
+        <label
+          v-for="(activity, actIndex) in apport.acts"
           :key="activity.title"
           class="activity-card"
           :class="{ selected: isSelected(activity) }"
-          @click="choose(activity)"
         >
+          <input
+            type="radio"
+            name="activity"
+            class="visually-hidden"
+            :checked="isSelected(activity)"
+            @click="
+              $emit(
+                'selected',
+                isSelected(activity) ? null : { apport: apportIndex, act: actIndex }
+              )
+            "
+          />
           <div class="activity-select">
-            <div class="radio" :class="{ checked: isSelected(activity) }">✓</div>
+            <div class="radio" aria-hidden="true">✓</div>
 
             <div>
               <h3>
@@ -32,57 +46,26 @@
               </p>
             </div>
           </div>
-        </article>
+        </label>
       </div>
     </section>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import type { Activity, ActivitiesStep, ActivityRef } from '@/types/microlearning';
 
-interface Activity {
-  title: string;
-
-  desc: string;
-}
-
-interface Apport {
-  label: string;
-
-  color: string;
-
-  acts: Activity[];
-}
-
-interface ActivityStep {
-  intro: string;
-
-  apports: Apport[];
-}
-
-defineProps<{
-  step: ActivityStep;
+const props = defineProps<{
+  step: ActivitiesStep;
+  selected: Activity | null;
 }>();
 
-const selected = ref<Activity | null>(null);
-
 function isSelected(activity: Activity) {
-  return selected.value?.title === activity.title;
+  return props.selected?.title === activity.title;
 }
 
-function choose(activity: Activity) {
-  selected.value = activity;
-
-  emit('selected', activity);
-
-  emit('completed');
-}
-
-const emit = defineEmits<{
-  (e: 'completed'): void;
-
-  (e: 'selected', activity: Activity): void;
+defineEmits<{
+  (e: 'selected', activity: ActivityRef | null): void;
 }>();
 </script>
 
@@ -93,12 +76,33 @@ const emit = defineEmits<{
   gap: 2rem;
 }
 
-.step-intro {
-  color: var(--text-secondary);
-  line-height: 1.7;
+.step-header {
   text-align: center;
   max-width: 720px;
   margin: 0 auto;
+}
+
+.step-intro {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0 0 1rem;
+}
+
+.step-instruction {
+  margin: 0;
+  font-weight: 600;
+  color: var(--neutral-100);
+}
+
+.visually-hidden {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.activity-card:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -225,6 +229,7 @@ const emit = defineEmits<{
 }
 
 .activity-card {
+  position: relative;
   cursor: pointer;
 }
 
