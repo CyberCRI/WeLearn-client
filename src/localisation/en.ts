@@ -292,7 +292,6 @@ export const en = {
   removeAll: 'Clear all',
   removeBookmark: 'Remove bookmark',
   removeSelection: 'Clear',
-  searchBarPlaceholder: 'Search...',
   sdgsAcronym: 'SDGs',
   sdgs: {
     1: 'No Poverty',

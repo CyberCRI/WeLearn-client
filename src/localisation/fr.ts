@@ -294,7 +294,6 @@ export const fr = {
   removeAll: 'Tout effacer',
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
-  searchBarPlaceholder: 'Rechercher...',
   sdgsAcronym: 'ODD',
   sdgs: {
     1: 'Pas de pauvreté',

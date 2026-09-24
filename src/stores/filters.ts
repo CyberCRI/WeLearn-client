@@ -45,6 +45,15 @@ export const useFiltersStore = defineStore('filters', () => {
     }
   };
 
+  // "Select all" for one category: untick all if every source is ticked, otherwise tick the missing ones
+  const toggleCategorySources = (names: Corpus['name'][]) => {
+    if (names.every((name) => sourcesFilters.value.includes(name))) {
+      sourcesFilters.value = sourcesFilters.value.filter((item) => !names.includes(item));
+    } else {
+      sourcesFilters.value = [...new Set([...sourcesFilters.value, ...names])];
+    }
+  };
+
   const handleResetFilters = () => {
     sdgFilters.value = [];
     sourcesFilters.value = [];
@@ -58,6 +67,7 @@ export const useFiltersStore = defineStore('filters', () => {
     sourcesFilters,
     handleSdgFilterChange,
     handleSourcesFilterChange,
+    toggleCategorySources,
     handleLanguageFilterChange,
     languageList,
     languageFilters,
