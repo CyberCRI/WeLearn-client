@@ -437,7 +437,8 @@ export const en = {
       description:
         'You can edit directly on this page, download a copy, and submit feedback that WeLearn will use to regenerate the syllabus — in any order, and as many times as you like.',
       giveFeedback: 'Provide feedback on the generated syllabus',
-      sendFeedback: 'Submit feedback'
+      sendFeedback: 'Submit feedback',
+      feedbackHistory: 'Changes you already requested ({n})'
     }
   },
   microlearning: {
