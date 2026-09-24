@@ -70,7 +70,7 @@ function hasQueryParams(route: RouteLocationNormalized) {
   return !!Object.keys(route.query).length;
 }
 
-router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalized) => {
+router.beforeEach(async (to: RouteLocationNormalized) => {
   const authStore = useAuthStore();
 
   // Wait for Keycloak initialization
