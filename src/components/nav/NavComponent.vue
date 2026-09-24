@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SearchIcon from '@/components/icons/SearchIcon.vue';
-import AboutIcon from '@/components/icons/AboutIcon.vue';
 import LinesLeaningIcon from '@/components/icons/LinesLeaningIcon.vue';
 import QnAIcon from '@/components/icons/QnAIcon.vue';
 import HelpComponent from '@/components/nav/HelpComponent.vue';
@@ -13,7 +12,8 @@ import LanguageSelector from './LanguageSelector.vue';
 
 const featureFlip = useFeatureFlipStore();
 
-const navEntries = [
+// Features (tools) on the left; personal/utility items on the right. About lives in the footer.
+const toolEntries = [
   {
     name: 'chat',
     to: '/q-and-a',
@@ -24,52 +24,57 @@ const navEntries = [
     name: 'syllabus',
     to: '/tutor',
     icon: BookIcon,
-    featureFlag: 'tutor',
     isFeatureEnabled: featureFlip.isFeatureEnabled('tutor')
-  },
-
-  {
-    name: 'search',
-    to: '/search',
-    icon: SearchIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('search')
-  },
-  {
-    name: 'bookmarks',
-    to: '/bookmarks',
-    icon: NavBookmarkIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('bookmarks')
   },
   {
     name: 'microlearning',
     to: '/microlearning',
     icon: LinesLeaningIcon,
-    featureFlag: 'microlearning',
     isFeatureEnabled: featureFlip.isFeatureEnabled('microlearning')
   },
   {
-    name: 'about',
-    to: '/about',
-    icon: AboutIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('about')
+    name: 'search',
+    to: '/search',
+    icon: SearchIcon,
+    isFeatureEnabled: featureFlip.isFeatureEnabled('search')
+  }
+];
+
+const utilityEntries = [
+  {
+    name: 'bookmarks',
+    to: '/bookmarks',
+    icon: NavBookmarkIcon,
+    isFeatureEnabled: featureFlip.isFeatureEnabled('bookmarks')
   }
 ];
 </script>
 <template>
   <div class="nav">
     <div class="nav-items">
-      <div v-for="entry in navEntries" :key="entry.name">
+      <template v-for="entry in toolEntries" :key="entry.name">
         <BaseNavItem
           v-if="entry.isFeatureEnabled"
           :to="entry.to"
           :name="entry.name"
           :icon="entry.icon"
         />
+      </template>
+
+      <div class="utilities">
+        <template v-for="entry in utilityEntries" :key="entry.name">
+          <BaseNavItem
+            v-if="entry.isFeatureEnabled"
+            :to="entry.to"
+            :name="entry.name"
+            :icon="entry.icon"
+          />
+        </template>
+
+        <HelpComponent />
+
+        <LanguageSelector />
       </div>
-
-      <HelpComponent />
-
-      <LanguageSelector />
     </div>
   </div>
 </template>
@@ -96,6 +101,14 @@ const navEntries = [
     display: flex;
     opacity: 1;
   }
+}
+
+.utilities {
+  margin-left: auto;
+  padding-left: 0.5rem;
+  border-left: 1px solid var(--neutral-20);
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .router-link-form {

@@ -114,6 +114,7 @@ onMounted(() => {
         :syllabus="store.syllabi"
         :updateSyllabus="store.updateSyllabus"
         :giveFeedback="store.giveFeedback"
+        :feedbackHistory="store.feedbackHistory"
         :action="stepToAction[4]"
         :restart="store.restart"
         :updateSyllabusInDB="store.updateSyllabusInDB"

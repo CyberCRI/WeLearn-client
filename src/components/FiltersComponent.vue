@@ -15,38 +15,13 @@ const props = defineProps<{
 }>();
 
 const sourcesStore = useSourcesStore();
-const availableSources = ref(sourcesStore.sourcesList);
 const { shouldClose } = toRefs(props);
-
-const handleSearchFilters = (event: Event) => {
-  if (!(event.target instanceof HTMLInputElement))
-    availableSources.value = sourcesStore.sourcesList;
-  const target = event.target as HTMLInputElement;
-  const value = target.value;
-  let temp = undefined;
-
-  for (const [category, sources] of Object.entries(sourcesStore.sourcesList)) {
-    const filteredSources = sources.filter((source) =>
-      source.name.toLowerCase().includes(value.toLowerCase())
-    );
-    if (filteredSources.length > 0) {
-      temp = temp || {};
-      temp[category] = filteredSources;
-    }
-  }
-
-  availableSources.value = temp || sourcesStore.sourcesList;
-};
 
 const hideFilters = ref(false);
 watch(shouldClose, (close) => {
   if (close) {
     hideFilters.value = close;
   }
-});
-
-watch(sourcesStore, () => {
-  availableSources.value = sourcesStore.sourcesList;
 });
 
 const filters = useFiltersStore();
@@ -70,22 +45,6 @@ const clearFilters = () => {
   </div>
   <div v-if="filters.hasFilters" class="is-flex">
     <div class="is-flex is-flex-direction-column">
-      <div class="is-flex flex-wrap selection mb-1" v-if="filters.languageFilters.length">
-        <p>{{ $t('languages') }}{{ $t(':') }}</p>
-        <GenericPillComponent
-          class="mx-1"
-          bgColor="primary"
-          :key="filter"
-          v-for="filter in filters.languageFilters"
-          :content="$t(`lang.${filter}`, `${filter}`)"
-        >
-          <template #actions>
-            <span class="is-clickable" @click="filters.handleLanguageFilterChange(filter)">
-              x
-            </span>
-          </template>
-        </GenericPillComponent>
-      </div>
       <div class="is-flex flex-wrap selection mb-1" v-if="filters.sourcesFilters.length">
         <p>{{ $t('sources') }}{{ $t(':') }}</p>
         <GenericPillComponent
@@ -114,6 +73,22 @@ const clearFilters = () => {
           </template>
         </GenericPillComponent>
       </div>
+      <div class="is-flex flex-wrap selection mb-1" v-if="filters.languageFilters.length">
+        <p>{{ $t('languages') }}{{ $t(':') }}</p>
+        <GenericPillComponent
+          class="mx-1"
+          bgColor="primary"
+          :key="filter"
+          v-for="filter in filters.languageFilters"
+          :content="$t(`lang.${filter}`, `${filter}`)"
+        >
+          <template #actions>
+            <span class="is-clickable" @click="filters.handleLanguageFilterChange(filter)">
+              x
+            </span>
+          </template>
+        </GenericPillComponent>
+      </div>
     </div>
     <p class="ml-auto mr-6 remove-all" @click="clearFilters">{{ $t('removeAll') }}</p>
   </div>
@@ -121,29 +96,22 @@ const clearFilters = () => {
     <span class="has-text-grey">{{ $t('noFiltersSelected') }}</span>
   </p>
   <div :class="{ hide: hideFilters }" class="pr-5 filters">
-    <input
-      class="input"
-      type="text"
-      :placeholder="$t('searchBarPlaceholder')"
-      @keyup="handleSearchFilters"
-    />
-
-    <details class="filter-section" open>
-      <summary>{{ $t('languages') }}</summary>
-      <div class="filter-options">
-        <LanguagesSelector :availableLanguages="filters.languageList" />
-      </div>
-    </details>
     <details class="filter-section" open>
       <summary>{{ $t('sources') }}</summary>
       <div class="filter-options">
-        <SourcesSelector :availableSources="availableSources" />
+        <SourcesSelector :availableSources="sourcesStore.sourcesList || {}" />
       </div>
     </details>
     <details class="filter-section" open>
       <summary>{{ $t('sdgsAcronym') }}</summary>
       <div class="filter-options">
         <SDGSelector />
+      </div>
+    </details>
+    <details class="filter-section" open>
+      <summary>{{ $t('languages') }}</summary>
+      <div class="filter-options">
+        <LanguagesSelector :availableLanguages="filters.languageList" />
       </div>
     </details>
   </div>
