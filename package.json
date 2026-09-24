@@ -22,6 +22,7 @@
     "docx": "^9.3.0",
     "file-saver": "^2.0.5",
     "json2md": "^2.0.3",
+    "keycloak-js": "^26.2.4",
     "lodash.isequal": "^4.5.0",
     "marked": "^12.0.2",
     "mixpanel-browser": "^2.80.0",

@@ -12,6 +12,7 @@ export const fr = {
     addBookmark: 'Ajouter aux favoris',
     removeBookmark: 'Retirer des favoris'
   },
+  logout: 'Déconnexion',
   chat: 'Chat',
   chatInputPlaceholder: 'Poser une question',
   chatNoResults:

@@ -1,12 +1,7 @@
 <template>
   <div class="language-selector">
     <select v-model="$i18n.locale" @change="storeLanguage">
-      <option
-        class="nav-lang"
-        v-for="locale in $i18n.availableLocales"
-        :key="`locale-${locale}`"
-        :value="locale"
-      >
+      <option v-for="locale in $i18n.availableLocales" :key="`locale-${locale}`" :value="locale">
         {{ locale.toLocaleUpperCase() }}
       </option>
     </select>

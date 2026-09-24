@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/nav/NavComponent.vue';
@@ -10,10 +10,13 @@ import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
+import { useAuthStore } from './stores/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
 const fetchError = ref(false);
+
+const authStore = useAuthStore();
 
 async function initCalls() {
   try {
@@ -28,9 +31,18 @@ async function initCalls() {
   }
 }
 
+watch(authStore, async (store) => {
+  if (store.isAuthenticated) {
+    console.log('here');
+    await initCalls();
+  }
+});
+
 onMounted(async () => {
   try {
-    await initCalls();
+    if (authStore.isAuthenticated) {
+      await initCalls();
+    }
   } catch (error) {
     fetchError.value = true;
   }
