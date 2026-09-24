@@ -22,7 +22,8 @@ watch(
   () => route.path.split('/')[1],
   async (path) => {
     instructions.value = HELP_USER[path as HelpUserKey] || [];
-  }
+  },
+  { immediate: true }
 );
 </script>
 <template>

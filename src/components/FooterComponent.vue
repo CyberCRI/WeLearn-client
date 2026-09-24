@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { WL_FEEDBACK_FORM_URL } from '@/utils/constants';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
+
+const featureFlip = useFeatureFlipStore();
 </script>
 
 <template>
@@ -9,6 +12,9 @@ import { WL_FEEDBACK_FORM_URL } from '@/utils/constants';
     </div>
     <div>
       <a target="_blank" :href="WL_FEEDBACK_FORM_URL">{{ $t('giveFeedback') }}</a>
+      <router-link v-if="featureFlip.isFeatureEnabled('about')" class="about" to="/about">
+        <span class="item-name">{{ $t('nav.about') }}</span>
+      </router-link>
       <router-link class="terms" to="/terms">
         <span class="item-name">{{ $t('terms') }}</span>
       </router-link>
@@ -31,7 +37,8 @@ a {
   cursor: pointer;
 }
 
-a:first-child {
+a:first-child,
+.about {
   margin-right: 1rem;
   padding-right: 1rem;
   border-right: 1px solid var(--neutral-70);
@@ -48,7 +55,8 @@ a:hover {
     font-size: 0.8rem;
   }
 
-  a:first-child {
+  a:first-child,
+  .about {
     margin-right: 0.5rem;
     padding-right: 0.5rem;
   }
