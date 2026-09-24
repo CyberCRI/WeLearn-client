@@ -14,7 +14,7 @@ import LanguageSelector from './LanguageSelector.vue';
 import { useAuth } from '@/composables/useAuth';
 
 const featureFlip = useFeatureFlipStore();
-const { isAuthenticated, userName, login, logout } = useAuth();
+const { isAuthenticated, login, logout } = useAuth();
 
 const navEntries = [
   {
