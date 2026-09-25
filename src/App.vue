@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 import { RouterView } from 'vue-router';
 import AppHeader from '@/components/AppHeader.vue';
 import NavComponent from '@/components/nav/NavComponent.vue';
@@ -31,16 +31,9 @@ async function initCalls() {
   }
 }
 
-watch(authStore, async (store) => {
-  if (store.isAuthenticated) {
-    console.log('here');
-    await initCalls();
-  }
-});
-
 onMounted(async () => {
   try {
-    if (authStore.isAuthenticated) {
+    if (authStore.isAuthenticated || !authStore.shouldAuthenticate) {
       await initCalls();
     }
   } catch (error) {
