@@ -73,6 +73,8 @@ function hasQueryParams(route: RouteLocationNormalized) {
 router.beforeEach(async (to: RouteLocationNormalized) => {
   const authStore = useAuthStore();
 
+  if (!authStore.shouldAuthenticate) return true;
+
   // Wait for Keycloak initialization
   if (authStore.isLoading) {
     await new Promise<void>((resolve) => {

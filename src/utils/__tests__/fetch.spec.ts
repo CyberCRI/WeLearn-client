@@ -1,6 +1,7 @@
-import axios from 'axios';
+// import axios from 'axios';
+import http from '../api';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { baseGetAxios, basePostAxios, API_BASE, WL_API_KEY, exportBibliography } from '../fetch';
+import { baseGetAxios, basePostAxios, exportBibliography } from '../fetch';
 
 const mockResolved = {
   status: 200
@@ -13,35 +14,31 @@ describe('fetch', () => {
   describe('postApi', () => {
     describe('success', () => {
       beforeEach(() => {
-        vi.spyOn(axios, 'post').mockResolvedValue(mockResolved);
+        vi.spyOn(http, 'post').mockResolvedValue(mockResolved);
       });
 
       it('should call axios.post', async () => {
         await basePostAxios('/endpoint');
-        expect(axios.post).toHaveBeenCalledTimes(1);
-        expect(axios.post).toHaveBeenCalledWith(
-          `${API_BASE}/api/v1/endpoint`,
-          {},
-          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' }, withCredentials: true }
-        );
+        expect(http.post).toHaveBeenCalledTimes(1);
+        expect(http.post).toHaveBeenCalledWith(`/endpoint`, {}, undefined);
       });
 
       it('should call axios.post with filter', async () => {
         await basePostAxios('/endpoint', { filter: 'i am a filter' });
 
-        expect(axios.post).toHaveBeenCalledWith(
-          `${API_BASE}/api/v1/endpoint`,
+        expect(http.post).toHaveBeenCalledWith(
+          `/endpoint`,
           {
             filter: 'i am a filter'
           },
-          { headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' }, withCredentials: true }
+          undefined
         );
       });
     });
 
     describe('error', () => {
       beforeEach(() => {
-        vi.spyOn(axios, 'post').mockRejectedValue(new Error('Error fetching data'));
+        vi.spyOn(http, 'post').mockRejectedValue(new Error('Error fetching data'));
       });
 
       it('should throw an error', async () => {
@@ -53,21 +50,18 @@ describe('fetch', () => {
   describe('getApi', () => {
     describe('success', () => {
       beforeEach(() => {
-        vi.spyOn(axios, 'get').mockResolvedValue(mockResolved);
+        vi.spyOn(http, 'get').mockResolvedValue(mockResolved);
       });
       it('should call window.fetch', async () => {
         await baseGetAxios('/endpoint');
-        expect(axios.get).toHaveBeenCalledTimes(1);
-        expect(axios.get).toHaveBeenCalledWith(`${API_BASE}/api/v1/endpoint`, {
-          headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' },
-          withCredentials: true
-        });
+        expect(http.get).toHaveBeenCalledTimes(1);
+        expect(http.get).toHaveBeenCalledWith(`/endpoint`);
       });
     });
 
     describe('error', () => {
       beforeEach(() => {
-        vi.spyOn(axios, 'get').mockRejectedValue(new Error('Error fetching data'));
+        vi.spyOn(http, 'get').mockRejectedValue(new Error('Error fetching data'));
       });
 
       it('should throw an error', async () => {
@@ -78,7 +72,7 @@ describe('fetch', () => {
 
   describe('exportBibliography', () => {
     beforeEach(() => {
-      vi.spyOn(axios, 'post').mockResolvedValue(mockResolved);
+      vi.spyOn(http, 'post').mockResolvedValue(mockResolved);
     });
 
     it('should send documents_ids to the bibliography endpoint', async () => {
@@ -89,13 +83,11 @@ describe('fetch', () => {
 
       await exportBibliography(documentsIds);
 
-      expect(axios.post).toHaveBeenCalledWith(
-        `${API_BASE}/api/v1/bibliography/export_bibliography`,
+      expect(http.post).toHaveBeenCalledWith(
+        `/bibliography/export_bibliography`,
         { documents_ids: documentsIds },
         {
-          headers: { 'X-API-Key': WL_API_KEY, 'X-Session-Id': '' },
-          responseType: 'blob',
-          withCredentials: true
+          responseType: 'blob'
         }
       );
     });

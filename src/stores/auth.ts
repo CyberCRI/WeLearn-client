@@ -18,6 +18,8 @@ export const useAuthStore = defineStore('auth', () => {
     return tokenParsed.value?.preferred_username || 'Unknown';
   });
 
+  const shouldAuthenticate = computed(() => import.meta.env.VITE_ENVIRONMENT !== 'test');
+
   async function init(): Promise<boolean> {
     try {
       const authenticated = await keycloak.init({
@@ -81,6 +83,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     isAuthenticated,
+    shouldAuthenticate,
     user,
     token,
     tokenParsed,
