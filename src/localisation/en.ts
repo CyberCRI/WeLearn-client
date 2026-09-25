@@ -13,6 +13,7 @@ export const en = {
     addBookmark: 'Add to bookmarks',
     removeBookmark: 'Remove from bookmarks'
   },
+  logout: 'Logout',
   chat: 'Chat',
   chatInputPlaceholder: 'Ask a question',
   chatNoResults:
