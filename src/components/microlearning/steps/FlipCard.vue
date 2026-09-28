@@ -1,5 +1,9 @@
 <template>
-  <div class="flip-card" :class="{ flipped, [card.color]: card.color }" @click="!flipped && $emit('flip')">
+  <div
+    class="flip-card"
+    :class="{ flipped, [card.color]: card.color }"
+    @click="!flipped && $emit('flip')"
+  >
     <div class="inner">
       <div class="front">
         <h3>
