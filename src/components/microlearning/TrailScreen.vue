@@ -17,7 +17,7 @@
             :key="currentStepIndex"
             :step="currentStep"
             v-bind="stepProps"
-            @toggle="$emit('toggleCard', $event as number)"
+            @flip="$emit('flipCard', $event as number)"
             @selected="$emit('chooseActivity', $event as ActivityRef | null)"
             @change-activity="previous"
           />
@@ -71,7 +71,7 @@ const emit = defineEmits<{
   (e: 'previous'): void;
   (e: 'finish'): void;
   (e: 'restart'): void;
-  (e: 'toggleCard', index: number): void;
+  (e: 'flipCard', index: number): void;
   (e: 'chooseActivity', activity: ActivityRef | null): void;
 }>();
 const currentStepIndex = computed(() => props.step);

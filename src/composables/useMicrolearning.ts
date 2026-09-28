@@ -169,10 +169,9 @@ export function useMicrolearning() {
     resetProgress();
   }
 
-  function toggleCard(index: number) {
-    const i = flippedCards.value.indexOf(index);
-    if (i === -1) flippedCards.value.push(index);
-    else flippedCards.value.splice(i, 1);
+  // One-way: cards stay revealed so text can be selected and progress is never undone
+  function flipCard(index: number) {
+    if (!flippedCards.value.includes(index)) flippedCards.value.push(index);
   }
 
   function chooseActivity(choice: ActivityRef | null) {
@@ -278,6 +277,6 @@ export function useMicrolearning() {
     goToComplete,
     restart,
     chooseActivity,
-    toggleCard
+    flipCard
   };
 }

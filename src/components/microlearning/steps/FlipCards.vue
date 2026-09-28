@@ -10,7 +10,7 @@
         :key="index"
         :card="card"
         :flipped="flipped.includes(index)"
-        @toggle="$emit('toggle', index)"
+        @flip="$emit('flip', index)"
       />
     </div>
 
@@ -36,7 +36,7 @@ const props = defineProps<{
 }>();
 
 defineEmits<{
-  (e: 'toggle', index: number): void;
+  (e: 'flip', index: number): void;
 }>();
 
 const completed = computed(() => props.flipped.length === props.step.cards.length);

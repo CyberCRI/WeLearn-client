@@ -1,5 +1,5 @@
 <template>
-  <div class="flip-card" :class="{ flipped, [card.color]: card.color }" @click="$emit('toggle')">
+  <div class="flip-card" :class="{ flipped, [card.color]: card.color }" @click="!flipped && $emit('flip')">
     <div class="inner">
       <div class="front">
         <h3>
@@ -31,7 +31,7 @@ defineProps<{
 }>();
 
 defineEmits<{
-  (e: 'toggle'): void;
+  (e: 'flip'): void;
 }>();
 </script>
 
@@ -51,6 +51,10 @@ defineEmits<{
   display: grid;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+}
+
+.flip-card.flipped {
+  cursor: auto;
 }
 
 .flipped .inner {
