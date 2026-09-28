@@ -5,7 +5,8 @@ import { ref, type Ref } from 'vue';
 import EditIcon from '@/components/icons/EditIcon.vue';
 const props = defineProps<{
   syllabus?: { content: string; source: string };
-  giveFeedback: (feedback: string) => void;
+  giveFeedback: (feedback: string) => Promise<boolean>;
+  feedbackHistory: string[];
   action: () => {};
   actionText?: string;
   disabled: boolean;
@@ -21,7 +22,8 @@ const feedback: Ref<string> = ref('');
 
 const toggleFeedback = async () => {
   if (feedback.value.length > 0) {
-    await props.giveFeedback(feedback.value);
+    // keep the text if sending failed, so the user doesn't lose what they wrote
+    if (!(await props.giveFeedback(feedback.value))) return;
     feedback.value = '';
   }
   enableFeedback.value = !enableFeedback.value;
@@ -69,6 +71,13 @@ const handleSyllabusEdition = () => {
       </div>
     </div>
 
+    <details v-if="feedbackHistory.length" class="feedback-history" open>
+      <summary>{{ $t('tutor.thirdStep.feedbackHistory', { n: feedbackHistory.length }) }}</summary>
+      <ol>
+        <li v-for="(item, index) in feedbackHistory" :key="index">{{ item }}</li>
+      </ol>
+    </details>
+
     <textarea class="textarea" v-if="enableFeedback" v-model="feedback"></textarea>
 
     <div class="actions">
@@ -96,6 +105,25 @@ const handleSyllabusEdition = () => {
 
 .button.feedback {
   margin-right: auto;
+}
+
+.feedback-history {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--neutral-20);
+  border-radius: 0.5rem;
+  background-color: var(--neutral-10);
+  summary {
+    cursor: pointer;
+    font-weight: bold;
+  }
+  ol {
+    margin: 0.5rem 0 0 1.5rem;
+  }
+  li {
+    white-space: pre-wrap;
+    margin-bottom: 0.25rem;
+  }
 }
 
 .button > svg {

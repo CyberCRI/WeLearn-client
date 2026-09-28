@@ -10,6 +10,7 @@ const props = defineProps<{
   selectAll?: () => void;
   isDisabled?: boolean;
   isCapitalized?: boolean;
+  isIndeterminate?: boolean;
 }>();
 
 const emit = defineEmits(['update:modelValue', 'selectAll']);
@@ -39,7 +40,7 @@ const model = computed({
       :checked="checked"
       :disabled="isDisabled"
     />
-    <span class="checkmark"></span>
+    <span class="checkmark" :class="{ indeterminate: isIndeterminate }"></span>
   </label>
 </template>
 <style scoped>
@@ -91,12 +92,12 @@ const model = computed({
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 0.25rem;
+  top: 0.3125rem;
   left: 0;
-  height: 1rem;
-  width: 1rem;
+  height: 0.875rem;
+  width: 0.875rem;
   background-color: var(--neutral-0);
-  outline: 0.125rem solid var(--neutral-50);
+  outline: 0.1rem solid var(--neutral-50);
   border-radius: 0.125rem;
 }
 
@@ -122,12 +123,19 @@ const model = computed({
   display: block;
 }
 
+/* Partial selection (e.g. "select all" with only some items ticked): show a dash */
+.container .checkmark.indeterminate:after {
+  display: block;
+  top: 0.375rem;
+  height: 0.125rem;
+}
+
 /* Style the checkmark/indicator */
 .container .checkmark:after {
-  left: 0.25rem;
-  top: 0.25rem;
-  width: 0.5rem;
-  height: 0.5rem;
+  left: 0.21875rem;
+  top: 0.21875rem;
+  width: 0.4375rem;
+  height: 0.4375rem;
   background-color: var(--primary);
 }
 </style>

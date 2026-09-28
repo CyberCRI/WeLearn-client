@@ -22,12 +22,11 @@ const storeLanguage = (e: Event) => {
 <style scoped>
 .language-selector {
   all: unset;
-  flex-direction: row;
-  justify-self: flex-end;
-  margin-top: auto;
-  font-size: 0.75rem;
-  margin-left: auto;
+  display: flex;
+  align-items: center;
   margin-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.25rem;
 }
 
 select,
@@ -36,12 +35,12 @@ select,
 }
 
 select {
-  border: 2px solid var(--neutral-0);
-
-  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  padding: 0.25rem 0.75rem;
   transition: 0.4s;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 select:hover {

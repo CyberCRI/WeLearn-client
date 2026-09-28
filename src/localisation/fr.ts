@@ -294,7 +294,6 @@ export const fr = {
   removeAll: 'Tout effacer',
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
-  searchBarPlaceholder: 'Rechercher...',
   sdgsAcronym: 'ODD',
   sdgs: {
     1: 'Pas de pauvreté',
@@ -443,7 +442,8 @@ export const fr = {
       description:
         'Vous pouvez modifier directement cette page, télécharger une copie et envoyer un retour que WeLearn utilisera pour régénérer le syllabus — dans l’ordre de votre choix, autant de fois que nécessaire.',
       giveFeedback: 'Donner un retour sur le syllabus généré',
-      sendFeedback: 'Envoyer le retour'
+      sendFeedback: 'Envoyer le retour',
+      feedbackHistory: 'Modifications déjà demandées ({n})'
     }
   },
   microlearning: {

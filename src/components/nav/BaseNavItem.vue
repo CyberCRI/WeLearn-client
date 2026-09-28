@@ -60,6 +60,14 @@ defineProps<{
   background-color: var(--neutral-20);
 }
 
+.icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .item-name {
   width: auto;
   white-space: nowrap;

@@ -17,6 +17,10 @@
   margin-bottom: 0rem;
 }
 
+.app-header-link {
+  margin-right: 2.5rem;
+}
+
 .logo {
   height: 100%;
   width: auto;

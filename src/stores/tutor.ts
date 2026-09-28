@@ -21,6 +21,8 @@ export const useTutorStore = defineStore('tutor', () => {
   const courseTitle: Ref<string> = ref('');
   const selectedSources: Ref<Document[]> = ref([]);
   const extracts: Ref<string[]> = ref([]);
+  // feedback the user already sent for the current syllabus, oldest first
+  const feedbackHistory: Ref<string[]> = ref([]);
 
   const goBack = () => (step.value = step.value - 1);
   const goNext = () => (step.value = step.value + 1);
@@ -245,6 +247,7 @@ export const useTutorStore = defineStore('tutor', () => {
     newFilesToSearch.value = {};
     searchedFiles.value = [];
     extracts.value = [];
+    feedbackHistory.value = [];
   };
 
   const retrieveSyllabus = async () => {
@@ -297,7 +300,7 @@ export const useTutorStore = defineStore('tutor', () => {
     goNext();
   };
 
-  const giveFeedback = async (feedback: string) => {
+  const giveFeedback = async (feedback: string): Promise<boolean> => {
     if (!tutorSearch.value || !syllabi.value) {
       throw new Error('Body is empty');
     }
@@ -313,8 +316,11 @@ export const useTutorStore = defineStore('tutor', () => {
       });
 
       syllabi.value = resp.data.syllabus[0];
+      feedbackHistory.value.push(feedback);
+      return true;
     } catch (error) {
       console.error('Error during feedback submission:', error);
+      return false;
     } finally {
       isLoading.value = false;
     }
@@ -374,6 +380,7 @@ export const useTutorStore = defineStore('tutor', () => {
     isLoading,
     searchedFiles,
     giveFeedback,
+    feedbackHistory,
     handleDownloadSyllabus,
     courseTitle,
     selectedSources,
