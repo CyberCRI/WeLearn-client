@@ -2,7 +2,7 @@
 import SearchIcon from '@/components/icons/SearchIcon.vue';
 import LinesLeaningIcon from '@/components/icons/LinesLeaningIcon.vue';
 import QnAIcon from '@/components/icons/QnAIcon.vue';
-import HelpComponent from '@/components/nav/HelpComponent.vue';
+import AboutIcon from '@/components/icons/AboutIcon.vue';
 
 import BookIcon from '@/components/icons/BookIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
@@ -12,7 +12,7 @@ import LanguageSelector from './LanguageSelector.vue';
 
 const featureFlip = useFeatureFlipStore();
 
-// Features (tools) on the left; personal/utility items on the right. About lives in the footer.
+// Features (tools) on the left; personal/utility items on the right.
 const toolEntries = [
   {
     name: 'chat',
@@ -46,6 +46,13 @@ const utilityEntries = [
     to: '/bookmarks',
     icon: NavBookmarkIcon,
     isFeatureEnabled: featureFlip.isFeatureEnabled('bookmarks')
+  },
+  // ponytail: Help (HelpComponent) removed from nav, its instructions are obsolete; files kept for a future rewrite
+  {
+    name: 'about',
+    to: '/about',
+    icon: AboutIcon,
+    isFeatureEnabled: featureFlip.isFeatureEnabled('about')
   }
 ];
 </script>
@@ -70,8 +77,6 @@ const utilityEntries = [
             :icon="entry.icon"
           />
         </template>
-
-        <HelpComponent />
 
         <LanguageSelector />
       </div>

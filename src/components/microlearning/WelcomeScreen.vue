@@ -1,9 +1,11 @@
 <template>
   <section class="welcome-screen">
     <div class="welcome-inner">
-      <h1 class="title is-size-3">{{ $t('microLearning.welcomeScreen.title') }}</h1>
+      <h1 class="title is-spaced is-size-3 is-size-4-mobile">
+        {{ $t('microLearning.welcomeScreen.title') }}
+      </h1>
 
-      <p class="subtitle">
+      <p class="subtitle is-size-6-mobile">
         {{ $t('microLearning.welcomeScreen.subtitle') }}
       </p>
 
@@ -71,7 +73,7 @@ function start() {
 
 .welcome-inner {
   width: 100%;
-  max-width: 50%;
+  max-width: 44rem;
   text-align: center;
 }
 
@@ -80,10 +82,10 @@ function start() {
 }
 
 .subtitle {
-  max-width: 80%;
+  max-width: 36rem;
   margin: auto;
   margin-bottom: 2.5rem;
-  line-height: 1.7;
+  line-height: 1.5;
   color: var(--neutral-80);
 }
 

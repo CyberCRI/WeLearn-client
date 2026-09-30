@@ -1,7 +1,7 @@
 <template>
   <div class="fullPageEvaluation">
     <p class="abadge">{{ $t('autoEvaluation.end.badge') }}</p>
-    <p class="title is-4">{{ $t('autoEvaluation.end.title') }}</p>
+    <p class="title is-spaced is-4">{{ $t('autoEvaluation.end.title') }}</p>
     <p class="subtitle is-6">
       {{ $t('autoEvaluation.end.subtitle') }}
     </p>
@@ -57,6 +57,7 @@ defineEmits<{
 <style lang="css" scoped>
 .fullPageEvaluation {
   padding-top: 1%;
+  padding-inline: 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;

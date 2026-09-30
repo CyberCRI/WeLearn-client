@@ -8,9 +8,9 @@ const sourcesStore = useSourcesStore();
   <div class="wrapper py-6">
     <div class="presentation is-flex is-fullwidth is-justify-content-center is-align-items-center">
       <div class="call-to-action is-flex is-flex-direction-column is-justify-content-space-between">
-        <div class="is-size-1 is-size-4-mobile has-text-weight-bold has-text-centered is-uppercase">
+        <h1 class="is-size-1 is-size-4-mobile has-text-weight-bold has-text-centered is-uppercase">
           {{ $t('landing.slogan') }}
-        </div>
+        </h1>
         <p class="subtitle is-size-6-mobile has-text-centered mt-4 mb-6">
           {{ $t('landing.description') }}
         </p>
@@ -19,38 +19,28 @@ const sourcesStore = useSourcesStore();
 
     <div class="partnership">
       <div class="logos my-4">
-        <img alt="logo" class="partner-logo mx-4" src="@/assets/lpi_logo.png" />
-        <img alt="logo" class="partner-logo mx-4" src="@/assets/uved.png" />
-        <img alt="logo" class="partner-logo mx-4" src="@/assets/cy_logo.png" />
-        <img alt="logo" class="partner-logo mx-4" src="@/assets/france2030.png" />
+        <img
+          alt="Learning Planet Institute"
+          class="partner-logo mx-4"
+          src="@/assets/lpi_logo.png"
+        />
+        <img alt="Fondation UVED" class="partner-logo mx-4" src="@/assets/uved.png" />
+        <img alt="CY Cergy Paris Université" class="partner-logo mx-4" src="@/assets/cy_logo.png" />
+        <img alt="France 2030" class="partner-logo mx-4" src="@/assets/france2030.png" />
       </div>
-      <h1 class="subtitle is-6 mt-6">{{ $t('landing.partnership') }}</h1>
+      <p class="subtitle is-6 mt-6">{{ $t('landing.partnership') }}</p>
     </div>
 
     <div class="product-description">
-      <h3 class="title is-size-4 pt-6 has-text-centered">{{ $t('landing.aboutTitle') }}</h3>
+      <h2 class="title is-size-4 pt-6 has-text-centered">{{ $t('landing.aboutTitle') }}</h2>
       <p class="subtitle is-size-6-mobile mt-4">
         {{ $t('landing.aboutDescription') }}
       </p>
-      <div class="video mt-6">
-        <h1 class="subtitle has-text-weight-bold mb-2">{{ $t('landing.toolPresentation') }}</h1>
-        <iframe
-          class="video"
-          title="vimeo-player"
-          src="https://player.vimeo.com/video/1155027283?h=afaa86b58d"
-          width="640"
-          height="360"
-          frameborder="0"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-          allowfullscreen
-        ></iframe>
-      </div>
     </div>
 
     <div class="section mt-6" v-if="sourcesStore?.infoPerCorpus?.length > 0">
       <div class="description mx-auto">
-        <h1 class="subtitle has-text-weight-bold mb-2">{{ $t('landing.sourcesTitle') }} ></h1>
+        <h2 class="subtitle has-text-weight-bold mb-2">{{ $t('landing.sourcesTitle') }}</h2>
         <p class="subtitle is-size-6">
           {{ $t('landing.sourcesDescription_1') }}
         </p>
@@ -73,7 +63,9 @@ const sourcesStore = useSourcesStore();
               <tr v-for="source in sourcesStore.infoPerCorpus" :key="source.corpus">
                 <td>{{ $t(`corpus.${source.corpus}`, source.corpus) }}</td>
                 <td>
-                  <a target="_blanc" :href="source.url">{{ source.url }}</a>
+                  <a target="_blank" rel="noopener noreferrer" :href="source.url">{{
+                    source.url
+                  }}</a>
                 </td>
                 <td class="qty-sources">
                   {{ new Intl.NumberFormat(i18n.global.locale.value).format(source.qty_in_qdrant) }}
@@ -101,7 +93,6 @@ const sourcesStore = useSourcesStore();
         <div class="description">
           <p class="subtitle is-size-6-mobile has-text-weight-bold mb-2">
             {{ $t('landing.horizontal.section_one.title') }}
-            <span class="is-size-4 is-size-6-mobile ml-4">></span>
           </p>
           <p class="subtitle is-size-6 pb-6">
             {{ $t('landing.horizontal.section_one.content') }}
@@ -114,7 +105,6 @@ const sourcesStore = useSourcesStore();
         <div class="description">
           <p class="subtitle is-size-6-mobile has-text-weight-bold mb-2">
             {{ $t('landing.horizontal.section_two.title') }}
-            <span class="is-size-4 is-size-6-mobile ml-4">></span>
           </p>
           <p class="subtitle is-size-6 is-size-6-mobile pb-6">
             {{ $t('landing.horizontal.section_two.content') }}
@@ -127,7 +117,6 @@ const sourcesStore = useSourcesStore();
         <div class="description">
           <p class="subtitle is-size-6-mobile has-text-weight-bold mb-2">
             {{ $t('landing.horizontal.section_three.title') }}
-            <span class="is-size-4 is-size-6-mobile ml-4">></span>
           </p>
           <p class="subtitle is-size-6 pb-6">
             {{ $t('landing.horizontal.section_three.content') }}
@@ -163,14 +152,6 @@ const sourcesStore = useSourcesStore();
 </template>
 
 <style scoped>
-.video {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 1rem;
-}
-
 .sources-table th {
   text-align: left;
   padding-left: 0;
@@ -210,7 +191,7 @@ const sourcesStore = useSourcesStore();
 .partnership {
   width: 45%;
   margin: auto;
-  text-align: justify;
+  text-align: left;
 }
 
 .logos {
@@ -227,7 +208,7 @@ const sourcesStore = useSourcesStore();
 .product-description {
   width: 60%;
   margin: auto;
-  text-align: center;
+  text-align: left;
 }
 
 .section {
@@ -273,12 +254,12 @@ const sourcesStore = useSourcesStore();
   .partnership {
     width: 90%;
     margin: auto;
-    text-align: justify;
+    text-align: left;
   }
 
   .product-description {
     width: 90%;
-    text-align: justify;
+    text-align: left;
   }
 
   .section.mt-6 {

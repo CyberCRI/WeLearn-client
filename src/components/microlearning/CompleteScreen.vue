@@ -3,7 +3,7 @@
     <div class="complete-inner">
       <div class="complete-icon">🌱</div>
 
-      <h1 class="title">{{ $t('microLearning.completeScreen.title') }}</h1>
+      <h1 class="title is-spaced">{{ $t('microLearning.completeScreen.title') }}</h1>
 
       <p class="subtitle">
         {{ $t('microLearning.completeScreen.subtitle') }}
