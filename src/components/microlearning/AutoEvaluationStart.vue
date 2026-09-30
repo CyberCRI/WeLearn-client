@@ -3,28 +3,45 @@
     <p class="abadge">{{ $t('autoEvaluation.start.badge') }}</p>
     <p class="title is-4">{{ $t('autoEvaluation.start.title') }}</p>
     <p class="subtitle is-6">
-      {{ $t('autoEvaluation.start.subtitle') }}
+      {{ locked ? $t('autoEvaluation.start.lockedNotice') : $t('autoEvaluation.start.subtitle') }}
     </p>
-    <QuestionComponent :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })" />
-    <QuestionComponent :question="$t('autoEvaluation.secondQuestion')" />
-    <div class="buttons">
-      <button class="btn-primary" @click="$emit('start')">
-        {{ $t('microLearning.briefingScreen.primaryButton') }}
-      </button>
-      <a @click="$emit('start')">{{ $t('skip') }}</a>
-    </div>
+    <QuestionComponent
+      v-model="answers.link"
+      :disabled="locked"
+      :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })"
+    />
+    <QuestionComponent
+      v-model="answers.confidence"
+      :disabled="locked"
+      :question="$t('autoEvaluation.secondQuestion')"
+    />
+    <TrailNavigation
+      class="nav"
+      :next-label="locked ? 'next' : 'microLearning.briefingScreen.primaryButton'"
+      :skippable="!locked"
+      @back="$emit('back')"
+      @next="$emit('start')"
+      @skip="$emit('start')"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
 import QuestionComponent from '@/components/microlearning/QuestionComponent.vue';
+import TrailNavigation from '@/components/microlearning/TrailNavigation.vue';
+import type { EvalAnswers } from '@/composables/useMicrolearning';
 
 defineProps<{
   discipline?: string;
+  locked: boolean;
 }>();
+
+// reactive object owned by useMicrolearning, fields are filled in place
+const answers = defineModel<EvalAnswers>('answers', { required: true });
 
 defineEmits<{
   (e: 'start'): void;
+  (e: 'back'): void;
 }>();
 </script>
 
@@ -40,21 +57,14 @@ defineEmits<{
   width: 100%;
 }
 
-.buttons {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.subtitle {
+  max-width: 560px;
+  text-align: center;
 }
 
-.btn-primary {
-  padding: 0.9rem;
-  border: none;
-  border-radius: 10px;
-  background: var(--primary-hover);
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 1rem;
+.nav {
+  width: 100%;
+  max-width: 560px;
 }
 
 .abadge {

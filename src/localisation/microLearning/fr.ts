@@ -36,6 +36,7 @@ export const microLearning = {
     }
   },
   restart: 'Recommencer',
+  restartConfirm: 'Changer de discipline ? Votre progression sur ce parcours sera perdue.',
   step: 'Étape',
   progressBarLabels: {
     contribution: 'Les apports',
@@ -45,12 +46,18 @@ export const microLearning = {
   },
   flipCards: {
     bravo: '✓ Bravo !',
-    completed: 'Vous avez découvert tous les apports de cette discipline.',
-    clickToDiscover: 'Cliquez pour découvrir'
+    completed: 'Vous avez découvert quelques-uns des apports clés de cette discipline.',
+    clickToDiscover: 'Cliquez pour découvrir',
+    nextHint: 'Retournez toutes les cartes pour continuer'
   },
   contributions: {
     title: 'Les apports de votre discipline',
     subtitle: 'En enseignant cette discipline, vous contribuez déjà à la transition écologique.'
+  },
+  activities: {
+    instruction:
+      "Laquelle de ces activités aimeriez-vous le plus essayer avec vos étudiant·es ? Choisissez-en une, vous la retrouverez à l'étape suivante.",
+    nextHint: 'Choisissez une activité pour continuer'
   },
   competence: {
     title: 'Les compétences que vos étudiant·es développent',
@@ -59,13 +66,17 @@ export const microLearning = {
   },
   reflection: {
     ctaSource: 'Consulter la ressource →',
-    resourceSubtitle: 'Apports croisés et impacts'
+    resourceSubtitle: 'Apports croisés et impacts',
+    yourPick: "L'activité que vous avez choisie",
+    yourPickHint: 'Gardez-la en tête pour répondre aux questions ci-dessous.',
+    changePick: 'Modifier',
+    activityPlaceholder: 'Par exemple : proposer « {activity} » lors de ma prochaine séance sur…'
   },
   completeScreen: {
     title: 'Parcours terminé !',
     subtitle: 'Vous avez exploré les liens entre votre discipline et la transition écologique.',
     description:
-      'La prochaine étape se passe dans votre salle de cours. Choisissez une activité, adaptez un exemple ou consultez la ressource proposée pour aller plus loin.',
+      "La prochaine étape se passe dans votre salle de cours. Voici l'activité que vous avez choisie et une ressource pour aller plus loin.",
     primaryButton: 'Créer un syllabus avec WeLearn',
     secondaryButton: 'Explorer une autre discipline'
   }

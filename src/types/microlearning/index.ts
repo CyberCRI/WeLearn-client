@@ -41,6 +41,11 @@ export interface Activity {
   desc: string;
 }
 
+export interface ActivityRef {
+  apport: number;
+  act: number;
+}
+
 export interface Apport {
   label: string;
   color: string;

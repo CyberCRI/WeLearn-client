@@ -456,7 +456,9 @@ export const fr = {
     start: {
       badge: 'Avant de commencer',
       title: 'Deux petites questions',
-      subtitle: "30 secondes pour nous aider à mesurer l'apport pédagogique de ce parcours."
+      subtitle: "30 secondes pour nous aider à mesurer l'apport pédagogique de ce parcours.",
+      lockedNotice:
+        'Vous avez commencé le parcours : ces réponses sont donc verrouillées. Elles indiquent votre point de départ, ce qui nous permet de mesurer ce qui a changé.'
     },
     end: {
       badge: 'Avant de partir',

@@ -10,6 +10,17 @@
       </p>
     </header>
 
+    <div v-if="chosenActivity" class="chosen-activity">
+      <div>
+        <span class="chosen-label">{{ $t('microLearning.reflection.yourPick') }}</span>
+        <p class="chosen-title">{{ chosenActivity.title }}</p>
+        <p class="chosen-hint">{{ $t('microLearning.reflection.yourPickHint') }}</p>
+      </div>
+      <button type="button" class="change-link" @click="$emit('changeActivity')">
+        {{ $t('microLearning.reflection.changePick') }}
+      </button>
+    </div>
+
     <div v-for="(prompt, index) in step.prompts" :key="index" class="reflection-card">
       <label :for="`reflection-${index}`">
         {{ prompt.q }}
@@ -18,7 +29,7 @@
       <textarea
         :id="`reflection-${index}`"
         v-model="answers[index]"
-        :placeholder="prompt.placeholder"
+        :placeholder="placeholderFor(index, prompt.placeholder)"
         rows="5"
       />
     </div>
@@ -45,7 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, watch } from 'vue';
+import type { Activity } from '@/types/microlearning';
+import i18n from '@/localisation/i18n';
 
 interface Prompt {
   q: string;
@@ -65,25 +77,25 @@ interface ReflectionStep {
   resource: Resource;
 }
 
-defineProps<{
+const props = defineProps<{
   step: ReflectionStep;
+  chosenActivity: Activity | null;
 }>();
 
-const emit = defineEmits<{
-  (e: 'completed'): void;
-  (e: 'answers', value: string[]): void;
+// reactive array owned by useMicrolearning so answers survive going back
+const answers = defineModel<string[]>('answers', { required: true });
+
+defineEmits<{
+  (e: 'changeActivity'): void;
 }>();
 
-const answers = reactive<string[]>([]);
-
-watch(
-  answers,
-  () => {
-    emit('answers', [...answers]);
-    emit('completed');
-  },
-  { deep: true }
-);
+// The last prompt asks how to bring it into class: point the example at the chosen activity
+function placeholderFor(index: number, fallback: string) {
+  if (!props.chosenActivity || index !== props.step.prompts.length - 1) return fallback;
+  return i18n.global.t('microLearning.reflection.activityPlaceholder', {
+    activity: props.chosenActivity.title
+  });
+}
 </script>
 
 <style scoped>
@@ -111,6 +123,48 @@ watch(
   line-height: 1.5;
   text-align: left;
   color: var(--neutral-80);
+}
+
+.chosen-activity {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin: 0.5rem 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  background: var(--primary-lighter);
+}
+
+.chosen-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-dark);
+}
+
+.chosen-title {
+  margin: 0.25rem 0;
+  font-weight: 600;
+}
+
+.chosen-hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--neutral-80);
+}
+
+.change-link {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: var(--primary-dark);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .reflection-card {

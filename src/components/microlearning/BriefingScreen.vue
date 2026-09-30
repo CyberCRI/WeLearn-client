@@ -29,19 +29,18 @@
         {{ $t('microLearning.hint') }}
       </div>
 
-      <button class="btn-primary" @click="$emit('start')">
-        {{ $t('microLearning.briefingScreen.primaryButton') }}
-      </button>
-
-      <button class="btn-ghost" @click="$emit('back')">
-        {{ $t('microLearning.briefingScreen.ghostButton') }}
-      </button>
+      <TrailNavigation
+        next-label="microLearning.briefingScreen.primaryButton"
+        @back="$emit('back')"
+        @next="$emit('start')"
+      />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import type { DisciplineMeta } from '@/types/microlearning';
+import TrailNavigation from './TrailNavigation.vue';
 
 const obj = ['understand', 'identify', 'discover'];
 defineProps<{
@@ -129,32 +128,5 @@ h2 {
   color: var(--neutral-70);
   font-size: 0.85rem;
   margin-bottom: 1rem;
-}
-
-.btn-primary {
-  width: 100%;
-  padding: 0.9rem;
-  border: none;
-  border-radius: 10px;
-  background: var(--primary-hover);
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-}
-
-.btn-primary:hover {
-  background: var(--primary-dark);
-}
-
-.btn-ghost {
-  border: none;
-  background: transparent;
-  color: var(--neutral-80);
-  cursor: pointer;
-}
-
-.btn-ghost:hover {
-  color: var(--neutral-100);
 }
 </style>

@@ -35,6 +35,7 @@ export const microLearning = {
     }
   },
   restart: 'Start over',
+  restartConfirm: 'Change discipline? Your progress on this journey will be lost.',
   step: 'Step',
   progressBarLabels: {
     contribution: 'Contributions',
@@ -44,12 +45,18 @@ export const microLearning = {
   },
   flipCards: {
     bravo: '✓ Well done!',
-    completed: "You've explored everything this discipline contributes.",
-    clickToDiscover: 'Click to flip'
+    completed: "You've explored some of the key ways this discipline contributes.",
+    clickToDiscover: 'Click to flip',
+    nextHint: 'Flip all the cards to continue'
   },
   contributions: {
     title: 'What your discipline contributes',
     subtitle: 'By teaching this discipline, you are already contributing to sustainability.'
+  },
+  activities: {
+    instruction:
+      "Which of these activities would you most like to try with your students? Pick one, you'll build on it in the next step.",
+    nextHint: 'Choose an activity to continue'
   },
   competence: {
     title: 'Skills your students develop',
@@ -58,13 +65,17 @@ export const microLearning = {
   },
   reflection: {
     ctaSource: 'View the resource →',
-    resourceSubtitle: 'Mutual contributions and impacts'
+    resourceSubtitle: 'Mutual contributions and impacts',
+    yourPick: 'The activity you picked',
+    yourPickHint: 'Keep it in mind as you answer the questions below.',
+    changePick: 'Change',
+    activityPlaceholder: 'For example: running "{activity}" in my next session on…'
   },
   completeScreen: {
     title: 'Journey complete!',
     subtitle: "You've explored how your discipline connects to sustainability.",
     description:
-      'Next, bring it into your classroom: pick an activity, adapt an example, or read the suggested resource to go further.',
+      "Next, bring it into your classroom. Here's the activity you picked and a resource to go further.",
     primaryButton: 'Create a syllabus with WeLearn',
     secondaryButton: 'Explore another discipline'
   }
