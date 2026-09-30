@@ -120,6 +120,7 @@ function confirmRestart() {
 @media (max-width: 900px) {
   .trail-header {
     grid-template-columns: 1fr;
+    row-gap: 0.75rem;
 
     text-align: center;
 

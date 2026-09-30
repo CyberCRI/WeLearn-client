@@ -196,57 +196,55 @@ export const en = {
   },
   languages: 'Languages',
   landing: {
-    toolPresentation: 'Tool presentation',
-    sourceNameTitle: 'Resource Name',
-    sourceUrlTitle: 'Resource Link',
-    sourceNumberTitle: 'Number of Documents',
-    sourcesTitle: 'About Our Resources',
+    sourceNameTitle: 'Resource name',
+    sourceUrlTitle: 'Resource link',
+    sourceNumberTitle: 'Number of documents',
+    sourcesTitle: 'About our resources',
     sourcesDescription_1:
-      'WeLearn provides access to a curated collection of open, reliable, and high-quality resources related to the Sustainable Development Goals (SDGs). These resources are identified through the large-scale analysis of more than 16 million online documents.',
+      'WeLearn provides access to a curated collection of open, reliable, and high-quality resources related to the Sustainable Development Goals (SDGs). These resources were identified through a large-scale analysis of more than 16 million online documents.',
     sourcesDescription_2:
-      'All resources made available on the platform meet three core selection criteria: \nopenness, through the use of open-access documents;\nreliability, by drawing from recognized and trusted collections; and \nrelevance, ensured by a classification model that retains only content explicitly linked to one of the 17 SDGs.',
-    sourcesDescription_3: 'The table below presents the distribution of documents by source.',
+      'All resources on the platform meet three core selection criteria:\nopenness, through the use of open-access documents;\nreliability, by drawing on recognized and trusted collections; and\nrelevance, ensured by a classification model that only retains content explicitly linked to one of the 17 SDGs.',
+    sourcesDescription_3: 'The table below shows how documents are distributed by source.',
 
-    slogan: 'Sustainability Education Made Easy',
-    description:
-      'Explore resources, learn, and boost sustainability integration in your courses with AI.',
+    slogan: 'Sustainability education made easy',
+    description: 'Explore resources, learn, and use AI to bring sustainability into your courses.',
     aboutTitle: 'About WeLearn',
     aboutDescription:
-      'WeLearn is a cutting-edge AI-powered learning platform designed to support educators in creating impactful, SDG-focused curricula. Our mission is to make the integration of sustainability into educational content seamless and intuitive. By leveraging advanced AI technologies, WeLearn supports the learning and teaching experience by curating and indexing high-quality, open resources from trusted databases, and using them as grounding for innovative pedagogical features.',
+      'WeLearn is an AI-powered platform that helps educators bring sustainability into their teaching. It draws on a curated collection of open, reliable resources linked to the Sustainable Development Goals (SDGs) and uses them to power practical teaching tools: search, a Q&A assistant, syllabus design, and micro-learning.',
     partnership:
-      'WeLearn is developed by the Learning Planet Institute as part of the “Ecological Transition for Sustainable Development” (TEDS) project. Funded by the French National Research Agency under "France 2030“ (reference: ANR-17-NCUN-0016) and the call for projects ”New University Curricula", the TEDS project is jointly led by the Learning Planet Institute, the UVED Foundation, and CY Cergy Paris University.',
+      'WeLearn is developed by the Learning Planet Institute as part of the TEDS project (“Ecological Transition for Sustainable Development”), jointly led with the UVED Foundation and CY Cergy Paris University. TEDS is funded by the French National Research Agency under France 2030 and the “New University Curricula” call for projects (ref. ANR-17-NCUN-0016).',
     horizontal: {
       section_one: {
-        title: 'Curated Knowledge on Sustainability',
+        title: 'Curated knowledge on sustainability',
         content:
-          'Carefully selected from over 16 million resources, WeLearn features open and reliable content related to the Sustainable Development Goals (SDGs).'
+          'WeLearn features open, reliable content on the Sustainable Development Goals (SDGs), carefully selected from trusted sources.'
       },
       section_two: {
-        title: 'Find What Matters, Fast',
+        title: 'Find what matters, fast',
         content:
-          'Dive into sustainability topics and find the right resources quickly and easily with WeLearn’s semantic search engine.'
+          'Explore sustainability topics and quickly find the right resources with WeLearn’s semantic search engine.'
       },
       section_three: {
-        title: 'Sourced Answers, Tailored to You',
+        title: 'Sourced answers, tailored to you',
         content:
-          'Get precise, referenced answers adapted to your context by chatting with the WeLearn virtual assistant.'
+          'Chat with the WeLearn virtual assistant to get precise, referenced answers adapted to your context.'
       }
     },
     vertical: {
       section_one: {
-        title: 'Supporting Sustainability with AI',
+        title: 'Supporting sustainability with AI',
         content:
           'We place sustainability at the heart of our mission, using technology to support a responsible future.'
       },
       section_two: {
-        title: 'Simplifying Sustainability Education',
+        title: 'Simplifying sustainability education',
         content:
           'We are dedicated to empowering educators worldwide to learn and teach about sustainability.'
       },
       section_three: {
-        title: 'Upholding Responsible AI Principles',
+        title: 'Upholding responsible AI principles',
         content:
-          'We are committed to a transparent and eco-conscious usage of Artificial Intelligence.'
+          'We are committed to a transparent and eco-conscious use of artificial intelligence.'
       }
     }
   },
@@ -338,7 +336,6 @@ export const en = {
     exportingBibliography: 'Exporting...'
   },
   terms: 'Privacy Policy',
-  giveFeedback: 'Feedback Form',
   subjects: {
     Anthropology: 'Anthropology',
     Arts: 'Arts',

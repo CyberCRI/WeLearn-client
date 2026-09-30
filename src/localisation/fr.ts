@@ -199,39 +199,38 @@ export const fr = {
   },
   languages: 'Langues',
   landing: {
-    toolPresentation: 'Présentation de l’outil',
     sourceNameTitle: 'Nom de la ressource',
     sourceUrlTitle: 'Lien vers la ressource',
     sourceNumberTitle: 'Nombre de documents',
     sourcesTitle: 'À propos de nos ressources',
     sourcesDescription_1:
-      'WeLearn donne accès à un ensemble de ressources ouvertes, fiables et de haute qualité, en lien avec les Objectifs de développement durable (ODD). Ces ressources sont identifiées à partir de l’analyse à grande échelle de plus de 16 millions de documents en ligne.',
+      'WeLearn donne accès à un ensemble de ressources ouvertes, fiables et de haute qualité, en lien avec les Objectifs de développement durable (ODD). Ces ressources ont été identifiées grâce à l’analyse à grande échelle de plus de 16 millions de documents en ligne.',
     sourcesDescription_2:
-      'L’ensemble des ressources proposées sur la plateforme répond à trois critères de sélection fondamentaux : \nl’ouverture, à travers l’utilisation de documents en libre accès ; \nla fiabilité, en s’appuyant sur des collections reconnues ; \nla pertinence, garantie par un modèle de classification qui identifie exclusivement les contenus associés à l’un des 17 ODD.',
+      'L’ensemble des ressources proposées sur la plateforme répond à trois critères de sélection fondamentaux :\nl’ouverture, grâce à l’utilisation de documents en libre accès ;\nla fiabilité, en s’appuyant sur des collections reconnues ;\nla pertinence, garantie par un modèle de classification qui ne retient que les contenus explicitement associés à l’un des 17 ODD.',
     sourcesDescription_3: 'Le tableau ci-dessous présente la répartition des documents par source.',
     slogan: 'L’éducation à la durabilité, facilitée',
     description:
-      'Explorez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
+      'Explorez des ressources, apprenez et intégrez la durabilité dans vos cours grâce à l’IA.',
     aboutTitle: 'À propos de WeLearn',
     aboutDescription:
-      'WeLearn est une plateforme d’apprentissage innovante, alimentée par l’intelligence artificielle, conçue pour accompagner les enseignants dans la création de contenus pédagogiques percutants centrés sur les Objectifs de Développement Durable (ODD). Notre mission est de rendre l’intégration de la durabilité dans les contenus éducatifs fluide et intuitive. En s’appuyant sur des technologies d’IA avancées, WeLearn augmente l’apprentissage et l’enseignement en sélectionnant et en indexant des ressources ouvertes de haute qualité, issues de bases de données fiables, qui servent de socle de référence à des fonctionnalités pédagogiques innovantes.',
+      'WeLearn est une plateforme qui s’appuie sur l’intelligence artificielle pour aider les enseignants à intégrer la durabilité dans leurs cours. Elle repose sur une sélection de ressources ouvertes et fiables liées aux Objectifs de développement durable (ODD), qui alimentent des outils pédagogiques concrets : recherche, assistant questions-réponses, conception de syllabus et micro-learning.',
     partnership:
-      'WeLearn est développé par le Learning Planet Institute dans le cadre du projet « Transition Écologique pour un Développement Soutenable » (TEDS). Financé par l’Agence Nationale de la Recherche, au titre de « France 2030 » (référence ANR-17-NCUN-0016) et l’appel à projets « Nouveaux Cursus à l’Université », le projet TEDS est porté conjointement par le Learning Planet Institute, la Fondation UVED et CY Cergy Paris Université.',
+      'WeLearn est développé par le Learning Planet Institute dans le cadre du projet TEDS (« Transition écologique pour un développement soutenable »), porté conjointement avec la Fondation UVED et CY Cergy Paris Université. TEDS est financé par l’Agence nationale de la recherche au titre de France 2030 et de l’appel à projets « Nouveaux cursus à l’université » (référence ANR-17-NCUN-0016).',
     horizontal: {
       section_one: {
-        title: 'Connaissances sur la durabilité',
+        title: 'Une sélection de savoirs sur la durabilité',
         content:
-          'Sélectionnés avec soin parmi plus de 16 millions de ressources, WeLearn propose des contenus ouverts et fiables liés aux Objectifs de développement durable (ODD).'
+          'WeLearn propose des contenus ouverts et fiables sur les Objectifs de développement durable (ODD), sélectionnés avec soin parmi des sources reconnues.'
       },
       section_two: {
         title: 'Trouver ce qui compte, rapidement',
         content:
-          'Plongez dans des sujets de durabilité et trouvez les bonnes ressources rapidement et facilement grâce au moteur de recherche sémantique de WeLearn.'
+          'Explorez les sujets liés à la durabilité et trouvez rapidement les bonnes ressources grâce au moteur de recherche sémantique de WeLearn.'
       },
       section_three: {
-        title: 'Des réponses sourcées, adaptées à vous',
+        title: 'Des réponses sourcées et personnalisées',
         content:
-          'Obtenez des réponses précises et référencées, adaptées à votre contexte, grâce à l’assistant virtuel de WeLearn.'
+          'Échangez avec l’assistant virtuel de WeLearn pour obtenir des réponses précises et référencées, adaptées à votre contexte.'
       }
     },
     vertical: {
@@ -243,12 +242,12 @@ export const fr = {
       section_two: {
         title: 'Simplifier l’éducation à la durabilité',
         content:
-          'Nous nous engageons à donner aux éducateurs du monde entier les moyens d’apprendre et d’enseigner la durabilité.'
+          'Nous nous engageons à donner aux enseignants du monde entier les moyens d’apprendre et d’enseigner la durabilité.'
       },
       section_three: {
-        title: 'Des principes d’IA responsable',
+        title: 'Respecter les principes d’une IA responsable',
         content:
-          'Nous nous engageons pour une utilisation de l’intelligence artificielle transparente et respectueuse de l’environnement'
+          'Nous nous engageons pour une utilisation de l’intelligence artificielle transparente et respectueuse de l’environnement.'
       }
     }
   },
@@ -341,7 +340,6 @@ export const fr = {
     exportingBibliography: 'Export en cours...'
   },
   terms: 'Politique de confidentialité',
-  giveFeedback: 'Formulaire de retour',
   subjects: {
     Anthropology: 'Anthropologie',
     Arts: 'Arts',
