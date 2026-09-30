@@ -455,7 +455,7 @@ export const en = {
       syllabus: {
         title: 'Writing your syllabus',
         description:
-          "WeLearn is combining your documents, course details and resources. This can take a few minutes: please don't close or reload this page."
+          "WeLearn is combining your documents, course details and resources. This can take up to a minute: please don't close or reload this page."
       },
       feedback: {
         title: 'Applying your changes',

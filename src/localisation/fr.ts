@@ -460,7 +460,7 @@ export const fr = {
       syllabus: {
         title: 'Rédaction de votre syllabus',
         description:
-          'WeLearn combine vos documents, les informations du cours et les ressources. Cela peut prendre quelques minutes : merci de ne pas fermer ni recharger la page.'
+          'WeLearn combine vos documents, les informations du cours et les ressources. Cela peut prendre jusqu’à une minute : merci de ne pas fermer ni recharger la page.'
       },
       feedback: {
         title: 'Application de vos modifications',
