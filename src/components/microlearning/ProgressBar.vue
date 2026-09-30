@@ -5,7 +5,13 @@
     </div>
 
     <div class="steps">
-      <div v-for="(step, index) in STEP_LABELS" :key="index" class="step" :class="stepClass(index)">
+      <div
+        v-for="(step, index) in steps"
+        :key="index"
+        class="step"
+        :class="stepClass(index)"
+        @click="clickable && index < currentStep && $emit('select', index)"
+      >
         <div class="circle">
           <svg v-if="index < currentStep" class="check" viewBox="0 0 24 24">
             <path
@@ -24,7 +30,7 @@
         </div>
 
         <span class="label">
-          {{ $t(`microLearning.progressBarLabels.${step}`) }}
+          {{ labels ? step : $t(`microLearning.progressBarLabels.${step}`) }}
         </span>
       </div>
     </div>
@@ -38,16 +44,25 @@ const STEP_LABELS = ['contribution', 'skills', 'activity', 'yourTurn'];
 
 const props = defineProps<{
   currentStep: number;
+  // already translated labels; defaults to the micro-learning steps
+  labels?: string[];
+  // finished steps emit "select" when clicked
+  clickable?: boolean;
 }>();
 
+defineEmits<{ select: [index: number] }>();
+
+const steps = computed(() => props.labels || STEP_LABELS);
+
 const progressWidth = computed(() => {
-  return `${(props.currentStep / (STEP_LABELS.length - 1) + 0.05) * 100}%`;
+  return `${(props.currentStep / (steps.value.length - 1) + 0.05) * 100}%`;
 });
 
 function stepClass(index: number) {
   return {
     active: index === props.currentStep,
-    done: index < props.currentStep
+    done: index < props.currentStep,
+    clickable: props.clickable && index < props.currentStep
   };
 }
 </script>
@@ -131,6 +146,10 @@ function stepClass(index: number) {
 
 .done .label {
   color: #444;
+}
+
+.clickable {
+  cursor: pointer;
 }
 
 .check {

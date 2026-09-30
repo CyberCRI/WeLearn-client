@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { scrollToAnchor } from '@/utils/navigation';
+import axios from 'axios';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
 import { type Ref, ref } from 'vue';
@@ -7,14 +7,29 @@ import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 
+const MAX_FILES = 3;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+// the LLM sometimes writes a literal "\n" (backslash + n): inside a table cell it
+// means a line break (<br>), anywhere else a real new line
+export const cleanSyllabus = (content: string) =>
+  content
+    .split('\n')
+    .map((line) =>
+      line.trim().startsWith('|') ? line.replace(/\\n/g, '<br>') : line.replace(/\\n/g, '\n')
+    )
+    .join('\n');
+
+export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'TOO_MANY_FILES';
+
 export const useTutorStore = defineStore('tutor', () => {
   const tutorSearch: Ref<TutorSearch | undefined> = ref(undefined);
   const syllabi: Ref<{ content: string; source: string } | undefined> = ref(undefined);
+  // keyed by file name, so the same file can't be added twice
   const newFilesToSearch: Ref<Record<string, File>> = ref({});
   const searchedFiles: Ref<File[]> = ref([]);
   const isLoading: Ref<boolean> = ref(false);
   const step: Ref<number> = ref(1);
-  const hasNewSearch: Ref<boolean> = ref(false);
   const level: Ref<string> = ref('');
   const duration: Ref<string> = ref('');
   const description: Ref<string> = ref('');
@@ -24,7 +39,6 @@ export const useTutorStore = defineStore('tutor', () => {
   // feedback the user already sent for the current syllabus, oldest first
   const feedbackHistory: Ref<string[]> = ref([]);
 
-  const goBack = () => (step.value = step.value - 1);
   const goNext = () => (step.value = step.value + 1);
   const setStep = (newStep: number) => (step.value = newStep);
 
@@ -32,61 +46,47 @@ export const useTutorStore = defineStore('tutor', () => {
   const shouldRetryAction: Ref<boolean> = ref(false);
   const hasSearchError: Ref<boolean> = ref(false);
   const reloadError: Ref<boolean> = ref(false);
-  const hasSyllabusError: Ref<boolean> = ref(false);
-  const fileError: Ref<{ state: boolean; reason: 'BIG_FILE' | 'BAD_EXTENSION' | null }> = ref({
+  const fileError: Ref<{ state: boolean; reason: FileErrorReason | null }> = ref({
     state: false,
     reason: null
   });
 
-  const addFile = (e: any, input_id: string) => {
-    const targetFile = e.target.files[0];
-
-    if (targetFile && targetFile.size > 5 * 1024 * 1024) {
-      fileError.value = {
-        state: true,
-        reason: 'BIG_FILE'
-      };
-      return;
-    }
-
-    if (
-      targetFile &&
-      !(
-        targetFile.type === 'application/pdf' ||
-        targetFile.type.startsWith('text/') ||
-        targetFile.type ===
-          'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      )
-    ) {
-      fileError.value = {
-        state: true,
-        reason: 'BAD_EXTENSION'
-      };
-      return;
-    }
-
-    newFilesToSearch.value = {
-      ...newFilesToSearch.value,
-      [input_id]: targetFile
-    };
-
-    fileError.value = {
-      state: false,
-      reason: null
-    };
+  // one request at a time: closing the loading modal aborts it
+  let controller: AbortController | undefined;
+  const startRequest = () => {
+    controller?.abort();
+    controller = new AbortController();
+    shouldRetryAction.value = false;
+    isLoading.value = true;
+    return { signal: controller.signal };
   };
 
-  const removeFile = (input_id: string) => {
-    if (newFilesToSearch.value[input_id]) {
-      delete newFilesToSearch.value[input_id];
+  const isAllowedType = (file: File) =>
+    file.type === 'application/pdf' ||
+    file.type.startsWith('text/') ||
+    file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+  const addFiles = (files: FileList | File[]) => {
+    let reason: FileErrorReason | null = null;
+    const next = { ...newFilesToSearch.value };
+    for (const file of Array.from(files)) {
+      if (file.size > MAX_FILE_SIZE) reason = 'BIG_FILE';
+      else if (!isAllowedType(file)) reason = 'BAD_EXTENSION';
+      else if (!next[file.name] && Object.keys(next).length >= MAX_FILES) reason = 'TOO_MANY_FILES';
+      else next[file.name] = file;
     }
-    fileError.value = {
-      state: false,
-      reason: null
-    };
+    newFilesToSearch.value = next;
+    fileError.value = { state: !!reason, reason };
   };
 
-  const summaries = ref<[string]>([]);
+  const removeFile = (name: string) => {
+    const rest = { ...newFilesToSearch.value };
+    delete rest[name];
+    newFilesToSearch.value = rest;
+    fileError.value = { state: false, reason: null };
+  };
+
+  const summaries = ref<string[]>([]);
 
   const updateSummary = (index: number, content: string) => {
     summaries.value[index] = content;
@@ -102,77 +102,66 @@ export const useTutorStore = defineStore('tutor', () => {
   const syllabusLanguage: Ref<string> = ref(i18n.global.locale.value);
   const selectSyllabusLanguage = (lang: string) => {
     syllabusLanguage.value = lang;
+    // summaries are extracted in this language, so they must be redone
+    searchedFiles.value = [];
   };
 
   const getFilesContent = async (arg: File[]) => {
-    isLoading.value = true;
-    shouldRetryAction.value = false;
+    const { signal } = startRequest();
     const formData = new FormData();
     arg.forEach((file) => {
       if (file) {
         formData.append('files', file);
       }
     });
-    try {
-      const resp = await basePostAxios(
-        `/tutor/files/content?lang=${syllabusLanguage.value}`,
-        formData,
-        {
-          headers: { 'content-type': 'multipart/form-data' }
-        }
-      );
-      if (resp.status === 204) {
-        shouldRetryAction.value = true;
-        throw new Error('retry getFilesContent');
-      } else {
-        extracts.value = resp.data.extracts;
-        const red_summaries = resp.data.extracts.reduce(
-          (acc: string[], curr: { summary: string }) => {
-            acc = [...acc, curr.summary];
-            return acc;
-          },
-          []
-        );
-        summaries.value = red_summaries;
-        goNext();
-        isLoading.value = false;
+    const resp = await basePostAxios(
+      `/tutor/files/content?lang=${syllabusLanguage.value}`,
+      formData,
+      {
+        headers: { 'content-type': 'multipart/form-data' },
+        signal
       }
-    } catch (error: any) {
-      shouldRetryAction.value = true;
-      throw new Error(error);
+    );
+    if (resp.status === 204) {
+      throw new Error('retry getFilesContent');
     }
-  };
-
-  const stopAction = () => {
+    extracts.value = resp.data.extracts;
+    summaries.value = resp.data.extracts.map((e: { summary: string }) => e.summary);
     isLoading.value = false;
   };
 
-  const retrieveTutorSearch = async (arg: File[]) => {
+  const stopAction = () => {
+    controller?.abort();
+    isLoading.value = false;
+    shouldRetryAction.value = false;
+  };
+
+  const retrieveTutorSearch = async () => {
     setStep(2);
-    isLoading.value = true;
+    const { signal } = startRequest();
 
     try {
-      const resp = await basePostAxios('/tutor/search_extracts', { summaries: summaries.value });
+      const resp = await basePostAxios(
+        '/tutor/search_extracts',
+        { summaries: summaries.value },
+        { signal }
+      );
       if (resp.status === 204) {
         shouldRetryAction.value = true;
-      } else {
-        tutorSearch.value = resp.data;
-        hasSearchError.value = false;
-        isLoading.value = false;
-        shouldRetryAction.value = false;
-
-        goNext();
-        scrollToAnchor('target-3');
+        return;
       }
+      tutorSearch.value = resp.data;
+      hasSearchError.value = false;
+      isLoading.value = false;
+      setStep(3);
     } catch (error: any) {
+      if (axios.isCancel(error)) return;
       console.error('Error during tutor search:', error);
       hasSearchError.value = true;
+      shouldRetryAction.value = true;
       if (error.code === 'ERR_NETWORK') {
         reloadError.value = true;
       }
-    } finally {
-      setStep(3);
-      searchedFiles.value = arg;
     }
   };
 
@@ -190,14 +179,14 @@ export const useTutorStore = defineStore('tutor', () => {
     setStep(1);
     reloadError.value = false;
     selectedSources.value = [];
-    const arg = Object.values(newFilesToSearch.value).filter((e) => e);
+    const arg = Object.values(newFilesToSearch.value);
     if (!arg.length) {
       console.error('No files selected');
       return;
     }
 
+    // same files as last time: keep the summaries the user may have edited
     if (_isequal(searchedFiles.value, arg)) {
-      hasNewSearch.value = false;
       goNext();
       return;
     }
@@ -205,40 +194,22 @@ export const useTutorStore = defineStore('tutor', () => {
     tutorSearch.value = undefined;
     try {
       await getFilesContent(arg);
-      hasNewSearch.value = true;
-      scrollToAnchor('target-2');
-      // goNext();
-    } catch (error) {
-      console.error('get files content did not work');
-    }
-  };
-
-  const handleSearch = async () => {
-    reloadError.value = false;
-    selectedSources.value = [];
-    const arg = Object.values(newFilesToSearch.value).filter((e) => e);
-    if (!arg.length) {
-      console.error('No files selected');
-      return;
-    }
-
-    if (_isequal(searchedFiles.value, arg) && !shouldRetryAction.value) {
-      hasNewSearch.value = false;
+      searchedFiles.value = arg;
       goNext();
-      return;
+    } catch (error) {
+      if (axios.isCancel(error)) return;
+      console.error('get files content did not work', error);
+      shouldRetryAction.value = true;
     }
-
-    tutorSearch.value = undefined;
-    await retrieveTutorSearch(arg);
-    hasNewSearch.value = true;
   };
 
   const restart = () => {
     setStep(1);
-    scrollToAnchor('target-1');
 
     //reset all refs
     tutorSearch.value = undefined;
+    syllabi.value = undefined;
+    summaries.value = [];
     selectedSources.value = [];
     courseTitle.value = '';
     level.value = '';
@@ -248,77 +219,88 @@ export const useTutorStore = defineStore('tutor', () => {
     searchedFiles.value = [];
     extracts.value = [];
     feedbackHistory.value = [];
+    hasSearchError.value = false;
+    fileError.value = { state: false, reason: null };
   };
 
-  const retrieveSyllabus = async () => {
-    if (!tutorSearch.value) {
-      throw new Error('Body is empty');
-    }
-    isLoading.value = true;
+  // with nothing selected, all found resources are used
+  const documentsToUse = () =>
+    selectedSources.value.length ? selectedSources.value : tutorSearch.value?.documents || [];
+
+  const retrieveSyllabus = async (): Promise<boolean> => {
+    const { signal } = startRequest();
     try {
-      const resp = await basePostAxios(`/tutor/syllabus?lang=${syllabusLanguage.value}`, {
-        ...tutorSearch.value,
-        documents: selectedSources.value.length
-          ? selectedSources.value
-          : tutorSearch.value.documents,
-        extracts: extracts.value,
-        ...(courseTitle.value && { course_title: courseTitle.value }),
-        ...(level.value && { level: level.value }),
-        ...(duration.value && { duration: duration.value }),
-        ...(description.value && { description: description.value })
-      });
+      const resp = await basePostAxios(
+        `/tutor/syllabus?lang=${syllabusLanguage.value}`,
+        {
+          ...tutorSearch.value,
+          documents: documentsToUse(),
+          extracts: extracts.value,
+          ...(courseTitle.value && { course_title: courseTitle.value }),
+          ...(level.value && { level: level.value }),
+          ...(duration.value && { duration: duration.value }),
+          ...(description.value && { description: description.value })
+        },
+        { signal }
+      );
 
       const data = resp.data as TutorSyllabus;
 
       //keep only the syllabus from pedagogical engineer
-      syllabi.value = data.syllabus.filter(({ source }) =>
+      const syllabus = data.syllabus.filter(({ source }) =>
         source.toLowerCase().includes('pedagogicalengineeragent')
       )[0];
-
-      hasSyllabusError.value = false;
-      scrollToAnchor('target-4');
-    } catch (error) {
-      console.error('Error during syllabus retrieval:', error);
-      hasSyllabusError.value = true;
-    } finally {
+      syllabi.value = syllabus && { ...syllabus, content: cleanSyllabus(syllabus.content) };
       isLoading.value = false;
+      return true;
+    } catch (error) {
+      if (axios.isCancel(error)) return false;
+      console.error('Error during syllabus retrieval:', error);
+      shouldRetryAction.value = true;
+      return false;
     }
   };
 
   const handleCreateSyllabus = async () => {
     setStep(3);
-    if (
-      !tutorSearch.value ||
-      (!tutorSearch.value.documents.length && !searchedFiles.value.length)
-    ) {
+    if (!tutorSearch.value) {
       console.error('No documents found');
       return;
     }
 
-    await retrieveSyllabus();
-    hasNewSearch.value = false;
-    goNext();
+    if (await retrieveSyllabus()) {
+      feedbackHistory.value = [];
+      goNext();
+    }
   };
 
-  const giveFeedback = async (feedback: string): Promise<boolean> => {
+  // true = applied, false = failed, undefined = cancelled by the user
+  const giveFeedback = async (feedback: string): Promise<boolean | undefined> => {
     if (!tutorSearch.value || !syllabi.value) {
       throw new Error('Body is empty');
     }
 
-    isLoading.value = true;
+    const { signal } = startRequest();
 
     try {
-      const resp = await basePostAxios('/tutor/syllabus/feedback', {
-        feedback: feedback,
-        syllabus: [syllabi.value],
-        ...tutorSearch.value,
-        documents: selectedSources.value
-      });
+      const resp = await basePostAxios(
+        '/tutor/syllabus/feedback',
+        {
+          feedback: feedback,
+          syllabus: [syllabi.value],
+          ...tutorSearch.value,
+          // known behaviour: feedback only relies on the current syllabus and the request
+          documents: selectedSources.value
+        },
+        { signal }
+      );
 
-      syllabi.value = resp.data.syllabus[0];
+      const syllabus = resp.data.syllabus[0];
+      syllabi.value = { ...syllabus, content: cleanSyllabus(syllabus.content) };
       feedbackHistory.value.push(feedback);
       return true;
     } catch (error) {
+      if (axios.isCancel(error)) return undefined;
       console.error('Error during feedback submission:', error);
       return false;
     } finally {
@@ -359,16 +341,14 @@ export const useTutorStore = defineStore('tutor', () => {
     syllabusLanguage,
     selectSyllabusLanguage,
     step,
-    goBack,
     goNext,
     setStep,
     syllabi,
-    addFile,
+    addFiles,
     removeFile,
     fileError,
     restart,
     reloadError,
-    handleSearch,
     retrieveTutorSearch,
     tutorSearch,
     appendSource,
@@ -376,7 +356,6 @@ export const useTutorStore = defineStore('tutor', () => {
     updateSummary,
     handleCreateSyllabus,
     hasSearchError,
-    hasSyllabusError,
     isLoading,
     searchedFiles,
     giveFeedback,

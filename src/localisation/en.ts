@@ -364,65 +364,119 @@ export const en = {
   },
   textLengthFeedback: 'Please add more text to improve search results.',
   tutor: {
-    typeDoc:
-      'This feature is currently under development. For the best results, we recommend using scientific articles or book chapters.',
-    articleToAddExample: 'Click to view an example document',
-    restartSyllabusCreation: 'Start a new syllabus creation',
-    syllabusSteps: 'Syllabus steps:',
     BIG_FILE: 'File size exceeds 5 MB.',
     BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
-    retry: {
-      title: 'Please try again',
-      description: 'An issue occurred while extracting the provided content, please try again.',
-      button: 'retry',
-      stop: 'cancel'
+    TOO_MANY_FILES: 'You can add up to 3 files.',
+    edit: 'Edit',
+    collapse: 'Close',
+    steps: {
+      documents: 'Documents',
+      summary: 'Summary',
+      resources: 'Resources',
+      syllabus: 'Syllabus'
+    },
+    documentsStep: {
+      title: 'Add your course materials',
+      description:
+        'Upload 1 to 3 documents your course is based on (articles, book chapters…). WeLearn builds the syllabus from them.',
+      dropzone: 'Drop files here or',
+      browse: 'browse',
+      limits: 'PDF, DOCX or TXT · 5 MB max · up to 3 files',
+      hint: 'This feature is in beta: scientific articles and book chapters give the best results.',
+      exampleLink: 'See an example document',
+      removeFile: 'Remove {name}',
+      noFile: 'Add at least one document to continue.',
+      languageLabel: 'Syllabus language',
+      detailsTitle: 'Tell us about your course',
+      recommended: 'Strongly recommended',
+      detailsWhy:
+        'The more you tell us, the better the syllabus fits your course. Without these details it will stay generic.',
+      titleLabel: 'Course title',
+      titlePlaceholder: 'e.g. Introduction to sociolinguistics',
+      levelLabel: 'Level of study',
+      levelPlaceholder: 'e.g. First-year undergraduate',
+      durationLabel: 'Duration',
+      durationPlaceholder: 'e.g. 6 weeks, 2 hours per week',
+      descriptionLabel: 'Course description and goals',
+      descriptionPlaceholder:
+        'e.g. Students discover the key concepts of sociolinguistics and learn to analyse language use in their own community.',
+      nudge: 'Without course details, your syllabus will be generic.',
+      addDetails: 'Add details',
+      continueAnyway: 'Continue anyway',
+      action: 'Analyse my documents',
+      recap: '{files} · {lang}'
+    },
+    summaryStep: {
+      title: 'Your document summary',
+      description:
+        "Here's what WeLearn understood from each document. You can adjust it if needed: it guides the search for related resources.",
+      noFileName: 'Document {n}',
+      action: 'Find related resources',
+      recap: 'No document summarized | 1 document summarized | {n} documents summarized'
+    },
+    resourcesStep: {
+      title: 'Choose resources to include',
+      description:
+        'These WeLearn resources match your documents and help connect your course to the Sustainable Development Goals. Click a resource to select it.',
+      selected: 'No resource selected | 1 resource selected | {n} resources selected',
+      allHint: 'Nothing selected: WeLearn will use all the resources above.',
+      action: 'Generate syllabus',
+      noSources: 'No related resources found',
+      noSourcesDescription:
+        'You can still generate a syllabus from your documents only, but it will make fewer links to sustainability. To get resources, go back and try other documents.',
+      searchError:
+        'The search for resources failed. You can still generate a syllabus from your documents.',
+      recapAll: 'All resources'
+    },
+    syllabusStep: {
+      title: 'Your syllabus is ready',
+      description:
+        'Click the text to edit it, ask WeLearn for changes, then download it as a Word file.',
+      feedbackLabel: 'Ask for changes',
+      feedbackPlaceholder:
+        'e.g. Add a week on assessment methods, shorten the reading list, make it more hands-on…',
+      regenerate: 'Regenerate with my changes',
+      feedbackError: "Your changes couldn't be applied. Please try again.",
+      feedbackHistory: 'Changes you already requested ({n})',
+      openLink: 'Open',
+      download: 'Download (.docx)',
+      restart: 'Start a new syllabus'
     },
     loading: {
-      wait: 'Please wait',
       extract: {
-        title: 'Document content extraction',
-        description: 'WeLearn extracts the content from your documents to generate a summary.'
+        title: 'Reading your documents',
+        description: 'WeLearn is identifying the main ideas of each document.'
       },
       search: {
-        title: 'Finding related resources',
+        title: 'Searching for related resources',
         description:
-          'Processing your documents and searching for relevant resources in the WeLearn database.'
+          'WeLearn is looking through its library for resources that match your documents.'
       },
       syllabus: {
-        title: 'Generating syllabus',
+        title: 'Writing your syllabus',
         description:
-          'WeLearn is generating your syllabus from the documents provided. This step may take a few minutes.'
+          "WeLearn is combining your documents, course details and resources. This can take a few minutes: please don't close or reload this page."
       },
-      default: {
-        title: 'Loading',
-        description: 'WeLearn is getting ready for the next step.'
+      feedback: {
+        title: 'Applying your changes',
+        description: 'WeLearn is updating the syllabus based on your request.'
       }
     },
+    error: {
+      title: 'Something went wrong',
+      extract: "We couldn't read your documents.",
+      search: "We couldn't search for related resources.",
+      syllabus: "We couldn't write the syllabus.",
+      kept: 'Your inputs are kept.',
+      retry: 'Try again',
+      cancel: 'Cancel'
+    },
+    // used by the hidden /tutor_test version
     summaries: {
       noFileName: 'No file name provided',
       title: 'Uploaded documents summaries',
       description:
         'WeLearn has extracted the following summaries from your uploaded documents. You can review them before proceeding to the next step.'
-    },
-    firstStep: {
-      syllabusLanguage: 'Syllabus language',
-      acceptedFiles: 'Accepted file types: PDF, TXT, DOCX',
-      searchError: 'No results were found for the provided document.',
-      title: 'Add documents',
-      description:
-        'To get started, upload one or more reference documents your course is based on. They will be used to generate your syllabus.',
-      cursusDescriptionTitle: 'Course information',
-      cursusDescriptionDescription:
-        'Fill in the information about your course. It will be used to generate a syllabus that adapts to your needs.',
-      cursusTitleLabel: 'Title',
-      cursusTitlePlaceholder: 'Sociolinguistics 101',
-      cursusLevelLabel: 'Level of study',
-      cursusLevelPlaceholder: 'Undergraduate',
-      cursusDurationLabel: 'Duration',
-      cursusDurationPlaceholder: '6 weeks',
-      cursusDescriptionLabel: 'Brief description of the course',
-      cursusDescriptionPlaceholder:
-        'This course covers the fundamentals of sociolinguistics, mainly key concepts and theories.'
     },
     secondStep: {
       title: 'Select additional resources',
@@ -431,14 +485,6 @@ export const en = {
       noSources: 'No resources related to your documents were found.',
       noSourcesDescription:
         'You can proceed with your uploaded documents only, but sustainability integration in the generated syllabus may be limited.\nTo explore more resources, return to the previous step to modify your uploaded documents.'
-    },
-    thirdStep: {
-      title: 'Your syllabus',
-      description:
-        'You can edit directly on this page, download a copy, and submit feedback that WeLearn will use to regenerate the syllabus — in any order, and as many times as you like.',
-      giveFeedback: 'Provide feedback on the generated syllabus',
-      sendFeedback: 'Submit feedback',
-      feedbackHistory: 'Changes you already requested ({n})'
     }
   },
   microlearning: {

@@ -1,34 +1,28 @@
 <template>
-  <ModalWrapper v-if="isLoading" :isOpen="isLoading" :onClose="stopAction">
-    <div v-if="shouldRetryAction" class="box">
-      <div class="is-flex is-flex-direction-column is-align-items-center is-justify-content-center">
-        <h1 class="title is-size-4 is-size-5-mobile has-text-centered">
-          <span class="mr-4"><ErrorDocumentIcon /></span>
-          {{ $t('tutor.retry.title') }}
-        </h1>
-
-        <p class="loader-text is-title is-size-4 is-size-5-mobile mx-6 px-6">
-          {{ $t('tutor.retry.description') }}
-        </p>
-        <div class="is-flex is-gap-4">
-          <button data-testid="tutor-back-button" class="button mt-6" @click="action">
-            {{ $t('tutor.retry.button') }}
-          </button>
-          <button data-testid="tutor-back-button" class="button mt-6" @click="stopAction()">
-            {{ $t('tutor.retry.stop') }}
-          </button>
-        </div>
+  <ModalWrapper v-if="isLoading" :isOpen="isLoading">
+    <div v-if="shouldRetryAction" class="box has-text-centered status" role="alert">
+      <ErrorDocumentIcon class="mb-3" />
+      <h1 class="title is-size-4 is-size-5-mobile">{{ $t('tutor.error.title') }}</h1>
+      <p>{{ $t(`tutor.error.${kind}`) }} {{ $t('tutor.error.kept') }}</p>
+      <div class="buttons is-centered mt-5">
+        <button data-testid="tutor-cancel-button" class="button" @click="stopAction()">
+          {{ $t('tutor.error.cancel') }}
+        </button>
+        <button data-testid="tutor-retry-button" class="button is-primary" @click="action()">
+          {{ $t('tutor.error.retry') }}
+        </button>
       </div>
     </div>
-    <div v-else class="box loading-modal has-text-centered">
-      <h1 class="title is-size-4 is-size-5-mobile">
-        {{ title }}
-      </h1>
-      <progress class="progress is-large is-primary mb-6" max="100">60%</progress>
-      <p class="is-title is-size-5 is-size-6-mobile">{{ $t('tutor.loading.wait') }}</p>
-      <p class="is-title is-size-5 is-size-6-mobile">
-        {{ description }}
-      </p>
+    <div v-else class="box has-text-centered status" role="status">
+      <button
+        class="delete close"
+        :aria-label="$t('tutor.error.cancel')"
+        data-testid="tutor-close-button"
+        @click="stopAction()"
+      />
+      <h1 class="title is-size-4 is-size-5-mobile">{{ $t(`tutor.loading.${kind}.title`) }}</h1>
+      <progress class="progress is-primary" max="100" />
+      <p>{{ $t(`tutor.loading.${kind}.description`) }}</p>
     </div>
   </ModalWrapper>
 </template>
@@ -42,15 +36,19 @@ defineProps<{
   shouldRetryAction: boolean;
   action: () => Promise<void>;
   stopAction: () => void;
-  title: string;
-  description: string;
+  kind: 'extract' | 'search' | 'syllabus' | 'feedback';
 }>();
 </script>
 
 <style scoped>
-.loading-modal {
+.status {
+  position: relative;
   padding: 2rem;
-  width: 100%;
-  height: 100%;
+}
+
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 </style>
