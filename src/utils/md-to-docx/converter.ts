@@ -1,4 +1,13 @@
-import { Document, Paragraph, TextRun, AlignmentType, PageOrientation, Packer, Table } from 'docx';
+import {
+  Document,
+  Paragraph,
+  TextRun,
+  AlignmentType,
+  PageOrientation,
+  Packer,
+  Table,
+  BorderStyle
+} from 'docx';
 import { type Options, type Style, headingConfigs } from './types';
 import {
   processHeading,
@@ -6,10 +15,10 @@ import {
   processListItem,
   processBlockquote,
   processComment,
-  processFormattedText,
+  processInlineText,
   collectTables,
+  isTableSeparator,
   processCodeBlock,
-  processLinkParagraph,
   processImage
 } from './helpers';
 
@@ -80,7 +89,22 @@ export async function convertMarkdownToDocx(
             listItems = [];
             inList = false;
           }
-          docChildren.push(new Paragraph({}));
+          // ponytail: no empty paragraph, text paragraphs already have spacing around them
+          continue;
+        }
+
+        // Horizontal rule (---, ***, ___): a thin line instead of raw dashes
+        if (/^(-{3,}|\*{3,}|_{3,})$/.test(line)) {
+          if (inList) {
+            docChildren.push(...listItems);
+            listItems = [];
+            inList = false;
+          }
+          docChildren.push(
+            new Paragraph({
+              border: { bottom: { style: BorderStyle.SINGLE, size: 6, color: 'CCCCCC', space: 1 } }
+            })
+          );
           continue;
         }
 
@@ -129,7 +153,7 @@ export async function convertMarkdownToDocx(
 
         // Handle tables
         if (line.startsWith('|') && line.endsWith('|')) {
-          if (i + 1 < lines.length && lines[i + 1].includes('|-')) {
+          if (i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
             if (inList) {
               docChildren.push(...listItems);
               listItems = [];
@@ -241,20 +265,12 @@ export async function convertMarkdownToDocx(
           continue;
         }
 
-        // Handle links - make sure this is after image handling
-        const linkMatch = line.match(/^(?!.*!\[).*\[([^\]]+)\]\(([^)]+)\)/);
-        if (linkMatch) {
-          const [, text, url] = linkMatch;
-          docChildren.push(processLinkParagraph(text, url, style));
-          continue;
-        }
-
         // Regular paragraph text with special formatting
         if (!inList) {
           try {
             docChildren.push(
               new Paragraph({
-                children: processFormattedText(line),
+                children: processInlineText(line),
                 spacing: {
                   before: style.paragraphSpacing,
                   after: style.paragraphSpacing,

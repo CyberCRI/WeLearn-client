@@ -1,27 +1,20 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import ChevronDown from '@/components/icons/ChevronDown.vue';
-import BaseDropdown from '@/components/dropdowns/BaseDropdown.vue';
+import { ref, computed, nextTick } from 'vue';
 import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
-
-// TODO: add info that default values will be used if not written down
-// TODO: make files required:w
+import type { FileErrorReason } from '@/stores/tutor';
 
 interface Props {
-  disabled?: boolean;
-  addFile: (e: Event, id: string) => void;
-  removeFile: (id: string) => void;
-  searchError?: boolean;
-  fileError: { state: boolean; reason: 'BIG_FILE' | 'BAD_EXTENSION' | null };
+  files: Record<string, File>;
+  addFiles: (files: FileList | File[]) => void;
+  removeFile: (name: string) => void;
+  fileError: { state: boolean; reason: FileErrorReason | null };
   courseTitle: string;
   level: string;
   duration: string;
   description: string;
   action: () => void;
-  actionText?: string;
-  addedFilesTitles: string[];
   storedLanguage: string;
-  selectLang: (string) => void;
+  selectLang: (lang: string) => void;
 }
 
 const props = defineProps<Props>();
@@ -32,253 +25,309 @@ const emit = defineEmits<{
   'update:description': [value: string];
 }>();
 
-const MAX_FILES = 3;
-const inputGroupLength = ref(1);
-const uid = ref(0);
-const inputGroupRef = ref<HTMLElement | null>(null);
-const inputContainerRef = ref<HTMLElement | null>(null);
-const fileInputRef = ref<HTMLInputElement | null>(null);
-const deleteButtonRef = ref<HTMLButtonElement | null>(null);
+const isDragging = ref(false);
+const showNudge = ref(false);
+const titleInput = ref<HTMLInputElement | null>(null);
+const nudge = ref<HTMLElement | null>(null);
 
-const canAddMoreFiles = computed(() => inputGroupLength.value < MAX_FILES);
-const hasMultipleFiles = computed(() => inputGroupLength.value > 1);
+const fileNames = computed(() => Object.keys(props.files));
+const hasDetails = computed(
+  () => !!(props.courseTitle || props.level || props.duration || props.description)
+);
 
-const updateInputGroupLength = () => {
-  inputGroupLength.value = document.querySelectorAll('.input-group input').length;
+const onPick = (e: Event) => {
+  const input = e.target as HTMLInputElement;
+  if (input.files) props.addFiles(input.files);
+  // allows picking the same file again after removing it
+  input.value = '';
 };
 
-const removeElementById = (id: string) => {
-  const element = document.getElementById(id);
-  if (element && element.parentNode === inputGroupRef.value) {
-    inputGroupRef.value?.removeChild(element);
-  }
-  updateInputGroupLength();
+const onDrop = (e: DragEvent) => {
+  isDragging.value = false;
+  if (e.dataTransfer?.files) props.addFiles(e.dataTransfer.files);
 };
 
-const handleRemoveFile = (id: string) => {
-  props.removeFile(id);
-  removeElementById(id);
-};
-
-const createInput = (id: string) => {
-  const input = fileInputRef.value?.cloneNode(false) as HTMLInputElement;
-  input.id = id;
-  input.files = new DataTransfer().files;
-  input.addEventListener('change', (e) => props.addFile(e, id));
-  return input;
-};
-
-const createDeleteButton = (id: string) => {
-  const delButton = deleteButtonRef.value?.cloneNode(true) as HTMLButtonElement;
-  delButton.disabled = false;
-  delButton.addEventListener('click', () => handleRemoveFile(id));
-  return delButton;
-};
-
-const appendNewInputFile = () => {
-  if (!inputGroupRef.value || !inputContainerRef.value) {
-    console.error('Input group is not defined');
+const onContinue = async () => {
+  if (!hasDetails.value && !showNudge.value) {
+    showNudge.value = true;
+    await nextTick();
+    nudge.value?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
+  showNudge.value = false;
+  props.action();
+};
 
-  const elementId = `file_${++uid.value}`;
-  const container = inputContainerRef.value.cloneNode(false) as HTMLElement;
-  container.id = elementId;
-
-  container.appendChild(createInput(elementId));
-  container.appendChild(createDeleteButton(elementId));
-
-  inputGroupRef.value.appendChild(container);
-  updateInputGroupLength();
+const focusDetails = () => {
+  showNudge.value = false;
+  titleInput.value?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  titleInput.value?.focus();
 };
 </script>
 
 <template>
-  <div id="target-1" class="wrapper">
-    <h1 class="title is-4 is-size-5-mobile">1 - {{ $t('tutor.firstStep.title') }}</h1>
-    <p class="subtitle is-6 is-size-6-mobile">{{ $t('tutor.firstStep.description') }}</p>
+  <div class="wrapper">
+    <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.documentsStep.title') }}</h1>
+    <p class="subtitle is-6 mt-2">{{ $t('tutor.documentsStep.description') }}</p>
 
-    <!-- File Input Section -->
-    <div class="is-flex is-flex-direction-column">
-      <div ref="inputGroupRef" class="input-group is-flex is-flex-direction-column">
-        <div ref="inputContainerRef" class="is-flex is-flex-direction-row mb-2" id="file_0">
-          <input
-            ref="fileInputRef"
-            class="input"
-            type="file"
-            accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            placeholder="Enter the new file"
-            data-testid="file-input"
-            @change="(e) => props.addFile(e, 'file_0')"
-          />
-          <button ref="deleteButtonRef" disabled class="button">x</button>
-        </div>
-      </div>
-      <p class="mr-2 is-italic">{{ $t('tutor.typeDoc') }}</p>
+    <label
+      class="dropzone"
+      :class="{ dragging: isDragging }"
+      @dragover.prevent="isDragging = true"
+      @dragleave="isDragging = false"
+      @drop.prevent="onDrop"
+    >
+      <input
+        class="is-sr-only"
+        type="file"
+        multiple
+        accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        data-testid="file-input"
+        @change="onPick"
+      />
+      <span>
+        {{ $t('tutor.documentsStep.dropzone') }}
+        <span class="browse">{{ $t('tutor.documentsStep.browse') }}</span>
+      </span>
+      <span class="is-size-7 has-text-grey">{{ $t('tutor.documentsStep.limits') }}</span>
+    </label>
+
+    <p v-if="fileError.state" class="has-text-danger mt-2">
+      {{ $t(`tutor.${fileError.reason}`) }}
+    </p>
+
+    <ul v-if="fileNames.length" class="files" data-testid="file-list">
+      <li v-for="name in fileNames" :key="name">
+        <span class="file-name">{{ name }}</span>
+        <button
+          class="delete is-small"
+          :aria-label="$t('tutor.documentsStep.removeFile', { name })"
+          @click="removeFile(name)"
+        />
+      </li>
+    </ul>
+
+    <p class="is-size-7 has-text-grey mt-2">
+      {{ $t('tutor.documentsStep.hint') }}
       <a
-        id="articleToAdd"
-        class="link is-small"
+        class="example-link"
         href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
         target="_blank"
-        ><span class="mr-2 is-small">{{ $t('tutor.articleToAddExample') }}</span>
-        <OpenUrlIcon class="icon is-small mt-2"
+        >{{ $t('tutor.documentsStep.exampleLink') }} <OpenUrlIcon class="icon is-small"
       /></a>
+    </p>
 
-      <p v-if="fileError.state" class="has-text-danger">
-        {{ $t(`tutor.${fileError.reason}`) }}
-      </p>
-
-      <div class="is-align-self-flex-end">
-        <span class="has-text-grey-light mr-2">{{ $t('tutor.firstStep.acceptedFiles') }}</span>
-        <button
-          v-if="hasMultipleFiles"
-          class="button has-background-grey-light ml-2"
-          @click="handleRemoveFile((inputGroupRef?.lastChild as HTMLElement)?.id || '')"
+    <div class="field mt-5 language">
+      <label class="label" for="cursus-lang">{{ $t('tutor.documentsStep.languageLabel') }}</label>
+      <div class="select">
+        <select
+          id="cursus-lang"
+          :value="storedLanguage"
+          @change="selectLang(($event.target as HTMLSelectElement).value)"
         >
-          -
-        </button>
-        <button class="button" :disabled="!canAddMoreFiles" @click="appendNewInputFile">+</button>
+          <option v-for="lang in ['fr', 'en']" :key="lang" :value="lang">
+            {{ $t(`lang.${lang}`) }}
+          </option>
+        </select>
       </div>
     </div>
 
-    <p v-if="searchError" class="has-text-danger mt-2">
-      {{ $t('tutor.firstStep.searchError') }}
-    </p>
+    <!-- Course details: optional but they make the syllabus fit the course -->
+    <div class="details box mt-5">
+      <h2 class="title is-5 mb-2 details-title">
+        {{ $t('tutor.documentsStep.detailsTitle') }}
+        <span class="tag is-primary is-light">{{ $t('tutor.documentsStep.recommended') }}</span>
+      </h2>
+      <p class="mb-4">{{ $t('tutor.documentsStep.detailsWhy') }}</p>
 
-    <!-- Course Description Section -->
-    <h2 class="title is-6 mt-4 is-size-6-mobile">
-      {{ $t('tutor.firstStep.cursusDescriptionTitle') }}
-    </h2>
-    <p class="subtitle is-6 is-size-6-mobile">
-      {{ $t('tutor.firstStep.cursusDescriptionDescription') }}
-    </p>
-
-    <div class="cursus-details">
-      <div class="description">
-        <label for="cursus-title">{{ $t('tutor.firstStep.cursusTitleLabel') }}</label>
-        <input
-          class="input"
-          type="text"
-          id="cursus-title"
-          :value="courseTitle"
-          @input="emit('update:courseTitle', ($event.target as HTMLInputElement).value)"
-          :placeholder="$t('tutor.firstStep.cursusTitlePlaceholder')"
-        />
-      </div>
-
-      <div class="description">
-        <label for="cursus-level">{{ $t('tutor.firstStep.cursusLevelLabel') }}</label>
-        <input
-          class="input"
-          type="text"
-          id="cursus-level"
-          :value="level"
-          @input="emit('update:level', ($event.target as HTMLInputElement).value)"
-          :placeholder="$t('tutor.firstStep.cursusLevelPlaceholder')"
-        />
-      </div>
-
-      <div class="description">
-        <label for="cursus-duration">{{ $t('tutor.firstStep.cursusDurationLabel') }}</label>
-        <input
-          class="input"
-          type="text"
-          id="cursus-duration"
-          :value="duration"
-          @input="emit('update:duration', ($event.target as HTMLInputElement).value)"
-          :placeholder="$t('tutor.firstStep.cursusDurationPlaceholder')"
-        />
-      </div>
-      <div class="description">
-        <label for="cursus-lang">{{ $t('tutor.firstStep.syllabusLanguage') }}</label>
-        <BaseDropdown v-slot="slotProps" :isUp="isUp" :title="storedLanguage">
-          <ClickableText
-            class="dropdown-item"
-            :text="$t('removeSelection')"
-            :action="
-              () => {
-                slotProps.toggleVisibility();
-              }
-            "
+      <div class="cursus-details">
+        <div class="field full">
+          <label class="label" for="cursus-title">{{ $t('tutor.documentsStep.titleLabel') }}</label>
+          <input
+            ref="titleInput"
+            class="input"
+            type="text"
+            id="cursus-title"
+            :value="courseTitle"
+            @input="emit('update:courseTitle', ($event.target as HTMLInputElement).value)"
+            :placeholder="$t('tutor.documentsStep.titlePlaceholder')"
           />
-          <a
-            :key="lang"
-            @click="
-              selectLang(lang);
-              slotProps.toggleVisibility();
-            "
-            v-for="lang in ['fr', 'en']"
-            class="dropdown-item"
-            :class="storedLanguage === lang && 'is-active'"
-          >
-            {{ $t(`${lang}`) }}
-          </a>
-        </BaseDropdown>
+        </div>
+        <div class="field">
+          <label class="label" for="cursus-level">{{ $t('tutor.documentsStep.levelLabel') }}</label>
+          <input
+            class="input"
+            type="text"
+            id="cursus-level"
+            :value="level"
+            @input="emit('update:level', ($event.target as HTMLInputElement).value)"
+            :placeholder="$t('tutor.documentsStep.levelPlaceholder')"
+          />
+        </div>
+        <div class="field">
+          <label class="label" for="cursus-duration">
+            {{ $t('tutor.documentsStep.durationLabel') }}
+          </label>
+          <input
+            class="input"
+            type="text"
+            id="cursus-duration"
+            :value="duration"
+            @input="emit('update:duration', ($event.target as HTMLInputElement).value)"
+            :placeholder="$t('tutor.documentsStep.durationPlaceholder')"
+          />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label" for="cursus-description">
+          {{ $t('tutor.documentsStep.descriptionLabel') }}
+        </label>
+        <textarea
+          id="cursus-description"
+          class="textarea"
+          rows="3"
+          :placeholder="$t('tutor.documentsStep.descriptionPlaceholder')"
+          :value="description"
+          @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
+        />
       </div>
     </div>
 
-    <label for="cursus-description" class="mt-4">
-      {{ $t('tutor.firstStep.cursusDescriptionLabel') }}
-    </label>
-    <textarea
-      id="cursus-description"
-      class="textarea mt-1"
-      :placeholder="$t('tutor.firstStep.cursusDescriptionPlaceholder')"
-      :value="description"
-      @input="emit('update:description', ($event.target as HTMLTextAreaElement).value)"
-    />
-    <div class="is-flex is-justify-content-end mt-4">
-      <a data-testid="tutor-next-button" class="button is-primary" href="#" @click="action()">
-        <ChevronDown />
-        {{ $t(`${actionText || 'next'}`) }}
-      </a>
+    <div v-if="showNudge" ref="nudge" class="notification is-warning is-light nudge" role="status">
+      <p>{{ $t('tutor.documentsStep.nudge') }}</p>
+      <div class="buttons mt-2">
+        <button class="button is-small" @click="focusDetails">
+          {{ $t('tutor.documentsStep.addDetails') }}
+        </button>
+        <button class="button is-small is-text" @click="onContinue">
+          {{ $t('tutor.documentsStep.continueAnyway') }}
+        </button>
+      </div>
+    </div>
+
+    <div class="step-footer">
+      <span v-if="!fileNames.length" class="has-text-grey is-size-7">
+        {{ $t('tutor.documentsStep.noFile') }}
+      </span>
+      <button
+        data-testid="tutor-next-button"
+        class="button is-primary"
+        :disabled="!fileNames.length"
+        @click="onContinue"
+      >
+        {{ $t('tutor.documentsStep.action') }} →
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.button > svg {
-  height: 1rem;
-  padding-right: 1rem;
-}
 .wrapper {
-  padding: 5% 0;
   width: 100%;
   display: flex;
   flex-direction: column;
-  transition: all 1s;
-  margin: 0 auto;
 }
 
-.description {
-  max-height: 2.5rem;
-  width: 24%;
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.5rem 1rem;
+  border: 2px dashed var(--neutral-20);
+  border-radius: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+  &:hover,
+  &.dragging,
+  &:focus-within {
+    border-color: var(--primary);
+    background-color: var(--neutral-10);
+  }
 }
 
-.wrapper.disabled {
-  opacity: 0.5;
-  pointer-events: none;
+.browse {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+.files {
+  margin-top: 0.75rem;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background-color: var(--neutral-10);
+    margin-bottom: 0.25rem;
+  }
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.example-link {
+  white-space: nowrap;
+  .icon {
+    width: 0.9em;
+    height: 0.9em;
+    vertical-align: -0.1em;
+  }
+}
+
+.language .select {
+  min-width: 12rem;
+  select {
+    width: 100%;
+  }
+}
+
+.details-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.details {
+  box-shadow: none;
+  border: 1px solid var(--neutral-20);
 }
 
 .cursus-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0 1rem;
+  .full {
+    grid-column: 1 / -1;
+  }
+}
+
+.nudge {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.step-footer {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 @media (max-width: 768px) {
   .cursus-details {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-
-  .description {
-    width: 100%;
-    max-height: none;
+    grid-template-columns: 1fr;
   }
 }
 </style>

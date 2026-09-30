@@ -6,50 +6,115 @@ exports[`TutorPage > renders properly 1`] = `
   data-v-8a8621cb=""
 >
   <div
-    class="is-flex is-flex-wrap-wrap is-justify-content-center is-align-items-center mt-4"
+    class="steps-bar"
     data-v-8a8621cb=""
   >
-    <p
-      class="subtitle has-text-weight-bold is-5 is-size-6-mobile mr-4 my-auto"
-      data-v-8a8621cb=""
-    >
-      tutor.syllabusSteps
-    </p>
     <div
-      class="wrapper"
-      data-v-050e406a=""
+      class="progress-wrapper"
+      data-v-49a355d6=""
       data-v-8a8621cb=""
     >
-      
-      <a
-        class="step-indicator active"
-        data-v-050e406a=""
-        href="#"
+      <div
+        class="progress-track"
+        data-v-49a355d6=""
       >
-        1
-      </a>
-      <a
-        class="step-indicator disabled"
-        data-v-050e406a=""
-        href="#"
+        <div
+          class="progress-fill"
+          data-v-49a355d6=""
+          style="width: 5%;"
+        />
+      </div>
+      <div
+        class="steps"
+        data-v-49a355d6=""
       >
-        2
-      </a>
-      <a
-        class="step-indicator disabled"
-        data-v-050e406a=""
-        href="#"
-      >
-        3
-      </a>
-      <a
-        class="step-indicator disabled"
-        data-v-050e406a=""
-        href="#"
-      >
-        4
-      </a>
-      
+        
+        <div
+          class="step active"
+          data-v-49a355d6=""
+        >
+          <div
+            class="circle"
+            data-v-49a355d6=""
+          >
+            <span
+              data-v-49a355d6=""
+            >
+              1
+            </span>
+          </div>
+          <span
+            class="label"
+            data-v-49a355d6=""
+          >
+            Documents
+          </span>
+        </div>
+        <div
+          class="step"
+          data-v-49a355d6=""
+        >
+          <div
+            class="circle"
+            data-v-49a355d6=""
+          >
+            <span
+              data-v-49a355d6=""
+            >
+              2
+            </span>
+          </div>
+          <span
+            class="label"
+            data-v-49a355d6=""
+          >
+            Résumé
+          </span>
+        </div>
+        <div
+          class="step"
+          data-v-49a355d6=""
+        >
+          <div
+            class="circle"
+            data-v-49a355d6=""
+          >
+            <span
+              data-v-49a355d6=""
+            >
+              3
+            </span>
+          </div>
+          <span
+            class="label"
+            data-v-49a355d6=""
+          >
+            Ressources
+          </span>
+        </div>
+        <div
+          class="step"
+          data-v-49a355d6=""
+        >
+          <div
+            class="circle"
+            data-v-49a355d6=""
+          >
+            <span
+              data-v-49a355d6=""
+            >
+              4
+            </span>
+          </div>
+          <span
+            class="label"
+            data-v-49a355d6=""
+          >
+            Syllabus
+          </span>
+        </div>
+        
+      </div>
     </div>
   </div>
   <!--v-if-->
@@ -58,368 +123,277 @@ exports[`TutorPage > renders properly 1`] = `
     class="layout-flex"
     data-v-8a8621cb=""
   >
-    <div
-      class="wrapper"
-      data-test="fist-step"
-      data-v-5582d651=""
+    
+    
+    <section
+      class="step-section"
       data-v-8a8621cb=""
       id="target-1"
     >
-      <h1
-        class="title is-4 is-size-5-mobile"
-        data-v-5582d651=""
-      >
-        1 - tutor.firstStep.title
-      </h1>
-      <p
-        class="subtitle is-6 is-size-6-mobile"
-        data-v-5582d651=""
-      >
-        tutor.firstStep.description
-      </p>
-      <!-- File Input Section -->
-      <div
-        class="is-flex is-flex-direction-column"
-        data-v-5582d651=""
-      >
-        <div
-          class="input-group is-flex is-flex-direction-column"
-          data-v-5582d651=""
-        >
-          <div
-            class="is-flex is-flex-direction-row mb-2"
-            data-v-5582d651=""
-            id="file_0"
-          >
-            <input
-              accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              class="input"
-              data-testid="file-input"
-              data-v-5582d651=""
-              placeholder="Enter the new file"
-              type="file"
-            />
-            <button
-              class="button"
-              data-v-5582d651=""
-              disabled=""
-            >
-              x
-            </button>
-          </div>
-        </div>
-        <p
-          class="mr-2 is-italic"
-          data-v-5582d651=""
-        >
-          tutor.typeDoc
-        </p>
-        <a
-          class="link is-small"
-          data-v-5582d651=""
-          href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
-          id="articleToAdd"
-          target="_blank"
-        >
-          <span
-            class="mr-2 is-small"
-            data-v-5582d651=""
-          >
-            tutor.articleToAddExample
-          </span>
-          <div
-            class="icon is-small mt-2"
-            data-v-5582d651=""
-            data-v-69f71e04=""
-          >
-            <svg
-              data-v-69f71e04=""
-              viewBox="0 0 512 512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-              <path
-                d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l82.7 0L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3l0 82.7c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160c0-17.7-14.3-32-32-32L320 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
-                data-v-69f71e04=""
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </a>
-        <!--v-if-->
-        <div
-          class="is-align-self-flex-end"
-          data-v-5582d651=""
-        >
-          <span
-            class="has-text-grey-light mr-2"
-            data-v-5582d651=""
-          >
-            tutor.firstStep.acceptedFiles
-          </span>
-          <!--v-if-->
-          <button
-            class="button"
-            data-v-5582d651=""
-          >
-            +
-          </button>
-        </div>
-      </div>
       <!--v-if-->
-      <!-- Course Description Section -->
-      <h2
-        class="title is-6 mt-4 is-size-6-mobile"
-        data-v-5582d651=""
-      >
-        tutor.firstStep.cursusDescriptionTitle
-      </h2>
-      <p
-        class="subtitle is-6 is-size-6-mobile"
-        data-v-5582d651=""
-      >
-        tutor.firstStep.cursusDescriptionDescription
-      </p>
+      
       <div
-        class="cursus-details"
+        class="wrapper"
+        data-test="fist-step"
         data-v-5582d651=""
+        data-v-8a8621cb=""
       >
-        <div
-          class="description"
+        <h1
+          class="title is-4 is-size-5-mobile"
           data-v-5582d651=""
         >
-          <label
-            data-v-5582d651=""
-            for="cursus-title"
-          >
-            tutor.firstStep.cursusTitleLabel
-          </label>
+          tutor.documentsStep.title
+        </h1>
+        <p
+          class="subtitle is-6 mt-2"
+          data-v-5582d651=""
+        >
+          tutor.documentsStep.description
+        </p>
+        <label
+          class="dropzone"
+          data-v-5582d651=""
+        >
           <input
-            class="input"
+            accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            class="is-sr-only"
+            data-testid="file-input"
             data-v-5582d651=""
-            id="cursus-title"
-            placeholder="tutor.firstStep.cursusTitlePlaceholder"
-            type="text"
-            value=""
+            multiple=""
+            type="file"
           />
-        </div>
-        <div
-          class="description"
-          data-v-5582d651=""
-        >
-          <label
+          <span
             data-v-5582d651=""
-            for="cursus-level"
           >
-            tutor.firstStep.cursusLevelLabel
-          </label>
-          <input
-            class="input"
+            tutor.documentsStep.dropzone 
+            <span
+              class="browse"
+              data-v-5582d651=""
+            >
+              tutor.documentsStep.browse
+            </span>
+          </span>
+          <span
+            class="is-size-7 has-text-grey"
             data-v-5582d651=""
-            id="cursus-level"
-            placeholder="tutor.firstStep.cursusLevelPlaceholder"
-            type="text"
-            value=""
-          />
-        </div>
-        <div
-          class="description"
-          data-v-5582d651=""
-        >
-          <label
-            data-v-5582d651=""
-            for="cursus-duration"
           >
-            tutor.firstStep.cursusDurationLabel
-          </label>
-          <input
-            class="input"
+            tutor.documentsStep.limits
+          </span>
+        </label>
+        <!--v-if-->
+        <!--v-if-->
+        <p
+          class="is-size-7 has-text-grey mt-2"
+          data-v-5582d651=""
+        >
+          tutor.documentsStep.hint 
+          <a
+            class="example-link"
             data-v-5582d651=""
-            id="cursus-duration"
-            placeholder="tutor.firstStep.cursusDurationPlaceholder"
-            type="text"
-            value=""
-          />
-        </div>
+            href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
+            target="_blank"
+          >
+            tutor.documentsStep.exampleLink 
+            <div
+              class="icon is-small"
+              data-v-5582d651=""
+              data-v-69f71e04=""
+            >
+              <svg
+                data-v-69f71e04=""
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                <path
+                  d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l82.7 0L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3l0 82.7c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160c0-17.7-14.3-32-32-32L320 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
+                  data-v-69f71e04=""
+                  fill="currentColor"
+                />
+              </svg>
+            </div>
+          </a>
+        </p>
         <div
-          class="description"
+          class="field mt-5 language"
           data-v-5582d651=""
         >
           <label
+            class="label"
             data-v-5582d651=""
             for="cursus-lang"
           >
-            tutor.firstStep.syllabusLanguage
+            tutor.documentsStep.languageLabel
           </label>
           <div
-            class="dropdown is-fullwidth"
+            class="select"
             data-v-5582d651=""
-            data-v-d2915419=""
           >
-            <div
-              class="dropdown-trigger"
-              data-v-d2915419=""
+            <select
+              data-v-5582d651=""
+              id="cursus-lang"
+              value="fr"
             >
-              <button
-                aria-controls="dropdown-menu"
-                aria-haspopup="true"
-                class="button"
-                data-v-d2915419=""
+              
+              <option
+                data-v-5582d651=""
+                value="fr"
               >
-                <div
-                  class="drop-title container is-flex"
-                  data-v-d2915419=""
-                >
-                  <span
-                    data-v-d2915419=""
-                  >
-                    fr
-                  </span>
-                  <!--v-if-->
-                </div>
-                <span
-                  class="icon is-small"
-                  data-v-d2915419=""
-                >
-                  <svg
-                    data-v-d2915419=""
-                    viewBox="0 0 448 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                    <path
-                      d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </div>
-            <div
-              class="dropdown-menu"
-              data-v-d2915419=""
-              id="dropdown-menu"
-              role="menu"
-            >
-              <div
-                class="dropdown-content"
-                data-v-d2915419=""
+                lang.fr
+              </option>
+              <option
+                data-v-5582d651=""
+                value="en"
               >
-                
-                <clickabletext
-                  action="() => {
-                slotProps.toggleVisibility();
-              }"
-                  class="dropdown-item"
-                  data-v-5582d651=""
-                  text="removeSelection"
-                />
-                
-                <a
-                  class="dropdown-item is-active"
-                  data-v-5582d651=""
-                >
-                  fr
-                </a>
-                <a
-                  class="dropdown-item"
-                  data-v-5582d651=""
-                >
-                  en
-                </a>
-                
-                
-              </div>
-            </div>
+                lang.en
+              </option>
+              
+            </select>
           </div>
         </div>
-      </div>
-      <label
-        class="mt-4"
-        data-v-5582d651=""
-        for="cursus-description"
-      >
-        tutor.firstStep.cursusDescriptionLabel
-      </label>
-      <textarea
-        class="textarea mt-1"
-        data-v-5582d651=""
-        id="cursus-description"
-        placeholder="tutor.firstStep.cursusDescriptionPlaceholder"
-        value=""
-      />
-      <div
-        class="is-flex is-justify-content-end mt-4"
-        data-v-5582d651=""
-      >
-        <a
-          class="button is-primary"
-          data-testid="tutor-next-button"
+        <!-- Course details: optional but they make the syllabus fit the course -->
+        <div
+          class="details box mt-5"
           data-v-5582d651=""
-          href="#"
         >
-          <svg
+          <h2
+            class="title is-5 mb-2 details-title"
             data-v-5582d651=""
-            viewBox="0 0 448 512"
-            xmlns="http://www.w3.org/2000/svg"
           >
-            <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
-              fill="currentColor"
+            tutor.documentsStep.detailsTitle 
+            <span
+              class="tag is-primary is-light"
+              data-v-5582d651=""
+            >
+              tutor.documentsStep.recommended
+            </span>
+          </h2>
+          <p
+            class="mb-4"
+            data-v-5582d651=""
+          >
+            tutor.documentsStep.detailsWhy
+          </p>
+          <div
+            class="cursus-details"
+            data-v-5582d651=""
+          >
+            <div
+              class="field full"
+              data-v-5582d651=""
+            >
+              <label
+                class="label"
+                data-v-5582d651=""
+                for="cursus-title"
+              >
+                tutor.documentsStep.titleLabel
+              </label>
+              <input
+                class="input"
+                data-v-5582d651=""
+                id="cursus-title"
+                placeholder="tutor.documentsStep.titlePlaceholder"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="field"
+              data-v-5582d651=""
+            >
+              <label
+                class="label"
+                data-v-5582d651=""
+                for="cursus-level"
+              >
+                tutor.documentsStep.levelLabel
+              </label>
+              <input
+                class="input"
+                data-v-5582d651=""
+                id="cursus-level"
+                placeholder="tutor.documentsStep.levelPlaceholder"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="field"
+              data-v-5582d651=""
+            >
+              <label
+                class="label"
+                data-v-5582d651=""
+                for="cursus-duration"
+              >
+                tutor.documentsStep.durationLabel
+              </label>
+              <input
+                class="input"
+                data-v-5582d651=""
+                id="cursus-duration"
+                placeholder="tutor.documentsStep.durationPlaceholder"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="field"
+            data-v-5582d651=""
+          >
+            <label
+              class="label"
+              data-v-5582d651=""
+              for="cursus-description"
+            >
+              tutor.documentsStep.descriptionLabel
+            </label>
+            <textarea
+              class="textarea"
+              data-v-5582d651=""
+              id="cursus-description"
+              placeholder="tutor.documentsStep.descriptionPlaceholder"
+              rows="3"
+              value=""
             />
-          </svg>
-           next
-        </a>
-      </div>
-    </div>
-    <div
-      class="summaries-section disabled"
-      data-v-834edf8c=""
-      data-v-8a8621cb=""
-      id="target-2"
-    >
-      <h2
-        class="title is-4 is-size-5-mobile mt-4"
-        data-testid="tutor-summaries-title"
-        data-v-834edf8c=""
-      >
-         2 - tutor.summaries.title
-      </h2>
-      <p
-        class="subtitle is-6"
-        data-v-834edf8c=""
-      >
-        tutor.summaries.description
-      </p>
-      
-      
-      <div
-        class="is-flex is-justify-content-end mt-4"
-        data-v-834edf8c=""
-      >
-        <a
-          class="button is-primary"
-          data-v-834edf8c=""
-          href="#"
+          </div>
+        </div>
+        <!--v-if-->
+        <div
+          class="step-footer"
+          data-v-5582d651=""
         >
-          <svg
-            data-v-834edf8c=""
-            viewBox="0 0 448 512"
-            xmlns="http://www.w3.org/2000/svg"
+          <span
+            class="has-text-grey is-size-7"
+            data-v-5582d651=""
           >
-            <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-            <path
-              d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
-              fill="currentColor"
-            />
-          </svg>
-           search
-        </a>
+            tutor.documentsStep.noFile
+          </span>
+          <button
+            class="button is-primary"
+            data-testid="tutor-next-button"
+            data-v-5582d651=""
+            disabled=""
+          >
+            tutor.documentsStep.action → 
+          </button>
+        </div>
       </div>
-    </div>
+      
+    </section>
+    
+    
     <!--v-if-->
+    
+    
     <!--v-if-->
+    
+    
+    <!--v-if-->
+    
+    
   </div>
 </div>
 `;

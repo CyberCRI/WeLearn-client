@@ -10,7 +10,8 @@ import {
   TableLayoutType,
   WidthType,
   ExternalHyperlink,
-  ImageRun
+  ImageRun,
+  type ParagraphChild
 } from 'docx';
 import { type Style, type TableData, type HeadingConfig, type ListItemConfig } from './types';
 
@@ -23,7 +24,8 @@ import { type Style, type TableData, type HeadingConfig, type ListItemConfig } f
  * @returns The processed paragraph
  */
 export function processHeading(line: string, config: HeadingConfig, style: Style): Paragraph {
-  const headingText = line.replace(new RegExp(`^#{${config.level}} `), '');
+  // the whole heading is bold already: drop the markdown bold markers
+  const headingText = line.replace(new RegExp(`^#{${config.level}} `), '').replace(/\*\*/g, '');
   const headingLevel = config.level;
 
   return new Paragraph({
@@ -66,7 +68,7 @@ export function processTable(tableData: TableData, documentType: 'document' | 'r
                   style: 'Strong',
                   children: [
                     new TextRun({
-                      text: header,
+                      text: header.replace(/\*\*/g, ''),
                       bold: true,
                       color: '000000'
                     })
@@ -85,16 +87,10 @@ export function processTable(tableData: TableData, documentType: 'document' | 'r
             children: row.map(
               (cell) =>
                 new TableCell({
-                  children: [
-                    new Paragraph({
-                      children: [
-                        new TextRun({
-                          text: cell,
-                          color: '000000'
-                        })
-                      ]
-                    })
-                  ]
+                  // one paragraph per <br>, with bold and links kept
+                  children: cell
+                    .split(/<br\s*\/?>/i)
+                    .map((part) => new Paragraph({ children: processInlineText(part.trim()) }))
                 })
             )
           })
@@ -116,12 +112,44 @@ export function processTable(tableData: TableData, documentType: 'document' | 'r
  * @param style - The style configuration
  * @returns The processed paragraph
  */
+// links, in the 3 forms the LLM writes them:
+// markdown [text](url) (text may hold brackets, e.g. [[lien]](url)), HTML <a href="url">text</a>, bare URL
+const LINK_REGEX =
+  /\[((?:[^[\]]|\[[^\]]*\])+)\]\(([^)\s]+)\)|<a\s[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>|(https?:\/\/[^\s)<>"]+)/g;
+
+/**
+ * Formats a line (bold, italic, code) and turns its links into real hyperlinks,
+ * keeping the text around them
+ */
+export function processInlineText(line: string): ParagraphChild[] {
+  const children: ParagraphChild[] = [];
+  let last = 0;
+  for (const match of line.matchAll(LINK_REGEX)) {
+    const index = match.index ?? 0;
+    if (index > last) children.push(...processFormattedText(line.slice(last, index)));
+    const url = match[2] || match[3] || match[5];
+    children.push(
+      new ExternalHyperlink({
+        children: [
+          new TextRun({
+            text: match[1] || match[4] || url,
+            color: '0000FF',
+            underline: { type: 'single' }
+          })
+        ],
+        link: url
+      })
+    );
+    last = index + match[0].length;
+  }
+  if (last < line.length) children.push(...processFormattedText(line.slice(last)));
+  return children;
+}
+
 export function processListItem(config: ListItemConfig, style: Style): Paragraph {
-  const children: TextRun[] = [
-    new TextRun({
-      text: config.text + (config.boldText ? '\n' : ''),
-      color: '000000'
-    })
+  const children: ParagraphChild[] = [
+    ...processInlineText(config.text),
+    ...(config.boldText ? [new TextRun({ text: '\n', color: '000000' })] : [])
   ];
 
   if (config.boldText) {
@@ -307,13 +335,17 @@ export function processFormattedText(line: string): TextRun[] {
  * @param lines - The markdown lines
  * @returns An array of table data
  */
+// separator line under a table header: |---|---| or | --- | :-: | (both are valid markdown)
+export const isTableSeparator = (line: string) =>
+  /^\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?$/.test(line.trim());
+
 export function collectTables(lines: string[]): TableData[] {
   const tables: TableData[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (line.trim().startsWith('|') && line.trim().endsWith('|')) {
-      if (i + 1 < lines.length && lines[i + 1].includes('|-')) {
+      if (i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
         const headers = line
           .split('|')
           .filter(Boolean)

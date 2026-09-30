@@ -164,21 +164,22 @@ test.describe('Tutor', () => {
     await page.goto('/tutor');
   });
 
-  test('should display input type file', async ({ page }) => {
-    await expect(page.getByTestId('file-input')).toBeVisible();
+  test('should display the file drop zone', async ({ page }) => {
+    await expect(page.getByTestId('file-input')).toBeAttached();
+    await expect(page.getByTestId('tutor-next-button')).toBeDisabled();
   });
 
-  test('should add more inputs files to the page', async ({ page }) => {
-    await page.getByRole('button', { name: '+' }).click();
-    const fileInputs = page.getByTestId('file-input');
-    await expect(fileInputs).toHaveCount(2);
+  test('should list added files and enable continue', async ({ page }) => {
+    await page.getByTestId('file-input').setInputFiles('./e2e/files/test_tutor.pdf');
+    await expect(page.getByTestId('file-list')).toContainText('test_tutor.pdf');
+    await expect(page.getByTestId('tutor-next-button')).toBeEnabled();
   });
 
-  test('should remove input when clicking on x', async ({ page }) => {
-    await page.getByRole('button', { name: '+' }).click();
-    await expect(page.getByTestId('file-input')).toHaveCount(2);
-    await page.getByRole('button', { name: 'x' }).last().click();
-    await expect(page.getByTestId('file-input')).toHaveCount(1);
+  test('should remove a file from the list', async ({ page }) => {
+    await page.getByTestId('file-input').setInputFiles('./e2e/files/test_tutor.pdf');
+    await page.getByTestId('file-list').getByRole('button').click();
+    await expect(page.getByTestId('file-list')).toHaveCount(0);
+    await expect(page.getByTestId('tutor-next-button')).toBeDisabled();
   });
 
   // test('should add file to input', async ({ page }) => {
