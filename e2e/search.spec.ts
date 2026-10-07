@@ -38,7 +38,9 @@ test.describe('search', () => {
 
     test('should select a source', async ({ page }) => {
       await page.getByText('Fake-Collection').click();
-      await expect(page.getByText('fake collection x')).toBeVisible();
+      // selected pill + its remove (×) button, labelled "Effacer"
+      await expect(page.getByText('fake collection')).toBeVisible();
+      await expect(page.getByRole('button', { name: 'Effacer', exact: true })).toBeVisible();
       await expect(page.getByLabel('fake-collection').locator('span')).toBeChecked();
     });
   });

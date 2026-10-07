@@ -296,6 +296,8 @@ export const fr = {
     }
   },
   reload: 'Recharger',
+  clearFilters: 'Effacer tous les filtres',
+  filtersSelected: '{n} sélectionné | {n} sélectionnés',
   removeAll: 'Tout effacer',
   removeBookmark: 'Retirer des favoris',
   removeSelection: 'Effacer',
