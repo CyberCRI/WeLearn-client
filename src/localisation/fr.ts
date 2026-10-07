@@ -345,6 +345,7 @@ export const fr = {
     exportBibliography: 'Exporter la bibliographie',
     exportingBibliography: 'Export en cours...'
   },
+  contact: 'Contact',
   terms: 'Politique de confidentialité',
   subjects: {
     Anthropology: 'Anthropologie',

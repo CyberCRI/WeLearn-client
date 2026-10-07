@@ -1,7 +1,11 @@
 <template>
   <div class="footer-wrapper">
     <div>
-      <a href="mailto:welearn@learningplanetinstitute.org">welearn@learningplanetinstitute.org</a>
+      <a
+        href="mailto:welearn@learningplanetinstitute.org"
+        title="welearn@learningplanetinstitute.org"
+        >{{ $t('contact') }}</a
+      >
       <router-link class="terms" to="/terms">
         <span class="item-name">{{ $t('terms') }}</span>
       </router-link>
