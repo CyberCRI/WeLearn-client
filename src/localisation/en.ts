@@ -287,6 +287,8 @@ export const en = {
     }
   },
   reload: 'Reload',
+  clearFilters: 'Clear all filters',
+  filtersSelected: '{n} selected',
   removeAll: 'Clear all',
   removeBookmark: 'Remove bookmark',
   removeSelection: 'Clear',

@@ -5,7 +5,6 @@ import { useSearchStore } from '@/stores/search';
 import SourcesListComponent from '@/components/SourcesListComponent.vue';
 import SearchIcon from '@/components/icons/SearchIcon.vue';
 import SearchWrapper from '@/components/SearchWrapper.vue';
-import DeleteButton from '@/components/DeleteButton.vue';
 import Pill from '@/components/PillComponent.vue';
 import FiltersComponent from '@/components/FiltersComponent.vue';
 import ColumnTemplate from '@/components/ColumnTemplate.vue';
@@ -37,7 +36,7 @@ const expandSearch = async () => {
 </script>
 
 <template>
-  <ColumnTemplate class="search-page">
+  <ColumnTemplate class="search-page" filtersFirst>
     <template #left-panel>
       <div class="wrapper" ref="wrapper">
         <Transition name="fade">
@@ -54,9 +53,14 @@ const expandSearch = async () => {
         </Transition>
         <SearchWrapper v-show="!isCompact" class="search-box">
           <template #textArea>
-            <div class="delete-button-wrapper" v-if="store.searchInput">
-              <DeleteButton :action="store.$reset" :delText="$t('clearSearch')" />
-            </div>
+            <!-- standard "clear field" ⓧ in the corner, far from the search button -->
+            <button
+              v-if="store.searchInput"
+              class="delete clear-search"
+              :aria-label="$t('clearSearch')"
+              :title="$t('clearSearch')"
+              @click="store.$reset"
+            />
             <TextArea v-model="store.searchInput" />
           </template>
           <template #sdgsList>
@@ -186,16 +190,11 @@ const expandSearch = async () => {
   padding: 1rem 3rem 0rem 3rem;
 }
 
-.delete-button-wrapper {
+.clear-search {
   position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  align-items: flex-end;
+  top: 0.75rem;
+  right: 0.75rem;
   z-index: 1;
-  & > * {
-    border: none;
-  }
 }
 
 .text-length-feedback {
@@ -234,7 +233,7 @@ const expandSearch = async () => {
     padding-top: 0.25rem;
   }
   .wrapper {
-    padding: 0.25rem;
+    padding: 0.25rem 1rem;
   }
   .sdg-list-title {
     font-size: 0.875em;
