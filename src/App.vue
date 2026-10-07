@@ -60,5 +60,7 @@ onMounted(async () => {
 .fullscreen {
   width: 100vw;
   height: 100vh;
+  /* dvh = height actually visible on phones (address bar shown); 100vh is taller there and lets the page scroll the nav away */
+  height: 100dvh;
 }
 </style>

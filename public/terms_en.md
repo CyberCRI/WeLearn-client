@@ -1,4 +1,4 @@
-## **Privacy Policy – WeLearn**
+## **WeLearn Privacy Policy**
 
 ### **1\. Who are we?**
 

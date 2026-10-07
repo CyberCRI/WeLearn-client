@@ -10,9 +10,12 @@
       >
         {{ value }}
       </button>
-      <span class="levelLegend" v-if="value === 1 || value == 5">{{
-        value === 1 ? $t('autoEvaluation.notAtAll') : $t('autoEvaluation.tottally')
-      }}</span>
+      <span
+        class="levelLegend"
+        :class="value === 1 ? 'start' : 'end'"
+        v-if="value === 1 || value == 5"
+        >{{ value === 1 ? $t('autoEvaluation.notAtAll') : $t('autoEvaluation.tottally') }}</span
+      >
     </div>
   </div>
 </template>
@@ -33,7 +36,7 @@ defineProps<{ disabled?: boolean }>();
 .scaleValue {
   background-color: var(--neutral-0);
   text-align: center;
-  padding: 0.5rem 2rem;
+  padding: 0.5rem 0;
   border-radius: 0.5rem;
   margin-top: 0.5rem;
   cursor: pointer;
@@ -58,14 +61,29 @@ defineProps<{ disabled?: boolean }>();
   color: var(--neutral-0);
 }
 
+/* legends hug the outer edges and may run inward past their narrow column instead of wrapping */
 .levelLegend {
   font-size: 0.8rem;
   color: var(--neutral-80);
+  white-space: nowrap;
+}
+.levelLegend.start {
+  align-self: flex-start;
+}
+.levelLegend.end {
+  align-self: flex-end;
+}
+
+@media (max-width: 576px) {
+  .scaleWrapper {
+    gap: 0.5rem;
+  }
 }
 
 .scaleLevel {
   display: flex;
   flex: 1;
+  min-width: 0;
   flex-direction: column;
   align-items: center;
   width: 100%;

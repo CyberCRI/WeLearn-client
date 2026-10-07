@@ -44,6 +44,15 @@ defineProps<{
 .status {
   position: relative;
   padding: 2rem;
+  max-width: 26rem;
+  margin-inline: auto;
+}
+
+@media (max-width: 576px) {
+  .status {
+    max-width: 20rem;
+    padding: 1.5rem 1.25rem;
+  }
 }
 
 .close {
