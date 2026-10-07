@@ -16,6 +16,12 @@ const router = createRouter({
       redirect: '/q-and-a'
     },
     {
+      path: '/register',
+      name: 'register',
+      component: SearchSDG,
+      meta: { requiresAuth: false }
+    },
+    {
       path: '/search',
       name: 'search-sdg',
       component: SearchSDG,
