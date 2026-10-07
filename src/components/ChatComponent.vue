@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import ChatArea from '@/components/ChatArea.vue';
 import ChatBuble from '@/components/ChatBuble.vue';
 import ChatInput from '@/components/ChatInput.vue';
@@ -9,22 +9,43 @@ import ChatQueuesPills from '@/components/ChatQueuesPills.vue';
 import Loading from '@/components/LoadingComponent.vue';
 import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import DeleteButton from '@/components/DeleteButton.vue';
+import ModalComponent from '@/components/ModalComponent.vue';
 
 const store = useChatStore();
 
 onMounted(() => store.getRandomQuestionNumber());
 
 const computedStatus = computed(() => store.chatStatus);
+
+// plain hash jumps get lost in the nested scroll containers on phones, so scroll explicitly
+const scrollToSources = () =>
+  document.getElementById('sourcesAnchor')?.scrollIntoView({ behavior: 'smooth' });
+
+const confirmClear = ref(false);
+const clearChat = () => {
+  store.$reset();
+  confirmClear.value = false;
+};
 </script>
 <template>
   <div class="chat-template">
-    <div class="delete-button-wrapper">
-      <DeleteButton
-        v-if="computedStatus !== CHAT_STATUS.EMPTY"
-        :action="store.$reset"
-        :delText="$t('clearChat')"
-      />
+    <div class="chat-toolbar" v-if="computedStatus !== CHAT_STATUS.EMPTY">
+      <DeleteButton :action="() => (confirmClear = true)" :delText="$t('clearChat')" />
     </div>
+    <!-- v-if: ModalComponent only reads isOpen on mount -->
+    <ModalComponent
+      v-if="confirmClear"
+      isOpen
+      :title="$t('confirmClearChat')"
+      :onClose="() => (confirmClear = false)"
+    >
+      <template #actions>
+        <div class="buttons my-4">
+          <button class="button" @click="confirmClear = false">{{ $t('cancel') }}</button>
+          <button class="button is-danger" @click="clearChat">{{ $t('clearChat') }}</button>
+        </div>
+      </template>
+    </ModalComponent>
     <ChatArea :isEmpty="computedStatus === CHAT_STATUS.EMPTY">
       <template #message-list>
         <ChatEmptyContent
@@ -74,9 +95,10 @@ const computedStatus = computed(() => store.chatStatus);
       </template>
     </ChatArea>
     <a
-      v-if="computedStatus !== CHAT_STATUS.DONE"
+      v-if="computedStatus === CHAT_STATUS.DONE && store.sourcesList.length"
       class="sourcesListLink phone"
       href="#sourcesAnchor"
+      @click.prevent="scrollToSources"
       >{{ $t('goToSources') }}</a
     >
 
@@ -99,11 +121,12 @@ const computedStatus = computed(() => store.chatStatus);
   height: 100%;
 }
 
-.delete-button-wrapper {
-  position: absolute;
-  right: 10%;
-  top: 1rem;
-  z-index: 1;
+.chat-toolbar {
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 0;
+  margin-bottom: 0.5rem;
 }
 
 .trash-icon {
@@ -158,12 +181,9 @@ const computedStatus = computed(() => store.chatStatus);
 }
 
 @media (max-width: 950px) {
-  .delete-button-wrapper {
-    position: absolute;
-    right: 0.5rem;
-    top: auto;
-    bottom: 2rem;
-    z-index: 1;
+  .chat-toolbar {
+    width: 100%;
+    padding-inline: 0.5rem;
   }
 
   .queues-wrapper {
@@ -175,10 +195,10 @@ const computedStatus = computed(() => store.chatStatus);
   }
 
   .input-area {
-    width: 85%;
+    width: calc(100% - 1rem);
     padding: 0.25rem 0.25rem;
     border-radius: 0.375rem;
-    margin: 0 1.5rem 0 0;
+    margin: 0 0.5rem;
 
     line-height: 1;
     height: fit-content;

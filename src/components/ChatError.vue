@@ -8,7 +8,7 @@ const reload = () => {
 
 <template>
   <div class="chat-error">
-    <div>Oops something wrong hapened. Please try again later.</div>
+    <div>{{ $t('chatError') }}</div>
     <ButtonComponent color="secondary" @click="reload()">
       {{ $t('reload') }}
     </ButtonComponent>
@@ -23,6 +23,16 @@ const reload = () => {
   height: 100%;
   text-align: center;
   font-size: 1.125em;
-  color: var(--neutral-20);
+  color: var(--neutral-80);
+  width: 80%;
+  gap: 1rem;
+  margin: 2rem auto;
+}
+
+@media (max-width: 950px) {
+  .chat-error {
+    width: 100%;
+    padding-inline: 1rem;
+  }
 }
 </style>
