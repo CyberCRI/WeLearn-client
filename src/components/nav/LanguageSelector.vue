@@ -29,6 +29,15 @@ const storeLanguage = (e: Event) => {
   padding-bottom: 0.25rem;
 }
 
+@media (max-width: 650px) {
+  .language-selector {
+    margin-right: 0.5rem;
+  }
+  select {
+    padding-inline: 0.5rem;
+  }
+}
+
 select,
 ::picker(select) {
   appearance: base-select;
@@ -56,6 +65,8 @@ select:open::picker-icon {
   rotate: 180deg;
 }
 ::picker(select) {
+  /* open towards the left: the selector sits at the right edge of the screen */
+  position-area: bottom span-left;
   border-radius: 8px;
   border: 1px solid #cccccc;
 }

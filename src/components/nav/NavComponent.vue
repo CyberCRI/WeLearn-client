@@ -147,9 +147,15 @@ const utilityEntries = [
   }
 }
 
-@media (max-width: 768px) {
+/* icon-only nav (in sync with AppHeader's 1330px): drop the top space kept for the full logo */
+@media (max-width: 1330px) {
   .nav-items {
     padding-top: 0.05rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-items {
     width: 95%;
     margin: 0 auto;
   }

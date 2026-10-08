@@ -1,4 +1,4 @@
-## **Politique de confidentialité – WeLearn**
+## **Politique de confidentialité de WeLearn**
 
 ### **1\. Qui sommes-nous ?**
 

@@ -20,6 +20,10 @@ export const en = {
   chatProvideValidQuestion: 'Please enter a valid question.',
   clearBookmarks: 'Clear bookmarks',
   clearChat: 'Clear chat',
+  chatError: 'Something went wrong. Please try again later.',
+  cancel: 'Cancel',
+  confirmClearChat: 'Delete this whole conversation?',
+  goToBottom: 'Scroll to latest message',
   clearSearch: 'Clear search',
   closeSidebar: 'Hide sidebar',
   copied: 'Copied!',
@@ -287,6 +291,8 @@ export const en = {
     }
   },
   reload: 'Reload',
+  clearFilters: 'Clear all filters',
+  filtersSelected: '{n} selected',
   removeAll: 'Clear all',
   removeBookmark: 'Remove bookmark',
   removeSelection: 'Clear',
@@ -335,6 +341,7 @@ export const en = {
     exportBibliography: 'Export bibliography',
     exportingBibliography: 'Exporting...'
   },
+  contact: 'Contact',
   terms: 'Privacy Policy',
   subjects: {
     Anthropology: 'Anthropology',

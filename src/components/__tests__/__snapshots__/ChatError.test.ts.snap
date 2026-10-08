@@ -8,7 +8,7 @@ exports[`ChatError > renders properly 1`] = `
   <div
     data-v-9a0d2e9c=""
   >
-    Oops something wrong hapened. Please try again later.
+    chatError
   </div>
   <button
     class="button is-secondary"

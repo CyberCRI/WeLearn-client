@@ -26,11 +26,13 @@ defineEmits(['update:modelValue']);
   border: none;
   height: 100%;
   padding: 2rem;
+  /* room for the clear ⓧ in the top-right corner */
+  padding-right: 3rem;
 }
 
 @media (max-width: 768px) {
   .textarea {
-    padding: 1rem;
+    padding: 1rem 2.5rem 1rem 1rem;
     font-size: 0.875em;
   }
 }

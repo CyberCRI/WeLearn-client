@@ -71,13 +71,17 @@ const handleOnWheel = () => {
       </div>
       <slot name="queues"></slot>
     </div>
-  </div>
-  <div
-    class="scroll-arrow"
-    :class="displayArrow ? 'visible' : 'hidden'"
-    @click="() => scrollToBottom(true)"
-  >
-    <ChevronDownVue />
+    <!-- zero-height sticky anchor: the button floats at the bottom of the scroller without taking layout space -->
+    <div class="scroll-arrow-anchor">
+      <button
+        v-show="displayArrow"
+        class="scroll-arrow"
+        :aria-label="$t('goToBottom')"
+        @click="() => scrollToBottom(true)"
+      >
+        <ChevronDownVue />
+      </button>
+    </div>
   </div>
 </template>
 
@@ -107,31 +111,36 @@ const handleOnWheel = () => {
   margin-top: auto;
 }
 
-.scroll-arrow {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  z-index: 1;
+.scroll-arrow-anchor {
+  position: sticky;
+  bottom: 0.75rem;
+  height: 0;
+  display: flex;
+  justify-content: center;
+}
 
-  margin: 1rem;
+.scroll-arrow {
+  all: unset;
+  box-sizing: border-box;
+  transform: translateY(-100%);
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0.4rem;
+  border-radius: 50%;
+  border: 1px solid var(--neutral-20);
+  background-color: var(--neutral-0);
+  color: var(--neutral-80);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 12%);
+  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
-  opacity: 0;
-}
-
-.visible {
-  opacity: 1;
-  cursor: pointer;
-  transition: opacity 0.1s ease-in-out;
-}
-.hidden {
-  opacity: 0;
-  cursor: default;
-  transition: opacity 0.3s ease-in-out;
-  width: 0;
-  height: 0;
-  margin: 0;
+  &:hover {
+    background-color: var(--neutral-10);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+  }
 }
 
 .empty-chat {
@@ -139,42 +148,5 @@ const handleOnWheel = () => {
   justify-content: center;
   height: 50%;
   align-items: center;
-}
-
-@media (min-width: 768px) {
-  .bottom-wrapper {
-    width: 100%;
-    padding-bottom: 1rem;
-  }
-  .scroll-arrow {
-    all: unset;
-    position: absolute;
-    bottom: 10%;
-    right: 50%;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    border: 1px solid;
-    padding: 4px;
-    color: var(--neutral-80);
-    background-color: rgba(255, 255, 255, 0.5);
-
-    margin: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-  }
-
-  .visible {
-    opacity: 1;
-    cursor: pointer;
-    transition: opacity 0.1s ease-in-out;
-  }
-  .hidden {
-    opacity: 0;
-    cursor: default;
-    transition: opacity 0.3s ease-in-out;
-  }
 }
 </style>

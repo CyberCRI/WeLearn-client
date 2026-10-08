@@ -16,16 +16,13 @@ exports[`QandA > renders properly 1`] = `
       data-v-8765cc6e=""
       data-v-dbbc9003=""
     >
-      <div
-        class="delete-button-wrapper"
-        data-v-8765cc6e=""
-      >
-        <!--v-if-->
-      </div>
-      
+      <!--v-if-->
+      <!-- v-if: ModalComponent only reads isOpen on mount -->
+      <!--v-if-->
       <div
         class="chat-component hidden-scroll"
         data-v-69ac69ea=""
+        data-v-8765cc6e=""
         style="scroll-behavior: auto;"
       >
         <div
@@ -74,31 +71,32 @@ exports[`QandA > renders properly 1`] = `
           
           
         </div>
-      </div>
-      <div
-        class="scroll-arrow hidden"
-        data-v-69ac69ea=""
-      >
-        <svg
+        <!-- zero-height sticky anchor: the button floats at the bottom of the scroller without taking layout space -->
+        <div
+          class="scroll-arrow-anchor"
           data-v-69ac69ea=""
-          viewBox="0 0 448 512"
-          xmlns="http://www.w3.org/2000/svg"
         >
-          <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-          <path
-            d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
-            fill="currentColor"
-          />
-        </svg>
+          <button
+            aria-label="goToBottom"
+            class="scroll-arrow"
+            data-v-69ac69ea=""
+            style="display: none;"
+          >
+            <svg
+              data-v-69ac69ea=""
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+              <path
+                d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+        </div>
       </div>
-      
-      <a
-        class="sourcesListLink phone"
-        data-v-8765cc6e=""
-        href="#sourcesAnchor"
-      >
-        goToSources
-      </a>
+      <!--v-if-->
       <div
         class="input-area"
         data-v-8765cc6e=""
@@ -192,12 +190,15 @@ exports[`QandA > renders properly 1`] = `
   >
     
     
+    <!-- two-line header (like a list item with a leading icon): the icon spans and centres on
+       title + status line; the status line stays outside the collapsible part so count + clear are always visible -->
     <div
-      class="is-clickable is-flex is-align-items-center is-align-content-center mt-4 mb-5"
+      class="filters-head"
       data-v-e843c1dd=""
     >
       <svg
-        class="mr-4"
+        aria-hidden="true"
+        class="head-icon"
         data-v-e843c1dd=""
         fill="none"
         height="24"
@@ -233,18 +234,19 @@ exports[`QandA > renders properly 1`] = `
           </clippath>
         </defs>
       </svg>
-      <span
-        class="is-flex is-align-items-center is-size-6"
+      <button
+        aria-expanded="true"
+        class="filters-toggle"
         data-v-e843c1dd=""
+        type="button"
       >
-        searchFilters
-      </span>
-      <div
-        class="chevron-icon"
-        data-v-e843c1dd=""
-      >
+        <span
+          data-v-e843c1dd=""
+        >
+          searchFilters
+        </span>
         <svg
-          class="ml-2"
+          class="chevron-icon"
           data-v-e843c1dd=""
           viewBox="0 0 448 512"
           xmlns="http://www.w3.org/2000/svg"
@@ -255,18 +257,21 @@ exports[`QandA > renders properly 1`] = `
             fill="currentColor"
           />
         </svg>
-      </div>
-    </div>
-    <p
-      data-v-e843c1dd=""
-    >
-      <span
-        class="has-text-grey"
+      </button>
+      <p
+        class="status-line"
         data-v-e843c1dd=""
       >
-        noFiltersSelected
-      </span>
-    </p>
+        <span
+          class="has-text-grey"
+          data-v-e843c1dd=""
+        >
+          noFiltersSelected
+        </span>
+      </p>
+    </div>
+    <!-- phones: when the panel is collapsed the status line is the summary, the pills would eat the screen -->
+    <!--v-if-->
     <div
       class="pr-5 filters"
       data-v-e843c1dd=""
