@@ -97,7 +97,10 @@ const utilityEntries = [
             </button>
           </template>
           <template v-else>
-            <button @click="login()" class="btn-login">{{ $t('login') }}</button>
+            <button class="button" @click="login()" ><span class="mr-2 logout-label">{{ $t('login') }}</span>
+              <span class="icon is-small">
+                <LogoutIcon />
+              </span></button>
           </template>
         </div>
       </div>

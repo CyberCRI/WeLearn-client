@@ -81,6 +81,17 @@ export const useAuthStore = defineStore('auth', () => {
     }, 30000);
   }
 
+  interface UserRegisterData {
+    name: string;
+    lastName: string;
+    email: string;
+    password: string;
+    checkPassword: string;
+  }
+  function register(data: UserRegisterData): void {
+    console.log(data);
+  }
+
   return {
     isAuthenticated,
     shouldAuthenticate,
@@ -92,6 +103,7 @@ export const useAuthStore = defineStore('auth', () => {
     userName,
     init,
     login,
-    logout
+    logout,
+    register
   };
 });

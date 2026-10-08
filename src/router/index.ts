@@ -7,6 +7,7 @@ import NotFound from '@/views/NotFound.vue';
 import MicrolearningModule from '@/views/MicrolearningModule.vue';
 import TestMAS from '@/views/TestMAS.vue';
 import { useAuthStore } from '@/stores/auth';
+import RegisterPage from '@/views/RegisterPage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,7 +19,7 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      component: SearchSDG,
+      component: RegisterPage,
       meta: { requiresAuth: false }
     },
     {

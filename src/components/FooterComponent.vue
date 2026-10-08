@@ -1,7 +1,10 @@
 <template>
   <div class="footer-wrapper">
     <div>
-      <a href="mailto:welearn@learningplanetinstitute.org">welearn@learningplanetinstitute.org</a>
+      <a href="mailto:welearn@learningplanetinstitute.org">{{ $t('contactUs') }}</a>
+    </div>
+    <div>
+      <a target="_blank" :href="WL_FEEDBACK_FORM_URL" class="gform">{{ $t('giveFeedback') }}</a>
       <router-link class="terms" to="/terms">
         <span class="item-name">{{ $t('terms') }}</span>
       </router-link>
@@ -39,6 +42,10 @@ a:hover {
     padding: 0 1rem;
     justify-content: center;
     font-size: 0.8rem;
+  }
+
+  .gform {
+    display: none;
   }
 
   a:first-child {
