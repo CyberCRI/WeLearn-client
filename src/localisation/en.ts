@@ -16,8 +16,8 @@ export const en = {
     removeBookmark: 'Remove from bookmarks'
   },
   contactUs: 'Contact us',
-  logout: 'Logout',
-  login: 'Login',
+  logout: 'Log out',
+  login: 'Log in',
   chat: 'Chat',
   chatInputPlaceholder: 'Ask a question',
   chatNoResults:

@@ -82,10 +82,10 @@ const utilityEntries = [
         </template>
 
         <LanguageSelector />
-        <div class="nav-auth mr-3 mb-3">
+        <div class="nav-auth mr-3">
           <template v-if="isAuthenticated">
             <button
-              class="button"
+              class="button is-text"
               aria-haspopup="true"
               aria-controls="dropdown-menu"
               @click="logout()"
@@ -97,10 +97,9 @@ const utilityEntries = [
             </button>
           </template>
           <template v-else>
-            <button class="button" @click="login()" ><span class="mr-2 logout-label">{{ $t('login') }}</span>
-              <span class="icon is-small">
-                <LogoutIcon />
-              </span></button>
+            <button class="button is-text" @click="login()">
+              <span class="mr-2 logout-label">{{ $t('login') }}</span>
+            </button>
           </template>
         </div>
       </div>

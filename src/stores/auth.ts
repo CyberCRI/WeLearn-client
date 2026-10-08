@@ -18,7 +18,7 @@ export const useAuthStore = defineStore('auth', () => {
     return tokenParsed.value?.preferred_username || 'Unknown';
   });
 
-  const shouldAuthenticate = computed(() => import.meta.env.VITE_ENVIRONMENT !== 'test');
+  const shouldAuthenticate = computed(() => import.meta.env.VITE_ENVIRONMENT === 'dev');
 
   async function init(): Promise<boolean> {
     try {
