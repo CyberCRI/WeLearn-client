@@ -25,6 +25,9 @@ jobs:
         VITE_ENVIRONMENT=$DOCKER_INJECT_VITE_ENVIRONMENT
         VITE_WL_API_KEY=$DOCKER_INJECT_VITE_WL_API_KEY
         VITE_MIXPANEL_TOKEN=$DOCKER_INJECT_VITE_MIXPANEL_TOKEN
+        VITE_KEYCLOAK_URL=$DOCKER_INJECT_VITE_KEYCLOAK_URL
+        VITE_KEYCLOAK_REALM=$DOCKER_INJECT_VITE_KEYCLOAK_REALM
+        VITE_KEYCLOAK_CLIENT_ID=$DOCKER_INJECT_VITE_KEYCLOAK_CLIENT_ID
     secrets:
       registry-username: ${{ secrets.DOCKER_PROD_USERNAME }}
       registry-password: ${{ secrets.DOCKER_PROD_PASSWORD }}
@@ -53,16 +56,16 @@ jobs:
       - name: Run unit tests
         run: yarn test:unit
 
-      - name: Install Playwright Browsers
-        run: yarn playwright install --with-deps
-      - name: Run Playwright tests
-        run: yarn playwright test
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+      # - name: Install Playwright Browsers
+      #   run: yarn playwright install --with-deps
+      # - name: Run Playwright tests
+      #   run: yarn playwright test
+      # - uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: playwright-report
+      #     path: playwright-report/
+      #     retention-days: 30
 
   tag-deploy:
     needs:

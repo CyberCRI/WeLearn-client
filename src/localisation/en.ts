@@ -1,6 +1,8 @@
 import { microLearning } from './microLearning/en';
+import { authentication } from './authentication/en';
 
 export const en = {
+  authentication,
   microLearning,
   ':': ':',
   adaptedTo: 'Adapted to:',
@@ -13,6 +15,9 @@ export const en = {
     addBookmark: 'Add to bookmarks',
     removeBookmark: 'Remove from bookmarks'
   },
+  contactUs: 'Contact us',
+  logout: 'Log out',
+  login: 'Log in',
   chat: 'Chat',
   chatInputPlaceholder: 'Ask a question',
   chatNoResults:

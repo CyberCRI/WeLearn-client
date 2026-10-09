@@ -1,8 +1,6 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-
-export const API_BASE = import.meta.env.VITE_API_BASE;
-const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
-export const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
+import http from './api';
+import keycloak from './keycloak';
 
 const getSessionIdFromStorage = () => {
   try {
@@ -14,15 +12,7 @@ const getSessionIdFromStorage = () => {
 };
 
 export const baseGetAxios = async (endpoint: string) => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
-
-  const response = await axios.get(`${API_BASE}${API_VERSION}${endpoint}`, {
-    withCredentials: true,
-    headers: {
-      'X-API-Key': WL_API_KEY,
-      'X-Session-Id': getSessionIdFromStorage()
-    }
-  });
+  const response = await http.get(`${endpoint}`);
 
   if (response.status !== 200) throw new Error('Error fetching data');
 
@@ -34,23 +24,8 @@ export const basePostAxios = async (
   options: Record<string, any> = {},
   config?: AxiosRequestConfig
 ) => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
-
-  const enhancedConfig = {
-    ...config,
-    withCredentials: true,
-    headers: {
-      'X-API-Key': WL_API_KEY,
-      'X-Session-Id': getSessionIdFromStorage()
-    }
-  };
-
   try {
-    const response = await axios.post(
-      `${API_BASE}${API_VERSION}${endpoint}`,
-      options,
-      enhancedConfig
-    );
+    const response = await http.post(`${endpoint}`, options, config);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error fetching data');
@@ -64,19 +39,8 @@ export const basePostAxios = async (
 };
 
 export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestConfig) => {
-  if (!API_BASE) throw new Error('API_BASE not defined');
-
-  const enhancedConfig = {
-    ...config,
-    withCredentials: true,
-    headers: {
-      'X-API-Key': WL_API_KEY,
-      'X-Session-Id': getSessionIdFromStorage()
-    }
-  };
-
   try {
-    const response = await axios.delete(`${API_BASE}${API_VERSION}${endpoint}`, enhancedConfig);
+    const response = await http.delete(`${endpoint}`, config);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error deleting data');
@@ -128,6 +92,10 @@ export const getSearch = async (
   return result;
 };
 
+const API_BASE = import.meta.env.VITE_API_BASE;
+const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
+const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
+
 export const fetchStream = async (
   endpoint: string,
   body: { bodyContent: string }
@@ -142,7 +110,8 @@ export const fetchStream = async (
       Accept: '*/*',
       'Content-Type': 'application/json',
       'X-API-Key': WL_API_KEY,
-      'X-Session-Id': getSessionIdFromStorage()
+      'X-Session-Id': getSessionIdFromStorage(),
+      Authorization: `Bearer ${keycloak.token}`
     }
   });
 
@@ -157,27 +126,12 @@ export const postBookmark = async (documentId: string) => {
 };
 
 export const deleteBookmark = async (documentId: string) => {
-  const resp = await axios.delete(
-    `${API_BASE}${API_VERSION}/user/bookmarks/:document_id?document_id=${documentId}`,
-    {
-      withCredentials: true,
-      headers: {
-        'X-API-Key': WL_API_KEY,
-        'X-Session-Id': getSessionIdFromStorage()
-      }
-    }
-  );
+  const resp = await http.delete(`/user/bookmarks/:document_id?document_id=${documentId}`);
   return resp;
 };
 
 export const deleteAllBookmarks = async () => {
-  await axios.delete(`${API_BASE}${API_VERSION}/user/bookmarks`, {
-    withCredentials: true,
-    headers: {
-      'X-API-Key': WL_API_KEY,
-      'X-Session-Id': getSessionIdFromStorage()
-    }
-  });
+  await http.delete(`/user/bookmarks`);
 };
 
 export const getBookmarks = async () => {

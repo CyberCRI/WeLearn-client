@@ -10,10 +10,13 @@ import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
+import { useAuthStore } from './stores/auth';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
 const fetchError = ref(false);
+
+const authStore = useAuthStore();
 
 async function initCalls() {
   try {
@@ -30,7 +33,9 @@ async function initCalls() {
 
 onMounted(async () => {
   try {
-    await initCalls();
+    if (authStore.isAuthenticated || !authStore.shouldAuthenticate) {
+      await initCalls();
+    }
   } catch (error) {
     fetchError.value = true;
   }

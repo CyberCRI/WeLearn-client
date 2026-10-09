@@ -5,12 +5,15 @@ import QnAIcon from '@/components/icons/QnAIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 
 import BookIcon from '@/components/icons/BookIcon.vue';
+import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
+import { useAuth } from '@/composables/useAuth';
 
 const featureFlip = useFeatureFlipStore();
+const { isAuthenticated, login, logout } = useAuth();
 
 // Features (tools) on the left; personal/utility items on the right.
 const toolEntries = [
@@ -79,11 +82,37 @@ const utilityEntries = [
         </template>
 
         <LanguageSelector />
+        <div class="nav-auth mr-3">
+          <template v-if="isAuthenticated">
+            <button
+              class="button is-text"
+              aria-haspopup="true"
+              aria-controls="dropdown-menu"
+              @click="logout()"
+            >
+              <span class="mr-2 logout-label">{{ $t('logout') }}</span>
+              <span class="icon is-small">
+                <LogoutIcon />
+              </span>
+            </button>
+          </template>
+          <template v-else>
+            <button class="button is-text" @click="login()">
+              <span class="mr-2 logout-label">{{ $t('login') }}</span>
+            </button>
+          </template>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <style scoped>
+.nav-auth {
+  display: flex;
+  margin: auto;
+  gap: 1rem;
+}
+
 .nav {
   display: flex;
   z-index: 2;
@@ -99,6 +128,8 @@ const utilityEntries = [
   opacity: 1;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+
   padding-top: 1.5rem;
   text-align: start;
 
