@@ -11,6 +11,7 @@ import type {
 import { ScreensEnum } from '@/types/microlearning';
 import { DATA } from '@/stores/microlearning/data';
 import i18n from '@/localisation/i18n';
+import { basePostAxios } from '@/utils/fetch';
 
 export interface EvalAnswers {
   link?: number;
@@ -137,6 +138,9 @@ export function useMicrolearning() {
   function startTrail() {
     step.value = 0;
     screen.value = ScreensEnum.trail;
+    if (Object.values(preAnswers)) {
+      registerFormAnswer(preAnswers, `microlearning_pre_${current_disc.value?.id}`);
+    }
   }
 
   function nextStep() {
@@ -151,6 +155,9 @@ export function useMicrolearning() {
 
   function goToComplete() {
     screen.value = ScreensEnum.complete;
+    if (Object.values(postAnswers)) {
+      registerFormAnswer(postAnswers, `microlearning_post_${current_disc.value?.id}`);
+    }
   }
 
   function prevStep() {
@@ -182,6 +189,26 @@ export function useMicrolearning() {
   watch(screen, (s) => {
     if (s === ScreensEnum.trail) preLocked.value = true;
   });
+
+  async function registerFormAnswer(ans: EvalAnswers, form_name: string) {
+    const answers_keys = Object.keys(ans);
+    try {
+      await Promise.all(
+        answers_keys.map((key) =>
+          basePostAxios('/metric/form_data', {
+            form_name,
+            question: key,
+            answer: ans[key as keyof EvalAnswers]?.toString(),
+            answer_type: 'text'
+          })
+        )
+      );
+
+      return ans;
+    } catch {
+      console.error('error while saving the answer');
+    }
+  }
 
   // =====================
   // URL SYNC (browser back/forward follow our navigation)
@@ -244,6 +271,7 @@ export function useMicrolearning() {
   // =====================
   return {
     // state
+    registerFormAnswer,
     screen,
     disc,
     current_disc,
