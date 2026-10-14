@@ -4,6 +4,9 @@ import SidePanelIcon from '@/components/icons/SidePanelIcon.vue';
 
 import { ref, type VNodeRef } from 'vue';
 
+// filtersFirst: on narrow screens put the right panel above the content instead of below it
+defineProps<{ filtersFirst?: boolean }>();
+
 const scrollerRef = ref<VNodeRef | null>(null);
 const isOpen = ref(true);
 
@@ -12,7 +15,7 @@ const toggleOpen = () => {
 };
 </script>
 <template>
-  <div class="gridy-template">
+  <div class="gridy-template" :class="{ 'filters-first': filtersFirst }">
     <div class="panely left scroll">
       <slot name="left-panel"></slot>
     </div>
@@ -71,6 +74,10 @@ const toggleOpen = () => {
 
   .left {
     height: auto;
+  }
+
+  .filters-first > .right {
+    order: -1;
   }
 }
 

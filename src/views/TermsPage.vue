@@ -40,7 +40,7 @@ watch(
 
 <style scoped>
 .terms-page {
-  max-width: 70%;
+  max-width: 48rem;
   margin: 2rem auto;
   padding: 0 1rem;
 }

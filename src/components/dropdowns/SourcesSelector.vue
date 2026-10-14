@@ -4,7 +4,6 @@ import ChevronDownIcon from '@/components/icons/ChevronDown.vue';
 import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
 import { useFiltersStore } from '@/stores/filters';
 import type { Corpus } from '@/types';
-import { ref } from 'vue';
 
 defineProps<{ isUp?: boolean; context?: string; availableSources: Record<string, Corpus[]> }>();
 const filters = useFiltersStore();
@@ -14,7 +13,7 @@ const selectedCount = (sources: Corpus[]) =>
   sources.filter((source) => filters.sourcesFilters.includes(source.name)).length;
 
 // categories are open by default; the chevron folds them (ticking the category never does)
-const folded = ref<Record<string, boolean>>({});
+const folded = filters.foldedCategories;
 </script>
 <template>
   <div v-for="(sources, category) in availableSources" :key="category" class="category">

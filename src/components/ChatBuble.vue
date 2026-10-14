@@ -85,13 +85,14 @@ const copyMessage = (msg: string) => {
   color: var(--neutral-80);
   padding: 1.25rem 1rem;
   gap: 1rem;
-  text-align: justify;
+  text-align: left;
 }
 .chat-bubble.last-message {
   padding-bottom: 5rem;
 }
 
 .cahtAvatar {
+  flex-shrink: 0;
   height: 1.5rem;
   margin-bottom: 0.9rem;
 }
@@ -100,11 +101,16 @@ const copyMessage = (msg: string) => {
   overflow: visible;
   margin: auto 0;
   border-radius: 0;
-  margin-left: 0.5rem;
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   margin-left: 0;
   & > a {
     color: var(--primary);
+  }
+  /* markdown comes in via v-html, so lists need :deep to get an indent; otherwise the numbers sit in the margin */
+  & :deep(ol),
+  & :deep(ul) {
+    padding-left: 1.5em;
   }
 }
 
@@ -122,29 +128,17 @@ const copyMessage = (msg: string) => {
 }
 
 @media (max-width: 992px) {
+  /* keep avatar beside the text; the copy button wraps under the message, aligned with the text */
   .chat-bubble {
-    font-size: 0.9em;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-  }
-
-  .chat-bubble-content {
-    width: 100%;
-    margin-left: 0;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.75rem;
+    padding: 1rem 0.5rem;
   }
 
   .details {
-    width: 10%;
-    height: 100%;
+    flex-basis: 100%;
     display: flex;
-    align-self: flex-end;
-    gap: 0.5rem;
-
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-end;
+    padding-left: 2.75rem;
   }
 
   .chat-bubble.last-message {
