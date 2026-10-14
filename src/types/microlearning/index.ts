@@ -33,6 +33,7 @@ export interface FlipCard {
 export interface Competence {
   name: string;
   tag: 'transversal' | 'disciplinaire';
+  tagClass: 'transversal' | 'disciplinary';
   concrete: string;
 }
 

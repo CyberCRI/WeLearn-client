@@ -140,7 +140,7 @@ defineProps<{
   color: var(--lpi-violet);
 }
 
-.competence-tag.disciplinaire {
+.competence-tag.disciplinary {
   background: var(--primary-lighter);
   color: var(--primary-hover);
 }
