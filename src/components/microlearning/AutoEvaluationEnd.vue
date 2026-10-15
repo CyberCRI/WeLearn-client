@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import QuestionComponent from '@/components/microlearning/QuestionComponent.vue';
 import TrailNavigation from '@/components/microlearning/TrailNavigation.vue';
-import type { EvalAnswers } from '@/composables/useMicrolearning';
+import type { EvalAnswers } from '@/types/microlearning';
 
 defineProps<{
   discipline?: string;

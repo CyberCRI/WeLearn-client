@@ -6,19 +6,15 @@ import type {
   DiscValue,
   Discipline,
   DisciplineMeta,
+  EvalAnswers,
   FlipStep
 } from '@/types/microlearning';
 import { ScreensEnum } from '@/types/microlearning';
 import { DATA } from '@/stores/microlearning/data';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
-
-export interface EvalAnswers {
-  link?: number;
-  confidence?: number;
-  willUse?: string;
-  feedback?: string;
-}
+import { getFromStorage, saveToStorage } from '@/utils/storage';
+import { calculateProgress } from '@/utils/progress';
 
 export function useMicrolearning() {
   const route = useRoute();
@@ -74,6 +70,18 @@ export function useMicrolearning() {
     return currentData.value?.steps?.[step.value] ?? null;
   });
 
+  const shouldHideAutoEvalStart = computed(() => {
+    const form_storage = getFromStorage(`${current_disc.value?.id}_microlearning_pre`);
+
+    return Boolean(form_storage);
+  });
+
+  const shouldHideAutoEvalEnd = computed(() => {
+    const form_storage = getFromStorage(`${current_disc.value?.id}_microlearning_post`);
+
+    return Boolean(form_storage);
+  });
+
   const chosenActivity = computed(() => {
     if (!actChoice.value) return null;
     const activities = currentData.value?.steps.find((s) => s.type === 'activities') as
@@ -98,7 +106,7 @@ export function useMicrolearning() {
 
   const progress = computed(() => {
     if (!currentData.value) return 0;
-    return (step.value / (currentData.value.steps.length - 1)) * 100;
+    return calculateProgress(step.value, currentData.value.steps.length - 1);
   });
 
   // =====================
@@ -131,23 +139,27 @@ export function useMicrolearning() {
     screen.value = ScreensEnum.briefing;
   }
 
+  // Pre form already answered for this discipline: go straight to the trail
   function goToautoEvalStart() {
-    screen.value = ScreensEnum.autoEvalStart;
+    if (shouldHideAutoEvalStart.value) startTrail();
+    else screen.value = ScreensEnum.autoEvalStart;
   }
 
   function startTrail() {
     step.value = 0;
     screen.value = ScreensEnum.trail;
-    if (Object.values(preAnswers)) {
-      registerFormAnswer(preAnswers, `microlearning_pre_${current_disc.value?.id}`);
+    if (hasAnswers(preAnswers)) {
+      registerFormAnswer(preAnswers, `${current_disc.value?.id}_microlearning_pre`);
     }
   }
 
   function nextStep() {
     if (!currentData.value) return;
 
+    // Post form already answered for this discipline: go straight to the end
     if (isLastStep.value) {
-      screen.value = ScreensEnum.autoEvalEnd;
+      if (shouldHideAutoEvalEnd.value) goToComplete();
+      else screen.value = ScreensEnum.autoEvalEnd;
     } else {
       step.value++;
     }
@@ -155,13 +167,14 @@ export function useMicrolearning() {
 
   function goToComplete() {
     screen.value = ScreensEnum.complete;
-    if (Object.values(postAnswers)) {
-      registerFormAnswer(postAnswers, `microlearning_post_${current_disc.value?.id}`);
+    if (hasAnswers(postAnswers)) {
+      registerFormAnswer(postAnswers, `${current_disc.value?.id}_microlearning_post`);
     }
   }
 
   function prevStep() {
     if (step.value > 0) step.value--;
+    else if (shouldHideAutoEvalStart.value) goToBriefing();
     else goToautoEvalStart();
   }
 
@@ -190,6 +203,14 @@ export function useMicrolearning() {
     if (s === ScreensEnum.trail) preLocked.value = true;
   });
 
+  const registerFormAnsLocally = (form_name: string) => {
+    saveToStorage(form_name, true);
+  };
+
+  const isAnswered = (value: EvalAnswers[keyof EvalAnswers]) => value !== undefined && value !== '';
+
+  const hasAnswers = (ans: EvalAnswers) => Object.values(ans).some(isAnswered);
+
   async function registerFormAnswer(ans: EvalAnswers, form_name: string) {
     const answers_keys = Object.keys(ans);
     try {
@@ -198,11 +219,13 @@ export function useMicrolearning() {
           basePostAxios('/metric/form_data', {
             form_name,
             question: key,
-            answer: ans[key as keyof EvalAnswers]?.toString(),
+            answer: String(ans[key as keyof EvalAnswers] ?? ''),
             answer_type: 'text'
           })
         )
       );
+
+      registerFormAnsLocally(form_name);
 
       return ans;
     } catch {
@@ -285,6 +308,8 @@ export function useMicrolearning() {
     preAnswers,
     postAnswers,
     preLocked,
+    shouldHideAutoEvalStart,
+    shouldHideAutoEvalEnd,
 
     // derived
     currentData,

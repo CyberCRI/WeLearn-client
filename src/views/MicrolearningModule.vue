@@ -29,6 +29,7 @@
         :chosen-activity="ml.chosenActivity.value"
         :reflection-answers="ml.reflectionAnswers"
         :flipped-cards="ml.flippedCards.value"
+        :progress="ml.progress.value"
         @flip-card="ml.flipCard"
         @choose-activity="ml.chooseActivity"
         @previous="ml.prevStep"

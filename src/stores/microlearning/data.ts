@@ -354,14 +354,14 @@ export const DATA: DataByLang = {
             {
               name: 'Analyse systémique',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es intègrent les limites planétaires dans l'analyse économique, dans une perspective interdisciplinaire qui va au-delà des modèles standard."
             },
             {
               name: 'Analyse prospective',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es décrivent les hypothèses économiques des différents scénarios de transition et anticipent les réactions des acteur·rices face aux politiques environnementales.'
             },
@@ -508,7 +508,7 @@ export const DATA: DataByLang = {
             {
               name: 'Analyse critique',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es interprètent une loi sur l'énergie ou le climat et distinguent ce qui relève du droit national, européen et international."
             },
@@ -663,7 +663,7 @@ export const DATA: DataByLang = {
             {
               name: 'Problématiser',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es posent des questions fondamentales sur la responsabilité envers les générations futures, sur la valeur intrinsèque de la nature, sur ce que signifie le progrès.'
             },
@@ -972,7 +972,7 @@ export const DATA: DataByLang = {
             {
               name: 'Lecture et production de cartes',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es réalisent une carte des vulnérabilités climatiques d'un territoire, en identifiant les zones à risque et les populations exposées à des événements extrêmes."
             },
@@ -986,7 +986,7 @@ export const DATA: DataByLang = {
             {
               name: 'Pensée multiscalaire',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es relient les décisions locales (un projet d'écoquartier) aux dynamiques nationales et mondiales (politiques climatiques, flux migratoires liés au climat)."
             }
@@ -1128,7 +1128,7 @@ export const DATA: DataByLang = {
             {
               name: 'Approche One Health',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es apprennent à penser la santé humaine comme liée à celle des écosystèmes et des autres vivants. Par exemple, analyser l'émergence de maladies vectorielles liées au réchauffement climatique."
             },
@@ -1291,14 +1291,14 @@ export const DATA: DataByLang = {
             {
               name: 'Analyse critique',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es analysent un objet sportif à l'ère des limites planétaires : renseigner et interpréter les indicateurs de performance environnementale d'une infrastructure ou d'un événement sportif."
             },
             {
               name: 'Capacité à concevoir',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es conçoivent un programme d'EPS ou d'entraînement tenant compte des aléas climatiques (canicule, qualité de l'air, inondation) et économe en ressources."
             }
@@ -1439,7 +1439,7 @@ export const DATA: DataByLang = {
             {
               name: 'Lecture critique et contextualisée',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es analysent les origines historiques et sociales d'une œuvre liée à la nature, et clarifient les valeurs et idéologies rattachées aux récits sur l'environnement."
             },
@@ -1595,14 +1595,14 @@ export const DATA: DataByLang = {
             {
               name: 'Analyse systémique',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es décrivent un écosystème sous l'angle de ses réseaux d'interaction, identifient les réactions en cascade lors d'une perturbation, et expliquent les notions de résilience et d'irréversibilité."
             },
             {
               name: 'Analyse critique',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es identifient les facteurs naturels et anthropiques responsables de la dynamique des écosystèmes, et connaissent l'intérêt et les limites des outils de collecte et de modélisation."
             },
@@ -1752,14 +1752,14 @@ export const DATA: DataByLang = {
             {
               name: 'Analyse critique des œuvres',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es comprennent comment les artistes traitent des enjeux écologiques dans différents contextes culturels, et décryptent l'évolution des sensibilités artistiques face à la nature et à l'artificialisation."
             },
             {
               name: 'Créativité et innovation',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es explorent de nouveaux matériaux (recyclés, naturels, durables) et expérimentent des formes artistiques sobres ou collaboratives en lien avec les enjeux de la transition.'
             },
@@ -1908,14 +1908,14 @@ export const DATA: DataByLang = {
             {
               name: 'Analyse des politiques publiques',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es conçoivent et évaluent des politiques de transition, comparent des instruments (taxes carbone, marchés de droits à polluer, réglementations) et identifient ce qui fonctionne selon les contextes.'
             },
             {
               name: 'Analyse critique des récits politiques',
               tag: 'disciplinaire',
-              tagClass: 'disciplinairy',
+              tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es identifient les récits, croyances et idéologies mobilisés dans les prises de décision politiques sur la transition (croissance verte ou décroissance) et analysent les visions qui orientent les choix collectifs.'
             },

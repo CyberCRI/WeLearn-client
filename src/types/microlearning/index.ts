@@ -1,6 +1,13 @@
 export type StepType = 'flip' | 'competences' | 'activities' | 'votretour';
 export type DiscValue = 'math' | 'history' | 'economics' | 'law' | 'philosophy' | 'psychology';
 
+export interface EvalAnswers {
+  link?: number;
+  confidence?: number;
+  willUse?: string;
+  feedback?: string;
+}
+
 export type Screens =
   | 'welcome'
   | 'briefing'
