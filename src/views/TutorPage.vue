@@ -10,6 +10,7 @@ import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';
 import { scrollToAnchor } from '@/utils/navigation';
+import { calculateProgress } from '@/utils/progress';
 
 const store = useTutorStore();
 const { t } = i18n.global;
@@ -63,6 +64,7 @@ onMounted(() => {
       <ProgressBar
         :currentStep="store.step - 1"
         :labels="stepLabels"
+        :progress="calculateProgress(store.step - 1, STEPS.length)"
         clickable
         @select="(i: number) => scrollToAnchor(`target-${i + 1}`)"
       />

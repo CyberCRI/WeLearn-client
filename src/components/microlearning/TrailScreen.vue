@@ -8,7 +8,7 @@
     />
 
     <main class="trail-body">
-      <ProgressBar :current-step="currentStepIndex" />
+      <ProgressBar :current-step="currentStepIndex" :progress="progress" />
 
       <div class="content-panel">
         <Transition name="fade" mode="out-in">
@@ -64,6 +64,7 @@ const props = defineProps<{
   flippedCards: number[];
   chosenActivity: Activity | null;
   reflectionAnswers: string[];
+  progress: number;
 }>();
 
 const emit = defineEmits<{

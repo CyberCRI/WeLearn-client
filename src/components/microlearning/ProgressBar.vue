@@ -48,6 +48,7 @@ const props = defineProps<{
   labels?: string[];
   // finished steps emit "select" when clicked
   clickable?: boolean;
+  progress: number;
 }>();
 
 defineEmits<{ select: [index: number] }>();
@@ -55,7 +56,7 @@ defineEmits<{ select: [index: number] }>();
 const steps = computed(() => props.labels || STEP_LABELS);
 
 const progressWidth = computed(() => {
-  return `${(props.currentStep / (steps.value.length - 1) + 0.05) * 100}%`;
+  return `${props.progress}%`;
 });
 
 function stepClass(index: number) {
