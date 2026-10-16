@@ -46,7 +46,11 @@ onMounted(async () => {
   <div class="fullscreen">
     <WelcomeModal />
 
-    <AppLayout>
+    <!-- pages with hideTemplate (student space) bring their own bar and footer -->
+    <div v-if="$route.meta.hideTemplate" class="own-layout">
+      <RouterView />
+    </div>
+    <AppLayout v-else>
       <template #header v-if="!$route.meta.hideTemplate">
         <AppHeader />
         <NavComponent />
@@ -65,5 +69,10 @@ onMounted(async () => {
 .fullscreen {
   width: 100vw;
   height: 100vh;
+}
+
+.own-layout {
+  height: 100%;
+  overflow: auto;
 }
 </style>

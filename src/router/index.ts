@@ -69,6 +69,19 @@ const router = createRouter({
       name: 'about',
       component: () => import('@/views/AboutPage.vue')
     },
+    // student space: no login, its own bar instead of the teacher header and menu
+    {
+      path: '/learn',
+      name: 'learn',
+      component: () => import('@/views/student/LearnHome.vue'),
+      meta: { requiresAuth: false, hideTemplate: true }
+    },
+    {
+      path: '/learn/:space(understand|explore|analyse|envision|apply)',
+      name: 'learn-space',
+      component: () => import('@/views/student/LearnSpace.vue'),
+      meta: { requiresAuth: false, hideTemplate: true }
+    },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
   ]
 });

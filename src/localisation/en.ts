@@ -1,9 +1,11 @@
 import { microLearning } from './microLearning/en';
 import { authentication } from './authentication/en';
+import { student } from './student/en';
 
 export const en = {
   authentication,
   microLearning,
+  student,
   ':': ':',
   adaptedTo: 'Adapted to:',
   addBookmark: 'Add to bookmarks',
