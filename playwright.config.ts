@@ -47,8 +47,9 @@ export default defineConfig({
      * Use the preview server on CI for more realistic testing.
     Playwright will re-use the local server if there is already a dev-server running.
      */
-    command: 'vite --mode test',
-    port: 5173,
+    // own port: a reused `yarn dev` server runs in dev mode and redirects to the real Keycloak
+    command: 'vite --mode test --port 5180 --strictPort',
+    port: 5180,
     reuseExistingServer: !process.env.CI
   }
 });

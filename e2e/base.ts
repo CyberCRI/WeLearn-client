@@ -1,9 +1,22 @@
 import { test as base } from '@playwright/test';
 
 import { docs } from './data';
+import { mockKeycloak, type KeycloakMock } from './keycloak';
 
-export const test = base.extend({
-  page: async ({ page }, use) => {
+type Fixtures = {
+  // start the test with an existing Keycloak session, use `test.use({ loggedIn: true })`
+  loggedIn: boolean;
+  keycloak: KeycloakMock;
+};
+
+export const test = base.extend<Fixtures>({
+  loggedIn: [false, { option: true }],
+  keycloak: async ({ context, loggedIn }, use) => {
+    await use(await mockKeycloak(context, loggedIn));
+  },
+  // depends on `keycloak` so Keycloak is mocked before the first navigation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  page: async ({ page, keycloak }, use) => {
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();
