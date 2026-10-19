@@ -119,7 +119,8 @@ router.beforeEach(async (to: RouteLocationNormalized) => {
 
 router.beforeEach((to, from, next) => {
   if (!hasQueryParams(to) && hasQueryParams(from)) {
-    next({ name: to.name as string, query: from.query });
+    // keep the full path (route params such as /learn/:space) and only add the query
+    next({ path: to.path, hash: to.hash, query: from.query });
   } else {
     next();
   }
