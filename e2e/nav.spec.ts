@@ -14,9 +14,10 @@ test.describe('nav', () => {
     await expect(page).toHaveURL(/\/q-and-a/);
   });
 
-  test('click on bookmarks', async ({ page }) => {
-    await page.getByTestId('nav-bookmarks').click();
-    await expect(page).toHaveURL(/\/bookmarks/);
+  // e2e runs logged out, so the user menu shows bookmarks disabled
+  test('bookmarks are disabled in the user menu when logged out', async ({ page }) => {
+    await page.getByTestId('user-menu').hover();
+    await expect(page.getByTestId('user-menu-bookmarks')).toHaveAttribute('aria-disabled', 'true');
   });
 
   test.describe('switch to language', () => {
