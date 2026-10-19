@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+# Project: WeLearn client
+
 WeLearn client: a Vue 3 + TypeScript SPA that helps university teachers bring sustainability / SDG content into their courses. It is only a frontend. All data and LLM calls go through the [WeLearn API](https://github.com/CyberCRI/WeLearn-api), so most features do nothing useful unless an API is reachable at `VITE_API_BASE`.
 
 ## Commands
