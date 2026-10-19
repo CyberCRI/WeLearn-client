@@ -4,11 +4,15 @@ defineProps<{
   isLeft?: boolean;
   isRight?: boolean;
   isOnTop?: boolean;
+  isBelow?: boolean;
 }>();
 </script>
 <template>
-  <div class="tooltip-wraper">
-    <div class="tooltip" :class="{ isleft: isLeft, isright: isRight, top: isOnTop }">
+  <div class="tooltip-wraper" :class="{ below: isBelow }">
+    <div
+      class="tooltip"
+      :class="{ isleft: isLeft, isright: isRight, top: isOnTop, below: isBelow }"
+    >
       {{ tooltipText }}
     </div>
   </div>
@@ -31,6 +35,19 @@ defineProps<{
   border-radius: 0.5rem;
   font-size: 0.75rem;
   white-space: nowrap;
+}
+
+/* below: the wrapper overlays the parent (needs position: relative) so it takes no space in the
+   parent's layout (no flex gap), and the tooltip is centred under it */
+.tooltip-wraper.below {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.tooltip.below {
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .top.isright {

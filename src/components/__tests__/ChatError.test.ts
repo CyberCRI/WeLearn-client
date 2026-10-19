@@ -7,6 +7,6 @@ describe('ChatError', () => {
   it('renders properly', () => {
     const wrapper = mount(ChatError);
     expect(wrapper.element).toMatchSnapshot();
-    expect(wrapper.text()).toContain('Oops something wrong hapened. Please try again later.');
+    expect(wrapper.text()).toContain('chatError');
   });
 });

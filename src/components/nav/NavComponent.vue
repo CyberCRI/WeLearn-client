@@ -6,6 +6,8 @@ import AboutIcon from '@/components/icons/AboutIcon.vue';
 
 import BookIcon from '@/components/icons/BookIcon.vue';
 import LogoutIcon from '@/components/icons/LogoutIcon.vue';
+import LoginIcon from '@/components/icons/LoginIcon.vue';
+import TooltipComponent from '@/components/TooltipComponent.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
@@ -82,25 +84,20 @@ const utilityEntries = [
         </template>
 
         <LanguageSelector />
-        <div class="nav-auth mr-3">
-          <template v-if="isAuthenticated">
-            <button
-              class="button is-text"
-              aria-haspopup="true"
-              aria-controls="dropdown-menu"
-              @click="logout()"
-            >
-              <span class="mr-2 logout-label">{{ $t('logout') }}</span>
-              <span class="icon is-small">
-                <LogoutIcon />
-              </span>
-            </button>
-          </template>
-          <template v-else>
-            <button class="button is-text" @click="login()">
-              <span class="mr-2 logout-label">{{ $t('login') }}</span>
-            </button>
-          </template>
+        <div class="nav-auth">
+          <button class="button is-text" @click="isAuthenticated ? logout() : login()">
+            <span class="auth-label">{{ $t(isAuthenticated ? 'logout' : 'login') }}</span>
+            <span class="icon is-small">
+              <LogoutIcon v-if="isAuthenticated" />
+              <LoginIcon v-else />
+            </span>
+            <TooltipComponent
+              class="tltip"
+              isBelow
+              aria-hidden="true"
+              :tooltipText="$t(isAuthenticated ? 'logout' : 'login')"
+            />
+          </button>
         </div>
       </div>
     </div>
@@ -109,8 +106,12 @@ const utilityEntries = [
 <style scoped>
 .nav-auth {
   display: flex;
-  margin: auto;
-  gap: 1rem;
+  margin: auto 0.75rem auto 0;
+}
+
+.nav-auth .button {
+  position: relative;
+  gap: 0.5rem;
 }
 
 .nav {
@@ -178,9 +179,36 @@ const utilityEntries = [
   }
 }
 
-@media (max-width: 768px) {
+/* icon-only nav (in sync with AppHeader's 1330px): drop the top space kept for the full logo */
+@media (max-width: 1330px) {
   .nav-items {
     padding-top: 0.05rem;
+  }
+  /* auth button goes icon-only like the nav items (label kept for screen readers, shown as tooltip) */
+  .auth-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .nav-auth .button:hover .tltip,
+  .nav-auth .button:focus-visible .tltip {
+    display: block;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-auth {
+    margin-right: 0.25rem;
+  }
+  .nav-auth .button {
+    padding-inline: 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-items {
     width: 95%;
     margin: 0 auto;
   }

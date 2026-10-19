@@ -54,6 +54,12 @@ export const useFiltersStore = defineStore('filters', () => {
     }
   };
 
+  // UI layout of the filter panel, shared by Chat and Search so it survives tab switches (in memory, resets on reload)
+  // narrow screens start collapsed: the panel sits above the search results there
+  const panelOpen = ref(window.matchMedia?.('(min-width: 992px)').matches ?? true);
+  const openSections = ref({ sources: true, sdgs: true, languages: true });
+  const foldedCategories = ref<Record<string, boolean>>({});
+
   const handleResetFilters = () => {
     sdgFilters.value = [];
     sourcesFilters.value = [];
@@ -71,6 +77,9 @@ export const useFiltersStore = defineStore('filters', () => {
     handleLanguageFilterChange,
     languageList,
     languageFilters,
-    handleResetFilters
+    handleResetFilters,
+    panelOpen,
+    openSections,
+    foldedCategories
   };
 });
