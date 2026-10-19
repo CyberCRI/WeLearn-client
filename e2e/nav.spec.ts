@@ -19,6 +19,25 @@ test.describe('nav', () => {
     await expect(page).toHaveURL(/\/bookmarks/);
   });
 
+  // auth is only on in dev, see auth.spec.ts
+  test.describe('without auth', () => {
+    test('has no user menu nor login/logout buttons', async ({ page }) => {
+      await expect(page.getByTestId('user-menu')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: /Connexion|Déconnexion/ })).toHaveCount(0);
+    });
+
+    test('never contacts Keycloak', async ({ page, keycloak }) => {
+      await page.reload();
+      await expect(page.getByTestId('nav-chat')).toBeVisible();
+      expect(keycloak.requests).toBe(0);
+    });
+
+    test('profile page redirects home', async ({ page }) => {
+      await page.goto('/profile');
+      await expect(page).toHaveURL(/\/q-and-a/);
+    });
+  });
+
   test.describe('switch to language', () => {
     test('switch language', async ({ page }) => {
       expect(await page.getByText('Posez une question')).toBeTruthy();

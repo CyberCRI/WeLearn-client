@@ -1,9 +1,25 @@
 import { test as base } from '@playwright/test';
 
 import { docs } from './data';
+import { mockKeycloak, type KeycloakMock } from './keycloak';
 
-export const test = base.extend({
-  page: async ({ page }, use) => {
+type Fixtures = {
+  // start the test with an existing Keycloak session, use `test.use({ loggedIn: true })`
+  loggedIn: boolean;
+  keycloak: KeycloakMock;
+  // first page loaded, must not require auth when the test starts logged out with auth on
+  startUrl: string;
+};
+
+export const test = base.extend<Fixtures>({
+  loggedIn: [false, { option: true }],
+  startUrl: ['/', { option: true }],
+  keycloak: async ({ context, loggedIn }, use) => {
+    await use(await mockKeycloak(context, loggedIn));
+  },
+  // depends on `keycloak` so Keycloak is mocked before the first navigation
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  page: async ({ page, keycloak, startUrl }, use) => {
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();
@@ -25,9 +41,10 @@ export const test = base.extend({
     // Mock search-related calls
 
     await page.route('**/**/search/**', async (route) => {
-      await page.evaluate(() =>
-        localStorage.setItem('sessionId', JSON.stringify('fake_session_id'))
-      );
+      // the page may be navigating away, then there is no storage to set
+      await page
+        .evaluate(() => localStorage.setItem('sessionId', JSON.stringify('fake_session_id')))
+        .catch(() => {});
       const url = route.request().url();
       if (url.includes('collections')) {
         const json = [{ name: 'fake-collection', category: 'fake-category' }];
@@ -65,7 +82,7 @@ export const test = base.extend({
       }
     });
 
-    await page.goto('/');
+    await page.goto(startUrl);
     // Close the welcome modal
     await page.getByTestId('consent-checkbox').check();
     await page.getByTestId('welcome-action').click();

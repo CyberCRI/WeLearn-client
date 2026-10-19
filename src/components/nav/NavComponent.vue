@@ -5,17 +5,18 @@ import QnAIcon from '@/components/icons/QnAIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 
 import BookIcon from '@/components/icons/BookIcon.vue';
-import LogoutIcon from '@/components/icons/LogoutIcon.vue';
-import LoginIcon from '@/components/icons/LoginIcon.vue';
-import TooltipComponent from '@/components/TooltipComponent.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
+import UserMenu from './UserMenu.vue';
 import { useAuth } from '@/composables/useAuth';
+import { useAuthStore } from '@/stores/auth';
 
 const featureFlip = useFeatureFlipStore();
-const { isAuthenticated, login, logout } = useAuth();
+const { isAuthenticated } = useAuth();
+// without auth (every env but dev) the nav keeps bookmarks and has no user menu
+const { shouldAuthenticate } = useAuthStore();
 
 // Features (tools) on the left; personal/utility items on the right.
 const toolEntries = [
@@ -46,11 +47,12 @@ const toolEntries = [
 ];
 
 const utilityEntries = [
+  // with auth, bookmarks live in the user menu (UserMenu.vue)
   {
     name: 'bookmarks',
     to: '/bookmarks',
     icon: NavBookmarkIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('bookmarks')
+    isFeatureEnabled: !shouldAuthenticate && featureFlip.isFeatureEnabled('bookmarks')
   },
   // ponytail: Help (HelpComponent) removed from nav, its instructions are obsolete; files kept for a future rewrite
   {
@@ -83,21 +85,10 @@ const utilityEntries = [
           />
         </template>
 
-        <LanguageSelector />
-        <div class="nav-auth">
-          <button class="button is-text" @click="isAuthenticated ? logout() : login()">
-            <span class="auth-label">{{ $t(isAuthenticated ? 'logout' : 'login') }}</span>
-            <span class="icon is-small">
-              <LogoutIcon v-if="isAuthenticated" />
-              <LoginIcon v-else />
-            </span>
-            <TooltipComponent
-              class="tltip"
-              isBelow
-              aria-hidden="true"
-              :tooltipText="$t(isAuthenticated ? 'logout' : 'login')"
-            />
-          </button>
+        <!-- logged-in users pick the language on the profile page -->
+        <LanguageSelector v-if="!isAuthenticated" />
+        <div v-if="shouldAuthenticate" class="nav-auth mr-3">
+          <UserMenu />
         </div>
       </div>
     </div>

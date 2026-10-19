@@ -265,6 +265,7 @@ export const en = {
     syllabus: 'Create a syllabus',
     about: 'About',
     help: 'Help',
+    profile: 'Profile',
     microlearning: 'Micro-learning',
     workshopForm: 'Workshop Form'
   },
@@ -294,6 +295,15 @@ export const en = {
       rolePlaceholder: 'Professor',
       consentLabel: 'I do not wish to share this information.'
     }
+  },
+  profile: {
+    title: 'My profile',
+    name: 'Name',
+    email: 'Email',
+    language: 'Language',
+    bookmarksLoginRequired: 'Log in to see your bookmarks',
+    notAvailable: 'Not available',
+    notAuthenticated: 'You are not logged in.'
   },
   reload: 'Reload',
   clearFilters: 'Clear all filters',

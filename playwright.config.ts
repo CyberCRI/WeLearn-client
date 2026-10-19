@@ -9,6 +9,10 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env.test') });
  */
 // require('dotenv').config();
 
+const PORT = 5180;
+const AUTH_PORT = 5181;
+const AUTH_SPECS = ['auth.spec.ts', 'profile.spec.ts'];
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -37,18 +41,31 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      // VITE_ENVIRONMENT=test: no auth, like staging and prod
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      testIgnore: AUTH_SPECS,
+      use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${PORT}` }
+    },
+    {
+      // VITE_ENVIRONMENT=dev: Keycloak auth on, against the mock in e2e/keycloak.ts
+      name: 'chromium-auth',
+      testMatch: AUTH_SPECS,
+      use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${AUTH_PORT}` }
     }
   ],
-  webServer: {
-    /**
-     * Use the dev server by default for faster feedback loop.
-     * Use the preview server on CI for more realistic testing.
-    Playwright will re-use the local server if there is already a dev-server running.
-     */
-    command: 'vite --mode test',
-    port: 5173,
-    reuseExistingServer: !process.env.CI
-  }
+  // own ports: a reused `yarn dev` server runs in dev mode and redirects to the real Keycloak
+  webServer: [
+    {
+      command: `vite --mode test --port ${PORT} --strictPort`,
+      port: PORT,
+      reuseExistingServer: !process.env.CI
+    },
+    {
+      // variables already in the environment win over .env.test
+      command: `vite --mode test --port ${AUTH_PORT} --strictPort`,
+      port: AUTH_PORT,
+      env: { VITE_ENVIRONMENT: 'dev' },
+      reuseExistingServer: !process.env.CI
+    }
+  ]
 });
