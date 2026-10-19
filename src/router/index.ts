@@ -8,6 +8,7 @@ import MicrolearningModule from '@/views/MicrolearningModule.vue';
 import TestMAS from '@/views/TestMAS.vue';
 import { useAuthStore } from '@/stores/auth';
 import RegisterPage from '@/views/RegisterPage.vue';
+import { isPreviewModule } from '@/components/teacher/teacherSpaces';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,6 +82,38 @@ const router = createRouter({
       name: 'learn-space',
       component: () => import('@/views/student/LearnSpace.vue'),
       meta: { requiresAuth: false, hideTemplate: true }
+    },
+    // entry page: choose "I'm teaching" (/teach) or "I'm learning" (/learn); / stays the chat
+    {
+      path: '/start',
+      name: 'start',
+      component: () => import('@/views/StartPage.vue'),
+      meta: { requiresAuth: false, hideTemplate: true }
+    },
+    // teacher space: the four framework spaces, linking to the existing teacher pages
+    {
+      path: '/teach',
+      name: 'teach',
+      component: () => import('@/views/teacher/TeachHome.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/teach/:space(understand|explore|design|teach)',
+      name: 'teach-space',
+      component: () => import('@/views/teacher/TeachSpace.vue'),
+      meta: { requiresAuth: true }
+    },
+    // mock page of a module still being designed; existing features keep their own pages
+    {
+      path: '/teach/:space(understand|design)/:module',
+      name: 'teach-preview',
+      component: () => import('@/views/teacher/TeachPreview.vue'),
+      meta: { requiresAuth: true },
+      beforeEnter: (to) =>
+        isPreviewModule(to.params.space, to.params.module) || {
+          name: 'teach-space',
+          params: { space: to.params.space }
+        }
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
   ]

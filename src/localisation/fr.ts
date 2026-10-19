@@ -1,11 +1,13 @@
 import { microLearning } from './microLearning/fr';
 import { authentication } from './authentication/fr';
 import { student } from './student/fr';
+import { journey } from './journey/fr';
 
 export const fr = {
   authentication,
   microLearning,
   student,
+  journey,
   ':': ' :',
   adaptedTo: 'Adapté à :',
   addBookmark: 'Ajouter aux favoris',

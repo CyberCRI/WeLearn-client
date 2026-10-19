@@ -1,12 +1,17 @@
 <script setup lang="ts">
 import LanguageSelector from '@/components/nav/LanguageSelector.vue';
+
+// isEntry: on the entry page (/start) the bar shows no space name and the logo leads back to it
+defineProps<{ isEntry?: boolean }>();
 </script>
 <template>
   <header class="student-bar">
-    <router-link class="home-link" :to="{ name: 'learn' }">
+    <router-link class="home-link" :to="{ name: isEntry ? 'start' : 'learn' }">
       <img alt="WeLearn" class="logo" src="@/assets/logo.png" />
-      <span class="divider" aria-hidden="true"></span>
-      <span class="space-title">{{ $t('student.bar.title') }}</span>
+      <template v-if="!isEntry">
+        <span class="divider" aria-hidden="true"></span>
+        <span class="space-title">{{ $t('student.bar.title') }}</span>
+      </template>
     </router-link>
     <LanguageSelector />
   </header>
