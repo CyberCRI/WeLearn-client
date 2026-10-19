@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import SpaceCard from '@/components/SpaceCard.vue';
 import SpaceLabel from '@/components/SpaceLabel.vue';
 import PreviewIntro from '@/components/teacher/PreviewIntro.vue';
+import AskWeLearnPanel from '@/components/teacher/AskWeLearnPanel.vue';
+import ExampleResultCard from '@/components/teacher/ExampleResultCard.vue';
+import { useFiltersStore } from '@/stores/filters';
+import { useSourcesStore } from '@/stores/sources';
 import {
   EXPLORE_LENSES,
+  EXPLORE_LENS_CATEGORIES,
+  RESEARCH_CASE_SOURCE_URL,
+  TEACH_RESULT_KINDS,
   TEACH_STEPS,
   TEACHER_MODULES,
   TEACHER_SPACE_COLOURS,
@@ -14,8 +21,12 @@ import {
 } from '@/components/teacher/teacherSpaces';
 
 // one page per teacher space: understand and design list their modules,
-// explore (two lenses) and teach (three steps) are previews
+// explore (two lenses) and teach (three steps) are previews; every space ends with "Ask WeLearn"
 const route = useRoute();
+const router = useRouter();
+const filtersStore = useFiltersStore();
+const sourcesStore = useSourcesStore();
+
 const space = computed(() => route.params.space as TeacherSpace);
 const colours = computed(() => TEACHER_SPACE_COLOURS[space.value]);
 const modules = computed(() => TEACHER_MODULES[space.value]);
@@ -26,6 +37,16 @@ const moduleLink = (module: TeacherModule) =>
   module.route
     ? { name: module.route }
     : { name: 'teach-preview', params: { space: space.value, module: module.key } };
+
+// search and chat read no filters from the address, so the lens pre-selects its sources in the
+// shared filters store (visible and editable in their filters panel) before opening the page
+const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) => {
+  const categories = EXPLORE_LENS_CATEGORIES[lens];
+  filtersStore.sourcesFilters = Object.entries(sourcesStore.sourceCategoryMap)
+    .filter(([, category]) => categories.includes(category))
+    .map(([name]) => name);
+  router.push({ name: routeName });
+};
 </script>
 <template>
   <div class="teach-page">
@@ -54,7 +75,7 @@ const moduleLink = (module: TeacherModule) =>
         </li>
       </ul>
 
-      <!-- explore: the two lenses side by side, both leading to search and chat -->
+      <!-- explore: the two lenses side by side, each opening search or chat on its own sources -->
       <template v-else-if="space === 'explore'">
         <PreviewIntro :question="$t(`${texts}.question`)" :objective="$t(`${texts}.objective`)" />
         <ul class="cards">
@@ -64,12 +85,50 @@ const moduleLink = (module: TeacherModule) =>
               :description="$t(`${texts}.lenses.${lens}.description`)"
               :accent="colours.accent"
             >
-              <router-link class="space-action" :to="{ name: 'search-sdg' }">
+              <!-- teach the topic: the two kinds of results, one invented example each -->
+              <div v-if="lens === 'teach'" class="result-kinds">
+                <section
+                  v-for="kind in TEACH_RESULT_KINDS"
+                  :key="kind"
+                  :data-testid="`results-${kind}`"
+                >
+                  <h3 class="result-kind-title">{{ $t(`${texts}.results.${kind}.title`) }}</h3>
+                  <p class="result-kind-description">
+                    {{ $t(`${texts}.results.${kind}.description`) }}
+                  </p>
+                  <ExampleResultCard
+                    class="mt-2"
+                    :meta="$t(`${texts}.results.${kind}.exampleMeta`)"
+                    :title="$t(`${texts}.results.${kind}.exampleTitle`)"
+                    :description="$t(`${texts}.results.${kind}.exampleDescription`)"
+                    :sourceNote="
+                      kind === 'researchCases'
+                        ? $t(`${texts}.results.${kind}.sourceNote`)
+                        : undefined
+                    "
+                    :source="
+                      kind === 'researchCases' ? $t(`${texts}.results.${kind}.source`) : undefined
+                    "
+                    :sourceUrl="kind === 'researchCases' ? RESEARCH_CASE_SOURCE_URL : undefined"
+                  />
+                </section>
+              </div>
+              <button
+                type="button"
+                class="space-action"
+                :data-testid="`lens-${lens}-search`"
+                @click="handleLens(lens, 'search-sdg')"
+              >
                 {{ $t(`${texts}.search`) }} →
-              </router-link>
-              <router-link class="space-action" :to="{ name: 'q-and-a' }">
+              </button>
+              <button
+                type="button"
+                class="space-action"
+                :data-testid="`lens-${lens}-chat`"
+                @click="handleLens(lens, 'q-and-a')"
+              >
                 {{ $t(`${texts}.chat`) }} →
-              </router-link>
+              </button>
             </SpaceCard>
           </li>
         </ul>
@@ -88,6 +147,8 @@ const moduleLink = (module: TeacherModule) =>
           </li>
         </ol>
       </template>
+
+      <AskWeLearnPanel :space="space" />
     </div>
   </div>
 </template>
@@ -108,15 +169,38 @@ const moduleLink = (module: TeacherModule) =>
   font-size: 0.9rem;
 }
 
+/* numbers are part of the step titles, so the list shows none of its own */
 .cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   margin-top: 2rem;
+  list-style: none;
 }
 
 .cards.is-three {
   grid-template-columns: repeat(3, 1fr);
+}
+
+.result-kinds {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.result-kind-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--neutral-80);
+}
+
+.result-kind-description {
+  font-size: 0.85rem;
+  color: var(--neutral-70);
 }
 
 @media (max-width: 768px) {

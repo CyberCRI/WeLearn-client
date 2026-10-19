@@ -36,6 +36,29 @@ const texts = computed(() => `journey.teach.spaces.${space.value}.modules.${modu
             {{ $t(`${texts}.steps.${step}`) }}
           </li>
         </ol>
+
+        <!-- one filled-in draft, so the team sees what the flow produces -->
+        <article class="example-draft mt-5" data-testid="example-draft">
+          <SpaceLabel :text="$t('journey.teach.exampleLabel')" tint="var(--lpi-yellow-lighter)" />
+          <h2 class="draft-title mt-3">{{ $t(`${texts}.example.title`) }}</h2>
+          <p class="draft-origin">{{ $t(`${texts}.example.startsFrom`) }}</p>
+          <dl class="draft-fields mt-3">
+            <dt>{{ $t(`${texts}.steps.intention`) }}</dt>
+            <dd>{{ $t(`${texts}.example.intention`) }}</dd>
+            <dt>{{ $t(`${texts}.steps.type`) }}</dt>
+            <dd>{{ $t(`${texts}.example.type`) }}</dd>
+            <dt>{{ $t(`${texts}.example.resourcesLabel`) }}</dt>
+            <dd>
+              <ul class="draft-resources">
+                <li>{{ $t(`${texts}.example.resource1`) }}</li>
+                <li>{{ $t(`${texts}.example.resource2`) }}</li>
+              </ul>
+            </dd>
+            <dt>{{ $t(`${texts}.example.assessmentLabel`) }}</dt>
+            <dd>{{ $t(`${texts}.example.assessment`) }}</dd>
+          </dl>
+        </article>
+
         <p class="notification is-info is-light mt-5">{{ $t(`${texts}.note`) }}</p>
       </template>
     </div>
@@ -89,6 +112,38 @@ const texts = computed(() => `journey.teach.spaces.${space.value}.modules.${modu
   color: var(--neutral-70);
 }
 
+.example-draft {
+  padding: 1.25rem;
+  border: 1px dashed var(--neutral-20);
+  border-top: 4px solid var(--accent);
+  border-radius: 8px;
+}
+
+.draft-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.draft-origin {
+  font-size: 0.85rem;
+  color: var(--neutral-70);
+}
+
+.draft-fields {
+  display: grid;
+  grid-template-columns: 12rem 1fr;
+  gap: 0.6rem 1rem;
+}
+
+.draft-fields dt {
+  font-weight: 600;
+}
+
+.draft-resources {
+  list-style: disc;
+  padding-left: 1.1rem;
+}
+
 @media (max-width: 600px) {
   .teach-content {
     padding: 1.5rem 1rem 2rem;
@@ -101,6 +156,10 @@ const texts = computed(() => `journey.teach.spaces.${space.value}.modules.${modu
 
   .steps li:not(:last-child)::after {
     content: none;
+  }
+
+  .draft-fields {
+    grid-template-columns: 1fr;
   }
 }
 </style>

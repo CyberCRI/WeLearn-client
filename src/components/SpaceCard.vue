@@ -89,9 +89,12 @@ defineProps<{
   padding: 0.4rem 0.9rem;
   border: 1px solid var(--primary-dark);
   border-radius: 999px;
+  background: none;
+  font-family: inherit;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--primary-dark);
+  cursor: pointer;
 }
 
 .space-card.is-link:hover .space-action,

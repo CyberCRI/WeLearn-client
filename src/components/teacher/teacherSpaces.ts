@@ -31,6 +31,26 @@ export const TEACHER_MODULES: Partial<Record<TeacherSpace, TeacherModule[]>> = {
 
 export const EXPLORE_LENSES = ['learn', 'teach'] as const;
 
+// source categories of the WeLearn API (/search/collections) behind each lens; a lens button
+// pre-selects them in the shared filters before opening search or chat
+export const EXPLORE_LENS_CATEGORIES: Record<(typeof EXPLORE_LENSES)[number], string[]> = {
+  learn: [
+    'academic_scientific_publications',
+    'expert_reports',
+    'science_communication_and_outreach'
+  ],
+  teach: ['teaching_resources']
+};
+
+// the two kinds of results inside "Teach the topic", each shown with one invented example
+export const TEACH_RESULT_KINDS = ['teachingResources', 'researchCases'] as const;
+
+// original document of the invented "Cases from research" example (an IPCC report, in WeLearn's corpus)
+export const RESEARCH_CASE_SOURCE_URL = 'https://www.ipcc.ch/report/ar6/wg2/';
+
+// example questions of the "Ask WeLearn" panel, per space (texts in journey.teach.spaces.*.ask)
+export const ASK_QUESTIONS = ['q1', 'q2'] as const;
+
 export const ACTIVITY_STEPS = [
   'context',
   'connection',

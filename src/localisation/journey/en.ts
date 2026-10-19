@@ -26,9 +26,20 @@ export const journey = {
     previewNotice: 'Preview: this feature is being designed',
     question: 'Your question',
     objective: 'Objective',
+    designNote: 'Design note',
+    exampleLabel: 'Example · written for this prototype, not from WeLearn’s sources',
+    ask: {
+      title: 'Ask WeLearn',
+      intro: 'At every stage, the WeLearn assistant answers your questions. Try one:',
+      sourcesNote: 'Answers come from WeLearn’s library of sustainability resources, with sources.'
+    },
     spaces: {
       understand: {
         name: 'Understand',
+        ask: {
+          q1: 'What does sustainability mean for my discipline?',
+          q2: 'What do the SDGs and GreenComp expect from university teachers?'
+        },
         title: 'Why sustainability matters for your teaching',
         description:
           'Four short modules on what sustainability means and how it meets your discipline.',
@@ -60,6 +71,10 @@ export const journey = {
       },
       explore: {
         name: 'Explore',
+        ask: {
+          q1: 'Find case studies on water management I could use in class.',
+          q2: 'What does recent research say about plastic pollution in rivers?'
+        },
         title: 'Find resources for what you teach',
         description:
           'Research and teaching resources connected to your course, seen through two lenses.',
@@ -79,11 +94,37 @@ export const journey = {
               'Educational resources, activities and case studies, to turn the content into teaching.'
           }
         },
+        results: {
+          teachingResources: {
+            title: 'Teaching resources',
+            description: 'Ready-made materials from educational sources.',
+            exampleTitle: 'Climate risk role-play: a ready-made lesson plan',
+            exampleMeta: 'Lesson plan · educational source',
+            exampleDescription:
+              'A 90-minute role-play in which students negotiate how a region adapts to more frequent floods.'
+          },
+          researchCases: {
+            title: 'Cases from research',
+            description:
+              'Teaching material extracted by AI from scientific and institutional documents.',
+            exampleTitle: 'Who pays for flood risk? A coastal city case',
+            exampleMeta: 'Case study',
+            exampleDescription:
+              'Students act as a city council weighing flood defences, insurance and planned relocation for a coastal district.',
+            sourceNote:
+              'Invented example. A real version would be AI-adapted from a document such as the',
+            source: 'IPCC Sixth Assessment Report, Working Group II (2022)'
+          }
+        },
         search: 'Search resources',
         chat: 'Ask a question'
       },
       design: {
         name: 'Design',
+        ask: {
+          q1: 'Help me create an activity on climate risk for my economics course.',
+          q2: 'How can I assess systems thinking in a student group project?'
+        },
         title: 'Build it into your course',
         description: 'Design your course, or turn a sustainability connection into an activity.',
         modules: {
@@ -108,12 +149,29 @@ export const journey = {
               resources: 'Resources from WeLearn',
               draft: 'Activity draft'
             },
+            example: {
+              title: 'Example activity draft: climate risk in an economics course',
+              startsFrom: 'Starts from the “Cases from research” example in EXPLORE.',
+              intention:
+                'Students can explain how climate risk is priced, and who bears the cost when it is not.',
+              type: 'Role-play in small groups, 90 minutes',
+              resourcesLabel: 'Two WeLearn resources',
+              resource1: 'Case from research: “Who pays for flood risk? A coastal city case”',
+              resource2: 'Teaching resource: “Climate risk role-play” lesson plan',
+              assessmentLabel: 'Assessment idea',
+              assessment:
+                'Each group writes a one-page recommendation to the council, assessed on its economic reasoning and on how it treats the people who bear the risk.'
+            },
             note: 'Idea: after creating a syllabus, a "Create an activity for this" button could open this flow with the course already filled in.'
           }
         }
       },
       teach: {
         name: 'Teach',
+        ask: {
+          q1: 'My students found this activity too abstract. How can I improve it?',
+          q2: 'How can I run a debate on the energy transition with 60 students?'
+        },
         title: 'Use it with your students',
         description: 'Use an activity in class, reflect on how it went and share what works.',
         question: 'How can I use this with my students and keep improving it?',
@@ -122,7 +180,8 @@ export const journey = {
         steps: {
           use: {
             title: 'Use',
-            description: 'A classroom-ready activity to share with your students.'
+            description:
+              'A classroom-ready activity. Share it with your class through a simple link.'
           },
           reflect: {
             title: 'Reflect',
