@@ -106,6 +106,7 @@ export const fr = {
   filterSDG: 'Filtrer par ODD',
   filteredBySDG: 'Filtré par l’ODD : | Filtré par les ODD :',
   genSyllabus: 'Générer le syllabus',
+  giveFeedback: 'Donner mon avis',
   goToSources: 'Voir les sources',
   goToTop: 'Retour en haut',
   gotIt: 'Compris !',

@@ -105,6 +105,7 @@ export const en = {
   filterSDG: 'Filter by SDG',
   filteredBySDG: 'Filtered by SDG: | Filtered by SDGs:',
   genSyllabus: 'Generate syllabus',
+  giveFeedback: 'Give feedback',
   goToSources: 'View sources',
   goToTop: 'Back to top',
   gotIt: 'Got it!',
