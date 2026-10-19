@@ -5,14 +5,18 @@ import QnAIcon from '@/components/icons/QnAIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 
 import BookIcon from '@/components/icons/BookIcon.vue';
+import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
 import UserMenu from './UserMenu.vue';
 import { useAuth } from '@/composables/useAuth';
+import { useAuthStore } from '@/stores/auth';
 
 const featureFlip = useFeatureFlipStore();
 const { isAuthenticated } = useAuth();
+// without auth (every env but dev) the nav keeps bookmarks and has no user menu
+const { shouldAuthenticate } = useAuthStore();
 
 // Features (tools) on the left; personal/utility items on the right.
 const toolEntries = [
@@ -43,7 +47,13 @@ const toolEntries = [
 ];
 
 const utilityEntries = [
-  // bookmarks live in the user menu (UserMenu.vue)
+  // with auth, bookmarks live in the user menu (UserMenu.vue)
+  {
+    name: 'bookmarks',
+    to: '/bookmarks',
+    icon: NavBookmarkIcon,
+    isFeatureEnabled: !shouldAuthenticate && featureFlip.isFeatureEnabled('bookmarks')
+  },
   // ponytail: Help (HelpComponent) removed from nav, its instructions are obsolete; files kept for a future rewrite
   {
     name: 'about',
@@ -77,7 +87,7 @@ const utilityEntries = [
 
         <!-- logged-in users pick the language on the profile page -->
         <LanguageSelector v-if="!isAuthenticated" />
-        <div class="nav-auth mr-3">
+        <div v-if="shouldAuthenticate" class="nav-auth mr-3">
           <UserMenu />
         </div>
       </div>

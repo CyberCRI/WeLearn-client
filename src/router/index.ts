@@ -68,7 +68,9 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: () => import('@/views/ProfilePage.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true },
+      // no accounts outside dev
+      beforeEnter: () => (useAuthStore().shouldAuthenticate ? true : '/')
     },
     {
       path: '/about',

@@ -14,10 +14,28 @@ test.describe('nav', () => {
     await expect(page).toHaveURL(/\/q-and-a/);
   });
 
-  // e2e runs logged out, so the user menu shows bookmarks disabled
-  test('bookmarks are disabled in the user menu when logged out', async ({ page }) => {
-    await page.getByTestId('user-menu').hover();
-    await expect(page.getByTestId('user-menu-bookmarks')).toHaveAttribute('aria-disabled', 'true');
+  test('click on bookmarks', async ({ page }) => {
+    await page.getByTestId('nav-bookmarks').click();
+    await expect(page).toHaveURL(/\/bookmarks/);
+  });
+
+  // auth is only on in dev, see auth.spec.ts
+  test.describe('without auth', () => {
+    test('has no user menu nor login/logout buttons', async ({ page }) => {
+      await expect(page.getByTestId('user-menu')).toHaveCount(0);
+      await expect(page.getByRole('button', { name: /Connexion|Déconnexion/ })).toHaveCount(0);
+    });
+
+    test('never contacts Keycloak', async ({ page, keycloak }) => {
+      await page.reload();
+      await expect(page.getByTestId('nav-chat')).toBeVisible();
+      expect(keycloak.requests).toBe(0);
+    });
+
+    test('profile page redirects home', async ({ page }) => {
+      await page.goto('/profile');
+      await expect(page).toHaveURL(/\/q-and-a/);
+    });
   });
 
   test.describe('switch to language', () => {

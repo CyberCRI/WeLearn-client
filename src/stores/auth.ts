@@ -21,6 +21,12 @@ export const useAuthStore = defineStore('auth', () => {
   const shouldAuthenticate = computed(() => import.meta.env.VITE_ENVIRONMENT === 'dev');
 
   async function init(): Promise<boolean> {
+    // auth is only rolled out on dev: elsewhere Keycloak is never contacted
+    if (!shouldAuthenticate.value) {
+      isLoading.value = false;
+      return false;
+    }
+
     try {
       const authenticated = await keycloak.init({
         onLoad: 'check-sso',

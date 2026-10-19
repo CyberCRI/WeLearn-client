@@ -1,4 +1,4 @@
-import type { BrowserContext, Route } from '@playwright/test';
+import type { BrowserContext, Page, Route } from '@playwright/test';
 
 // Must match VITE_KEYCLOAK_* in .env.test
 export const KEYCLOAK_URL = 'http://keycloak.test';
@@ -15,6 +15,7 @@ export const fakeUser = {
 export interface KeycloakMock {
   loggedIn: boolean;
   logoutCalls: number;
+  requests: number;
 }
 
 // keycloak-js sends credentials, so the origin has to be echoed back instead of '*'
@@ -37,6 +38,15 @@ function redirect(route: Route, location: string) {
   return route.fulfill({ status: 302, headers: { Location: location } });
 }
 
+// back to the app, as Keycloak does after a successful login
+function redirectWithCode(route: Route, authUrl: URL) {
+  const redirectUri = authUrl.searchParams.get('redirect_uri');
+  const oauthState = authUrl.searchParams.get('state');
+  // the code carries the nonce so the token endpoint can put it back in the id token
+  const code = authUrl.searchParams.get('nonce');
+  return redirect(route, `${redirectUri}#state=${oauthState}&session_state=fake&code=${code}`);
+}
+
 /**
  * Fakes the Keycloak server so the real keycloak-js adapter can run its
  * check-sso / login / logout flows against it.
@@ -45,9 +55,10 @@ export async function mockKeycloak(
   context: BrowserContext,
   initiallyLoggedIn = false
 ): Promise<KeycloakMock> {
-  const state: KeycloakMock = { loggedIn: initiallyLoggedIn, logoutCalls: 0 };
+  const state: KeycloakMock = { loggedIn: initiallyLoggedIn, logoutCalls: 0, requests: 0 };
 
   await context.route(`${KEYCLOAK_URL}/**`, async (route) => {
+    state.requests += 1;
     const request = route.request();
     const url = new URL(request.url());
     const path = url.pathname.replace(new URL(REALM_URL).pathname, '');
@@ -70,15 +81,23 @@ export async function mockKeycloak(
       const oauthState = url.searchParams.get('state');
       const isSilent = url.searchParams.get('prompt') === 'none';
 
-      // an interactive login always succeeds, as if the user filled the Keycloak form
-      if (!isSilent) state.loggedIn = true;
-
-      if (!state.loggedIn) {
+      if (!state.loggedIn && isSilent) {
         return redirect(route, `${redirectUri}#error=login_required&state=${oauthState}`);
       }
-      // the code carries the nonce so the token endpoint can put it back in the id token
-      const code = url.searchParams.get('nonce');
-      return redirect(route, `${redirectUri}#state=${oauthState}&session_state=fake&code=${code}`);
+      if (!state.loggedIn) {
+        // stand-in for the Keycloak login form, see signInOnKeycloak()
+        url.pathname = `${new URL(REALM_URL).pathname}/login-actions/authenticate`;
+        return route.fulfill({
+          contentType: 'text/html',
+          body: `<a data-testid="kc-sign-in" href="${url}">Sign in</a>`
+        });
+      }
+      return redirectWithCode(route, url);
+    }
+
+    if (path === '/login-actions/authenticate') {
+      state.loggedIn = true;
+      return redirectWithCode(route, url);
     }
 
     if (path === '/protocol/openid-connect/token') {
@@ -119,4 +138,13 @@ export async function mockKeycloak(
   });
 
   return state;
+}
+
+export function keycloakSignIn(page: Page) {
+  return page.getByTestId('kc-sign-in');
+}
+
+/** Fills the fake Keycloak login form, as a user would */
+export async function signInOnKeycloak(page: Page) {
+  await keycloakSignIn(page).click();
 }

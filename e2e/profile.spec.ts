@@ -1,5 +1,6 @@
+// Runs with VITE_ENVIRONMENT=dev (chromium-auth project); without auth /profile redirects, see nav.spec.ts
 import { test, expect } from './base';
-import { fakeUser } from './keycloak';
+import { fakeUser, keycloakSignIn, signInOnKeycloak } from './keycloak';
 
 test.describe('profile', () => {
   test.describe('logged in', () => {
@@ -35,18 +36,20 @@ test.describe('profile', () => {
 
       await page.getByTestId('profile-logout').click();
 
-      await expect(page.getByTestId('profile-name')).toHaveCount(0);
+      await expect(keycloakSignIn(page)).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
     });
   });
 
   test.describe('logged out', () => {
-    test('asks the user to log in', async ({ page }) => {
-      await page.goto('/profile');
+    test.use({ startUrl: '/about' });
 
-      await expect(page.getByText("Vous n'êtes pas connecté·e.")).toBeVisible();
-      await expect(page.getByTestId('profile-login')).toBeVisible();
-      await expect(page.getByTestId('profile-name')).toHaveCount(0);
+    test('asks to log in, then shows the user information', async ({ page }) => {
+      await page.goto('/profile');
+      await signInOnKeycloak(page);
+
+      await expect(page).toHaveURL(/\/profile/);
+      await expect(page.getByTestId('profile-email')).toHaveText(fakeUser.email);
     });
   });
 });
