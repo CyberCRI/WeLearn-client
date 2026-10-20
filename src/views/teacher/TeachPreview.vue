@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SpaceLabel from '@/components/SpaceLabel.vue';
+import AiLabel from '@/components/AiLabel.vue';
 import PreviewIntro from '@/components/teacher/PreviewIntro.vue';
 import {
   ACTIVITY_STEPS,
@@ -34,12 +35,16 @@ const texts = computed(() => `journey.teach.spaces.${space.value}.modules.${modu
           <li v-for="(step, index) in ACTIVITY_STEPS" :key="step" :data-testid="`activity-${step}`">
             <span class="step-number">{{ index + 1 }}</span>
             {{ $t(`${texts}.steps.${step}`) }}
+            <AiLabel v-if="step === 'draft'" />
           </li>
         </ol>
 
         <!-- one filled-in draft, so the team sees what the flow produces -->
         <article class="example-draft mt-5" data-testid="example-draft">
-          <SpaceLabel :text="$t('journey.teach.exampleLabel')" tint="var(--lpi-yellow-lighter)" />
+          <div class="draft-tags">
+            <AiLabel :text="$t('journey.teach.ai.draft')" />
+            <SpaceLabel :text="$t('journey.teach.exampleLabel')" tint="var(--lpi-yellow-lighter)" />
+          </div>
           <h2 class="draft-title mt-3">{{ $t(`${texts}.example.title`) }}</h2>
           <p class="draft-origin">{{ $t(`${texts}.example.startsFrom`) }}</p>
           <dl class="draft-fields mt-3">
@@ -110,6 +115,13 @@ const texts = computed(() => `journey.teach.spaces.${space.value}.modules.${modu
 .step-number {
   font-size: 0.8rem;
   color: var(--neutral-70);
+}
+
+.draft-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .example-draft {

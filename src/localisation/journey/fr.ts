@@ -15,8 +15,57 @@ export const journey = {
     }
   },
   teach: {
-    title: 'Comment WeLearn peut-il soutenir votre enseignement aujourd’hui ?',
-    intro: 'Choisissez ce dont vous avez besoin. Vous pouvez commencer où vous voulez.',
+    identity: 'Enseigner la durabilité, avec l’appui de l’IA et ancré dans la recherche.',
+    fastLane: {
+      title: 'Qu’enseignez-vous ?',
+      subtitle:
+        'L’IA de WeLearn propose des ressources, des cas réels et des idées d’activités issus d’une bibliothèque de recherche et de supports pédagogiques, toujours avec leurs sources. Vous décidez de ce que vous utilisez.',
+      inputLabel: 'Ce que vous enseignez',
+      placeholder: 'Économie en première année, introduction aux marchés',
+      examples: 'Exemples :',
+      chips: {
+        law: 'Droit, contrats',
+        biology: 'Biologie, écosystèmes',
+        engineering: 'Ingénierie, matériaux'
+      },
+      button: 'Trouver des idées',
+      empty: 'Indiquez d’abord ce que vous enseignez.',
+      question:
+        'J’enseigne {subject}. Propose des ressources, un cas réel et une idée d’activité pour intégrer la durabilité.'
+    },
+    teds: {
+      entry: 'Vous enseignez un cours TEDS ?',
+      themes: 'Climat, biodiversité, ressources, transition juste',
+      start: 'Commencer ici',
+      title: 'Accompagner les cours TEDS',
+      intro:
+        'Les cours TEDS initient les étudiants à la transition écologique pour un développement soutenable. WeLearn vous aidera à en préparer un, thème par thème.',
+      question: 'Comment WeLearn peut-il m’aider à préparer un cours TEDS ?',
+      objective:
+        'Préparer un cours TEDS avec des ressources, des cas réels et des activités sur ses grands thèmes, adaptés à vos étudiants.',
+      themesTitle: 'Les grands thèmes',
+      themeList: {
+        climate: 'Climat',
+        biodiversity: 'Biodiversité',
+        resources: 'Ressources',
+        justTransition: 'Transition juste'
+      },
+      howTitle: 'Comment WeLearn vous accompagnera',
+      how: {
+        understand: 'Comprendre ce qu’on attend d’un cours TEDS et son lien avec votre discipline.',
+        explore:
+          'Trouver des travaux de recherche, des rapports et des cas réels pour chaque thème.',
+        design:
+          'Obtenir un brouillon IA de votre syllabus et de vos activités, que vous relisez et adaptez.',
+        teach: 'Partager les activités avec vos étudiants et les améliorer après le cours.'
+      }
+    },
+    chooseTitle: 'Ou choisissez ce dont vous avez besoin',
+    journeyNav: 'Espace enseignant',
+    ai: {
+      draft: 'Brouillon IA',
+      adapted: 'Adapté par l’IA à partir de documents'
+    },
     getStarted: 'Commencer',
     open: 'Ouvrir',
     seePreview: 'Voir l’aperçu',
@@ -36,6 +85,8 @@ export const journey = {
     spaces: {
       understand: {
         name: 'Comprendre',
+        cardQuestion: 'Quel est le rapport entre la durabilité et ma discipline ?',
+        cardOutcome: 'Vous repartez avec une vision claire pour votre domaine',
         ask: {
           q1: 'Que signifie la durabilité pour ma discipline ?',
           q2: 'Qu’attendent les ODD et GreenComp des enseignants du supérieur ?'
@@ -72,6 +123,8 @@ export const journey = {
       },
       explore: {
         name: 'Explorer',
+        cardQuestion: 'Où trouver de bons supports pour mon cours ?',
+        cardOutcome: 'Vous repartez avec des ressources et des cas réels',
         ask: {
           q1: 'Trouve des études de cas sur la gestion de l’eau que je pourrais utiliser en cours.',
           q2: 'Que dit la recherche récente sur la pollution plastique des rivières ?'
@@ -117,11 +170,12 @@ export const journey = {
             source: 'Sixième rapport d’évaluation du GIEC, groupe de travail II (2022)'
           }
         },
-        search: 'Rechercher des ressources',
-        chat: 'Poser une question'
+        search: 'Rechercher des ressources'
       },
       design: {
         name: 'Concevoir',
+        cardQuestion: 'Comment l’intégrer à mon cours ?',
+        cardOutcome: 'Vous repartez avec un brouillon de syllabus ou d’activité',
         ask: {
           q1: 'Aide-moi à créer une activité sur le risque climatique pour mon cours d’économie.',
           q2: 'Comment évaluer la pensée systémique dans un projet de groupe étudiant ?'
@@ -172,6 +226,8 @@ export const journey = {
       },
       teach: {
         name: 'Enseigner',
+        cardQuestion: 'Comment l’utiliser avec mes étudiants ?',
+        cardOutcome: 'Vous repartez avec un lien pour votre classe et des idées d’amélioration',
         ask: {
           q1: 'Mes étudiants ont trouvé cette activité trop abstraite. Comment l’améliorer ?',
           q2: 'Comment organiser un débat sur la transition énergétique avec 60 étudiants ?'

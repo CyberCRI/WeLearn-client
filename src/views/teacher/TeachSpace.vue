@@ -6,6 +6,7 @@ import SpaceLabel from '@/components/SpaceLabel.vue';
 import PreviewIntro from '@/components/teacher/PreviewIntro.vue';
 import AskWeLearnPanel from '@/components/teacher/AskWeLearnPanel.vue';
 import ExampleResultCard from '@/components/teacher/ExampleResultCard.vue';
+import AiLabel from '@/components/AiLabel.vue';
 import { useFiltersStore } from '@/stores/filters';
 import { useSourcesStore } from '@/stores/sources';
 import {
@@ -71,6 +72,7 @@ const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) =>
             tint="var(--lpi-yellow-lighter)"
             :to="moduleLink(module)"
             :actionText="module.route ? $t('journey.teach.open') : $t('journey.teach.seePreview')"
+            :aiLabel="module.hasAiDraft ? $t('journey.teach.ai.draft') : undefined"
           />
         </li>
       </ul>
@@ -92,7 +94,14 @@ const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) =>
                   :key="kind"
                   :data-testid="`results-${kind}`"
                 >
-                  <h3 class="result-kind-title">{{ $t(`${texts}.results.${kind}.title`) }}</h3>
+                  <h3 class="result-kind-title">
+                    {{ $t(`${texts}.results.${kind}.title`) }}
+                    <AiLabel
+                      v-if="kind === 'researchCases'"
+                      class="ml-2"
+                      :text="$t('journey.teach.ai.adapted')"
+                    />
+                  </h3>
                   <p class="result-kind-description">
                     {{ $t(`${texts}.results.${kind}.description`) }}
                   </p>
@@ -127,7 +136,7 @@ const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) =>
                 :data-testid="`lens-${lens}-chat`"
                 @click="handleLens(lens, 'q-and-a')"
               >
-                {{ $t(`${texts}.chat`) }} →
+                <AiLabel /> {{ $t('journey.teach.ask.title') }} →
               </button>
             </SpaceCard>
           </li>

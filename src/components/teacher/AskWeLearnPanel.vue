@@ -1,28 +1,20 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { useChatStore } from '@/stores/chat';
-import { useFiltersStore } from '@/stores/filters';
+import AiLabel from '@/components/AiLabel.vue';
+import { useAskWeLearn } from '@/composables/useAskWeLearn';
 import { ASK_QUESTIONS, type TeacherSpace } from '@/components/teacher/teacherSpaces';
 import i18n from '@/localisation/i18n';
 
-// example questions for the WeLearn assistant; a click opens the existing chat with the question
-// in its input box (not sent: the teacher can adjust it, then send)
+// example questions for the WeLearn assistant, labelled as AI; a click opens the chat with the question
 const props = defineProps<{ space: TeacherSpace }>();
 
-const router = useRouter();
-const chatStore = useChatStore();
-const filtersStore = useFiltersStore();
+const { askWeLearn } = useAskWeLearn();
 
-const handleAsk = (question: string) => {
-  // the filters are shared with search (an explore lens may have set them): answer from the whole library
-  filtersStore.sourcesFilters = [];
-  chatStore.chatInput = i18n.global.t(`journey.teach.spaces.${props.space}.ask.${question}`);
-  router.push({ name: 'q-and-a' });
-};
+const handleAsk = (question: string) =>
+  askWeLearn(i18n.global.t(`journey.teach.spaces.${props.space}.ask.${question}`));
 </script>
 <template>
   <section class="ask-panel" data-testid="ask-panel">
-    <h2 class="ask-title">{{ $t('journey.teach.ask.title') }}</h2>
+    <h2 class="ask-title"><AiLabel :text="$t('journey.teach.ask.title')" /></h2>
     <p class="ask-intro">{{ $t('journey.teach.ask.intro') }}</p>
     <ul class="ask-questions">
       <li v-for="question in ASK_QUESTIONS" :key="question">

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router';
 import SpaceLabel from '@/components/SpaceLabel.vue';
+import AiLabel from '@/components/AiLabel.vue';
 
 // a learning space, module or choice: coloured top border, optional label, title, line.
 // with `to` the whole card is one link (as on the student homepage) and `actionText` is shown
-// as its button; without it, the slot holds the card's own buttons or links
+// as its button; without it, the slot holds the card's own buttons or links.
+// `aiLabel` marks a card whose result is written by the AI (for example "AI draft")
 defineProps<{
   label?: string;
   title: string;
@@ -13,6 +15,7 @@ defineProps<{
   tint?: string;
   to?: RouteLocationRaw;
   actionText?: string;
+  aiLabel?: string;
 }>();
 </script>
 <template>
@@ -22,14 +25,20 @@ defineProps<{
     :to="to"
     :style="{ '--accent': accent, '--tint': tint }"
   >
-    <SpaceLabel v-if="label" :text="label" :tint="tint" />
+    <div v-if="label || aiLabel" class="space-tags">
+      <SpaceLabel v-if="label" :text="label" :tint="tint" />
+      <AiLabel v-if="aiLabel" :text="aiLabel" />
+    </div>
     <span class="space-title">{{ title }}</span>
     <span class="space-description">{{ description }}</span>
     <!-- ponytail: the whole card is the link, so this only looks like a button (no button inside a link) -->
     <span v-if="actionText" class="space-action">{{ actionText }} →</span>
   </router-link>
   <div v-else class="space-card" :style="{ '--accent': accent, '--tint': tint }">
-    <SpaceLabel v-if="label" :text="label" :tint="tint" />
+    <div v-if="label || aiLabel" class="space-tags">
+      <SpaceLabel v-if="label" :text="label" :tint="tint" />
+      <AiLabel v-if="aiLabel" :text="aiLabel" />
+    </div>
     <h2 class="space-title">{{ title }}</h2>
     <p class="space-description">{{ description }}</p>
     <div class="space-actions">
@@ -61,6 +70,13 @@ defineProps<{
 .space-card.is-link:focus-visible {
   border-color: var(--accent);
   box-shadow: 0 2px 8px var(--neutral-20);
+}
+
+.space-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .space-title {

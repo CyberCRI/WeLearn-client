@@ -11,6 +11,8 @@ import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 import { useAuthStore } from './stores/auth';
+import TeacherJourneyNav from '@/components/teacher/TeacherJourneyNav.vue';
+import { isTeacherSpaceRoute } from '@/components/teacher/teacherSpaces';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
@@ -53,7 +55,12 @@ onMounted(async () => {
     <AppLayout v-else>
       <template #header v-if="!$route.meta.hideTemplate">
         <AppHeader />
-        <NavComponent />
+        <NavComponent>
+          <!-- teacher space: the four spaces replace the tool links (tools stay inside the spaces) -->
+          <template v-if="isTeacherSpaceRoute($route.name)" #tools>
+            <TeacherJourneyNav />
+          </template>
+        </NavComponent>
       </template>
       <template #main>
         <RouterView />

@@ -62,14 +62,17 @@ const utilityEntries = [
 <template>
   <div class="nav">
     <div class="nav-items">
-      <template v-for="entry in toolEntries" :key="entry.name">
-        <BaseNavItem
-          v-if="entry.isFeatureEnabled"
-          :to="entry.to"
-          :name="entry.name"
-          :icon="entry.icon"
-        />
-      </template>
+      <!-- a page can replace the tool links (the teacher space shows its four spaces instead) -->
+      <slot name="tools">
+        <template v-for="entry in toolEntries" :key="entry.name">
+          <BaseNavItem
+            v-if="entry.isFeatureEnabled"
+            :to="entry.to"
+            :name="entry.name"
+            :icon="entry.icon"
+          />
+        </template>
+      </slot>
 
       <div class="utilities">
         <template v-for="entry in utilityEntries" :key="entry.name">

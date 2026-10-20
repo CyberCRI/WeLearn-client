@@ -115,6 +115,13 @@ const router = createRouter({
           params: { space: to.params.space }
         }
     },
+    // preview: how WeLearn will support TEDS courses (entry line on /teach)
+    {
+      path: '/teach/teds',
+      name: 'teach-teds',
+      component: () => import('@/views/teacher/TeachTeds.vue'),
+      meta: { requiresAuth: true }
+    },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
   ]
 });

@@ -16,8 +16,56 @@ export const journey = {
     }
   },
   teach: {
-    title: 'How can WeLearn support your teaching today?',
-    intro: 'Choose what you need. You can start anywhere.',
+    identity: 'Teaching sustainability, supported by AI and grounded in research.',
+    fastLane: {
+      title: 'What are you teaching?',
+      subtitle:
+        'WeLearn’s AI suggests resources, real cases and activity ideas from a library of research and teaching material, always with sources. You decide what to use.',
+      inputLabel: 'What you teach',
+      placeholder: 'First-year economics, introduction to markets',
+      examples: 'Examples:',
+      chips: {
+        law: 'Law, contracts',
+        biology: 'Biology, ecosystems',
+        engineering: 'Engineering, materials'
+      },
+      button: 'Find ideas',
+      empty: 'Enter what you teach first.',
+      question:
+        'I teach {subject}. Suggest resources, a real case and an activity idea to integrate sustainability.'
+    },
+    teds: {
+      entry: 'Teaching a TEDS course?',
+      themes: 'Climate, biodiversity, resources, just transition',
+      start: 'Start here',
+      title: 'Supporting TEDS courses',
+      intro:
+        'TEDS courses introduce students to the ecological transition for sustainable development. WeLearn will help you prepare one, theme by theme.',
+      question: 'How can WeLearn help me prepare a TEDS course?',
+      objective:
+        'Prepare a TEDS course with resources, real cases and activities on its main themes, adapted to your students.',
+      themesTitle: 'The main themes',
+      themeList: {
+        climate: 'Climate',
+        biodiversity: 'Biodiversity',
+        resources: 'Resources',
+        justTransition: 'Just transition'
+      },
+      howTitle: 'How WeLearn will support you',
+      how: {
+        understand:
+          'Understand what is expected of a TEDS course and how it meets your discipline.',
+        explore: 'Find research, reports and real cases for each theme.',
+        design: 'Get an AI draft of your syllabus and activities, which you review and adapt.',
+        teach: 'Share activities with your students and improve them after class.'
+      }
+    },
+    chooseTitle: 'Or choose what you need',
+    journeyNav: 'Teacher space',
+    ai: {
+      draft: 'AI draft',
+      adapted: 'AI-adapted from documents'
+    },
     getStarted: 'Get started',
     open: 'Open',
     seePreview: 'See the preview',
@@ -36,6 +84,8 @@ export const journey = {
     spaces: {
       understand: {
         name: 'Understand',
+        cardQuestion: 'What does sustainability have to do with my discipline?',
+        cardOutcome: 'You leave with a clear picture for your field',
         ask: {
           q1: 'What does sustainability mean for my discipline?',
           q2: 'What do the SDGs and GreenComp expect from university teachers?'
@@ -71,6 +121,8 @@ export const journey = {
       },
       explore: {
         name: 'Explore',
+        cardQuestion: 'Where can I find good material for my course?',
+        cardOutcome: 'You leave with resources and real cases',
         ask: {
           q1: 'Find case studies on water management I could use in class.',
           q2: 'What does recent research say about plastic pollution in rivers?'
@@ -116,11 +168,12 @@ export const journey = {
             source: 'IPCC Sixth Assessment Report, Working Group II (2022)'
           }
         },
-        search: 'Search resources',
-        chat: 'Ask a question'
+        search: 'Search resources'
       },
       design: {
         name: 'Design',
+        cardQuestion: 'How do I build this into my course?',
+        cardOutcome: 'You leave with a syllabus or activity draft',
         ask: {
           q1: 'Help me create an activity on climate risk for my economics course.',
           q2: 'How can I assess systems thinking in a student group project?'
@@ -168,6 +221,8 @@ export const journey = {
       },
       teach: {
         name: 'Teach',
+        cardQuestion: 'How do I use it with my students?',
+        cardOutcome: 'You leave with a class link and ideas to improve',
         ask: {
           q1: 'My students found this activity too abstract. How can I improve it?',
           q2: 'How can I run a debate on the energy transition with 60 students?'

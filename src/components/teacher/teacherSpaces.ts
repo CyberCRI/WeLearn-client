@@ -16,6 +16,8 @@ export interface TeacherModule {
   key: string;
   // name of an existing teacher page; without it the module opens a preview page
   route?: string;
+  // the module's result is written by the AI (shown with an "AI draft" label)
+  hasAiDraft?: boolean;
 }
 
 // understand and design list modules; explore and teach are a single preview page each
@@ -26,7 +28,10 @@ export const TEACHER_MODULES: Partial<Record<TeacherSpace, TeacherModule[]>> = {
     { key: 'teds' },
     { key: 'discipline', route: 'micro-learning' }
   ],
-  design: [{ key: 'course', route: 'tutor' }, { key: 'activity' }]
+  design: [
+    { key: 'course', route: 'tutor', hasAiDraft: true },
+    { key: 'activity', hasAiDraft: true }
+  ]
 };
 
 export const EXPLORE_LENSES = ['learn', 'teach'] as const;
@@ -61,6 +66,17 @@ export const ACTIVITY_STEPS = [
 ] as const;
 
 export const TEACH_STEPS = ['use', 'reflect', 'share'] as const;
+
+// example subjects under the fast lane's text box (texts in journey.teach.fastLane.chips)
+export const FAST_LANE_CHIPS = ['law', 'biology', 'engineering'] as const;
+
+// TEDS preview page: the course's main themes
+export const TEDS_THEMES = ['climate', 'biodiversity', 'resources', 'justTransition'] as const;
+
+// pages of the teacher space, which show the four spaces instead of the tools in the top menu
+const TEACHER_SPACE_ROUTES = ['teach', 'teach-space', 'teach-preview', 'teach-teds'];
+
+export const isTeacherSpaceRoute = (name: unknown) => TEACHER_SPACE_ROUTES.includes(name as string);
 
 export const isPreviewModule = (space: unknown, module: unknown) =>
   !!TEACHER_MODULES[space as TeacherSpace]?.some((item) => item.key === module && !item.route);
