@@ -1,15 +1,5 @@
 import axios, { type AxiosRequestConfig } from 'axios';
-import http from './api';
-import keycloak from './keycloak';
-
-const getSessionIdFromStorage = () => {
-  try {
-    const sessionId = localStorage.getItem('sessionId');
-    return sessionId ? JSON.parse(sessionId) : '';
-  } catch (error) {
-    return '';
-  }
-};
+import http, { getAuthHeaders } from './api';
 
 export const baseGetAxios = async (endpoint: string) => {
   const response = await http.get(`${endpoint}`);
@@ -110,8 +100,7 @@ export const fetchStream = async (
       Accept: '*/*',
       'Content-Type': 'application/json',
       'X-API-Key': WL_API_KEY,
-      'X-Session-Id': getSessionIdFromStorage(),
-      Authorization: `Bearer ${keycloak.token}`
+      ...(await getAuthHeaders())
     }
   });
 
