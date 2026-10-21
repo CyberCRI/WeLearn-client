@@ -14,6 +14,22 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
 
+// refreshes the keycloak token if needed: shared by the axios instance and fetchStream
+export const getAuthHeaders = async (): Promise<Record<string, string>> => {
+  const headers: Record<string, string> = { 'X-Session-Id': getSessionIdFromStorage() };
+
+  if (!keycloak.authenticated) return headers;
+
+  try {
+    await keycloak.updateToken(30);
+    if (keycloak.token) headers.Authorization = `Bearer ${keycloak.token}`;
+  } catch {
+    keycloak.logout();
+  }
+
+  return headers;
+};
+
 const http = axios.create({
   baseURL: `${API_BASE}${API_VERSION}`,
   withCredentials: true,
@@ -25,15 +41,7 @@ const http = axios.create({
 
 http.interceptors.request.use(
   async (config) => {
-    if (keycloak.authenticated) {
-      try {
-        await keycloak.updateToken(30);
-        config.headers['X-Session-Id'] = getSessionIdFromStorage();
-        config.headers.Authorization = `Bearer ${keycloak.token}`;
-      } catch {
-        keycloak.logout();
-      }
-    }
+    config.headers.set(await getAuthHeaders());
     return config;
   },
   (error) => Promise.reject(error)
