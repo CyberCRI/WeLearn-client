@@ -1,14 +1,15 @@
 <script setup lang="ts">
 // top of every teacher mock page: the "Preview" notice, then the teacher's question and the
-// objective kept in a small design note, so the page reads as the product, not a specification
-defineProps<{ question: string; objective: string }>();
+// objective kept in a small design note, so the page reads as the product, not a specification.
+// without a question and an objective, only the notice is shown
+defineProps<{ question?: string; objective?: string }>();
 </script>
 <template>
   <div class="preview-intro">
     <p class="tag is-warning is-light is-medium" data-testid="preview-notice">
       {{ $t('journey.teach.previewNotice') }}
     </p>
-    <aside class="design-note mt-4" data-testid="design-note">
+    <aside v-if="question && objective" class="design-note mt-4" data-testid="design-note">
       <p class="design-note-title">{{ $t('journey.teach.designNote') }}</p>
       <dl>
         <dt>{{ $t('journey.teach.question') }}</dt>

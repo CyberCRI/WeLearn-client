@@ -74,6 +74,38 @@ export type TutorSyllabus = {
   documents: Document[];
 };
 
+// answer of /tutor/mas_files/content: the document type it detected and, for a syllabus, its
+// description and objectives copied as written (null or [] when not found)
+export type SyllabusExtraction = {
+  detected_document_type: 'none' | 'article' | 'syllabus' | 'unknown';
+  confidence: number;
+  summary: string | null;
+  description: string | null;
+  objectives: string[];
+  reasoning: string | null;
+};
+
+// where a piece of the reviewed course comes from: read from the document, corrected or added
+// by the teacher
+export type CourseFieldOrigin = 'extracted' | 'edited' | 'added';
+
+export interface CourseField {
+  value: string;
+  origin: CourseFieldOrigin;
+  // the text as read from the document, kept so the teacher can see or restore it
+  original?: string;
+  // an objective the teacher marked as belonging to the whole programme, not to this course
+  isProgramme?: boolean;
+}
+
+// the course overview; the extraction does not read these yet, so only the teacher adds them
+export const COURSE_OVERVIEW_KEYS = ['title', 'disciplineLevel', 'topics'] as const;
+export type CourseOverviewKey = (typeof COURSE_OVERVIEW_KEYS)[number];
+
+// optional details the extraction does not read yet; only the teacher fills them
+export const COURSE_EXTRA_KEYS = ['workload', 'sessions', 'assessment'] as const;
+export type CourseExtraKey = (typeof COURSE_EXTRA_KEYS)[number];
+
 export interface SyllabusData {
   description: {
     text: string;

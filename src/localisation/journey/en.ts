@@ -16,28 +16,10 @@ export const journey = {
     }
   },
   teach: {
-    identity: 'Teaching sustainability, supported by AI and grounded in research.',
-    fastLane: {
-      title: 'What are you teaching?',
-      subtitle:
-        'WeLearn’s AI suggests resources, real cases and activity ideas from a library of research and teaching material, always with sources. You decide what to use.',
-      inputLabel: 'What you teach',
-      placeholder: 'First-year economics, introduction to markets',
-      examples: 'Examples:',
-      chips: {
-        law: 'Law, contracts',
-        biology: 'Biology, ecosystems',
-        engineering: 'Engineering, materials'
-      },
-      button: 'Find ideas',
-      empty: 'Enter what you teach first.',
-      question:
-        'I teach {subject}. Suggest resources, a real case and an activity idea to integrate sustainability.'
-    },
+    title: 'Where would you like to start?',
+    intro:
+      'Explore sustainability, discover relevant resources, and use WeLearn AI to support your teaching.',
     teds: {
-      entry: 'Teaching a TEDS course?',
-      themes: 'Climate, biodiversity, resources, just transition',
-      start: 'Start here',
       title: 'Supporting TEDS courses',
       intro:
         'TEDS courses introduce students to the ecological transition for sustainable development. WeLearn will help you prepare one, theme by theme.',
@@ -60,8 +42,6 @@ export const journey = {
         teach: 'Share activities with your students and improve them after class.'
       }
     },
-    chooseTitle: 'Or choose what you need',
-    journeyNav: 'Teacher space',
     ai: {
       draft: 'AI draft',
       adapted: 'AI-adapted from documents'
@@ -81,39 +61,177 @@ export const journey = {
       intro: 'At every stage, the WeLearn assistant answers your questions. Try one:',
       sourcesNote: 'Answers come from WeLearn’s library of sustainability resources, with sources.'
     },
+    courseStart: {
+      question: 'Do you already have a course?',
+      yes: 'Yes, I have a course',
+      no: "No, I'm starting from scratch",
+      working: 'Working from an existing course',
+      change: 'Change',
+      changeWarning:
+        'Changing will discard your syllabus and what you have reviewed so far in this tab.',
+      discard: 'Discard and change',
+      keepWorking: 'Keep working',
+      newCourse:
+        'Planning a new course from scratch is still being designed. It is not available yet.'
+    },
+    adapt: {
+      title: 'Adapt my existing course',
+      intro:
+        'Start from your syllabus. WeLearn reads it, then you check and correct what it understood before anything else happens.',
+      aiRead: 'Read by AI',
+      upload: {
+        title: 'Your syllabus',
+        dropzone: 'Drop your syllabus or course outline here, or',
+        browse: 'browse',
+        limits: 'One file · PDF, DOCX or TXT · 5 MB max',
+        remove: 'Remove {name}',
+        languageLabel: 'Course language',
+        notice: 'Your syllabus will be sent to WeLearn for AI analysis.',
+        read: 'Read my syllabus',
+        retry: 'Try again',
+        or: 'or',
+        example: 'Try with an example syllabus',
+        exampleHint: 'A demonstration with a fictional course. Nothing is sent or analysed by AI.',
+        pasteToggle: 'Or paste your own syllabus text',
+        pasteLabel: 'Your syllabus or course description',
+        pasteUse: 'Use my text',
+        pasteHint:
+          'Your text stays in this browser tab. It is not sent or analysed by AI: you fill in your course from it.',
+        errors: {
+          BIG_FILE: 'This file is larger than 5 MB.',
+          BAD_EXTENSION: 'Use a PDF, DOCX or TXT file.'
+        }
+      },
+      reading: {
+        sending: 'Uploading your syllabus',
+        sent: 'Syllabus uploaded',
+        reading: 'Reading your course information',
+        review: 'Ready for your review',
+        elapsed: '{seconds} s',
+        cancel: 'Cancel'
+      },
+      unavailable: {
+        title: 'WeLearn could not be reached',
+        text: 'Your syllabus was not analysed. Please try again in a moment.'
+      },
+      error: {
+        title: 'WeLearn could not read this syllabus',
+        text: 'Please try again, or choose another file.'
+      },
+      review: {
+        exampleBanner: 'Demonstration: a fictional example syllabus. Nothing was analysed by AI.',
+        pastedBanner:
+          'Your pasted text stays in this browser tab. It was not sent or analysed by AI: fill in your course from it.',
+        pastedName: 'Pasted text',
+        notFilled: 'Not filled in yet.',
+        noObjectivesYet: 'No learning objectives added yet.',
+        original: 'Original document',
+        originalNote: 'Kept unchanged on your device.',
+        openOriginal: 'Open the original',
+        title: 'Let’s check your course',
+        intro:
+          'WeLearn has identified information from your syllabus. Review it before exploring sustainability connections.',
+        showDocument: 'Show the text',
+        detected: {
+          syllabus: 'Recognised as a syllabus',
+          article: 'This looks like an article, not a syllabus',
+          unknown: 'WeLearn is not sure this is a syllabus',
+          none: 'No text could be read from this file'
+        },
+        notSyllabusHint: 'For the best results, upload your syllabus or course outline.',
+        overview: 'Course overview',
+        overviewKeys: {
+          title: 'Course title',
+          disciplineLevel: 'Discipline and level',
+          topics: 'Main topics'
+        },
+        description: 'Description from your syllabus',
+        showMore: 'Show full text',
+        showLess: 'Show less',
+        objectives: 'Learning objectives',
+        programmeHint:
+          'Some syllabi also list degree or programme objectives. Mark them so they stay apart from this course’s own.',
+        markProgramme: 'Programme-level',
+        programmeTitle: 'Programme-level objectives (marked by you)',
+        unmarkProgramme: 'Move back to course objectives',
+        origin: {
+          extracted: 'From your syllabus',
+          extractedExample: 'From the example',
+          edited: 'Corrected by you',
+          added: 'Added by you'
+        },
+        notFound: 'Not found in your syllabus.',
+        noObjectives: 'No learning objectives were found in your syllabus.',
+        add: 'Add',
+        edit: 'Edit',
+        save: 'Save',
+        cancel: 'Cancel',
+        remove: 'Remove',
+        showOriginal: 'Show original',
+        hideOriginal: 'Hide original',
+        restore: 'Restore original',
+        addObjective: 'Add a learning objective',
+        more: 'More details (optional)',
+        moreHint: 'WeLearn does not read these yet. Add only what matters for your course.',
+        extras: {
+          workload: 'Workload (hours, ECTS)',
+          sessions: 'Sessions or topics',
+          assessment: 'Assessment'
+        },
+        localNote: 'Your changes stay in this browser tab. They are not saved or sent.',
+        confirm: 'Confirm course',
+        confirmed:
+          'Course confirmed in this tab. Next step, sustainability connections, is coming soon.',
+        startOver: 'Start over'
+      },
+      example: {
+        fileName: 'example-syllabus-microeconomics.txt',
+        document:
+          'EXAMPLE SYLLABUS (fictional, written for this prototype)\n\nIntroduction to Microeconomics\nFirst year, Bachelor · 5 ECTS · 12 sessions of 3 hours\n\nCourse description\nThis course introduces the basic tools of microeconomic analysis. Students study how households and firms make decisions and how markets allocate resources.\n\nLearning outcomes\nBy the end of the course, students will be able to:\n1. Explain the law of supply and demand.\n2. Calculate and interpret price elasticity.\n3. Analyse market equilibrium and the effects of taxes.\n\nSession plan\nSessions 1–2: Supply and demand\nSessions 3–4: Elasticity\nSessions 5–8: Market equilibrium and taxes\nSessions 9–12: Market failures\n\nAssessment\nMidterm exam 40%, group project 20%, final exam 40%.',
+        description:
+          'This course introduces the basic tools of microeconomic analysis. Students study how households and firms make decisions and how markets allocate resources.',
+        objectives: {
+          o1: 'Explain the law of supply and demand.',
+          o2: 'Calculate and interpret price elasticity.',
+          o3: 'Analyse market equilibrium and the effects of taxes.'
+        }
+      }
+    },
     spaces: {
       understand: {
         name: 'Understand',
-        cardQuestion: 'What does sustainability have to do with my discipline?',
-        cardOutcome: 'You leave with a clear picture for your field',
-        ask: {
-          q1: 'What does sustainability mean for my discipline?',
-          q2: 'What do the SDGs and GreenComp expect from university teachers?'
-        },
         title: 'Why sustainability matters for your teaching',
-        description:
-          'Four short modules on what sustainability means and how it meets your discipline.',
+        pageTitle: 'Why sustainability matters for your teaching',
+        intro:
+          'Understand sustainability education and discover how it connects to what you teach.',
+        description: 'Learn the essentials of sustainability and how they connect to your subject.',
         modules: {
           foundations: {
             title: 'Sustainability foundations',
+            summary: 'Understand key sustainability concepts, ESD and TEDS in higher education.',
             question: 'What do we actually mean by sustainability and ecological transition?',
             objective:
               'Build a shared basic understanding of sustainability, the ecological transition and education for sustainable development.'
           },
           frameworks: {
-            title: 'Key frameworks: SDGs and GreenComp',
+            title: 'Sustainability frameworks',
+            summary: 'Discover the SDGs and GreenComp, and how they can inform your teaching.',
             question: 'What are the SDGs and GreenComp, and why do they matter for teaching?',
             objective:
               'Get to know the main frameworks without reading long and often abstract official documents.'
           },
           teds: {
             title: 'Sustainability in higher education (TEDS)',
+            summary:
+              'Why sustainability is part of higher education, especially the French TEDS expectations.',
             question: 'Why am I being asked to integrate this into my teaching?',
             objective:
               'Understand the higher education context, especially the French TEDS expectations.'
           },
           discipline: {
             title: 'Sustainability in your discipline',
+            summary:
+              'Explore meaningful connections between sustainability and the subjects you teach.',
             question: 'What does any of this have to do with my discipline?',
             objective: 'See how your discipline already connects to sustainability.'
           }
@@ -121,32 +239,32 @@ export const journey = {
       },
       explore: {
         name: 'Explore',
-        cardQuestion: 'Where can I find good material for my course?',
-        cardOutcome: 'You leave with resources and real cases',
         ask: {
           q1: 'Find case studies on water management I could use in class.',
           q2: 'What does recent research say about plastic pollution in rivers?'
         },
         title: 'Find resources for what you teach',
-        description:
-          'Research and teaching resources connected to your course, seen through two lenses.',
+        pageTitle: 'Find resources for what you teach',
+        intro:
+          'Explore research, reliable knowledge and teaching materials relevant to your subject.',
+        description: 'Discover research and teaching materials relevant to your course.',
         question:
           'What sustainability knowledge, examples and teaching resources can support what I already teach?',
         objective:
           'Discover credible academic, institutional and teaching resources connected to your course, and how they can serve your teaching.',
         lenses: {
           learn: {
-            title: 'Learn about the topic',
-            description:
-              'Research, reports and science communication, to feel confident about the content.'
+            title: 'Learn about a topic',
+            description: 'Find research, reports and reliable explanations.'
           },
           teach: {
-            title: 'Teach the topic',
-            description:
-              'Educational resources, activities and case studies, to turn the content into teaching.'
+            title: 'Find teaching materials',
+            description: 'Discover cases, activities and educational resources.'
           }
         },
         results: {
+          title: 'Two kinds of teaching materials',
+          note: 'Invented examples showing what results will look like. They are not live search results.',
           teachingResources: {
             title: 'Teaching resources',
             description: 'Ready-made materials from educational sources.',
@@ -172,17 +290,15 @@ export const journey = {
       },
       design: {
         name: 'Design',
-        cardQuestion: 'How do I build this into my course?',
-        cardOutcome: 'You leave with a syllabus or activity draft',
-        ask: {
-          q1: 'Help me create an activity on climate risk for my economics course.',
-          q2: 'How can I assess systems thinking in a student group project?'
-        },
-        title: 'Build it into your course',
-        description: 'Design your course, or turn a sustainability connection into an activity.',
+        title: 'Bring sustainability into your teaching',
+        pageTitle: 'Bring sustainability into your teaching',
+        intro:
+          'Adapt a course or develop a learning activity that connects sustainability to what you teach.',
+        description: 'Adapt a course or develop a learning activity.',
         modules: {
           course: {
             title: 'Design your course',
+            summary: 'Create a new course or adapt an existing one to integrate sustainability.',
             question:
               'How can I create or adapt my course to meaningfully integrate sustainability?',
             objective:
@@ -190,20 +306,38 @@ export const journey = {
           },
           activity: {
             title: 'Design an activity',
+            summary: 'Develop a learning activity that connects sustainability to what you teach.',
             question:
               'How can I turn a sustainability connection into a meaningful activity for my students?',
             objective:
               'Create a learning activity that links your subject to sustainability learning objectives, with suitable teaching methods.',
+            intro:
+              'Turn a sustainability connection into a meaningful activity for your students, in three parts.',
+            parts: {
+              context: {
+                title: 'Teaching context and sustainability connection',
+                text: 'Start from what you teach: your discipline, your students’ level and the sustainability question your course connects to.'
+              },
+              intention: {
+                title: 'Learning intention',
+                text: 'Say what your students should be able to do by the end of the activity.'
+              },
+              develop: {
+                title: 'Developing and reviewing an activity',
+                text: 'Choose a type of activity and resources from WeLearn, then review and adapt a draft before using it with your students.'
+              }
+            },
             steps: {
               context: 'Teaching context',
               connection: 'Sustainability connection',
               intention: 'Learning intention',
-              type: 'Activity type',
-              resources: 'Resources from WeLearn',
-              draft: 'Activity draft'
+              type: 'Activity type'
             },
             example: {
-              title: 'Example activity draft: climate risk in an economics course',
+              title: 'Example: climate risk in an economics course',
+              context: 'Economics, second-year bachelor students',
+              connection: 'Climate risk, and who bears its cost',
+              draftLabel: 'Activity draft',
               startsFrom: 'Starts from the “Cases from research” example in EXPLORE.',
               intention:
                 'Students can explain how climate risk is priced, and who bears the cost when it is not.',
@@ -215,20 +349,20 @@ export const journey = {
               assessment:
                 'Each group writes a one-page recommendation to the council, assessed on its economic reasoning and on how it treats the people who bear the risk.'
             },
-            note: 'Idea: after creating a syllabus, a "Create an activity for this" button could open this flow with the course already filled in.'
+            note: 'Later, this could start from a course prepared in “Design your course”, with your teaching context already filled in.'
           }
         }
       },
       teach: {
         name: 'Teach',
-        cardQuestion: 'How do I use it with my students?',
-        cardOutcome: 'You leave with a class link and ideas to improve',
         ask: {
           q1: 'My students found this activity too abstract. How can I improve it?',
           q2: 'How can I run a debate on the energy transition with 60 students?'
         },
         title: 'Use it with your students',
-        description: 'Use an activity in class, reflect on how it went and share what works.',
+        pageTitle: 'Use it with your students',
+        intro: 'Use an activity in class, reflect on how it went and share what works.',
+        description: 'Put activities into practice and reflect on what works.',
         question: 'How can I use this with my students and keep improving it?',
         objective:
           'Leave with something concrete for your class, learn from how it went and share what works with other teachers.',

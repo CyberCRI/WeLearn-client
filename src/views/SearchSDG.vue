@@ -40,6 +40,8 @@ const expandSearch = async () => {
   <ColumnTemplate class="search-page">
     <template #left-panel>
       <div class="wrapper" ref="wrapper">
+        <!-- optional heading above the search (teacher EXPLORE); empty on /search -->
+        <slot name="header" />
         <Transition name="fade">
           <button
             v-if="isCompact"

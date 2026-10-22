@@ -97,10 +97,33 @@ const router = createRouter({
       component: () => import('@/views/teacher/TeachHome.vue'),
       meta: { requiresAuth: true }
     },
+    // explore is the existing search itself, with a teacher heading (a static path wins over :space)
+    {
+      path: '/teach/explore',
+      name: 'teach-explore',
+      component: () => import('@/views/teacher/TeachExplore.vue'),
+      meta: { requiresAuth: true }
+    },
     {
       path: '/teach/:space(understand|explore|design|teach)',
       name: 'teach-space',
       component: () => import('@/views/teacher/TeachSpace.vue'),
+      meta: { requiresAuth: true },
+      // links by name to the explore space (homepage card) open the search page above
+      beforeEnter: (to) => to.params.space !== 'explore' || { name: 'teach-explore' }
+    },
+    // course design entry: adapt an existing course or plan a new one
+    {
+      path: '/teach/design/course',
+      name: 'teach-course',
+      component: () => import('@/views/teacher/CourseStart.vue'),
+      meta: { requiresAuth: true }
+    },
+    // course design prototype, "adapt my existing course", opened from the entry above
+    {
+      path: '/teach/design/adapt',
+      name: 'teach-adapt',
+      component: () => import('@/views/teacher/AdaptCourse.vue'),
       meta: { requiresAuth: true }
     },
     // mock page of a module still being designed; existing features keep their own pages

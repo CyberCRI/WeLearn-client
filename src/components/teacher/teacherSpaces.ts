@@ -16,8 +16,8 @@ export interface TeacherModule {
   key: string;
   // name of an existing teacher page; without it the module opens a preview page
   route?: string;
-  // the module's result is written by the AI (shown with an "AI draft" label)
-  hasAiDraft?: boolean;
+  // kept as a page (its route still works) but not listed as a card on the space page
+  isHidden?: boolean;
 }
 
 // understand and design list modules; explore and teach are a single preview page each
@@ -25,12 +25,14 @@ export const TEACHER_MODULES: Partial<Record<TeacherSpace, TeacherModule[]>> = {
   understand: [
     { key: 'foundations' },
     { key: 'frameworks' },
-    { key: 'teds' },
+    // ponytail: TEDS now belongs within foundations; its preview page is kept but no longer listed
+    { key: 'teds', isHidden: true },
     { key: 'discipline', route: 'micro-learning' }
   ],
   design: [
-    { key: 'course', route: 'tutor', hasAiDraft: true },
-    { key: 'activity', hasAiDraft: true }
+    // course design starts with a choice: adapt an existing course or plan a new one
+    { key: 'course', route: 'teach-course' },
+    { key: 'activity' }
   ]
 };
 
@@ -38,6 +40,8 @@ export const EXPLORE_LENSES = ['learn', 'teach'] as const;
 
 // source categories of the WeLearn API (/search/collections) behind each lens; a lens button
 // pre-selects them in the shared filters before opening search or chat
+// ponytail: no longer used since explore became the search page (filters are chosen there);
+// kept for a later "learn / teaching materials" shortcut
 export const EXPLORE_LENS_CATEGORIES: Record<(typeof EXPLORE_LENSES)[number], string[]> = {
   learn: [
     'academic_scientific_publications',
@@ -56,27 +60,13 @@ export const RESEARCH_CASE_SOURCE_URL = 'https://www.ipcc.ch/report/ar6/wg2/';
 // example questions of the "Ask WeLearn" panel, per space (texts in journey.teach.spaces.*.ask)
 export const ASK_QUESTIONS = ['q1', 'q2'] as const;
 
-export const ACTIVITY_STEPS = [
-  'context',
-  'connection',
-  'intention',
-  'type',
-  'resources',
-  'draft'
-] as const;
+// activity design preview: its three parts (texts in journey.teach.spaces.design.modules.activity.parts)
+export const ACTIVITY_PARTS = ['context', 'intention', 'develop'] as const;
 
 export const TEACH_STEPS = ['use', 'reflect', 'share'] as const;
 
-// example subjects under the fast lane's text box (texts in journey.teach.fastLane.chips)
-export const FAST_LANE_CHIPS = ['law', 'biology', 'engineering'] as const;
-
 // TEDS preview page: the course's main themes
 export const TEDS_THEMES = ['climate', 'biodiversity', 'resources', 'justTransition'] as const;
-
-// pages of the teacher space, which show the four spaces instead of the tools in the top menu
-const TEACHER_SPACE_ROUTES = ['teach', 'teach-space', 'teach-preview', 'teach-teds'];
-
-export const isTeacherSpaceRoute = (name: unknown) => TEACHER_SPACE_ROUTES.includes(name as string);
 
 export const isPreviewModule = (space: unknown, module: unknown) =>
   !!TEACHER_MODULES[space as TeacherSpace]?.some((item) => item.key === module && !item.route);

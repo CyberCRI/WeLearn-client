@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import SearchIcon from '@/components/icons/SearchIcon.vue';
-import LinesLeaningIcon from '@/components/icons/LinesLeaningIcon.vue';
-import QnAIcon from '@/components/icons/QnAIcon.vue';
+import HomeIcon from '@/components/icons/HomeIcon.vue';
+import SparkleIcon from '@/components/icons/SparkleIcon.vue';
 import AboutIcon from '@/components/icons/AboutIcon.vue';
 
-import BookIcon from '@/components/icons/BookIcon.vue';
 import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import NavBookmarkIcon from '@/components/icons/NavBookmarkIcon.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
@@ -15,31 +13,22 @@ import { useAuth } from '@/composables/useAuth';
 const featureFlip = useFeatureFlipStore();
 const { isAuthenticated, login, logout } = useAuth();
 
-// Features (tools) on the left; personal/utility items on the right.
+// Home and the assistant on the left; personal/utility items on the right.
+// the other tools (syllabus, micro-learning, search) are reached from the teacher spaces on /teach
 const toolEntries = [
+  {
+    name: 'home',
+    to: '/teach',
+    icon: HomeIcon,
+    isFeatureEnabled: true
+  },
   {
     name: 'chat',
     to: '/q-and-a',
-    icon: QnAIcon,
+    icon: SparkleIcon,
+    // the AI assistant: a sparkle and a light violet pill, the colour of the AI labels
+    isHighlighted: true,
     isFeatureEnabled: featureFlip.isFeatureEnabled('chat')
-  },
-  {
-    name: 'syllabus',
-    to: '/tutor',
-    icon: BookIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('tutor')
-  },
-  {
-    name: 'microlearning',
-    to: '/microlearning',
-    icon: LinesLeaningIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('microlearning')
-  },
-  {
-    name: 'search',
-    to: '/search',
-    icon: SearchIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('search')
   }
 ];
 
@@ -62,17 +51,15 @@ const utilityEntries = [
 <template>
   <div class="nav">
     <div class="nav-items">
-      <!-- a page can replace the tool links (the teacher space shows its four spaces instead) -->
-      <slot name="tools">
-        <template v-for="entry in toolEntries" :key="entry.name">
-          <BaseNavItem
-            v-if="entry.isFeatureEnabled"
-            :to="entry.to"
-            :name="entry.name"
-            :icon="entry.icon"
-          />
-        </template>
-      </slot>
+      <template v-for="entry in toolEntries" :key="entry.name">
+        <BaseNavItem
+          v-if="entry.isFeatureEnabled"
+          :to="entry.to"
+          :name="entry.name"
+          :icon="entry.icon"
+          :is-highlighted="entry.isHighlighted"
+        />
+      </template>
 
       <div class="utilities">
         <template v-for="entry in utilityEntries" :key="entry.name">

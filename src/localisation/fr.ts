@@ -264,7 +264,8 @@ export const fr = {
   },
   moreDocuments: 'Explorer d’autres ressources',
   nav: {
-    chat: 'Chat',
+    home: 'Accueil',
+    chat: 'Demandez à WeLearn',
     search: 'Recherche',
     bookmarks: 'Favoris',
     syllabus: 'Créer un syllabus',

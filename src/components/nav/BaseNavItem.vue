@@ -3,7 +3,7 @@
     <router-link
       class="router-link"
       :to="to"
-      :class="{ 'router-link-not-active': neverActive }"
+      :class="{ 'router-link-not-active': neverActive, 'is-highlighted': isHighlighted }"
       :data-testid="`nav-${name}`"
     >
       <div class="icon">
@@ -20,6 +20,8 @@ defineProps<{
   name: string;
   icon: object;
   neverActive?: boolean;
+  // a little more visible than the other entries (used for the AI assistant)
+  isHighlighted?: boolean;
 }>();
 </script>
 
@@ -58,6 +60,16 @@ defineProps<{
 
 .router-link-active:not(.router-link-not-active) {
   background-color: var(--neutral-20);
+}
+
+.router-link.is-highlighted {
+  border-radius: 999px;
+  background-color: var(--lpi-violet-lighter);
+  font-weight: 600;
+  &:hover,
+  &.router-link-active {
+    background-color: color-mix(in srgb, var(--lpi-violet) 35%, var(--lpi-violet-lighter));
+  }
 }
 
 .icon {

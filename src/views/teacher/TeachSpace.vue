@@ -1,19 +1,16 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, type Component } from 'vue';
+import { useRoute } from 'vue-router';
 import SpaceCard from '@/components/SpaceCard.vue';
 import SpaceLabel from '@/components/SpaceLabel.vue';
 import PreviewIntro from '@/components/teacher/PreviewIntro.vue';
 import AskWeLearnPanel from '@/components/teacher/AskWeLearnPanel.vue';
-import ExampleResultCard from '@/components/teacher/ExampleResultCard.vue';
-import AiLabel from '@/components/AiLabel.vue';
-import { useFiltersStore } from '@/stores/filters';
-import { useSourcesStore } from '@/stores/sources';
+import FeatureRow from '@/components/teacher/FeatureRow.vue';
+import BookIcon from '@/components/icons/BookIcon.vue';
+import EditIcon from '@/components/icons/EditIcon.vue';
+import NetworkIcon from '@/components/icons/NetworkIcon.vue';
+import LinesLeaningIcon from '@/components/icons/LinesLeaningIcon.vue';
 import {
-  EXPLORE_LENSES,
-  EXPLORE_LENS_CATEGORIES,
-  RESEARCH_CASE_SOURCE_URL,
-  TEACH_RESULT_KINDS,
   TEACH_STEPS,
   TEACHER_MODULES,
   TEACHER_SPACE_COLOURS,
@@ -21,16 +18,24 @@ import {
   type TeacherSpace
 } from '@/components/teacher/teacherSpaces';
 
-// one page per teacher space: understand and design list their modules,
-// explore (two lenses) and teach (three steps) are previews; every space ends with "Ask WeLearn"
+// one page per teacher space: understand and design list their modules, teach (three steps) is a
+// preview and ends with the "Ask WeLearn" panel. explore has its own page (TeachExplore, the search)
+
+// icons of the module rows (understand, design)
+const MODULE_ICONS: Record<string, Component> = {
+  foundations: BookIcon,
+  frameworks: NetworkIcon,
+  discipline: LinesLeaningIcon,
+  course: BookIcon,
+  activity: EditIcon
+};
+
 const route = useRoute();
-const router = useRouter();
-const filtersStore = useFiltersStore();
-const sourcesStore = useSourcesStore();
 
 const space = computed(() => route.params.space as TeacherSpace);
 const colours = computed(() => TEACHER_SPACE_COLOURS[space.value]);
-const modules = computed(() => TEACHER_MODULES[space.value]);
+// hidden modules keep their page and route, but get no card here
+const modules = computed(() => TEACHER_MODULES[space.value]?.filter((module) => !module.isHidden));
 const texts = computed(() => `journey.teach.spaces.${space.value}`);
 
 // existing features open their page, the others open their preview
@@ -38,16 +43,6 @@ const moduleLink = (module: TeacherModule) =>
   module.route
     ? { name: module.route }
     : { name: 'teach-preview', params: { space: space.value, module: module.key } };
-
-// search and chat read no filters from the address, so the lens pre-selects its sources in the
-// shared filters store (visible and editable in their filters panel) before opening the page
-const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) => {
-  const categories = EXPLORE_LENS_CATEGORIES[lens];
-  filtersStore.sourcesFilters = Object.entries(sourcesStore.sourceCategoryMap)
-    .filter(([, category]) => categories.includes(category))
-    .map(([name]) => name);
-  router.push({ name: routeName });
-};
 </script>
 <template>
   <div class="teach-page">
@@ -58,90 +53,22 @@ const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) =>
       <div class="mt-5">
         <SpaceLabel :text="$t(`${texts}.name`)" :tint="colours.tint" />
       </div>
-      <h1 class="title is-3 is-size-4-mobile mt-3">{{ $t(`${texts}.title`) }}</h1>
-      <p class="subtitle is-6 mt-2">{{ $t(`${texts}.description`) }}</p>
+      <h1 class="title is-3 is-size-4-mobile mt-3">{{ $t(`${texts}.pageTitle`) }}</h1>
+      <p class="subtitle is-6 mt-2">{{ $t(`${texts}.intro`) }}</p>
 
-      <!-- understand, design: one card per module -->
-      <ul v-if="modules" class="cards">
+      <!-- understand, design: a quiet list of features -->
+      <ul v-if="modules" class="feature-list">
         <li v-for="module in modules" :key="module.key" :data-testid="`module-${module.key}`">
-          <SpaceCard
-            :label="module.route ? undefined : $t('journey.teach.preview')"
-            :title="$t(`${texts}.modules.${module.key}.title`)"
-            :description="$t(`${texts}.modules.${module.key}.question`)"
-            :accent="colours.accent"
-            tint="var(--lpi-yellow-lighter)"
+          <FeatureRow
             :to="moduleLink(module)"
-            :actionText="module.route ? $t('journey.teach.open') : $t('journey.teach.seePreview')"
-            :aiLabel="module.hasAiDraft ? $t('journey.teach.ai.draft') : undefined"
+            :icon="MODULE_ICONS[module.key]"
+            :tint="colours.tint"
+            :title="$t(`${texts}.modules.${module.key}.title`)"
+            :description="$t(`${texts}.modules.${module.key}.summary`)"
+            :badge="module.route ? undefined : $t('journey.teach.preview')"
           />
         </li>
       </ul>
-
-      <!-- explore: the two lenses side by side, each opening search or chat on its own sources -->
-      <template v-else-if="space === 'explore'">
-        <PreviewIntro :question="$t(`${texts}.question`)" :objective="$t(`${texts}.objective`)" />
-        <ul class="cards">
-          <li v-for="lens in EXPLORE_LENSES" :key="lens" :data-testid="`lens-${lens}`">
-            <SpaceCard
-              :title="$t(`${texts}.lenses.${lens}.title`)"
-              :description="$t(`${texts}.lenses.${lens}.description`)"
-              :accent="colours.accent"
-            >
-              <!-- teach the topic: the two kinds of results, one invented example each -->
-              <div v-if="lens === 'teach'" class="result-kinds">
-                <section
-                  v-for="kind in TEACH_RESULT_KINDS"
-                  :key="kind"
-                  :data-testid="`results-${kind}`"
-                >
-                  <h3 class="result-kind-title">
-                    {{ $t(`${texts}.results.${kind}.title`) }}
-                    <AiLabel
-                      v-if="kind === 'researchCases'"
-                      class="ml-2"
-                      :text="$t('journey.teach.ai.adapted')"
-                    />
-                  </h3>
-                  <p class="result-kind-description">
-                    {{ $t(`${texts}.results.${kind}.description`) }}
-                  </p>
-                  <ExampleResultCard
-                    class="mt-2"
-                    :meta="$t(`${texts}.results.${kind}.exampleMeta`)"
-                    :title="$t(`${texts}.results.${kind}.exampleTitle`)"
-                    :description="$t(`${texts}.results.${kind}.exampleDescription`)"
-                    :sourceNote="
-                      kind === 'researchCases'
-                        ? $t(`${texts}.results.${kind}.sourceNote`)
-                        : undefined
-                    "
-                    :source="
-                      kind === 'researchCases' ? $t(`${texts}.results.${kind}.source`) : undefined
-                    "
-                    :sourceUrl="kind === 'researchCases' ? RESEARCH_CASE_SOURCE_URL : undefined"
-                  />
-                </section>
-              </div>
-              <button
-                type="button"
-                class="space-action"
-                :data-testid="`lens-${lens}-search`"
-                @click="handleLens(lens, 'search-sdg')"
-              >
-                {{ $t(`${texts}.search`) }} →
-              </button>
-              <button
-                type="button"
-                class="space-action"
-                :data-testid="`lens-${lens}-chat`"
-                @click="handleLens(lens, 'q-and-a')"
-              >
-                <AiLabel /> {{ $t('journey.teach.ask.title') }} →
-              </button>
-            </SpaceCard>
-          </li>
-        </ul>
-      </template>
 
       <!-- teach: use, reflect, share -->
       <template v-else>
@@ -157,7 +84,8 @@ const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) =>
         </ol>
       </template>
 
-      <AskWeLearnPanel :space="space" />
+      <!-- only teach keeps the assistant panel; Ask WeLearn is in the top navigation everywhere -->
+      <AskWeLearnPanel v-if="space === 'teach'" :space="space" />
     </div>
   </div>
 </template>
@@ -187,29 +115,23 @@ const handleLens = (lens: (typeof EXPLORE_LENSES)[number], routeName: string) =>
   list-style: none;
 }
 
+/* module cards share the row evenly (three or two cards, no empty slot) */
+.feature-list {
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--neutral-20);
+  list-style: none;
+}
+
+.feature-list li {
+  border-bottom: 1px solid var(--neutral-20);
+}
+
+.cards.is-modules {
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
 .cards.is-three {
   grid-template-columns: repeat(3, 1fr);
-}
-
-.result-kinds {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  margin-bottom: 0.5rem;
-}
-
-.result-kind-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--neutral-80);
-}
-
-.result-kind-description {
-  font-size: 0.85rem;
-  color: var(--neutral-70);
 }
 
 @media (max-width: 768px) {

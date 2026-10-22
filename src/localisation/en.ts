@@ -260,7 +260,8 @@ export const en = {
   },
   moreDocuments: 'Explore more documents',
   nav: {
-    chat: 'Chat',
+    home: 'Home',
+    chat: 'Ask WeLearn',
     search: 'Search',
     bookmarks: 'Bookmarks',
     syllabus: 'Create a syllabus',
