@@ -45,6 +45,7 @@ export function useAuth() {
     userName,
     login: authStore.login,
     logout: authStore.logout,
+    updateLocale: authStore.updateLocale,
     getToken,
     getValidToken,
     authenticatedFetch

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import keycloak from '@/utils/keycloak';
+import i18n from '@/localisation/i18n';
 import { IS_DEV_ENVIRONMENT } from '@/utils/env';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -41,6 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
         token.value = keycloak.token;
         tokenParsed.value = keycloak.tokenParsed;
         roles.value = keycloak.realmAccess?.roles || [];
+        applyKeycloakLocale();
 
         try {
           const profile = await keycloak.loadUserProfile();
@@ -61,9 +63,37 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  // the locale claim is the language last picked on a keycloak page (login, account)
+  function applyKeycloakLocale(): void {
+    const kcLocale = keycloak.idTokenParsed?.locale;
+    if (kcLocale === 'en' || kcLocale === 'fr') {
+      i18n.global.locale.value = kcLocale;
+      localStorage.setItem('language', kcLocale);
+    }
+  }
+
+  // keep the keycloak user locale in sync with the app selector, otherwise the next login
+  // would bring back the language last picked on a keycloak page
+  async function updateLocale(lang: string): Promise<void> {
+    if (!isAuthenticated.value || !user.value) return;
+    const attributes = { ...user.value.attributes, locale: [lang] };
+    try {
+      const response = await fetch(`${keycloak.authServerUrl}/realms/${keycloak.realm}/account`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${keycloak.token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...user.value, attributes })
+      });
+      if (!response.ok) throw new Error(`status ${response.status}`);
+      user.value = { ...user.value, attributes };
+    } catch (err) {
+      console.warn('Could not save the language on the keycloak user:', err);
+    }
+  }
+
   function login(redirectUri?: string): void {
     keycloak.login({
-      redirectUri: redirectUri || window.location.origin
+      redirectUri: redirectUri || window.location.origin,
+      locale: i18n.global.locale.value
     });
   }
 
@@ -111,6 +141,7 @@ export const useAuthStore = defineStore('auth', () => {
     init,
     login,
     logout,
+    updateLocale,
     register
   };
 });
