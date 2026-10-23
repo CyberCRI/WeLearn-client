@@ -12,6 +12,7 @@ defineProps<{
   number?: number;
   title: string;
   corpus: string;
+  subCorpus?: string | null;
   url: string;
   id?: string;
   sdg: number[];
@@ -54,7 +55,7 @@ const handleModalOpen = () => {
             <span v-if="details.journal || details.publisher"
               >{{ details.journal || details.publisher }} via
             </span>
-            {{ $t(`corpus.${corpus}`, corpus) }}
+            {{ $t(`corpus.${subCorpus || corpus}`, subCorpus || corpus) }}
           </p>
           <div class="is-flex is-align-items-center">
             <div class="is-6 mr-2">

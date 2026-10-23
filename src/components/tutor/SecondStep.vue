@@ -38,6 +38,7 @@ defineProps<{
           <CardSimpleComponent
             :title="source.payload.document_title"
             :corpus="source.payload.document_corpus"
+            :subCorpus="source.payload.document_sub_corpus"
             :url="source.payload.document_url"
             :details="source.payload.document_details"
             :sdg="source.payload.document_sdg"
@@ -56,6 +57,7 @@ defineProps<{
                   :sdg="source.payload.document_sdg"
                   :details="source.payload.document_details"
                   :corpus="source.payload.document_corpus"
+                  :subCorpus="source.payload.document_sub_corpus"
                   :score="source.score"
                   :toggleBookmark="() => {}"
                   :isBookmarked="false"
