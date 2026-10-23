@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import type { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import keycloak from '@/utils/keycloak';
+import { IS_DEV_ENVIRONMENT } from '@/utils/env';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false);
@@ -18,7 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
     return tokenParsed.value?.preferred_username || 'Unknown';
   });
 
-  const shouldAuthenticate = computed(() => import.meta.env.VITE_ENVIRONMENT === 'dev');
+  const shouldAuthenticate = computed(() => IS_DEV_ENVIRONMENT);
 
   async function init(): Promise<boolean> {
     // auth is only rolled out on dev: elsewhere Keycloak is never contacted

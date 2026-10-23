@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
+import { IS_DEV_ENVIRONMENT } from '@/utils/env';
 type FeatureFlip = {
   [key: string]: boolean;
 };
 export const useFeatureFlipStore = defineStore('featureFlip', () => {
-  const isDevEnvironment = (import.meta.env.VITE_ENVIRONMENT || '').trim().includes('dev');
+  const isDevEnvironment = IS_DEV_ENVIRONMENT;
   const featureFlip: FeatureFlip = {
     tutor: true,
     search: true,
