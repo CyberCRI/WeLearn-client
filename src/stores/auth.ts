@@ -18,11 +18,13 @@ export const useAuthStore = defineStore('auth', () => {
     return tokenParsed.value?.preferred_username || 'Unknown';
   });
 
-  const shouldAuthenticate = computed(() => import.meta.env.VITE_ENVIRONMENT === 'dev');
+  // .trim() keeps the check at runtime: a plain `=== 'dev'` is folded to `false` at build time,
+  // since docker builds with the $DOCKER_INJECT_ placeholder and only interpolates it at nginx start
+  const shouldAuthenticate = computed(
+    () => (import.meta.env.VITE_ENVIRONMENT || '').trim() === 'dev'
+  );
 
   async function init(): Promise<boolean> {
-    console.log(import.meta.env.VITE_ENVIRONMENT);
-    console.log(shouldAuthenticate);
     // auth is only rolled out on dev: elsewhere Keycloak is never contacted
     if (!shouldAuthenticate.value) {
       isLoading.value = false;
