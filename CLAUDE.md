@@ -4,6 +4,13 @@
 
 WeLearn client: a Vue 3 + TypeScript SPA that helps university teachers bring sustainability / SDG content into their courses. It is only a frontend. All data and LLM calls go through the [WeLearn API](https://github.com/CyberCRI/WeLearn-api), so most features do nothing useful unless an API is reachable at `VITE_API_BASE`.
 
+## Agent rules
+
+These rules are strict and apply to every agent and subagent working in this repo.
+
+- **Never install, add, remove or upgrade a package without the human confirming it first.** This covers `yarn add`, `yarn remove`, `yarn upgrade`, `npm install <pkg>`, `npx playwright install`, and editing dependency versions in `package.json` or `yarn.lock`. Say which package and version you want and why, then wait for a yes. Running `yarn install` to restore the existing lockfile is fine.
+- **Never commit to `main`, and never push to it.** Work on a feature branch; if you are on `main`, create a branch before your first commit. Changes reach `main` only through a PR.
+
 ## Commands
 
 Use **yarn**, not npm (`yarn.lock` is the lockfile).
