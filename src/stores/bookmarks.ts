@@ -40,8 +40,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
 
     try {
       const bookmarks = await getAllBookmarks();
-      const data = bookmarks.data;
-      sourcesBookmarked.value = Array.isArray(data) ? data : (data?.docs ?? []);
+      sourcesBookmarked.value = bookmarks.data as Document[];
       idsBookmarked.value = sourcesBookmarked.value.map((bookmark) => bookmark.payload.document_id);
       hasChanged.value = false;
     } catch (error) {

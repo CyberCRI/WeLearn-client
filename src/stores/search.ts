@@ -36,7 +36,7 @@ export const useSearchStore = defineStore('search', () => {
     setFetchingSourcesState();
 
     try {
-      const promises = [
+      const [sdgsFromQuery, { data, status }] = await Promise.all([
         getSDGsFromQuery(searchInput.value),
         getSearch(100, {
           query: searchInput.value,
@@ -45,13 +45,12 @@ export const useSearchStore = defineStore('search', () => {
           corpora: sourcesFilters,
           relevance_factor: RELEVANCE_FACTOR
         })
-      ];
-      const [sdgsFromQuery, { data, status }] = await Promise.all(promises);
+      ]);
 
-      sdgsQuery.value = sdgsFromQuery as string[];
+      sdgsQuery.value = sdgsFromQuery;
 
       isFetchingSources.value = false;
-      searchResults.value = data.length ? data : data.docs;
+      searchResults.value = (data.docs ?? []) as Document[];
       saveToStorage('searchInput', searchInput.value);
       saveToStorage('searchResults', searchResults.value);
 

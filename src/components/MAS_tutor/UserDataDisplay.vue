@@ -1,20 +1,9 @@
 <script setup lang="ts">
 import SummariesStep from '@/components/MAS_tutor/SummariesStep.vue';
+import type { CourseMetadata } from '@/types';
 
 defineProps<{
-  courseMetadaRef: {
-    discipline?: string;
-    topic?: string;
-    level?: string;
-    num_sessions?: number;
-    session_duration?: number;
-    session_type?: string;
-    class_size?: number;
-    session_mode?: string;
-    output_language?: string;
-    user_description?: string;
-    syllabus_mode?: string;
-  };
+  courseMetadaRef: CourseMetadata;
   summaries: Array<string>;
   filesRef: Array<File>;
   hasUserInputData: boolean;
