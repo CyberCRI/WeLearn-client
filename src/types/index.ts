@@ -5,6 +5,7 @@ export type Document = {
     document_id: string;
     document_external_id?: string;
     document_corpus: string;
+    document_sub_corpus?: string | null;
     document_title: string;
     document_desc: string;
     document_url: string;

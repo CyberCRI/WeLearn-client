@@ -15,6 +15,7 @@ const props = defineProps<{
   number?: number;
   title: string;
   corpus: string;
+  subCorpus?: string | null;
   description: string;
   url: string;
   sdg: number[];
@@ -83,7 +84,7 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
           </span>
 
           <span :class="corpusDetails ? 'is-italic' : 'has-text-weight-semibold'">
-            {{ $t(`corpus.${corpus}`, corpus) }}</span
+            {{ $t(`corpus.${subCorpus || corpus}`, subCorpus || corpus) }}</span
           >
         </p>
         <p v-if="details?.authors" class="authors">

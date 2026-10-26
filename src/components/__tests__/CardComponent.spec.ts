@@ -62,3 +62,28 @@ describe('CardComponent conversation tracking', () => {
     expect(document.getElementById(trackerId)).toBeNull();
   });
 });
+
+describe('CardComponent corpus label', () => {
+  const mountWithSubCorpus = (subCorpus?: string | null) =>
+    mount(CardComponent, {
+      props: {
+        title: 'Article',
+        corpus: 'hal',
+        subCorpus,
+        description: 'Article description',
+        url: 'https://example.org',
+        sdg: [],
+        details: { authors: [] },
+        toggleBookmark: () => undefined,
+        isBookmarked: false
+      }
+    });
+
+  it('shows the sub corpus when present', () => {
+    expect(mountWithSubCorpus('theses').get('.corpus').text()).toBe('corpus.theses');
+  });
+
+  it('falls back to the corpus when there is no sub corpus', () => {
+    expect(mountWithSubCorpus(null).get('.corpus').text()).toBe('corpus.hal');
+  });
+});
