@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(yarn add *)",
+      "Bash(yarn remove *)",
+      "Bash(yarn upgrade *)",
+      "Bash(yarn upgrade)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(npm uninstall *)",
+      "Bash(npm update *)",
+      "Bash(pnpm add *)",
+      "Bash(npx playwright install *)",
+      "Bash(npx playwright install)",
+      "Bash(yarn playwright install *)"
+    ],
+    "deny": [
+      "Bash(git push origin main)",
+      "Bash(git push origin main *)",
+      "Bash(git push * origin main)",
+      "Bash(git push origin HEAD:main)",
+      "Bash(git push * HEAD:main)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.sh\"",
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}
