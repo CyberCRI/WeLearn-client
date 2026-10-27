@@ -26,9 +26,9 @@ const props = defineProps<{
   toggleBookmark: () => void;
   isBookmarked: boolean;
   hasFullDescription?: boolean;
-  slice?: string;
+  slice?: string | null;
   id?: string;
-  externalId?: string;
+  externalId?: string | null;
   docMetrics?: (docId?: string | undefined) => Promise<void>;
 }>();
 

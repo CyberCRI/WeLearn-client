@@ -32,7 +32,7 @@ defineProps<{
           class="source"
           @click="appendSource(source)"
           v-for="source in sources"
-          :key="source.id"
+          :key="source.id ?? source.payload.document_id"
           :class="{ selected: selectedSources.includes(source) }"
         >
           <CardSimpleComponent

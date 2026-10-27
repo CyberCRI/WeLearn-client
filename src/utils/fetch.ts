@@ -1,21 +1,23 @@
-import axios, { type AxiosRequestConfig } from 'axios';
+import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import http, { getAuthHeaders } from './api';
+import type { ApiRequestBody, ApiResponse } from '@/types/api';
 
-export const baseGetAxios = async (endpoint: string) => {
-  const response = await http.get(`${endpoint}`);
+// pass the response type from `@/types/api`, e.g. baseGetAxios<ApiResponse<'/user/bookmarks'>>
+export const baseGetAxios = async <T = any>(endpoint: string): Promise<T> => {
+  const response = await http.get<T>(`${endpoint}`);
 
   if (response.status !== 200) throw new Error('Error fetching data');
 
   return response.data;
 };
 
-export const basePostAxios = async (
+export const basePostAxios = async <T = any>(
   endpoint: string,
   options: Record<string, any> = {},
   config?: AxiosRequestConfig
-) => {
+): Promise<AxiosResponse<T>> => {
   try {
-    const response = await http.post(`${endpoint}`, options, config);
+    const response = await http.post<T>(`${endpoint}`, options, config);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error fetching data');
@@ -28,9 +30,12 @@ export const basePostAxios = async (
   }
 };
 
-export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestConfig) => {
+export const baseDeleteAxios = async <T = any>(
+  endpoint: string,
+  config?: AxiosRequestConfig
+): Promise<AxiosResponse<T>> => {
   try {
-    const response = await http.delete(`${endpoint}`, config);
+    const response = await http.delete<T>(`${endpoint}`, config);
 
     if (!(response.status >= 200) && !(response.status <= 300)) {
       throw new Error('Error deleting data');
@@ -45,12 +50,12 @@ export const baseDeleteAxios = async (endpoint: string, config?: AxiosRequestCon
 
 export const getSDGsFromQuery = async (query: string): Promise<string[]> => {
   try {
-    const result = await axios.post(
-      `https://aurora-sdg.labs.vu.nl/classifier/classify/aurora-sdg-multi`,
-      {
-        text: query
-      }
-    );
+    // external classifier, not part of the WeLearn API contract
+    const result = await axios.post<{
+      predictions: { prediction: number; sdg: { code: string } }[];
+    }>(`https://aurora-sdg.labs.vu.nl/classifier/classify/aurora-sdg-multi`, {
+      text: query
+    });
 
     if (!result) return [];
 
@@ -69,12 +74,14 @@ export const getSDGsFromQuery = async (query: string): Promise<string[]> => {
 
 export const getSearch = async (
   nbResults: number,
-  options: Record<string, any>,
-  subject?: string
+  options: ApiRequestBody<'/search/by_document'>,
+  { subject, relevanceFactor }: { subject?: string; relevanceFactor?: number } = {}
 ) => {
-  const result = await basePostAxios(
-    `/search/by_document?nb_results=${nbResults}${subject ? `&subject=${subject}` : ''}`,
-    options
+  // the API reads these from the query string, not the body
+  const result = await basePostAxios<ApiResponse<'/search/by_document', 'post'>>(
+    '/search/by_document',
+    options,
+    { params: { nb_results: nbResults, subject, relevance_factor: relevanceFactor } }
   );
 
   if (!result) throw new Error('oopss');
@@ -110,12 +117,16 @@ export const fetchStream = async (
 };
 
 export const postBookmark = async (documentId: string) => {
-  const resp = await basePostAxios(`/user/bookmarks/:document_id?document_id=${documentId}`);
+  const resp = await basePostAxios<ApiResponse<'/user/bookmarks/:document_id', 'post'>>(
+    `/user/bookmarks/:document_id?document_id=${documentId}`
+  );
   return resp;
 };
 
 export const deleteBookmark = async (documentId: string) => {
-  const resp = await http.delete(`/user/bookmarks/:document_id?document_id=${documentId}`);
+  const resp = await http.delete<ApiResponse<'/user/bookmarks/:document_id', 'delete'>>(
+    `/user/bookmarks/:document_id?document_id=${documentId}`
+  );
   return resp;
 };
 
@@ -124,21 +135,22 @@ export const deleteAllBookmarks = async () => {
 };
 
 export const getBookmarks = async () => {
-  const bookmarksIds = await baseGetAxios(`/user/bookmarks`);
-  const ids = bookmarksIds.bookmarks.reduce((acc: string[], curr: { document_id: string }) => {
-    acc.push(curr.document_id);
-    return acc;
-  }, []);
-  const docsPayloads = await basePostAxios('/search/documents/by_ids', ids);
+  const bookmarksIds = await baseGetAxios<ApiResponse<'/user/bookmarks'>>(`/user/bookmarks`);
+  const ids = bookmarksIds.bookmarks.map((bookmark) => bookmark.document_id);
+  const docsPayloads = await basePostAxios<ApiResponse<'/search/documents/by_ids', 'post'>>(
+    '/search/documents/by_ids',
+    ids
+  );
   return docsPayloads;
 };
 
 export const exportBibliography = async (documentsIds: string[]) => {
   if (!documentsIds.length) throw new Error('No document ids provided');
 
-  return basePostAxios(
-    '/bibliography/export_bibliography',
-    { documents_ids: documentsIds },
-    { responseType: 'blob' }
-  );
+  const body: ApiRequestBody<'/bibliography/export_bibliography'> = {
+    documents_ids: documentsIds
+  };
+  return basePostAxios<Blob>('/bibliography/export_bibliography', body, {
+    responseType: 'blob'
+  });
 };

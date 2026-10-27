@@ -23,10 +23,11 @@ yarn test:e2e       # playwright; starts `vite --mode test` itself, API calls ar
 yarn lint           # eslint --fix
 yarn format         # prettier --write src/
 yarn type-check     # vue-tsc
+yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.json
 yarn build          # type-check + vite build
 ```
 
-CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check` and `yarn test:unit`. Playwright is **not** run in CI. Before you say a change is done, run lint, `format:check` and the unit tests.
+CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check`, `yarn test:unit`, Playwright and the `api-contract` check. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check` and the unit tests.
 
 ## Stack
 
@@ -109,6 +110,12 @@ The nav entries are gated by `featureFlip` store flags.
   - **snake_case:** only for API payload/response fields, so they match the backend (`thread_id`, `sdg_filter`, `document_id`). Don't carry it into local variable names.
   - **Legacy names:** some existing names don't follow these rules (`mas_tutor.ts`, `MAS_tutor/`, `userInputMas.vue`, `current_disc`, `CheckboxCompnent.vue`). Don't copy them, and don't rename them unless the user asks, because renaming touches imports and snapshots.
 - **Typing:** shared domain types (`Document`, `ChatMessage`, `TutorSyllabus`, ...) live in `src/types/index.ts`. Add new ones there. `@typescript-eslint/no-unused-vars` is set to error.
+- **API types come from the API contract:**
+  - The source of truth is `openapi.json` in WeLearn-api. `yarn gen:api` turns it into `src/types/generated/openapi.ts` (reads `openapi.json` from WeLearn-api `main` on GitHub; set `OPENAPI_SCHEMA=<path or url>` to use a local file or another branch). **Never edit `src/types/generated/`**; regenerate it and commit the result.
+  - Never hand-write the shape of an API payload or response. Use the helpers in `src/types/api.ts`: `ApiResponse<'/user/bookmarks'>`, `ApiResponse<'/search/by_document', 'post'>`, `ApiRequestBody<'/bibliography/export_bibliography'>`, `ApiSchema<'CorpusRead'>`. Endpoints are written without the `/api/v1` prefix, as the axios helpers take them.
+  - Pass the type to the helper: `baseGetAxios<ApiResponse<'/search/collections'>>('/search/collections')`. Domain types in `src/types/index.ts` alias the generated schemas; refine them only where the API is looser (`// ponytail:`), like `Document.payload.document_details`.
+  - CI job `api-contract` regenerates the types from WeLearn-api `main` and fails if they differ. When the API changes, run `yarn gen:api`, then `yarn type-check` and fix what broke.
+  - `yarn type-check` still has pre-existing errors unrelated to the API, so it is not in CI yet. Don't add new ones.
 
 ## Tests
 

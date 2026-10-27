@@ -2,12 +2,13 @@ import { defineStore } from 'pinia';
 import { baseGetAxios } from '@/utils/fetch';
 import { type Ref, ref } from 'vue';
 import type { Corpus, Document } from '@/types';
+import type { ApiResponse } from '@/types/api';
 import { exportBibliography } from '@/utils/fetch';
 
 export const useSourcesStore = defineStore('sources', () => {
   const categorySourceMap = ref<Record<string, Corpus[]> | null>(null);
   const sourceCategoryMap: Ref<Record<string, string>> = ref({});
-  const infoPerCorpus: Ref<[]> = ref([]);
+  const infoPerCorpus: Ref<ApiResponse<'/metric/nb_docs_info_per_corpus'>> = ref([]);
   const totalInQdrant: Ref<number> = ref(0);
   const isExportingBibliography = ref(false);
 
@@ -17,27 +18,27 @@ export const useSourcesStore = defineStore('sources', () => {
     }
 
     try {
-      const fetchedCorpus = await baseGetAxios('/search/collections');
-      fetchedCorpus.sort((a: Corpus, b: Corpus) => a.name.localeCompare(b.name));
+      const fetchedCorpus = await baseGetAxios<Corpus[]>('/search/collections');
+      fetchedCorpus.sort((a, b) => a.name.localeCompare(b.name));
+
+      // ponytail: a corpus without category lands under "null", as it always has
+      const categoryOf = (corpus: Corpus) => String(corpus.category);
 
       const corpusByCategory: Record<string, Corpus[]> = fetchedCorpus.reduce(
-        (acc: Record<string, Corpus[]>, corpus: Corpus) => {
-          if (!acc[corpus.category]) {
-            acc[corpus.category] = [];
+        (acc: Record<string, Corpus[]>, corpus) => {
+          if (!acc[categoryOf(corpus)]) {
+            acc[categoryOf(corpus)] = [];
           }
-          acc[corpus.category].push(corpus);
+          acc[categoryOf(corpus)].push(corpus);
           return acc;
         },
         {}
       );
 
-      sourceCategoryMap.value = fetchedCorpus.reduce(
-        (acc: Record<string, string>, corpus: Corpus) => {
-          acc[corpus.name] = corpus.category;
-          return acc;
-        },
-        {}
-      );
+      sourceCategoryMap.value = fetchedCorpus.reduce((acc: Record<string, string>, corpus) => {
+        acc[corpus.name] = categoryOf(corpus);
+        return acc;
+      }, {});
 
       categorySourceMap.value = corpusByCategory;
       return corpusByCategory;
@@ -53,7 +54,9 @@ export const useSourcesStore = defineStore('sources', () => {
       return;
     }
     try {
-      const response = await baseGetAxios('/metric/nb_docs_info_per_corpus');
+      const response = await baseGetAxios<ApiResponse<'/metric/nb_docs_info_per_corpus'>>(
+        '/metric/nb_docs_info_per_corpus'
+      );
       infoPerCorpus.value = response;
       const totalDocsInQdrant = response.reduce((acc, curr) => {
         acc = acc + curr.qty_in_qdrant;

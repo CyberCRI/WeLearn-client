@@ -1,0 +1,32 @@
+#!/bin/sh
+# runs the ci `lint-and-test` and `api-contract` checks before pushing
+# e2e tests are left to ci, they make every push too slow
+# skip once with `git push --no-verify`
+set -e
+
+# the checks run on the working tree, so it has to match what is pushed
+if ! git diff --quiet HEAD; then
+  echo "pre-push: uncommitted changes, commit or stash them first (or push with --no-verify)"
+  exit 1
+fi
+
+echo "pre-push: lint"
+yarn -s lint:check
+
+echo "pre-push: format"
+yarn -s format:check
+
+echo "pre-push: unit tests"
+yarn -s test:unit --run
+
+echo "pre-push: api contract"
+OPENAPI_URL=https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json
+if [ "$(curl -s -o /dev/null -w "%{http_code}" "$OPENAPI_URL")" = "404" ]; then
+  echo "no openapi.json on WeLearn-api main yet, skipping"
+else
+  yarn -s gen:api
+  git diff --exit-code src/types/generated || {
+    echo "pre-push: src/types/generated is out of date with WeLearn-api main, commit the regenerated types"
+    exit 1
+  }
+fi
