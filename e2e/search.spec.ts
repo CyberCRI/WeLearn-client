@@ -33,15 +33,15 @@ test.describe('search', () => {
 
   test.describe('sources', () => {
     test('should display list of sources in filtrer on click', async ({ page }) => {
-      await expect(page.getByText('fake-collection')).toBeVisible();
+      await expect(page.getByText('fake collection')).toBeVisible();
     });
 
     test('should select a source', async ({ page }) => {
-      await page.getByText('Fake-Collection').click();
+      await page.getByText('fake collection').click();
       // selected pill + its remove (×) button, labelled "Effacer"
-      await expect(page.getByText('fake collection')).toBeVisible();
+      await expect(page.locator('.selection').getByText('fake collection')).toBeVisible();
       await expect(page.getByRole('button', { name: 'Effacer', exact: true })).toBeVisible();
-      await expect(page.getByLabel('fake-collection').locator('span')).toBeChecked();
+      await expect(page.locator('#fake-collection')).toBeChecked();
     });
   });
 

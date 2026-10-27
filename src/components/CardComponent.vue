@@ -7,6 +7,7 @@ import type { DocumentDetails } from '@/types';
 
 import BookmarkComponent from './BookmarkComponent.vue';
 import { addTheConversationTrackerScript } from '@/utils/metrics.js';
+import { idToLabel } from '@/utils/strings';
 
 const isMoreAuthorsHidden = ref(true);
 
@@ -55,7 +56,10 @@ const displayedDescription = computed(() => {
     : props.description;
 });
 
-const corpusDetails = computed(() => props.details.journal || props.details.publisher);
+// the sub corpus names the actual source, so it takes precedence over journal/publisher
+const corpusDetails = computed(
+  () => props.subCorpus || props.details.journal || props.details.publisher
+);
 </script>
 
 <template>
@@ -79,12 +83,14 @@ const corpusDetails = computed(() => props.details.journal || props.details.publ
         <p v-if="shouldDisplayScore">{{ score }}</p>
         <p v-if="corpus" class="corpus">
           <span v-if="corpusDetails">
-            <strong class="is-capitalized">{{ corpusDetails }} </strong>
+            <strong class="is-capitalized"
+              >{{ subCorpus ? $t(`corpus.${subCorpus}`, idToLabel(subCorpus)) : corpusDetails }}
+            </strong>
             <i> via </i>
           </span>
 
           <span :class="corpusDetails ? 'is-italic' : 'has-text-weight-semibold'">
-            {{ $t(`corpus.${subCorpus || corpus}`, subCorpus || corpus) }}</span
+            {{ $t(`corpus.${corpus}`, idToLabel(corpus)) }}</span
           >
         </p>
         <p v-if="details?.authors" class="authors">

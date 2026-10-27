@@ -4,6 +4,7 @@ import ChevronDownIcon from '@/components/icons/ChevronDown.vue';
 import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
 import { useFiltersStore } from '@/stores/filters';
 import type { Corpus } from '@/types';
+import { idToLabel } from '@/utils/strings';
 
 defineProps<{ isUp?: boolean; context?: string; availableSources: Record<string, Corpus[]> }>();
 const filters = useFiltersStore();
@@ -53,7 +54,7 @@ const folded = filters.foldedCategories;
           :id="source.name"
           v-model="filters.sourcesFilters"
           :value="source.name"
-          :label="$t(`corpus.${source.name}`, source.name)"
+          :label="$t(`corpus.${source.name}`, idToLabel(source.name))"
           :checked="filters.sourcesFilters.includes(source.name)"
           isCapitalized
         >
