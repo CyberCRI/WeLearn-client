@@ -1,6 +1,6 @@
 #!/bin/sh
 # runs the ci `lint-and-test` and `api-contract` checks before pushing
-# ponytail: e2e tests are left to ci, they make every push too slow
+# e2e tests are left to ci, they make every push too slow
 # skip once with `git push --no-verify`
 set -e
 
