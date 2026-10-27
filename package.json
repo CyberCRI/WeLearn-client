@@ -16,7 +16,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
-    "gen:api": "openapi-typescript ${OPENAPI_SCHEMA:-../WeLearn-api/openapi.json} -o src/types/generated/openapi.ts && prettier --write src/types/generated"
+    "gen:api": "openapi-typescript ${OPENAPI_SCHEMA:-https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json} -o src/types/generated/openapi.ts && prettier --write src/types/generated"
   },
   "dependencies": {
     "axios": "^1.15.0",

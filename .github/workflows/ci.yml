@@ -74,13 +74,6 @@ jobs:
     runs-on: wlc-lint-and-test-runner
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/checkout@v3
-        with:
-          repository: CyberCRI/WeLearn-api
-          ref: main
-          path: welearn-api
-          sparse-checkout: openapi.json
-          sparse-checkout-cone-mode: false
       - uses: actions/setup-node@v3
         with:
           node-version: 20
@@ -91,11 +84,12 @@ jobs:
 
       - name: Check generated API types are up to date
         run: |
-          if [ ! -f welearn-api/openapi.json ]; then
+          status=$(curl -s -o /dev/null -w "%{http_code}" https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json)
+          if [ "$status" = "404" ]; then
             echo "No openapi.json on WeLearn-api main yet, skipping."
             exit 0
           fi
-          OPENAPI_SCHEMA=welearn-api/openapi.json yarn gen:api
+          yarn gen:api
           git diff --exit-code src/types/generated || {
             echo "::error::src/types/generated is out of date with WeLearn-api main, run 'yarn gen:api' and fix the type errors"
             exit 1
