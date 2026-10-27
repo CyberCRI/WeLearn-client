@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSourcesStore } from '@/stores/sources';
 import i18n from '@/localisation/i18n';
+import { idToLabel } from '@/utils/strings';
 
 const sourcesStore = useSourcesStore();
 </script>
@@ -61,7 +62,7 @@ const sourcesStore = useSourcesStore();
             </thead>
             <tbody>
               <tr v-for="source in sourcesStore.infoPerCorpus" :key="source.corpus">
-                <td>{{ $t(`corpus.${source.corpus}`, source.corpus) }}</td>
+                <td>{{ $t(`corpus.${source.corpus}`, idToLabel(source.corpus)) }}</td>
                 <td>
                   <a target="_blank" rel="noopener noreferrer" :href="source.url">{{
                     source.url

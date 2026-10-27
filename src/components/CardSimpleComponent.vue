@@ -6,6 +6,7 @@ import SeeDetails from './icons/SeeDetailsIcon.vue';
 import { ref } from 'vue';
 import BookmarkComponent from './BookmarkComponent.vue';
 import type { DocumentDetails } from '@/types';
+import { idToLabel } from '@/utils/strings';
 
 defineProps<{
   category?: string;
@@ -52,10 +53,15 @@ const handleModalOpen = () => {
       <div class="is-flex">
         <div class="is-flex is-flex-direction-column">
           <p v-if="corpus" class="corpus has-text-weight-normal is-italic">
-            <span v-if="details.journal || details.publisher"
-              >{{ details.journal || details.publisher }} via
+            <span v-if="subCorpus || details.journal || details.publisher"
+              >{{
+                subCorpus
+                  ? $t(`corpus.${subCorpus}`, idToLabel(subCorpus))
+                  : details.journal || details.publisher
+              }}
+              via
             </span>
-            {{ $t(`corpus.${subCorpus || corpus}`, subCorpus || corpus) }}
+            {{ $t(`corpus.${corpus}`, idToLabel(corpus)) }}
           </p>
           <div class="is-flex is-align-items-center">
             <div class="is-6 mr-2">

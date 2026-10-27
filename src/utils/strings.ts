@@ -13,3 +13,6 @@ export const chatSplitEffect = (answer: string, currentAssistantPrompt: ChatMess
 
   return null;
 };
+
+// fallback label for an id with no translation: 'bmj-open' → 'bmj open'
+export const idToLabel = (id: string) => id.replace(/-/g, ' ');

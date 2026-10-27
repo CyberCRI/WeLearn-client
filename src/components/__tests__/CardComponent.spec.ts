@@ -79,8 +79,8 @@ describe('CardComponent corpus label', () => {
       }
     });
 
-  it('shows the sub corpus when present', () => {
-    expect(mountWithSubCorpus('theses').get('.corpus').text()).toBe('corpus.theses');
+  it('shows the sub corpus as the source, via the corpus', () => {
+    expect(mountWithSubCorpus('theses').get('.corpus').text()).toBe('corpus.theses via corpus.hal');
   });
 
   it('falls back to the corpus when there is no sub corpus', () => {

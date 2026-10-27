@@ -9,6 +9,7 @@ import LanguagesSelector from '@/components/dropdowns/LanguagesSelector.vue';
 import { useFiltersStore } from '@/stores/filters';
 import { useSourcesStore } from '@/stores/sources';
 import { computed, watch, toRefs } from 'vue';
+import { idToLabel } from '@/utils/strings';
 
 const props = defineProps<{
   shouldClose?: boolean;
@@ -73,7 +74,7 @@ const clearFilters = () => {
           bgColor="primary"
           :key="filter"
           v-for="filter in filters.sourcesFilters"
-          :content="`${$t(`corpus.${filter}`, `${filter.replace('-', ' ')}`)}`"
+          :content="$t(`corpus.${filter}`, idToLabel(filter))"
         >
           <template #actions>
             <button

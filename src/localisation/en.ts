@@ -53,6 +53,7 @@ export const en = {
     oapen: 'OAPEN',
     'open-edition-books': 'OpenEdition Books',
     openalex: 'OpenAlex',
+    'bmj-open': 'BMJ Open',
     peerj: 'PeerJ',
     plos: 'PLOS',
     'press-books': 'Pressbooks',
