@@ -38,13 +38,16 @@ export const useSearchStore = defineStore('search', () => {
     try {
       const [sdgsFromQuery, { data, status }] = await Promise.all([
         getSDGsFromQuery(searchInput.value),
-        getSearch(100, {
-          query: searchInput.value,
-          lang: languageFilters,
-          sdg_filter: sdgFilters,
-          corpora: sourcesFilters,
-          relevance_factor: RELEVANCE_FACTOR
-        })
+        getSearch(
+          100,
+          {
+            query: searchInput.value,
+            lang: languageFilters,
+            sdg_filter: sdgFilters,
+            corpora: sourcesFilters
+          },
+          { relevanceFactor: RELEVANCE_FACTOR }
+        )
       ]);
 
       sdgsQuery.value = sdgsFromQuery;

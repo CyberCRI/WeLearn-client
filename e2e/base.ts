@@ -52,7 +52,7 @@ export const test = base.extend<Fixtures>({
       } else if (url.includes('nb_docs')) {
         await route.fulfill({ json: { nb_docs: 10 } });
       } else if (url.includes('by_document')) {
-        await route.fulfill({ status: 200, body: JSON.stringify(docs) });
+        await route.fulfill({ status: 200, body: JSON.stringify({ docs }) });
       } else if (url.includes('by_ids')) {
         await route.fulfill({ status: 200, body: JSON.stringify(docs) });
       } else {

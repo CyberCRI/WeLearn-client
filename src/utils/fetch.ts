@@ -75,11 +75,13 @@ export const getSDGsFromQuery = async (query: string): Promise<string[]> => {
 export const getSearch = async (
   nbResults: number,
   options: ApiRequestBody<'/search/by_document'>,
-  subject?: string
+  { subject, relevanceFactor }: { subject?: string; relevanceFactor?: number } = {}
 ) => {
+  // the API reads these from the query string, not the body
   const result = await basePostAxios<ApiResponse<'/search/by_document', 'post'>>(
-    `/search/by_document?nb_results=${nbResults}${subject ? `&subject=${subject}` : ''}`,
-    options
+    '/search/by_document',
+    options,
+    { params: { nb_results: nbResults, subject, relevance_factor: relevanceFactor } }
   );
 
   if (!result) throw new Error('oopss');
