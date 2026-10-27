@@ -12,13 +12,31 @@
 
       <div class="content-panel">
         <Transition name="fade" mode="out-in">
-          <component
-            :is="currentComponent"
-            :key="currentStepIndex"
+          <FlipCards
+            v-if="currentStep.type === 'flip'"
+            :key="`flip-${currentStepIndex}`"
             :step="currentStep"
-            v-bind="stepProps"
-            @flip="$emit('flipCard', $event as number)"
-            @selected="$emit('chooseActivity', $event as ActivityRef | null)"
+            :flipped="flippedCards"
+            @flip="$emit('flipCard', $event)"
+          />
+          <CompetenceCards
+            v-else-if="currentStep.type === 'competences'"
+            :key="`competences-${currentStepIndex}`"
+            :step="currentStep"
+          />
+          <ActivityCards
+            v-else-if="currentStep.type === 'activities'"
+            :key="`activities-${currentStepIndex}`"
+            :step="currentStep"
+            :selected="chosenActivity"
+            @selected="$emit('chooseActivity', $event)"
+          />
+          <ReflectionStep
+            v-else
+            :key="`reflection-${currentStepIndex}`"
+            :step="currentStep"
+            :chosenActivity="chosenActivity"
+            :answers="reflectionAnswers"
             @change-activity="previous"
           />
         </Transition>
@@ -94,40 +112,8 @@ const hint = computed(() => {
   return undefined;
 });
 
-const stepProps = computed(() => {
-  switch (currentStep.value.type) {
-    case 'flip':
-      return { flipped: props.flippedCards };
-    case 'activities':
-      return { selected: props.chosenActivity };
-    case 'votretour':
-      return { chosenActivity: props.chosenActivity, answers: props.reflectionAnswers };
-    default:
-      return {};
-  }
-});
-
 const isLastStep = computed(() => {
   return currentStepIndex.value === props.discipline.steps.length - 1;
-});
-
-const currentComponent = computed(() => {
-  switch (currentStep.value.type) {
-    case 'flip':
-      return FlipCards;
-
-    case 'competences':
-      return CompetenceCards;
-
-    case 'activities':
-      return ActivityCards;
-
-    case 'votretour':
-      return ReflectionStep;
-
-    default:
-      return FlipCards;
-  }
 });
 
 function previous() {

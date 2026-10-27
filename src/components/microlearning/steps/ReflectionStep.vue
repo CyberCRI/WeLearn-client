@@ -56,26 +56,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Activity } from '@/types/microlearning';
+import type { Activity, ReflectionStep } from '@/types/microlearning';
 import i18n from '@/localisation/i18n';
-
-interface Prompt {
-  q: string;
-  placeholder: string;
-}
-
-interface Resource {
-  label: string;
-  title: string;
-  href: string;
-}
-
-interface ReflectionStep {
-  statement: string;
-  sub: string;
-  prompts: Prompt[];
-  resource: Resource;
-}
 
 const props = defineProps<{
   step: ReflectionStep;

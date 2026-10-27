@@ -10,7 +10,7 @@ import { ref } from 'vue';
 const props = defineProps<{
   id_number: number;
   summaries: string[];
-  files: File;
+  files: File[];
   updateSummary: (index: number, content: string) => void;
   action: () => void;
   actionText?: string;
@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const editableParagraphs = ref(props.summaries.map(() => true));
 
-function toggleEdit(index, value) {
+function toggleEdit(index: number, value: boolean) {
   editableParagraphs.value[index] = value;
 
   if (editableParagraphs.value[index]) {
@@ -32,26 +32,27 @@ function toggleEdit(index, value) {
       const sel = window.getSelection();
       range.selectNodeContents(el);
       range.collapse(false);
+      if (!sel) return;
       sel.removeAllRanges();
       sel.addRange(range);
     });
   }
 }
 
-function preventLineBreaks(e) {
+function preventLineBreaks(e: KeyboardEvent) {
   if (e.key === 'Enter') {
     e.preventDefault();
   }
 }
 
-function sanitizePaste(e) {
+function sanitizePaste(e: ClipboardEvent) {
   e.preventDefault();
-  const text = e.clipboardData.getData('text/plain').replace(/\r?\n|\r/g, ' ');
+  const text = (e.clipboardData?.getData('text/plain') ?? '').replace(/\r?\n|\r/g, ' ');
   document.execCommand('insertText', false, text);
 }
 
-const handleTextEdit = (event, index) => {
-  const newValue = event.target.innerText;
+const handleTextEdit = (event: Event, index: number) => {
+  const newValue = (event.target as HTMLElement).innerText;
   props.updateSummary(index, newValue);
 };
 </script>

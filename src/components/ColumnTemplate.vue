@@ -2,12 +2,11 @@
 import TooltipComponent from '@/components/TooltipComponent.vue';
 import SidePanelIcon from '@/components/icons/SidePanelIcon.vue';
 
-import { ref, type VNodeRef } from 'vue';
+import { ref } from 'vue';
 
 // filtersFirst: on narrow screens put the right panel above the content instead of below it
 defineProps<{ filtersFirst?: boolean }>();
 
-const scrollerRef = ref<VNodeRef | null>(null);
 const isOpen = ref(true);
 
 const toggleOpen = () => {
@@ -27,12 +26,7 @@ const toggleOpen = () => {
         isLeft
       />
     </div>
-    <div
-      class="panely right scroll"
-      :class="{ opened: isOpen }"
-      ref="scrollerRef"
-      @scroll="handleDisplayArrow"
-    >
+    <div class="panely right scroll" :class="{ opened: isOpen }">
       <slot name="right-panel"></slot>
     </div>
   </div>

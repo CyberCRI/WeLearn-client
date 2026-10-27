@@ -141,7 +141,7 @@ export async function convertMarkdownToDocx(
                 listItems = [];
                 inList = false;
               }
-              docChildren.push(processHeading(line, headingConfigs[level], style, documentType));
+              docChildren.push(processHeading(line, headingConfigs[level], style));
               continue;
             }
             // Graceful degradation for unsupported heading levels

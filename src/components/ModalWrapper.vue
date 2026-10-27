@@ -1,22 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue';
 const props = defineProps<{
   isOpen: boolean;
   onClose?: () => void;
 }>();
 
-const computedState = computed(() => props.isOpen);
-
 const handleModalClose = () => {
   if (props.onClose) {
     props.onClose();
   }
-  computedState.value = false;
 };
 </script>
 
 <template>
-  <div class="modal" :class="{ 'is-active': computedState }">
+  <div class="modal" :class="{ 'is-active': isOpen }">
     <div class="modal-background" @click="onClose ? handleModalClose() : null"></div>
     <div class="modal-content">
       <slot></slot>

@@ -1,5 +1,19 @@
+// 'votretour' is the reflection step; the value is fixed by the static data
 export type StepType = 'flip' | 'competences' | 'activities' | 'votretour';
-export type DiscValue = 'math' | 'history' | 'economics' | 'law' | 'philosophy' | 'psychology';
+export type DiscValue =
+  | 'math'
+  | 'history'
+  | 'economics'
+  | 'law'
+  | 'philosophy'
+  | 'psychology'
+  | 'geography'
+  | 'health'
+  | 'staps'
+  | 'letters'
+  | 'ecology'
+  | 'art'
+  | 'polsci';
 
 export interface EvalAnswers {
   link?: number;
@@ -39,7 +53,8 @@ export interface FlipCard {
 
 export interface Competence {
   name: string;
-  tag: 'transversal' | 'disciplinaire';
+  // displayed label, written in the data's language: 'disciplinaire' in fr, 'disciplinary' in en
+  tag: 'transversal' | 'disciplinaire' | 'disciplinary';
   tagClass: 'transversal' | 'disciplinary';
   concrete: string;
 }
@@ -86,7 +101,7 @@ export interface ActivitiesStep extends StepBase {
   feedback: string;
 }
 
-export interface VotretourStep extends StepBase {
+export interface ReflectionStep extends StepBase {
   type: 'votretour';
   statement: string;
   sub: string;
@@ -98,30 +113,14 @@ export interface VotretourStep extends StepBase {
   };
 }
 
-export interface Data {
-  math: {
-    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
-  };
-  history: {
-    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
-  };
-  economics: {
-    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
-  };
-  law: {
-    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
-  };
-  philosophy: {
-    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
-  };
-  psychology: {
-    steps: [FlipStep, CompetencesStep, ActivitiesStep, VotretourStep];
-  };
-}
+export type Data = Record<
+  DiscValue,
+  { steps: [FlipStep, CompetencesStep, ActivitiesStep, ReflectionStep] }
+>;
 
 export type DataByLang = Record<'fr' | 'en', Data>;
 
-export type Step = FlipStep | CompetencesStep | ActivitiesStep | VotretourStep;
+export type Step = FlipStep | CompetencesStep | ActivitiesStep | ReflectionStep;
 
 export interface Discipline {
   steps: Step[];

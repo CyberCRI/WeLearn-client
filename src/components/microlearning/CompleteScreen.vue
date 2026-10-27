@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import type { Activity, Discipline, VotretourStep } from '@/types/microlearning';
+import type { Activity, Discipline, ReflectionStep } from '@/types/microlearning';
 
 const props = defineProps<{
   discipline: Discipline;
@@ -53,7 +53,7 @@ const props = defineProps<{
 
 const resource = computed(
   () =>
-    (props.discipline.steps.find((s) => s.type === 'votretour') as VotretourStep | undefined)
+    (props.discipline.steps.find((s) => s.type === 'votretour') as ReflectionStep | undefined)
       ?.resource
 );
 
