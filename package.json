@@ -14,8 +14,10 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
+    "prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
     "gen:api": "openapi-typescript ${OPENAPI_SCHEMA:-https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json} -o src/types/generated/openapi.ts && prettier --write src/types/generated"
   },
   "dependencies": {

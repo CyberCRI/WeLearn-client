@@ -27,7 +27,7 @@ yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.
 yarn build          # type-check + vite build
 ```
 
-CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check` and `yarn test:unit`. Playwright is **not** run in CI. Before you say a change is done, run lint, `format:check` and the unit tests.
+CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check`, `yarn test:unit`, Playwright and the `api-contract` check. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check` and the unit tests.
 
 ## Stack
 
