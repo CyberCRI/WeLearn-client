@@ -15,7 +15,8 @@ const defaultOnboardingState: OnboardingState = {
 
 export const useUserStore = defineStore('user', () => {
   const onboardingState = ref<Ref<OnboardingState>>(
-    getFromStorage('onboardingState') || defaultOnboardingState
+    // copy, so updates don't mutate the shared default
+    getFromStorage('onboardingState') || { ...defaultOnboardingState }
   );
 
   const userMetricsDataAction = async (
