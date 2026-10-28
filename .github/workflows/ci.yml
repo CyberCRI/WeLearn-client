@@ -53,8 +53,8 @@ jobs:
           yarn lint
           yarn format:check
 
-      - name: Run unit tests
-        run: yarn test:unit
+      - name: Run unit tests with coverage
+        run: yarn test:coverage
 
       - name: Install Playwright Browsers
         run: yarn playwright install --with-deps
