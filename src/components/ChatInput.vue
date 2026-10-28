@@ -14,6 +14,12 @@ const onSend = (value: string) => {
   props.action(value);
   store.clearInput();
 };
+
+const handleInput = () => {
+  if (parent.value) {
+    parent.value.dataset.replicatedValue = store.chatInput;
+  }
+};
 </script>
 
 <template>
@@ -26,7 +32,7 @@ const onSend = (value: string) => {
         :placeholder="$t('chatInputPlaceholder')"
         v-model="store.chatInput"
         @keydown.enter.exact="[onSend(store.chatInput), $event.preventDefault()]"
-        @input="parent.dataset.replicatedValue = store.chatInput"
+        @input="handleInput"
       ></textarea>
     </div>
     <div class="action">

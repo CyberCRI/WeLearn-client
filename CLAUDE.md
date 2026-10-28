@@ -28,7 +28,7 @@ yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.
 yarn build          # type-check + vite build
 ```
 
-CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check`, `yarn test:coverage`, Playwright and the `api-contract` check. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check` and `test:coverage`. If you add tests, raise the coverage floors in `vitest.config.ts` to just under the new values.
+CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check`, `yarn type-check`, `yarn test:coverage`, Playwright and the `api-contract` check. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check` and `test:coverage`. If you add tests, raise the coverage floors in `vitest.config.ts` to just under the new values.
 
 ## Stack
 
@@ -116,7 +116,6 @@ The nav entries are gated by `featureFlip` store flags.
   - Never hand-write the shape of an API payload or response. Use the helpers in `src/types/api.ts`: `ApiResponse<'/user/bookmarks'>`, `ApiResponse<'/search/by_document', 'post'>`, `ApiRequestBody<'/bibliography/export_bibliography'>`, `ApiSchema<'CorpusRead'>`. Endpoints are written without the `/api/v1` prefix, as the axios helpers take them.
   - Pass the type to the helper: `baseGetAxios<ApiResponse<'/search/collections'>>('/search/collections')`. Domain types in `src/types/index.ts` alias the generated schemas; refine them only where the API is looser (`// ponytail:`), like `Document.payload.document_details`.
   - CI job `api-contract` regenerates the types from WeLearn-api `main` and fails if they differ. When the API changes, run `yarn gen:api`, then `yarn type-check` and fix what broke.
-  - `yarn type-check` still has pre-existing errors unrelated to the API, so it is not in CI yet. Don't add new ones.
 
 ## Tests
 

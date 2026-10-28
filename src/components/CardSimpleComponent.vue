@@ -23,7 +23,7 @@ defineProps<{
   score?: number;
   toggleBookmark?: () => void;
   isBookmarked?: boolean;
-  docMetrics?: (docId?: string | undefined) => Promise<void>;
+  docMetrics?: (docId: string) => Promise<void>;
 }>();
 
 const isModalActive = ref(false);
@@ -93,7 +93,7 @@ const handleModalOpen = () => {
             target="_blank"
             :href="url"
             @click.stop
-            @click="docMetrics && docMetrics(id)"
+            @click="docMetrics && id && docMetrics(id)"
           >
             <OpenUrlIcon class="icon is-small" />
             <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.openArticle')" isLeft />

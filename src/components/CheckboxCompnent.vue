@@ -5,7 +5,7 @@ const props = defineProps<{
   value: string;
   id: string;
   name: string;
-  modelValue?: string[] | string;
+  modelValue?: (string | number)[] | string;
   checked: boolean;
   selectAll?: () => void;
   isDisabled?: boolean;

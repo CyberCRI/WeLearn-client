@@ -7,11 +7,11 @@ import ShowPassIcon from '@/components/icons/ShowPassIcon.vue';
 import HidePassIcon from '@/components/icons/HidePassIcon.vue';
 
 const form = reactive({
-  name: undefined,
-  lastName: undefined,
-  email: undefined,
-  password: undefined,
-  checkPassword: undefined
+  name: '',
+  lastName: '',
+  email: '',
+  password: '',
+  checkPassword: ''
 });
 
 const authStore = useAuthStore();
