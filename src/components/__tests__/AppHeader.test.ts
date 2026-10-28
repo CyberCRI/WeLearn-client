@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 
 import router from '@/router';
 
@@ -12,6 +13,11 @@ const mountOptions = {
 };
 
 describe('AppHeader', () => {
+  // the router guard reads the auth store on the first navigation
+  beforeEach(() => {
+    setActivePinia(createPinia());
+  });
+
   it('renders properly', () => {
     const wrapper = shallowMount(AppHeader, mountOptions);
     expect(wrapper.element).toMatchSnapshot();

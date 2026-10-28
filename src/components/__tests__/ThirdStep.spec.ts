@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils';
 import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import { cleanSyllabus } from '@/stores/tutor';
 
-const mountStep = (content: string) =>
-  mount(ThirdStep, {
+const mountStep = (content: string) => {
+  const wrapper = mount(ThirdStep, {
     props: {
       syllabus: { content, source: 'x' },
       giveFeedback: vi.fn(),
@@ -15,6 +15,10 @@ const mountStep = (content: string) =>
       updateSyllabusInDB: vi.fn()
     }
   });
+  // jsdom follows links even inside editable text, a browser doesn't
+  wrapper.find('#syllabus').element.addEventListener('click', (e) => e.preventDefault());
+  return wrapper;
+};
 
 describe('ThirdStep link bubble', () => {
   it('shows an "open" bubble in a new tab when a link is clicked', async () => {

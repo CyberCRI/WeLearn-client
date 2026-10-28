@@ -49,6 +49,7 @@ describe('fetch', () => {
     describe('error', () => {
       beforeEach(() => {
         vi.spyOn(http, 'post').mockRejectedValue(new Error('Error fetching data'));
+        vi.spyOn(console, 'error').mockImplementation(() => {});
       });
 
       it('should throw an error', async () => {
