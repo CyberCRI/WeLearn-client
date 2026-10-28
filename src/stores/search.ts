@@ -8,6 +8,9 @@ import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 
+const MIN_SEARCH_WORDS = 5;
+const MIN_SEARCH_CHARS = 50;
+
 export const useSearchStore = defineStore('search', () => {
   const allCorpus: Ref<Corpus['name'][]> = ref([]);
   const hasPartialResult = ref(false);
@@ -24,9 +27,12 @@ export const useSearchStore = defineStore('search', () => {
   const shouldDisplaySubjects = computed(() => i18n.global.locale.value == 'en');
   const shouldDisplayScore = computed(() => getQueryParamValue('score') === 'true');
 
-  const isSearchDisabled =
-    computed(() => searchInput.value.split(/(\s)/).length <= 5) ||
-    searchInput.value.split('').length <= 50;
+  // enough words or enough characters, either one is enough to search
+  const isSearchDisabled = computed(() => {
+    const input = searchInput.value.trim();
+    const wordCount = input ? input.split(/\s+/).length : 0;
+    return wordCount <= MIN_SEARCH_WORDS && input.length <= MIN_SEARCH_CHARS;
+  });
 
   const fetchSources = async () => {
     if (isSearchDisabled.value || isFetchingSources.value) {
@@ -70,7 +76,7 @@ export const useSearchStore = defineStore('search', () => {
     } catch (error: unknown) {
       setSourcesError();
       const currError = error as ErrorDetails;
-      errorCode.value = currError.response.data.detail.code || 'UNKNOWN_ERROR';
+      errorCode.value = currError.response?.data?.detail?.code || 'UNKNOWN_ERROR';
     }
   };
 

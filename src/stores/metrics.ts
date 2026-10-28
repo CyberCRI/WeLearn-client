@@ -12,7 +12,7 @@ export const useMetricsStore = defineStore('metrics', () => {
   // move this to a utils file this does not use any state from the store and is only a wrapper around the updateClickedDocument util function
   const recordClickedDocumentFromchat = async (docId: string) => {
     // check if in campaign
-    if (await !getCampaignStatus()) {
+    if (!(await getCampaignStatus())) {
       return;
     }
 

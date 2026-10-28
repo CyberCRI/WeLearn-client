@@ -72,7 +72,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
    `TutorPage.vue` maps each step to a store action (`stepToAction`). Only one request runs at a time (`AbortController` in `startRequest`). Finished steps fold into a recap.
 
 5. **`/microlearning`:** a screen state machine in `useMicrolearning` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). The content lives in the static `stores/microlearning/data.ts`, keyed by language and then discipline. Answers are kept in memory only.
-6. **`/search`:** document similarity search (the query needs >5 words and >50 chars) plus SDG detection from an external classifier.
+6. **`/search`:** document similarity search (the query needs >5 words or >50 chars) plus SDG detection from an external classifier.
 7. **`/bookmarks`:** the saved documents, with a bibliography export.
 8. `/tutor_test` (TestMAS) is a hidden experimental page. Don't remove it or `SecondStep.vue`, which it depends on.
 
@@ -133,7 +133,6 @@ The nav entries are gated by `featureFlip` store flags.
 
 ## Gotchas
 
-- In `search.ts`, `isSearchDisabled` is a `computed(...) || ...` expression. The computed object is always truthy, so the `||` branch never runs. Be careful when you touch it.
 - `stores/microlearning/data.ts` is about 4k lines of static FR/EN content. Never edit this file.
 - `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
 - Mixpanel init in `main.ts` is commented out on purpose.
