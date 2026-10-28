@@ -13,6 +13,24 @@ export default mergeConfig(
       root: fileURLToPath(new URL('./', import.meta.url)),
       transformMode: {
         web: [/\.[jt]sx$/]
+      },
+      coverage: {
+        provider: 'v8',
+        // count every source file, not only the ones a test imports
+        all: true,
+        include: ['src/**/*.{ts,vue}'],
+        exclude: [
+          'src/**/__tests__/**',
+          'src/types/**',
+          // static content, never edited
+          'src/stores/microlearning/data.ts'
+        ],
+        reporter: ['text-summary', 'html'],
+        // floor a little under the current coverage, raise it as tests are added
+        statements: 70,
+        branches: 60,
+        functions: 23,
+        lines: 70
       }
     }
   })

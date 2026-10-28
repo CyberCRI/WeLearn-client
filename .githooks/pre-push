@@ -19,8 +19,8 @@ yarn -s format:check
 echo "pre-push: type check"
 yarn -s type-check
 
-echo "pre-push: unit tests"
-yarn -s test:unit --run
+echo "pre-push: unit tests and coverage"
+yarn -s test:coverage
 
 echo "pre-push: api contract"
 OPENAPI_URL=https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json

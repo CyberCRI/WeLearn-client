@@ -19,6 +19,7 @@ Use **yarn**, not npm (`yarn.lock` is the lockfile).
 yarn dev            # vite --mode dev  → http://localhost:5173 (reads .env.local / .env.dev)
 yarn test:unit      # vitest (jsdom), watch mode; add `--run` for a single pass
 yarn test:unit --run src/utils/__tests__/progress.spec.ts   # one file
+yarn test:coverage  # single pass + v8 coverage, fails under the floors in vitest.config.ts (html report in coverage/)
 yarn test:e2e       # playwright; starts `vite --mode test` itself, API calls are mocked
 yarn lint           # eslint --fix
 yarn format         # prettier --write src/
@@ -27,7 +28,7 @@ yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.
 yarn build          # type-check + vite build
 ```
 
-CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check`, `yarn type-check`, `yarn test:unit`, Playwright and the `api-contract` check. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check`, `type-check` and the unit tests.
+CI (`.github/workflows/ci.yml`) runs `yarn lint`, `yarn format:check`, `yarn type-check`, `yarn test:coverage`, Playwright and the `api-contract` check. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check` and `test:coverage`. If you add tests, raise the coverage floors in `vitest.config.ts` to just under the new values.
 
 ## Stack
 
