@@ -9,7 +9,7 @@
     </header>
 
     <div class="competence-grid">
-      <article v-for="competence in step.featured" :key="competence.id" class="competence-card">
+      <article v-for="competence in step.featured" :key="competence.name" class="competence-card">
         <span class="competence-tag" :class="competence.tagClass">
           {{ competence.tag }}
         </span>
@@ -41,22 +41,10 @@
 </template>
 
 <script setup lang="ts">
-interface Competence {
-  id: string;
-  tag: string;
-  tagClass: 'transversal' | 'disciplinaire';
-  name: string;
-  concrete: string;
-}
-
-interface CompetenceStep {
-  intro: string;
-  featured: Competence[];
-  also: string[];
-}
+import type { CompetencesStep } from '@/types/microlearning';
 
 defineProps<{
-  step: CompetenceStep;
+  step: CompetencesStep;
 }>();
 </script>
 

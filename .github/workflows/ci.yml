@@ -53,6 +53,9 @@ jobs:
           yarn lint
           yarn format:check
 
+      - name: Run type check
+        run: yarn type-check
+
       - name: Run unit tests
         run: yarn test:unit
 

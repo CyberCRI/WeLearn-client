@@ -65,7 +65,8 @@ export const useChatStore = defineStore('chat', () => {
     processingMetadata.value = metadata;
 
     if (
-      ['fetching_resources', 'analyzing_resources'].includes(metadata?.step) &&
+      metadata.step &&
+      ['fetching_resources', 'analyzing_resources'].includes(metadata.step) &&
       !sourcesList.value.length
     ) {
       chatStatus.value = CHAT_STATUS.SEARCHING;

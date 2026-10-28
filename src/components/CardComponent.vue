@@ -30,7 +30,7 @@ const props = defineProps<{
   slice?: string | null;
   id?: string;
   externalId?: string | null;
-  docMetrics?: (docId?: string | undefined) => Promise<void>;
+  docMetrics?: (docId: string) => Promise<void>;
 }>();
 
 const toggleShowMoreAuthors = () => {
@@ -69,7 +69,7 @@ const corpusDetails = computed(
         <p class="doc-number">{{ number }}</p>
       </div>
       <p class="card-header-title">
-        <a target="_blank" :href="url" @click.stop @click="docMetrics && docMetrics(id)">
+        <a target="_blank" :href="url" @click.stop @click="docMetrics && id && docMetrics(id)">
           {{ title }}
         </a>
       </p>

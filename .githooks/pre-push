@@ -16,6 +16,9 @@ yarn -s lint:check
 echo "pre-push: format"
 yarn -s format:check
 
+echo "pre-push: type check"
+yarn -s type-check
+
 echo "pre-push: unit tests"
 yarn -s test:unit --run
 
