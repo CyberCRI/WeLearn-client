@@ -27,10 +27,10 @@ export default mergeConfig(
         ],
         reporter: ['text-summary', 'html'],
         // floor a little under the current coverage, raise it as tests are added
-        statements: 70,
-        branches: 60,
-        functions: 23,
-        lines: 70
+        statements: 73,
+        branches: 67,
+        functions: 30,
+        lines: 73
       }
     }
   })
