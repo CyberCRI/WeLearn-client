@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "CC-BY-NC-SA 4.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build-dev": "vite build --mode dev",
     "dev": "vite --mode dev",
