@@ -17,5 +17,7 @@ exports[`ToasterComponent > renders properly 1`] = `
   >
     Oops something wrong hapened. Please try again later.
   </p>
+  
+  
 </div>
 `;

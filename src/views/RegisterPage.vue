@@ -1,135 +1,178 @@
 <script setup lang="ts">
+import { computed, nextTick, onUnmounted, reactive, ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
-import { reactive, ref, type Ref } from 'vue';
+import ButtonComponent from '@/components/ButtonComponent.vue';
+import TextInputComponent from '@/components/TextInputComponent.vue';
+import ToasterComponent from '@/components/ToasterComponent.vue';
 import EmailIcon from '@/components/icons/EmailIcon.vue';
-import PasswordIcon from '@/components/icons/PasswordIcon.vue';
-import ShowPassIcon from '@/components/icons/ShowPassIcon.vue';
-import HidePassIcon from '@/components/icons/HidePassIcon.vue';
+import UserIcon from '@/components/icons/UserIcon.vue';
+import { isValidEmail } from '@/utils/validation';
+import type { UserRegisterData } from '@/types';
 
-const form = reactive({
-  name: '',
-  lastName: '',
-  email: '',
-  password: '',
-  checkPassword: ''
-});
+type FieldName = keyof UserRegisterData;
+const FIELDS: FieldName[] = ['firstName', 'lastName', 'email'];
+const KNOWN_ERROR_CODES = ['EMAIL_ALREADY_EXISTS', 'KEYCLOAK_UNAVAILABLE', 'SIGNUP_DISABLED'];
 
 const authStore = useAuthStore();
-const showCheckPass: Ref<boolean> = ref(false);
-const showPass: Ref<boolean> = ref(false);
+const { isRegistering, hasRegistered, registerErrorCode } = storeToRefs(authStore);
 
-const handleSubmitAlert = () => {
-  authStore.register(form);
-  window.alert('the feature will be available soon');
+const form = reactive<UserRegisterData>({ firstName: '', lastName: '', email: '' });
+// i18n keys, empty when the field is valid
+const errors = reactive<Record<FieldName, string>>({ firstName: '', lastName: '', email: '' });
+const hasTriedSubmit = ref(false);
+const submittedEmail = ref('');
+
+const firstNameInput = ref<InstanceType<typeof TextInputComponent> | null>(null);
+const lastNameInput = ref<InstanceType<typeof TextInputComponent> | null>(null);
+const emailInput = ref<InstanceType<typeof TextInputComponent> | null>(null);
+const inputs = { firstName: firstNameInput, lastName: lastNameInput, email: emailInput };
+const successToaster = ref<InstanceType<typeof ToasterComponent> | null>(null);
+
+// a bad email is shown on its field, not in the banner
+const serverErrorKey = computed(() => {
+  const code = registerErrorCode.value;
+  if (!code || code === 'INVALID_EMAIL') return '';
+  return `authentication.errors.${KNOWN_ERROR_CODES.includes(code) ? code : 'UNKNOWN'}`;
+});
+
+const validateField = (field: FieldName) => {
+  if (field === 'email') {
+    errors.email = isValidEmail(form.email) ? '' : 'authentication.emailInvalid';
+  } else {
+    errors[field] = form[field].trim() ? '' : `authentication.${field}Required`;
+  }
 };
+
+// errors appear on submit, then follow the user's corrections field by field
+const handleBlur = (field: FieldName) => {
+  if (hasTriedSubmit.value) validateField(field);
+};
+
+const handleSubmit = async () => {
+  hasTriedSubmit.value = true;
+  FIELDS.forEach(validateField);
+  const firstInvalid = FIELDS.find((field) => errors[field]);
+  if (firstInvalid) {
+    inputs[firstInvalid].value?.focus();
+    return;
+  }
+
+  submittedEmail.value = form.email.trim();
+  await authStore.register({ ...form });
+
+  if (hasRegistered.value) {
+    // the form is gone: move focus to the message so it is read
+    await nextTick();
+    successToaster.value?.$el.focus();
+  } else if (registerErrorCode.value === 'INVALID_EMAIL') {
+    errors.email = 'authentication.emailInvalid';
+    emailInput.value?.focus();
+  }
+};
+
+onUnmounted(() => authStore.resetRegister());
 </script>
 
 <template>
   <h1 class="title is-3 is-size-5-mobile">{{ $t('authentication.registerTitle') }}</h1>
   <div class="box">
-    <form @submit.prevent="handleSubmitAlert">
-      <div>
-        <label for="name">First name <span class="has-text-danger">*</span></label>
-        <input class="input" type="text" id="name" v-model="form.name" />
-      </div>
-      <div>
-        <label for="last_name">Last name <span class="has-text-danger">*</span></label>
-        <input class="input" type="text" id="last_name" v-model="form.lastName" />
-      </div>
-      <div class="field">
-        <label for="email">Email <span class="has-text-danger">*</span></label>
-        <p class="control has-icons-left has-icons-right">
-          <input class="input" type="email" required v-model="form.email" />
-          <span class="icon is-small is-left my-auto">
-            <div class="icon-wrapper">
-              <EmailIcon />
-            </div>
-          </span>
-        </p>
-      </div>
-      <div class="field">
-        <label for="pass">Password <span class="has-text-danger">*</span></label>
-        <div class="is-flex">
-          <p class="control has-icons-left">
-            <input
-              class="input"
-              :type="showPass ? 'text' : 'password'"
-              id="pass"
-              minlength="8"
-              required
-              v-model="form.password"
-            />
-            <span class="icon is-small is-left my-auto">
-              <div class="icon-wrapper">
-                <PasswordIcon />
-              </div>
-            </span>
-          </p>
-          <div class="ml-2 mt-2 is-clickable" @click="showPass = !showPass">
-            <HidePassIcon v-if="showPass" />
-            <ShowPassIcon v-else />
-          </div>
-        </div>
-      </div>
+    <!-- live regions stay in the DOM so screen readers announce what appears in them -->
+    <div role="status">
+      <ToasterComponent
+        v-if="hasRegistered"
+        ref="successToaster"
+        tabindex="-1"
+        heading-tag="h2"
+        level="info"
+        :title="$t('authentication.successTitle')"
+        :description="$t('authentication.successMessage', { email: submittedEmail })"
+      />
+    </div>
+    <div role="alert">
+      <ToasterComponent
+        v-if="serverErrorKey"
+        heading-tag="h2"
+        level="error"
+        :title="$t('authentication.errorTitle')"
+        :description="$t(serverErrorKey)"
+      >
+        <ButtonComponent
+          v-if="registerErrorCode === 'EMAIL_ALREADY_EXISTS' && authStore.shouldAuthenticate"
+          type="button"
+          color="primary"
+          data-testid="register-login"
+          @click="authStore.login()"
+        >
+          {{ $t('authentication.loginButton') }}
+        </ButtonComponent>
+      </ToasterComponent>
+    </div>
 
-      <div class="field">
-        <label for="checkpass">Confirm password <span class="has-text-danger">*</span></label>
-        <div class="is-flex">
-          <p class="control has-icons-left has-icons-right">
-            <input
-              class="input"
-              :type="showCheckPass ? 'text' : 'password'"
-              id="checkpass"
-              minlength="8"
-              required
-              v-model="form.checkPassword"
-              :class="{ 'is-danger': form.password !== form.checkPassword }"
-            />
-            <span class="icon is-small is-left">
-              <div class="icon-wrapper">
-                <PasswordIcon />
-              </div>
-            </span>
-            <span class="icon is-small is-right">
-              <div class="icon-wrapper"></div>
-            </span>
-          </p>
-          <div class="ml-2 mt-2 is-clickable" @click="showCheckPass = !showCheckPass">
-            <HidePassIcon v-if="showCheckPass" />
-            <ShowPassIcon v-else />
-          </div>
-        </div>
-      </div>
+    <form v-if="!hasRegistered" novalidate @submit.prevent="handleSubmit">
+      <p class="mb-2">{{ $t('authentication.requiredFieldsNote') }}</p>
+      <TextInputComponent
+        ref="firstNameInput"
+        id="register-first-name"
+        v-model="form.firstName"
+        :label="$t('authentication.firstNameLabel')"
+        autocomplete="given-name"
+        required
+        :error="errors.firstName && $t(errors.firstName)"
+        @blur="handleBlur('firstName')"
+      >
+        <template #icon><UserIcon width="20" height="20" /></template>
+      </TextInputComponent>
+      <TextInputComponent
+        ref="lastNameInput"
+        id="register-last-name"
+        v-model="form.lastName"
+        :label="$t('authentication.lastNameLabel')"
+        autocomplete="family-name"
+        required
+        :error="errors.lastName && $t(errors.lastName)"
+        @blur="handleBlur('lastName')"
+      >
+        <template #icon><UserIcon width="20" height="20" /></template>
+      </TextInputComponent>
+      <TextInputComponent
+        ref="emailInput"
+        id="register-email"
+        v-model="form.email"
+        type="email"
+        :label="$t('authentication.emailLabel')"
+        :hint="$t('authentication.emailHint')"
+        autocomplete="email"
+        required
+        :error="errors.email && $t(errors.email)"
+        @blur="handleBlur('email')"
+      >
+        <template #icon><EmailIcon /></template>
+      </TextInputComponent>
 
       <div class="action-buttons">
-        <router-link class="button" type="submit" to="/">{{
-          $t('authentication.cancelButton')
-        }}</router-link>
-        <input
-          class="button is-primary"
+        <router-link class="button" to="/">{{ $t('authentication.cancelButton') }}</router-link>
+        <!-- stays enabled: a disabled button can't be focused nor tell why it is disabled -->
+        <ButtonComponent
           type="submit"
-          :value="$t('authentication.registerButton')"
-          :disabled="form.password !== form.checkPassword"
-        />
+          color="primary"
+          data-testid="register-submit"
+          :aria-busy="isRegistering || undefined"
+        >
+          {{
+            isRegistering ? $t('authentication.submitting') : $t('authentication.registerButton')
+          }}
+        </ButtonComponent>
       </div>
     </form>
   </div>
 </template>
-<style lang="css" scoped>
-.icon-wrapper {
-  position: relative;
-  top: 0.8rem;
-  left: 0.5rem;
-}
 
+<style lang="css" scoped>
 h1 {
   margin: auto;
   margin-top: 8rem;
   text-align: center;
-}
-
-label {
-  font-weight: 700;
 }
 
 .box {
@@ -162,15 +205,11 @@ form {
   }
 
   form {
-    display: flex;
-    flex-direction: column;
     gap: 0.2rem;
   }
 
   h1 {
-    margin: auto;
     margin-top: 1rem;
-    text-align: center;
   }
 
   .action-buttons {

@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia';
 import { type Ref, ref } from 'vue';
-import { getFromStorage, saveToStorage } from '@/utils/storage';
+import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import { basePostAxios } from '@/utils/fetch';
+import { useChatStore } from '@/stores/chat';
+import { useSearchStore } from '@/stores/search';
 
 type OnboardingState = {
   hasSeenWelcome: boolean;
@@ -44,9 +46,36 @@ export const useUserStore = defineStore('user', () => {
     saveToStorage('onboardingState', onboardingState.value);
   };
 
+  // the previous user's history must not show up for the next one;
+  // language and onboarding are device preferences, they stay
+  const clearUserData = () => {
+    useChatStore().$reset();
+    useSearchStore().$reset();
+    // storage only for the hidden TestMAS page, its in-memory state goes on reload
+    clearFromStorage('courseMetadaRef');
+    clearFromStorage('userMetricsData');
+  };
+
+  // call with every user id the API returns. Without a sessionId (sign-up), a
+  // user change drops the stored session: the next user_and_session stores a new one
+  const syncUserId = (userId: string, sessionId?: string) => {
+    const storedUserId = getFromStorage('userId');
+
+    if (storedUserId && storedUserId !== userId) {
+      clearUserData();
+      if (getFromStorage('sessionId') !== sessionId) {
+        clearFromStorage('sessionId');
+      }
+    }
+
+    if (sessionId) saveToStorage('sessionId', sessionId);
+    saveToStorage('userId', userId);
+  };
+
   return {
     onboardingState,
     setHasSeenWelcome,
-    userMetricsDataAction
+    userMetricsDataAction,
+    syncUserId
   };
 });

@@ -11,13 +11,19 @@ defineProps({
   level: {
     type: String,
     default: 'info'
+  },
+  // h1 by default for existing usages; pages that already have an h1 pass h2
+  headingTag: {
+    type: String,
+    default: 'h1'
   }
 });
 </script>
 <template>
   <div class="toaster" :class="level">
-    <h1 class="header">{{ title }}</h1>
+    <component :is="headingTag" class="header">{{ title }}</component>
     <p v-if="description" class="body">{{ description }}</p>
+    <slot></slot>
   </div>
 </template>
 <style scoped>

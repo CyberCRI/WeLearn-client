@@ -4,6 +4,10 @@ import type { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import keycloak from '@/utils/keycloak';
 import i18n from '@/localisation/i18n';
 import { IS_DEV_ENVIRONMENT } from '@/utils/env';
+import { basePostAxios } from '@/utils/fetch';
+import { useUserStore } from '@/stores/user';
+import type { ApiRequestBody, ApiResponse } from '@/types/api';
+import type { UserRegisterData } from '@/types';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false);
@@ -118,15 +122,43 @@ export const useAuthStore = defineStore('auth', () => {
     }, 30000);
   }
 
-  interface UserRegisterData {
-    name: string;
-    lastName: string;
-    email: string;
-    password: string;
-    checkPassword: string;
+  const isRegistering = ref(false);
+  const hasRegistered = ref(false);
+  const registerErrorCode = ref<string | null>(null);
+
+  // keycloak emails a link to verify the address and set the password
+  async function register(data: UserRegisterData): Promise<void> {
+    if (isRegistering.value) return;
+
+    isRegistering.value = true;
+    registerErrorCode.value = null;
+    const body: ApiRequestBody<'/user/signup'> = {
+      email: data.email.trim(),
+      first_name: data.firstName.trim(),
+      last_name: data.lastName.trim()
+    };
+
+    try {
+      const response = await basePostAxios<ApiResponse<'/user/signup', 'post'>>(
+        '/user/signup',
+        body
+      );
+      useUserStore().syncUserId(response.data.user_id);
+      hasRegistered.value = true;
+    } catch (error: any) {
+      const code = error?.response?.data?.detail?.code;
+      if (code) registerErrorCode.value = code;
+      else if (error?.response?.status === 422) registerErrorCode.value = 'INVALID_EMAIL';
+      else registerErrorCode.value = 'UNKNOWN';
+    } finally {
+      isRegistering.value = false;
+    }
   }
-  function register(data: UserRegisterData): void {
-    console.log(data);
+
+  function resetRegister(): void {
+    isRegistering.value = false;
+    hasRegistered.value = false;
+    registerErrorCode.value = null;
   }
 
   return {
@@ -142,6 +174,10 @@ export const useAuthStore = defineStore('auth', () => {
     login,
     logout,
     updateLocale,
-    register
+    isRegistering,
+    hasRegistered,
+    registerErrorCode,
+    register,
+    resetRegister
   };
 });
