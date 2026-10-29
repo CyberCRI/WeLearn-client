@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ChatQueuesPills from '../ChatQueuesPills.vue';
 
@@ -25,5 +25,23 @@ describe('CheckboxCompnentVue', () => {
       }
     });
     expect(wrapper.findAll('.disabled')).toHaveLength(1);
+  });
+
+  it('only shows the last two questions and sends the clicked one', async () => {
+    const action = vi.fn();
+    const wrapper = mount(ChatQueuesPills, {
+      props: {
+        messageList: ['question 1', 'question 2', 'question 3'],
+        action,
+        shouldDisable: false
+      }
+    });
+    const cards = wrapper.findAll('.card');
+
+    expect(cards.map((card) => card.text())).toEqual(['question 2', 'question 3']);
+
+    await cards[1].trigger('click');
+
+    expect(action).toHaveBeenCalledWith('question 3');
   });
 });

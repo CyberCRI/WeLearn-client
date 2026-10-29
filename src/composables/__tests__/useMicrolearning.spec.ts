@@ -1,13 +1,19 @@
-import { reactive } from 'vue';
+import { nextTick, reactive } from 'vue';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useMicrolearning } from '../useMicrolearning';
 import { basePostAxios } from '@/utils/fetch';
 import { flushPromises } from '@vue/test-utils';
 import { ScreensEnum } from '@/types/microlearning';
 
+// one route per test, so a test can change the query like a browser back/forward would
+const routing = vi.hoisted(() => ({
+  route: { query: {} } as { query: Record<string, string> },
+  push: null as unknown as ReturnType<typeof vi.fn>
+}));
+
 vi.mock('vue-router', () => ({
-  useRoute: () => reactive({ query: {} }),
-  useRouter: () => ({ push: vi.fn(), replace: vi.fn() })
+  useRoute: () => routing.route,
+  useRouter: () => ({ push: routing.push, replace: vi.fn() })
 }));
 
 vi.mock('@/utils/fetch', () => ({
@@ -17,6 +23,8 @@ vi.mock('@/utils/fetch', () => ({
 describe('useMicrolearning form answers', () => {
   beforeEach(() => {
     localStorage.clear();
+    routing.route = reactive({ query: {} });
+    routing.push = vi.fn();
     vi.mocked(basePostAxios).mockResolvedValue({} as Awaited<ReturnType<typeof basePostAxios>>);
   });
 
@@ -226,6 +234,125 @@ describe('useMicrolearning form answers', () => {
       selectDiscipline('math');
 
       expect(shouldHideAutoEvalStart.value).toBe(false);
+    });
+  });
+
+  describe('navigation', () => {
+    it('goes back to the trail', () => {
+      const { selectDiscipline, backToTrail, screen } = useMicrolearning();
+      selectDiscipline('math');
+
+      backToTrail();
+
+      expect(screen.value).toBe(ScreensEnum.trail);
+    });
+
+    it('restarts from the welcome screen and forgets the progress', () => {
+      const { selectDiscipline, startTrail, nextStep, flipCard, restart, ...state } =
+        useMicrolearning();
+      selectDiscipline('math');
+      state.preAnswers.confidence = 2;
+      startTrail();
+      nextStep();
+      flipCard(0);
+
+      restart();
+
+      expect(state.screen.value).toBe(ScreensEnum.welcome);
+      expect(state.disc.value).toBeNull();
+      expect(state.current_disc.value).toBeNull();
+      expect(state.step.value).toBe(0);
+      expect(state.flippedCards.value).toEqual([]);
+      expect(state.preAnswers).toEqual({});
+      expect(state.preLocked.value).toBe(false);
+    });
+
+    it('pushes the screen and step to the url', async () => {
+      routing.route.query = { lang: 'en' };
+      const { selectDiscipline, startTrail } = useMicrolearning();
+      selectDiscipline('math');
+      startTrail();
+      await nextTick();
+
+      expect(routing.push).toHaveBeenLastCalledWith({
+        query: { lang: 'en', disc: 'math', screen: ScreensEnum.trail, step: '0' }
+      });
+    });
+  });
+
+  describe('flipCard', () => {
+    it('reveals each card once and never hides it again', () => {
+      const { flipCard, flippedCards } = useMicrolearning();
+
+      flipCard(1);
+      flipCard(0);
+      flipCard(1);
+
+      expect(flippedCards.value).toEqual([1, 0]);
+    });
+  });
+
+  describe('chooseActivity', () => {
+    it('stores the chosen activity and can clear it', () => {
+      const { selectDiscipline, chooseActivity, actChoice, chosenActivity } = useMicrolearning();
+      selectDiscipline('math');
+
+      chooseActivity({ apport: 0, act: 0 });
+
+      expect(actChoice.value).toEqual({ apport: 0, act: 0 });
+      expect(chosenActivity.value).not.toBeNull();
+
+      chooseActivity(null);
+
+      expect(actChoice.value).toBeNull();
+      expect(chosenActivity.value).toBeNull();
+    });
+  });
+
+  describe('url query (applyQuery)', () => {
+    it('restores the discipline, screen and step from the url', async () => {
+      const { disc, screen, step } = useMicrolearning();
+
+      routing.route.query = { disc: 'math', screen: ScreensEnum.trail, step: '2' };
+      await nextTick();
+
+      expect(disc.value).toBe('math');
+      expect(screen.value).toBe(ScreensEnum.trail);
+      expect(step.value).toBe(2);
+    });
+
+    it('clamps the step to the trail length', async () => {
+      const { step, currentData } = useMicrolearning();
+
+      routing.route.query = { disc: 'math', screen: ScreensEnum.trail, step: '999' };
+      await nextTick();
+
+      expect(step.value).toBe(currentData.value!.steps.length - 1);
+    });
+
+    it('starts at the first step when the step is not a number', async () => {
+      const { step, screen } = useMicrolearning();
+
+      routing.route.query = { disc: 'math', screen: ScreensEnum.briefing, step: 'abc' };
+      await nextTick();
+
+      expect(screen.value).toBe(ScreensEnum.briefing);
+      expect(step.value).toBe(0);
+    });
+
+    it.each([
+      ['an unknown discipline', { disc: 'astrology', screen: 'trail' }],
+      ['an unknown screen', { disc: 'math', screen: 'nowhere' }],
+      ['no screen', { disc: 'math' }]
+    ])('goes back to the welcome screen for %s', async (_, query) => {
+      const { selectDiscipline, screen } = useMicrolearning();
+      selectDiscipline('math');
+      await nextTick();
+
+      routing.route.query = query;
+      await nextTick();
+
+      expect(screen.value).toBe(ScreensEnum.welcome);
     });
   });
 });
