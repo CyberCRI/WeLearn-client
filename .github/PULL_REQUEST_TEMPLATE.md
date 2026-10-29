@@ -30,6 +30,7 @@
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 
-- [ ] My code follows the code style of this project.
+- [ ] My code follows the [code conventions](https://github.com/CyberCRI/WeLearn-client/blob/main/README.md#code-conventions) of this project.
+- [ ] The PR title follows the [git workflow](https://github.com/CyberCRI/WeLearn-client/blob/main/README.md#git-workflow) (`<type>(<scope>): <summary>`).
 - [ ] My code is tested.
 - [ ] I have updated the documentation accordingly.
