@@ -130,6 +130,7 @@ The nav entries are gated by `featureFlip` store flags.
 - Docker builds with `$DOCKER_INJECT_*` placeholders. `interpolate-variables.sh` swaps them into the built JS when nginx starts. A new `VITE_*` var therefore has to be added to the `Dockerfile` ARGs **and** to the `ci.yml` build-args.
 - `devops-toolbox/` is a git submodule (sops secrets). Don't edit it.
 - The project does not accept outside contributions. PRs follow `.github/PULL_REQUEST_TEMPLATE.md` (Description / Why / How / type of change).
+- Branches are `<type>/<short-kebab-description>` (`feat/bookmark-collections`). Commit messages and PR titles are Conventional Commits, `<type>(<scope>): <summary>` with type `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `build` or `ci` and an optional scope (`chat`, `tutor`, `ui`, ...). PRs are squash-merged, so the PR title becomes the commit on `main`.
 
 ## Gotchas
 
