@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import CardComponent from '../CardComponent.vue';
 
@@ -85,5 +85,66 @@ describe('CardComponent corpus label', () => {
 
   it('falls back to the corpus when there is no sub corpus', () => {
     expect(mountWithSubCorpus(null).get('.corpus').text()).toBe('corpus.hal');
+  });
+});
+
+describe('CardComponent authors', () => {
+  const authors = Array.from({ length: 12 }, (_, index) => ({ name: `Author ${index + 1}` }));
+  const mountWithAuthors = () =>
+    mount(CardComponent, {
+      props: {
+        title: 'Article',
+        corpus: 'hal',
+        description: 'Article description',
+        url: 'https://example.org',
+        sdg: [],
+        details: { authors },
+        toggleBookmark: () => undefined,
+        isBookmarked: false
+      }
+    });
+
+  it('shows the first ten authors and reveals or hides the others on click', async () => {
+    const wrapper = mountWithAuthors();
+    const toggle = wrapper.get('.authors .is-underlined');
+
+    expect(wrapper.findAll('.more-authors')).toHaveLength(0);
+    expect(wrapper.get('.authors').text()).toContain('Author 10');
+    expect(wrapper.get('.authors').text()).not.toContain('Author 11');
+    expect(toggle.text()).toBe('showMoreAuthors');
+
+    await toggle.trigger('click');
+
+    expect(wrapper.findAll('.more-authors')).toHaveLength(2);
+    expect(wrapper.get('.authors').text()).toContain('Author 12');
+    expect(wrapper.get('.authors .is-underlined').text()).toBe('hideAuthors');
+
+    await wrapper.get('.authors .is-underlined').trigger('click');
+
+    expect(wrapper.findAll('.more-authors')).toHaveLength(0);
+  });
+});
+
+describe('CardComponent title link', () => {
+  it('records the document metrics when the title is clicked', async () => {
+    const docMetrics = vi.fn().mockResolvedValue(undefined);
+    const wrapper = mount(CardComponent, {
+      props: {
+        title: 'Article',
+        corpus: 'hal',
+        description: 'Article description',
+        url: 'https://example.org',
+        sdg: [],
+        details: { authors: [] },
+        toggleBookmark: () => undefined,
+        isBookmarked: false,
+        id: 'doc-1',
+        docMetrics
+      }
+    });
+
+    await wrapper.get('.card-header-title a').trigger('click');
+
+    expect(docMetrics).toHaveBeenCalledWith('doc-1');
   });
 });

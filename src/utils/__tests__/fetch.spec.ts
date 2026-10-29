@@ -2,11 +2,13 @@ import axios from 'axios';
 import http from '../api';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  baseDeleteAxios,
   baseGetAxios,
   basePostAxios,
   deleteAllBookmarks,
   deleteBookmark,
   exportBibliography,
+  fetchStream,
   getBookmarks,
   getSDGsFromQuery,
   getSearch,
@@ -202,5 +204,80 @@ describe('fetch helpers', () => {
       );
       expect(result.data).toEqual([{ id: 'doc-1' }]);
     });
+  });
+});
+
+describe('baseDeleteAxios', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('calls http.delete and returns the response', async () => {
+    vi.spyOn(http, 'delete').mockResolvedValue({ status: 200, data: 'ok' });
+
+    const response = await baseDeleteAxios('/endpoint', { params: { id: 1 } });
+
+    expect(http.delete).toHaveBeenCalledWith('/endpoint', { params: { id: 1 } });
+    expect(response).toEqual({ status: 200, data: 'ok' });
+  });
+
+  it('logs and rethrows the error', async () => {
+    const error = new Error('Error deleting data');
+    vi.spyOn(http, 'delete').mockRejectedValue(error);
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    await expect(baseDeleteAxios('/endpoint')).rejects.toThrow('Error deleting data');
+    expect(console.error).toHaveBeenCalledWith('Error in baseDeleteAxios:', error);
+  });
+});
+
+describe('fetchStream', () => {
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('posts the body and returns the streamed response body', async () => {
+    localStorage.setItem('sessionId', JSON.stringify('session-1'));
+    const body = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode('data: hello'));
+        controller.close();
+      }
+    });
+    const fetchMock = vi.fn().mockResolvedValue({ body });
+    vi.stubGlobal('fetch', fetchMock);
+
+    const result = await fetchStream('/qna/chat/agent_stream', { bodyContent: '{"query":"q"}' });
+
+    expect(result).toBe(body);
+    const { value } = await result!.getReader().read();
+    expect(new TextDecoder().decode(value)).toBe('data: hello');
+
+    const apiVersion = import.meta.env.VITE_API_VERSION || '/api/v1';
+    expect(fetchMock).toHaveBeenCalledWith(
+      `${import.meta.env.VITE_API_BASE}${apiVersion}/qna/chat/agent_stream`,
+      expect.objectContaining({
+        method: 'POST',
+        body: '{"query":"q"}',
+        credentials: 'include',
+        headers: expect.objectContaining({
+          'Content-Type': 'application/json',
+          'X-API-Key': import.meta.env.VITE_WL_API_KEY,
+          'X-Session-Id': 'session-1'
+        })
+      })
+    );
+  });
+
+  it('throws when the response has no body', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ body: null }));
+
+    await expect(fetchStream('/endpoint', { bodyContent: '{}' })).rejects.toThrow(
+      'Error fetching data'
+    );
   });
 });
