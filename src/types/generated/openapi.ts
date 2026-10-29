@@ -186,26 +186,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v1/qna/chat/answer': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * Chat Answer
-     * @description This endpoint is used to get the answer to the user's query based on the provided context and history
-     */
-    post: operations['qna-q_and_a_ans'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/v1/qna/chat/history': {
     parameters: {
       query?: never;
@@ -217,46 +197,6 @@ export interface paths {
     get: operations['qna-get_chat_history'];
     put?: never;
     post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v1/qna/reformulate/questions': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * Formulates new questions
-     * @description This endpoint formulates new questions based on the provided context and history. They can be use to suggest it to the user.
-     */
-    post: operations['qna-q_and_a_new_questions'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v1/qna/stream': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /**
-     * Chat Answer
-     * @description This endpoint is used to get the answer to the user's query based on the provided context and history. Streamed version
-     */
-    post: operations['qna-q_and_a_stream'];
     delete?: never;
     options?: never;
     head?: never;
@@ -919,29 +859,6 @@ export interface components {
       /** Mappings */
       mappings: components['schemas']['CompetencyMapping'][];
     };
-    /** Context */
-    Context: {
-      /**
-       * History
-       * @default []
-       */
-      history:
-        | {
-            [key: string]: unknown;
-          }[]
-        | null;
-      /** Lang */
-      lang?: string | null;
-      /** Query */
-      query?: string | null;
-      /**
-       * Sources
-       * @default []
-       */
-      sources: components['schemas']['EnhancedDocumentSlice'][];
-      /** Subject */
-      subject?: string | null;
-    };
     /** CorpusRead */
     CorpusRead: {
       /** Category */
@@ -1285,11 +1202,6 @@ export interface components {
      * @enum {string}
      */
     QuestionType: 'text' | 'checkbox' | 'predefined_text';
-    /** ReformulatedQuestionsResponse */
-    ReformulatedQuestionsResponse: {
-      /** New Questions */
-      NEW_QUESTIONS: string[];
-    };
     /** RegisterFormAnswerBody */
     RegisterFormAnswerBody: {
       /** Answer */
@@ -1983,41 +1895,6 @@ export interface operations {
       };
     };
   };
-  'qna-q_and_a_ans': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['Context'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': {
-            [key: string]: string | null;
-          };
-        };
-      };
-      /** @description Error */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
   'qna-get_chat_history': {
     parameters: {
       query: {
@@ -2044,70 +1921,6 @@ export interface operations {
               | null;
           }[];
         };
-      };
-      /** @description Error */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  'qna-q_and_a_new_questions': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['Context'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ReformulatedQuestionsResponse'];
-        };
-      };
-      /** @description Error */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
-  'qna-q_and_a_stream': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': components['schemas']['Context'];
-      };
-    };
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content?: never;
       };
       /** @description Error */
       default: {
