@@ -28,7 +28,7 @@ export default mergeConfig(
         reporter: ['text-summary', 'html'],
         // floor a little under the current coverage, raise it as tests are added
         statements: 76,
-        branches: 75,
+        branches: 76,
         functions: 42,
         lines: 76
       }
