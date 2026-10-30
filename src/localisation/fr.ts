@@ -401,13 +401,13 @@ export const fr = {
       syllabus: 'Syllabus'
     },
     documentsStep: {
-      title: 'Ajoutez vos supports de cours',
+      title: 'Ajoutez votre syllabus ou vos supports de cours',
       description:
-        "Importez 1 à 3 documents sur lesquels repose votre cours (articles, chapitres d'ouvrage…). WeLearn construit le syllabus à partir de ceux-ci.",
+        "Importez 1 à 3 documents : votre syllabus actuel, si vous en avez un, et les supports sur lesquels repose votre cours (articles, chapitres d'ouvrage…). WeLearn construit un nouveau syllabus à partir de ceux-ci.",
       dropzone: 'Déposez vos fichiers ici ou',
       browse: 'parcourez',
       limits: 'PDF, DOCX ou TXT · 5 Mo max · 3 fichiers maximum',
-      hint: "Cette fonctionnalité est en bêta : les articles scientifiques et les chapitres d'ouvrage donnent les meilleurs résultats.",
+      hint: 'Cette fonctionnalité est en bêta.',
       exampleLink: 'Voir un exemple de document',
       removeFile: 'Retirer {name}',
       noFile: 'Ajoutez au moins un document pour continuer.',

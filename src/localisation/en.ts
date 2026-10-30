@@ -395,13 +395,13 @@ export const en = {
       syllabus: 'Syllabus'
     },
     documentsStep: {
-      title: 'Add your course materials',
+      title: 'Add your syllabus or course materials',
       description:
-        'Upload 1 to 3 documents your course is based on (articles, book chapters…). WeLearn builds the syllabus from them.',
+        'Upload 1 to 3 documents: your current syllabus, if you have one, and the materials your course is based on (articles, book chapters…). WeLearn builds a new syllabus from them.',
       dropzone: 'Drop files here or',
       browse: 'browse',
       limits: 'PDF, DOCX or TXT · 5 MB max · up to 3 files',
-      hint: 'This feature is in beta: scientific articles and book chapters give the best results.',
+      hint: 'This feature is in beta.',
       exampleLink: 'See an example document',
       removeFile: 'Remove {name}',
       noFile: 'Add at least one document to continue.',
