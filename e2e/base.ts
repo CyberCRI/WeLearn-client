@@ -68,6 +68,11 @@ export const test = base.extend<Fixtures>({
       }
     });
 
+    // external sdg classifier called alongside every search, it must not hang the tests when down
+    await page.route('**/aurora-sdg.labs.vu.nl/**', async (route) => {
+      await route.fulfill({ json: { predictions: [] } });
+    });
+
     // Mock metrics-related calls
     await page.route('**/**/metrics/**', async (route) => {
       const url = route.request().url();
