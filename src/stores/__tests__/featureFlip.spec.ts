@@ -1,35 +1,52 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
+import type { Environment } from '@/types';
 import { useFeatureFlipStore } from '../featureFlip';
 
-const env = vi.hoisted(() => ({ isDev: false }));
+const env = vi.hoisted(() => ({ name: 'prod' as Environment }));
 
 vi.mock('@/utils/env', () => ({
-  get IS_DEV_ENVIRONMENT() {
-    return env.isDev;
+  ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
+  get ENVIRONMENT_NAME() {
+    return env.name;
   }
 }));
+
+const PAGE_FEATURES = ['chat', 'tutor', 'search', 'bookmarks', 'about', 'microlearning'] as const;
 
 describe('featureFlip store', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });
 
-  it('enables the known features only', () => {
+  it.each<Environment>(['dev', 'staging', 'test', 'prod'])('enables every page in %s', (name) => {
+    env.name = name;
     const store = useFeatureFlipStore();
 
-    expect(store.isFeatureEnabled('chat')).toBe(true);
-    expect(store.isFeatureEnabled('unknown')).toBe(false);
+    PAGE_FEATURES.forEach((feature) => expect(store.isFeatureEnabled(feature)).toBe(true));
   });
 
-  it.each([
-    [true, 'enables', true],
-    [false, 'disables', false]
-  ])('isWorkshopFeatureEnabled: dev=%s %s the workshop features', (isDev, _, expected) => {
-    env.isDev = isDev;
+  it.each<[Environment, boolean]>([
+    ['dev', true],
+    ['staging', false],
+    ['test', false],
+    ['prod', false]
+  ])('workshop in %s: %s', (name, expected) => {
+    env.name = name;
     const store = useFeatureFlipStore();
 
-    expect(store.isWorkshopFeatureEnabled()).toBe(expected);
-    expect(store.isDevEnvironment).toBe(expected);
+    expect(store.isFeatureEnabled('workshop')).toBe(expected);
+  });
+
+  it.each<[Environment, boolean]>([
+    ['dev', true],
+    ['staging', true],
+    ['test', false],
+    ['prod', false]
+  ])('auth in %s: %s', (name, expected) => {
+    env.name = name;
+    const store = useFeatureFlipStore();
+
+    expect(store.isFeatureEnabled('auth')).toBe(expected);
   });
 });

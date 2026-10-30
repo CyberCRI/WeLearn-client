@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import type { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import keycloak from '@/utils/keycloak';
 import i18n from '@/localisation/i18n';
-import { IS_AUTH_ENVIRONMENT } from '@/utils/env';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { basePostAxios } from '@/utils/fetch';
 import { useUserStore } from '@/stores/user';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
@@ -26,10 +26,11 @@ export const useAuthStore = defineStore('auth', () => {
     return fullName || tokenParsed.value?.preferred_username || 'Unknown';
   });
 
-  const shouldAuthenticate = computed(() => IS_AUTH_ENVIRONMENT);
+  const featureFlip = useFeatureFlipStore();
+  const shouldAuthenticate = computed(() => featureFlip.isFeatureEnabled('auth'));
 
   async function init(): Promise<boolean> {
-    // auth is only rolled out on dev and staging: elsewhere Keycloak is never contacted
+    // where the auth feature is off, keycloak is never contacted
     if (!shouldAuthenticate.value) {
       isLoading.value = false;
       return false;

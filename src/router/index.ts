@@ -7,7 +7,16 @@ import NotFound from '@/views/NotFound.vue';
 import MicrolearningModule from '@/views/MicrolearningModule.vue';
 import TestMAS from '@/views/TestMAS.vue';
 import { useAuthStore } from '@/stores/auth';
+import { useFeatureFlipStore, type Feature } from '@/stores/featureFlip';
 import RegisterPage from '@/views/RegisterPage.vue';
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean;
+    // the page is reachable only where this feature is on (stores/featureFlip.ts)
+    feature?: Feature;
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,29 +31,30 @@ const router = createRouter({
       component: RegisterPage,
       meta: { requiresAuth: false }
     },
-    {
-      path: '/search',
-      name: 'search-sdg',
-      component: SearchSDG,
-      meta: { requiresAuth: true }
-    },
+    // the chat comes first: the first enabled feature route is where a disabled one redirects
     {
       path: '/q-and-a',
       name: 'q-and-a',
       component: QandA,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, feature: 'chat' }
+    },
+    {
+      path: '/search',
+      name: 'search-sdg',
+      component: SearchSDG,
+      meta: { requiresAuth: true, feature: 'search' }
     },
     {
       path: '/bookmarks',
       name: 'bookmarks',
       component: Bookmarks,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, feature: 'bookmarks' }
     },
     {
       path: '/tutor',
       name: 'tutor',
       component: Tutor,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, feature: 'tutor' }
     },
     {
       path: '/tutor_test',
@@ -62,7 +72,7 @@ const router = createRouter({
       path: '/microlearning',
       name: 'micro-learning',
       component: MicrolearningModule,
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: true, feature: 'microlearning' }
     },
     {
       path: '/profile',
@@ -75,7 +85,8 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('@/views/AboutPage.vue')
+      component: () => import('@/views/AboutPage.vue'),
+      meta: { feature: 'about' }
     },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
   ]
@@ -84,6 +95,18 @@ const router = createRouter({
 function hasQueryParams(route: RouteLocationNormalized) {
   return !!Object.keys(route.query).length;
 }
+
+// before the auth guard: no login for a page that is off anyway
+router.beforeEach((to: RouteLocationNormalized) => {
+  const { isFeatureEnabled } = useFeatureFlipStore();
+  if (!to.meta.feature || isFeatureEnabled(to.meta.feature)) return true;
+
+  // not '/': it redirects to the chat, which may be the disabled page
+  const fallback = router.options.routes.find(
+    (route) => route.meta?.feature && isFeatureEnabled(route.meta.feature)
+  );
+  return fallback ? fallback.path : false;
+});
 
 router.beforeEach(async (to: RouteLocationNormalized) => {
   const authStore = useAuthStore();
@@ -102,9 +125,7 @@ router.beforeEach(async (to: RouteLocationNormalized) => {
     });
   }
 
-  const requiresAuth = to.meta.requiresAuth as boolean | undefined;
-
-  if (requiresAuth && !authStore.isAuthenticated) {
+  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     authStore.login(window.location.origin + to.fullPath);
     return false;
   }

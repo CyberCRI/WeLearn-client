@@ -3,9 +3,10 @@ import { createPinia, setActivePinia } from 'pinia';
 import { useAuthStore } from '../auth';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
+import type { Environment } from '@/types';
 
 const { env, keycloak } = vi.hoisted(() => ({
-  env: { hasAuth: true },
+  env: { name: 'dev' as Environment },
   keycloak: {
     init: vi.fn(),
     login: vi.fn(),
@@ -21,8 +22,9 @@ const { env, keycloak } = vi.hoisted(() => ({
 }));
 
 vi.mock('@/utils/env', () => ({
-  get IS_AUTH_ENVIRONMENT() {
-    return env.hasAuth;
+  ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
+  get ENVIRONMENT_NAME() {
+    return env.name;
   }
 }));
 
@@ -52,7 +54,7 @@ describe('auth store', () => {
   beforeEach(() => {
     localStorage.clear();
     setActivePinia(createPinia());
-    env.hasAuth = true;
+    env.name = 'dev';
     keycloak.token = undefined;
     keycloak.tokenParsed = undefined;
     keycloak.idTokenParsed = undefined;
@@ -73,7 +75,7 @@ describe('auth store', () => {
 
   describe('init', () => {
     it('skips keycloak outside dev and staging', async () => {
-      env.hasAuth = false;
+      env.name = 'prod';
       const store = useAuthStore();
 
       expect(store.shouldAuthenticate).toBe(false);
