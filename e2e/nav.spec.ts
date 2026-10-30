@@ -19,7 +19,7 @@ test.describe('nav', () => {
     await expect(page).toHaveURL(/\/bookmarks/);
   });
 
-  // auth is only on in dev, see auth.spec.ts
+  // auth is only on in dev and staging, see auth.spec.ts
   test.describe('without auth', () => {
     test('has no user menu nor login/logout buttons', async ({ page }) => {
       await expect(page.getByTestId('user-menu')).toHaveCount(0);

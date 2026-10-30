@@ -6,7 +6,7 @@ import { useAuthStore } from '@/stores/auth';
 
 vi.mock('@/utils/keycloak', () => ({ default: { login: vi.fn() } }));
 // the login button only shows where keycloak is rolled out
-vi.mock('@/utils/env', () => ({ IS_DEV_ENVIRONMENT: true }));
+vi.mock('@/utils/env', () => ({ IS_AUTH_ENVIRONMENT: true }));
 
 const mountPage = () =>
   mount(RegisterPage, {

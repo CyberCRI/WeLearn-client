@@ -5,11 +5,11 @@ import router from '../index';
 import keycloak from '@/utils/keycloak';
 import { useAuthStore } from '@/stores/auth';
 
-const env = vi.hoisted(() => ({ isDev: false }));
+const env = vi.hoisted(() => ({ hasAuth: false }));
 
 vi.mock('@/utils/env', () => ({
-  get IS_DEV_ENVIRONMENT() {
-    return env.isDev;
+  get IS_AUTH_ENVIRONMENT() {
+    return env.hasAuth;
   }
 }));
 
@@ -21,7 +21,7 @@ describe('router', () => {
   // the router is a singleton: start each test from a neutral page, so that navigating to the
   // tested route really runs the guards
   beforeEach(async () => {
-    env.isDev = false;
+    env.hasAuth = false;
     setActivePinia(createPinia());
     await router.push('/about');
     // fresh auth store, so shouldAuthenticate is computed with the env of the test
@@ -71,7 +71,7 @@ describe('router', () => {
 
   describe('in dev (auth)', () => {
     beforeEach(() => {
-      env.isDev = true;
+      env.hasAuth = true;
     });
 
     it('asks a logged out user to log in on a protected route', async () => {

@@ -9,14 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import { useAuth } from '@/composables/useAuth';
-
-const { updateLocale } = useAuth();
-
 const storeLanguage = (e: Event) => {
   const lang = (e.target as HTMLSelectElement).value;
   localStorage.setItem('language', lang);
-  updateLocale(lang);
 };
 </script>
 
