@@ -422,6 +422,7 @@ export const en = {
       nudge: 'Without course details, your syllabus will be generic.',
       addDetails: 'Add details',
       continueAnyway: 'Continue anyway',
+      aiNotice: 'Your files are sent to WeLearn for AI analysis.',
       action: 'Analyse my documents',
       recap: '{files} · {lang}'
     },
@@ -430,6 +431,7 @@ export const en = {
       description:
         "Here's what WeLearn understood from each document. You can adjust it if needed: it guides the search for related resources.",
       noFileName: 'Document {n}',
+      aiLabel: 'Analysed by WeLearn AI',
       action: 'Find related resources',
       recap: 'No document summarized | 1 document summarized | {n} documents summarized'
     },
@@ -451,6 +453,7 @@ export const en = {
       title: 'Your syllabus is ready',
       description:
         'Click the text to edit it, ask WeLearn for changes, then download it as a Word file.',
+      aiLabel: 'Written by WeLearn AI. Review it and keep what fits your course.',
       feedbackLabel: 'Ask for changes',
       feedbackPlaceholder:
         'e.g. Add a week on assessment methods, shorten the reading list, make it more hands-on…',

@@ -177,6 +177,13 @@ describe('ThirdStep editing keeps the syllabus intact', () => {
   });
 });
 
+describe('ThirdStep AI label', () => {
+  it('says the syllabus was written by WeLearn AI', () => {
+    const wrapper = mountStep('Syllabus');
+    expect(wrapper.find('[data-testid="ai-label"]').text()).toBe('tutor.syllabusStep.aiLabel');
+  });
+});
+
 describe('cleanSyllabus', () => {
   it('turns literal "\\n" into <br> in tables and into new lines elsewhere', () => {
     expect(cleanSyllabus('| 1 | a \\n- b |\nText\\nmore')).toBe('| 1 | a <br>- b |\nText\nmore');

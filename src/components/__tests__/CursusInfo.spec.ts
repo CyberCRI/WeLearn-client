@@ -115,4 +115,9 @@ describe('CursusInfo', () => {
     expect(document.activeElement).toBe(wrapper.find('#cursus-title').element);
     expect(wrapper.props('action')).not.toHaveBeenCalled();
   });
+
+  it('says the files are sent to WeLearn for AI analysis', () => {
+    const wrapper = mountInfo();
+    expect(wrapper.find('[data-testid="ai-notice"]').text()).toBe('tutor.documentsStep.aiNotice');
+  });
 });

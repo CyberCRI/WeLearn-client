@@ -428,6 +428,7 @@ export const fr = {
       nudge: 'Sans informations sur le cours, votre syllabus sera générique.',
       addDetails: 'Ajouter des informations',
       continueAnyway: 'Continuer quand même',
+      aiNotice: "Vos fichiers sont envoyés à WeLearn pour être analysés par l'IA.",
       action: 'Analyser mes documents',
       recap: '{files} · {lang}'
     },
@@ -436,6 +437,7 @@ export const fr = {
       description:
         "Voici ce que WeLearn a retenu de chaque document. Vous pouvez l'ajuster si besoin : il oriente la recherche de ressources.",
       noFileName: 'Document {n}',
+      aiLabel: "Analysé par l'IA de WeLearn",
       action: 'Trouver des ressources',
       recap: 'Aucun document résumé | 1 document résumé | {n} documents résumés'
     },
@@ -458,6 +460,7 @@ export const fr = {
       title: 'Votre syllabus est prêt',
       description:
         'Cliquez sur le texte pour le modifier, demandez des modifications à WeLearn, puis téléchargez-le au format Word.',
+      aiLabel: "Rédigé par l'IA de WeLearn. Relisez-le et gardez ce qui convient à votre cours.",
       feedbackLabel: 'Demander des modifications',
       feedbackPlaceholder:
         "ex. : Ajouter une semaine sur l'évaluation, raccourcir la bibliographie, rendre le cours plus pratique…",

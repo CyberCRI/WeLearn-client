@@ -12,6 +12,9 @@ defineProps<{
       {{ $t('tutor.summaryStep.title') }}
     </h2>
     <p class="subtitle is-6 mt-2">{{ $t('tutor.summaryStep.description') }}</p>
+    <p class="is-size-7 has-text-grey mb-4" data-testid="ai-label">
+      {{ $t('tutor.summaryStep.aiLabel') }}
+    </p>
 
     <div class="field" v-for="(summary, index) in summaries" :key="index">
       <label class="label" :for="`summary_${index}`">

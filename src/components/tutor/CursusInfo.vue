@@ -206,6 +206,10 @@ const focusDetails = () => {
       </div>
     </div>
 
+    <p class="is-size-7 has-text-grey mt-5" data-testid="ai-notice">
+      {{ $t('tutor.documentsStep.aiNotice') }}
+    </p>
+
     <div class="step-footer">
       <span v-if="!fileNames.length" class="has-text-grey is-size-7">
         {{ $t('tutor.documentsStep.noFile') }}

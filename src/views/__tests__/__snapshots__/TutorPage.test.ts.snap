@@ -361,6 +361,13 @@ exports[`TutorPage > renders properly 1`] = `
           </div>
         </div>
         <!--v-if-->
+        <p
+          class="is-size-7 has-text-grey mt-5"
+          data-testid="ai-notice"
+          data-v-5582d651=""
+        >
+          tutor.documentsStep.aiNotice
+        </p>
         <div
           class="step-footer"
           data-v-5582d651=""
