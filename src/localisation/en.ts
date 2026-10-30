@@ -388,11 +388,79 @@ export const en = {
     TOO_MANY_FILES: 'You can add up to 3 files.',
     edit: 'Edit',
     collapse: 'Close',
+    start: {
+      question: 'Do you already have a course?',
+      yes: 'Yes, I have a course',
+      no: "No, I'm starting from scratch",
+      working: 'Working from an existing course',
+      workingNew: 'Creating a course from scratch',
+      change: 'Change',
+      changeWarning: 'Changing will discard what you have added for this course.',
+      discard: 'Discard and change',
+      keepWorking: 'Keep working'
+    },
+    course: {
+      title: 'Your course',
+      description:
+        'Add your current syllabus. On the next screen, you check what WeLearn read from it.',
+      dropzone: 'Drop your syllabus here or',
+      limits: 'One file · PDF, DOCX or TXT · 5 MB max',
+      languageLabel: 'Course language',
+      contextTitle: 'Teaching context',
+      optional: '(optional)',
+      contextHint:
+        'A few quick choices help WeLearn suit its suggestions to your teaching. Leave blank anything you prefer not to say.',
+      fields: {
+        title: 'Course title',
+        discipline: 'Discipline',
+        level: 'Level',
+        sessions: 'Number of sessions',
+        sessionLength: 'Session length',
+        sessionType: 'Session type',
+        sessionMode: 'Format',
+        classSize: 'Number of students'
+      },
+      disciplinePlaceholder: 'e.g. Economics',
+      choose: 'Choose…',
+      fromSyllabus: 'From your syllabus',
+      levels: {
+        l1: 'Bachelor, year 1',
+        l2: 'Bachelor, year 2',
+        l3: 'Bachelor, year 3',
+        m1: 'Master, year 1',
+        m2: 'Master, year 2',
+        doctorate: 'Doctorate',
+        other: 'Other'
+      },
+      sessionTypes: {
+        lecture: 'Lecture',
+        tutorial: 'Tutorial',
+        practical: 'Practical or lab',
+        seminar: 'Seminar',
+        project: 'Project',
+        mixed: 'Mixed'
+      },
+      modes: {
+        PRESENTIEL: 'In person',
+        DISTANCIEL: 'Remote',
+        HYBRIDE: 'Hybrid'
+      },
+      aiNotice: 'Your syllabus is sent to WeLearn for AI analysis.',
+      noFile: 'Add your syllabus to continue.',
+      action: 'Continue',
+      recap: '{file} · {lang}'
+    },
     steps: {
+      course: 'Your course',
+      check: 'Check your course',
+      additions: 'Sustainability additions',
+      updated: 'Your updated syllabus',
+      idea: 'Your course idea',
+      proposal: "WeLearn's proposal",
       documents: 'Documents',
       summary: 'Summary',
       resources: 'Resources',
-      syllabus: 'Syllabus'
+      syllabus: 'Your syllabus'
     },
     documentsStep: {
       title: 'Add your syllabus or course materials',

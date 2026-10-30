@@ -2,8 +2,15 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
-import { type Ref, ref } from 'vue';
-import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
+import { type Ref, computed, ref } from 'vue';
+import {
+  type CoursePath,
+  type Document,
+  type TeachingContext,
+  type TutorSearch,
+  type TutorSyllabus
+} from '@/types';
+import { emptyTeachingContext, readTeachingContext } from '@/utils/teachingContext';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 
@@ -21,6 +28,15 @@ export const cleanSyllabus = (content: string) =>
     .join('\n');
 
 export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'TOO_MANY_FILES';
+
+// FileReader rather than file.text(), which jsdom (unit tests) does not have
+const readText = (file: File) =>
+  new Promise<string>((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = () => resolve('');
+    reader.readAsText(file);
+  });
 
 export const useTutorStore = defineStore('tutor', () => {
   const tutorSearch: Ref<TutorSearch | undefined> = ref(undefined);
@@ -84,6 +100,78 @@ export const useTutorStore = defineStore('tutor', () => {
     delete rest[name];
     newFilesToSearch.value = rest;
     fileError.value = { state: false, reason: null };
+  };
+
+  // the new flow: the teacher first says whether they already have a course
+  const path: Ref<CoursePath | null> = ref(null);
+  const syllabusFile: Ref<File | null> = ref(null);
+  const teachingContext: Ref<TeachingContext> = ref(emptyTeachingContext());
+  // fields filled from what the syllabus states; a teacher's change makes them their own
+  const prefilled: Ref<(keyof TeachingContext)[]> = ref([]);
+
+  const hasStartedCourse = computed(
+    () =>
+      !!syllabusFile.value ||
+      Object.values(teachingContext.value).some((value) => value !== '' && value !== null)
+  );
+
+  const choosePath = (chosen: CoursePath) => {
+    path.value = chosen;
+    setStep(1);
+  };
+
+  const clearPrefilled = () => {
+    const context = { ...teachingContext.value };
+    const empty = emptyTeachingContext();
+    prefilled.value.forEach((key) => {
+      (context as Record<string, unknown>)[key] = empty[key];
+    });
+    teachingContext.value = context;
+    prefilled.value = [];
+  };
+
+  const setSyllabusFile = async (file: File) => {
+    if (file.size > MAX_FILE_SIZE || !isAllowedType(file)) {
+      fileError.value = {
+        state: true,
+        reason: file.size > MAX_FILE_SIZE ? 'BIG_FILE' : 'BAD_EXTENSION'
+      };
+      return;
+    }
+    fileError.value = { state: false, reason: null };
+    clearPrefilled();
+    syllabusFile.value = file;
+    // only plain text can be read here; other files are read by WeLearn on the next screen
+    if (!file.type.startsWith('text/')) return;
+    const found = readTeachingContext(await readText(file));
+    const context = { ...teachingContext.value };
+    const keys = (Object.keys(found) as (keyof typeof found)[]).filter(
+      (key) => context[key] === null
+    );
+    keys.forEach((key) => (context[key] = found[key] ?? null));
+    teachingContext.value = context;
+    prefilled.value = keys;
+  };
+
+  const removeSyllabusFile = () => {
+    clearPrefilled();
+    syllabusFile.value = null;
+    fileError.value = { state: false, reason: null };
+  };
+
+  const updateContext = <K extends keyof TeachingContext>(key: K, value: TeachingContext[K]) => {
+    teachingContext.value = { ...teachingContext.value, [key]: value };
+    prefilled.value = prefilled.value.filter((name) => name !== key);
+  };
+
+  // "Change" on the start question: everything added for the course is discarded
+  const resetCourse = () => {
+    path.value = null;
+    syllabusFile.value = null;
+    teachingContext.value = emptyTeachingContext();
+    prefilled.value = [];
+    fileError.value = { state: false, reason: null };
+    setStep(1);
   };
 
   const summaries = ref<string[]>([]);
@@ -220,7 +308,7 @@ export const useTutorStore = defineStore('tutor', () => {
     extracts.value = [];
     feedbackHistory.value = [];
     hasSearchError.value = false;
-    fileError.value = { state: false, reason: null };
+    resetCourse();
   };
 
   // with nothing selected, all found resources are used
@@ -338,6 +426,16 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   return {
+    path,
+    syllabusFile,
+    teachingContext,
+    prefilled,
+    hasStartedCourse,
+    choosePath,
+    setSyllabusFile,
+    removeSyllabusFile,
+    updateContext,
+    resetCourse,
     syllabusLanguage,
     selectSyllabusLanguage,
     step,

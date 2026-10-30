@@ -1,48 +1,35 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import i18n from '@/localisation/i18n';
+import PathChoice from '@/components/tutor/PathChoice.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
-import SummariesStep from '@/components/tutor/SummariesStep.vue';
-import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
-import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
 import ProgressBar from '@/components/microlearning/ProgressBar.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
-import StatusModal from '@/components/tutor/StatusModal.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 import { calculateProgress } from '@/utils/progress';
+import type { CoursePath } from '@/types';
 
 const store = useTutorStore();
 const { t } = i18n.global;
 
-const STEPS = ['documents', 'summary', 'resources', 'syllabus'] as const;
-const stepLabels = computed(() => STEPS.map((s) => t(`tutor.steps.${s}`)));
-
-// which loading / error message the modal shows (feedback runs at step 4)
-const loadingKind = computed(
-  () => (['extract', 'search', 'syllabus', 'feedback'] as const)[store.step - 1] || 'extract'
-);
-
-const stepToAction: Record<1 | 2 | 3 | 4, (arg?: any) => Promise<void>> = {
-  1: store.handleSummaryFiles,
-  2: store.retrieveTutorSearch,
-  3: store.handleCreateSyllabus,
-  4: store.handleDownloadSyllabus
+// one step bar per path: improving an existing course, or creating one from scratch
+const SCREENS: Record<CoursePath, readonly string[]> = {
+  existing: ['course', 'check', 'additions', 'updated'],
+  scratch: ['idea', 'proposal', 'syllabus']
 };
+const screens = computed(() => (store.path ? SCREENS[store.path] : []));
+const stepLabels = computed(() => screens.value.map((s) => t(`tutor.steps.${s}`)));
 
-// finished steps fold into a one-line recap; "Edit" opens one again
+// finished screens fold into a one-line recap; "Edit" opens one again
 const expanded = ref<Record<number, boolean>>({});
 const isFolded = (n: number) => n < store.step && !expanded.value[n];
 
-const recap = computed(() => ({
-  1: t('tutor.documentsStep.recap', {
-    files: Object.keys(store.newFilesToSearch).join(', '),
+const recaps = computed<Record<string, string>>(() => ({
+  course: t('tutor.course.recap', {
+    file: store.syllabusFile?.name || '',
     lang: t(`lang.${store.syllabusLanguage}`)
-  }),
-  2: t('tutor.summaryStep.recap', store.summaries.length),
-  3: store.selectedSources.length
-    ? t('tutor.resourcesStep.selected', store.selectedSources.length)
-    : t('tutor.resourcesStep.recapAll')
+  })
 }));
 
 watch(
@@ -60,78 +47,50 @@ onMounted(() => {
 </script>
 <template>
   <div class="content-centered-wrapper">
-    <div class="steps-bar">
+    <div v-if="store.path" class="steps-bar" data-testid="steps-bar">
       <ProgressBar
         :currentStep="store.step - 1"
         :labels="stepLabels"
-        :progress="calculateProgress(store.step - 1, STEPS.length)"
+        :progress="calculateProgress(store.step - 1, stepLabels.length)"
         clickable
         @select="(i: number) => scrollToAnchor(`target-${i + 1}`)"
       />
     </div>
     <ErrorComponent v-if="store.reloadError" />
-    <StatusModal
-      :isLoading="store.isLoading"
-      :shouldRetryAction="store.shouldRetryAction"
-      :action="stepToAction[store.step as 1 | 2 | 3 | 4]"
-      :stopAction="store.stopAction"
-      :kind="loadingKind"
-    />
 
     <div class="layout-flex">
-      <template v-for="n in 4" :key="n">
-        <section v-if="store.step >= n" :id="`target-${n}`" class="step-section">
-          <div v-if="n < store.step" class="recap" :class="{ open: expanded[n] }">
+      <PathChoice
+        :path="store.path"
+        :hasStarted="store.hasStartedCourse"
+        @choose="store.choosePath"
+        @reset="store.resetCourse"
+      />
+
+      <template v-for="(screen, index) in screens" :key="screen">
+        <section v-if="store.step > index" :id="`target-${index + 1}`" class="step-section">
+          <div v-if="index + 1 < store.step" class="recap" :class="{ open: expanded[index + 1] }">
             <span class="recap-check" aria-hidden="true">✓</span>
-            <strong>{{ stepLabels[n - 1] }}</strong>
-            <span class="recap-text">{{ recap[n as 1 | 2 | 3] }}</span>
-            <button class="button is-small is-text" @click="expanded[n] = !expanded[n]">
-              {{ expanded[n] ? $t('tutor.collapse') : $t('tutor.edit') }}
+            <strong>{{ stepLabels[index] }}</strong>
+            <span class="recap-text">{{ recaps[screen] }}</span>
+            <button
+              class="button is-small is-text"
+              @click="expanded[index + 1] = !expanded[index + 1]"
+            >
+              {{ expanded[index + 1] ? $t('tutor.collapse') : $t('tutor.edit') }}
             </button>
           </div>
 
-          <template v-if="!isFolded(n)">
+          <template v-if="!isFolded(index + 1)">
             <CursusInfo
-              v-if="n === 1"
+              v-if="screen === 'course'"
               data-test="fist-step"
-              :files="store.newFilesToSearch"
-              :addFiles="store.addFiles"
-              :removeFile="store.removeFile"
+              :file="store.syllabusFile"
               :fileError="store.fileError"
-              :selectLang="store.selectSyllabusLanguage"
+              :setFile="store.setSyllabusFile"
+              :removeFile="store.removeSyllabusFile"
               :storedLanguage="store.syllabusLanguage"
-              v-model:courseTitle="store.courseTitle"
-              v-model:level="store.level"
-              v-model:duration="store.duration"
-              v-model:description="store.description"
-              :action="stepToAction[1]"
-            />
-            <SummariesStep
-              v-else-if="n === 2"
-              :updateSummary="store.updateSummary"
-              :summaries="store.summaries"
-              :files="store.newFilesToSearch"
-              :action="stepToAction[2]"
-            />
-            <ResourcesStep
-              v-else-if="n === 3"
-              data-test="second-step"
-              :sources="store.tutorSearch?.documents"
-              :searchError="store.hasSearchError"
-              :appendSource="store.appendSource"
-              :selectedSources="store.selectedSources"
-              :action="stepToAction[3]"
-            />
-            <EditableSyllabus
-              v-else
-              data-test="third-step"
-              :syllabus="store.syllabi"
-              :updateSyllabus="store.updateSyllabus"
-              :giveFeedback="store.giveFeedback"
-              :feedbackHistory="store.feedbackHistory"
-              :action="stepToAction[4]"
-              :restart="store.restart"
-              :updateSyllabusInDB="store.updateSyllabusInDB"
+              :selectLang="store.selectSyllabusLanguage"
+              :action="store.goNext"
             />
           </template>
         </section>

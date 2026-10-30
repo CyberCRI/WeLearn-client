@@ -54,6 +54,21 @@ export type TutorSyllabus = Omit<ApiSchema<'SyllabusResponse'>, 'documents'> & {
   documents: Document[];
 };
 
+// the two ways into /tutor: improving an existing course, or creating one from scratch
+export type CoursePath = 'existing' | 'scratch';
+
+// the teaching context of the course; empty means the teacher did not say, never a default
+export type TeachingContext = {
+  title: string;
+  discipline: string;
+  level: string;
+  sessions: number | null;
+  sessionLength: number | null; // hours, as the API expects
+  sessionType: string;
+  sessionMode: ApiSchema<'SessionMode'> | '';
+  classSize: number | null;
+};
+
 type SyllabusGeneration = ApiSchema<'SyllabusGenerationResponse'>;
 
 export type SyllabusData = {

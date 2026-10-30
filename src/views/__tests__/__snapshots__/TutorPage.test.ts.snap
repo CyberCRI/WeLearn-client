@@ -5,400 +5,48 @@ exports[`TutorPage > renders properly 1`] = `
   class="content-centered-wrapper"
   data-v-8a8621cb=""
 >
-  <div
-    class="steps-bar"
-    data-v-8a8621cb=""
-  >
-    <div
-      class="progress-wrapper"
-      data-v-49a355d6=""
-      data-v-8a8621cb=""
-    >
-      <div
-        class="progress-track"
-        data-v-49a355d6=""
-      >
-        <div
-          class="progress-fill"
-          data-v-49a355d6=""
-          style="width: 5%;"
-        />
-      </div>
-      <div
-        class="steps"
-        data-v-49a355d6=""
-      >
-        
-        <div
-          class="step active"
-          data-v-49a355d6=""
-        >
-          <div
-            class="circle"
-            data-v-49a355d6=""
-          >
-            <span
-              data-v-49a355d6=""
-            >
-              1
-            </span>
-          </div>
-          <span
-            class="label"
-            data-v-49a355d6=""
-          >
-            Documents
-          </span>
-        </div>
-        <div
-          class="step"
-          data-v-49a355d6=""
-        >
-          <div
-            class="circle"
-            data-v-49a355d6=""
-          >
-            <span
-              data-v-49a355d6=""
-            >
-              2
-            </span>
-          </div>
-          <span
-            class="label"
-            data-v-49a355d6=""
-          >
-            Résumé
-          </span>
-        </div>
-        <div
-          class="step"
-          data-v-49a355d6=""
-        >
-          <div
-            class="circle"
-            data-v-49a355d6=""
-          >
-            <span
-              data-v-49a355d6=""
-            >
-              3
-            </span>
-          </div>
-          <span
-            class="label"
-            data-v-49a355d6=""
-          >
-            Ressources
-          </span>
-        </div>
-        <div
-          class="step"
-          data-v-49a355d6=""
-        >
-          <div
-            class="circle"
-            data-v-49a355d6=""
-          >
-            <span
-              data-v-49a355d6=""
-            >
-              4
-            </span>
-          </div>
-          <span
-            class="label"
-            data-v-49a355d6=""
-          >
-            Syllabus
-          </span>
-        </div>
-        
-      </div>
-    </div>
-  </div>
   <!--v-if-->
   <!--v-if-->
   <div
     class="layout-flex"
     data-v-8a8621cb=""
   >
-    
-    
-    <section
-      class="step-section"
+    <div
+      aria-labelledby="course-question"
+      class="question"
+      data-v-06951086=""
       data-v-8a8621cb=""
-      id="target-1"
+      role="group"
     >
-      <!--v-if-->
-      
-      <div
-        class="wrapper"
-        data-test="fist-step"
-        data-v-5582d651=""
-        data-v-8a8621cb=""
+      <h1
+        class="title is-4 is-size-5-mobile"
+        data-v-06951086=""
+        id="course-question"
       >
-        <h1
-          class="title is-4 is-size-5-mobile"
-          data-v-5582d651=""
+        tutor.start.question
+      </h1>
+      <div
+        class="options"
+        data-v-06951086=""
+      >
+        <button
+          class="option"
+          data-testid="option-existing"
+          data-v-06951086=""
+          type="button"
         >
-          tutor.documentsStep.title
-        </h1>
-        <p
-          class="subtitle is-6 mt-2"
-          data-v-5582d651=""
+          tutor.start.yes
+        </button>
+        <button
+          class="option"
+          data-testid="option-scratch"
+          data-v-06951086=""
+          type="button"
         >
-          tutor.documentsStep.description
-        </p>
-        <label
-          class="dropzone"
-          data-v-5582d651=""
-        >
-          <input
-            accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            class="is-sr-only"
-            data-testid="file-input"
-            data-v-5582d651=""
-            multiple=""
-            type="file"
-          />
-          <span
-            data-v-5582d651=""
-          >
-            tutor.documentsStep.dropzone 
-            <span
-              class="browse"
-              data-v-5582d651=""
-            >
-              tutor.documentsStep.browse
-            </span>
-          </span>
-          <span
-            class="is-size-7 has-text-grey"
-            data-v-5582d651=""
-          >
-            tutor.documentsStep.limits
-          </span>
-        </label>
-        <!--v-if-->
-        <!--v-if-->
-        <p
-          class="is-size-7 has-text-grey mt-2"
-          data-v-5582d651=""
-        >
-          tutor.documentsStep.hint 
-          <a
-            class="example-link"
-            data-v-5582d651=""
-            href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
-            target="_blank"
-          >
-            tutor.documentsStep.exampleLink 
-            <div
-              class="icon is-small"
-              data-v-5582d651=""
-              data-v-69f71e04=""
-            >
-              <svg
-                data-v-69f71e04=""
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                <path
-                  d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l82.7 0L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3l0 82.7c0 17.7 14.3 32 32 32s32-14.3 32-32l0-160c0-17.7-14.3-32-32-32L320 0zM80 32C35.8 32 0 67.8 0 112L0 432c0 44.2 35.8 80 80 80l320 0c44.2 0 80-35.8 80-80l0-112c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 112c0 8.8-7.2 16-16 16L80 448c-8.8 0-16-7.2-16-16l0-320c0-8.8 7.2-16 16-16l112 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L80 32z"
-                  data-v-69f71e04=""
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </a>
-        </p>
-        <div
-          class="field mt-5 language"
-          data-v-5582d651=""
-        >
-          <label
-            class="label"
-            data-v-5582d651=""
-            for="cursus-lang"
-          >
-            tutor.documentsStep.languageLabel
-          </label>
-          <div
-            class="select"
-            data-v-5582d651=""
-          >
-            <select
-              data-v-5582d651=""
-              id="cursus-lang"
-              value="fr"
-            >
-              
-              <option
-                data-v-5582d651=""
-                value="fr"
-              >
-                lang.fr
-              </option>
-              <option
-                data-v-5582d651=""
-                value="en"
-              >
-                lang.en
-              </option>
-              
-            </select>
-          </div>
-        </div>
-        <!-- Course details: optional but they make the syllabus fit the course -->
-        <div
-          class="details box mt-5"
-          data-v-5582d651=""
-        >
-          <h2
-            class="title is-5 mb-2 details-title"
-            data-v-5582d651=""
-          >
-            tutor.documentsStep.detailsTitle 
-            <span
-              class="tag is-primary is-light"
-              data-v-5582d651=""
-            >
-              tutor.documentsStep.recommended
-            </span>
-          </h2>
-          <p
-            class="mb-4"
-            data-v-5582d651=""
-          >
-            tutor.documentsStep.detailsWhy
-          </p>
-          <div
-            class="cursus-details"
-            data-v-5582d651=""
-          >
-            <div
-              class="field full"
-              data-v-5582d651=""
-            >
-              <label
-                class="label"
-                data-v-5582d651=""
-                for="cursus-title"
-              >
-                tutor.documentsStep.titleLabel
-              </label>
-              <input
-                class="input"
-                data-v-5582d651=""
-                id="cursus-title"
-                placeholder="tutor.documentsStep.titlePlaceholder"
-                type="text"
-                value=""
-              />
-            </div>
-            <div
-              class="field"
-              data-v-5582d651=""
-            >
-              <label
-                class="label"
-                data-v-5582d651=""
-                for="cursus-level"
-              >
-                tutor.documentsStep.levelLabel
-              </label>
-              <input
-                class="input"
-                data-v-5582d651=""
-                id="cursus-level"
-                placeholder="tutor.documentsStep.levelPlaceholder"
-                type="text"
-                value=""
-              />
-            </div>
-            <div
-              class="field"
-              data-v-5582d651=""
-            >
-              <label
-                class="label"
-                data-v-5582d651=""
-                for="cursus-duration"
-              >
-                tutor.documentsStep.durationLabel
-              </label>
-              <input
-                class="input"
-                data-v-5582d651=""
-                id="cursus-duration"
-                placeholder="tutor.documentsStep.durationPlaceholder"
-                type="text"
-                value=""
-              />
-            </div>
-          </div>
-          <div
-            class="field"
-            data-v-5582d651=""
-          >
-            <label
-              class="label"
-              data-v-5582d651=""
-              for="cursus-description"
-            >
-              tutor.documentsStep.descriptionLabel
-            </label>
-            <textarea
-              class="textarea"
-              data-v-5582d651=""
-              id="cursus-description"
-              placeholder="tutor.documentsStep.descriptionPlaceholder"
-              rows="3"
-              value=""
-            />
-          </div>
-        </div>
-        <!--v-if-->
-        <p
-          class="is-size-7 has-text-grey mt-5"
-          data-testid="ai-notice"
-          data-v-5582d651=""
-        >
-          tutor.documentsStep.aiNotice
-        </p>
-        <div
-          class="step-footer"
-          data-v-5582d651=""
-        >
-          <span
-            class="has-text-grey is-size-7"
-            data-v-5582d651=""
-          >
-            tutor.documentsStep.noFile
-          </span>
-          <button
-            class="button is-primary"
-            data-testid="tutor-next-button"
-            data-v-5582d651=""
-            disabled=""
-          >
-            tutor.documentsStep.action → 
-          </button>
-        </div>
+          tutor.start.no
+        </button>
       </div>
-      
-    </section>
-    
-    
-    <!--v-if-->
-    
-    
-    <!--v-if-->
-    
-    
-    <!--v-if-->
+    </div>
     
     
   </div>

@@ -56,6 +56,87 @@ describe('tutor store', () => {
     });
   });
 
+  describe('new flow: path, syllabus and teaching context', () => {
+    const syllabusText = (text: string) => new File([text], 'syllabus.txt', { type: 'text/plain' });
+
+    it('starts on the chosen path, at its first screen', () => {
+      const store = useTutorStore();
+      store.setStep(3);
+      store.choosePath('existing');
+      expect(store.path).toBe('existing');
+      expect(store.step).toBe(1);
+    });
+
+    it('refuses a syllabus that is too big or of the wrong type', async () => {
+      const store = useTutorStore();
+      await store.setSyllabusFile(file('big.pdf', PDF, 6 * 1024 * 1024));
+      expect(store.fileError).toEqual({ state: true, reason: 'BIG_FILE' });
+      await store.setSyllabusFile(file('pic.png', 'image/png'));
+      expect(store.fileError).toEqual({ state: true, reason: 'BAD_EXTENSION' });
+      expect(store.syllabusFile).toBeNull();
+    });
+
+    it('keeps a pdf syllabus without reading anything from it', async () => {
+      const store = useTutorStore();
+      await store.setSyllabusFile(file('syllabus.pdf'));
+      expect(store.syllabusFile?.name).toBe('syllabus.pdf');
+      expect(store.prefilled).toEqual([]);
+      expect(store.hasStartedCourse).toBe(true);
+    });
+
+    it('fills in what a text syllabus states, without overwriting the teacher', async () => {
+      const store = useTutorStore();
+      store.updateContext('sessionLength', 2);
+      await store.setSyllabusFile(syllabusText('12 sessions of 3 hours'));
+      expect(store.teachingContext.sessions).toBe(12);
+      expect(store.teachingContext.sessionLength).toBe(2);
+      expect(store.prefilled).toEqual(['sessions']);
+    });
+
+    it('treats a changed value as the teacher’s own', async () => {
+      const store = useTutorStore();
+      await store.setSyllabusFile(syllabusText('12 sessions of 3 hours'));
+      store.updateContext('sessions', 10);
+      expect(store.prefilled).toEqual(['sessionLength']);
+    });
+
+    it('removes what was read when the syllabus is removed, keeps what the teacher gave', async () => {
+      const store = useTutorStore();
+      store.updateContext('title', 'Macroeconomics');
+      await store.setSyllabusFile(syllabusText('12 sessions of 3 hours'));
+      store.removeSyllabusFile();
+      expect(store.syllabusFile).toBeNull();
+      expect(store.teachingContext.sessions).toBeNull();
+      expect(store.teachingContext.sessionLength).toBeNull();
+      expect(store.teachingContext.title).toBe('Macroeconomics');
+      expect(store.prefilled).toEqual([]);
+    });
+
+    it('reads nothing when a text syllabus cannot be read', async () => {
+      const store = useTutorStore();
+      vi.spyOn(FileReader.prototype, 'readAsText').mockImplementation(function (this: FileReader) {
+        this.onerror?.(new ProgressEvent('error') as ProgressEvent<FileReader>);
+      });
+      await store.setSyllabusFile(syllabusText('12 sessions of 3 hours'));
+      expect(store.syllabusFile?.name).toBe('syllabus.txt');
+      expect(store.prefilled).toEqual([]);
+    });
+
+    it('discards everything when the path is changed', async () => {
+      const store = useTutorStore();
+      store.choosePath('existing');
+      await store.setSyllabusFile(syllabusText('12 sessions of 3 hours'));
+      store.updateContext('level', 'l1');
+      store.goNext();
+      store.resetCourse();
+      expect(store.path).toBeNull();
+      expect(store.step).toBe(1);
+      expect(store.syllabusFile).toBeNull();
+      expect(store.teachingContext.level).toBe('');
+      expect(store.hasStartedCourse).toBe(false);
+    });
+  });
+
   describe('files', () => {
     it('adds pdf, text and docx files', () => {
       const store = useTutorStore();
