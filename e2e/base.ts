@@ -95,7 +95,14 @@ export const test = base.extend<Fixtures>({
       }
     });
 
+    // analytics is off in test mode; never let a stray call reach mixpanel
+    await page.route('**/*.mixpanel.com/**', async (route) => {
+      await route.fulfill({ status: 200, body: '1' });
+    });
+
     await page.goto(startUrl);
+    // Refuse analytics first: the banner sits above the welcome modal
+    await page.getByTestId('consent-refuse').click();
     // Close the welcome modal
     await page.getByTestId('consent-checkbox').check();
     await page.getByTestId('welcome-action').click();

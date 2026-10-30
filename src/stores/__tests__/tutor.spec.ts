@@ -5,6 +5,7 @@ import { useTutorStore } from '../tutor';
 import { basePostAxios } from '@/utils/fetch';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import type { Document, TutorSearch } from '@/types';
+import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   basePostAxios: vi.fn()
@@ -14,6 +15,8 @@ vi.mock('@/utils/md-to-docx', () => ({
   convertMarkdownToDocx: vi.fn(),
   downloadDocx: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 type PostResult = Awaited<ReturnType<typeof basePostAxios>>;
 const mockPost = (value: unknown) =>
@@ -553,6 +556,107 @@ describe('tutor store', () => {
       expect(store.feedbackHistory).toEqual([]);
       expect(store.hasSearchError).toBe(false);
       expect(store.fileError).toEqual({ state: false, reason: null });
+    });
+  });
+
+  describe('analytics', () => {
+    it('tracks the files step with counts only', async () => {
+      mockPost({ status: 200, data: { extracts: [{ summary: 's1' }, { summary: 's2' }] } });
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf', PDF, 2048), file('b.docx', DOCX, 1024)]);
+
+      await store.handleSummaryFiles();
+
+      expect(track).toHaveBeenCalledWith('Tutor Step Completed', {
+        step: 1,
+        durationMs: expect.any(Number),
+        filesCount: 2,
+        fileTypes: [PDF, DOCX],
+        totalSizeKb: 3
+      });
+    });
+
+    it('tracks a failed files step', async () => {
+      mockPostError(new Error('boom'));
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf')]);
+
+      await store.handleSummaryFiles();
+
+      expect(track).toHaveBeenCalledWith('Tutor Step Failed', {
+        step: 1,
+        durationMs: expect.any(Number)
+      });
+    });
+
+    it('tracks the search step and its failure', async () => {
+      mockPost({ status: 200, data: search([doc('1'), doc('2')]) });
+      const store = useTutorStore();
+
+      await store.retrieveTutorSearch();
+      mockPostError(new Error('boom'));
+      await store.retrieveTutorSearch();
+
+      expect(track).toHaveBeenCalledWith('Tutor Step Completed', {
+        step: 2,
+        durationMs: expect.any(Number),
+        sourcesCount: 2
+      });
+      expect(track).toHaveBeenCalledWith('Tutor Step Failed', {
+        step: 2,
+        durationMs: expect.any(Number)
+      });
+    });
+
+    it('tracks the syllabus step and its failure', async () => {
+      mockPost({ data: { syllabus: [pedagogical] } });
+      const store = useTutorStore();
+      store.tutorSearch = search([doc('1')]);
+
+      await store.handleCreateSyllabus();
+      mockPostError(new Error('boom'));
+      await store.handleCreateSyllabus();
+
+      expect(track).toHaveBeenCalledWith('Tutor Step Completed', {
+        step: 3,
+        durationMs: expect.any(Number),
+        sourcesCount: 1
+      });
+      expect(track).toHaveBeenCalledWith('Tutor Step Failed', {
+        step: 3,
+        durationMs: expect.any(Number)
+      });
+    });
+
+    it('tracks the feedback length, never its text', async () => {
+      mockPost({ data: { syllabus: [{ source: 'agent', content: 'new' }] } });
+      mockPostError(new Error('boom'));
+      const store = useTutorStore();
+      store.tutorSearch = search();
+      store.syllabi = { source: 'agent', content: 'old' };
+
+      await store.giveFeedback('shorter');
+      await store.giveFeedback('shorter');
+
+      expect(track).toHaveBeenCalledWith('Syllabus Feedback Sent', {
+        feedbackLength: 7,
+        isApplied: true
+      });
+      expect(track).toHaveBeenCalledWith('Syllabus Feedback Sent', {
+        feedbackLength: 7,
+        isApplied: false
+      });
+      expect(JSON.stringify(vi.mocked(track).mock.calls)).not.toContain('shorter');
+    });
+
+    it('tracks the download', async () => {
+      mockPost({});
+      const store = useTutorStore();
+      store.syllabi = { source: 'agent', content: '# Course' };
+
+      await store.handleDownloadSyllabus();
+
+      expect(track).toHaveBeenCalledWith('Syllabus Downloaded', {});
     });
   });
 });

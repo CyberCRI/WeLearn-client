@@ -6,6 +6,7 @@ import { type Ref, ref } from 'vue';
 import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
+import { track } from '@/utils/analytics';
 
 const MAX_FILES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
@@ -139,6 +140,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const retrieveTutorSearch = async () => {
     setStep(2);
     const { signal } = startRequest();
+    const startedAt = Date.now();
 
     try {
       const resp = await basePostAxios(
@@ -154,9 +156,15 @@ export const useTutorStore = defineStore('tutor', () => {
       hasSearchError.value = false;
       isLoading.value = false;
       setStep(3);
+      track('Tutor Step Completed', {
+        step: 2,
+        durationMs: Date.now() - startedAt,
+        sourcesCount: resp.data.documents?.length ?? 0
+      });
     } catch (error: any) {
       if (axios.isCancel(error)) return;
       console.error('Error during tutor search:', error);
+      track('Tutor Step Failed', { step: 2, durationMs: Date.now() - startedAt });
       hasSearchError.value = true;
       shouldRetryAction.value = true;
       if (error.code === 'ERR_NETWORK') {
@@ -192,14 +200,23 @@ export const useTutorStore = defineStore('tutor', () => {
     }
 
     tutorSearch.value = undefined;
+    const startedAt = Date.now();
     try {
       await getFilesContent(arg);
       searchedFiles.value = arg;
       goNext();
+      track('Tutor Step Completed', {
+        step: 1,
+        durationMs: Date.now() - startedAt,
+        filesCount: arg.length,
+        fileTypes: [...new Set(arg.map((file) => file.type))],
+        totalSizeKb: Math.round(arg.reduce((total, file) => total + file.size, 0) / 1024)
+      });
     } catch (error) {
       if (axios.isCancel(error)) return;
       console.error('get files content did not work', error);
       shouldRetryAction.value = true;
+      track('Tutor Step Failed', { step: 1, durationMs: Date.now() - startedAt });
     }
   };
 
@@ -229,6 +246,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
   const retrieveSyllabus = async (): Promise<boolean> => {
     const { signal } = startRequest();
+    const startedAt = Date.now();
     try {
       const resp = await basePostAxios(
         `/tutor/syllabus?lang=${syllabusLanguage.value}`,
@@ -252,10 +270,16 @@ export const useTutorStore = defineStore('tutor', () => {
       )[0];
       syllabi.value = syllabus && { ...syllabus, content: cleanSyllabus(syllabus.content) };
       isLoading.value = false;
+      track('Tutor Step Completed', {
+        step: 3,
+        durationMs: Date.now() - startedAt,
+        sourcesCount: documentsToUse().length
+      });
       return true;
     } catch (error) {
       if (axios.isCancel(error)) return false;
       console.error('Error during syllabus retrieval:', error);
+      track('Tutor Step Failed', { step: 3, durationMs: Date.now() - startedAt });
       shouldRetryAction.value = true;
       return false;
     }
@@ -298,10 +322,12 @@ export const useTutorStore = defineStore('tutor', () => {
       const syllabus = resp.data.syllabus[0];
       syllabi.value = { ...syllabus, content: cleanSyllabus(syllabus.content) };
       feedbackHistory.value.push(feedback);
+      track('Syllabus Feedback Sent', { feedbackLength: feedback.length, isApplied: true });
       return true;
     } catch (error) {
       if (axios.isCancel(error)) return undefined;
       console.error('Error during feedback submission:', error);
+      track('Syllabus Feedback Sent', { feedbackLength: feedback.length, isApplied: false });
       return false;
     } finally {
       isLoading.value = false;
@@ -315,6 +341,7 @@ export const useTutorStore = defineStore('tutor', () => {
     }
     const docxContent = await convertMarkdownToDocx(syllabi.value.content);
     downloadDocx(docxContent, 'syllabus.docx');
+    track('Syllabus Downloaded', {});
     try {
       await basePostAxios('/metric/syllabus_downloaded');
     } catch (error) {

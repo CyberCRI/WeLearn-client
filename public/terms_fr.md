@@ -43,6 +43,7 @@ Les traitements mis en œuvre sur la plateforme WeLearn poursuivent les finalit�
 - proposer des fonctionnalités d’aide à la recherche, au raisonnement et à la structuration de contenus à l’aide d’outils d’intelligence artificielle,
 - maintenir l'historique des conversations afin d'assurer la continuité de l'expérience utilisateur et d'améliorer la qualité des échanges,
 - recueillir des retours d’expérience afin d’améliorer la plateforme,
+- avec votre consentement, mesurer l’utilisation de la plateforme (statistiques d’audience et d’usage) afin de l’améliorer,
 - assurer la sécurité, l’intégrité et le bon fonctionnement de la plateforme (par exemple, détection des abus et résolution des incidents).
 
 ---
@@ -152,6 +153,7 @@ Les traitements reposent :
 
 - sur l’intérêt légitime du Learning Planet Institute à proposer et améliorer un outil pédagogique non commercial,
 - pour le formulaire de retour d’expérience, sur le consentement des personnes concernées,
+- pour la mesure d’utilisation, sur le consentement des personnes concernées, recueilli via le bandeau affiché lors de votre première visite,
 - et, le cas échéant, sur des bases légales supplémentaires décrites dans les notices d’information spécifiques aux événements ponctuels (y compris, le cas échéant, le consentement pour un usage optionnel à des fins de recherche).
 
 ---
@@ -161,6 +163,8 @@ Les traitements reposent :
 Les données personnelles sont traitées exclusivement par le responsable de traitement, à savoir le Learning Planet Institute.
 
 Elles ne font l’objet d’aucune communication à des tiers, ni d’aucun partage à des fins commerciales.
+
+Si vous consentez à la mesure d’utilisation, les données d’usage sont traitées pour notre compte par **Mixpanel Inc.**, en qualité de sous-traitant, dans le cadre d’un accord de traitement des données (article 28 du RGPD). Ces données sont stockées dans les centres de données de Mixpanel situés dans l’Union européenne. Mixpanel Inc. étant une société américaine, tout transfert hors de l’Union européenne est encadré par le Data Privacy Framework UE–États-Unis et par les clauses contractuelles types de la Commission européenne prévues dans l’accord de traitement de Mixpanel.
 
 ---
 
@@ -180,6 +184,7 @@ Pour les événements ponctuels, des garanties supplémentaires peuvent être ap
 
 Les données issues du formulaire de retour d’expérience sont conservées pendant une durée maximale de 24 mois, à des fins d’analyse et d’amélioration de la plateforme, puis supprimées ou anonymisées.
 Les données traitées de manière transitoire (recherche, documents téléversés) ne sont pas conservées.
+Les données de mesure d’utilisation sont conservées au maximum 25 mois pour les événements et 30 jours pour les enregistrements de session ; les identifiants déposés sur votre appareil expirent au plus tard après 13 mois. Votre choix de consentement vous est redemandé tous les 6 mois.
 Les données issues du chat (messages, réponses générées et horodatages) sont conservées jusqu'à la suppression de la conversation par l'utilisateur, puis définitivement effacées.
 Pour les événements ponctuels où des journaux d’interaction pseudonymisés sont collectés, la durée de conservation applicable est précisée dans la notice d’information spécifique à l’événement. Cela inclut (le cas échéant) les règles de conservation relatives aux données d’inscription/participation et aux journaux d’interaction de la plateforme collectés pendant l’événement.
 
@@ -210,11 +215,18 @@ Si vous avez participé à un événement ponctuel, il pourra vous être demand�
 
 ### **11\. Gestion des cookies**
 
-La plateforme WeLearn utilise uniquement des cookies strictement nécessaires à son fonctionnement (cookies fonctionnels).
+La plateforme WeLearn utilise des cookies et des traceurs similaires (stockage local du navigateur) strictement nécessaires à son fonctionnement, comme votre session, votre langue et vos préférences d’affichage. Conformément à la réglementation en vigueur, ils ne nécessitent pas votre consentement.
 
-Ces cookies sont indispensables au bon fonctionnement du site et ne nécessitent pas le recueil de votre consentement, conformément à la réglementation en vigueur.
+**Mesure d’utilisation (Mixpanel), uniquement avec votre consentement.** Lors de votre première visite, un bandeau vous permet d’accepter ou de refuser la mesure d’utilisation, aussi simplement l’un que l’autre. Rien n’est envoyé à Mixpanel et aucun identifiant de mesure n’est déposé avant votre acceptation. Si vous acceptez :
 
-Aucun cookie publicitaire ou de suivi à des fins commerciales n’est utilisé.
+- nous enregistrons les pages visitées et les fonctionnalités utilisées (par exemple : une question envoyée, une étape du syllabus terminée, une ressource ajoutée aux favoris), uniquement sous forme de nombres et de durées. **Nous n’enregistrons jamais le texte de vos questions, vos documents téléversés, vos syllabus ni vos retours** ;
+- si vous êtes connecté·e, ces événements sont associés à votre identifiant utilisateur WeLearn aléatoire, jamais à votre nom ni à votre adresse e-mail ;
+- votre adresse IP n’est pas utilisée pour vous localiser ;
+- une petite partie des sessions peut être enregistrée afin de comprendre l’usage de l’interface (enregistrement de session et cartes de chaleur). Dans ces enregistrements, **tous les textes et tous les champs de saisie sont masqués**, et les images et fichiers téléversés sont cachés ;
+- Mixpanel dépose des identifiants dans le stockage local de votre navigateur (clés commençant par `mp_` et `__mp_opt_in_out_`).
+
+Vous pouvez modifier votre choix à tout moment via le lien **Gestion des cookies** en bas de chaque page. Un refus n’a aucune incidence sur votre accès à la plateforme.
+Aucun cookie publicitaire n’est utilisé.
 
 ---
 

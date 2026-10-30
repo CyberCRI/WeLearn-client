@@ -358,6 +358,14 @@ export const en = {
     exportingBibliography: 'Exporting...'
   },
   terms: 'Privacy Policy',
+  consent: {
+    title: 'Help us improve WeLearn',
+    text: 'With your consent, we measure how WeLearn is used (pages visited, features used, masked session recordings) with Mixpanel, hosted in the EU. We never record your questions, your documents or your syllabi. You can change your choice at any time from the footer.',
+    policyLink: 'Learn more',
+    accept: 'Accept',
+    refuse: 'Refuse',
+    settings: 'Cookie settings'
+  },
   subjects: {
     Anthropology: 'Anthropology',
     Arts: 'Arts',

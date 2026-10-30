@@ -7,6 +7,7 @@ import {
   getBookmarks as getAllBookmarks,
   deleteAllBookmarks
 } from '@/utils/fetch';
+import { track } from '@/utils/analytics';
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
   const sourcesBookmarked: Ref<Document[]> = ref([]);
@@ -20,6 +21,10 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       await postBookmark(source.payload.document_id);
       idsBookmarked.value.push(source.payload.document_id);
       hasChanged.value = true;
+      track('Bookmark Added', {
+        corpus: source.payload.document_corpus,
+        bookmarksCount: idsBookmarked.value.length
+      });
     } catch (error) {
       console.error('Failed to add bookmark:', error);
       return;
@@ -33,6 +38,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     idsBookmarked.value = idsBookmarked.value.filter((id) => id !== sourceId);
     await deleteBookmark(sourceId);
     hasChanged.value = true;
+    track('Bookmark Removed', { bookmarksCount: idsBookmarked.value.length });
   };
 
   const getBookmarks = async () => {

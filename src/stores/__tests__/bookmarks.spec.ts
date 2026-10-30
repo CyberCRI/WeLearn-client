@@ -4,6 +4,7 @@ import { flushPromises } from '@vue/test-utils';
 import { useBookmarksStore } from '../bookmarks';
 import { deleteAllBookmarks, deleteBookmark, getBookmarks, postBookmark } from '@/utils/fetch';
 import type { Document } from '@/types';
+import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   postBookmark: vi.fn(),
@@ -11,6 +12,8 @@ vi.mock('@/utils/fetch', () => ({
   deleteAllBookmarks: vi.fn(),
   getBookmarks: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 const doc = (id: string) => ({ payload: { document_id: id } }) as Document;
 
@@ -135,5 +138,25 @@ describe('bookmarks store', () => {
     expect(deleteAllBookmarks).toHaveBeenCalledOnce();
     expect(store.bookmarkedLength).toBe(0);
     expect(store.isBookmarked('doc-1')).toBe(false);
+  });
+
+  it('tracks added and removed bookmarks', async () => {
+    const store = useBookmarksStore();
+    const source = { payload: { document_id: 'doc-1', document_corpus: 'ted' } } as Document;
+
+    await store.addBookmark(source);
+    await store.removeBookmark('doc-1');
+
+    expect(track).toHaveBeenCalledWith('Bookmark Added', { corpus: 'ted', bookmarksCount: 1 });
+    expect(track).toHaveBeenCalledWith('Bookmark Removed', { bookmarksCount: 0 });
+  });
+
+  it('does not track a bookmark that failed', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(postBookmark).mockRejectedValue(new Error('boom'));
+
+    await useBookmarksStore().addBookmark(doc('doc-1'));
+
+    expect(track).not.toHaveBeenCalled();
   });
 });

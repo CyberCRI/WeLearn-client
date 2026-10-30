@@ -7,21 +7,20 @@ import App from './App.vue';
 import router from './router';
 import i18n from './localisation/i18n';
 import { useAuthStore } from './stores/auth';
+import { useUserStore } from './stores/user';
+import { initAnalytics, track } from './utils/analytics';
 
-//Import Mixpanel SDK (only required for npm and yarn)
-// import mixpanel from 'mixpanel-browser';
+// mixpanel only starts once the user accepts in the consent banner
+initAnalytics();
 
-// mixpanel.init(import.meta.env.VITE_MIXPANEL_TOKEN, {
-//   debug: import.meta.env.VITE_ENVIRONMENT === 'dev', // Enable debug mode for development
-//   track_pageview: true,
-//   persistence: 'localStorage',
-//   record_sessions_percent: 100, //records 100% of all sessions
-//   record_heatmap_data: true
-// });
 const pinia = createPinia();
 const app = createApp(App);
 
 app.use(pinia).use(router).use(i18n);
+
+useUserStore().applyAnalyticsConsent();
+// route name only: the full path can carry query params
+router.afterEach((to) => track('Page Viewed', { routeName: String(to.name ?? 'unknown') }));
 
 const authStore = useAuthStore();
 

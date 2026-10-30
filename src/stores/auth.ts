@@ -7,6 +7,7 @@ import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { basePostAxios } from '@/utils/fetch';
 import { useUserStore } from '@/stores/user';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
+import { resetAnalytics, track } from '@/utils/analytics';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
 import type { UserRegisterData } from '@/types';
 
@@ -52,7 +53,10 @@ export const useAuthStore = defineStore('auth', () => {
         tokenParsed.value = keycloak.tokenParsed;
         roles.value = keycloak.realmAccess?.roles || [];
         user.value = profileFromIdToken();
-        if (isBackFromLogin) applyKeycloakLocale();
+        if (isBackFromLogin) {
+          applyKeycloakLocale();
+          track('Logged In', {});
+        }
 
         startTokenRefresh();
       }
@@ -90,6 +94,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function login(redirectUri?: string): void {
+    track('Login Clicked', {});
     saveToStorage(LOGIN_PENDING_KEY, true);
     keycloak.login({
       redirectUri: redirectUri || window.location.origin,
@@ -98,6 +103,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout(): void {
+    track('Logged Out', {});
+    resetAnalytics();
     keycloak.logout({
       redirectUri: window.location.origin
     });
