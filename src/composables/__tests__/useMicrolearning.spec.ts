@@ -4,6 +4,7 @@ import { useMicrolearning } from '../useMicrolearning';
 import { basePostAxios } from '@/utils/fetch';
 import { flushPromises } from '@vue/test-utils';
 import { ScreensEnum } from '@/types/microlearning';
+import { track } from '@/utils/analytics';
 
 // one route per test, so a test can change the query like a browser back/forward would
 const routing = vi.hoisted(() => ({
@@ -19,6 +20,8 @@ vi.mock('vue-router', () => ({
 vi.mock('@/utils/fetch', () => ({
   basePostAxios: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 describe('useMicrolearning form answers', () => {
   beforeEach(() => {
@@ -149,6 +152,30 @@ describe('useMicrolearning form answers', () => {
       await flushPromises();
 
       expect(basePostAxios).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('analytics', () => {
+    it('tracks the start, each step and the end of a trail', () => {
+      const { selectDiscipline, startTrail, nextStep, postAnswers, goToComplete } =
+        useMicrolearning();
+      selectDiscipline('math');
+
+      startTrail();
+      nextStep();
+      postAnswers.confidence = 5;
+      goToComplete();
+
+      expect(track).toHaveBeenCalledWith('Microlearning Started', { discipline: 'math' });
+      expect(track).toHaveBeenCalledWith('Microlearning Step Completed', {
+        discipline: 'math',
+        stepIndex: 0
+      });
+      expect(track).toHaveBeenCalledWith('Microlearning Completed', {
+        discipline: 'math',
+        hasPreEval: false,
+        hasPostEval: true
+      });
     });
   });
 

@@ -7,6 +7,7 @@ import { RELEVANCE_FACTOR } from '@/utils/constants';
 import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
+import { track } from '@/utils/analytics';
 
 const MIN_SEARCH_WORDS = 5;
 const MIN_SEARCH_CHARS = 50;
@@ -39,6 +40,11 @@ export const useSearchStore = defineStore('search', () => {
       return;
     }
     const { sdgFilters, sourcesFilters, languageFilters } = useFiltersStore();
+    const searchMetrics = {
+      queryLength: searchInput.value.length,
+      sdgFilterCount: sdgFilters.length,
+      corpusFilterCount: sourcesFilters.length
+    };
     setFetchingSourcesState();
 
     try {
@@ -73,10 +79,23 @@ export const useSearchStore = defineStore('search', () => {
       if (status === 204) {
         displayNoResult.value = true;
       }
+      track('Search Performed', {
+        ...searchMetrics,
+        resultsCount: searchResults.value.length,
+        sdgCount: sdgsFromQuery.length,
+        hasError: false
+      });
     } catch (error: unknown) {
       setSourcesError();
       const currError = error as ErrorDetails;
       errorCode.value = currError.response?.data?.detail?.code || 'UNKNOWN_ERROR';
+      track('Search Performed', {
+        ...searchMetrics,
+        resultsCount: 0,
+        sdgCount: 0,
+        hasError: true,
+        errorCode: errorCode.value
+      });
     }
   };
 

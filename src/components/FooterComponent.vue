@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useUserStore } from '@/stores/user';
+
+const user = useUserStore();
+</script>
+
 <template>
   <div class="footer-wrapper">
     <div>
@@ -7,6 +13,15 @@
       <router-link class="terms" to="/terms">
         <span class="item-name">{{ $t('terms') }}</span>
       </router-link>
+    </div>
+    <div>
+      <a
+        class="consent-settings"
+        href="#"
+        data-testid="consent-settings"
+        @click.prevent="user.reviewAnalyticsConsent"
+        >{{ $t('consent.settings') }}</a
+      >
     </div>
   </div>
 </template>
@@ -26,7 +41,8 @@ a {
   cursor: pointer;
 }
 
-.contact {
+.contact,
+.terms {
   margin-right: 1rem;
   padding-right: 1rem;
   border-right: 1px solid var(--neutral-70);
@@ -43,7 +59,8 @@ a:hover {
     font-size: 0.8rem;
   }
 
-  .contact {
+  .contact,
+  .terms {
     margin-right: 0.5rem;
     padding-right: 0.5rem;
   }

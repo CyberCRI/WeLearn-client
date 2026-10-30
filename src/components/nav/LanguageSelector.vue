@@ -9,9 +9,13 @@
 </template>
 
 <script setup lang="ts">
+import { setAnalyticsProperties, track } from '@/utils/analytics';
+
 const storeLanguage = (e: Event) => {
   const lang = (e.target as HTMLSelectElement).value;
+  track('Language Changed', { language: lang });
   localStorage.setItem('language', lang);
+  setAnalyticsProperties({ language: lang });
 };
 </script>
 

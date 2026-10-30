@@ -82,6 +82,7 @@ The nav entries are gated by `featureFlip` store flags.
 
 - **API calls:** always go through `@/utils/fetch` (`baseGetAxios`, `basePostAxios`, `baseDeleteAxios`) or the `http` axios instance in `utils/api.ts`. These already add the `X-API-Key`, `X-Session-Id` and Bearer token, refresh the token and log out on 401. Use `fetchStream` only for streaming endpoints. Don't call `fetch`/`axios` directly for the WeLearn API.
 - **Store pattern:** async actions live in the store. Track state with `isLoading`, error flags such as `hasXError` / `shouldRetryAction` and an `errorCode` from `error.response.data.detail.code`. Stores expose `$reset()` when they persist state.
+- **Analytics:** track product events with `track('Event Name', props)` from `@/utils/analytics`, never by importing `mixpanel-browser` directly. Declare each event and its props in `AnalyticsEvents` (`src/types/index.ts`). Send only counts, lengths, enums and ids, never free text, file content, names or emails. When you add an event, update the Mixpanel section of `public/terms_*.md` if the kind of data changes.
 - **Persistence:** use `saveToStorage` / `getFromStorage` / `clearFromStorage` from `utils/storage.ts`, which handle JSON for you. Stores that survive a reload initialize from storage (`ref(getFromStorage('chat') || [])`).
 - **i18n:** every user-facing string goes in **both** `localisation/en.ts` and `localisation/fr.ts`. A unit test (`localisation/__tests__/langs.spec.ts`) fails if their top-level keys differ. In templates use `$t('key')`. In TS use `i18n.global.t`. French is the default locale (`?lang=` or localStorage `language` overrides it).
 - **Comments:** comments are short, lowercase and explain _why_. A `// ponytail:` comment marks a deliberate shortcut or trade-off (for example "kept for a future rewrite" or "native checkbox for the visual only"). Read it before "fixing" that code, and use the same tag when you knowingly take a shortcut.
@@ -136,4 +137,4 @@ The nav entries are gated by `featureFlip` store flags.
 
 - `stores/microlearning/data.ts` is about 4k lines of static FR/EN content. Never edit this file.
 - `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
-- Mixpanel init in `main.ts` is commented out on purpose.
+- Mixpanel only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts.

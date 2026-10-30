@@ -4,11 +4,14 @@ import { CHAT_STATUS, useChatStore } from '../chat';
 import { useFiltersStore } from '../filters';
 import { baseGetAxios, fetchStream } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
+import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   baseGetAxios: vi.fn(),
   fetchStream: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 type StreamBody = Awaited<ReturnType<typeof fetchStream>>;
 
@@ -40,6 +43,7 @@ describe('chat store', () => {
   afterEach(() => {
     vi.mocked(fetchStream).mockReset();
     vi.mocked(baseGetAxios).mockReset();
+    vi.mocked(track).mockReset();
     vi.restoreAllMocks();
   });
 
@@ -326,6 +330,38 @@ describe('chat store', () => {
 
       expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
       expect(store.hasChatAnswerError).toBe(true);
+    });
+
+    it('tracks the question without its text, then the answer', async () => {
+      localStorage.setItem('chatThreadId', 'thread-0');
+      mockStream([sse({ content: 'Hello' })]);
+      useFiltersStore().sdgFilters = [13, 14];
+      const store = useChatStore();
+
+      await store.onSendMessage('a question', true);
+
+      expect(track).toHaveBeenCalledWith('Chat Question Sent', {
+        queryLength: 10,
+        isFollowUp: true,
+        isSuggestedQuestion: true,
+        sdgFilterCount: 2,
+        corpusFilterCount: 0
+      });
+      expect(track).toHaveBeenCalledWith('Chat Answer Received', {
+        durationMs: expect.any(Number),
+        sourcesCount: 0
+      });
+      expect(JSON.stringify(vi.mocked(track).mock.calls)).not.toContain('a question');
+    });
+
+    it('tracks a failed answer', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(fetchStream).mockRejectedValue(new Error('network'));
+
+      await useChatStore().onSendMessage('a question');
+
+      expect(track).toHaveBeenCalledWith('Chat Answer Failed', { durationMs: expect.any(Number) });
+      expect(track).not.toHaveBeenCalledWith('Chat Answer Received', expect.anything());
     });
   });
 

@@ -4,11 +4,14 @@ import { useSearchStore } from '../search';
 import { useFiltersStore } from '../filters';
 import { getSDGsFromQuery, getSearch } from '@/utils/fetch';
 import { RELEVANCE_FACTOR } from '@/utils/constants';
+import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   getSearch: vi.fn(),
   getSDGsFromQuery: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 // 6 words, under 50 characters
 const VALID_QUERY = 'how do forests store carbon dioxide';
@@ -188,5 +191,44 @@ describe('search store', () => {
     expect(store.sdgsQuery).toEqual([]);
     expect(localStorage.getItem('searchInput')).toBeNull();
     expect(localStorage.getItem('searchResults')).toBeNull();
+  });
+
+  describe('analytics', () => {
+    afterEach(() => {
+      vi.mocked(track).mockReset();
+    });
+
+    it('tracks a search without its text', async () => {
+      mockSearch(200);
+      useFiltersStore().sdgFilters = [13];
+      const store = useSearchStore();
+      store.searchInput = VALID_QUERY;
+
+      await store.fetchSources();
+
+      expect(track).toHaveBeenCalledWith('Search Performed', {
+        queryLength: VALID_QUERY.length,
+        sdgFilterCount: 1,
+        corpusFilterCount: 0,
+        resultsCount: 1,
+        sdgCount: 2,
+        hasError: false
+      });
+      expect(JSON.stringify(vi.mocked(track).mock.calls)).not.toContain('forests');
+    });
+
+    it('tracks a failed search with its error code', async () => {
+      vi.mocked(getSDGsFromQuery).mockResolvedValue([]);
+      vi.mocked(getSearch).mockRejectedValue(new Error('network'));
+      const store = useSearchStore();
+      store.searchInput = VALID_QUERY;
+
+      await store.fetchSources();
+
+      expect(track).toHaveBeenCalledWith(
+        'Search Performed',
+        expect.objectContaining({ hasError: true, errorCode: 'UNKNOWN_ERROR', resultsCount: 0 })
+      );
+    });
   });
 });

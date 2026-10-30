@@ -81,3 +81,58 @@ export type UserRegisterData = {
   lastName: string;
   email: string;
 };
+
+// device-level choice, stored with the date so it can be asked again
+export type AnalyticsConsent = {
+  status: 'granted' | 'denied';
+  date: string;
+};
+
+export type SourceOrigin = 'chat' | 'search' | 'tutor' | 'bookmarks' | 'other';
+
+// event name -> props. Only counts, lengths, enums and ids: never free text or document content
+export type AnalyticsEvents = {
+  'Page Viewed': { routeName: string };
+  'Analytics Consent': { granted: true };
+  'Chat Question Sent': {
+    queryLength: number;
+    isFollowUp: boolean;
+    isSuggestedQuestion: boolean;
+    sdgFilterCount: number;
+    corpusFilterCount: number;
+  };
+  'Chat Answer Received': { durationMs: number; sourcesCount: number };
+  'Chat Answer Failed': { durationMs: number };
+  'Chat Reset': Record<string, never>;
+  'Source Opened': { origin: SourceOrigin };
+  'Search Performed': {
+    queryLength: number;
+    resultsCount: number;
+    sdgCount: number;
+    sdgFilterCount: number;
+    corpusFilterCount: number;
+    hasError: boolean;
+    errorCode?: string;
+  };
+  'Tutor Step Completed': {
+    step: number;
+    durationMs: number;
+    filesCount?: number;
+    fileTypes?: string[];
+    totalSizeKb?: number;
+    sourcesCount?: number;
+  };
+  'Tutor Step Failed': { step: number; durationMs: number };
+  'Syllabus Feedback Sent': { feedbackLength: number; isApplied: boolean };
+  'Syllabus Downloaded': Record<string, never>;
+  'Bookmark Added': { corpus: string; bookmarksCount: number };
+  'Bookmark Removed': { bookmarksCount: number };
+  'Bibliography Exported': { count: number };
+  'Microlearning Started': { discipline: string };
+  'Microlearning Step Completed': { discipline: string; stepIndex: number };
+  'Microlearning Completed': { discipline: string; hasPreEval: boolean; hasPostEval: boolean };
+  'Login Clicked': Record<string, never>;
+  'Logged In': Record<string, never>;
+  'Logged Out': Record<string, never>;
+  'Language Changed': { language: string };
+};

@@ -10,6 +10,7 @@ import Loading from '@/components/LoadingComponent.vue';
 import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import DeleteButton from '@/components/DeleteButton.vue';
 import ModalComponent from '@/components/ModalComponent.vue';
+import { track } from '@/utils/analytics';
 
 const store = useChatStore();
 
@@ -24,6 +25,7 @@ const scrollToSources = () =>
 const confirmClear = ref(false);
 const clearChat = () => {
   store.$reset();
+  track('Chat Reset', {});
   confirmClear.value = false;
 };
 </script>
@@ -89,7 +91,7 @@ const clearChat = () => {
               $t(`defaultQueues[${store.questionNumbers[0]}]`),
               $t(`defaultQueues[${store.questionNumbers[1]}]`)
             ]"
-            :action="(content: string) => store.onSendMessage(content)"
+            :action="(content: string) => store.onSendMessage(content, true)"
           />
         </div>
       </template>

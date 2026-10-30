@@ -1,6 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LanguageSelector from '../LanguageSelector.vue';
+import { setAnalyticsProperties, track } from '@/utils/analytics';
+
+vi.mock('@/utils/analytics', () => ({ setAnalyticsProperties: vi.fn(), track: vi.fn() }));
 
 describe('LanguageSelector', () => {
   beforeEach(() => {
@@ -21,5 +24,7 @@ describe('LanguageSelector', () => {
 
     expect(i18n.locale).toBe('en');
     expect(localStorage.getItem('language')).toBe('en');
+    expect(track).toHaveBeenCalledWith('Language Changed', { language: 'en' });
+    expect(setAnalyticsProperties).toHaveBeenCalledWith({ language: 'en' });
   });
 });

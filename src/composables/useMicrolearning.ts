@@ -15,6 +15,7 @@ import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 import { getFromStorage, saveToStorage } from '@/utils/storage';
 import { calculateProgress } from '@/utils/progress';
+import { track } from '@/utils/analytics';
 
 export function useMicrolearning() {
   const route = useRoute();
@@ -148,6 +149,7 @@ export function useMicrolearning() {
   function startTrail() {
     step.value = 0;
     screen.value = ScreensEnum.trail;
+    track('Microlearning Started', { discipline: current_disc.value?.id ?? 'unknown' });
     if (hasAnswers(preAnswers)) {
       registerFormAnswer(preAnswers, `${current_disc.value?.id}_microlearning_pre`);
     }
@@ -155,6 +157,10 @@ export function useMicrolearning() {
 
   function nextStep() {
     if (!currentData.value) return;
+    track('Microlearning Step Completed', {
+      discipline: current_disc.value?.id ?? 'unknown',
+      stepIndex: step.value
+    });
 
     // Post form already answered for this discipline: go straight to the end
     if (isLastStep.value) {
@@ -167,6 +173,11 @@ export function useMicrolearning() {
 
   function goToComplete() {
     screen.value = ScreensEnum.complete;
+    track('Microlearning Completed', {
+      discipline: current_disc.value?.id ?? 'unknown',
+      hasPreEval: hasAnswers(preAnswers),
+      hasPostEval: hasAnswers(postAnswers)
+    });
     if (hasAnswers(postAnswers)) {
       registerFormAnswer(postAnswers, `${current_disc.value?.id}_microlearning_post`);
     }

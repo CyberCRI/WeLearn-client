@@ -3,6 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import { useAuthStore } from '../auth';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
+import { resetAnalytics, track } from '@/utils/analytics';
 
 const { env, keycloak } = vi.hoisted(() => ({
   env: { hasAuth: true },
@@ -32,6 +33,7 @@ const { syncUserId } = vi.hoisted(() => ({ syncUserId: vi.fn() }));
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 vi.mock('@/stores/user', () => ({ useUserStore: () => ({ syncUserId }) }));
+vi.mock('@/utils/analytics', () => ({ resetAnalytics: vi.fn(), track: vi.fn() }));
 
 const authenticate = () => {
   keycloak.init.mockResolvedValue(true);
@@ -118,6 +120,7 @@ describe('auth store', () => {
       expect(i18n.global.locale.value).toBe('en');
       expect(localStorage.getItem('language')).toBe('en');
       expect(localStorage.getItem('loginPending')).toBeNull();
+      expect(track).toHaveBeenCalledWith('Logged In', {});
     });
 
     it('keeps the app language on a reload', async () => {
@@ -239,6 +242,7 @@ describe('auth store', () => {
         locale: 'en'
       });
       expect(localStorage.getItem('loginPending')).toBe('true');
+      expect(track).toHaveBeenCalledWith('Login Clicked', {});
 
       store.login();
       expect(keycloak.login).toHaveBeenLastCalledWith({
@@ -251,6 +255,8 @@ describe('auth store', () => {
       useAuthStore().logout();
 
       expect(keycloak.logout).toHaveBeenCalledWith({ redirectUri: window.location.origin });
+      expect(track).toHaveBeenCalledWith('Logged Out', {});
+      expect(resetAnalytics).toHaveBeenCalled();
     });
   });
 

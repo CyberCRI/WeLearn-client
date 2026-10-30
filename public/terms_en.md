@@ -37,6 +37,7 @@ The processing carried out on the WeLearn platform pursues the following purpose
 - offering features that support research, reasoning, and content structuring through artificial intelligence tools,
 - maintain a conversation history to ensure a consistent user experience and improve the quality of interactions,
 - collecting feedback in order to improve the platform,
+- with your consent, measuring how the platform is used (audience and usage statistics) in order to improve it,
 - ensuring the security, integrity, and proper functioning of the platform (for example, detecting abuse and troubleshooting).
 
 ---
@@ -144,6 +145,7 @@ Processing is based on:
 
 - the legitimate interest of the Learning Planet Institute in offering and improving a non-commercial educational tool,
 - for the feedback form, on the consent of the data subjects,
+- for usage measurement (analytics), on the consent of the data subjects, collected through the banner shown on your first visit,
 - and, where applicable, on additional legal bases described in event-specific information notices for one-off events (including, where appropriate, consent for optional research use).
 
 ---
@@ -153,6 +155,8 @@ Processing is based on:
 Personal data is processed **by authorised staff of the data controller** (Learning Planet Institute).
 
 It is not disclosed to any third parties and is not shared for commercial purposes.
+
+If you consent to usage measurement, usage data is processed on our behalf by **Mixpanel Inc.**, acting as a processor under a data processing agreement (article 28 GDPR). This data is stored in Mixpanel's European Union data centres. Mixpanel Inc. is a United States company: any transfer outside the European Union is covered by the EU-US Data Privacy Framework and by the Standard Contractual Clauses of the European Commission included in Mixpanel's data processing agreement.
 
 ---
 
@@ -172,6 +176,7 @@ For one-off events, additional safeguards may be applied as described in the eve
 Data collected through the feedback form is retained for a maximum period of 24 months for the purposes of analysis and platform improvement, after which it is deleted or anonymized.
 
 Data processed on a temporary basis (searches, uploaded documents) is not retained.
+Usage measurement data (events and session recordings) is retained for a maximum of 25 months for events and 30 days for session recordings, and the identifiers stored on your device expire after at most 13 months. Your consent choice is asked again every 6 months.
 Data from the chat (inputs, responses and timestamps) is retained until the user deletes the conversation, after which it is permanently deleted.
 For one-off events where pseudonymous interaction logs are collected, the applicable retention period is specified in the event-specific information notice. This includes (as applicable) retention rules for registration/participation data and for platform interaction logs collected during the event.
 
@@ -203,9 +208,18 @@ If you participated in a one-off event, you may be asked to provide your random 
 
 ### **11\. Cookie management**
 
-The WeLearn platform uses only cookies that are strictly necessary for its operation (functional cookies).
-These cookies are essential for the proper functioning of the site and do not require your consent, in accordance with applicable regulations.
-No advertising or tracking cookies for commercial purposes are used.
+The WeLearn platform uses cookies and similar storage (browser local storage) that are strictly necessary for its operation, such as your session, language and display preferences. These do not require your consent, in accordance with applicable regulations.
+
+**Usage measurement (Mixpanel), only with your consent.** When you first visit WeLearn, a banner lets you accept or refuse usage measurement, with equal ease. Nothing is sent to Mixpanel and no measurement identifier is stored before you accept. If you accept:
+
+- we record which pages you visit and which features you use (for example: a question was sent, a syllabus step was completed, a resource was bookmarked), with counts and durations only. **We never record the text of your questions, your uploaded documents, your syllabi or your feedback**;
+- if you are logged in, these events are linked to your random WeLearn user identifier, never to your name or email address;
+- your IP address is not used to locate you;
+- a small share of sessions may be recorded to understand how the interface is used (session replay and heatmaps). In these recordings **all text and every input field are masked**, and images and uploaded files are hidden;
+- Mixpanel stores identifiers in your browser's local storage (keys starting with `mp_` and `__mp_opt_in_out_`).
+
+You can change your choice at any time with the **Cookie settings** link at the bottom of every page. Refusing has no impact on your access to the platform.
+No advertising cookies are used.
 
 ---
 
