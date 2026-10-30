@@ -1,18 +1,34 @@
 <script setup lang="ts">
 import { useChatStore } from '@/stores/chat';
 import SendIcon from './icons/SendIcon.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const store = useChatStore();
 const parent = ref<HTMLElement | null>(null);
-const props = defineProps<{ action: (arg: string) => void }>();
+// modelValue and placeholder are optional: without them the input is Ask WeLearn's (chat store);
+// the learner tutor passes its own draft so the two never share what is being typed
+const props = defineProps<{
+  action: (arg: string) => void;
+  modelValue?: string;
+  placeholder?: string;
+}>();
+const emit = defineEmits<{ 'update:modelValue': [value: string] }>();
+
+const draft = computed({
+  get: () => (props.modelValue === undefined ? store.chatInput : props.modelValue),
+  set: (value: string) => {
+    if (props.modelValue === undefined) store.chatInput = value;
+    else emit('update:modelValue', value);
+  }
+});
 
 const onSend = (value: string) => {
   if (value.replace(/(\r\n|\n|\r)/gm, '').trim().length === 0) {
     return;
   }
   props.action(value);
-  store.clearInput();
+  if (props.modelValue === undefined) store.clearInput();
+  else emit('update:modelValue', '');
 };
 </script>
 
@@ -23,14 +39,14 @@ const onSend = (value: string) => {
         class="chat-input"
         auto-grow
         type="text-area"
-        :placeholder="$t('chatInputPlaceholder')"
-        v-model="store.chatInput"
-        @keydown.enter.exact="[onSend(store.chatInput), $event.preventDefault()]"
-        @input="parent.dataset.replicatedValue = store.chatInput"
+        :placeholder="placeholder || $t('chatInputPlaceholder')"
+        v-model="draft"
+        @keydown.enter.exact="[onSend(draft), $event.preventDefault()]"
+        @input="parent.dataset.replicatedValue = draft"
       ></textarea>
     </div>
     <div class="action">
-      <SendIcon @click="onSend(store.chatInput)" />
+      <SendIcon @click="onSend(draft)" />
     </div>
   </div>
 </template>

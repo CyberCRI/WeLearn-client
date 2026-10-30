@@ -86,21 +86,21 @@ describe('TeachSpace', () => {
     }
   });
 
-  it('design: its own heading and intro, course design entry and the activity preview', () => {
+  it('design: its own heading and intro, course design and activity design entries', () => {
     const wrapper = mountSpace('design');
 
     expect(wrapper.find('h1').text()).toBe('journey.teach.spaces.design.pageTitle');
     expect(wrapper.find('h1 + p').text()).toBe('journey.teach.spaces.design.intro');
     expect(linksOf(wrapper).slice(1)).toEqual([
       { name: 'teach-course' },
-      { name: 'teach-preview', params: { space: 'design', module: 'activity' } }
+      { name: 'teach-activity' }
     ]);
-    // no "AI draft" badges on these cards; the activity keeps its "Preview" badge
+    // no "AI draft" badges on these cards; the activity is a real feature now, no "Preview" badge
     expect(wrapper.find('[data-testid="module-course"] [data-testid="ai-label"]').exists()).toBe(
       false
     );
     const activity = wrapper.find('[data-testid="module-activity"]');
-    expect(activity.text()).toContain('journey.teach.preview');
+    expect(activity.text()).not.toContain('journey.teach.preview');
     expect(activity.find('[data-testid="ai-label"]').exists()).toBe(false);
   });
 
@@ -189,7 +189,7 @@ describe('TeachPreview', () => {
 
   it('only exists for modules that are still being designed', () => {
     expect(isPreviewModule('understand', 'foundations')).toBe(true);
-    expect(isPreviewModule('design', 'activity')).toBe(true);
+    expect(isPreviewModule('design', 'activity')).toBe(false);
     expect(isPreviewModule('understand', 'discipline')).toBe(false);
     expect(isPreviewModule('design', 'course')).toBe(false);
     expect(isPreviewModule('design', 'foundations')).toBe(false);

@@ -66,6 +66,7 @@ export const journey = {
       yes: 'Yes, I have a course',
       no: "No, I'm starting from scratch",
       working: 'Working from an existing course',
+      workingNew: 'Creating a course from scratch',
       change: 'Change',
       changeWarning:
         'Changing will discard your syllabus and what you have reviewed so far in this tab.',
@@ -74,16 +75,291 @@ export const journey = {
       newCourse:
         'Planning a new course from scratch is still being designed. It is not available yet.'
     },
+    scratch: {
+      brief: {
+        title: 'Your course idea',
+        intro:
+          'A few words are enough. WeLearn proposes a course you can then keep, change or remove piece by piece.',
+        idea: 'What would you like to teach?',
+        ideaPlaceholder:
+          'For example: an introduction to environmental economics for first-year students',
+        disciplineLevel: 'Discipline and student level',
+        disciplineLevelPlaceholder: 'For example: Economics, first year of a bachelor’s degree',
+        format: 'Duration or format',
+        formatPlaceholder: 'For example: 10 sessions of 2 hours',
+        goals: 'Particular learning goals or sustainability interests',
+        goalsPlaceholder: 'For example: students should be able to read climate data critically',
+        optional: '(optional)',
+        notice: 'Your brief will be sent to WeLearn for AI analysis.',
+        submit: 'Propose a course',
+        retry: 'Try again'
+      },
+      drafting: 'WeLearn is drafting a course proposal from your brief…',
+      unavailable: {
+        title: 'WeLearn could not be reached',
+        text: 'No course was proposed. Please try again in a moment.'
+      },
+      error: {
+        title: 'WeLearn could not propose a course this time',
+        text: 'Please try again, or reword your brief.'
+      },
+      review: {
+        title: 'Your course proposal',
+        intro:
+          'Proposed by WeLearn from your brief. Keep, change or remove what you want before WeLearn looks for resources.',
+        yourBrief: 'Your brief',
+        purpose: 'Purpose of the course',
+        activities: 'Learning activities',
+        assessment: 'Assessment',
+        opportunities: 'Sustainability opportunities',
+        opportunitiesHint:
+          'Where sustainability can deepen the course. WeLearn looks for resources for the ones you keep.',
+        keep: 'Keep',
+        remove: 'Remove'
+      },
+      summary: {
+        title: 'Your course proposal',
+        intro: 'Proposed by WeLearn and shaped by your choices. Edit it as a whole, then copy it.',
+        objectives: 'Learning objectives',
+        topics: 'Main content',
+        structure: 'Teaching structure',
+        activities: 'Learning activities',
+        assessment: 'Assessment',
+        sustainability: 'Sustainability integration',
+        resources: 'WeLearn resources:',
+        activity: 'Activity:',
+        edit: 'Edit the proposal',
+        restore: 'Restore the proposal',
+        copy: 'Copy the proposal',
+        copied: 'Copied'
+      }
+    },
+    practices: {
+      title: 'See how others teach sustainability',
+      intro:
+        'Discover how university educators integrate sustainability into their courses, with practical examples, resources and experiences you can adapt.',
+      search: 'Search by discipline, topic or teaching approach',
+      noMatch: 'No teaching practice matches this search.',
+      emptyTitle: 'No teaching practice has been shared yet.',
+      emptyText:
+        'This collection will grow through contributions from university teachers: real practices, reviewed before they appear here.',
+      share: 'Share a teaching practice',
+      back: 'Teaching practices',
+      notFound: 'This teaching practice cannot be found.',
+      context: 'Teaching context',
+      connection: 'Sustainability connection',
+      approach: 'Teaching approach',
+      resources: 'Resources',
+      experience: 'Experience',
+      worked: 'What worked',
+      challenges: 'Challenges',
+      adaptations: 'Adaptations',
+      adapt: 'Adapt this approach',
+      materials: 'Teaching materials',
+      form: {
+        title: 'Share a teaching practice',
+        intro:
+          'Describe something you actually did with your students. You send your contribution to the WeLearn team, who review it; it is published in this space only after review and with your permission. Sharing is voluntary.',
+        discipline: 'Discipline',
+        course: 'Course',
+        level: 'Student level',
+        topic: 'What sustainability topic you integrated, and why',
+        approach: 'What you did with your students',
+        resources: 'Resources used',
+        lessons: 'What you learned or would change',
+        optional: 'optional',
+        materials: 'Teaching materials',
+        materialsHelp:
+          'Share any documents or resources you used in this teaching practice (syllabus, activity instructions, worksheets, slides, case studies, datasets…). Only include materials you have permission to share, without students’ personal information.',
+        materialsPlaceholder: 'One link per line, e.g. Student worksheet – https://…',
+        materialsInvalid: 'These lines have no web link:',
+        files:
+          'To share files (PDF, DOCX, PPTX, XLSX), attach them to the e-mail at the next step: WeLearn cannot store files yet.',
+        prepare: 'Review my contribution',
+        subject: 'WeLearn – teaching practice contribution',
+        send: 'Send to WeLearn for review',
+        reviewTitle: 'Review your contribution',
+        privacy:
+          'Check that it contains no personal information about your students (names, grades, identifiable work).',
+        nextTitle: 'What happens next',
+        next: {
+          send: 'You send it from your e-mail to the WeLearn team ({address}). Attach your files (PDF, DOCX, PPTX, XLSX) if you have any: WeLearn cannot store them yet.',
+          review: 'The WeLearn team reviews it and may contact you.',
+          publish:
+            'Your text and materials are published in this space only after review and with your permission. Sending does not mean publishing.'
+        },
+        mailOpened:
+          'Your mail client should open with your contribution. It is only sent when you send that e-mail, and it is not published. If nothing opens, copy it and send it to {address}.',
+        long: 'Your contribution is long: if the e-mail looks incomplete in your mail client, copy it and paste it into an e-mail to {address}.',
+        copy: 'Copy',
+        copied: 'Copied',
+        edit: 'Edit'
+      }
+    },
+    activity: {
+      intro:
+        'Describe your teaching context: WeLearn suggests a few activity ideas, finds resources for the one you choose and prepares a one-page activity.',
+      contextLabel: 'Your context:',
+      context: {
+        fromCourse: 'Context taken from your course “{title}”. Change it if needed.',
+        subject: 'What are you teaching?',
+        subjectPlaceholder: 'For example: the limits of GDP as a measure of well-being',
+        students: 'Students: discipline and level',
+        studentsPlaceholder: 'For example: Economics, first year of a bachelor’s degree',
+        time: 'Time available',
+        timePlaceholder: 'For example: one 90-minute session',
+        goal: 'What would you like students to learn or do?',
+        goalPlaceholder: 'For example: compare GDP with another indicator and discuss its limits',
+        notice: 'Your context will be sent to WeLearn for AI analysis.',
+        submit: 'Suggest activity ideas'
+      },
+      ideas: {
+        title: 'Activity ideas',
+        intro: 'Suggested by WeLearn. Choose one, ask for other ideas or describe your own.',
+        choose: 'Choose this idea',
+        preferredType: 'Other ideas (optional: a type of activity you prefer)',
+        preferredTypePlaceholder: 'For example: debate, data analysis, case study',
+        other: 'Suggest other ideas',
+        ownIdea: 'Or describe your own idea',
+        ownIdeaPlaceholder:
+          'For example: students compare two regional development indicators in small groups',
+        useOwnIdea: 'Develop my idea',
+        planning: 'Preparing searches for your context',
+        searching: 'Searching WeLearn for resources',
+        found: '{count} resources found',
+        thinking: 'Checking what they contain and suggesting activities they can support',
+        basedOn: 'Based on:',
+        methodNotice: {
+          needsPartner:
+            '“{method}” is not suggested: it needs a real partner (an association, a local authority, a company…) and several sessions, which the context does not mention. Add them to the context if you have them.',
+          needsSessions:
+            '“{method}” is not suggested: it needs several sessions, and the time given is a single session. The ideas below fit that time.',
+          needsData:
+            '“{method}” is not suggested: it needs verified figures, and the resources found have none that can be used.',
+          needsCase:
+            '“{method}” is not suggested: it needs a documented case, and the resources found contain none.',
+          notSupported:
+            '“{method}” could not be suggested with the resources found; here are the approaches that can be done.'
+        },
+        noRelevant:
+          'WeLearn found no document that directly addresses this subject. The activities below do not rely on any document: their material is written by WeLearn.',
+        selfContained: 'Self-contained activity: WeLearn writes the scenario and instructions.',
+        none: 'No activity could be supported by the resources found. Describe your own idea, or change your context.',
+        unavailable: 'WeLearn could not be reached. Please try again in a moment.',
+        error: 'WeLearn could not suggest ideas this time. Please try again.'
+      },
+      result: {
+        chosen: 'Chosen idea:',
+        otherIdea: 'Choose another idea',
+        searching: 'Searching WeLearn for resources',
+        found: '{count} candidate resources found',
+        selecting: 'Selecting the resources this activity can really use',
+        writing: 'Preparing the activity',
+        unavailable: 'WeLearn could not be reached. Please try again in a moment.',
+        error: 'WeLearn could not prepare this activity this time.',
+        note: 'Draft suggested by WeLearn. Edit it as a whole, then copy it.',
+        objective: 'Learning objective',
+        format: 'Duration and format',
+        preparation: 'Preparation',
+        steps: 'Steps',
+        studentInstructions: 'Instructions for students',
+        tryAnother: 'Try another approach',
+        data: 'Data',
+        dataContext: 'Context',
+        dataSource: 'Source',
+        reportedFrom: 'values reported from {source}',
+        notComparable: 'values not established on the same basis: no chart',
+        providedMaterial: 'Material provided by WeLearn',
+        studentOutput: 'What students produce',
+        limitation: 'Limitation',
+        missingMaterials: 'Needed material not found in WeLearn:',
+        assumes: 'This version still assumes you provide data that WeLearn did not find.',
+        check: 'How you check learning',
+        greencomp: 'GreenComp competences practised',
+        resources: 'Supporting resources',
+        noResources:
+          'WeLearn found no resource in its database that this activity could really use. The activity relies on what you provide.',
+        edit: 'Edit the activity',
+        copy: 'Copy the activity',
+        copied: 'Copied',
+        restore: 'Restore the draft',
+        otherFormat: 'Another format?',
+        otherFormatPlaceholder: 'For example: shorter, online, in one large group',
+        rewrite: 'Suggest another version'
+      },
+      materials: {
+        data: 'Data',
+        graph: 'Graph or table',
+        case: 'Documented case',
+        study: 'Study',
+        concept: 'Concepts',
+        teaching: 'Teaching material',
+        report: 'Report'
+      },
+      handout: {
+        create: 'Create student handout',
+        title: 'Student handout',
+        intro:
+          'Made from this activity only: its instructions, its material, its verified data and source excerpts. Review and edit it before handing it out.',
+        gapsTitle: 'Before handing it out:',
+        gaps: {
+          instructions: 'The activity has no instructions for students.',
+          data: 'This data analysis has no verified table: students have no figures to work on.',
+          scenario: 'The scenario, case or roles students need are not written.',
+          sources: 'The activity has neither a source nor material for students.',
+          assumes: 'The activity expects data it does not provide.',
+          edited: 'You edited the activity: carry your changes over to the handout.'
+        },
+        copy: 'Copy',
+        copied: 'Copied',
+        download: 'Download (.docx)',
+        recreate: 'Create again from the activity'
+      },
+      approaches: {
+        case_study: 'Case study analysis',
+        systems_mapping: 'Systems mapping',
+        lca_project: 'Life cycle assessment (LCA) project',
+        critical_analysis: 'Critical analysis',
+        stakeholder_role_play: 'Stakeholder role-play',
+        personal_action_plan: 'Personal action plan',
+        advocacy_campaign: 'Advocacy campaign',
+        futures_workshop: 'Futures literacy workshop',
+        policy_analysis: 'Policy and governance analysis',
+        reflective_portfolio: 'Reflective portfolio',
+        community_project: 'Community project',
+        interdisciplinary_project: 'Interdisciplinary research project',
+        living_lab: 'Living lab / co-creation',
+        source_analysis: 'Critical source analysis',
+        transition_planning: 'Transition planning',
+        comparative_data_analysis: 'Comparative data analysis',
+        problem_based_learning: 'Problem-based learning',
+        structured_debate: 'Structured debate'
+      },
+      greencomp: {
+        valuing_sustainability: 'Valuing sustainability',
+        supporting_fairness: 'Supporting fairness',
+        promoting_nature: 'Promoting nature',
+        systems_thinking: 'Systems thinking',
+        critical_thinking: 'Critical thinking',
+        problem_framing: 'Problem framing',
+        futures_literacy: 'Futures literacy',
+        adaptability: 'Adaptability',
+        exploratory_thinking: 'Exploratory thinking',
+        political_agency: 'Political agency',
+        collective_action: 'Collective action',
+        individual_initiative: 'Individual initiative'
+      }
+    },
     adapt: {
       title: 'Adapt my existing course',
       intro:
         'Start from your syllabus. WeLearn reads it, then you check and correct what it understood before anything else happens.',
-      aiRead: 'Read by AI',
+      aiRead: 'Analysed by WeLearn AI',
       upload: {
         title: 'Your syllabus',
         dropzone: 'Drop your syllabus or course outline here, or',
         browse: 'browse',
-        limits: 'One file · PDF, DOCX or TXT · 5 MB max',
+        limits: 'One file · PDF, DOCX, XLSX or TXT · 5 MB max',
         remove: 'Remove {name}',
         languageLabel: 'Course language',
         notice: 'Your syllabus will be sent to WeLearn for AI analysis.',
@@ -99,7 +375,7 @@ export const journey = {
           'Your text stays in this browser tab. It is not sent or analysed by AI: you fill in your course from it.',
         errors: {
           BIG_FILE: 'This file is larger than 5 MB.',
-          BAD_EXTENSION: 'Use a PDF, DOCX or TXT file.'
+          BAD_EXTENSION: 'Use a PDF, DOCX, XLSX or TXT file.'
         }
       },
       reading: {
@@ -109,6 +385,11 @@ export const journey = {
         review: 'Ready for your review',
         elapsed: '{seconds} s',
         cancel: 'Cancel'
+      },
+      choose: {
+        title: 'Which course would you like to work on?',
+        intro: '{name} contains several courses. Choose one: WeLearn will read only that one.',
+        oneCourse: 'It is a single course: continue with the whole document'
       },
       unavailable: {
         title: 'WeLearn could not be reached',
@@ -139,29 +420,51 @@ export const journey = {
           none: 'No text could be read from this file'
         },
         notSyllabusHint: 'For the best results, upload your syllabus or course outline.',
-        overview: 'Course overview',
         overviewKeys: {
-          title: 'Course title',
-          disciplineLevel: 'Discipline and level',
+          title: 'Title',
+          discipline: 'Discipline',
+          level: 'Level',
           topics: 'Main topics'
         },
-        description: 'Description from your syllabus',
+        materialLabel: 'Material',
+        materialTypes: {
+          syllabus: 'Course syllabus',
+          course_plan: 'Course or semester plan',
+          lesson: 'Single lesson or session',
+          partial: 'Partial course description',
+          other: 'Other teaching material'
+        },
+        correct: 'Correct',
+        fromDocument: 'From your document',
+        aboutReading: 'About this reading',
+        editObjectives: 'Edit the objectives',
+        done: 'Done',
+        focusCourse: 'Course chosen in the document: {title}',
+        notFoundOverview: 'Not found in your document:',
+        notFilledOverview: 'Not filled in yet:',
+        emptyReading: 'WeLearn found no course information in this file.',
+        dropped:
+          'WeLearn left out {count} item(s) it could not find word for word in your syllabus.',
+        textCut: 'This document is long: only its first part was read.',
+        sessions: 'Sessions',
+        description: 'Description from your document',
         showMore: 'Show full text',
         showLess: 'Show less',
         objectives: 'Learning objectives',
         programmeHint:
-          'Some syllabi also list degree or programme objectives. Mark them so they stay apart from this course’s own.',
+          'Objectives listed under a degree or programme heading are kept apart. You can move any objective between the two groups.',
         markProgramme: 'Programme-level',
-        programmeTitle: 'Programme-level objectives (marked by you)',
+        programmeTitle: 'Programme-level objectives',
         unmarkProgramme: 'Move back to course objectives',
         origin: {
-          extracted: 'From your syllabus',
+          extracted: 'From your document',
+          suggested: 'Suggested by WeLearn',
           extractedExample: 'From the example',
           edited: 'Corrected by you',
           added: 'Added by you'
         },
-        notFound: 'Not found in your syllabus.',
-        noObjectives: 'No learning objectives were found in your syllabus.',
+        notFound: 'Not found in your document.',
+        noObjectives: 'No learning objectives were found in your document.',
         add: 'Add',
         edit: 'Edit',
         save: 'Save',
@@ -175,14 +478,58 @@ export const journey = {
         moreHint: 'WeLearn does not read these yet. Add only what matters for your course.',
         extras: {
           workload: 'Workload (hours, ECTS)',
-          sessions: 'Sessions or topics',
           assessment: 'Assessment'
         },
         localNote: 'Your changes stay in this browser tab. They are not saved or sent.',
-        confirm: 'Confirm course',
+        confirm: 'Confirm and explore sustainability connections',
         confirmed:
           'Course confirmed in this tab. Next step, sustainability connections, is coming soon.',
         startOver: 'Start over'
+      },
+      connections: {
+        courseLabel: 'Your teaching',
+        review: 'Review',
+        title: 'Sustainability connections',
+        intro:
+          'AI-supported suggestions, based on resources found in the WeLearn database. Your original material is not changed.',
+        thinking: 'Looking for meaningful connections in your course',
+        searching: 'Searching WeLearn for supporting resources',
+        found: '{count} candidate resources found',
+        selecting: 'Selecting the most relevant resources',
+        unavailable: 'WeLearn could not be reached. Please try again in a moment.',
+        error: 'WeLearn could not suggest connections this time.',
+        retry: 'Try again',
+        noResources:
+          'WeLearn found no resource close enough to this teaching to suggest a connection.',
+        noConnections:
+          'WeLearn found no connection with resources strong enough to suggest. You can review your teaching and try again.',
+        where: 'Where',
+        wholeCourse: 'Your teaching as a whole',
+        why: 'Why it matters',
+        how: 'How to use it',
+        resources: 'Supporting resources',
+        designActivity: 'Design a learning activity for this course',
+        setAside: 'Set aside',
+        undo: 'Bring back',
+        setAsideTitle: 'Set aside ({count})',
+        develop: 'Develop this adaptation',
+        adaptation: {
+          developing: 'WeLearn is preparing a short activity',
+          note: 'Draft suggested by WeLearn, added to your teaching: nothing in your original material is replaced.',
+          placement: 'Where it fits',
+          objective: 'Learning objective',
+          duration: 'Duration',
+          steps: 'Steps',
+          studentTask: 'What students do',
+          check: 'How you check learning',
+          resources: 'Resources',
+          edit: 'Edit the adaptation',
+          restore: 'Restore the draft',
+          copy: 'Copy the adaptation',
+          copied: 'Copied',
+          unavailable: 'WeLearn could not be reached.',
+          error: 'WeLearn could not prepare this adaptation.'
+        }
       },
       example: {
         fileName: 'example-syllabus-microeconomics.txt',
@@ -359,10 +706,11 @@ export const journey = {
           q1: 'My students found this activity too abstract. How can I improve it?',
           q2: 'How can I run a debate on the energy transition with 60 students?'
         },
-        title: 'Use it with your students',
+        title: 'See how others teach sustainability',
         pageTitle: 'Use it with your students',
         intro: 'Use an activity in class, reflect on how it went and share what works.',
-        description: 'Put activities into practice and reflect on what works.',
+        description:
+          'Discover real teaching experiences, resources and approaches shared by university educators.',
         question: 'How can I use this with my students and keep improving it?',
         objective:
           'Leave with something concrete for your class, learn from how it went and share what works with other teachers.',

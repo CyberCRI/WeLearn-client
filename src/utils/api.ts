@@ -42,7 +42,7 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && keycloak.authenticated) {
       keycloak.logout();
     }
     return Promise.reject(error);

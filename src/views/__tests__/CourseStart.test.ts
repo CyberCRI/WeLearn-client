@@ -3,6 +3,7 @@ import { mount, RouterLinkStub } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import CourseStart from '../teacher/CourseStart.vue';
 import { useCourseDesignStore } from '@/stores/courseDesign';
+import { basePostAxios } from '@/utils/fetch';
 
 vi.mock('@/utils/fetch', () => ({
   basePostAxios: vi.fn()
@@ -47,18 +48,68 @@ describe('CourseStart (design your course)', () => {
 
     await route.find('[data-testid="example-button"]').trigger('click');
     expect(wrapper.find('[data-testid="example-banner"]').exists()).toBe(true);
-    expect(wrapper.findAll('[data-testid="objective"]')).toHaveLength(3);
+    expect(wrapper.findAll('[data-testid="objective-list"] li')).toHaveLength(3);
   });
 
-  it('"no" says honestly that this route is not available yet, with no upload', async () => {
+  it('"no" opens a short brief: only the course idea is needed to ask for a proposal', async () => {
     const wrapper = mountPage();
     await wrapper.find('[data-testid="option-no"]').trigger('click');
 
-    expect(wrapper.find('[data-testid="route-new"]').text()).toBe(
-      'journey.teach.courseStart.newCourse'
+    const route = wrapper.find('[data-testid="route-new"]');
+    expect(route.find('[data-testid="course-brief"]').exists()).toBe(true);
+    expect(route.find('[data-testid="read-button"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="chosen-path"]').text()).toContain(
+      'journey.teach.courseStart.workingNew'
     );
-    expect(wrapper.find('[data-testid="read-button"]').exists()).toBe(false);
-    expect(wrapper.find('[data-testid="option-no"]').attributes('aria-pressed')).toBe('true');
+    const button = route.find('[data-testid="draft-button"]');
+    expect(button.attributes('disabled')).toBeDefined();
+    await route.find('[data-testid="brief-idea"]').setValue('Une introduction à la macroéconomie');
+    expect(button.attributes('disabled')).toBeUndefined();
+  });
+
+  it('a proposal is reviewed as WeLearn’s, with its opportunities the teacher can remove', async () => {
+    const store = useCourseDesignStore();
+    vi.mocked(basePostAxios).mockResolvedValue({
+      status: 200,
+      data: {
+        answer: JSON.stringify({
+          title: 'Macroéconomie et transition écologique',
+          purpose: 'Comprendre les grands agrégats.',
+          discipline: 'Économie',
+          level: 'L1',
+          objectives: ['Définir le PIB.', 'Expliquer le chômage.'],
+          topics: ['Le PIB', 'Le chômage'],
+          sessions: ['Séance 1 : Le PIB'],
+          activities: ['Étude de cas'],
+          assessment: ['Examen écrit'],
+          sustainability: [
+            {
+              title: 'Les limites du PIB',
+              anchor: 'Le PIB',
+              why: 'Le PIB ne mesure pas le bien-être.',
+              how: 'Débat.',
+              queries: ['limites du PIB', 'beyond GDP']
+            }
+          ]
+        })
+      }
+    } as any);
+    store.brief.idea = 'Introduction à la macroéconomie';
+    await store.draftProposal();
+    const wrapper = mountPage();
+
+    expect(wrapper.find('[data-testid="route-new"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('journey.teach.scratch.review.title');
+    expect(wrapper.find('[data-testid="original"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="overview"]').text()).toContain(
+      'journey.teach.adapt.review.origin.suggested'
+    );
+    expect(wrapper.findAll('[data-testid="objective-list"] li')).toHaveLength(2);
+    expect(wrapper.find('[data-testid="activities-part"]').exists()).toBe(true);
+
+    await wrapper.find('[data-testid="toggle-opportunity"]').trigger('click');
+    expect(store.keptIdeas).toEqual([]);
+    expect(wrapper.find('[data-testid="opportunity"]').classes()).toContain('is-removed');
   });
 
   it('coming back to a course already started shows it again, under the folded question', () => {

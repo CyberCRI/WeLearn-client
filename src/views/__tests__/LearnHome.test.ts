@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount, RouterLinkStub } from '@vue/test-utils';
 import LearnHome from '../student/LearnHome.vue';
+import SpaceCard from '@/components/SpaceCard.vue';
 import { STUDENT_SPACES } from '@/components/student/spaces';
 import { fr } from '@/localisation/fr';
 import { en } from '@/localisation/en';
@@ -10,32 +11,23 @@ vi.mock('vue-router', async (importOriginal) => ({
   onBeforeRouteLeave: vi.fn()
 }));
 
-const mountPage = () =>
-  mount(LearnHome, {
-    global: {
-      stubs: { RouterLink: RouterLinkStub, StudentBar: true, FooterComponent: true }
-    }
-  });
+const mountPage = () => mount(LearnHome, { global: { stubs: { RouterLink: RouterLinkStub } } });
 
 describe('LearnHome', () => {
-  it('shows one card per space, in order, each opening its own space', () => {
-    const links = mountPage().findAllComponents(RouterLinkStub);
-
-    expect(links.map((link) => link.props('to'))).toEqual(
+  it('is built like the teacher homepage: a title, an intro and one card per learner space', () => {
+    const wrapper = mountPage();
+    expect(wrapper.find('h1').text()).toBe('student.home.title');
+    expect(wrapper.text()).toContain('student.home.intro');
+    const cards = wrapper.findAllComponents(SpaceCard);
+    expect(cards.map((card) => card.props('to'))).toEqual(
       STUDENT_SPACES.map((space) => ({ name: 'learn-space', params: { space } }))
     );
-  });
-
-  it('shows the label, title, description and button of each space', () => {
-    const wrapper = mountPage();
-
-    for (const space of STUDENT_SPACES) {
-      const card = wrapper.find(`[data-testid="space-card-${space}"]`);
-      for (const field of ['name', 'title', 'description']) {
-        expect(card.text()).toContain(`student.spaces.${space}.${field}`);
-      }
-      expect(card.text()).toContain('student.home.getStarted');
-    }
+    expect(cards.map((card) => card.props('title'))).toEqual(
+      STUDENT_SPACES.map((space) => `student.spaces.${space}.title`)
+    );
+    expect(cards.every((card) => card.props('actionText') === 'student.home.getStarted')).toBe(
+      true
+    );
   });
 
   it('has every student text in both French and English', () => {

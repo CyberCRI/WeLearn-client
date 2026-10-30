@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import SpaceLabel from '@/components/SpaceLabel.vue';
-import type { CourseField } from '@/types';
+import type { CourseField, CourseFieldOrigin } from '@/types';
 
 // one piece of the reviewed course: its text, where it comes from (read from the document,
 // corrected or added by the teacher) and the teacher's actions on it. without a field it offers
@@ -15,6 +15,9 @@ const props = defineProps<{
   addLabel?: string;
   isPlain?: boolean;
   isCollapsible?: boolean;
+  // an origin already said once around the field (a card marked "suggested by WeLearn AI"):
+  // its label is not repeated; any other origin (corrected by you) still shows
+  hiddenOrigin?: CourseFieldOrigin;
 }>();
 
 const emit = defineEmits<{
@@ -25,6 +28,7 @@ const emit = defineEmits<{
 
 const ORIGIN_TINTS = {
   extracted: 'var(--secondary-lighter)',
+  suggested: 'var(--lpi-violet-lighter)',
   edited: 'var(--lpi-yellow-lighter)',
   added: 'var(--tertiary-lighter)'
 };
@@ -68,7 +72,11 @@ const handleSave = () => {
 <template>
   <div
     class="review-field"
-    :class="{ 'is-missing': !field && !isEditing, 'is-plain': isPlain }"
+    :class="{
+      'is-missing': !field && !isEditing,
+      'is-plain': isPlain,
+      'is-quiet': !!field && field.origin === hiddenOrigin
+    }"
     data-testid="review-field"
   >
     <template v-if="isEditing">
@@ -91,7 +99,9 @@ const handleSave = () => {
 
     <template v-else-if="field">
       <div class="field-head">
+        <span v-if="field.origin === hiddenOrigin" />
         <SpaceLabel
+          v-else
           :text="$t(`journey.teach.adapt.review.origin.${originKey}`)"
           :tint="ORIGIN_TINTS[field.origin]"
           :data-testid="`origin-${field.origin}`"
@@ -117,7 +127,7 @@ const handleSave = () => {
             </button>
           </template>
           <button
-            v-if="field.origin === 'added'"
+            v-if="field.origin === 'added' || field.isSuggestion"
             type="button"
             class="button is-small is-text"
             @click="emit('remove')"
@@ -128,14 +138,17 @@ const handleSave = () => {
           <slot name="actions" />
         </div>
       </div>
-      <p
-        ref="textEl"
-        class="field-text"
-        :class="{ 'is-preview': isCollapsible && !isExpanded }"
-        data-testid="field-text"
-      >
-        {{ field.value }}
-      </p>
+      <!-- the parent may show the text another way (topics as tags, sessions as a list) -->
+      <slot name="text" :value="field.value">
+        <p
+          ref="textEl"
+          class="field-text"
+          :class="{ 'is-preview': isCollapsible && !isExpanded }"
+          data-testid="field-text"
+        >
+          {{ field.value }}
+        </p>
+      </slot>
       <button
         v-if="isCollapsible && (isCut || isExpanded)"
         type="button"
@@ -175,6 +188,16 @@ const handleSave = () => {
 .review-field.is-missing {
   border-style: dashed;
   background: var(--neutral-10);
+}
+
+/* origin label not repeated: the actions sit beside the text instead of on a line of their own */
+.is-quiet .field-head {
+  float: right;
+  margin-left: 0.5rem;
+}
+
+.is-quiet .field-text {
+  margin-top: 0;
 }
 
 /* overview lines: no box, the page stays light */

@@ -9,28 +9,34 @@ import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
 import { useAuth } from '@/composables/useAuth';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { isStudentRoute } from '@/components/student/spaces';
 
 const featureFlip = useFeatureFlipStore();
 const { isAuthenticated, login, logout } = useAuth();
 
 // Home and the assistant on the left; personal/utility items on the right.
 // the other tools (syllabus, micro-learning, search) are reached from the teacher spaces on /teach
-const toolEntries = [
+// on the learner pages (/learn...), Home and Ask WeLearn lead to the learner homepage and tutor
+const route = useRoute();
+const isLearner = computed(() => isStudentRoute(route?.name));
+const toolEntries = computed(() => [
   {
     name: 'home',
-    to: '/teach',
+    to: isLearner.value ? '/learn' : '/teach',
     icon: HomeIcon,
     isFeatureEnabled: true
   },
   {
     name: 'chat',
-    to: '/q-and-a',
+    to: isLearner.value ? '/learn/ask' : '/q-and-a',
     icon: SparkleIcon,
     // the AI assistant: a sparkle and a light violet pill, the colour of the AI labels
     isHighlighted: true,
     isFeatureEnabled: featureFlip.isFeatureEnabled('chat')
   }
-];
+]);
 
 const utilityEntries = [
   {

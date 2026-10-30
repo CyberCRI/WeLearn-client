@@ -2,6 +2,8 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import SyllabusUpload from '@/components/teacher/SyllabusUpload.vue';
 import CourseReview from '@/components/teacher/CourseReview.vue';
+import CourseChooser from '@/components/teacher/CourseChooser.vue';
+import CourseConnections from '@/components/teacher/CourseConnections.vue';
 import { useCourseDesignStore } from '@/stores/courseDesign';
 
 // "adapt my existing course": upload (or example / pasted text), real reading by the API, review.
@@ -32,7 +34,9 @@ const elapsed = computed(() =>
 </script>
 <template>
   <div class="course-adapt-flow">
-    <CourseReview v-if="store.status === 'ready'" />
+    <CourseReview v-if="store.status === 'ready' && !store.isConfirmed" />
+    <CourseConnections v-else-if="store.status === 'ready'" />
+    <CourseChooser v-else-if="store.status === 'choosing'" />
 
     <!-- only real operations: the upload (with its real progress), then the API reading;
          the review step is never marked done here: on success the review itself replaces this -->

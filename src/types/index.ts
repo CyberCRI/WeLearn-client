@@ -85,25 +85,53 @@ export type SyllabusExtraction = {
   reasoning: string | null;
 };
 
-// where a piece of the reviewed course comes from: read from the document, corrected or added
-// by the teacher
-export type CourseFieldOrigin = 'extracted' | 'edited' | 'added';
+// where an objective sits in the syllabus: under a heading naming the course, the programme or
+// degree, or neither
+export type ObjectiveScope = 'course' | 'programme' | 'unspecified';
+
+// what the teaching material is, as interpreted by the AI (the teacher can change it)
+export type MaterialType = 'syllabus' | 'course_plan' | 'lesson' | 'partial' | 'other';
+
+// structured reading of a syllabus (asked through /qna/chat/answer): every text copied as
+// written in the document, null or [] when the document does not state it
+export interface CourseReading {
+  title: string | null;
+  discipline: string | null;
+  level: string | null;
+  description: string | null;
+  topics: string[];
+  sessions: { label: string | null; title: string }[];
+  objectives: { text: string; scope: ObjectiveScope }[];
+  document_language: string | null;
+  material_type: MaterialType;
+  // titles of the distinct courses when the document holds several, copied as written
+  courses_found: string[];
+}
+
+// where a piece of the reviewed course comes from: read from the document, suggested by the AI
+// (an interpretation, not a copy), corrected or added by the teacher
+export type CourseFieldOrigin = 'extracted' | 'suggested' | 'edited' | 'added';
 
 export interface CourseField {
   value: string;
   origin: CourseFieldOrigin;
-  // the text as read from the document, kept so the teacher can see or restore it
+  // the text as read from the document (or as the AI suggested it), kept so the teacher can see
+  // or restore it
   original?: string;
-  // an objective the teacher marked as belonging to the whole programme, not to this course
+  // an objective that belongs to the whole programme, not to this course (listed under a
+  // programme heading in the syllabus, or marked by the teacher)
   isProgramme?: boolean;
+  // proposed by WeLearn (a course created from scratch): its original is a suggestion, which the
+  // teacher may also reject
+  isSuggestion?: boolean;
 }
 
-// the course overview; the extraction does not read these yet, so only the teacher adds them
-export const COURSE_OVERVIEW_KEYS = ['title', 'disciplineLevel', 'topics'] as const;
+// the course overview lines, read from the syllabus when it states them
+export const COURSE_OVERVIEW_KEYS = ['title', 'discipline', 'level'] as const;
 export type CourseOverviewKey = (typeof COURSE_OVERVIEW_KEYS)[number];
 
-// optional details the extraction does not read yet; only the teacher fills them
-export const COURSE_EXTRA_KEYS = ['workload', 'sessions', 'assessment'] as const;
+// optional details the reading does not return; only the teacher fills them
+export const COURSE_EXTRA_KEYS = ['workload', 'assessment'] as const;
 export type CourseExtraKey = (typeof COURSE_EXTRA_KEYS)[number];
 
 export interface SyllabusData {
@@ -161,4 +189,25 @@ export interface CourseMetadata {
 export enum CreateSyllabusStepsId {
   search = 'search',
   syllabus = 'syllabus'
+}
+
+// a teaching practice shared by a university teacher and approved for the TEACH collection
+export interface TeachingPractice {
+  id: string;
+  discipline: string;
+  course: string;
+  level: string;
+  // what sustainability topic was integrated, and why
+  topic: string;
+  why: string;
+  // what the teacher actually did with students
+  approach: string;
+  resources: { title: string; url: string }[];
+  // the teacher's own materials (syllabus, worksheets, slides...), only those they agreed to
+  // publish, at a public link checked during review and free of students' personal information
+  materials?: { title: string; url: string }[];
+  // the teacher's own account, when given
+  worked?: string;
+  challenges?: string;
+  adaptations?: string;
 }

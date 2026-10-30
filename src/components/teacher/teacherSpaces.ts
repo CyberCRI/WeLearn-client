@@ -32,7 +32,7 @@ export const TEACHER_MODULES: Partial<Record<TeacherSpace, TeacherModule[]>> = {
   design: [
     // course design starts with a choice: adapt an existing course or plan a new one
     { key: 'course', route: 'teach-course' },
-    { key: 'activity' }
+    { key: 'activity', route: 'teach-activity' }
   ]
 };
 

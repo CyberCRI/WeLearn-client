@@ -67,6 +67,7 @@ export const journey = {
       yes: 'Oui, j’ai un cours',
       no: 'Non, je pars de zéro',
       working: 'Vous partez d’un cours existant',
+      workingNew: 'Vous partez de zéro',
       change: 'Modifier',
       changeWarning:
         'Changer de parcours effacera votre syllabus et ce que vous avez relu jusqu’ici dans cet onglet.',
@@ -75,16 +76,297 @@ export const journey = {
       newCourse:
         'La conception d’un nouveau cours à partir de zéro est en cours de développement. Elle n’est pas encore disponible.'
     },
+    scratch: {
+      brief: {
+        title: 'Votre idée de cours',
+        intro:
+          'Quelques mots suffisent. WeLearn vous propose un cours que vous pourrez garder, modifier ou retirer élément par élément.',
+        idea: 'Que souhaitez-vous enseigner ?',
+        ideaPlaceholder:
+          'Par exemple : une introduction à l’économie de l’environnement pour des étudiant·e·s de première année',
+        disciplineLevel: 'Discipline et niveau des étudiant·e·s',
+        disciplineLevelPlaceholder: 'Par exemple : Économie, Licence 1',
+        format: 'Durée ou format',
+        formatPlaceholder: 'Par exemple : 10 séances de 2 h',
+        goals: 'Objectifs particuliers ou intérêts en matière de durabilité',
+        goalsPlaceholder:
+          'Par exemple : que les étudiant·e·s sachent lire de façon critique des données climatiques',
+        optional: '(facultatif)',
+        notice: 'Votre demande sera envoyée à WeLearn pour une analyse par IA.',
+        submit: 'Proposer un cours',
+        retry: 'Réessayer'
+      },
+      drafting: 'WeLearn prépare une proposition de cours à partir de votre demande…',
+      unavailable: {
+        title: 'WeLearn n’a pas pu être joint',
+        text: 'Aucun cours n’a été proposé. Veuillez réessayer dans un instant.'
+      },
+      error: {
+        title: 'WeLearn n’a pas pu proposer de cours cette fois-ci',
+        text: 'Veuillez réessayer ou reformuler votre demande.'
+      },
+      review: {
+        title: 'Votre proposition de cours',
+        intro:
+          'Proposée par WeLearn à partir de votre demande. Gardez, modifiez ou retirez ce que vous voulez avant que WeLearn cherche des ressources.',
+        yourBrief: 'Votre demande',
+        purpose: 'Finalité du cours',
+        activities: 'Activités d’apprentissage',
+        assessment: 'Évaluation',
+        opportunities: 'Pistes de durabilité',
+        opportunitiesHint:
+          'Là où la durabilité peut approfondir le cours. WeLearn cherche des ressources pour celles que vous gardez.',
+        keep: 'Garder',
+        remove: 'Retirer'
+      },
+      summary: {
+        title: 'Votre proposition de cours',
+        intro:
+          'Proposée par WeLearn et façonnée par vos choix. Modifiez-la dans son ensemble, puis copiez-la.',
+        objectives: 'Objectifs d’apprentissage',
+        topics: 'Contenus principaux',
+        structure: 'Structure des séances',
+        activities: 'Activités d’apprentissage',
+        assessment: 'Évaluation',
+        sustainability: 'Intégration de la durabilité',
+        resources: 'Ressources WeLearn :',
+        activity: 'Activité :',
+        edit: 'Modifier la proposition',
+        restore: 'Rétablir la proposition',
+        copy: 'Copier la proposition',
+        copied: 'Copié'
+      }
+    },
+    practices: {
+      title: 'Voir comment d’autres enseignent la durabilité',
+      intro:
+        'Découvrez comment des enseignant·e·s du supérieur intègrent la durabilité dans leurs cours, avec des exemples concrets, des ressources et des retours d’expérience à adapter.',
+      search: 'Rechercher par discipline, thème ou approche pédagogique',
+      noMatch: 'Aucune pratique ne correspond à cette recherche.',
+      emptyTitle: 'Aucune pratique pédagogique n’a encore été partagée.',
+      emptyText:
+        'Cette collection s’enrichira des contributions d’enseignant·e·s du supérieur : des pratiques réelles, relues avant d’apparaître ici.',
+      share: 'Partager une pratique pédagogique',
+      back: 'Pratiques pédagogiques',
+      notFound: 'Cette pratique pédagogique est introuvable.',
+      context: 'Contexte d’enseignement',
+      connection: 'Lien avec la durabilité',
+      approach: 'Démarche pédagogique',
+      resources: 'Ressources',
+      experience: 'Retour d’expérience',
+      worked: 'Ce qui a fonctionné',
+      challenges: 'Difficultés',
+      adaptations: 'Adaptations',
+      adapt: 'Adapter cette approche',
+      materials: 'Supports pédagogiques',
+      form: {
+        title: 'Partager une pratique pédagogique',
+        intro:
+          'Décrivez ce que vous avez réellement fait avec vos étudiant·e·s. Vous envoyez votre contribution à l’équipe WeLearn, qui la relit ; elle n’est publiée dans cet espace qu’après relecture et avec votre autorisation. Le partage est volontaire.',
+        discipline: 'Discipline',
+        course: 'Cours',
+        level: 'Niveau des étudiant·e·s',
+        topic: 'Le thème de durabilité intégré, et pourquoi',
+        approach: 'Ce que vous avez fait avec vos étudiant·e·s',
+        resources: 'Ressources utilisées',
+        lessons: 'Ce que vous en retenez ou changeriez',
+        optional: 'facultatif',
+        materials: 'Supports pédagogiques',
+        materialsHelp:
+          'Partagez les documents ou ressources utilisés dans cette pratique (syllabus, consignes, fiches étudiant·e·s, diaporamas, études de cas, jeux de données…). N’incluez que des supports que vous avez le droit de partager, sans informations personnelles sur vos étudiant·e·s.',
+        materialsPlaceholder: 'Un lien par ligne, par exemple : Fiche étudiant·e – https://…',
+        materialsInvalid: 'Ces lignes ne contiennent pas de lien web :',
+        files:
+          'Pour partager des fichiers (PDF, DOCX, PPTX, XLSX), joignez-les au message à l’étape suivante : WeLearn ne peut pas encore enregistrer de fichiers.',
+        prepare: 'Relire ma contribution',
+        subject: 'WeLearn – contribution d’une pratique pédagogique',
+        send: 'Envoyer à WeLearn pour relecture',
+        reviewTitle: 'Relisez votre contribution',
+        privacy:
+          'Vérifiez qu’elle ne contient aucune information personnelle sur vos étudiant·e·s (noms, notes, travaux identifiables).',
+        nextTitle: 'Ce qui se passe ensuite',
+        next: {
+          send: 'Vous l’envoyez depuis votre messagerie à l’équipe WeLearn ({address}). Joignez-y vos fichiers (PDF, DOCX, PPTX, XLSX) si vous en avez : WeLearn ne peut pas encore les enregistrer.',
+          review: 'L’équipe WeLearn la relit et peut vous recontacter.',
+          publish:
+            'Votre texte et vos supports ne sont publiés dans cet espace qu’après relecture et avec votre autorisation. Envoyer ne veut pas dire publier.'
+        },
+        mailOpened:
+          'Votre messagerie devrait s’ouvrir avec votre contribution. Elle n’est envoyée que lorsque vous envoyez ce message, et elle n’est pas publiée. Si rien ne s’ouvre, copiez-la et envoyez-la à {address}.',
+        long: 'Votre contribution est longue : si le message paraît incomplet dans votre messagerie, copiez-la et collez-la dans un e-mail à {address}.',
+        copy: 'Copier',
+        copied: 'Copié',
+        edit: 'Modifier'
+      }
+    },
+    activity: {
+      intro:
+        'Décrivez votre contexte d’enseignement : WeLearn vous propose quelques idées d’activité, cherche des ressources pour celle que vous choisissez et prépare une activité d’une page.',
+      contextLabel: 'Votre contexte :',
+      context: {
+        fromCourse: 'Contexte repris de votre cours « {title} ». Modifiez-le si besoin.',
+        subject: 'Qu’enseignez-vous ?',
+        subjectPlaceholder: 'Par exemple : les limites du PIB comme mesure du bien-être',
+        students: 'Étudiant·e·s : discipline et niveau',
+        studentsPlaceholder: 'Par exemple : Économie, Licence 1',
+        time: 'Temps disponible',
+        timePlaceholder: 'Par exemple : une séance de 1 h 30',
+        goal: 'Que souhaitez-vous que les étudiant·e·s apprennent ou fassent ?',
+        goalPlaceholder:
+          'Par exemple : comparer le PIB à un autre indicateur et en discuter les limites',
+        notice: 'Votre contexte sera envoyé à WeLearn pour une analyse par IA.',
+        submit: 'Proposer des idées d’activité'
+      },
+      ideas: {
+        title: 'Idées d’activité',
+        intro:
+          'Proposées par WeLearn. Choisissez-en une, demandez d’autres idées ou décrivez la vôtre.',
+        choose: 'Choisir cette idée',
+        preferredType: 'D’autres idées (facultatif : un type d’activité que vous préférez)',
+        preferredTypePlaceholder: 'Par exemple : débat, analyse de données, étude de cas',
+        other: 'Proposer d’autres idées',
+        ownIdea: 'Ou décrivez votre propre idée',
+        ownIdeaPlaceholder:
+          'Par exemple : les étudiant·e·s comparent deux indicateurs de développement régional en petits groupes',
+        useOwnIdea: 'Développer mon idée',
+        planning: 'Préparation des recherches pour votre contexte',
+        searching: 'Recherche de ressources dans WeLearn',
+        found: '{count} ressources trouvées',
+        thinking: 'Vérification de leur contenu et proposition d’activités qu’elles permettent',
+        basedOn: 'S’appuie sur :',
+        methodNotice: {
+          needsPartner:
+            '« {method} » n’est pas proposé : il suppose un partenaire réel (association, collectivité, entreprise…) et plusieurs séances, que le contexte ne mentionne pas. Précisez-les dans le contexte si vous en avez.',
+          needsSessions:
+            '« {method} » n’est pas proposé : il demande plusieurs séances, et le temps indiqué est d’une seule séance. Les idées ci-dessous tiennent dans ce temps.',
+          needsData:
+            '« {method} » n’est pas proposé : il suppose des chiffres vérifiés, et les ressources trouvées n’en contiennent pas d’exploitables.',
+          needsCase:
+            '« {method} » n’est pas proposé : il suppose un cas documenté, et les ressources trouvées n’en contiennent pas.',
+          notSupported:
+            '« {method} » n’a pas pu être proposé avec les ressources trouvées ; voici les approches réalisables.'
+        },
+        noRelevant:
+          'WeLearn n’a trouvé aucun document qui traite directement de ce sujet. Les activités ci-dessous ne s’appuient sur aucun document : leur matériel est écrit par WeLearn.',
+        selfContained: 'Activité autonome : WeLearn rédige le scénario et les consignes.',
+        none: 'Aucune activité n’a pu s’appuyer sur les ressources trouvées. Décrivez votre propre idée ou modifiez votre contexte.',
+        unavailable: 'WeLearn n’a pas pu être joint. Veuillez réessayer dans un instant.',
+        error: 'WeLearn n’a pas pu proposer d’idées cette fois-ci. Veuillez réessayer.'
+      },
+      result: {
+        chosen: 'Idée choisie :',
+        otherIdea: 'Choisir une autre idée',
+        searching: 'Recherche de ressources dans WeLearn',
+        found: '{count} ressources candidates trouvées',
+        selecting: 'Sélection des ressources réellement utilisables pour cette activité',
+        writing: 'Préparation de l’activité',
+        unavailable: 'WeLearn n’a pas pu être joint. Veuillez réessayer dans un instant.',
+        error: 'WeLearn n’a pas pu préparer cette activité cette fois-ci.',
+        note: 'Brouillon proposé par WeLearn. Modifiez-le dans son ensemble, puis copiez-le.',
+        objective: 'Objectif d’apprentissage',
+        format: 'Durée et format',
+        preparation: 'Préparation',
+        steps: 'Étapes',
+        studentInstructions: 'Consignes aux étudiant·e·s',
+        tryAnother: 'Essayer une autre approche',
+        data: 'Données',
+        dataContext: 'Contexte',
+        dataSource: 'Source',
+        reportedFrom: 'valeurs rapportées d’après {source}',
+        notComparable: 'valeurs non établies sur la même base : pas de graphique',
+        providedMaterial: 'Matériel fourni par WeLearn',
+        studentOutput: 'Ce que produisent les étudiant·e·s',
+        limitation: 'Limite',
+        missingMaterials: 'Matériel nécessaire introuvable dans WeLearn :',
+        assumes:
+          'Cette version suppose encore que vous fournissiez des données que WeLearn n’a pas trouvées.',
+        check: 'Comment vérifier les apprentissages',
+        greencomp: 'Compétences GreenComp travaillées',
+        resources: 'Ressources à l’appui',
+        noResources:
+          'WeLearn n’a trouvé dans sa base aucune ressource réellement utilisable pour cette activité. L’activité s’appuie sur ce que vous fournirez.',
+        edit: 'Modifier l’activité',
+        copy: 'Copier l’activité',
+        copied: 'Copié',
+        restore: 'Rétablir le brouillon',
+        otherFormat: 'Un autre format ?',
+        otherFormatPlaceholder: 'Par exemple : plus court, à distance, en grand groupe',
+        rewrite: 'Proposer une autre version'
+      },
+      materials: {
+        data: 'Données',
+        graph: 'Graphique ou tableau',
+        case: 'Cas documenté',
+        study: 'Étude',
+        concept: 'Notions',
+        teaching: 'Support pédagogique',
+        report: 'Rapport'
+      },
+      handout: {
+        create: 'Créer la fiche étudiant·e',
+        title: 'Fiche étudiant·e',
+        intro:
+          'Créée uniquement à partir de cette activité : ses consignes, son matériel, ses données et extraits de sources vérifiés. Relisez-la et modifiez-la avant de la distribuer.',
+        gapsTitle: 'Avant de la distribuer :',
+        gaps: {
+          instructions: 'L’activité ne contient pas de consignes pour les étudiant·e·s.',
+          data: 'Cette analyse de données n’a pas de tableau vérifié : les étudiant·e·s n’ont pas de chiffres sur lesquels travailler.',
+          scenario:
+            'Le scénario, le cas ou les rôles nécessaires aux étudiant·e·s ne sont pas rédigés.',
+          sources: 'L’activité n’a ni source ni matériel pour les étudiant·e·s.',
+          assumes: 'L’activité suppose des données qu’elle ne fournit pas.',
+          edited: 'Vous avez modifié l’activité : reportez vos modifications dans la fiche.'
+        },
+        copy: 'Copier',
+        copied: 'Copié',
+        download: 'Télécharger (.docx)',
+        recreate: 'Recréer à partir de l’activité'
+      },
+      approaches: {
+        case_study: 'Étude de cas',
+        systems_mapping: 'Cartographie systémique',
+        lca_project: 'Projet d’analyse de cycle de vie (ACV)',
+        critical_analysis: 'Analyse critique',
+        stakeholder_role_play: 'Jeu de rôle des parties prenantes',
+        personal_action_plan: 'Plan d’action personnel',
+        advocacy_campaign: 'Campagne de plaidoyer',
+        futures_workshop: 'Atelier de littératie des futurs',
+        policy_analysis: 'Analyse des politiques et de la gouvernance',
+        reflective_portfolio: 'Portfolio réflexif',
+        community_project: 'Projet avec une communauté',
+        interdisciplinary_project: 'Projet de recherche interdisciplinaire',
+        living_lab: 'Living lab / co-création',
+        source_analysis: 'Analyse critique des sources',
+        transition_planning: 'Planification de la transition',
+        comparative_data_analysis: 'Analyse comparative de données',
+        problem_based_learning: 'Apprentissage par problème',
+        structured_debate: 'Débat structuré'
+      },
+      greencomp: {
+        valuing_sustainability: 'Valoriser la durabilité',
+        supporting_fairness: 'Défendre l’équité',
+        promoting_nature: 'Promouvoir la nature',
+        systems_thinking: 'Pensée systémique',
+        critical_thinking: 'Pensée critique',
+        problem_framing: 'Cadrage des problèmes',
+        futures_literacy: 'Littératie des futurs',
+        adaptability: 'Adaptabilité',
+        exploratory_thinking: 'Pensée exploratoire',
+        political_agency: 'Capacité d’action politique',
+        collective_action: 'Action collective',
+        individual_initiative: 'Initiative individuelle'
+      }
+    },
     adapt: {
       title: 'Adapter mon cours existant',
       intro:
         'Partez de votre syllabus. WeLearn le lit, puis vous vérifiez et corrigez ce qu’il a compris avant toute autre étape.',
-      aiRead: 'Lu par l’IA',
+      aiRead: 'Analysé par l’IA de WeLearn',
       upload: {
         title: 'Votre syllabus',
         dropzone: 'Déposez ici votre syllabus ou plan de cours, ou',
         browse: 'parcourez vos fichiers',
-        limits: 'Un fichier · PDF, DOCX ou TXT · 5 Mo maximum',
+        limits: 'Un fichier · PDF, DOCX, XLSX ou TXT · 5 Mo maximum',
         remove: 'Retirer {name}',
         languageLabel: 'Langue du cours',
         notice: 'Votre syllabus sera envoyé à WeLearn pour une analyse par l’IA.',
@@ -101,7 +383,7 @@ export const journey = {
           'Votre texte reste dans cet onglet du navigateur. Il n’est ni envoyé ni analysé par l’IA : vous remplissez votre cours à partir de lui.',
         errors: {
           BIG_FILE: 'Ce fichier dépasse 5 Mo.',
-          BAD_EXTENSION: 'Utilisez un fichier PDF, DOCX ou TXT.'
+          BAD_EXTENSION: 'Utilisez un fichier PDF, DOCX, XLSX ou TXT.'
         }
       },
       reading: {
@@ -111,6 +393,11 @@ export const journey = {
         review: 'Prêt pour votre relecture',
         elapsed: '{seconds} s',
         cancel: 'Annuler'
+      },
+      choose: {
+        title: 'Sur quel cours souhaitez-vous travailler ?',
+        intro: '{name} contient plusieurs cours. Choisissez-en un : WeLearn ne lira que celui-ci.',
+        oneCourse: 'Il s’agit d’un seul cours : continuer avec tout le document'
       },
       unavailable: {
         title: 'WeLearn n’a pas pu être joint',
@@ -143,29 +430,51 @@ export const journey = {
         },
         notSyllabusHint:
           'Pour de meilleurs résultats, déposez votre syllabus ou votre plan de cours.',
-        overview: 'Aperçu du cours',
         overviewKeys: {
-          title: 'Titre du cours',
-          disciplineLevel: 'Discipline et niveau',
+          title: 'Titre',
+          discipline: 'Discipline',
+          level: 'Niveau',
           topics: 'Principaux thèmes'
         },
-        description: 'Description issue de votre syllabus',
+        materialLabel: 'Support',
+        materialTypes: {
+          syllabus: 'Syllabus de cours',
+          course_plan: 'Plan de cours ou de semestre',
+          lesson: 'Séance ou leçon unique',
+          partial: 'Description partielle d’un cours',
+          other: 'Autre support pédagogique'
+        },
+        correct: 'Corriger',
+        fromDocument: 'Issu de votre document',
+        aboutReading: 'À propos de cette lecture',
+        editObjectives: 'Modifier les objectifs',
+        done: 'Terminé',
+        focusCourse: 'Cours choisi dans le document : {title}',
+        notFoundOverview: 'Introuvable dans votre document :',
+        notFilledOverview: 'Pas encore renseigné :',
+        emptyReading: 'WeLearn n’a trouvé aucune information de cours dans ce fichier.',
+        dropped:
+          'WeLearn a écarté {count} élément(s) qu’il n’a pas retrouvé(s) mot pour mot dans votre syllabus.',
+        textCut: 'Ce document est long : seule sa première partie a été lue.',
+        sessions: 'Séances',
+        description: 'Description issue de votre document',
         showMore: 'Afficher tout le texte',
         showLess: 'Afficher moins',
         objectives: 'Objectifs d’apprentissage',
         programmeHint:
-          'Certains syllabus listent aussi des objectifs du diplôme ou de la formation. Signalez-les pour les distinguer des objectifs propres à ce cours.',
+          'Les objectifs listés sous un titre de diplôme ou de formation sont mis à part. Vous pouvez déplacer chaque objectif d’un groupe à l’autre.',
         markProgramme: 'Objectif de la formation',
-        programmeTitle: 'Objectifs de la formation (signalés par vous)',
+        programmeTitle: 'Objectifs de la formation',
         unmarkProgramme: 'Remettre dans les objectifs du cours',
         origin: {
-          extracted: 'Issu de votre syllabus',
+          extracted: 'Issu de votre document',
+          suggested: 'Proposé par WeLearn',
           extractedExample: 'Issu de l’exemple',
           edited: 'Corrigé par vous',
           added: 'Ajouté par vous'
         },
-        notFound: 'Introuvable dans votre syllabus.',
-        noObjectives: 'Aucun objectif d’apprentissage n’a été trouvé dans votre syllabus.',
+        notFound: 'Introuvable dans votre document.',
+        noObjectives: 'Aucun objectif d’apprentissage n’a été trouvé dans votre document.',
         add: 'Ajouter',
         edit: 'Modifier',
         save: 'Enregistrer',
@@ -180,15 +489,59 @@ export const journey = {
           'WeLearn ne lit pas encore ces éléments. N’ajoutez que ce qui compte pour votre cours.',
         extras: {
           workload: 'Volume horaire (heures, ECTS)',
-          sessions: 'Séances ou thèmes',
           assessment: 'Évaluation'
         },
         localNote:
           'Vos modifications restent dans cet onglet du navigateur. Elles ne sont ni enregistrées ni envoyées.',
-        confirm: 'Confirmer le cours',
+        confirm: 'Confirmer et explorer les liens avec la durabilité',
         confirmed:
           'Cours confirmé dans cet onglet. Prochaine étape, les liens avec la durabilité : bientôt disponible.',
         startOver: 'Recommencer'
+      },
+      connections: {
+        courseLabel: 'Votre enseignement',
+        review: 'Revoir',
+        title: 'Liens avec la durabilité',
+        intro:
+          'Suggestions appuyées par l’IA, à partir de ressources trouvées dans la base WeLearn. Votre support d’origine n’est pas modifié.',
+        thinking: 'Recherche de liens pertinents dans votre cours',
+        searching: 'Recherche de ressources à l’appui dans WeLearn',
+        found: '{count} ressources candidates trouvées',
+        selecting: 'Sélection des ressources les plus pertinentes',
+        unavailable: 'WeLearn n’a pas pu être joint. Veuillez réessayer dans un instant.',
+        error: 'WeLearn n’a pas pu proposer de liens cette fois-ci.',
+        retry: 'Réessayer',
+        noResources:
+          'WeLearn n’a trouvé aucune ressource assez proche de cet enseignement pour proposer un lien.',
+        noConnections:
+          'WeLearn n’a trouvé aucun lien appuyé par des ressources assez solides. Vous pouvez revoir votre enseignement et réessayer.',
+        where: 'Où',
+        wholeCourse: 'Votre enseignement dans son ensemble',
+        why: 'Pourquoi c’est pertinent',
+        how: 'Comment l’utiliser',
+        resources: 'Ressources à l’appui',
+        designActivity: 'Concevoir une activité d’apprentissage pour ce cours',
+        setAside: 'Écarter',
+        undo: 'Rétablir',
+        setAsideTitle: 'Écartés ({count})',
+        develop: 'Développer cette adaptation',
+        adaptation: {
+          developing: 'WeLearn prépare une activité courte',
+          note: 'Brouillon proposé par WeLearn, en ajout à votre enseignement : rien n’est remplacé dans votre support d’origine.',
+          placement: 'Où l’intégrer',
+          objective: 'Objectif d’apprentissage',
+          duration: 'Durée',
+          steps: 'Étapes',
+          studentTask: 'Ce que font les étudiant·e·s',
+          check: 'Comment vérifier les apprentissages',
+          resources: 'Ressources',
+          edit: 'Modifier l’adaptation',
+          restore: 'Rétablir le brouillon',
+          copy: 'Copier l’adaptation',
+          copied: 'Copié',
+          unavailable: 'WeLearn n’a pas pu être joint.',
+          error: 'WeLearn n’a pas pu préparer cette adaptation.'
+        }
       },
       example: {
         fileName: 'exemple-syllabus-microeconomie.txt',
@@ -374,11 +727,12 @@ export const journey = {
           q1: 'Mes étudiants ont trouvé cette activité trop abstraite. Comment l’améliorer ?',
           q2: 'Comment organiser un débat sur la transition énergétique avec 60 étudiants ?'
         },
-        title: 'L’utiliser avec vos étudiants',
+        title: 'Voir comment d’autres enseignent la durabilité',
         pageTitle: 'L’utiliser avec vos étudiants',
         intro:
           'Utilisez une activité en classe, faites le point sur son déroulement et partagez ce qui fonctionne.',
-        description: 'Mettez les activités en pratique et faites le point sur ce qui fonctionne.',
+        description:
+          'Découvrez des expériences, des ressources et des approches d’enseignement réelles, partagées par des enseignant·e·s du supérieur.',
         question: 'Comment l’utiliser avec mes étudiants et continuer à l’améliorer ?',
         objective:
           'Repartir avec quelque chose de concret pour votre classe, tirer les leçons de son déroulement et partager ce qui fonctionne avec d’autres enseignants.',

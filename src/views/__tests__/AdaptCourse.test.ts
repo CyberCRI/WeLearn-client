@@ -53,7 +53,7 @@ describe('AdaptCourse', () => {
     );
     expect(wrapper.find('[data-testid="ai-label"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="detected"]').exists()).toBe(false);
-    expect(wrapper.findAll('[data-testid="objective"]')).toHaveLength(3);
+    expect(wrapper.findAll('[data-testid="objective-list"] li')).toHaveLength(3);
     expect(wrapper.find('[data-testid="local-note"]').text()).toBe(
       'journey.teach.adapt.review.localNote'
     );
@@ -148,13 +148,58 @@ describe('AdaptCourse', () => {
     );
   });
 
-  it('the overview is never filled by WeLearn: only what the teacher adds, marked as theirs', async () => {
+  it('a full reading: a short course card, the longer parts folded, programme objectives apart', () => {
+    const store = useCourseDesignStore();
+    const read = (value: string) => ({ value, origin: 'extracted' as const, original: value });
+    store.setFile(new File(['x'], 'stats.pdf', { type: 'application/pdf' }));
+    store.source = 'upload';
+    store.readingMode = 'full';
+    store.overview = {
+      title: read('Statistiques descriptives'),
+      discipline: null,
+      level: read('L1 – S2')
+    };
+    store.topics = read('PIB\nInflation');
+    store.sessions = read('Séance 1 · Tendance centrale\nSéance 2 · Dispersion');
+    store.objectives = [
+      read('Construire un tableau croisé.'),
+      { ...read('Exercer un esprit critique.'), isProgramme: true }
+    ];
+    store.droppedCount = 1;
+    store.status = 'ready';
+    const wrapper = mountPage();
+
+    expect(wrapper.find('[data-testid="overview-title"]').text()).toContain(
+      'Statistiques descriptives'
+    );
+    expect(wrapper.findAll('[data-testid="topics"] .tag').map((tag) => tag.text())).toEqual([
+      'PIB',
+      'Inflation'
+    ]);
+    // only the discipline is missing, said once
+    const missing = wrapper.find('[data-testid="overview-missing"]');
+    expect(missing.text()).toContain('journey.teach.adapt.review.notFoundOverview');
+    expect(missing.findAll('.review-field')).toHaveLength(1);
+    // the longer parts start folded
+    ['objectives-part', 'sessions-part', 'description-part'].forEach((part) =>
+      expect(wrapper.find(`[data-testid="${part}"]`).attributes('open')).toBeUndefined()
+    );
+    expect(wrapper.findAll('[data-testid="session-list"] li')).toHaveLength(2);
+    expect(wrapper.findAll('[data-testid="objective-list"] li')).toHaveLength(1);
+    expect(wrapper.find('[data-testid="programme"]').text()).toContain(
+      'Exercer un esprit critique.'
+    );
+    expect(wrapper.find('[data-testid="dropped"]').exists()).toBe(true);
+  });
+
+  it('what the course card lacks sits on one line; what the teacher adds is marked as theirs', async () => {
     useCourseDesignStore().loadExample();
     const wrapper = mountPage();
     const title = () => wrapper.find('[data-testid="overview-title"]');
 
-    ['title', 'disciplineLevel', 'topics'].forEach((key) =>
-      expect(wrapper.find(`[data-testid="overview-${key}"]`).classes()).toContain('is-missing')
+    const missing = wrapper.find('[data-testid="overview-missing"]');
+    ['title', 'discipline', 'level', 'topics'].forEach((key) =>
+      expect(missing.find(`[data-testid="overview-${key}"]`).classes()).toContain('is-missing')
     );
     await title().find('button').trigger('click');
     await title().find('textarea').setValue('Introduction à la macroéconomie');
@@ -195,6 +240,9 @@ describe('AdaptCourse', () => {
     const wrapper = mountPage();
     const first = store.objectives[0].value;
 
+    // a plain list first; the programme-level marks are among the editing tools
+    expect(wrapper.find('[data-testid="mark-programme"]').exists()).toBe(false);
+    await wrapper.find('[data-testid="edit-objectives"]').trigger('click');
     await wrapper.find('[data-testid="mark-programme"]').trigger('click');
     expect(wrapper.findAll('[data-testid="objective"]')).toHaveLength(2);
     expect(wrapper.find('[data-testid="programme-objective"]').text()).toContain(first);

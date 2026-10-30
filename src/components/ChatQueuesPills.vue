@@ -1,15 +1,21 @@
 <script setup lang="ts">
-defineProps<{
-  action: (message: string) => void;
-  messageList: string[];
-  shouldDisable: boolean;
-}>();
+// limit: how many pills are shown (Ask WeLearn shows its last two; the learner tutor its three
+// starters)
+withDefaults(
+  defineProps<{
+    action: (message: string) => void;
+    messageList: string[];
+    shouldDisable: boolean;
+    limit?: number;
+  }>(),
+  { limit: 2 }
+);
 </script>
 <template>
   <div class="queues scroll" :class="{ disabled: shouldDisable }">
     <div class="flexy">
       <div
-        v-for="message in messageList.slice(-2)"
+        v-for="message in messageList.slice(-limit)"
         :key="message"
         class="card cursor"
         @click="action(message)"

@@ -70,18 +70,35 @@ const router = createRouter({
       name: 'about',
       component: () => import('@/views/AboutPage.vue')
     },
-    // student space: no login, its own bar instead of the teacher header and menu
+    // student space: no login; the app's header, with Home and Ask WeLearn leading to the learner pages
     {
       path: '/learn',
       name: 'learn',
       component: () => import('@/views/student/LearnHome.vue'),
-      meta: { requiresAuth: false, hideTemplate: true }
+      meta: { requiresAuth: false }
+    },
+    // Ask WeLearn for learners: the tutor conversation
+    {
+      path: '/learn/ask',
+      name: 'learn-ask',
+      component: () => import('@/views/student/LearnAsk.vue'),
+      meta: { requiresAuth: false }
+    },
+    // the three guided starts are now starters inside the Ask WeLearn conversation
+    {
+      path: '/learn/start/:start(exploring|question|working)',
+      redirect: { name: 'learn-ask' }
+    },
+    // explore and analyse became investigate: older links still land somewhere useful
+    {
+      path: '/learn/:space(explore|analyse)',
+      redirect: { name: 'learn-space', params: { space: 'investigate' } }
     },
     {
-      path: '/learn/:space(understand|explore|analyse|envision|apply)',
+      path: '/learn/:space(understand|investigate|envision|apply)',
       name: 'learn-space',
       component: () => import('@/views/student/LearnSpace.vue'),
-      meta: { requiresAuth: false, hideTemplate: true }
+      meta: { requiresAuth: false }
     },
     // entry page: choose "I'm teaching" (/teach) or "I'm learning" (/learn); / stays the chat
     {
@@ -109,8 +126,31 @@ const router = createRouter({
       name: 'teach-space',
       component: () => import('@/views/teacher/TeachSpace.vue'),
       meta: { requiresAuth: true },
-      // links by name to the explore space (homepage card) open the search page above
-      beforeEnter: (to) => to.params.space !== 'explore' || { name: 'teach-explore' }
+      // links by name to the explore space (homepage card) open the search page above, and the
+      // teach space is the collection of teaching practices below
+      beforeEnter: (to) =>
+        (to.params.space === 'explore' && { name: 'teach-explore' }) ||
+        (to.params.space === 'teach' && { name: 'teach-practices' }) ||
+        true
+    },
+    // TEACH: teaching practices shared by teachers, one practice, sharing one's own
+    {
+      path: '/teach/practices',
+      name: 'teach-practices',
+      component: () => import('@/views/teacher/TeachPractices.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/teach/practices/share',
+      name: 'teach-share',
+      component: () => import('@/views/teacher/SharePractice.vue'),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/teach/practices/:id',
+      name: 'teach-practice',
+      component: () => import('@/views/teacher/TeachPractice.vue'),
+      meta: { requiresAuth: true }
     },
     // course design entry: adapt an existing course or plan a new one
     {
@@ -124,6 +164,13 @@ const router = createRouter({
       path: '/teach/design/adapt',
       name: 'teach-adapt',
       component: () => import('@/views/teacher/AdaptCourse.vue'),
+      meta: { requiresAuth: true }
+    },
+    // design a learning activity (before the module mock pages below, which it replaces)
+    {
+      path: '/teach/design/activity',
+      name: 'teach-activity',
+      component: () => import('@/views/teacher/ActivityDesign.vue'),
       meta: { requiresAuth: true }
     },
     // mock page of a module still being designed; existing features keep their own pages

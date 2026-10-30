@@ -42,7 +42,7 @@ const handleDrop = (event: DragEvent) => {
       <input
         class="is-sr-only"
         type="file"
-        accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        accept=".pdf, .txt, .docx, .xlsx, application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         data-testid="syllabus-input"
         @change="handlePick"
       />

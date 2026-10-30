@@ -2,21 +2,26 @@
 import { ref, type Ref } from 'vue';
 import SpaceLabel from '@/components/SpaceLabel.vue';
 import CourseAdaptFlow from '@/components/teacher/CourseAdaptFlow.vue';
+import CourseScratchFlow from '@/components/teacher/CourseScratchFlow.vue';
 import { useCourseDesignStore } from '@/stores/courseDesign';
 import { TEACHER_SPACE_COLOURS } from '@/components/teacher/teacherSpaces';
 
 // "design your course" as one workspace: a single question, then the matching route right below.
-// "yes" shows the existing-course flow (upload, example, paste, review); "no" is still being
-// designed, so it says so instead of pretending to work
+// "yes" shows the existing-course flow (upload, example, paste, review); "no" creates a course
+// from scratch (a short brief, WeLearn's proposal, review). both end with sustainability
+// connections
 const store = useCourseDesignStore();
 const colours = TEACHER_SPACE_COLOURS.design;
 const texts = 'journey.teach.courseStart';
 
 // some work on the existing course (a file, an example, a review) that changing path would lose
-const hasWork = () => store.status !== 'idle' || !!store.source || !!store.file;
+const hasWork = () =>
+  store.status !== 'idle' || !!store.source || !!store.file || !!store.brief.idea.trim();
 
 // coming back to a course already started: show it again
-const choice: Ref<'yes' | 'no' | null> = ref(hasWork() ? 'yes' : null);
+const choice: Ref<'yes' | 'no' | null> = ref(
+  hasWork() ? (store.isScratch || store.brief.idea.trim() ? 'no' : 'yes') : null
+);
 
 // "yes" folds the question into one line; changing path asks first when work would be lost
 const isConfirmingChange = ref(false);
@@ -44,9 +49,9 @@ const handleDiscard = () => {
       </h1>
 
       <!-- once on the existing-course path, the question is one discreet line -->
-      <div v-if="choice === 'yes'" class="chosen-path" data-testid="chosen-path">
+      <div v-if="choice" class="chosen-path" data-testid="chosen-path">
         <p v-if="!isConfirmingChange" class="chosen-line">
-          {{ $t(`${texts}.working`) }}
+          {{ choice === 'yes' ? $t(`${texts}.working`) : $t(`${texts}.workingNew`) }}
           <button
             type="button"
             class="button is-small is-text"
@@ -108,15 +113,9 @@ const handleDiscard = () => {
         <div v-if="choice === 'yes'" key="yes" class="route" data-testid="route-existing">
           <CourseAdaptFlow />
         </div>
-        <p
-          v-else-if="choice === 'no'"
-          key="no"
-          class="not-yet"
-          role="status"
-          data-testid="route-new"
-        >
-          {{ $t(`${texts}.newCourse`) }}
-        </p>
+        <div v-else-if="choice === 'no'" key="no" class="route" data-testid="route-new">
+          <CourseScratchFlow />
+        </div>
       </Transition>
     </div>
   </div>
@@ -212,15 +211,6 @@ const handleDiscard = () => {
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-top: 0.5rem;
-}
-
-.not-yet {
-  max-width: 40rem;
-  margin-top: 1.5rem;
-  padding: 0.75rem 1rem;
-  border-left: 4px solid var(--lpi-yellow);
-  border-radius: 4px;
-  background: var(--lpi-yellow-lighter);
 }
 
 /* a short fade when the option changes; none for people who prefer reduced motion */
