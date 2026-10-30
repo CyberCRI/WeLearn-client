@@ -44,43 +44,50 @@ const bookmarks = useBookmarksStore();
             aria-hidden="true"
             :checked="selectedSources.includes(source)"
           />
-          <CardSimpleComponent
-            :title="source.payload.document_title"
-            :corpus="source.payload.document_corpus"
-            :subCorpus="source.payload.document_sub_corpus"
-            :url="source.payload.document_url"
-            :details="source.payload.document_details"
-            :sdg="source.payload.document_sdg"
-            :toggleBookmark="() => bookmarks.toggleBookmark(source)"
-            :isBookmarked="bookmarks.isBookmarked(source.payload.document_id)"
-          >
-            <template #modal="scope">
-              <ModalWrapper
-                :key="`modal-${source.id}`"
-                :isOpen="scope.isOpen"
-                :onClose="scope.onClose"
-                @click.stop
-                @keydown.stop
-              >
-                <Card
-                  :key="`modal-card-${source.id}`"
-                  :title="source.payload.document_title"
-                  :description="source.payload.document_desc"
-                  :url="source.payload.document_url"
-                  :sdg="source.payload.document_sdg"
-                  :details="source.payload.document_details"
-                  :corpus="source.payload.document_corpus"
-                  :subCorpus="source.payload.document_sub_corpus"
-                  :score="source.score"
-                  :toggleBookmark="() => bookmarks.toggleBookmark(source)"
-                  :isBookmarked="bookmarks.isBookmarked(source.payload.document_id)"
-                  :slice="source.payload.slice_content"
-                  :externalId="source.payload.document_external_id"
-                  hasFullDescription
-                />
-              </ModalWrapper>
+          <div class="source-body">
+            <CardSimpleComponent
+              :title="source.payload.document_title"
+              :corpus="source.payload.document_corpus"
+              :subCorpus="source.payload.document_sub_corpus"
+              :url="source.payload.document_url"
+              :details="source.payload.document_details"
+              :sdg="source.payload.document_sdg"
+              :toggleBookmark="() => bookmarks.toggleBookmark(source)"
+              :isBookmarked="bookmarks.isBookmarked(source.payload.document_id)"
+            >
+              <template #modal="scope">
+                <ModalWrapper
+                  :key="`modal-${source.id}`"
+                  :isOpen="scope.isOpen"
+                  :onClose="scope.onClose"
+                  @click.stop
+                  @keydown.stop
+                >
+                  <Card
+                    :key="`modal-card-${source.id}`"
+                    :title="source.payload.document_title"
+                    :description="source.payload.document_desc"
+                    :url="source.payload.document_url"
+                    :sdg="source.payload.document_sdg"
+                    :details="source.payload.document_details"
+                    :corpus="source.payload.document_corpus"
+                    :subCorpus="source.payload.document_sub_corpus"
+                    :score="source.score"
+                    :toggleBookmark="() => bookmarks.toggleBookmark(source)"
+                    :isBookmarked="bookmarks.isBookmarked(source.payload.document_id)"
+                    :slice="source.payload.slice_content"
+                    :externalId="source.payload.document_external_id"
+                    hasFullDescription
+                  />
+                </ModalWrapper>
+              </template>
+            </CardSimpleComponent>
+            <!-- the passage the search matched; long ones are cut to a few lines, the details window shows it whole -->
+            <template v-if="source.payload.slice_content">
+              <p class="passage-label">{{ $t('tutor.resourcesStep.passageLabel') }}</p>
+              <p class="passage" data-testid="passage">{{ source.payload.slice_content }}</p>
             </template>
-          </CardSimpleComponent>
+          </div>
         </div>
       </div>
     </template>
@@ -140,6 +147,27 @@ const bookmarks = useBookmarksStore();
 }
 .source.selected {
   background-color: var(--primary-lighter);
+}
+.source-body {
+  flex: 1;
+  min-width: 0;
+}
+.passage-label {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--neutral-70);
+}
+.passage {
+  margin-top: 0.125rem;
+  padding-left: 0.75rem;
+  border-left: 2px solid var(--neutral-20);
+  font-size: 0.8rem;
+  color: var(--neutral-70);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .check {
   flex-shrink: 0;

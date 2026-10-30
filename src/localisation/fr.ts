@@ -448,6 +448,7 @@ export const fr = {
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
       allHint: 'Aucune sélection : WeLearn utilisera toutes les ressources ci-dessus.',
+      passageLabel: 'Passage qui correspond à vos documents',
       action: 'Générer le syllabus',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:
