@@ -5,12 +5,13 @@ import router from '../index';
 import keycloak from '@/utils/keycloak';
 import { useAuthStore } from '@/stores/auth';
 
-const env = vi.hoisted(() => ({ hasAuth: false }));
+const flags = vi.hoisted(() => ({ hasAuth: false, disabled: [] as string[] }));
 
-vi.mock('@/utils/env', () => ({
-  get IS_AUTH_ENVIRONMENT() {
-    return env.hasAuth;
-  }
+vi.mock('@/stores/featureFlip', () => ({
+  useFeatureFlipStore: () => ({
+    isFeatureEnabled: (feature: string) =>
+      feature === 'auth' ? flags.hasAuth : !flags.disabled.includes(feature)
+  })
 }));
 
 vi.mock('@/utils/keycloak', () => ({
@@ -21,10 +22,11 @@ describe('router', () => {
   // the router is a singleton: start each test from a neutral page, so that navigating to the
   // tested route really runs the guards
   beforeEach(async () => {
-    env.hasAuth = false;
+    flags.hasAuth = false;
+    flags.disabled = [];
     setActivePinia(createPinia());
     await router.push('/about');
-    // fresh auth store, so shouldAuthenticate is computed with the env of the test
+    // fresh auth store, so shouldAuthenticate is computed with the flags of the test
     setActivePinia(createPinia());
   });
 
@@ -54,6 +56,44 @@ describe('router', () => {
     expect(module.default).toBeTruthy();
   });
 
+  describe('feature flips', () => {
+    it('sends a disabled page back to the chat', async () => {
+      flags.disabled = ['tutor'];
+
+      await router.push('/tutor');
+
+      expect(router.currentRoute.value.name).toBe('q-and-a');
+    });
+
+    it('falls back to the first enabled page when the chat is disabled', async () => {
+      flags.disabled = ['chat'];
+
+      await router.push('/');
+
+      expect(router.currentRoute.value.name).toBe('search-sdg');
+    });
+
+    it('cancels the navigation when no page is enabled', async () => {
+      flags.disabled = ['chat', 'search', 'bookmarks', 'tutor', 'microlearning', 'about'];
+
+      await router.push('/tutor');
+
+      expect(router.currentRoute.value.name).toBe('about');
+    });
+
+    it('does not ask for a login on a disabled page', async () => {
+      flags.hasAuth = true;
+      flags.disabled = ['bookmarks'];
+      useAuthStore().isLoading = false;
+
+      await router.push('/bookmarks');
+
+      expect(keycloak.login).toHaveBeenCalledWith(
+        expect.objectContaining({ redirectUri: `${window.location.origin}/q-and-a` })
+      );
+    });
+  });
+
   describe('outside dev (no auth)', () => {
     it('lets protected routes through without login', async () => {
       await router.push('/bookmarks');
@@ -71,7 +111,7 @@ describe('router', () => {
 
   describe('in dev (auth)', () => {
     beforeEach(() => {
-      env.hasAuth = true;
+      flags.hasAuth = true;
     });
 
     it('asks a logged out user to log in on a protected route', async () => {

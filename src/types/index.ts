@@ -81,3 +81,6 @@ export type UserRegisterData = {
   lastName: string;
   email: string;
 };
+
+// the deploy targets, read from VITE_ENVIRONMENT (see utils/env.ts)
+export type Environment = 'dev' | 'staging' | 'test' | 'prod';

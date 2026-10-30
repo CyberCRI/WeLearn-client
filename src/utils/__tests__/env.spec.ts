@@ -13,16 +13,17 @@ describe('env', () => {
   });
 
   it.each([
-    ['dev', true, true],
-    [' dev ', true, true],
-    ['staging', false, true],
-    ['prod', false, false],
-    ['test', false, false],
-    ['', false, false]
-  ])('reads %j as dev: %s, auth: %s', async (environment, isDev, hasAuth) => {
+    ['dev', 'dev'],
+    [' dev ', 'dev'],
+    ['staging', 'staging'],
+    ['prod', 'prod'],
+    ['test', 'test'],
+    // unknown or missing: the most restrictive
+    ['', 'prod'],
+    ['demo', 'prod']
+  ])('reads %j as %s', async (environment, name) => {
     const env = await loadEnv(environment);
 
-    expect(env.IS_DEV_ENVIRONMENT).toBe(isDev);
-    expect(env.IS_AUTH_ENVIRONMENT).toBe(hasAuth);
+    expect(env.ENVIRONMENT_NAME).toBe(name);
   });
 });

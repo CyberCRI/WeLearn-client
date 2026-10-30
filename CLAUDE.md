@@ -60,7 +60,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
 ## User flow
 
 1. **Boot:** `main.ts` → `authStore.init()` (Keycloak `check-sso`) → mount. `App.vue` then calls `/user/user_and_session` (it stores `sessionId` in localStorage, and that value is sent as the `X-Session-Id` header), loads the source/corpus lists and loads bookmarks.
-2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced when `VITE_ENVIRONMENT` is `dev` or `staging`** (`IS_AUTH_ENVIRONMENT` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
+2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced where the `auth` feature flip is on, today `dev` and `staging`** (`FEATURE_ENVIRONMENTS.auth` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
 3. `/` redirects to **`/q-and-a` (Chat)**. The user asks a question with optional SDG/corpus filters (`filters` store). The answer is streamed from `/qna/chat/agent_stream` through `fetchStream`, and `chatStatus` moves through the `CHAT_STATUS` states. Cited sources can be bookmarked.
 4. **`/tutor` (Syllabus):** a 4-step wizard driven by `tutor` store `step`:
 
@@ -76,13 +76,14 @@ tests/unit.setup.ts  # global $t mock → returns the key
 7. **`/bookmarks`:** the saved documents, with a bibliography export.
 8. `/tutor_test` (TestMAS) is a hidden experimental page. Don't remove it or `SecondStep.vue`, which it depends on.
 
-The nav entries are gated by `featureFlip` store flags.
+The nav entries and routes are gated by `featureFlip` store flags (see Conventions).
 
 ## Conventions
 
 - **API calls:** always go through `@/utils/fetch` (`baseGetAxios`, `basePostAxios`, `baseDeleteAxios`) or the `http` axios instance in `utils/api.ts`. These already add the `X-API-Key`, `X-Session-Id` and Bearer token, refresh the token and log out on 401. Use `fetchStream` only for streaming endpoints. Don't call `fetch`/`axios` directly for the WeLearn API.
 - **Store pattern:** async actions live in the store. Track state with `isLoading`, error flags such as `hasXError` / `shouldRetryAction` and an `errorCode` from `error.response.data.detail.code`. Stores expose `$reset()` when they persist state.
 - **Persistence:** use `saveToStorage` / `getFromStorage` / `clearFromStorage` from `utils/storage.ts`, which handle JSON for you. Stores that survive a reload initialize from storage (`ref(getFromStorage('chat') || [])`).
+- **Feature flips:** `FEATURE_ENVIRONMENTS` in `stores/featureFlip.ts` lists the environments where each feature is on. It is resolved at runtime from `ENVIRONMENT_NAME` (`utils/env.ts`), because one Docker image serves every environment. A new page gets an entry there and `meta.feature` on its route; the router guard then redirects it away where it is off. Remove the entry once the feature is on everywhere.
 - **i18n:** every user-facing string goes in **both** `localisation/en.ts` and `localisation/fr.ts`. A unit test (`localisation/__tests__/langs.spec.ts`) fails if their top-level keys differ. In templates use `$t('key')`. In TS use `i18n.global.t`. French is the default locale (`?lang=` or localStorage `language` overrides it).
 - **Comments:** comments are short, lowercase and explain _why_. A `// ponytail:` comment marks a deliberate shortcut or trade-off (for example "kept for a future rewrite" or "native checkbox for the visual only"). Read it before "fixing" that code, and use the same tag when you knowingly take a shortcut.
 - **Components:** use PascalCase file names. Many shared ones end in `Component.vue` (`ButtonComponent`, `ModalComponent`). Icons are SVG components in `components/icons/`.
