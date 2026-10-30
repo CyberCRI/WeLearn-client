@@ -45,7 +45,7 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      // VITE_ENVIRONMENT=test: no auth, like staging and prod
+      // VITE_ENVIRONMENT=test: no auth, like prod
       name: 'chromium',
       testIgnore: AUTH_SPECS,
       use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${PORT}` }

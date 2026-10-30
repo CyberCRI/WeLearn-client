@@ -3,11 +3,15 @@ import { ref, computed } from 'vue';
 import type { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import keycloak from '@/utils/keycloak';
 import i18n from '@/localisation/i18n';
-import { IS_DEV_ENVIRONMENT } from '@/utils/env';
+import { IS_AUTH_ENVIRONMENT } from '@/utils/env';
 import { basePostAxios } from '@/utils/fetch';
 import { useUserStore } from '@/stores/user';
+import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
 import type { UserRegisterData } from '@/types';
+
+// set before the keycloak redirect, so init() knows it comes back from a login and not a reload
+const LOGIN_PENDING_KEY = 'loginPending';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false);
@@ -18,16 +22,14 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoading = ref(true);
 
   const userName = computed(() => {
-    if (user.value) {
-      return `${user.value.firstName} ${user.value.lastName}`;
-    }
-    return tokenParsed.value?.preferred_username || 'Unknown';
+    const fullName = [user.value?.firstName, user.value?.lastName].filter(Boolean).join(' ');
+    return fullName || tokenParsed.value?.preferred_username || 'Unknown';
   });
 
-  const shouldAuthenticate = computed(() => IS_DEV_ENVIRONMENT);
+  const shouldAuthenticate = computed(() => IS_AUTH_ENVIRONMENT);
 
   async function init(): Promise<boolean> {
-    // auth is only rolled out on dev: elsewhere Keycloak is never contacted
+    // auth is only rolled out on dev and staging: elsewhere Keycloak is never contacted
     if (!shouldAuthenticate.value) {
       isLoading.value = false;
       return false;
@@ -41,19 +43,15 @@ export const useAuthStore = defineStore('auth', () => {
       });
 
       isAuthenticated.value = authenticated;
+      const isBackFromLogin = getFromStorage(LOGIN_PENDING_KEY) === true;
+      clearFromStorage(LOGIN_PENDING_KEY);
 
       if (authenticated) {
         token.value = keycloak.token;
         tokenParsed.value = keycloak.tokenParsed;
         roles.value = keycloak.realmAccess?.roles || [];
-        applyKeycloakLocale();
-
-        try {
-          const profile = await keycloak.loadUserProfile();
-          user.value = profile;
-        } catch (err) {
-          console.warn('Could not load user profile:', err);
-        }
+        user.value = profileFromIdToken();
+        if (isBackFromLogin) applyKeycloakLocale();
 
         startTokenRefresh();
       }
@@ -67,7 +65,21 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // the locale claim is the language last picked on a keycloak page (login, account)
+  // ponytail: built from the id token claims, loadUserProfile() calls /account which the lp realm
+  // refuses (no account audience in the token), and nothing here needs more than these fields
+  function profileFromIdToken(): KeycloakProfile {
+    const claims = keycloak.idTokenParsed;
+    return {
+      username: claims?.preferred_username,
+      firstName: claims?.given_name,
+      lastName: claims?.family_name,
+      email: claims?.email
+    };
+  }
+
+  // the locale claim is the language last picked on a keycloak page (login, account). only applied
+  // after a login: the app language is not saved on the keycloak user, so on a reload the claim
+  // would bring back an older language than the one picked in the app
   function applyKeycloakLocale(): void {
     const kcLocale = keycloak.idTokenParsed?.locale;
     if (kcLocale === 'en' || kcLocale === 'fr') {
@@ -76,25 +88,8 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // keep the keycloak user locale in sync with the app selector, otherwise the next login
-  // would bring back the language last picked on a keycloak page
-  async function updateLocale(lang: string): Promise<void> {
-    if (!isAuthenticated.value || !user.value) return;
-    const attributes = { ...user.value.attributes, locale: [lang] };
-    try {
-      const response = await fetch(`${keycloak.authServerUrl}/realms/${keycloak.realm}/account`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${keycloak.token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...user.value, attributes })
-      });
-      if (!response.ok) throw new Error(`status ${response.status}`);
-      user.value = { ...user.value, attributes };
-    } catch (err) {
-      console.warn('Could not save the language on the keycloak user:', err);
-    }
-  }
-
   function login(redirectUri?: string): void {
+    saveToStorage(LOGIN_PENDING_KEY, true);
     keycloak.login({
       redirectUri: redirectUri || window.location.origin,
       locale: i18n.global.locale.value
@@ -173,7 +168,6 @@ export const useAuthStore = defineStore('auth', () => {
     init,
     login,
     logout,
-    updateLocale,
     isRegistering,
     hasRegistered,
     registerErrorCode,

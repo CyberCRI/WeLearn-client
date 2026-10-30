@@ -109,6 +109,8 @@ export async function mockKeycloak(
         sub: 'fake-user-id',
         sid: 'fake-session',
         preferred_username: fakeUser.username,
+        given_name: fakeUser.firstName,
+        family_name: fakeUser.lastName,
         email: fakeUser.email,
         realm_access: { roles: ['user'] }
       };
@@ -122,10 +124,6 @@ export async function mockKeycloak(
           expires_in: 3600
         }
       });
-    }
-
-    if (path === '/account') {
-      return route.fulfill({ headers: CORS_HEADERS, json: fakeUser });
     }
 
     if (path === '/protocol/openid-connect/logout') {

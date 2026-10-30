@@ -66,13 +66,13 @@ cd WeLearn-client
 cp .env.test .env.local
 ```
 
-| Variable                                                              | Purpose                                                          |
-| --------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `VITE_API_BASE`, `VITE_API_VERSION`                                   | URL and version of the WeLearn API                               |
-| `VITE_WL_API_KEY`                                                     | API key sent with every request                                  |
-| `VITE_ENVIRONMENT`                                                    | Environment name. Login is only required when it is set to `dev` |
-| `VITE_KEYCLOAK_URL`, `VITE_KEYCLOAK_REALM`, `VITE_KEYCLOAK_CLIENT_ID` | Keycloak authentication                                          |
-| `VITE_MIXPANEL_TOKEN`                                                 | Analytics token. Optional, analytics are currently disabled      |
+| Variable                                                              | Purpose                                                                       |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `VITE_API_BASE`, `VITE_API_VERSION`                                   | URL and version of the WeLearn API                                            |
+| `VITE_WL_API_KEY`                                                     | API key sent with every request                                               |
+| `VITE_ENVIRONMENT`                                                    | Environment name. Login is only required when it is set to `dev` or `staging` |
+| `VITE_KEYCLOAK_URL`, `VITE_KEYCLOAK_REALM`, `VITE_KEYCLOAK_CLIENT_ID` | Keycloak authentication                                                       |
+| `VITE_MIXPANEL_TOKEN`                                                 | Analytics token. Optional, analytics are currently disabled                   |
 
 4. Install dependencies using Yarn (this also enables the git pre-push hook, see [Development](#development)):
 

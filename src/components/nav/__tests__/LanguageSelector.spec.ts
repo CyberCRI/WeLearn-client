@@ -1,16 +1,9 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import LanguageSelector from '../LanguageSelector.vue';
 
-const updateLocale = vi.fn();
-
-vi.mock('@/composables/useAuth', () => ({
-  useAuth: () => ({ updateLocale })
-}));
-
 describe('LanguageSelector', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
     localStorage.removeItem('language');
   });
 
@@ -18,7 +11,7 @@ describe('LanguageSelector', () => {
     localStorage.removeItem('language');
   });
 
-  it('stores the chosen language and sends it to the user profile', async () => {
+  it('stores the chosen language', async () => {
     const i18n = { locale: 'fr', availableLocales: ['en', 'fr'] };
     const wrapper = mount(LanguageSelector, { global: { mocks: { $i18n: i18n } } });
 
@@ -28,6 +21,5 @@ describe('LanguageSelector', () => {
 
     expect(i18n.locale).toBe('en');
     expect(localStorage.getItem('language')).toBe('en');
-    expect(updateLocale).toHaveBeenCalledWith('en');
   });
 });

@@ -5,10 +5,9 @@ import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 
 const { env, keycloak } = vi.hoisted(() => ({
-  env: { isDev: true },
+  env: { hasAuth: true },
   keycloak: {
     init: vi.fn(),
-    loadUserProfile: vi.fn(),
     login: vi.fn(),
     logout: vi.fn(),
     updateToken: vi.fn(),
@@ -22,8 +21,8 @@ const { env, keycloak } = vi.hoisted(() => ({
 }));
 
 vi.mock('@/utils/env', () => ({
-  get IS_DEV_ENVIRONMENT() {
-    return env.isDev;
+  get IS_AUTH_ENVIRONMENT() {
+    return env.hasAuth;
   }
 }));
 
@@ -34,13 +33,16 @@ const { syncUserId } = vi.hoisted(() => ({ syncUserId: vi.fn() }));
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 vi.mock('@/stores/user', () => ({ useUserStore: () => ({ syncUserId }) }));
 
-const profile = { firstName: 'Ada', lastName: 'Lovelace', attributes: { team: ['lpi'] } };
-
 const authenticate = () => {
   keycloak.init.mockResolvedValue(true);
-  keycloak.loadUserProfile.mockResolvedValue(profile);
   keycloak.token = 'token-1';
   keycloak.tokenParsed = { preferred_username: 'ada' };
+  keycloak.idTokenParsed = {
+    preferred_username: 'ada',
+    given_name: 'Ada',
+    family_name: 'Lovelace',
+    email: 'ada@test.org'
+  };
   keycloak.realmAccess = { roles: ['teacher'] };
 };
 
@@ -50,7 +52,7 @@ describe('auth store', () => {
   beforeEach(() => {
     localStorage.clear();
     setActivePinia(createPinia());
-    env.isDev = true;
+    env.hasAuth = true;
     keycloak.token = undefined;
     keycloak.tokenParsed = undefined;
     keycloak.idTokenParsed = undefined;
@@ -70,8 +72,8 @@ describe('auth store', () => {
   });
 
   describe('init', () => {
-    it('skips keycloak outside dev', async () => {
-      env.isDev = false;
+    it('skips keycloak outside dev and staging', async () => {
+      env.hasAuth = false;
       const store = useAuthStore();
 
       expect(store.shouldAuthenticate).toBe(false);
@@ -95,25 +97,44 @@ describe('auth store', () => {
       expect(store.isAuthenticated).toBe(true);
       expect(store.token).toBe('token-1');
       expect(store.roles).toEqual(['teacher']);
-      expect(store.user).toEqual(profile);
+      expect(store.user).toEqual({
+        username: 'ada',
+        firstName: 'Ada',
+        lastName: 'Lovelace',
+        email: 'ada@test.org'
+      });
       expect(store.userName).toBe('Ada Lovelace');
       expect(store.isLoading).toBe(false);
     });
 
-    it('applies the keycloak locale', async () => {
+    it('applies the keycloak locale when coming back from a login', async () => {
+      authenticate();
+      i18n.global.locale.value = 'fr';
+      keycloak.idTokenParsed = { locale: 'en' };
+      localStorage.setItem('loginPending', 'true');
+
+      await useAuthStore().init();
+
+      expect(i18n.global.locale.value).toBe('en');
+      expect(localStorage.getItem('language')).toBe('en');
+      expect(localStorage.getItem('loginPending')).toBeNull();
+    });
+
+    it('keeps the app language on a reload', async () => {
       authenticate();
       i18n.global.locale.value = 'fr';
       keycloak.idTokenParsed = { locale: 'en' };
 
       await useAuthStore().init();
 
-      expect(i18n.global.locale.value).toBe('en');
-      expect(localStorage.getItem('language')).toBe('en');
+      expect(i18n.global.locale.value).toBe('fr');
+      expect(localStorage.getItem('language')).toBeNull();
     });
 
     it('ignores an unsupported keycloak locale', async () => {
       authenticate();
       i18n.global.locale.value = 'fr';
+      localStorage.setItem('loginPending', 'true');
       keycloak.idTokenParsed = { locale: 'de' };
 
       await useAuthStore().init();
@@ -122,18 +143,26 @@ describe('auth store', () => {
       expect(localStorage.getItem('language')).toBeNull();
     });
 
-    it('falls back to the username when the profile cannot load', async () => {
+    it('falls back to the username when the token has no name', async () => {
       authenticate();
       keycloak.realmAccess = undefined;
-      keycloak.loadUserProfile.mockRejectedValue(new Error('no profile'));
+      keycloak.idTokenParsed = { preferred_username: 'ada' };
       const store = useAuthStore();
 
       expect(await store.init()).toBe(true);
 
-      expect(store.user).toBeNull();
       expect(store.roles).toEqual([]);
       expect(store.userName).toBe('ada');
-      expect(console.warn).toHaveBeenCalled();
+    });
+
+    it('shows the first name alone when there is no last name', async () => {
+      authenticate();
+      keycloak.idTokenParsed = { given_name: 'Ada' };
+      const store = useAuthStore();
+
+      await store.init();
+
+      expect(store.userName).toBe('Ada');
     });
 
     it('stays anonymous when keycloak says not authenticated', async () => {
@@ -144,7 +173,7 @@ describe('auth store', () => {
 
       expect(store.isAuthenticated).toBe(false);
       expect(store.userName).toBe('Unknown');
-      expect(keycloak.loadUserProfile).not.toHaveBeenCalled();
+      expect(store.user).toBeNull();
       expect(store.isLoading).toBe(false);
     });
 
@@ -199,49 +228,6 @@ describe('auth store', () => {
     });
   });
 
-  describe('updateLocale', () => {
-    it('does nothing for an anonymous user', async () => {
-      const fetchMock = vi.fn();
-      vi.stubGlobal('fetch', fetchMock);
-
-      await useAuthStore().updateLocale('en');
-
-      expect(fetchMock).not.toHaveBeenCalled();
-    });
-
-    it('saves the locale on the keycloak user', async () => {
-      const fetchMock = vi.fn().mockResolvedValue({ ok: true });
-      vi.stubGlobal('fetch', fetchMock);
-      authenticate();
-      const store = useAuthStore();
-      await store.init();
-
-      await store.updateLocale('en');
-
-      const [url, options] = fetchMock.mock.calls[0];
-      expect(url).toBe('https://kc.test/realms/welearn/account');
-      expect(options.method).toBe('POST');
-      expect(options.headers.Authorization).toBe('Bearer token-1');
-      expect(JSON.parse(options.body).attributes).toEqual({ team: ['lpi'], locale: ['en'] });
-      expect(store.user?.attributes).toEqual({ team: ['lpi'], locale: ['en'] });
-    });
-
-    it('keeps the user unchanged when keycloak refuses', async () => {
-      vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: false, status: 403 }));
-      authenticate();
-      const store = useAuthStore();
-      await store.init();
-
-      await store.updateLocale('en');
-
-      expect(store.user?.attributes).toEqual({ team: ['lpi'] });
-      expect(console.warn).toHaveBeenCalledWith(
-        'Could not save the language on the keycloak user:',
-        expect.any(Error)
-      );
-    });
-  });
-
   describe('login and logout', () => {
     it('logs in with the app locale and the given redirect', () => {
       i18n.global.locale.value = 'en';
@@ -252,6 +238,7 @@ describe('auth store', () => {
         redirectUri: 'https://app.test/tutor',
         locale: 'en'
       });
+      expect(localStorage.getItem('loginPending')).toBe('true');
 
       store.login();
       expect(keycloak.login).toHaveBeenLastCalledWith({

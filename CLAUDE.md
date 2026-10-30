@@ -60,7 +60,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
 ## User flow
 
 1. **Boot:** `main.ts` → `authStore.init()` (Keycloak `check-sso`) → mount. `App.vue` then calls `/user/user_and_session` (it stores `sessionId` in localStorage, and that value is sent as the `X-Session-Id` header), loads the source/corpus lists and loads bookmarks.
-2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced when `VITE_ENVIRONMENT === 'dev'`** (`authStore.shouldAuthenticate`). In other environments the guard lets everything through.
+2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced when `VITE_ENVIRONMENT` is `dev` or `staging`** (`IS_AUTH_ENVIRONMENT` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
 3. `/` redirects to **`/q-and-a` (Chat)**. The user asks a question with optional SDG/corpus filters (`filters` store). The answer is streamed from `/qna/chat/agent_stream` through `fetchStream`, and `chatStatus` moves through the `CHAT_STATUS` states. Cited sources can be bookmarked.
 4. **`/tutor` (Syllabus):** a 4-step wizard driven by `tutor` store `step`:
 
