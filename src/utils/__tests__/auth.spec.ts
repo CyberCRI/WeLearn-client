@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { createPinia, setActivePinia } from 'pinia';
 import { getUserAndSession } from '../auth';
 import { basePostAxios } from '@/utils/fetch';
 
@@ -11,6 +12,7 @@ type PostResponse = Awaited<ReturnType<typeof basePostAxios>>;
 describe('getUserAndSession', () => {
   beforeEach(() => {
     localStorage.clear();
+    setActivePinia(createPinia());
     vi.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
@@ -19,9 +21,9 @@ describe('getUserAndSession', () => {
     vi.restoreAllMocks();
   });
 
-  it('stores the session id and returns the message', async () => {
+  it('stores the session and user ids and returns the message', async () => {
     vi.mocked(basePostAxios).mockResolvedValue({
-      data: { session_id: 'session-1', message: 'user and session created' }
+      data: { session_id: 'session-1', user_id: 'user-1', message: 'user and session created' }
     } as PostResponse);
 
     const message = await getUserAndSession();
@@ -29,11 +31,27 @@ describe('getUserAndSession', () => {
     expect(basePostAxios).toHaveBeenCalledWith('/user/user_and_session');
     expect(message).toBe('user and session created');
     expect(localStorage.getItem('sessionId')).toBe('"session-1"');
+    expect(localStorage.getItem('userId')).toBe('"user-1"');
+  });
+
+  it("clears the previous user's data when the user changed", async () => {
+    localStorage.setItem('userId', JSON.stringify('user-1'));
+    localStorage.setItem('sessionId', JSON.stringify('session-1'));
+    localStorage.setItem('searchInput', JSON.stringify('old query'));
+    vi.mocked(basePostAxios).mockResolvedValue({
+      data: { session_id: 'session-2', user_id: 'user-2', message: 'ok' }
+    } as PostResponse);
+
+    await getUserAndSession();
+
+    expect(localStorage.getItem('searchInput')).toBeNull();
+    expect(localStorage.getItem('sessionId')).toBe('"session-2"');
+    expect(localStorage.getItem('userId')).toBe('"user-2"');
   });
 
   it('sends the encoded referer', async () => {
     vi.mocked(basePostAxios).mockResolvedValue({
-      data: { session_id: 'session-1', message: 'ok' }
+      data: { session_id: 'session-1', user_id: 'user-1', message: 'ok' }
     } as PostResponse);
 
     await getUserAndSession('https://example.org/?a=1&b=2');

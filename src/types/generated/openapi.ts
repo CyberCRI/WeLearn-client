@@ -611,6 +611,27 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/user/signup': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Sign up with Keycloak
+     * @description Create a Keycloak account and its WeLearn user. Keycloak emails a link to
+     *     verify the email and set a password. 409 if the email has an account.
+     */
+    post: operations['user-sign_up'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/user/user': {
     parameters: {
       query?: never;
@@ -1395,6 +1416,25 @@ export interface components {
        */
       session_id: string;
     };
+    /** SignUpRequest */
+    SignUpRequest: {
+      /** Email */
+      email: string;
+      /** First Name */
+      first_name?: string | null;
+      /** Last Name */
+      last_name?: string | null;
+    };
+    /** SignUpResponse */
+    SignUpResponse: {
+      /** Message */
+      message: string;
+      /**
+       * User Id
+       * Format: uuid
+       */
+      user_id: string;
+    };
     /**
      * SparseVector
      * @description Sparse vector structure
@@ -1566,6 +1606,11 @@ export interface components {
        * Format: uuid
        */
       session_id: string;
+      /**
+       * User Id
+       * Format: uuid
+       */
+      user_id: string;
     };
     /** UserResponse */
     UserResponse: {
@@ -2769,6 +2814,41 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['SessionResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-sign_up': {
+    parameters: {
+      query?: {
+        referer?: string | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SignUpRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SignUpResponse'];
         };
       };
       /** @description Error */

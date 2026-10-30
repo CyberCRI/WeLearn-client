@@ -12,7 +12,7 @@
           cy="8"
           r="5"
           fill="none"
-          stroke="#000"
+          stroke="currentColor"
           stroke-width="2"
         />
       </g>
@@ -22,7 +22,7 @@
           class="stroke-shape"
           d="m20 21a8 8 0 0 0-16 0"
           fill="none"
-          stroke="#000"
+          stroke="currentColor"
           stroke-width="2"
         />
       </g>

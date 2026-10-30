@@ -74,3 +74,10 @@ export enum CreateSyllabusStepsId {
   search = 'search',
   syllabus = 'syllabus'
 }
+
+// the register form; the API takes it as `SignUpRequest` (snake_case)
+export type UserRegisterData = {
+  firstName: string;
+  lastName: string;
+  email: string;
+};

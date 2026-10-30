@@ -23,8 +23,16 @@ export const test = base.extend<Fixtures>({
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();
-      if (url.includes('user/user')) {
-        await route.fulfill({ status: 200, body: JSON.stringify({ user_id: 'fake_user_id' }) });
+      if (url.includes('user/signup')) {
+        await route.fulfill({
+          status: 201,
+          body: JSON.stringify({ message: 'user created', user_id: 'fake_user_id' })
+        });
+      } else if (url.includes('user/user')) {
+        await route.fulfill({
+          status: 200,
+          body: JSON.stringify({ user_id: 'fake_user_id', session_id: 'fake_session_id' })
+        });
       } else if (url.includes('session')) {
         await route.fulfill({
           status: 200,

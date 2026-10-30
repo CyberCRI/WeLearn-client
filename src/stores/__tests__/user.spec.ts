@@ -91,4 +91,75 @@ describe('user store', () => {
     ).resolves.toBeUndefined();
     expect(console.error).toHaveBeenCalled();
   });
+
+  describe('syncUserId', () => {
+    const stored = (key: string) => JSON.parse(localStorage.getItem(key) || 'null');
+    const USER_DATA_KEYS = [
+      'chat',
+      'chatThreadId',
+      'searchInput',
+      'searchResults',
+      'courseMetadaRef',
+      'userMetricsData'
+    ];
+
+    beforeEach(() => {
+      USER_DATA_KEYS.forEach((key) => localStorage.setItem(key, JSON.stringify(`old-${key}`)));
+      localStorage.setItem('language', 'fr');
+      localStorage.setItem('onboardingState', JSON.stringify({ hasSeenWelcome: true }));
+      localStorage.setItem('sessionId', JSON.stringify('session-1'));
+    });
+
+    it('saves the first user id without clearing anything', () => {
+      useUserStore().syncUserId('user-1', 'session-1');
+
+      expect(stored('userId')).toBe('user-1');
+      USER_DATA_KEYS.forEach((key) => expect(stored(key)).toBe(`old-${key}`));
+    });
+
+    it('keeps the data of the same user and saves a new session', () => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+
+      useUserStore().syncUserId('user-1', 'session-2');
+
+      expect(stored('sessionId')).toBe('session-2');
+      USER_DATA_KEYS.forEach((key) => expect(stored(key)).toBe(`old-${key}`));
+    });
+
+    it("clears the previous user's data but keeps the device preferences", () => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+
+      useUserStore().syncUserId('user-2', 'session-2');
+
+      expect(stored('userId')).toBe('user-2');
+      USER_DATA_KEYS.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
+      expect(localStorage.getItem('language')).toBe('fr');
+      expect(stored('onboardingState')).toEqual({ hasSeenWelcome: true });
+    });
+
+    it('replaces the session of the previous user', () => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+
+      useUserStore().syncUserId('user-2', 'session-2');
+
+      expect(stored('sessionId')).toBe('session-2');
+    });
+
+    it('drops the session of the previous user when none is given (sign-up)', () => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+
+      useUserStore().syncUserId('user-2');
+
+      expect(localStorage.getItem('sessionId')).toBeNull();
+      expect(stored('userId')).toBe('user-2');
+    });
+
+    it('keeps the session when the user did not change and none is given', () => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+
+      useUserStore().syncUserId('user-1');
+
+      expect(stored('sessionId')).toBe('session-1');
+    });
+  });
 });

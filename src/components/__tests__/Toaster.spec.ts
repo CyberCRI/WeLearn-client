@@ -14,4 +14,14 @@ describe('ToasterComponent', () => {
     expect(wrapper.element).toMatchSnapshot();
     expect(wrapper.text()).toContain('Oops something wrong hapened. Please try again later.');
   });
+
+  it('renders the given heading level and extra content', () => {
+    const wrapper = mount(ToasterComponentVue, {
+      props: { title: 'Error', headingTag: 'h2' },
+      slots: { default: '<button>Retry</button>' }
+    });
+    expect(wrapper.find('h1').exists()).toBe(false);
+    expect(wrapper.get('h2').text()).toBe('Error');
+    expect(wrapper.get('button').text()).toBe('Retry');
+  });
 });

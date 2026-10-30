@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useAuthStore } from '../auth';
 import i18n from '@/localisation/i18n';
+import { basePostAxios } from '@/utils/fetch';
 
 const { env, keycloak } = vi.hoisted(() => ({
   env: { isDev: true },
@@ -27,6 +28,11 @@ vi.mock('@/utils/env', () => ({
 }));
 
 vi.mock('@/utils/keycloak', () => ({ default: keycloak }));
+
+const { syncUserId } = vi.hoisted(() => ({ syncUserId: vi.fn() }));
+
+vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
+vi.mock('@/stores/user', () => ({ useUserStore: () => ({ syncUserId }) }));
 
 const profile = { firstName: 'Ada', lastName: 'Lovelace', attributes: { team: ['lpi'] } };
 
@@ -236,7 +242,7 @@ describe('auth store', () => {
     });
   });
 
-  describe('login, logout and register', () => {
+  describe('login and logout', () => {
     it('logs in with the app locale and the given redirect', () => {
       i18n.global.locale.value = 'en';
       const store = useAuthStore();
@@ -259,21 +265,91 @@ describe('auth store', () => {
 
       expect(keycloak.logout).toHaveBeenCalledWith({ redirectUri: window.location.origin });
     });
+  });
 
-    // ponytail: register is a stub that only logs the data
-    it('register only logs the data', () => {
-      const log = vi.spyOn(console, 'log').mockImplementation(() => {});
-      const data = {
-        name: 'Ada',
-        lastName: 'Lovelace',
-        email: 'ada@test',
-        password: 'p',
-        checkPassword: 'p'
-      };
+  describe('register', () => {
+    const data = { firstName: ' Ada ', lastName: 'Lovelace', email: ' ada@test.org ' };
+    type PostResponse = Awaited<ReturnType<typeof basePostAxios>>;
+    const apiError = (status: number, code?: string) =>
+      Object.assign(new Error('Request failed'), {
+        response: { status, data: { detail: code ? { message: 'm', code } : 'd' } }
+      });
 
-      useAuthStore().register(data);
+    it('signs up with trimmed values and syncs the new user id', async () => {
+      vi.mocked(basePostAxios).mockResolvedValue({
+        data: { message: 'user created', user_id: 'user-1' }
+      } as PostResponse);
+      const store = useAuthStore();
 
-      expect(log).toHaveBeenCalledWith(data);
+      await store.register(data);
+
+      expect(basePostAxios).toHaveBeenCalledWith('/user/signup', {
+        email: 'ada@test.org',
+        first_name: 'Ada',
+        last_name: 'Lovelace'
+      });
+      expect(syncUserId).toHaveBeenCalledWith('user-1');
+      expect(store.hasRegistered).toBe(true);
+      expect(store.registerErrorCode).toBeNull();
+      expect(store.isRegistering).toBe(false);
+    });
+
+    it.each([
+      [409, 'EMAIL_ALREADY_EXISTS'],
+      [503, 'KEYCLOAK_UNAVAILABLE'],
+      [500, 'SIGNUP_DISABLED']
+    ])('keeps the API error code of a %i', async (status, code) => {
+      vi.mocked(basePostAxios).mockRejectedValue(apiError(status, code));
+      const store = useAuthStore();
+
+      await store.register(data);
+
+      expect(store.registerErrorCode).toBe(code);
+      expect(store.hasRegistered).toBe(false);
+      expect(syncUserId).not.toHaveBeenCalled();
+    });
+
+    it('maps a validation error to INVALID_EMAIL', async () => {
+      vi.mocked(basePostAxios).mockRejectedValue(apiError(422));
+      const store = useAuthStore();
+
+      await store.register(data);
+
+      expect(store.registerErrorCode).toBe('INVALID_EMAIL');
+    });
+
+    it('maps a network error to UNKNOWN', async () => {
+      vi.mocked(basePostAxios).mockRejectedValue(new Error('Network Error'));
+      const store = useAuthStore();
+
+      await store.register(data);
+
+      expect(store.registerErrorCode).toBe('UNKNOWN');
+    });
+
+    it('ignores a second submit while the first is running', async () => {
+      let resolve!: (value: PostResponse) => void;
+      vi.mocked(basePostAxios).mockReturnValue(new Promise((r) => (resolve = r)));
+      const store = useAuthStore();
+
+      const first = store.register(data);
+      await store.register(data);
+      expect(store.isRegistering).toBe(true);
+      resolve({ data: { message: 'ok', user_id: 'user-1' } } as PostResponse);
+      await first;
+
+      expect(basePostAxios).toHaveBeenCalledOnce();
+    });
+
+    it('resets the register state', async () => {
+      vi.mocked(basePostAxios).mockRejectedValue(new Error('Network Error'));
+      const store = useAuthStore();
+      await store.register(data);
+
+      store.resetRegister();
+
+      expect(store.registerErrorCode).toBeNull();
+      expect(store.hasRegistered).toBe(false);
     });
   });
 });
