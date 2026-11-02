@@ -19,7 +19,7 @@ defineProps<{
           Object.values(files)[index]?.name || $t('tutor.summaryStep.noFileName', { n: index + 1 })
         }}
       </label>
-      <!-- ponytail: field-sizing grows the box natively; rows is the fallback for older browsers -->
+      <!-- field-sizing grows the box natively; rows is the fallback for older browsers -->
       <textarea
         :id="`summary_${index}`"
         class="textarea summary"

@@ -12,11 +12,15 @@ vi.mock('@/utils/fetch', () => ({
 
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
+const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
+vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
+
 const corpus = (name: string, category: string | null) => ({ name, category }) as Corpus;
 const doc = (id: string) => ({ payload: { document_id: id } }) as Document;
 
 describe('sources store', () => {
   beforeEach(() => {
+    auth.isGuest = false;
     setActivePinia(createPinia());
   });
 
@@ -123,6 +127,15 @@ describe('sources store', () => {
       expect(window.URL.revokeObjectURL).toHaveBeenCalledWith('blob:export');
       expect(store.isExportingBibliography).toBe(false);
       expect(track).toHaveBeenCalledWith('Bibliography Exported', { count: 2 });
+    });
+
+    it('asks a guest to sign up instead of exporting', async () => {
+      auth.isGuest = true;
+
+      await useSourcesStore().handleBibliographyExport([doc('doc-1')]);
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('bibliography');
+      expect(exportBibliography).not.toHaveBeenCalled();
     });
 
     it('does nothing without document ids', async () => {

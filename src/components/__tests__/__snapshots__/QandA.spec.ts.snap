@@ -148,6 +148,7 @@ exports[`QandA > renders properly 1`] = `
           </div>
         </div>
       </div>
+      <!--v-if-->
     </div>
     
   </div>

@@ -8,6 +8,7 @@ import {
   deleteAllBookmarks
 } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
+import { useAuthStore } from '@/stores/auth';
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
   const sourcesBookmarked: Ref<Document[]> = ref([]);
@@ -55,6 +56,12 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
   };
 
   const toggleBookmark = (source: Document) => {
+    const authStore = useAuthStore();
+    if (authStore.isGuest) {
+      authStore.askToSignUp('bookmark');
+      return;
+    }
+
     const sourceId = source.payload.document_id;
     if (idsBookmarked.value.includes(sourceId)) {
       removeBookmark(sourceId);

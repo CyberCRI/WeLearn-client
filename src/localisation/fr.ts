@@ -308,7 +308,6 @@ export const fr = {
     email: 'E-mail',
     language: 'Langue',
     cookies: 'Cookies',
-    bookmarksLoginRequired: 'Connectez-vous pour voir vos favoris',
     notAvailable: 'Non disponible',
     notAuthenticated: "Vous n'êtes pas connecté·e."
   },

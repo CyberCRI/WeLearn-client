@@ -89,7 +89,7 @@ export async function convertMarkdownToDocx(
             listItems = [];
             inList = false;
           }
-          // ponytail: no empty paragraph, text paragraphs already have spacing around them
+          // no empty paragraph, text paragraphs already have spacing around them
           continue;
         }
 

@@ -5,6 +5,7 @@ import type { Corpus, Document } from '@/types';
 import type { ApiResponse } from '@/types/api';
 import { exportBibliography } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
+import { useAuthStore } from '@/stores/auth';
 
 export const useSourcesStore = defineStore('sources', () => {
   const categorySourceMap = ref<Record<string, Corpus[]> | null>(null);
@@ -22,7 +23,7 @@ export const useSourcesStore = defineStore('sources', () => {
       const fetchedCorpus = await baseGetAxios<Corpus[]>('/search/collections');
       fetchedCorpus.sort((a, b) => a.name.localeCompare(b.name));
 
-      // ponytail: a corpus without category lands under "null", as it always has
+      // a corpus without category lands under "null", as it always has
       const categoryOf = (corpus: Corpus) => String(corpus.category);
 
       const corpusByCategory: Record<string, Corpus[]> = fetchedCorpus.reduce(
@@ -92,6 +93,12 @@ export const useSourcesStore = defineStore('sources', () => {
   const handleBibliographyExport = async (sourcesList: Document[]) => {
     const ids = documentIds(sourcesList);
     if (!ids.length || isExportingBibliography.value) return;
+
+    const authStore = useAuthStore();
+    if (authStore.isGuest) {
+      authStore.askToSignUp('bibliography');
+      return;
+    }
 
     isExportingBibliography.value = true;
 

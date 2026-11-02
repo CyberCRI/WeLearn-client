@@ -194,6 +194,35 @@ describe('auth store', () => {
     });
   });
 
+  describe('guest', () => {
+    it('is a guest when auth is on and the user is not logged in', () => {
+      const store = useAuthStore();
+
+      expect(store.isGuest).toBe(true);
+
+      store.isAuthenticated = true;
+      expect(store.isGuest).toBe(false);
+    });
+
+    it('is never a guest where auth is off', () => {
+      env.name = 'prod';
+
+      expect(useAuthStore().isGuest).toBe(false);
+    });
+
+    it('opens and closes the signup prompt, and tracks it', () => {
+      const store = useAuthStore();
+
+      store.askToSignUp('download');
+
+      expect(store.signupPromptReason).toBe('download');
+      expect(track).toHaveBeenCalledWith('Signup Prompt Shown', { reason: 'download' });
+
+      store.closeSignupPrompt();
+      expect(store.signupPromptReason).toBeNull();
+    });
+  });
+
   describe('token refresh', () => {
     it('updates the token every 30 seconds', async () => {
       authenticate();

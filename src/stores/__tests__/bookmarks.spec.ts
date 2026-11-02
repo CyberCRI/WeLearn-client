@@ -15,6 +15,9 @@ vi.mock('@/utils/fetch', () => ({
 
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
+const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
+vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
+
 const doc = (id: string) => ({ payload: { document_id: id } }) as Document;
 
 const mockGetBookmarks = (docs: Document[]) =>
@@ -24,6 +27,7 @@ const mockGetBookmarks = (docs: Document[]) =>
 
 describe('bookmarks store', () => {
   beforeEach(() => {
+    auth.isGuest = false;
     setActivePinia(createPinia());
   });
 
@@ -125,6 +129,18 @@ describe('bookmarks store', () => {
     store.toggleBookmark(doc('doc-1'));
     await flushPromises();
     expect(deleteBookmark).toHaveBeenCalledWith('doc-1');
+    expect(store.isBookmarked('doc-1')).toBe(false);
+  });
+
+  it('asks a guest to sign up instead of bookmarking', async () => {
+    auth.isGuest = true;
+    const store = useBookmarksStore();
+
+    store.toggleBookmark(doc('doc-1'));
+    await flushPromises();
+
+    expect(auth.askToSignUp).toHaveBeenCalledWith('bookmark');
+    expect(postBookmark).not.toHaveBeenCalled();
     expect(store.isBookmarked('doc-1')).toBe(false);
   });
 

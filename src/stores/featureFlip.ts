@@ -23,7 +23,7 @@ export type Feature = keyof typeof FEATURE_ENVIRONMENTS;
 
 // `?preview=auth,analytics` turns features on for this browser where their env keeps them off,
 // `?preview=off` turns it back off. kept in storage because the param is lost on reload and on
-// the keycloak redirects. ponytail: hidden, not secret, anyone who knows the param gets it
+// the keycloak redirects. hidden, not secret, anyone who knows the param gets it
 const PREVIEW_STORAGE_KEY = 'featurePreview';
 const PREVIEW_QUERY_PARAM = 'preview';
 const PREVIEW_OFF = 'off';

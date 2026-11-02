@@ -1,6 +1,6 @@
 // Runs with VITE_ENVIRONMENT=dev (chromium-auth project); without auth /profile redirects, see nav.spec.ts
 import { test, expect } from './base';
-import { fakeUser, keycloakSignIn, signInOnKeycloak } from './keycloak';
+import { fakeUser, signInOnKeycloak } from './keycloak';
 
 test.describe('profile', () => {
   test.describe('logged in', () => {
@@ -44,7 +44,9 @@ test.describe('profile', () => {
 
       await page.getByTestId('profile-logout').click();
 
-      await expect(keycloakSignIn(page)).toBeVisible();
+      // back home as a guest
+      await page.getByTestId('user-menu').hover();
+      await expect(page.getByTestId('user-menu-login')).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
     });
   });

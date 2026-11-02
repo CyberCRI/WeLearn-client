@@ -21,5 +21,29 @@ export const authentication = {
     SIGNUP_DISABLED: 'Sign-up is not available at the moment.',
     UNKNOWN: 'Something went wrong. Please try again in a moment.'
   },
-  errorTitle: 'Your account could not be created'
+  errorTitle: 'Your account could not be created',
+  signupPrompt: {
+    title: 'Create your free account',
+    createAccount: 'Create an account',
+    login: 'I already have an account',
+    reasons: {
+      bookmarks:
+        'Your bookmarks are saved to your account. Create one for free to find them again.',
+      bookmark: 'Create a free account to bookmark this resource and find it again later.',
+      download:
+        'Your syllabus is ready. Create a free account to download it, or log in: it will download right after.',
+      bibliography: 'Create a free account to export your bibliography.',
+      chatLimit:
+        'You have used all the free questions of the guest access. Create a free account to keep chatting.',
+      syllabusLimit:
+        'You have used the free syllabus of the guest access. Create a free account to create more.'
+    }
+  },
+  // plural forms: none left | 1 left | n left
+  guestQuota: {
+    chat: 'Guest access: you have used your {limit} free questions. | Guest access: 1 free question left out of {limit}. | Guest access: {n} free questions left out of {limit}.',
+    syllabus:
+      'Guest access: you have used your free syllabus. | Guest access: you can create 1 free syllabus. | Guest access: you can create {n} free syllabi.',
+    createAccount: 'Create a free account for unlimited use'
+  }
 };

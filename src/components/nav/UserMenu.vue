@@ -4,7 +4,10 @@ import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import { useAuth } from '@/composables/useAuth';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
+import { useAuthStore } from '@/stores/auth';
+
 const { isAuthenticated, userName, login, logout } = useAuth();
+const { askToSignUp } = useAuthStore();
 const isBookmarksEnabled = useFeatureFlipStore().isFeatureEnabled('bookmarks');
 </script>
 
@@ -50,15 +53,14 @@ const isBookmarksEnabled = useFeatureFlipStore().isFeatureEnabled('bookmarks');
           </button>
         </template>
         <template v-else>
-          <span
+          <button
             v-if="isBookmarksEnabled"
-            class="dropdown-item is-disabled"
-            aria-disabled="true"
-            :title="$t('profile.bookmarksLoginRequired')"
+            class="dropdown-item item-button is-locked"
             data-testid="user-menu-bookmarks"
+            @click="askToSignUp('bookmarks')"
           >
             {{ $t('nav.bookmarks') }}
-          </span>
+          </button>
           <button class="dropdown-item item-button" data-testid="user-menu-login" @click="login()">
             {{ $t('login') }}
           </button>
@@ -69,9 +71,8 @@ const isBookmarksEnabled = useFeatureFlipStore().isFeatureEnabled('bookmarks');
 </template>
 
 <style scoped>
-.is-disabled {
+.is-locked {
   color: var(--neutral-50);
-  cursor: not-allowed;
 }
 
 /* keyboard users get the menu too, not only mouse hover */

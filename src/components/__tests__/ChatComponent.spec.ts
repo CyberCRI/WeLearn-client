@@ -92,7 +92,7 @@ describe('ChatComponent', () => {
     const store = useChatStore();
     store.chatStatus = CHAT_STATUS.DONE;
     store.chatMessagesList = [{ role: 'user', content: 'hello' }];
-    // ponytail: only the sources length matters here, not the document shape
+    // only the sources length matters here, not the document shape
     store.sourcesList = [{ id: 'doc' }] as unknown as typeof store.sourcesList;
     const anchor = document.createElement('div');
     anchor.id = 'sourcesAnchor';

@@ -9,6 +9,7 @@ import ProgressBar from '@/components/microlearning/ProgressBar.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';
+import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 import { calculateProgress } from '@/utils/progress';
 
@@ -56,6 +57,8 @@ watch(
 
 onMounted(() => {
   scrollToAnchor(`target-${store.step}`);
+  // back from the login a guest started with the download button
+  store.downloadPendingSyllabus();
 });
 </script>
 <template>
@@ -69,6 +72,7 @@ onMounted(() => {
         @select="(i: number) => scrollToAnchor(`target-${i + 1}`)"
       />
     </div>
+    <GuestQuotaNotice feature="syllabus" class="mb-3" />
     <ErrorComponent v-if="store.reloadError" />
     <StatusModal
       :isLoading="store.isLoading"

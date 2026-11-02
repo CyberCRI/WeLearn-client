@@ -297,7 +297,7 @@ export function useMicrolearning() {
     }
   );
 
-  // ponytail: answers live in memory only, so a page refresh starts over from the welcome screen
+  // answers live in memory only, so a page refresh starts over from the welcome screen
   if (!sameAsRoute({})) router.replace({ query: withOtherParams({}) });
 
   // =====================

@@ -55,7 +55,7 @@ const utilityEntries = [
     icon: NavBookmarkIcon,
     isFeatureEnabled: !shouldAuthenticate && featureFlip.isFeatureEnabled('bookmarks')
   },
-  // ponytail: Help (HelpComponent) removed from nav, its instructions are obsolete; files kept for a future rewrite
+  // Help (HelpComponent) removed from nav, its instructions are obsolete; files kept for a future rewrite
   {
     name: 'about',
     to: '/about',

@@ -7,6 +7,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import AppLayout from '@/components/AppLayout.vue';
 import WelcomeModal from '@/components/modals/WelcomeModal.vue';
 import ConsentBanner from '@/components/ConsentBanner.vue';
+import SignupPromptModal from '@/components/modals/SignupPromptModal.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
@@ -19,13 +20,15 @@ const fetchError = ref(false);
 
 const authStore = useAuthStore();
 
+// guests get a session too: the API links their anonymous user to the account when they sign up
 async function initCalls() {
   try {
     await Promise.all([
       getInfoPerCorpus(),
       getSourcesList(),
       getUserAndSession(getQueryParamValue('referer') || ''),
-      getBookmarks()
+      // bookmarks need an account
+      ...(authStore.isGuest ? [] : [getBookmarks()])
     ]);
   } catch (err) {
     console.error(err);
@@ -34,9 +37,7 @@ async function initCalls() {
 
 onMounted(async () => {
   try {
-    if (authStore.isAuthenticated || !authStore.shouldAuthenticate) {
-      await initCalls();
-    }
+    await initCalls();
   } catch (error) {
     fetchError.value = true;
   }
@@ -47,6 +48,7 @@ onMounted(async () => {
   <div class="fullscreen">
     <WelcomeModal />
     <ConsentBanner />
+    <SignupPromptModal />
 
     <AppLayout>
       <template #header v-if="!$route.meta.hideTemplate">
