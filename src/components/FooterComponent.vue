@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useAuth } from '@/composables/useAuth';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { useUserStore } from '@/stores/user';
 
 const user = useUserStore();
 const { isAuthenticated } = useAuth();
+const isAnalyticsEnabled = useFeatureFlipStore().isFeatureEnabled('analytics');
 </script>
 
 <template>
@@ -17,7 +19,7 @@ const { isAuthenticated } = useAuth();
       </router-link>
     </div>
     <!-- logged-in users manage cookies from their profile -->
-    <div v-if="!isAuthenticated">
+    <div v-if="isAnalyticsEnabled && !isAuthenticated">
       <a
         class="consent-settings"
         href="#"

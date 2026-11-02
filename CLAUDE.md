@@ -138,4 +138,4 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 
 - `stores/microlearning/data.ts` is about 4k lines of static FR/EN content. Never edit this file.
 - `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
-- Mixpanel only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts.
+- Mixpanel is behind the `analytics` feature flip (`FEATURE_ENVIRONMENTS.analytics`, `['dev']` for now): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.

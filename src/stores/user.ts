@@ -13,6 +13,7 @@ import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 import { useChatStore } from '@/stores/chat';
 import { useSearchStore } from '@/stores/search';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 type OnboardingState = {
   hasSeenWelcome: boolean;
@@ -62,7 +63,10 @@ export const useUserStore = defineStore('user', () => {
   };
 
   const analyticsConsent = ref<AnalyticsConsent | null>(getStoredConsent());
-  const shouldAskAnalyticsConsent = computed(() => analyticsConsent.value === null);
+  const isAnalyticsEnabled = useFeatureFlipStore().isFeatureEnabled('analytics');
+  const shouldAskAnalyticsConsent = computed(
+    () => isAnalyticsEnabled && analyticsConsent.value === null
+  );
 
   // mixpanel keeps its own opt-in: an expired or missing choice must switch it off too
   const applyAnalyticsConsent = () => {

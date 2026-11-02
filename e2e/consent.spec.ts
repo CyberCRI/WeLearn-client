@@ -1,6 +1,11 @@
+// Runs with VITE_ENVIRONMENT=dev (chromium-auth project): analytics is feature-flipped off elsewhere,
+// see nav.spec.ts
 import { test, expect } from './base';
 
 test.describe('analytics consent', () => {
+  // the footer link is for logged-out users, and /about does not require auth
+  test.use({ startUrl: '/about' });
+
   test('remembers the refusal made on the first visit', async ({ page }) => {
     await page.reload();
 
@@ -16,18 +21,5 @@ test.describe('analytics consent', () => {
     await expect(page.getByTestId('consent-banner')).toHaveCount(0);
     const consent = await page.evaluate(() => localStorage.getItem('analyticsConsent'));
     expect(JSON.parse(consent || '{}').status).toBe('granted');
-  });
-
-  test('never contacts mixpanel in test mode', async ({ page }) => {
-    const mixpanelCalls: string[] = [];
-    page.on('request', (request) => {
-      if (request.url().includes('mixpanel.com')) mixpanelCalls.push(request.url());
-    });
-
-    await page.getByTestId('consent-settings').click();
-    await page.getByTestId('consent-accept').click();
-    await page.getByTestId('nav-search').click();
-
-    expect(mixpanelCalls).toEqual([]);
   });
 });

@@ -9,6 +9,7 @@ import {
   revokeAnalyticsConsent,
   track
 } from '@/utils/analytics';
+import type { Environment } from '@/types';
 
 vi.mock('@/utils/fetch', () => ({
   basePostAxios: vi.fn()
@@ -22,11 +23,22 @@ vi.mock('@/utils/analytics', () => ({
   track: vi.fn()
 }));
 
+const env = vi.hoisted(() => ({ name: 'dev' as Environment }));
+
+// the analytics feature flag is on in dev only
+vi.mock('@/utils/env', () => ({
+  ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
+  get ENVIRONMENT_NAME() {
+    return env.name;
+  }
+}));
+
 const storedOnboarding = () => JSON.parse(localStorage.getItem('onboardingState') || 'null');
 
 describe('user store', () => {
   beforeEach(() => {
     localStorage.clear();
+    env.name = 'dev';
     setActivePinia(createPinia());
   });
 
@@ -191,6 +203,12 @@ describe('user store', () => {
 
     it('asks when no choice is stored', () => {
       expect(useUserStore().shouldAskAnalyticsConsent).toBe(true);
+    });
+
+    it('never asks when the analytics feature is off', () => {
+      env.name = 'prod';
+
+      expect(useUserStore().shouldAskAnalyticsConsent).toBe(false);
     });
 
     it('restores a recent choice', () => {

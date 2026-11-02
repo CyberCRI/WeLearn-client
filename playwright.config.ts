@@ -15,12 +15,14 @@ dotenv.config({ path: path.resolve(configDir, '..', '.env.test') });
 
 const PORT = 5180;
 const AUTH_PORT = 5181;
-const AUTH_SPECS = ['auth.spec.ts', 'profile.spec.ts'];
+// keycloak and analytics are only on in dev
+const DEV_SPECS = ['auth.spec.ts', 'profile.spec.ts', 'consent.spec.ts'];
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+// same shape as ProjectOptions in e2e/base.ts, not imported: e2e stays out of tsconfig.node
+export default defineConfig<{ isDevEnvironment: boolean }>({
   testDir: './e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -45,16 +47,20 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      // VITE_ENVIRONMENT=test: no auth, like prod
+      // VITE_ENVIRONMENT=test: no auth nor analytics, like prod
       name: 'chromium',
-      testIgnore: AUTH_SPECS,
+      testIgnore: DEV_SPECS,
       use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${PORT}` }
     },
     {
-      // VITE_ENVIRONMENT=dev: Keycloak auth on, against the mock in e2e/keycloak.ts
+      // VITE_ENVIRONMENT=dev: Keycloak auth on, against the mock in e2e/keycloak.ts, and analytics on
       name: 'chromium-auth',
-      testMatch: AUTH_SPECS,
-      use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${AUTH_PORT}` }
+      testMatch: DEV_SPECS,
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: `http://localhost:${AUTH_PORT}`,
+        isDevEnvironment: true
+      }
     }
   ],
   // own ports: a reused `yarn dev` server runs in dev mode and redirects to the real Keycloak

@@ -5,6 +5,7 @@ import ConsentBanner from '../ConsentBanner.vue';
 import FooterComponent from '../FooterComponent.vue';
 import { useUserStore } from '@/stores/user';
 import { grantAnalyticsConsent, revokeAnalyticsConsent } from '@/utils/analytics';
+import type { Environment } from '@/types';
 
 vi.mock('@/utils/analytics', () => ({
   grantAnalyticsConsent: vi.fn(),
@@ -14,12 +15,23 @@ vi.mock('@/utils/analytics', () => ({
   track: vi.fn()
 }));
 
+const env = vi.hoisted(() => ({ name: 'dev' as Environment }));
+
+// the analytics feature flag is on in dev only
+vi.mock('@/utils/env', () => ({
+  ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
+  get ENVIRONMENT_NAME() {
+    return env.name;
+  }
+}));
+
 const mountWithRouter = (component: typeof ConsentBanner) =>
   mount(component, { global: { stubs: { RouterLink: RouterLinkStub } } });
 
 describe('ConsentBanner', () => {
   beforeEach(() => {
     localStorage.clear();
+    env.name = 'dev';
     setActivePinia(createPinia());
   });
 
@@ -35,6 +47,13 @@ describe('ConsentBanner', () => {
       wrapper.find('[data-testid="consent-refuse"]').classes()
     );
     expect(wrapper.findComponent(RouterLinkStub).props('to')).toBe('/terms');
+  });
+
+  it('never shows when the analytics feature is off', () => {
+    env.name = 'prod';
+    const wrapper = mountWithRouter(ConsentBanner);
+
+    expect(wrapper.find('[data-testid="consent-banner"]').exists()).toBe(false);
   });
 
   it('is hidden when a choice is stored', () => {
