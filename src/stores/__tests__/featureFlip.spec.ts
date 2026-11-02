@@ -62,3 +62,74 @@ describe('featureFlip store', () => {
     expect(store.isFeatureEnabled('analytics')).toBe(expected);
   });
 });
+
+describe('featureFlip preview', () => {
+  const openWith = (search: string) => {
+    window.history.replaceState({}, '', `/q-and-a${search}`);
+    setActivePinia(createPinia());
+    return useFeatureFlipStore();
+  };
+
+  beforeEach(() => {
+    env.name = 'prod';
+    localStorage.clear();
+  });
+
+  it('keeps every feature off-env as is without the param', () => {
+    const store = openWith('');
+
+    expect(store.previewFeatures).toEqual([]);
+    expect(store.isFeatureEnabled('auth')).toBe(false);
+  });
+
+  it('turns on only the requested features', () => {
+    const store = openWith('?preview=auth');
+
+    expect(store.isFeatureEnabled('auth')).toBe(true);
+    expect(store.isFeatureEnabled('analytics')).toBe(false);
+    expect(store.previewFeatures).toEqual(['auth']);
+  });
+
+  it('takes a comma list and ignores unknown names', () => {
+    const store = openWith('?preview=auth,%20analytics,foo,toString');
+
+    expect(store.previewFeatures).toEqual(['auth', 'analytics']);
+  });
+
+  it('survives a reload without the param', () => {
+    openWith('?preview=auth');
+    const store = openWith('');
+
+    expect(store.isFeatureEnabled('auth')).toBe(true);
+  });
+
+  it('adds to the features already saved', () => {
+    openWith('?preview=auth');
+    const store = openWith('?preview=analytics');
+
+    expect(store.previewFeatures).toEqual(['auth', 'analytics']);
+  });
+
+  it('is cleared by preview=off', () => {
+    openWith('?preview=auth');
+    openWith('?preview=off');
+    const store = openWith('');
+
+    expect(store.isFeatureEnabled('auth')).toBe(false);
+    expect(localStorage.getItem('featurePreview')).toBeNull();
+  });
+
+  it('drops unknown names from a tampered storage value', () => {
+    localStorage.setItem('featurePreview', JSON.stringify(['foo', 'auth']));
+    const store = openWith('');
+
+    expect(store.previewFeatures).toEqual(['auth']);
+  });
+
+  it('ignores a storage value that is not a list', () => {
+    localStorage.setItem('featurePreview', JSON.stringify('auth'));
+    const store = openWith('');
+
+    expect(store.previewFeatures).toEqual([]);
+  });
+});

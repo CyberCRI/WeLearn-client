@@ -10,6 +10,7 @@ import { useFeatureFlipStore } from '@/stores/featureFlip';
 import BaseNavItem from './BaseNavItem.vue';
 import LanguageSelector from './LanguageSelector.vue';
 import UserMenu from './UserMenu.vue';
+import GenericPillComponent from '@/components/GenericPillComponent.vue';
 import { useAuth } from '@/composables/useAuth';
 import { useAuthStore } from '@/stores/auth';
 
@@ -85,6 +86,13 @@ const utilityEntries = [
           />
         </template>
 
+        <!-- only shown to testers who opted in with ?preview=, ?preview=off hides it again -->
+        <GenericPillComponent
+          v-if="featureFlip.previewFeatures.length"
+          class="preview-pill"
+          :content="$t('nav.preview')"
+          bg-color="primary-dark"
+        />
         <!-- logged-in users pick the language on the profile page -->
         <LanguageSelector v-if="!isAuthenticated" />
         <div v-if="shouldAuthenticate" class="nav-auth mr-3">
@@ -95,6 +103,10 @@ const utilityEntries = [
   </div>
 </template>
 <style scoped>
+.preview-pill {
+  align-self: center;
+}
+
 .nav-auth {
   display: flex;
   margin: auto 0.75rem auto 0;
