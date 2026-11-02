@@ -306,6 +306,7 @@ export const fr = {
     name: 'Nom',
     email: 'E-mail',
     language: 'Langue',
+    cookies: 'Cookies',
     bookmarksLoginRequired: 'Connectez-vous pour voir vos favoris',
     notAvailable: 'Non disponible',
     notAuthenticated: "Vous n'êtes pas connecté·e."
@@ -365,7 +366,7 @@ export const fr = {
   terms: 'Politique de confidentialité',
   consent: {
     title: 'Aidez-nous à améliorer WeLearn',
-    text: "Avec votre accord, nous mesurons l'utilisation de WeLearn (pages visitées, fonctionnalités utilisées, enregistrements de session masqués) avec Mixpanel, hébergé dans l'UE. Nous n'enregistrons jamais vos questions, vos documents ni vos syllabus. Vous pouvez modifier votre choix à tout moment depuis le pied de page.",
+    text: "Avec votre accord, nous mesurons l'utilisation de WeLearn (pages visitées, fonctionnalités utilisées, enregistrements de session masqués) avec Mixpanel, hébergé dans l'UE. Nous n'enregistrons jamais vos questions, vos documents ni vos syllabus. Vous pouvez modifier votre choix à tout moment depuis le pied de page, ou depuis votre profil si vous êtes connecté·e.",
     policyLink: 'En savoir plus',
     accept: 'Accepter',
     refuse: 'Refuser',

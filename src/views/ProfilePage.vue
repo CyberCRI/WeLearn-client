@@ -5,8 +5,10 @@ import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import LanguageSelector from '@/components/nav/LanguageSelector.vue';
 import { useAuth } from '@/composables/useAuth';
+import { useUserStore } from '@/stores/user';
 
 const { isAuthenticated, user, userName, login, logout } = useAuth();
+const userStore = useUserStore();
 
 const email = computed(() => user.value?.email);
 </script>
@@ -29,6 +31,16 @@ const email = computed(() => user.value?.email);
         <dd data-testid="profile-email">{{ email || $t('profile.notAvailable') }}</dd>
         <dt class="has-text-weight-semibold">{{ $t('profile.language') }}</dt>
         <dd><LanguageSelector /></dd>
+        <dt class="has-text-weight-semibold">{{ $t('profile.cookies') }}</dt>
+        <dd>
+          <ButtonComponent
+            is-discreet
+            data-testid="profile-consent-settings"
+            @click="userStore.reviewAnalyticsConsent"
+          >
+            {{ $t('consent.settings') }}
+          </ButtonComponent>
+        </dd>
       </dl>
 
       <ButtonComponent class="mt-5" data-testid="profile-logout" @click="logout()">

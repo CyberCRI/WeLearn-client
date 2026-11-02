@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useAuth } from '@/composables/useAuth';
 import { useUserStore } from '@/stores/user';
 
 const user = useUserStore();
+const { isAuthenticated } = useAuth();
 </script>
 
 <template>
@@ -14,7 +16,8 @@ const user = useUserStore();
         <span class="item-name">{{ $t('terms') }}</span>
       </router-link>
     </div>
-    <div>
+    <!-- logged-in users manage cookies from their profile -->
+    <div v-if="!isAuthenticated">
       <a
         class="consent-settings"
         href="#"
@@ -41,8 +44,7 @@ a {
   cursor: pointer;
 }
 
-.contact,
-.terms {
+.footer-wrapper > div:not(:last-child) a {
   margin-right: 1rem;
   padding-right: 1rem;
   border-right: 1px solid var(--neutral-70);
@@ -59,8 +61,7 @@ a:hover {
     font-size: 0.8rem;
   }
 
-  .contact,
-  .terms {
+  .footer-wrapper > div:not(:last-child) a {
     margin-right: 0.5rem;
     padding-right: 0.5rem;
   }
