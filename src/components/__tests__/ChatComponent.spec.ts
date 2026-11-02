@@ -44,7 +44,7 @@ describe('ChatComponent', () => {
       await wrapper.vm.$nextTick();
       const pill = wrapper.find('.queues-wrapper .card');
       await pill.trigger('click');
-      expect(store.onSendMessage).toHaveBeenCalledWith(pill.text());
+      expect(store.onSendMessage).toHaveBeenCalledWith(pill.text(), true);
     });
   });
 

@@ -7,6 +7,7 @@ import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage
 import { extractProcessingMetadata } from '@/utils/chatProcessing';
 import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
+import { track } from '@/utils/analytics';
 
 // CHAT STATUSES
 export const CHAT_STATUS = {
@@ -356,7 +357,7 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
   }
 
-  async function onSendMessage(message: string): Promise<void> {
+  async function onSendMessage(message: string, isSuggestedQuestion = false): Promise<void> {
     // checks if can be sent
     if (
       !message ||
@@ -364,6 +365,16 @@ export const useChatStore = defineStore('chat', () => {
     ) {
       return;
     }
+
+    const { sdgFilters, sourcesFilters } = useFiltersStore();
+    track('Chat Question Sent', {
+      queryLength: message.length,
+      isFollowUp: !!storedThreadId.value,
+      isSuggestedQuestion,
+      sdgFilterCount: sdgFilters.length,
+      corpusFilterCount: sourcesFilters.length
+    });
+    const startedAt = Date.now();
 
     addToMessageList({ role: 'user', content: message });
 
@@ -375,10 +386,15 @@ export const useChatStore = defineStore('chat', () => {
       chatStatus.value = CHAT_STATUS.ERROR;
       hasChatAnswerError.value = true;
       console.error(error);
+      track('Chat Answer Failed', { durationMs: Date.now() - startedAt });
       return;
     }
 
     chatStatus.value = CHAT_STATUS.DONE;
+    track('Chat Answer Received', {
+      durationMs: Date.now() - startedAt,
+      sourcesCount: sourcesList.value.length
+    });
   }
 
   const getRandomQuestionNumber = () => {

@@ -4,6 +4,7 @@ import { type Ref, ref } from 'vue';
 import type { Corpus, Document } from '@/types';
 import type { ApiResponse } from '@/types/api';
 import { exportBibliography } from '@/utils/fetch';
+import { track } from '@/utils/analytics';
 
 export const useSourcesStore = defineStore('sources', () => {
   const categorySourceMap = ref<Record<string, Corpus[]> | null>(null);
@@ -103,6 +104,7 @@ export const useSourcesStore = defineStore('sources', () => {
           : new Blob([response.data], { type: response.headers['content-type'] });
 
       downloadBlob(fileBlob, fileName);
+      track('Bibliography Exported', { count: ids.length });
     } catch (error) {
       console.error('Unable to export bibliography:', error);
     } finally {

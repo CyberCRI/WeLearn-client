@@ -29,7 +29,7 @@ export default mergeConfig(
         // floor a little under the current coverage, raise it as tests are added
         statements: 85,
         branches: 88,
-        functions: 86,
+        functions: 87,
         lines: 85
       }
     }

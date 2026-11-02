@@ -38,6 +38,25 @@ test.describe('nav', () => {
     });
   });
 
+  // analytics is feature-flipped on in dev only, see consent.spec.ts
+  test.describe('without analytics', () => {
+    test('has no consent banner nor cookie settings, and never contacts mixpanel', async ({
+      page
+    }) => {
+      const mixpanelCalls: string[] = [];
+      page.on('request', (request) => {
+        if (request.url().includes('mixpanel.com')) mixpanelCalls.push(request.url());
+      });
+
+      await page.reload();
+      await page.getByTestId('nav-search').click();
+
+      await expect(page.getByTestId('consent-banner')).toHaveCount(0);
+      await expect(page.getByTestId('consent-settings')).toHaveCount(0);
+      expect(mixpanelCalls).toEqual([]);
+    });
+  });
+
   test.describe('switch to language', () => {
     test('switch language', async ({ page }) => {
       expect(await page.getByText('Posez une question')).toBeTruthy();

@@ -3,7 +3,13 @@ import { test as base } from '@playwright/test';
 import { docs } from './data';
 import { mockKeycloak, type KeycloakMock } from './keycloak';
 
-type Fixtures = {
+// set per project in playwright.config.ts
+export type ProjectOptions = {
+  // analytics (and its consent banner) is feature-flipped on in dev only
+  isDevEnvironment: boolean;
+};
+
+type Fixtures = ProjectOptions & {
   // start the test with an existing Keycloak session, use `test.use({ loggedIn: true })`
   loggedIn: boolean;
   keycloak: KeycloakMock;
@@ -12,6 +18,7 @@ type Fixtures = {
 };
 
 export const test = base.extend<Fixtures>({
+  isDevEnvironment: [false, { option: true }],
   loggedIn: [false, { option: true }],
   startUrl: ['/', { option: true }],
   keycloak: async ({ context, loggedIn }, use) => {
@@ -19,7 +26,7 @@ export const test = base.extend<Fixtures>({
   },
   // depends on `keycloak` so Keycloak is mocked before the first navigation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  page: async ({ page, keycloak, startUrl }, use) => {
+  page: async ({ page, keycloak, startUrl, isDevEnvironment }, use) => {
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();
@@ -95,7 +102,14 @@ export const test = base.extend<Fixtures>({
       }
     });
 
+    // analytics is off in test mode; never let a stray call reach mixpanel
+    await page.route('**/*.mixpanel.com/**', async (route) => {
+      await route.fulfill({ status: 200, body: '1' });
+    });
+
     await page.goto(startUrl);
+    // Refuse analytics first: the banner sits above the welcome modal
+    if (isDevEnvironment) await page.getByTestId('consent-refuse').click();
     // Close the welcome modal
     await page.getByTestId('consent-checkbox').check();
     await page.getByTestId('welcome-action').click();

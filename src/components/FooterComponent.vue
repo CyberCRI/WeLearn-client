@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { useAuth } from '@/composables/useAuth';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
+import { useUserStore } from '@/stores/user';
+
+const user = useUserStore();
+const { isAuthenticated } = useAuth();
+const isAnalyticsEnabled = useFeatureFlipStore().isFeatureEnabled('analytics');
+</script>
+
 <template>
   <div class="footer-wrapper">
     <div>
@@ -7,6 +17,16 @@
       <router-link class="terms" to="/terms">
         <span class="item-name">{{ $t('terms') }}</span>
       </router-link>
+    </div>
+    <!-- logged-in users manage cookies from their profile -->
+    <div v-if="isAnalyticsEnabled && !isAuthenticated">
+      <a
+        class="consent-settings"
+        href="#"
+        data-testid="consent-settings"
+        @click.prevent="user.reviewAnalyticsConsent"
+        >{{ $t('consent.settings') }}</a
+      >
     </div>
   </div>
 </template>
@@ -26,7 +46,7 @@ a {
   cursor: pointer;
 }
 
-.contact {
+.footer-wrapper > div:not(:last-child) a {
   margin-right: 1rem;
   padding-right: 1rem;
   border-right: 1px solid var(--neutral-70);
@@ -43,7 +63,7 @@ a:hover {
     font-size: 0.8rem;
   }
 
-  .contact {
+  .footer-wrapper > div:not(:last-child) a {
     margin-right: 0.5rem;
     padding-right: 0.5rem;
   }

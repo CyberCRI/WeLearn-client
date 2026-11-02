@@ -3,11 +3,14 @@ import { createPinia, setActivePinia } from 'pinia';
 import { useSourcesStore } from '../sources';
 import { baseGetAxios, exportBibliography } from '@/utils/fetch';
 import type { Corpus, Document } from '@/types';
+import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   baseGetAxios: vi.fn(),
   exportBibliography: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 const corpus = (name: string, category: string | null) => ({ name, category }) as Corpus;
 const doc = (id: string) => ({ payload: { document_id: id } }) as Document;
@@ -119,6 +122,7 @@ describe('sources store', () => {
       expect(click).toHaveBeenCalledOnce();
       expect(window.URL.revokeObjectURL).toHaveBeenCalledWith('blob:export');
       expect(store.isExportingBibliography).toBe(false);
+      expect(track).toHaveBeenCalledWith('Bibliography Exported', { count: 2 });
     });
 
     it('does nothing without document ids', async () => {

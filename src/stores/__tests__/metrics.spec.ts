@@ -2,10 +2,13 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useMetricsStore } from '../metrics';
 import { updateClickedDocument } from '@/utils/metrics';
+import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/metrics', () => ({
   updateClickedDocument: vi.fn()
 }));
+
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 describe('metrics store', () => {
   beforeEach(() => {
@@ -55,5 +58,19 @@ describe('metrics store', () => {
     await useMetricsStore().recordClickedDocumentFromchat('');
 
     expect(updateClickedDocument).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['/q-and-a', 'chat'],
+    ['/tutor', 'tutor'],
+    ['/search', 'search'],
+    ['/bookmarks', 'bookmarks'],
+    ['/about', 'other']
+  ])('tracks a source opened on %s as %s', async (path, origin) => {
+    window.history.pushState({}, '', path);
+
+    await useMetricsStore().recordClickedDocumentFromchat('doc-1');
+
+    expect(track).toHaveBeenLastCalledWith('Source Opened', { origin });
   });
 });

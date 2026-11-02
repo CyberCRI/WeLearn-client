@@ -2,9 +2,35 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useUserStore } from '../user';
 import { basePostAxios } from '@/utils/fetch';
+import {
+  grantAnalyticsConsent,
+  identifyUser,
+  resetAnalytics,
+  revokeAnalyticsConsent,
+  track
+} from '@/utils/analytics';
+import type { Environment } from '@/types';
 
 vi.mock('@/utils/fetch', () => ({
   basePostAxios: vi.fn()
+}));
+
+vi.mock('@/utils/analytics', () => ({
+  grantAnalyticsConsent: vi.fn(),
+  identifyUser: vi.fn(),
+  resetAnalytics: vi.fn(),
+  revokeAnalyticsConsent: vi.fn(),
+  track: vi.fn()
+}));
+
+const env = vi.hoisted(() => ({ name: 'dev' as Environment }));
+
+// the analytics feature flag is on in dev only
+vi.mock('@/utils/env', () => ({
+  ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
+  get ENVIRONMENT_NAME() {
+    return env.name;
+  }
 }));
 
 const storedOnboarding = () => JSON.parse(localStorage.getItem('onboardingState') || 'null');
@@ -12,6 +38,7 @@ const storedOnboarding = () => JSON.parse(localStorage.getItem('onboardingState'
 describe('user store', () => {
   beforeEach(() => {
     localStorage.clear();
+    env.name = 'dev';
     setActivePinia(createPinia());
   });
 
@@ -135,6 +162,13 @@ describe('user store', () => {
       USER_DATA_KEYS.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
       expect(localStorage.getItem('language')).toBe('fr');
       expect(stored('onboardingState')).toEqual({ hasSeenWelcome: true });
+      expect(resetAnalytics).toHaveBeenCalled();
+    });
+
+    it('identifies the user for analytics', () => {
+      useUserStore().syncUserId('user-1', 'session-1');
+
+      expect(identifyUser).toHaveBeenCalledWith('user-1');
     });
 
     it('replaces the session of the previous user', () => {
@@ -160,6 +194,78 @@ describe('user store', () => {
       useUserStore().syncUserId('user-1');
 
       expect(stored('sessionId')).toBe('session-1');
+    });
+  });
+
+  describe('analytics consent', () => {
+    const storedConsent = () => JSON.parse(localStorage.getItem('analyticsConsent') || 'null');
+    const daysAgo = (days: number) => new Date(Date.now() - days * 86_400_000).toISOString();
+
+    it('asks when no choice is stored', () => {
+      expect(useUserStore().shouldAskAnalyticsConsent).toBe(true);
+    });
+
+    it('never asks when the analytics feature is off', () => {
+      env.name = 'prod';
+
+      expect(useUserStore().shouldAskAnalyticsConsent).toBe(false);
+    });
+
+    it('restores a recent choice', () => {
+      localStorage.setItem(
+        'analyticsConsent',
+        JSON.stringify({ status: 'granted', date: daysAgo(10) })
+      );
+
+      expect(useUserStore().shouldAskAnalyticsConsent).toBe(false);
+    });
+
+    it('asks again after six months', () => {
+      localStorage.setItem(
+        'analyticsConsent',
+        JSON.stringify({ status: 'granted', date: daysAgo(200) })
+      );
+
+      expect(useUserStore().shouldAskAnalyticsConsent).toBe(true);
+    });
+
+    it('stores an acceptance, opts in and keeps a proof of it', () => {
+      const store = useUserStore();
+
+      store.setAnalyticsConsent(true);
+
+      expect(storedConsent().status).toBe('granted');
+      expect(store.shouldAskAnalyticsConsent).toBe(false);
+      expect(grantAnalyticsConsent).toHaveBeenCalledWith({ language: 'fr' });
+      expect(track).toHaveBeenCalledWith('Analytics Consent', { granted: true });
+    });
+
+    it('stores a refusal, opts out and sends nothing', () => {
+      const store = useUserStore();
+
+      store.setAnalyticsConsent(false);
+
+      expect(storedConsent().status).toBe('denied');
+      expect(revokeAnalyticsConsent).toHaveBeenCalled();
+      expect(grantAnalyticsConsent).not.toHaveBeenCalled();
+      expect(track).not.toHaveBeenCalled();
+    });
+
+    it('opts out on boot when there is no valid choice', () => {
+      useUserStore().applyAnalyticsConsent();
+
+      expect(revokeAnalyticsConsent).toHaveBeenCalled();
+      expect(grantAnalyticsConsent).not.toHaveBeenCalled();
+    });
+
+    it('reopens the banner and keeps the stored choice until a new one is made', () => {
+      const store = useUserStore();
+      store.setAnalyticsConsent(true);
+
+      store.reviewAnalyticsConsent();
+
+      expect(store.shouldAskAnalyticsConsent).toBe(true);
+      expect(storedConsent().status).toBe('granted');
     });
   });
 });

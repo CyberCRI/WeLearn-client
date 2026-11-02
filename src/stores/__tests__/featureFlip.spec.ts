@@ -49,4 +49,16 @@ describe('featureFlip store', () => {
 
     expect(store.isFeatureEnabled('auth')).toBe(expected);
   });
+
+  it.each<[Environment, boolean]>([
+    ['dev', true],
+    ['staging', false],
+    ['test', false],
+    ['prod', false]
+  ])('analytics in %s: %s', (name, expected) => {
+    env.name = name;
+    const store = useFeatureFlipStore();
+
+    expect(store.isFeatureEnabled('analytics')).toBe(expected);
+  });
 });

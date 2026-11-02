@@ -31,6 +31,14 @@ test.describe('profile', () => {
       await expect(page.getByRole('heading', { name: 'My profile' })).toBeVisible();
     });
 
+    test('manages cookies from the profile, not the footer', async ({ page }) => {
+      await page.goto('/profile');
+
+      await expect(page.getByTestId('consent-settings')).toHaveCount(0);
+      await page.getByTestId('profile-consent-settings').click();
+      await expect(page.getByTestId('consent-banner')).toBeVisible();
+    });
+
     test('logs out', async ({ page, keycloak }) => {
       await page.goto('/profile');
 

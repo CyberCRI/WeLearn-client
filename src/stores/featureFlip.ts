@@ -13,7 +13,9 @@ const FEATURE_ENVIRONMENTS = {
   microlearning: ENVIRONMENTS,
   workshop: ['dev'],
   // keycloak login is rolled out on dev and staging, not on prod yet
-  auth: ['dev', 'staging']
+  auth: ['dev', 'staging'],
+  // mixpanel + consent banner, dev only until the rollout is validated
+  analytics: ['dev']
 } satisfies Record<string, readonly Environment[]>;
 
 export type Feature = keyof typeof FEATURE_ENVIRONMENTS;
