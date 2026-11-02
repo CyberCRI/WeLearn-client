@@ -4,6 +4,7 @@ import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import router from '@/router';
 import UserMenu from '../UserMenu.vue';
+import { useAuthStore } from '@/stores/auth';
 
 const login = vi.fn();
 const logout = vi.fn();
@@ -34,12 +35,13 @@ describe('UserMenu', () => {
     expect(logout).toHaveBeenCalledOnce();
   });
 
-  it('disables bookmarks and offers login when not authenticated', async () => {
+  it('prompts a signup for bookmarks and offers login when not authenticated', async () => {
     isAuthenticated.value = false;
     const wrapper = mount(UserMenu, mountOptions);
     const bookmarks = wrapper.get('[data-testid="user-menu-bookmarks"]');
-    expect(bookmarks.attributes('aria-disabled')).toBe('true');
     expect(bookmarks.attributes('href')).toBeUndefined();
+    await bookmarks.trigger('click');
+    expect(useAuthStore().signupPromptReason).toBe('bookmarks');
     expect(wrapper.find('[data-testid="user-menu-profile"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="user-menu-logout"]').exists()).toBe(false);
     await wrapper.get('[data-testid="user-menu-login"]').trigger('click');

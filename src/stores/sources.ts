@@ -5,6 +5,7 @@ import type { Corpus, Document } from '@/types';
 import type { ApiResponse } from '@/types/api';
 import { exportBibliography } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
+import { useAuthStore } from '@/stores/auth';
 
 export const useSourcesStore = defineStore('sources', () => {
   const categorySourceMap = ref<Record<string, Corpus[]> | null>(null);
@@ -92,6 +93,12 @@ export const useSourcesStore = defineStore('sources', () => {
   const handleBibliographyExport = async (sourcesList: Document[]) => {
     const ids = documentIds(sourcesList);
     if (!ids.length || isExportingBibliography.value) return;
+
+    const authStore = useAuthStore();
+    if (authStore.isGuest) {
+      authStore.askToSignUp('bibliography');
+      return;
+    }
 
     isExportingBibliography.value = true;
 

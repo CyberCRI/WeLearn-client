@@ -9,7 +9,7 @@ import { useUserStore } from '@/stores/user';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import { resetAnalytics, track } from '@/utils/analytics';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
-import type { UserRegisterData } from '@/types';
+import type { SignupPromptReason, UserRegisterData } from '@/types';
 
 // set before the keycloak redirect, so init() knows it comes back from a login and not a reload
 const LOGIN_PENDING_KEY = 'loginPending';
@@ -29,6 +29,21 @@ export const useAuthStore = defineStore('auth', () => {
 
   const featureFlip = useFeatureFlipStore();
   const shouldAuthenticate = computed(() => featureFlip.isFeatureEnabled('auth'));
+  // a guest can use the tools but not keep their work (bookmarks, downloads, exports).
+  // ponytail: gated in the client only, the API does not check the token yet
+  const isGuest = computed(() => shouldAuthenticate.value && !isAuthenticated.value);
+
+  // set when a guest hits something that needs an account, SignupPromptModal shows it
+  const signupPromptReason = ref<SignupPromptReason | null>(null);
+
+  function askToSignUp(reason: SignupPromptReason): void {
+    signupPromptReason.value = reason;
+    track('Signup Prompt Shown', { reason });
+  }
+
+  function closeSignupPrompt(): void {
+    signupPromptReason.value = null;
+  }
 
   async function init(): Promise<boolean> {
     // where the auth feature is off, keycloak is never contacted
@@ -167,6 +182,10 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     isAuthenticated,
     shouldAuthenticate,
+    isGuest,
+    signupPromptReason,
+    askToSignUp,
+    closeSignupPrompt,
     user,
     token,
     tokenParsed,

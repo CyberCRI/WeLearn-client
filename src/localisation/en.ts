@@ -304,7 +304,6 @@ export const en = {
     email: 'Email',
     language: 'Language',
     cookies: 'Cookies',
-    bookmarksLoginRequired: 'Log in to see your bookmarks',
     notAvailable: 'Not available',
     notAuthenticated: 'You are not logged in.'
   },

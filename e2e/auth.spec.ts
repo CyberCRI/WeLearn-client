@@ -6,7 +6,6 @@ const fullName = `${fakeUser.firstName} ${fakeUser.lastName}`;
 
 test.describe('auth', () => {
   test.describe('logged out', () => {
-    // every other page requires auth and would redirect to Keycloak
     test.use({ startUrl: '/about' });
 
     test('user menu offers to log in', async ({ page }) => {
@@ -16,12 +15,13 @@ test.describe('auth', () => {
       await expect(page.getByTestId('user-menu-profile')).toHaveCount(0);
     });
 
-    test('bookmarks are disabled in the user menu', async ({ page }) => {
+    test('bookmarks in the user menu ask to sign up', async ({ page }) => {
       await page.getByTestId('user-menu').hover();
-      await expect(page.getByTestId('user-menu-bookmarks')).toHaveAttribute(
-        'aria-disabled',
-        'true'
-      );
+      await page.getByTestId('user-menu-bookmarks').click();
+
+      await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+      await page.getByTestId('signup-prompt-register').click();
+      await expect(page).toHaveURL(/\/register/);
     });
 
     test('logs in from the user menu', async ({ page, keycloak }) => {
@@ -37,7 +37,68 @@ test.describe('auth', () => {
     });
 
     test('a protected page asks to log in, then opens', async ({ page }) => {
+      await page.goto('/profile');
+      await signInOnKeycloak(page);
+
+      await expect(page).toHaveURL(/\/profile/);
+      await expect(page.getByTestId('user-menu').getByText(fullName)).toBeAttached();
+    });
+  });
+
+  test.describe('guest', () => {
+    test.use({ startUrl: '/about' });
+
+    test.beforeEach(async ({ page }) => {
+      // let the first search run as a guest
       await page.goto('/search');
+    });
+
+    test('can search, and is asked to sign up to bookmark', async ({ page }) => {
+      await expect(keycloakSignIn(page)).toHaveCount(0);
+      await page.fill('textarea', 'this is a longer text for testing');
+      await page.getByLabel('Recherche', { exact: true }).click();
+      await expect(page.getByText('Document one test')).toBeVisible();
+
+      await page
+        .locator('header')
+        .filter({ hasText: 'Document one test' })
+        .getByTestId('toggleBookmark')
+        .click();
+
+      await expect(page.getByTestId('signup-prompt-login')).toBeVisible();
+    });
+
+    test('opening the bookmarks page asks to sign up', async ({ page }) => {
+      await page.goto('/bookmarks');
+
+      await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+      await expect(page).not.toHaveURL(/\/bookmarks/);
+    });
+
+    test('sees how many free questions and syllabi are left', async ({ page }) => {
+      await page.goto('/q-and-a');
+      await expect(page.getByTestId('guest-quota-text')).toContainText('5');
+
+      await page.goto('/tutor');
+      await expect(page.getByTestId('guest-quota-text')).toContainText('1 syllabus');
+    });
+
+    test('is asked to sign up after the last free question', async ({ page }) => {
+      await page.evaluate(() =>
+        localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }))
+      );
+      await page.goto('/q-and-a');
+
+      await page.fill('textarea', 'one more question');
+      await page.keyboard.press('Enter');
+
+      await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+    });
+
+    test('logs in from the signup prompt and comes back to the page', async ({ page }) => {
+      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-bookmarks').click();
+      await page.getByTestId('signup-prompt-login').click();
       await signInOnKeycloak(page);
 
       await expect(page).toHaveURL(/\/search/);
@@ -58,8 +119,9 @@ test.describe('auth', () => {
       await page.getByTestId('user-menu').hover();
       await page.getByTestId('user-menu-logout').click();
 
-      // back home, which requires auth again
-      await expect(keycloakSignIn(page)).toBeVisible();
+      // back home as a guest
+      await page.getByTestId('user-menu').hover();
+      await expect(page.getByTestId('user-menu-login')).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
       expect(keycloak.loggedIn).toBe(false);
     });

@@ -10,6 +10,7 @@ import Loading from '@/components/LoadingComponent.vue';
 import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import DeleteButton from '@/components/DeleteButton.vue';
 import ModalComponent from '@/components/ModalComponent.vue';
+import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import { track } from '@/utils/analytics';
 
 const store = useChatStore();
@@ -111,6 +112,7 @@ const clearChat = () => {
         :action="(content: string) => store.onSendMessage(content)"
       />
     </div>
+    <GuestQuotaNotice feature="chat" class="quota-notice mt-2" />
   </div>
 </template>
 <style scoped>
@@ -137,6 +139,10 @@ const clearChat = () => {
   &:hover {
     color: var(--tertiary-hover);
   }
+}
+
+.quota-notice {
+  width: 80%;
 }
 
 .input-area {

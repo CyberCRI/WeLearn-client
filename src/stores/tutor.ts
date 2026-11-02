@@ -7,9 +7,14 @@ import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
+import { useAuthStore } from '@/stores/auth';
+import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 
 const MAX_FILES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
+// a guest's syllabus, kept through the keycloak redirect and downloaded once they are logged in
+const PENDING_SYLLABUS_KEY = 'pendingSyllabus';
 
 // the LLM sometimes writes a literal "\n" (backslash + n): inside a table cell it
 // means a line break (<br>), anywhere else a real new line
@@ -184,6 +189,9 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const handleSummaryFiles = async () => {
+    // a guest who used their syllabus would upload files for nothing
+    if (!useGuestQuotaStore().checkQuota('syllabus')) return;
+
     setStep(1);
     reloadError.value = false;
     selectedSources.value = [];
@@ -285,6 +293,7 @@ export const useTutorStore = defineStore('tutor', () => {
     }
   };
 
+  // feedback on the generated syllabus is not counted, only generating one
   const handleCreateSyllabus = async () => {
     setStep(3);
     if (!tutorSearch.value) {
@@ -292,7 +301,11 @@ export const useTutorStore = defineStore('tutor', () => {
       return;
     }
 
+    const guestQuota = useGuestQuotaStore();
+    if (!guestQuota.checkQuota('syllabus')) return;
+
     if (await retrieveSyllabus()) {
+      guestQuota.consume('syllabus');
       feedbackHistory.value = [];
       goNext();
     }
@@ -334,12 +347,8 @@ export const useTutorStore = defineStore('tutor', () => {
     }
   };
 
-  const handleDownloadSyllabus = async () => {
-    if (!syllabi.value || !syllabi.value.content) {
-      console.error('No syllabi available for download');
-      return;
-    }
-    const docxContent = await convertMarkdownToDocx(syllabi.value.content);
+  const downloadSyllabus = async (content: string) => {
+    const docxContent = await convertMarkdownToDocx(content);
     downloadDocx(docxContent, 'syllabus.docx');
     track('Syllabus Downloaded', {});
     try {
@@ -347,6 +356,32 @@ export const useTutorStore = defineStore('tutor', () => {
     } catch (error) {
       console.error('Error during metrics update:', error);
     }
+  };
+
+  const handleDownloadSyllabus = async () => {
+    if (!syllabi.value || !syllabi.value.content) {
+      console.error('No syllabi available for download');
+      return;
+    }
+
+    const authStore = useAuthStore();
+    if (authStore.isGuest) {
+      saveToStorage(PENDING_SYLLABUS_KEY, syllabi.value.content);
+      authStore.askToSignUp('download');
+      return;
+    }
+
+    await downloadSyllabus(syllabi.value.content);
+  };
+
+  // ponytail: the wizard itself is not restored after the login (uploaded files can't be stored),
+  // only the syllabus the guest asked for is downloaded
+  const downloadPendingSyllabus = async () => {
+    const content: unknown = getFromStorage(PENDING_SYLLABUS_KEY);
+    if (useAuthStore().isGuest || typeof content !== 'string' || !content) return;
+
+    clearFromStorage(PENDING_SYLLABUS_KEY);
+    await downloadSyllabus(content);
   };
 
   const updateSyllabusInDB = async () => {
@@ -388,6 +423,7 @@ export const useTutorStore = defineStore('tutor', () => {
     giveFeedback,
     feedbackHistory,
     handleDownloadSyllabus,
+    downloadPendingSyllabus,
     courseTitle,
     selectedSources,
     level,

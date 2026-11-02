@@ -93,6 +93,18 @@ export type AnalyticsConsent = {
 
 export type SourceOrigin = 'chat' | 'search' | 'tutor' | 'bookmarks' | 'other';
 
+// what a guest tried to do when the signup prompt opened (key under authentication.signupPrompt)
+export type SignupPromptReason =
+  | 'bookmarks'
+  | 'bookmark'
+  | 'download'
+  | 'bibliography'
+  | 'chatLimit'
+  | 'syllabusLimit';
+
+// what a guest can do a limited number of times (stores/guestQuota.ts)
+export type GuestQuotaFeature = 'chat' | 'syllabus';
+
 // event name -> props. Only counts, lengths, enums and ids: never free text or document content
 export type AnalyticsEvents = {
   'Page Viewed': { routeName: string };
@@ -135,6 +147,9 @@ export type AnalyticsEvents = {
   'Microlearning Step Completed': { discipline: string; stepIndex: number };
   'Microlearning Completed': { discipline: string; hasPreEval: boolean; hasPostEval: boolean };
   'Login Clicked': Record<string, never>;
+  'Signup Prompt Shown': { reason: SignupPromptReason };
+  'Signup Prompt Clicked': { reason: SignupPromptReason; action: 'register' | 'login' };
+  'Guest Quota Notice Clicked': { feature: GuestQuotaFeature; remaining: number };
   'Logged In': Record<string, never>;
   'Logged Out': Record<string, never>;
   'Language Changed': { language: string };

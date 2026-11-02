@@ -81,16 +81,18 @@ describe('router', () => {
       expect(router.currentRoute.value.name).toBe('about');
     });
 
-    it('does not ask for a login on a disabled page', async () => {
+    it('neither asks for a login nor prompts a signup on a disabled page', async () => {
       flags.hasAuth = true;
       flags.disabled = ['bookmarks'];
-      useAuthStore().isLoading = false;
+      const authStore = useAuthStore();
+      authStore.isLoading = false;
 
       await router.push('/bookmarks');
 
-      expect(keycloak.login).toHaveBeenCalledWith(
-        expect.objectContaining({ redirectUri: `${window.location.origin}/q-and-a` })
-      );
+      // the fallback, the chat, is open to guests
+      expect(router.currentRoute.value.name).toBe('q-and-a');
+      expect(keycloak.login).not.toHaveBeenCalled();
+      expect(authStore.signupPromptReason).toBeNull();
     });
   });
 
@@ -118,12 +120,37 @@ describe('router', () => {
       const authStore = useAuthStore();
       authStore.isLoading = false;
 
+      await router.push('/profile');
+
+      expect(router.currentRoute.value.name).not.toBe('profile');
+      expect(keycloak.login).toHaveBeenCalledWith(
+        expect.objectContaining({ redirectUri: `${window.location.origin}/profile` })
+      );
+    });
+
+    it.each(['/q-and-a', '/search', '/tutor', '/microlearning', '/terms'])(
+      'lets a guest open %s',
+      async (path) => {
+        const authStore = useAuthStore();
+        authStore.isLoading = false;
+
+        await router.push(path);
+
+        expect(router.currentRoute.value.path).toBe(path);
+        expect(keycloak.login).not.toHaveBeenCalled();
+        expect(authStore.signupPromptReason).toBeNull();
+      }
+    );
+
+    it('shows a guest the signup prompt on the bookmarks page and stays put', async () => {
+      const authStore = useAuthStore();
+      authStore.isLoading = false;
+
       await router.push('/bookmarks');
 
-      expect(router.currentRoute.value.name).not.toBe('bookmarks');
-      expect(keycloak.login).toHaveBeenCalledWith(
-        expect.objectContaining({ redirectUri: `${window.location.origin}/bookmarks` })
-      );
+      expect(router.currentRoute.value.name).toBe('about');
+      expect(authStore.signupPromptReason).toBe('bookmarks');
+      expect(keycloak.login).not.toHaveBeenCalled();
     });
 
     it('lets a logged out user open a public route', async () => {

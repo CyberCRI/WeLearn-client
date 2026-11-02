@@ -8,6 +8,7 @@ import { extractProcessingMetadata } from '@/utils/chatProcessing';
 import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
 import { track } from '@/utils/analytics';
+import { useGuestQuotaStore } from '@/stores/guestQuota';
 
 // CHAT STATUSES
 export const CHAT_STATUS = {
@@ -366,6 +367,9 @@ export const useChatStore = defineStore('chat', () => {
       return;
     }
 
+    const guestQuota = useGuestQuotaStore();
+    if (!guestQuota.checkQuota('chat')) return;
+
     const { sdgFilters, sourcesFilters } = useFiltersStore();
     track('Chat Question Sent', {
       queryLength: message.length,
@@ -391,6 +395,7 @@ export const useChatStore = defineStore('chat', () => {
     }
 
     chatStatus.value = CHAT_STATUS.DONE;
+    guestQuota.consume('chat');
     track('Chat Answer Received', {
       durationMs: Date.now() - startedAt,
       sourcesCount: sourcesList.value.length

@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import axios from 'axios';
 import { useTutorStore } from '../tutor';
+import { useGuestQuotaStore } from '../guestQuota';
 import { basePostAxios } from '@/utils/fetch';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import type { Document, TutorSearch } from '@/types';
@@ -17,6 +18,9 @@ vi.mock('@/utils/md-to-docx', () => ({
 }));
 
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
+
+const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
+vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
 
 type PostResult = Awaited<ReturnType<typeof basePostAxios>>;
 const mockPost = (value: unknown) =>
@@ -36,6 +40,7 @@ const pedagogical = { source: 'PedagogicalEngineerAgent', content: '| a\\nb |\nl
 
 describe('tutor store', () => {
   beforeEach(() => {
+    auth.isGuest = false;
     localStorage.clear();
     setActivePinia(createPinia());
     vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -485,6 +490,79 @@ describe('tutor store', () => {
 
       expect(downloadDocx).toHaveBeenCalledOnce();
       expect(console.error).toHaveBeenCalledWith('Error during metrics update:', expect.any(Error));
+    });
+
+    it('asks a guest who used their syllabus to sign up before uploading files', async () => {
+      auth.isGuest = true;
+      localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf')]);
+
+      await store.handleSummaryFiles();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('syllabusLimit');
+      expect(basePostAxios).not.toHaveBeenCalled();
+    });
+
+    it('asks a guest who used their syllabus to sign up before generating another', async () => {
+      auth.isGuest = true;
+      localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
+      const store = useTutorStore();
+      store.tutorSearch = search();
+
+      await store.handleCreateSyllabus();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('syllabusLimit');
+      expect(basePostAxios).not.toHaveBeenCalled();
+    });
+
+    it('counts a generated syllabus in the guest quota', async () => {
+      auth.isGuest = true;
+      mockPost({ data: { syllabus: [pedagogical] } });
+      const store = useTutorStore();
+      store.tutorSearch = search();
+
+      await store.handleCreateSyllabus();
+
+      expect(store.step).toBe(4);
+      expect(useGuestQuotaStore().usage.syllabus).toBe(1);
+    });
+
+    it('keeps a guest syllabus and asks to sign up instead of downloading', async () => {
+      auth.isGuest = true;
+      const store = useTutorStore();
+      store.syllabi = { source: 'agent', content: '# Course' };
+
+      await store.handleDownloadSyllabus();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('download');
+      expect(convertMarkdownToDocx).not.toHaveBeenCalled();
+      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '')).toBe('# Course');
+    });
+
+    it('downloads the kept syllabus once the guest is logged in, only once', async () => {
+      localStorage.setItem('pendingSyllabus', JSON.stringify('# Course'));
+      vi.mocked(convertMarkdownToDocx).mockResolvedValueOnce(new Blob(['docx']));
+      mockPost({});
+      const store = useTutorStore();
+
+      await store.downloadPendingSyllabus();
+      await store.downloadPendingSyllabus();
+
+      expect(convertMarkdownToDocx).toHaveBeenCalledOnce();
+      expect(convertMarkdownToDocx).toHaveBeenCalledWith('# Course');
+      expect(downloadDocx).toHaveBeenCalledOnce();
+      expect(localStorage.getItem('pendingSyllabus')).toBeNull();
+    });
+
+    it('does not download the kept syllabus while still a guest', async () => {
+      auth.isGuest = true;
+      localStorage.setItem('pendingSyllabus', JSON.stringify('# Course'));
+
+      await useTutorStore().downloadPendingSyllabus();
+
+      expect(convertMarkdownToDocx).not.toHaveBeenCalled();
+      expect(localStorage.getItem('pendingSyllabus')).not.toBeNull();
     });
 
     it('does not save without a syllabus', async () => {

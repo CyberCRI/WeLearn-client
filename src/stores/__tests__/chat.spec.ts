@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { CHAT_STATUS, useChatStore } from '../chat';
 import { useFiltersStore } from '../filters';
+import { useGuestQuotaStore } from '../guestQuota';
 import { baseGetAxios, fetchStream } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
@@ -12,6 +13,9 @@ vi.mock('@/utils/fetch', () => ({
 }));
 
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
+
+const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
+vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
 
 type StreamBody = Awaited<ReturnType<typeof fetchStream>>;
 
@@ -36,6 +40,8 @@ const lastBody = () => JSON.parse(vi.mocked(fetchStream).mock.calls.at(-1)![1].b
 
 describe('chat store', () => {
   beforeEach(() => {
+    auth.isGuest = false;
+    auth.askToSignUp.mockReset();
     localStorage.clear();
     setActivePinia(createPinia());
   });
@@ -159,6 +165,39 @@ describe('chat store', () => {
         expect(store.chatMessagesList).toEqual([]);
       }
     );
+
+    it('counts an answered question in the guest quota', async () => {
+      auth.isGuest = true;
+      mockStream([sse({ content: 'Hello' })]);
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(useGuestQuotaStore().usage.chat).toBe(1);
+    });
+
+    it('does not count a failed question in the guest quota', async () => {
+      auth.isGuest = true;
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(fetchStream).mockRejectedValue(new Error('boom'));
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(useGuestQuotaStore().usage.chat).toBe(0);
+    });
+
+    it('asks a guest who used every free question to sign up', async () => {
+      auth.isGuest = true;
+      localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }));
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('chatLimit');
+      expect(fetchStream).not.toHaveBeenCalled();
+      expect(store.chatMessagesList).toEqual([]);
+    });
 
     it('streams the answer into an assistant message and persists the chat', async () => {
       mockStream([sse({ content: 'Hello' }), sse({ delta: ' world' })]);

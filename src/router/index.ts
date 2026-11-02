@@ -9,10 +9,14 @@ import TestMAS from '@/views/TestMAS.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useFeatureFlipStore, type Feature } from '@/stores/featureFlip';
 import RegisterPage from '@/views/RegisterPage.vue';
+import type { SignupPromptReason } from '@/types';
 
 declare module 'vue-router' {
   interface RouteMeta {
+    // where auth is on, a guest can't open the page. pages not marked are open to guests
     requiresAuth?: boolean;
+    // a guest gets the signup prompt for this reason instead of the keycloak login
+    signupPromptReason?: SignupPromptReason;
     // the page is reachable only where this feature is on (stores/featureFlip.ts)
     feature?: Feature;
   }
@@ -36,25 +40,25 @@ const router = createRouter({
       path: '/q-and-a',
       name: 'q-and-a',
       component: QandA,
-      meta: { requiresAuth: true, feature: 'chat' }
+      meta: { feature: 'chat' }
     },
     {
       path: '/search',
       name: 'search-sdg',
       component: SearchSDG,
-      meta: { requiresAuth: true, feature: 'search' }
+      meta: { feature: 'search' }
     },
     {
       path: '/bookmarks',
       name: 'bookmarks',
       component: Bookmarks,
-      meta: { requiresAuth: true, feature: 'bookmarks' }
+      meta: { requiresAuth: true, signupPromptReason: 'bookmarks', feature: 'bookmarks' }
     },
     {
       path: '/tutor',
       name: 'tutor',
       component: Tutor,
-      meta: { requiresAuth: true, feature: 'tutor' }
+      meta: { feature: 'tutor' }
     },
     {
       path: '/tutor_test',
@@ -65,14 +69,13 @@ const router = createRouter({
     {
       path: '/terms',
       name: 'terms',
-      component: () => import('@/views/TermsPage.vue'),
-      meta: { requiresAuth: true }
+      component: () => import('@/views/TermsPage.vue')
     },
     {
       path: '/microlearning',
       name: 'micro-learning',
       component: MicrolearningModule,
-      meta: { requiresAuth: true, feature: 'microlearning' }
+      meta: { feature: 'microlearning' }
     },
     {
       path: '/profile',
@@ -108,7 +111,7 @@ router.beforeEach((to: RouteLocationNormalized) => {
   return fallback ? fallback.path : false;
 });
 
-router.beforeEach(async (to: RouteLocationNormalized) => {
+router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormalized) => {
   const authStore = useAuthStore();
 
   if (!authStore.shouldAuthenticate) return true;
@@ -126,6 +129,12 @@ router.beforeEach(async (to: RouteLocationNormalized) => {
   }
 
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    if (to.meta.signupPromptReason) {
+      authStore.askToSignUp(to.meta.signupPromptReason);
+      // stay on the current page, or land on the home page when the url was opened directly
+      return from.matched.length ? false : '/';
+    }
+
     authStore.login(window.location.origin + to.fullPath);
     return false;
   }
