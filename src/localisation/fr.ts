@@ -270,6 +270,7 @@ export const fr = {
     syllabus: 'Créer un syllabus',
     about: 'À propos',
     help: 'Aide',
+    preview: 'Aperçu',
     profile: 'Profil',
     microlearning: 'Micro-learning',
     workshopForm: "Formulaire d'atelier"

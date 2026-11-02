@@ -266,6 +266,7 @@ export const en = {
     syllabus: 'Create a syllabus',
     about: 'About',
     help: 'Help',
+    preview: 'Preview',
     profile: 'Profile',
     microlearning: 'Micro-learning',
     workshopForm: 'Workshop Form'
