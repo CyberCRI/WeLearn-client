@@ -15,7 +15,7 @@ const SIGNUP_REASONS = { chat: 'chatLimit', syllabus: 'syllabusLimit' } as const
 
 const emptyUsage = (): Record<GuestQuotaFeature, number> => ({ chat: 0, syllabus: 0 });
 
-// ponytail: counted in the browser only, clearing the storage resets it. the API has no quota yet
+// counted in the browser only, clearing the storage resets it. the API has no quota yet
 // (see guest-access-api-next-steps.md), this is a nudge to sign up, not a cost protection
 export const useGuestQuotaStore = defineStore('guestQuota', () => {
   const usage = ref<Record<GuestQuotaFeature, number>>({

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// ponytail: forked from SecondStep.vue, which stays as-is for the hidden /tutor_test page
+// forked from SecondStep.vue, which stays as-is for the hidden /tutor_test page
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
@@ -36,7 +36,7 @@ const bookmarks = useBookmarksStore();
           @click="appendSource(source)"
           @keydown.enter.space.prevent="appendSource(source)"
         >
-          <!-- ponytail: native checkbox for the visual only, the row handles clicks and keyboard -->
+          <!-- native checkbox for the visual only, the row handles clicks and keyboard -->
           <input
             type="checkbox"
             class="check"

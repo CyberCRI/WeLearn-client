@@ -30,7 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
   const featureFlip = useFeatureFlipStore();
   const shouldAuthenticate = computed(() => featureFlip.isFeatureEnabled('auth'));
   // a guest can use the tools but not keep their work (bookmarks, downloads, exports).
-  // ponytail: gated in the client only, the API does not check the token yet
+  // gated in the client only, the API does not check the token yet
   const isGuest = computed(() => shouldAuthenticate.value && !isAuthenticated.value);
 
   // set when a guest hits something that needs an account, SignupPromptModal shows it
@@ -85,7 +85,7 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  // ponytail: built from the id token claims, loadUserProfile() calls /account which the lp realm
+  // built from the id token claims, loadUserProfile() calls /account which the lp realm
   // refuses (no account audience in the token), and nothing here needs more than these fields
   function profileFromIdToken(): KeycloakProfile {
     const claims = keycloak.idTokenParsed;

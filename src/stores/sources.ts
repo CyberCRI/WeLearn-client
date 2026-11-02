@@ -23,7 +23,7 @@ export const useSourcesStore = defineStore('sources', () => {
       const fetchedCorpus = await baseGetAxios<Corpus[]>('/search/collections');
       fetchedCorpus.sort((a, b) => a.name.localeCompare(b.name));
 
-      // ponytail: a corpus without category lands under "null", as it always has
+      // a corpus without category lands under "null", as it always has
       const categoryOf = (corpus: Corpus) => String(corpus.category);
 
       const corpusByCategory: Record<string, Corpus[]> = fetchedCorpus.reduce(

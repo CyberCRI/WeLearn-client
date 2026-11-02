@@ -374,7 +374,7 @@ export const useTutorStore = defineStore('tutor', () => {
     await downloadSyllabus(syllabi.value.content);
   };
 
-  // ponytail: the wizard itself is not restored after the login (uploaded files can't be stored),
+  // the wizard itself is not restored after the login (uploaded files can't be stored),
   // only the syllabus the guest asked for is downloaded
   const downloadPendingSyllabus = async () => {
     const content: unknown = getFromStorage(PENDING_SYLLABUS_KEY);

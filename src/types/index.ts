@@ -2,7 +2,7 @@ import type { ApiSchema } from './api';
 
 type DocumentPayload = ApiSchema<'EnhancedDocumentSlicePayloadModel'>;
 
-// ponytail: the API types `document_details` as a free dict, so its known keys are listed here
+// the API types `document_details` as a free dict, so its known keys are listed here
 export type Document = Omit<ApiSchema<'EnhancedDocumentSlice'>, 'payload'> & {
   payload: Omit<DocumentPayload, 'document_details'> & { document_details: DocumentDetails };
 };
