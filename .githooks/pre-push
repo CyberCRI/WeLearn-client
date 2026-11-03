@@ -1,12 +1,55 @@
 #!/bin/sh
 # runs the ci `lint-and-test` checks (api contract included) before pushing
 # e2e tests are left to ci, they make every push too slow
+# also refuses pushes to main and new branches not named <type>_<kebab-description>
 # skip once with `git push --no-verify`
 set -e
 
-# the checks run on the working tree, so it has to match what is pushed
-if ! git diff --quiet HEAD; then
-  echo "pre-push: uncommitted changes, commit or stash them first (or push with --no-verify)"
+branch_re='^(feat|fix|docs|test|refactor|chore|build|ci)_[a-z0-9]+(-[a-z0-9]+)*$'
+head_sha=$(git rev-parse HEAD)
+has_code=false
+
+# git sends one line per pushed ref: <local ref> <local sha> <remote ref> <remote sha>
+# an all-zero sha means the ref doesn't exist on that side
+while read -r local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = refs/heads/main ]; then
+    echo "pre-push: pushing to main is not allowed, push a branch and open a pull request"
+    exit 1
+  fi
+
+  # deleting a ref pushes no code
+  case "$local_sha" in *[!0]*) ;; *) continue ;; esac
+  has_code=true
+
+  case "$remote_ref" in
+    refs/heads/*)
+      name=${remote_ref#refs/heads/}
+      # only new branches, the ones already on the remote keep their names
+      case "$remote_sha" in
+        *[!0]*) ;;
+        *)
+          if ! printf '%s' "$name" | grep -Eq "$branch_re"; then
+            echo "pre-push: branch '$name' should be named <type>_<kebab-description>, for example feat_bookmark-collections"
+            echo "  types: feat fix docs test refactor chore build ci. rename it with: git branch -m <new-name>"
+            exit 1
+          fi
+          ;;
+      esac
+      ;;
+  esac
+
+  if [ "$(git rev-parse "$local_sha^{commit}" 2>/dev/null)" != "$head_sha" ]; then
+    echo "pre-push: warning, $local_ref is not the checked-out commit, the checks below run on HEAD"
+  fi
+done
+
+$has_code || exit 0
+
+# the checks run on the working tree, so it has to match what is pushed:
+# untracked files count too, a file that was never added passes here and fails in ci
+if [ -n "$(git status --porcelain)" ]; then
+  echo "pre-push: uncommitted or untracked files, commit, stash or delete them first (or push with --no-verify)"
+  git status --short
   exit 1
 fi
 

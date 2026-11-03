@@ -135,7 +135,13 @@ The types in `src/types/generated/` are generated from the `openapi.json` file o
 
 ### Pre-push hook
 
-`yarn install` enables a git pre-push hook (`.githooks/pre-push`) that runs the same checks as CI before every push: lint, format, type check, unit tests with coverage and the API contract check. End-to-end tests are left to CI. To skip the hook once, use `git push --no-verify`.
+`yarn install` enables a git pre-push hook (`.githooks/pre-push`) that runs the same checks as CI before every push: lint, format, type check, unit tests with coverage and the API contract check. End-to-end tests are left to CI. It also refuses to push:
+
+- to `main`;
+- a new branch that doesn't follow the naming rule below (branches already on GitHub keep their names);
+- when there are uncommitted or untracked files, because the checks run on the working tree.
+
+To skip the hook once, use `git push --no-verify`.
 
 ### Code conventions
 
@@ -144,7 +150,7 @@ The coding rules are in [CLAUDE.md](CLAUDE.md). It is written for AI agents, but
 ### Git workflow
 
 - Never commit or push to `main`. Work on a branch and open a pull request, it reaches `main` through a squash merge.
-- Name branches `<type>/<short-description>` in kebab-case, for example `feat/bookmark-collections` or `fix/ui-filters-chat-nav`.
+- Name branches `<type>_<short-description>`, with the description in kebab-case, for example `feat_bookmark-collections` or `fix_ui-filters-chat-nav`.
 - Write commit messages and PR titles as [Conventional Commits](https://www.conventionalcommits.org/): `<type>(<scope>): <summary>`, for example `feat(microlearning): adds form data collection`. The scope is optional and names the feature or area (`chat`, `tutor`, `ui`, `ci`, ...). The PR title becomes the commit on `main`.
 - Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `build`, `ci`.
 - Fill in the [pull request template](.github/PULL_REQUEST_TEMPLATE.md).
