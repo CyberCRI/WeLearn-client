@@ -108,7 +108,7 @@ export const useSourcesStore = defineStore('sources', () => {
       const fileBlob =
         response.data instanceof Blob
           ? response.data
-          : new Blob([response.data], { type: response.headers['content-type'] });
+          : new Blob([response.data], { type: response.headers['content-type']?.toString() });
 
       downloadBlob(fileBlob, fileName);
       track('Bibliography Exported', { count: ids.length });

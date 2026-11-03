@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { marked } from 'marked';
+import { renderMarkdown } from '@/utils/markdown';
 import TurndownService from 'turndown';
 import { gfm } from 'turndown-plugin-gfm';
 import { computed, nextTick, ref } from 'vue';
@@ -26,7 +26,9 @@ const turndown = new TurndownService({
   hr: '---'
 });
 turndown.use(gfm);
-// the markdown comes from the LLM, not a user: no need to escape it
+// ponytail: no markdown escaping, md-to-docx doesn't understand backslash escapes and would print
+// them in the Word file. html typed by the user can end up in the markdown, which is safe because
+// renderMarkdown sanitizes it before it is shown again
 turndown.escape = (s: string) => s;
 // a real line break would split the table row, so keep <br> inside table cells
 turndown.addRule('tableCellBreak', {
@@ -34,7 +36,9 @@ turndown.addRule('tableCellBreak', {
   replacement: () => '<br>'
 });
 
-const html = computed(() => (props.syllabus?.content ? marked.parse(props.syllabus.content) : ''));
+const html = computed(() =>
+  props.syllabus?.content ? renderMarkdown(props.syllabus.content) : ''
+);
 
 // links can't be followed inside editable text, so clicking one shows a small
 // "open" bubble under it (like in Google Docs)

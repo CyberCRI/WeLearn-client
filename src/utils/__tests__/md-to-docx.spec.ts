@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { ExternalHyperlink, TextRun } from 'docx';
 import { processInlineText } from '@/utils/md-to-docx/helpers';
 import { convertMarkdownToDocx } from '@/utils/md-to-docx';
-import JSZip from 'jszip';
+import { readDocx } from './readDocx';
 
 describe('processInlineText', () => {
   it('keeps the text around links and turns every link into a hyperlink', () => {
@@ -49,8 +49,7 @@ describe('processInlineText', () => {
       '-   Limites à la croissance [[lien]](https://www.clubofrome.org/)'
     ].join('\n');
     const blob = await convertMarkdownToDocx(md);
-    const zip = await JSZip.loadAsync(blob);
-    const xml = await zip.file('word/document.xml')!.async('string');
+    const xml = (await readDocx(blob)).read('word/document.xml');
     const text = xml.replace(/<[^>]+>/g, '');
 
     expect((xml.match(/<w:tbl>/g) || []).length).toBe(1);

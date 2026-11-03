@@ -5,25 +5,23 @@ import DescreteButton from './ButtonComponent.vue';
 import UserAvatar from './UserAvatar.vue';
 import CopyIcon from './icons/CopyIcon.vue';
 import TooltipComponent from './TooltipComponent.vue';
-import { marked } from 'marked';
-import { ref, type Ref } from 'vue';
+import { renderMarkdown } from '@/utils/markdown';
+import { computed, ref, type Ref } from 'vue';
 
 const copied = ref(false);
 const timeOut: Ref<null | number> = ref(null);
 
-defineProps<{
+const props = defineProps<{
   message: string;
   isUSer: boolean;
   isLast: boolean;
   shouldDisable: boolean;
 }>();
 
-const renderer = new marked.Renderer();
-const linkRenderer = renderer.link;
-renderer.link = (href, title, text) => {
-  const html = linkRenderer.call(renderer, href, title, text);
-  return html.replace(/^<a /, '<a target="_blank" rel="nofollow" ');
-};
+// user messages are shown as typed, only the answers are markdown
+const answerHtml = computed(() =>
+  props.isUSer ? '' : renderMarkdown(props.message, { externalLinks: true })
+);
 
 const copyMessage = (msg: string) => {
   if (timeOut.value) {
@@ -43,7 +41,8 @@ const copyMessage = (msg: string) => {
       <UserAvatar v-if="isUSer" />
       <AssistantAvatar v-else />
     </div>
-    <p class="chat-bubble-content" v-html="marked.parse(message, { renderer })" />
+    <p v-if="isUSer" class="chat-bubble-content user-message">{{ message }}</p>
+    <p v-else class="chat-bubble-content" v-html="answerHtml" />
     <div class="details">
       <DescreteButton
         class="detail-button"
@@ -106,6 +105,9 @@ const copyMessage = (msg: string) => {
   margin-left: 0;
   & > a {
     color: var(--primary);
+  }
+  &.user-message {
+    white-space: pre-wrap;
   }
   /* markdown comes in via v-html, so lists need :deep to get an indent; otherwise the numbers sit in the margin */
   & :deep(ol),

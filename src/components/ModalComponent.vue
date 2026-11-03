@@ -30,7 +30,7 @@ const handleModalClose = () => {
         class="is-flex is-flex-direction-column is-justify-content-space-between is-align-items-center"
       >
         <p class="title my-6" v-if="title">{{ title }}</p>
-        <p class="subtitle mb-5 px-6" v-if="message" v-html="message" />
+        <p class="subtitle mb-5 px-6" v-if="message">{{ message }}</p>
         <div class="container px-6">
           <slot name="extraInfo"></slot>
         </div>
