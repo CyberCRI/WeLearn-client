@@ -21,7 +21,8 @@ yarn dev            # vite --mode dev  → http://localhost:5173 (reads .env.loc
 yarn test:unit      # vitest (jsdom), watch mode; add `--run` for a single pass
 yarn test:unit --run src/utils/__tests__/progress.spec.ts   # one file
 yarn test:coverage  # single pass + v8 coverage, fails under the floors in vitest.config.ts (html report in coverage/)
-yarn test:e2e       # playwright; starts `vite --mode test` itself, API calls are mocked
+yarn test:e2e       # playwright; builds into dist/e2e-* and serves it with `vite preview`, API calls are mocked
+                    # (E2E_DEV_SERVER=1 uses the dev server instead, for quick local iterations)
 yarn lint           # eslint --fix
 yarn format         # prettier --write src/
 yarn type-check     # vue-tsc

@@ -18,6 +18,17 @@ const AUTH_PORT = 5181;
 // keycloak and analytics are only on in dev
 const DEV_SPECS = ['auth.spec.ts', 'profile.spec.ts', 'consent.spec.ts'];
 
+// the tests run against a production build: the dev server compiles every module on request,
+// which on a slow runner keeps the page blank past the expect timeout.
+// E2E_DEV_SERVER=1 uses the dev server instead, for quick local iterations.
+// VITE_* variables are baked in at build time, so each environment gets its own build.
+const serve = (env: 'test' | 'dev', port: number) =>
+  process.env.E2E_DEV_SERVER
+    ? `vite --mode test --port ${port} --strictPort`
+    : `vite build --mode test --outDir dist/e2e-${env} && vite preview --outDir dist/e2e-${env} --port ${port} --strictPort`;
+// the build has to finish before the server answers
+const SERVER_TIMEOUT = 180_000;
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -66,15 +77,17 @@ export default defineConfig<{ isDevEnvironment: boolean }>({
   // own ports: a reused `yarn dev` server runs in dev mode and redirects to the real Keycloak
   webServer: [
     {
-      command: `vite --mode test --port ${PORT} --strictPort`,
+      command: serve('test', PORT),
       port: PORT,
+      timeout: SERVER_TIMEOUT,
       reuseExistingServer: !process.env.CI
     },
     {
       // variables already in the environment win over .env.test
-      command: `vite --mode test --port ${AUTH_PORT} --strictPort`,
+      command: serve('dev', AUTH_PORT),
       port: AUTH_PORT,
       env: { VITE_ENVIRONMENT: 'dev' },
+      timeout: SERVER_TIMEOUT,
       reuseExistingServer: !process.env.CI
     }
   ]
