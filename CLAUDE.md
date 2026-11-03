@@ -10,6 +10,7 @@ These rules are strict and apply to every agent and subagent working in this rep
 
 - **Never install, add, remove or upgrade a package without the human confirming it first.** This covers `yarn add`, `yarn remove`, `yarn upgrade`, `npm install <pkg>`, `npx playwright install`, and editing dependency versions in `package.json` or `yarn.lock`. Say which package and version you want and why, then wait for a yes. Running `yarn install` to restore the existing lockfile is fine.
 - **Never commit to `main`, and never push to it.** Work on a feature branch; if you are on `main`, create a branch before your first commit. Changes reach `main` only through a PR.
+- The hooks in `.claude/hooks/` (wired in `.claude/settings.json`, they need `jq`) enforce these rules and the "never edit" ones below. They also run prettier on each file you edit in `src/`. If a hook blocks you, ask the human. Don't work around it.
 
 ## Commands
 
@@ -28,7 +29,7 @@ yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.
 yarn build          # type-check + vite build
 ```
 
-CI (`.github/workflows/ci.yml`) runs `yarn lint:check`, `yarn format:check`, `yarn type-check`, `yarn test:coverage`, Playwright and the API contract check, all in the `lint-and-test` job. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). Before you say a change is done, run lint, `format:check` and `test:coverage`. If you add tests, raise the coverage floors in `vitest.config.ts` to just under the new values.
+CI (`.github/workflows/ci.yml`) runs `yarn lint:check`, `yarn format:check`, `yarn type-check`, `yarn test:coverage`, Playwright and the API contract check, all in the `lint-and-test` job. The `.githooks/pre-push` hook runs the same checks except Playwright before every push (enabled by `yarn install` through the `prepare` script; skip once with `git push --no-verify`). It also refuses pushes to `main`, badly named new branches, and uncommitted or untracked files. Before you say a change is done, run lint, `format:check` and `test:coverage`. If you add tests, raise the coverage floors in `vitest.config.ts` to just under the new values.
 
 ## Stack
 
@@ -132,7 +133,7 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 - Docker builds with `$DOCKER_INJECT_*` placeholders. `interpolate-variables.sh` swaps them into the built JS when nginx starts. A new `VITE_*` var therefore has to be added to the `Dockerfile` ARGs **and** to the `ci.yml` build-args.
 - `devops-toolbox/` is a git submodule (sops secrets). Don't edit it.
 - The project does not accept outside contributions. PRs follow `.github/PULL_REQUEST_TEMPLATE.md` (Description / Why / How / type of change).
-- Branches are `<type>/<short-kebab-description>` (`feat/bookmark-collections`). Commit messages and PR titles are Conventional Commits, `<type>(<scope>): <summary>` with type `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `build` or `ci` and an optional scope (`chat`, `tutor`, `ui`, ...). PRs are squash-merged, so the PR title becomes the commit on `main`.
+- Branches are `<type>_<short-kebab-description>` (`feat_bookmark-collections`). The pre-push hook refuses a new branch with another name; branches already on the remote keep theirs. Commit messages and PR titles are Conventional Commits, `<type>(<scope>): <summary>` with type `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `build` or `ci` and an optional scope (`chat`, `tutor`, `ui`, ...). PRs are squash-merged, so the PR title becomes the commit on `main`.
 
 ## Gotchas
 

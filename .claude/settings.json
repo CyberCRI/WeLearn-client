@@ -19,7 +19,11 @@
       "Bash(git push origin main *)",
       "Bash(git push * origin main)",
       "Bash(git push origin HEAD:main)",
-      "Bash(git push * HEAD:main)"
+      "Bash(git push * HEAD:main)",
+      "Bash(git push origin +main)",
+      "Bash(git push --all *)",
+      "Bash(git push --mirror *)",
+      "Read(./.env.local)"
     ]
   },
   "hooks": {
@@ -32,6 +36,29 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-bash.sh\"",
             "timeout": 10,
             "onFailure": "block"
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Edit|Write|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/guard-files.sh\"",
+            "timeout": 10,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.sh\"",
+            "timeout": 30
           }
         ]
       }
