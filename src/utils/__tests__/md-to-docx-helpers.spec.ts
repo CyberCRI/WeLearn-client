@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { Document, Packer, Paragraph } from 'docx';
-import JSZip from 'jszip';
+import { readDocx } from './readDocx';
 import {
   createLinkParagraph,
   processBlockquote,
@@ -25,11 +25,8 @@ const STYLE: Style = {
 // renders the paragraphs into a real .docx and returns its document.xml
 const toXml = async (children: Paragraph[]) => {
   const doc = new Document({ sections: [{ children }] });
-  const zip = await JSZip.loadAsync(await Packer.toBlob(doc));
-  return {
-    zip,
-    xml: await zip.file('word/document.xml')!.async('string')
-  };
+  const docx = await readDocx(await Packer.toBlob(doc));
+  return { docx, xml: docx.read('word/document.xml') };
 };
 
 const textOf = (xml: string) => xml.replace(/<[^>]+>/g, '');
@@ -47,7 +44,8 @@ describe('md-to-docx helpers', () => {
     expect(xml).toContain('<w:i/>');
     expect(xml).toMatch(/<w:ind w:left="720"/);
     expect(xml).toMatch(/<w:left w:val="single" w:color="AAAAAA" w:sz="3"/);
-    expect(xml).toMatch(/<w:spacing w:before="120" w:after="120"/);
+    // attribute order is up to docx
+    expect(xml).toMatch(/<w:spacing (?=[^>]*w:before="120")(?=[^>]*w:after="120")/);
   });
 
   it('renders a comment as a grey italic paragraph prefixed with "Comment:"', async () => {
@@ -109,8 +107,8 @@ describe('md-to-docx helpers', () => {
     ['processLinkParagraph', processLinkParagraph('Site', 'https://a.org/x', STYLE)],
     ['createLinkParagraph', createLinkParagraph('Site', 'https://a.org/x')]
   ])('%s produces a real hyperlink to the url', async (_name, paragraph) => {
-    const { zip, xml } = await toXml([paragraph]);
-    const rels = await zip.file('word/_rels/document.xml.rels')!.async('string');
+    const { docx, xml } = await toXml([paragraph]);
+    const rels = docx.read('word/_rels/document.xml.rels');
 
     expect(textOf(xml)).toBe('Site');
     expect((xml.match(/<w:hyperlink /g) || []).length).toBe(1);
@@ -130,13 +128,13 @@ describe('md-to-docx helpers', () => {
     vi.stubGlobal('fetch', fetchMock);
 
     const paragraphs = await processImage('A cat', 'https://img.org/cat.jpg', STYLE);
-    const { zip, xml } = await toXml(paragraphs);
+    const { docx, xml } = await toXml(paragraphs);
 
     expect(fetchMock).toHaveBeenCalledWith('https://img.org/cat.jpg');
     expect(paragraphs).toHaveLength(1);
     expect(xml).toContain('<w:drawing>');
     expect(xml).toContain('<w:jc w:val="center"/>');
-    expect(Object.keys(zip.files).some((name) => name.startsWith('word/media/'))).toBe(true);
+    expect(docx.paths.some((name) => name.startsWith('word/media/'))).toBe(true);
   });
 
   it('falls back to a red placeholder when the image cannot be fetched', async () => {

@@ -177,6 +177,16 @@ describe('ThirdStep editing keeps the syllabus intact', () => {
   });
 });
 
+describe('ThirdStep sanitizing', () => {
+  it('drops event handlers from html in the syllabus', () => {
+    const wrapper = mountStep('# Plan\n\n<img src=x onerror="alert(1)">');
+    const img = wrapper.find('#syllabus img');
+    expect(img.exists()).toBe(true);
+    expect(img.attributes('onerror')).toBeUndefined();
+    expect(wrapper.find('#syllabus h1').text()).toBe('Plan');
+  });
+});
+
 describe('cleanSyllabus', () => {
   it('turns literal "\\n" into <br> in tables and into new lines elsewhere', () => {
     expect(cleanSyllabus('| 1 | a \\n- b |\nText\\nmore')).toBe('| 1 | a <br>- b |\nText\nmore');
