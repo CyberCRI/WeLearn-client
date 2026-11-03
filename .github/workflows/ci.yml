@@ -13,7 +13,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # the image is only built and pushed once every check passed
   build-docker:
+    needs: lint-and-test
     uses: CyberCRI/github-workflows/.github/workflows/build-push.yaml@main
     with:
       registry-name: ${{ vars.DOCKER_PROD_REGISTRY }}
