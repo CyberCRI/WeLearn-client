@@ -61,7 +61,7 @@ defineProps<{
   border-top-right-radius: 0;
 }
 
-.tooltip.isright.not(.top) {
+.tooltip.isright:not(.top) {
   left: 0.5rem;
   border-top-left-radius: 0;
 }
