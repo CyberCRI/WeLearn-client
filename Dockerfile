@@ -15,7 +15,7 @@ RUN yarn install --pure-lockfile --non-interactive &&\
     rm -rf /usr/local/share/.cache
 
 COPY . .
-RUN npm run build-only
+RUN yarn build-only
 
 FROM nginx:1.25.2-alpine
 
