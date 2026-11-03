@@ -23,6 +23,8 @@ RUN apk add --no-cache bash
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY welearn.conf /etc/nginx/conf.d/default.conf
+# .inc, not .conf: only welearn.conf includes it, nginx.conf must not load it at http level
+COPY security-headers.conf /etc/nginx/conf.d/security-headers.inc
 
 EXPOSE 8080
 
