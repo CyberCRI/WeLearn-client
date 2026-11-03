@@ -37,7 +37,7 @@ This project is built with Vue 3 and TypeScript and serves as an SDG expert to h
 
 To run this project locally, you'll need:
 
-- **Node.js 20** (the version used by CI and the Docker image). You can download it from [nodejs.org](https://nodejs.org/).
+- **Node.js 24** (the version in `.nvmrc`, used by CI and the Docker image). You can download it from [nodejs.org](https://nodejs.org/), or run `nvm use` in the project folder.
 - **Yarn 1.22.x or later**. Install it globally with:
 
 ```bash
