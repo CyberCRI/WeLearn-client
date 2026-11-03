@@ -1,0 +1,25 @@
+name: PR title
+# prs are squash-merged, so the title becomes the commit on main: it has to be a conventional commit
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  check-title:
+    runs-on: wlc-lint-and-test-runner
+    timeout-minutes: 5
+    steps:
+      - name: Check the title is a conventional commit
+        # the title goes through env, never straight into the script
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          if printf '%s' "$TITLE" | grep -Eq '^(feat|fix|docs|test|refactor|chore|build|ci)(\([A-Za-z0-9_-]+\))?!?: [^ ].*$'; then
+            echo "ok: $TITLE"
+          else
+            echo "::error::PR title must be '<type>(<scope>): <summary>' with type feat, fix, docs, test, refactor, chore, build or ci (scope optional), got: '$TITLE'"
+            exit 1
+          fi
