@@ -146,15 +146,15 @@ export const fetchStream = async (
 };
 
 export const postBookmark = async (documentId: string) => {
-  const resp = await basePostAxios<ApiResponse<'/user/bookmarks/:document_id', 'post'>>(
-    `/user/bookmarks/:document_id?document_id=${documentId}`
+  const resp = await basePostAxios<ApiResponse<'/user/bookmarks/{document_id}', 'post'>>(
+    `/user/bookmarks/${documentId}`
   );
   return resp;
 };
 
 export const deleteBookmark = async (documentId: string) => {
-  const resp = await http.delete<ApiResponse<'/user/bookmarks/:document_id', 'delete'>>(
-    `/user/bookmarks/:document_id?document_id=${documentId}`
+  const resp = await http.delete<ApiResponse<'/user/bookmarks/{document_id}', 'delete'>>(
+    `/user/bookmarks/${documentId}`
   );
   return resp;
 };

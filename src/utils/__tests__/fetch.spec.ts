@@ -175,11 +175,7 @@ describe('fetch helpers', () => {
 
       await postBookmark('doc-1');
 
-      expect(http.post).toHaveBeenCalledWith(
-        '/user/bookmarks/:document_id?document_id=doc-1',
-        {},
-        undefined
-      );
+      expect(http.post).toHaveBeenCalledWith('/user/bookmarks/doc-1', {}, undefined);
     });
 
     it('deletes a bookmark', async () => {
@@ -187,7 +183,7 @@ describe('fetch helpers', () => {
 
       await deleteBookmark('doc-1');
 
-      expect(http.delete).toHaveBeenCalledWith('/user/bookmarks/:document_id?document_id=doc-1');
+      expect(http.delete).toHaveBeenCalledWith('/user/bookmarks/doc-1');
     });
 
     it('deletes every bookmark', async () => {
