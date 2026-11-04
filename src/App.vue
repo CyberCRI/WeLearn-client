@@ -8,6 +8,7 @@ import AppLayout from '@/components/AppLayout.vue';
 import WelcomeModal from '@/components/modals/WelcomeModal.vue';
 import ConsentBanner from '@/components/ConsentBanner.vue';
 import SignupPromptModal from '@/components/modals/SignupPromptModal.vue';
+import SessionExpiredModal from '@/components/modals/SessionExpiredModal.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
@@ -49,6 +50,7 @@ onMounted(async () => {
     <WelcomeModal />
     <ConsentBanner />
     <SignupPromptModal />
+    <SessionExpiredModal />
 
     <AppLayout>
       <template #header v-if="!$route.meta.hideTemplate">

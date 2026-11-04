@@ -1,5 +1,7 @@
 import axios from 'axios';
 import keycloak from '@/utils/keycloak';
+// only used inside the handlers, so the cycle (auth store → fetch → api) is safe at load time
+import { useAuthStore } from '@/stores/auth';
 
 const getSessionIdFromStorage = () => {
   try {
@@ -22,10 +24,12 @@ export const getAuthHeaders = async (): Promise<Record<string, string>> => {
 
   try {
     await keycloak.updateToken(30);
-    if (keycloak.token) headers.Authorization = `Bearer ${keycloak.token}`;
-  } catch {
-    keycloak.logout();
+  } catch (error) {
+    // the session is over: don't send the request without a token while the page redirects
+    useAuthStore().logout({ isExpired: true });
+    throw error;
   }
+  if (keycloak.token) headers.Authorization = `Bearer ${keycloak.token}`;
 
   return headers;
 };
@@ -50,8 +54,13 @@ http.interceptors.request.use(
 http.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      keycloak.logout();
+    // a guest's 401 is just an error, and logging out must never replace the AxiosError
+    if (error.response?.status === 401 && keycloak.authenticated) {
+      try {
+        useAuthStore().logout({ isExpired: true });
+      } catch (logoutError) {
+        console.error('Logout after a 401 failed:', logoutError);
+      }
     }
     return Promise.reject(error);
   }

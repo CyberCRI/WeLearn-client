@@ -13,6 +13,8 @@ import type { SignupPromptReason, UserRegisterData } from '@/types';
 
 // set before the keycloak redirect, so init() knows it comes back from a login and not a reload
 const LOGIN_PENDING_KEY = 'loginPending';
+// set before a forced logout, so the app can say why once it is back from keycloak
+const SESSION_EXPIRED_KEY = 'sessionExpired';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false);
@@ -45,12 +47,28 @@ export const useAuthStore = defineStore('auth', () => {
     signupPromptReason.value = null;
   }
 
+  // true after the app logged the user out on its own (expired token, 401), SessionExpiredModal shows it
+  const isSessionExpired = ref(false);
+
+  function closeSessionExpired(): void {
+    isSessionExpired.value = false;
+  }
+
   async function init(): Promise<boolean> {
     // where the auth feature is off, keycloak is never contacted
     if (!shouldAuthenticate.value) {
       isLoading.value = false;
       return false;
     }
+
+    // set before init: keycloak-js schedules onTokenExpired when init stores the token
+    keycloak.onAuthRefreshSuccess = syncToken;
+    keycloak.onTokenExpired = () => {
+      keycloak.updateToken(60).catch(() => {
+        console.warn('Token refresh failed, logging out');
+        logout({ isExpired: true });
+      });
+    };
 
     try {
       const authenticated = await keycloak.init({
@@ -62,18 +80,17 @@ export const useAuthStore = defineStore('auth', () => {
       isAuthenticated.value = authenticated;
       const isBackFromLogin = getFromStorage(LOGIN_PENDING_KEY) === true;
       clearFromStorage(LOGIN_PENDING_KEY);
+      isSessionExpired.value = !authenticated && getFromStorage(SESSION_EXPIRED_KEY) === true;
+      clearFromStorage(SESSION_EXPIRED_KEY);
 
       if (authenticated) {
-        token.value = keycloak.token;
-        tokenParsed.value = keycloak.tokenParsed;
+        syncToken();
         roles.value = keycloak.realmAccess?.roles || [];
         user.value = profileFromIdToken();
         if (isBackFromLogin) {
           applyKeycloakLocale();
           track('Logged In', {});
         }
-
-        startTokenRefresh();
       }
 
       isLoading.value = false;
@@ -117,27 +134,35 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
-  function logout(): void {
+  // several 401s can arrive together, only the first one redirects
+  let isLoggingOut = false;
+
+  // a guest, or keycloak never initialised (auth off), has no session to end: keycloak-js
+  // would throw on an uninitialised adapter
+  // isExpired: the app ends the session itself, not the user, so it explains why after the redirect.
+  // an options object, so a click event passed by `@click="logout"` can't turn it on
+  async function logout({ isExpired = false }: { isExpired?: boolean } = {}): Promise<void> {
+    if (isLoggingOut || !keycloak.authenticated) return;
+
+    isLoggingOut = true;
+    if (isExpired) saveToStorage(SESSION_EXPIRED_KEY, true);
     track('Logged Out', {});
     resetAnalytics();
-    keycloak.logout({
-      redirectUri: window.location.origin
-    });
+    try {
+      await keycloak.logout({
+        redirectUri: window.location.origin
+      });
+    } catch (error) {
+      isLoggingOut = false;
+      clearFromStorage(SESSION_EXPIRED_KEY);
+      console.error('Keycloak logout failed:', error);
+    }
   }
 
-  function startTokenRefresh(): void {
-    setInterval(async () => {
-      try {
-        const refreshed = await keycloak.updateToken(60);
-        if (refreshed) {
-          token.value = keycloak.token;
-          tokenParsed.value = keycloak.tokenParsed;
-        }
-      } catch {
-        console.warn('Token refresh failed, logging out');
-        logout();
-      }
-    }, 30000);
+  // also runs after the refreshes done by getAuthHeaders, so the store never goes stale
+  function syncToken(): void {
+    token.value = keycloak.token;
+    tokenParsed.value = keycloak.tokenParsed;
   }
 
   const isRegistering = ref(false);
@@ -186,6 +211,8 @@ export const useAuthStore = defineStore('auth', () => {
     signupPromptReason,
     askToSignUp,
     closeSignupPrompt,
+    isSessionExpired,
+    closeSessionExpired,
     user,
     token,
     tokenParsed,

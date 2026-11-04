@@ -6,6 +6,8 @@ import keycloak from '@/utils/keycloak';
 
 vi.mock('@/utils/keycloak', () => ({
   default: {
+    // a logged-in user: the store skips logout otherwise
+    authenticated: true,
     token: undefined as string | undefined,
     updateToken: vi.fn(),
     login: vi.fn(),

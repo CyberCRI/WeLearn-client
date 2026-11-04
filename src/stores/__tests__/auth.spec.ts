@@ -13,6 +13,9 @@ const { env, keycloak } = vi.hoisted(() => ({
     login: vi.fn(),
     logout: vi.fn(),
     updateToken: vi.fn(),
+    authenticated: false as boolean,
+    onAuthRefreshSuccess: undefined as (() => void) | undefined,
+    onTokenExpired: undefined as (() => void) | undefined,
     token: undefined as string | undefined,
     tokenParsed: undefined as Record<string, unknown> | undefined,
     idTokenParsed: undefined as Record<string, unknown> | undefined,
@@ -39,6 +42,7 @@ vi.mock('@/utils/analytics', () => ({ resetAnalytics: vi.fn(), track: vi.fn() })
 
 const authenticate = () => {
   keycloak.init.mockResolvedValue(true);
+  keycloak.authenticated = true;
   keycloak.token = 'token-1';
   keycloak.tokenParsed = { preferred_username: 'ada' };
   keycloak.idTokenParsed = {
@@ -57,6 +61,9 @@ describe('auth store', () => {
     localStorage.clear();
     setActivePinia(createPinia());
     env.name = 'dev';
+    keycloak.authenticated = false;
+    keycloak.onAuthRefreshSuccess = undefined;
+    keycloak.onTokenExpired = undefined;
     keycloak.token = undefined;
     keycloak.tokenParsed = undefined;
     keycloak.idTokenParsed = undefined;
@@ -223,40 +230,99 @@ describe('auth store', () => {
     });
   });
 
-  describe('token refresh', () => {
-    it('updates the token every 30 seconds', async () => {
-      authenticate();
+  describe('session expired', () => {
+    it('tells the user once they are back from a forced logout', async () => {
+      localStorage.setItem('sessionExpired', 'true');
+      keycloak.init.mockResolvedValue(false);
       const store = useAuthStore();
+
       await store.init();
-      keycloak.updateToken.mockResolvedValue(true);
-      keycloak.token = 'token-2';
-      keycloak.tokenParsed = { preferred_username: 'ada2' };
 
-      await vi.advanceTimersByTimeAsync(30000);
+      expect(store.isSessionExpired).toBe(true);
+      expect(localStorage.getItem('sessionExpired')).toBeNull();
 
-      expect(keycloak.updateToken).toHaveBeenCalledWith(60);
-      expect(store.token).toBe('token-2');
-      expect(store.tokenParsed).toEqual({ preferred_username: 'ada2' });
+      store.closeSessionExpired();
+      expect(store.isSessionExpired).toBe(false);
     });
 
-    it('keeps the token when it was not refreshed', async () => {
+    it('says nothing when the user is logged in again', async () => {
+      localStorage.setItem('sessionExpired', 'true');
       authenticate();
       const store = useAuthStore();
+
       await store.init();
-      keycloak.updateToken.mockResolvedValue(false);
-      keycloak.token = 'token-2';
 
-      await vi.advanceTimersByTimeAsync(30000);
-
-      expect(store.token).toBe('token-1');
+      expect(store.isSessionExpired).toBe(false);
+      expect(localStorage.getItem('sessionExpired')).toBeNull();
     });
 
-    it('logs out when the refresh fails', async () => {
+    it('says nothing on a normal visit', async () => {
+      keycloak.init.mockResolvedValue(false);
+      const store = useAuthStore();
+
+      await store.init();
+
+      expect(store.isSessionExpired).toBe(false);
+    });
+
+    it('flags the logout when an expired token cannot be refreshed', async () => {
       authenticate();
       await useAuthStore().init();
       keycloak.updateToken.mockRejectedValue(new Error('expired'));
 
-      await vi.advanceTimersByTimeAsync(30000);
+      keycloak.onTokenExpired?.();
+      await vi.runAllTimersAsync();
+
+      expect(localStorage.getItem('sessionExpired')).toBe('true');
+    });
+  });
+
+  describe('token refresh', () => {
+    it('sets the keycloak handlers before init, and starts no timer', async () => {
+      authenticate();
+      keycloak.init.mockImplementation(async () => {
+        expect(keycloak.onAuthRefreshSuccess).toBeTypeOf('function');
+        expect(keycloak.onTokenExpired).toBeTypeOf('function');
+        return true;
+      });
+
+      await useAuthStore().init();
+
+      expect(vi.getTimerCount()).toBe(0);
+    });
+
+    it('syncs the token after any keycloak refresh', async () => {
+      authenticate();
+      const store = useAuthStore();
+      await store.init();
+      keycloak.token = 'token-2';
+      keycloak.tokenParsed = { preferred_username: 'ada2' };
+
+      keycloak.onAuthRefreshSuccess?.();
+
+      expect(store.token).toBe('token-2');
+      expect(store.tokenParsed).toEqual({ preferred_username: 'ada2' });
+    });
+
+    it('refreshes the token when it expires', async () => {
+      authenticate();
+      await useAuthStore().init();
+      keycloak.updateToken.mockResolvedValue(true);
+
+      keycloak.onTokenExpired?.();
+      await vi.runAllTimersAsync();
+
+      expect(keycloak.updateToken).toHaveBeenCalledWith(60);
+      expect(keycloak.logout).not.toHaveBeenCalled();
+    });
+
+    it('logs out when the refresh of an expired token fails', async () => {
+      authenticate();
+      await useAuthStore().init();
+      keycloak.updateToken.mockRejectedValue(new Error('expired'));
+
+      keycloak.onTokenExpired?.();
+      await vi.runAllTimersAsync();
 
       expect(keycloak.logout).toHaveBeenCalledWith({ redirectUri: window.location.origin });
     });
@@ -283,11 +349,67 @@ describe('auth store', () => {
     });
 
     it('logs out back to the app', () => {
+      keycloak.authenticated = true;
       useAuthStore().logout();
 
       expect(keycloak.logout).toHaveBeenCalledWith({ redirectUri: window.location.origin });
       expect(track).toHaveBeenCalledWith('Logged Out', {});
       expect(resetAnalytics).toHaveBeenCalled();
+    });
+
+    it('logs out only once when called several times', async () => {
+      keycloak.authenticated = true;
+      const store = useAuthStore();
+
+      await Promise.all([store.logout(), store.logout(), store.logout()]);
+
+      expect(keycloak.logout).toHaveBeenCalledTimes(1);
+      expect(track).toHaveBeenCalledTimes(1);
+    });
+
+    it('does nothing for a guest or when keycloak was never initialised', async () => {
+      await useAuthStore().logout();
+
+      expect(keycloak.logout).not.toHaveBeenCalled();
+      expect(track).not.toHaveBeenCalled();
+      expect(resetAnalytics).not.toHaveBeenCalled();
+    });
+
+    it('remembers a forced logout across the keycloak redirect', async () => {
+      keycloak.authenticated = true;
+
+      await useAuthStore().logout({ isExpired: true });
+
+      expect(localStorage.getItem('sessionExpired')).toBe('true');
+    });
+
+    it('does not flag a logout asked by the user', async () => {
+      keycloak.authenticated = true;
+
+      await useAuthStore().logout();
+
+      expect(localStorage.getItem('sessionExpired')).toBeNull();
+    });
+
+    it('drops the flag when the forced logout fails', async () => {
+      keycloak.authenticated = true;
+      keycloak.logout.mockRejectedValueOnce(new Error('network'));
+
+      await useAuthStore().logout({ isExpired: true });
+
+      expect(localStorage.getItem('sessionExpired')).toBeNull();
+    });
+
+    it('allows a new attempt when the keycloak logout fails', async () => {
+      keycloak.authenticated = true;
+      keycloak.logout.mockRejectedValueOnce(new Error('network'));
+      const store = useAuthStore();
+
+      await store.logout();
+      await store.logout();
+
+      expect(keycloak.logout).toHaveBeenCalledTimes(2);
+      expect(console.error).toHaveBeenCalledWith('Keycloak logout failed:', expect.any(Error));
     });
   });
 

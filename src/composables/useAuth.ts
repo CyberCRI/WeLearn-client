@@ -15,7 +15,7 @@ export function useAuth() {
       await keycloak.updateToken(30);
       return keycloak.token;
     } catch {
-      authStore.logout();
+      authStore.logout({ isExpired: true });
       return undefined;
     }
   }
