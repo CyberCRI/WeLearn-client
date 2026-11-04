@@ -124,6 +124,30 @@ test.describe('auth', () => {
       await expect(page.getByTestId('user-menu-login')).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
       expect(keycloak.loggedIn).toBe(false);
+      // the user asked for it, so no "session expired" message
+      await expect(page.getByTestId('session-expired')).toHaveCount(0);
+    });
+
+    test('explains a forced logout after a 401, and offers to log in again', async ({
+      page,
+      keycloak
+    }) => {
+      // the API refuses the session: the bookmarks loaded at boot get a 401
+      await page.route('**/user/bookmarks**', (route) => route.fulfill({ status: 401 }));
+      await page.reload();
+
+      await expect(page.getByTestId('session-expired')).toBeVisible();
+      expect(keycloak.logoutCalls).toBe(1);
+      expect(keycloak.loggedIn).toBe(false);
+
+      // the API accepts the new session, otherwise the boot 401 would log out again
+      await page.unroute('**/user/bookmarks**');
+      await page.getByTestId('session-expired-login').click();
+      await signInOnKeycloak(page);
+
+      await page.getByTestId('user-menu').hover();
+      await expect(page.getByTestId('user-menu').getByText(fullName)).toBeVisible();
+      await expect(page.getByTestId('session-expired')).toHaveCount(0);
     });
   });
 });

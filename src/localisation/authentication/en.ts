@@ -22,6 +22,12 @@ export const authentication = {
     UNKNOWN: 'Something went wrong. Please try again in a moment.'
   },
   errorTitle: 'Your account could not be created',
+  sessionExpired: {
+    title: 'Your session has expired',
+    message: 'For your security, your session was closed. Log in again to find your work.',
+    login: 'Log in again',
+    continueAsGuest: 'Continue without an account'
+  },
   signupPrompt: {
     title: 'Create your free account',
     createAccount: 'Create an account',

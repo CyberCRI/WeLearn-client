@@ -22,6 +22,13 @@ export const authentication = {
     UNKNOWN: 'Une erreur est survenue. Réessayez dans un instant.'
   },
   errorTitle: 'Votre compte n’a pas pu être créé',
+  sessionExpired: {
+    title: 'Votre session a expiré',
+    message:
+      'Pour votre sécurité, votre session a été fermée. Reconnectez-vous pour retrouver votre travail.',
+    login: 'Se reconnecter',
+    continueAsGuest: 'Continuer sans compte'
+  },
   signupPrompt: {
     title: 'Créez votre compte gratuit',
     createAccount: 'Créer un compte',
