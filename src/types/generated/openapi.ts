@@ -568,6 +568,30 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Add user bookmark (deprecated, use /bookmarks/{document_id})
+     * @deprecated
+     */
+    post: operations['user-add_user_bookmark_legacy'];
+    /**
+     * Delete a user bookmark (deprecated, use /bookmarks/{document_id})
+     * @deprecated
+     */
+    delete: operations['user-delete_user_bookmark_legacy'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/user/bookmarks/{document_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** Add user bookmark */
     post: operations['user-add_user_bookmark'];
     /** Delete a user bookmark */
@@ -668,12 +692,10 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Perform a Health Check
-     * @description ## Perform a Health Check
-     *     Endpoint to perform a healthcheck on. This endpoint can primarily be used Docker
-     *     to ensure a robust container orchestration and management is in place. Other
-     *     services which rely on proper functioning of the API service will not deploy if this
-     *     endpoint returns any other HTTP status code except 200 (OK).
+     * Perform a Database Health Check
+     * @description ## Perform a Database Health Check
+     *     Runs `SELECT 1` against Postgres. Returns 200 (OK) when the database answers,
+     *     503 (Service Unavailable) with code `DATABASE_UNAVAILABLE` otherwise.
      *     Returns:
      *         HealthCheck: Returns a JSON response with the health status
      */
@@ -2650,7 +2672,7 @@ export interface operations {
       };
     };
   };
-  'user-add_user_bookmark': {
+  'user-add_user_bookmark_legacy': {
     parameters: {
       query: {
         document_id: string;
@@ -2681,13 +2703,75 @@ export interface operations {
       };
     };
   };
-  'user-delete_user_bookmark': {
+  'user-delete_user_bookmark_legacy': {
     parameters: {
       query: {
         document_id: string;
       };
       header?: never;
       path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BookmarkDeletedResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-add_user_bookmark': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        document_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BookmarkAddedResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-delete_user_bookmark': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        document_id: string;
+      };
       cookie?: never;
     };
     requestBody?: never;
@@ -2874,6 +2958,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['HealthCheck'];
+        };
+      };
+      /** @description Database unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
     };
