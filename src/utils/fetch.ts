@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
-import http, { getAuthHeaders } from './api';
+import http, { getAuthHeaders, handleUnauthorized } from './api';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
 
 // pass the response type from `@/types/api`, e.g. baseGetAxios<ApiResponse<'/user/bookmarks'>>
@@ -93,9 +93,31 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 const API_VERSION = import.meta.env.VITE_API_VERSION || '/api/v1';
 const WL_API_KEY = import.meta.env.VITE_WL_API_KEY;
 
+// same shape as an AxiosError, so stores read `error.response.data.detail.code` the usual way
+export class StreamResponseError extends Error {
+  response: { status: number; data: unknown };
+
+  constructor(status: number, data: unknown) {
+    super(`Stream request failed with status ${status}`);
+    this.name = 'StreamResponseError';
+    this.response = { status, data };
+  }
+}
+
+// the API answers errors in json ({ detail: { code } }), a proxy may answer plain text
+const readErrorBody = async (response: Response): Promise<unknown> => {
+  const text = await response.text().catch(() => '');
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text;
+  }
+};
+
 export const fetchStream = async (
   endpoint: string,
-  body: { bodyContent: string }
+  body: { bodyContent: string },
+  { signal }: { signal?: AbortSignal } = {}
 ): Promise<Response['body']> => {
   if (!API_BASE) throw new Error('API_BASE not defined');
 
@@ -103,6 +125,7 @@ export const fetchStream = async (
     method: 'POST',
     body: body.bodyContent,
     credentials: 'include',
+    signal,
     headers: {
       Accept: '*/*',
       'Content-Type': 'application/json',
@@ -110,6 +133,12 @@ export const fetchStream = async (
       ...(await getAuthHeaders())
     }
   });
+
+  // an error body must never be streamed as the answer
+  if (!response.ok) {
+    handleUnauthorized(response.status);
+    throw new StreamResponseError(response.status, await readErrorBody(response));
+  }
 
   if (!response.body) throw new Error('Error fetching data');
 

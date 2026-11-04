@@ -51,17 +51,21 @@ http.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// shared by the axios instance and fetchStream. a guest's 401 is just an error, and logging out
+// must never throw, so the caller always gets the original error
+export const handleUnauthorized = (status?: number): void => {
+  if (status !== 401 || !keycloak.authenticated) return;
+  try {
+    useAuthStore().logout({ isExpired: true });
+  } catch (logoutError) {
+    console.error('Logout after a 401 failed:', logoutError);
+  }
+};
+
 http.interceptors.response.use(
   (response) => response,
   (error) => {
-    // a guest's 401 is just an error, and logging out must never replace the AxiosError
-    if (error.response?.status === 401 && keycloak.authenticated) {
-      try {
-        useAuthStore().logout({ isExpired: true });
-      } catch (logoutError) {
-        console.error('Logout after a 401 failed:', logoutError);
-      }
-    }
+    handleUnauthorized(error.response?.status);
     return Promise.reject(error);
   }
 );

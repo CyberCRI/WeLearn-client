@@ -12,8 +12,19 @@ import {
   getBookmarks,
   getSDGsFromQuery,
   getSearch,
-  postBookmark
+  postBookmark,
+  StreamResponseError
 } from '../fetch';
+
+const keycloakMock = vi.hoisted(() => ({
+  authenticated: false as boolean,
+  token: 'token-1',
+  updateToken: vi.fn(async () => true)
+}));
+const { logout } = vi.hoisted(() => ({ logout: vi.fn() }));
+
+vi.mock('@/utils/keycloak', () => ({ default: keycloakMock }));
+vi.mock('@/stores/auth', () => ({ useAuthStore: () => ({ logout }) }));
 
 const mockResolved = {
   status: 200
@@ -248,12 +259,11 @@ describe('fetchStream', () => {
         controller.close();
       }
     });
-    const fetchMock = vi.fn().mockResolvedValue({ body });
+    const fetchMock = vi.fn().mockResolvedValue(new Response(body, { status: 200 }));
     vi.stubGlobal('fetch', fetchMock);
 
     const result = await fetchStream('/qna/chat/agent_stream', { bodyContent: '{"query":"q"}' });
 
-    expect(result).toBe(body);
     const { value } = await result!.getReader().read();
     expect(new TextDecoder().decode(value)).toBe('data: hello');
 
@@ -274,10 +284,70 @@ describe('fetchStream', () => {
   });
 
   it('throws when the response has no body', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ body: null }));
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, status: 200, body: null }));
 
     await expect(fetchStream('/endpoint', { bodyContent: '{}' })).rejects.toThrow(
       'Error fetching data'
     );
+  });
+
+  it('passes the abort signal to fetch', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response('data: hi', { status: 200 }));
+    vi.stubGlobal('fetch', fetchMock);
+    const controller = new AbortController();
+
+    await fetchStream('/endpoint', { bodyContent: '{}' }, { signal: controller.signal });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ signal: controller.signal })
+    );
+  });
+
+  describe('when the API answers an error', () => {
+    beforeEach(() => {
+      keycloakMock.authenticated = false;
+      logout.mockClear();
+    });
+
+    const failWith = (status: number, body: string) =>
+      vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(body, { status })));
+
+    it('throws with the status and the error code instead of streaming the body', async () => {
+      failWith(422, JSON.stringify({ detail: { code: 'EMPTY_QUERY', message: 'm' } }));
+
+      const error = await fetchStream('/endpoint', { bodyContent: '{}' }).catch((e) => e);
+
+      expect(error).toBeInstanceOf(StreamResponseError);
+      expect(error.response.status).toBe(422);
+      expect(error.response.data.detail.code).toBe('EMPTY_QUERY');
+    });
+
+    it('keeps a plain-text error body', async () => {
+      failWith(500, 'Internal Server Error');
+
+      const error = await fetchStream('/endpoint', { bodyContent: '{}' }).catch((e) => e);
+
+      expect(error.response).toEqual({ status: 500, data: 'Internal Server Error' });
+    });
+
+    it('logs a signed-in user out on a 401', async () => {
+      keycloakMock.authenticated = true;
+      failWith(401, JSON.stringify({ detail: 'Unauthorized' }));
+
+      const error = await fetchStream('/endpoint', { bodyContent: '{}' }).catch((e) => e);
+
+      expect(error.response.status).toBe(401);
+      expect(logout).toHaveBeenCalledWith({ isExpired: true });
+    });
+
+    it('does not log a guest out on a 401', async () => {
+      failWith(401, '');
+
+      const error = await fetchStream('/endpoint', { bodyContent: '{}' }).catch((e) => e);
+
+      expect(error.response).toEqual({ status: 401, data: '' });
+      expect(logout).not.toHaveBeenCalled();
+    });
   });
 });
