@@ -12,11 +12,11 @@ export const authentication = {
   emailInvalid: "Saisissez une adresse e-mail valide, par exemple nom{'@'}universite.fr.",
   submitting: 'Création du compte…',
   successTitle: 'Vérifiez votre boîte mail',
+  // même message que l’adresse ait déjà un compte ou non (pas d’énumération des comptes)
   successMessage:
-    'Un lien a été envoyé à {email}. Suivez-le pour confirmer votre adresse et choisir votre mot de passe.',
-  loginButton: 'Se connecter',
+    'Si aucun compte n’existe encore pour {email}, vous allez recevoir un e-mail pour le confirmer et choisir votre mot de passe.',
   errors: {
-    EMAIL_ALREADY_EXISTS: 'Un compte existe déjà pour cette adresse. Vous pouvez vous connecter.',
+    RATE_LIMITED: 'Trop de tentatives. Patientez un moment avant de réessayer.',
     KEYCLOAK_UNAVAILABLE: 'Le service est indisponible pour le moment. Réessayez dans un instant.',
     SIGNUP_DISABLED: 'L’inscription n’est pas disponible pour le moment.',
     UNKNOWN: 'Une erreur est survenue. Réessayez dans un instant.'

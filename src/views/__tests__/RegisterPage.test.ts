@@ -5,7 +5,7 @@ import RegisterPage from '../RegisterPage.vue';
 import { useAuthStore } from '@/stores/auth';
 
 vi.mock('@/utils/keycloak', () => ({ default: { login: vi.fn() } }));
-// the login button only shows where keycloak is rolled out
+// the auth feature is on, as where keycloak is rolled out
 vi.mock('@/utils/env', () => ({
   ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
   ENVIRONMENT_NAME: 'dev'
@@ -113,27 +113,25 @@ describe('RegisterPage', () => {
     expect(wrapper.find('form').exists()).toBe(false);
     const status = wrapper.get('[role="status"]');
     expect(status.text()).toContain('authentication.successTitle');
+    expect(status.text()).toContain('authentication.successMessage');
     expect(status.find('h2').exists()).toBe(true);
     expect(document.activeElement).toBe(status.get('.toaster').element);
   });
 
-  it('announces an existing account and offers to log in', async () => {
+  it('announces too many attempts and keeps the form', async () => {
     wrapper = mountPage();
     const store = useAuthStore();
     vi.spyOn(store, 'register').mockImplementation(async () => {
-      store.registerErrorCode = 'EMAIL_ALREADY_EXISTS';
+      store.registerErrorCode = 'RATE_LIMITED';
     });
-    const login = vi.spyOn(store, 'login').mockImplementation(() => {});
     await fill(wrapper, validValues);
 
     await wrapper.get('form').trigger('submit');
     await flushPromises();
 
     const alert = wrapper.get('[role="alert"]');
-    expect(alert.text()).toContain('authentication.errors.EMAIL_ALREADY_EXISTS');
+    expect(alert.text()).toContain('authentication.errors.RATE_LIMITED');
     expect(wrapper.find('form').exists()).toBe(true);
-    await wrapper.get('[data-testid="register-login"]').trigger('click');
-    expect(login).toHaveBeenCalled();
   });
 
   it('falls back to a generic message for an unknown error code', async () => {

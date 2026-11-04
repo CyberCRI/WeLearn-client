@@ -34,10 +34,7 @@ vi.mock('@/utils/env', () => ({
 
 vi.mock('@/utils/keycloak', () => ({ default: keycloak }));
 
-const { syncUserId } = vi.hoisted(() => ({ syncUserId: vi.fn() }));
-
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
-vi.mock('@/stores/user', () => ({ useUserStore: () => ({ syncUserId }) }));
 vi.mock('@/utils/analytics', () => ({ resetAnalytics: vi.fn(), track: vi.fn() }));
 
 const authenticate = () => {
@@ -421,9 +418,10 @@ describe('auth store', () => {
         response: { status, data: { detail: code ? { message: 'm', code } : 'd' } }
       });
 
-    it('signs up with trimmed values and syncs the new user id', async () => {
+    it('signs up with trimmed values', async () => {
+      // same neutral answer whether or not the email already has an account
       vi.mocked(basePostAxios).mockResolvedValue({
-        data: { message: 'user created', user_id: 'user-1' }
+        data: { message: 'If no account exists yet for this email, ...' }
       } as PostResponse);
       const store = useAuthStore();
 
@@ -434,14 +432,13 @@ describe('auth store', () => {
         first_name: 'Ada',
         last_name: 'Lovelace'
       });
-      expect(syncUserId).toHaveBeenCalledWith('user-1');
       expect(store.hasRegistered).toBe(true);
       expect(store.registerErrorCode).toBeNull();
       expect(store.isRegistering).toBe(false);
     });
 
     it.each([
-      [409, 'EMAIL_ALREADY_EXISTS'],
+      [429, 'RATE_LIMITED'],
       [503, 'KEYCLOAK_UNAVAILABLE'],
       [500, 'SIGNUP_DISABLED']
     ])('keeps the API error code of a %i', async (status, code) => {
@@ -452,7 +449,6 @@ describe('auth store', () => {
 
       expect(store.registerErrorCode).toBe(code);
       expect(store.hasRegistered).toBe(false);
-      expect(syncUserId).not.toHaveBeenCalled();
     });
 
     it('maps a validation error to INVALID_EMAIL', async () => {
@@ -481,7 +477,7 @@ describe('auth store', () => {
       const first = store.register(data);
       await store.register(data);
       expect(store.isRegistering).toBe(true);
-      resolve({ data: { message: 'ok', user_id: 'user-1' } } as PostResponse);
+      resolve({ data: { message: 'ok' } } as PostResponse);
       await first;
 
       expect(basePostAxios).toHaveBeenCalledOnce();
