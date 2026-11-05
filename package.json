@@ -7,6 +7,7 @@
   "scripts": {
     "build-dev": "vite build --mode dev",
     "dev": "vite --mode dev",
+    "dev:prod-api": "vite --mode prodapi",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest --mode test",
