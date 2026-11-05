@@ -18,6 +18,7 @@ Use **yarn**, not npm (`yarn.lock` is the lockfile).
 
 ```bash
 yarn dev            # vite --mode dev  → http://localhost:5173 (reads .env.local / .env.dev)
+yarn dev:prod-api   # same, but API calls go through the vite proxy to the prod API (needs .env.prodapi.local, see README)
 yarn test:unit      # vitest (jsdom), watch mode; add `--run` for a single pass
 yarn test:unit --run src/utils/__tests__/progress.spec.ts   # one file
 yarn test:coverage  # single pass + v8 coverage, fails under the floors in vitest.config.ts (html report in coverage/)

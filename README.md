@@ -118,6 +118,7 @@ The project follows a standard Vue 3 application structure:
 | Command              | What it does                                             |
 | -------------------- | -------------------------------------------------------- |
 | `yarn dev`           | Start the development server                             |
+| `yarn dev:prod-api`  | Start the development server against the production API  |
 | `yarn build`         | Type-check and build for production                      |
 | `yarn test:unit`     | Run the unit tests (Vitest) in watch mode                |
 | `yarn test:coverage` | Run the unit tests once with coverage                    |
@@ -128,6 +129,25 @@ The project follows a standard Vue 3 application structure:
 | `yarn gen:api`       | Regenerate the API types from WeLearn-api's OpenAPI file |
 
 See `package.json` for the full list of scripts.
+
+### Running against the production API
+
+Production CORS only allows the production front-end origins, never `localhost`. To test the local app against prod, `yarn dev:prod-api` sends the API calls through a Vite proxy (`vite.config.ts`). The browser only talks to `localhost:5173`, and Vite forwards `/prod-api/*` to `https://api.welearn.k8s.lp-i.org`.
+
+1. Create `.env.prodapi.local`. It is ignored by git and overrides `.env.local` in this mode:
+
+   ```bash
+   VITE_API_BASE=/prod-api
+   VITE_WL_API_KEY=<production API key>
+   ```
+
+2. Run `yarn dev:prod-api` and open `http://localhost:5173/`.
+
+Things to know:
+
+- **This is real production data.** A sign-up creates a real account and sends a real email, chat and tutor calls cost LLM credits, and bookmarks are written to the production database.
+- **Use guest mode.** Logging in only works if the production Keycloak client allows `http://localhost:5173` as a redirect URI.
+- **The dev API is still the default.** Use it for day-to-day work, because it allows `localhost` directly.
 
 ### API types
 
