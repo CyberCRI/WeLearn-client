@@ -12,7 +12,7 @@ import type { UserRegisterData } from '@/types';
 
 type FieldName = keyof UserRegisterData;
 const FIELDS: FieldName[] = ['firstName', 'lastName', 'email'];
-const KNOWN_ERROR_CODES = ['EMAIL_ALREADY_EXISTS', 'KEYCLOAK_UNAVAILABLE', 'SIGNUP_DISABLED'];
+const KNOWN_ERROR_CODES = ['RATE_LIMITED', 'KEYCLOAK_UNAVAILABLE', 'SIGNUP_DISABLED'];
 
 const authStore = useAuthStore();
 const { isRegistering, hasRegistered, registerErrorCode } = storeToRefs(authStore);
@@ -96,17 +96,7 @@ onUnmounted(() => authStore.resetRegister());
         level="error"
         :title="$t('authentication.errorTitle')"
         :description="$t(serverErrorKey)"
-      >
-        <ButtonComponent
-          v-if="registerErrorCode === 'EMAIL_ALREADY_EXISTS' && authStore.shouldAuthenticate"
-          type="button"
-          color="primary"
-          data-testid="register-login"
-          @click="authStore.login()"
-        >
-          {{ $t('authentication.loginButton') }}
-        </ButtonComponent>
-      </ToasterComponent>
+      />
     </div>
 
     <form v-if="!hasRegistered" novalidate @submit.prevent="handleSubmit">

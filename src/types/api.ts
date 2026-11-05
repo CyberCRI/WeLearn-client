@@ -16,7 +16,7 @@ export type ApiEndpoint = keyof paths extends infer Path
 
 type ApiOperation<E extends ApiEndpoint, M extends HttpMethod> = paths[`${ApiPrefix}${E}`][M];
 
-// the 200 body, or the 201 body for endpoints that create something
+// the 200 body, or the 201/202 body for endpoints that create or accept something
 export type ApiResponse<E extends ApiEndpoint, M extends HttpMethod = 'get'> =
   ApiOperation<E, M> extends {
     responses: { 200: { content: { 'application/json': infer Body } } };
@@ -26,7 +26,11 @@ export type ApiResponse<E extends ApiEndpoint, M extends HttpMethod = 'get'> =
           responses: { 201: { content: { 'application/json': infer Body } } };
         }
       ? Body
-      : never;
+      : ApiOperation<E, M> extends {
+            responses: { 202: { content: { 'application/json': infer Body } } };
+          }
+        ? Body
+        : never;
 
 export type ApiRequestBody<E extends ApiEndpoint, M extends HttpMethod = 'post'> =
   ApiOperation<E, M> extends {

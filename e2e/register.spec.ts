@@ -46,13 +46,14 @@ test.describe('register', () => {
     expect(hasCalledSignup).toBe(false);
   });
 
-  test('announces an email that already has an account', async ({ page }) => {
+  test('announces too many attempts', async ({ page }) => {
     await page.route('**/user/signup', (route) =>
       route.fulfill({
-        status: 409,
+        status: 429,
         contentType: 'application/json',
+        headers: { 'Retry-After': '3600' },
         body: JSON.stringify({
-          detail: { message: 'exists', code: 'EMAIL_ALREADY_EXISTS' }
+          detail: { message: 'Too many sign-up attempts', code: 'RATE_LIMITED' }
         })
       })
     );
@@ -60,7 +61,7 @@ test.describe('register', () => {
 
     await page.getByRole('button', { name: 'Inscription' }).click();
 
-    await expect(page.getByRole('alert')).toContainText('Un compte existe déjà pour cette adresse');
+    await expect(page.getByRole('alert')).toContainText('Trop de tentatives');
     await expect(field(page, 'Adresse e-mail')).toBeVisible();
   });
 });

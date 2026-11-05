@@ -110,8 +110,8 @@ export const useUserStore = defineStore('user', () => {
     clearFromStorage('userMetricsData');
   };
 
-  // call with every user id the API returns. Without a sessionId (sign-up), a
-  // user change drops the stored session: the next user_and_session stores a new one
+  // call with every user id the API returns. Without a sessionId, a user change
+  // drops the stored session: the next user_and_session stores a new one
   const syncUserId = (userId: string, sessionId?: string) => {
     const storedUserId = getFromStorage('userId');
 

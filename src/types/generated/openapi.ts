@@ -568,6 +568,30 @@ export interface paths {
     };
     get?: never;
     put?: never;
+    /**
+     * Add user bookmark (deprecated, use /bookmarks/{document_id})
+     * @deprecated
+     */
+    post: operations['user-add_user_bookmark_legacy'];
+    /**
+     * Delete a user bookmark (deprecated, use /bookmarks/{document_id})
+     * @deprecated
+     */
+    delete: operations['user-delete_user_bookmark_legacy'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/user/bookmarks/{document_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
     /** Add user bookmark */
     post: operations['user-add_user_bookmark'];
     /** Delete a user bookmark */
@@ -594,23 +618,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/v1/user/session': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Create new session */
-    post: operations['user-handle_session'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/v1/user/signup': {
     parameters: {
       query?: never;
@@ -623,26 +630,11 @@ export interface paths {
     /**
      * Sign up with Keycloak
      * @description Create a Keycloak account and its WeLearn user. Keycloak emails a link to
-     *     verify the email and set a password. 409 if the email has an account.
+     *     verify the email and set a password. The answer is the same 202 whether the
+     *     email is new or already has an account, so it does not reveal which emails
+     *     are registered.
      */
     post: operations['user-sign_up'];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  '/api/v1/user/user': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** Create new user */
-    post: operations['user-handle_user'];
     delete?: never;
     options?: never;
     head?: never;
@@ -700,12 +692,10 @@ export interface paths {
       cookie?: never;
     };
     /**
-     * Perform a Health Check
-     * @description ## Perform a Health Check
-     *     Endpoint to perform a healthcheck on. This endpoint can primarily be used Docker
-     *     to ensure a robust container orchestration and management is in place. Other
-     *     services which rely on proper functioning of the API service will not deploy if this
-     *     endpoint returns any other HTTP status code except 200 (OK).
+     * Perform a Database Health Check
+     * @description ## Perform a Database Health Check
+     *     Runs `SELECT 1` against Postgres. Returns 200 (OK) when the database answers,
+     *     503 (Service Unavailable) with code `DATABASE_UNAVAILABLE` otherwise.
      *     Returns:
      *         HealthCheck: Returns a JSON response with the health status
      */
@@ -1408,14 +1398,6 @@ export interface components {
       /** Type */
       type: string;
     };
-    /** SessionResponse */
-    SessionResponse: {
-      /**
-       * Session Id
-       * Format: uuid
-       */
-      session_id: string;
-    };
     /** SignUpRequest */
     SignUpRequest: {
       /** Email */
@@ -1425,15 +1407,14 @@ export interface components {
       /** Last Name */
       last_name?: string | null;
     };
-    /** SignUpResponse */
+    /**
+     * SignUpResponse
+     * @description Same answer whether the email is new or already has an account, so sign-up
+     *     does not reveal which emails are registered.
+     */
     SignUpResponse: {
       /** Message */
       message: string;
-      /**
-       * User Id
-       * Format: uuid
-       */
-      user_id: string;
     };
     /**
      * SparseVector
@@ -1606,14 +1587,6 @@ export interface components {
        * Format: uuid
        */
       session_id: string;
-      /**
-       * User Id
-       * Format: uuid
-       */
-      user_id: string;
-    };
-    /** UserResponse */
-    UserResponse: {
       /**
        * User Id
        * Format: uuid
@@ -2699,7 +2672,7 @@ export interface operations {
       };
     };
   };
-  'user-add_user_bookmark': {
+  'user-add_user_bookmark_legacy': {
     parameters: {
       query: {
         document_id: string;
@@ -2730,13 +2703,75 @@ export interface operations {
       };
     };
   };
-  'user-delete_user_bookmark': {
+  'user-delete_user_bookmark_legacy': {
     parameters: {
       query: {
         document_id: string;
       };
       header?: never;
       path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BookmarkDeletedResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-add_user_bookmark': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        document_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['BookmarkAddedResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-delete_user_bookmark': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        document_id: string;
+      };
       cookie?: never;
     };
     requestBody?: never;
@@ -2794,39 +2829,6 @@ export interface operations {
       };
     };
   };
-  'user-handle_session': {
-    parameters: {
-      query: {
-        user_id: string;
-        session_id?: string | null;
-        referer?: string | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['SessionResponse'];
-        };
-      };
-      /** @description Error */
-      default: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ErrorResponse'];
-        };
-      };
-    };
-  };
   'user-sign_up': {
     parameters: {
       query?: {
@@ -2843,7 +2845,7 @@ export interface operations {
     };
     responses: {
       /** @description Successful Response */
-      201: {
+      202: {
         headers: {
           [name: string]: unknown;
         };
@@ -2851,8 +2853,8 @@ export interface operations {
           'application/json': components['schemas']['SignUpResponse'];
         };
       };
-      /** @description Error */
-      default: {
+      /** @description Too many attempts (code RATE_LIMITED), see Retry-After */
+      429: {
         headers: {
           [name: string]: unknown;
         };
@@ -2860,27 +2862,22 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-    };
-  };
-  'user-handle_user': {
-    parameters: {
-      query?: {
-        user_id?: string | null;
-        referer?: string | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful Response */
-      200: {
+      /** @description Sign-up is not configured (code SIGNUP_DISABLED) */
+      500: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['UserResponse'];
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable (code KEYCLOAK_UNAVAILABLE) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2961,6 +2958,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['HealthCheck'];
+        };
+      };
+      /** @description Database unavailable */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
     };

@@ -32,8 +32,8 @@ export const test = base.extend<Fixtures>({
       const url = route.request().url();
       if (url.includes('user/signup')) {
         await route.fulfill({
-          status: 201,
-          body: JSON.stringify({ message: 'user created', user_id: 'fake_user_id' })
+          status: 202,
+          body: JSON.stringify({ message: 'accepted' })
         });
       } else if (url.includes('user/user')) {
         await route.fulfill({

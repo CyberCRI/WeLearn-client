@@ -12,11 +12,11 @@ export const authentication = {
   emailInvalid: "Enter a valid email address, for example name{'@'}university.edu.",
   submitting: 'Creating account…',
   successTitle: 'Check your inbox',
+  // same message whether or not the email already has an account (no user enumeration)
   successMessage:
-    'We sent a link to {email}. Follow it to confirm your address and choose your password.',
-  loginButton: 'Log in',
+    'If no account exists yet for {email}, you will receive an email to confirm it and set your password.',
   errors: {
-    EMAIL_ALREADY_EXISTS: 'An account already exists for this email. You can log in instead.',
+    RATE_LIMITED: 'Too many attempts. Please wait a while before trying again.',
     KEYCLOAK_UNAVAILABLE: 'The service is unavailable right now. Please try again in a moment.',
     SIGNUP_DISABLED: 'Sign-up is not available at the moment.',
     UNKNOWN: 'Something went wrong. Please try again in a moment.'

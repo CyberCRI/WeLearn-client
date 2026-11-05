@@ -5,7 +5,6 @@ import keycloak from '@/utils/keycloak';
 import i18n from '@/localisation/i18n';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { basePostAxios } from '@/utils/fetch';
-import { useUserStore } from '@/stores/user';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import { resetAnalytics, track } from '@/utils/analytics';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
@@ -169,7 +168,9 @@ export const useAuthStore = defineStore('auth', () => {
   const hasRegistered = ref(false);
   const registerErrorCode = ref<string | null>(null);
 
-  // keycloak emails a link to verify the address and set the password
+  // keycloak emails a link to verify the address and set the password. the API answers the
+  // same whether or not the email already has an account (no user enumeration), so there is
+  // no user id to sync: the next user_and_session call with the token resolves the user
   async function register(data: UserRegisterData): Promise<void> {
     if (isRegistering.value) return;
 
@@ -182,13 +183,10 @@ export const useAuthStore = defineStore('auth', () => {
     };
 
     try {
-      const response = await basePostAxios<ApiResponse<'/user/signup', 'post'>>(
-        '/user/signup',
-        body
-      );
-      useUserStore().syncUserId(response.data.user_id);
+      await basePostAxios<ApiResponse<'/user/signup', 'post'>>('/user/signup', body);
       hasRegistered.value = true;
     } catch (error: any) {
+      // RATE_LIMITED (429), KEYCLOAK_UNAVAILABLE (503), SIGNUP_DISABLED (500)
       const code = error?.response?.data?.detail?.code;
       if (code) registerErrorCode.value = code;
       else if (error?.response?.status === 422) registerErrorCode.value = 'INVALID_EMAIL';
