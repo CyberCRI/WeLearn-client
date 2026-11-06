@@ -26,6 +26,13 @@ export const CHAT_STATUS = {
 
 type CHAT_STATUSES_TYPE = keyof typeof CHAT_STATUS;
 
+// the api answers 404 THREAD_NOT_FOUND for a thread that is gone or belongs to someone else,
+// for example a guest whose session expired: the stored thread can't be continued
+const isThreadNotFound = (error: unknown): boolean => {
+  const response = (error as { response?: { status?: number; data?: any } })?.response;
+  return response?.status === 404 && response.data?.detail?.code === 'THREAD_NOT_FOUND';
+};
+
 // every other status means an answer is on its way (SEARCHED and FORMULATED_ANSWER included)
 const SETTLED_STATUSES = [
   CHAT_STATUS.EMPTY,
@@ -116,6 +123,13 @@ export const useChatStore = defineStore('chat', () => {
 
       chatMessagesList.value = chatThread;
     } catch (error) {
+      if (isThreadNotFound(error)) {
+        // the conversation can't be continued, so a follow-up would be answered without it
+        if (startedGeneration === generation) {
+          $reset();
+        }
+        return;
+      }
       // keep the chat restored from storage
       console.error(error);
     }
@@ -170,6 +184,13 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
+  function forgetThread() {
+    storedThreadId.value = null;
+    storedMessageId.value = null;
+    clearFromStorage('chatThreadId');
+    clearFromStorage('chatMessageId');
+  }
+
   function storeMessageId(messageId: string) {
     if (messageId !== storedMessageId.value) {
       localStorage.setItem('chatMessageId', messageId);
@@ -187,18 +208,31 @@ export const useChatStore = defineStore('chat', () => {
     clearProcessingMetadata();
 
     const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
-    const body = {
-      query: userMsg,
-      ...(storedThreadId.value && { thread_id: storedThreadId.value }),
-      corpora: selectedCorpus,
-      sdg_filter: sdgFilters
-    };
+    const openStream = () =>
+      fetchStream(
+        '/qna/chat/agent_stream',
+        {
+          bodyContent: JSON.stringify({
+            query: userMsg,
+            ...(storedThreadId.value && { thread_id: storedThreadId.value }),
+            corpora: selectedCorpus,
+            sdg_filter: sdgFilters
+          })
+        },
+        { signal }
+      );
 
-    const stream = await fetchStream(
-      '/qna/chat/agent_stream',
-      { bodyContent: JSON.stringify(body) },
-      { signal }
-    );
+    let stream: Awaited<ReturnType<typeof fetchStream>>;
+    try {
+      stream = await openStream();
+    } catch (error) {
+      if (!isThreadNotFound(error) || isStale()) {
+        throw error;
+      }
+      // the stored thread can't be continued: ask again on a new one
+      forgetThread();
+      stream = await openStream();
+    }
     if (isStale()) {
       return false;
     }
@@ -233,6 +267,16 @@ export const useChatStore = defineStore('chat', () => {
         ...currentMessage,
         content: `${currentMessage.content}${chunk}`
       };
+      persistChat();
+    };
+
+    const replaceAssistantMessage = (content: string) => {
+      const currentMessage = chatMessagesList.value[assistantMessageIndex];
+      if (!currentMessage) {
+        return;
+      }
+
+      chatMessagesList.value[assistantMessageIndex] = { ...currentMessage, content };
       persistChat();
     };
 
@@ -330,6 +374,11 @@ export const useChatStore = defineStore('chat', () => {
         }
         chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
         appendToAssistantMessage(contentChunk);
+      }
+
+      // the last event carries the whole answer when the api rewrote it (citation links added)
+      if (typeof parsed?.final_content === 'string') {
+        replaceAssistantMessage(parsed.final_content);
       }
 
       const docs = extractDocs(parsed);
@@ -498,15 +547,12 @@ export const useChatStore = defineStore('chat', () => {
     reformulatedQuery.value = null;
     shouldFetchNewDocuments.value = true;
     storedSubject.value = undefined;
-    storedThreadId.value = null;
-    storedMessageId.value = null;
+    forgetThread();
     clearFromStorage('chat');
     clearFromStorage('chatSources');
     clearFromStorage('questionQueues');
     clearFromStorage('reformulatedQuery');
     clearFromStorage('chatSubject');
-    clearFromStorage('chatThreadId');
-    clearFromStorage('chatMessageId');
   }
 
   return {
