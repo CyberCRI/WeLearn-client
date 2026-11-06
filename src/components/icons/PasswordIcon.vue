@@ -1,10 +1,18 @@
 <template>
-  <svg width="17" height="22" viewBox="0 0 17 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M2.8 7.4V6.48571C2.8 3.4468 5.20857 1 8.2 1C11.1914 1 13.6 3.4468 13.6 6.48571V7.4M2.8 7.4C1.81 7.4 1 8.22286 1 9.22857V18.3714C1 19.3771 1.81 20.2 2.8 20.2H13.6C14.59 20.2 15.4 19.3771 15.4 18.3714V9.22857C15.4 8.22286 14.59 7.4 13.6 7.4M2.8 7.4H13.6M8.2 14.8V12.4"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-    />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <!-- lucide v0.460.0 (ISC): lock -->
+    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
   </svg>
 </template>
