@@ -84,7 +84,7 @@ const isDisabledCloseModal = computed(() => {
     </template>
     <template #actions>
       <button
-        class="button is-primary is-medium"
+        class="button is-primary"
         data-testid="welcome-action"
         :disabled="isDisabledCloseModal"
         @click="modalActions"
@@ -97,7 +97,7 @@ const isDisabledCloseModal = computed(() => {
 
 <style scoped>
 .user-metrics-wrapper {
-  background-color: var(--primary-light);
+  background-color: var(--primary-lighter);
   border-radius: 0.4rem;
   padding: 2rem;
 }

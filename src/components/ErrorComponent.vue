@@ -10,13 +10,12 @@ const router = useRouter();
     :message="$t('errorModalGeneric.message')"
     :onClose="() => router.go(0)"
     isOpen
+    size="small"
   >
     <template #actions>
-      <div class="is-flex is-flex-direction-column is-align-items-center my-4">
-        <button class="button is-warning" @click="router.go(0)">
-          {{ $t('errorModalGeneric.action') }}
-        </button>
-      </div>
+      <button class="button is-primary" @click="router.go(0)">
+        {{ $t('errorModalGeneric.action') }}
+      </button>
     </template>
   </Modal>
 </template>

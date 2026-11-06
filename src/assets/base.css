@@ -69,9 +69,10 @@
 
   --bulma-primary: var(--primary);
   --bulma-danger-h: 348;
-  --bulma-danger-s: 100%;
-  --bulma-danger-l: 73%;
-  --bulma-danger-base: hsla(vr(--bulma-danger-h), var(--bulma-danger-s), var(--bulma-danger-l), 1);
+  /* dark enough for white button text and red error text on white */
+  --bulma-danger-s: 70%;
+  --bulma-danger-l: 45%;
+  --bulma-danger-base: hsla(var(--bulma-danger-h), var(--bulma-danger-s), var(--bulma-danger-l), 1);
   --bulma-link-text: var(--primary-hover);
   .control,
   .input,
