@@ -26,6 +26,9 @@ export const cleanSyllabus = (content: string) =>
     )
     .join('\n');
 
+// the api may leave a slice without an id, then the document id tells sources apart
+export const sourceKey = (source: Document) => source.id ?? source.payload.document_id;
+
 export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'TOO_MANY_FILES';
 
 export const useTutorStore = defineStore('tutor', () => {
@@ -158,6 +161,8 @@ export const useTutorStore = defineStore('tutor', () => {
         return;
       }
       tutorSearch.value = resp.data;
+      // the selection belongs to the previous result
+      selectedSources.value = [];
       hasSearchError.value = false;
       isLoading.value = false;
       setStep(3);
@@ -179,34 +184,37 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const appendSource = (source: Document) => {
-    const sourceExists =
-      selectedSources.value && selectedSources.value.some((s) => s.id === source.id);
+    const key = sourceKey(source);
+    const sourceExists = selectedSources.value.some((s) => sourceKey(s) === key);
     if (!sourceExists) {
       selectedSources.value.push(source);
     } else {
-      selectedSources.value = selectedSources.value.filter((s) => s.id !== source.id);
+      selectedSources.value = selectedSources.value.filter((s) => sourceKey(s) !== key);
     }
   };
 
-  const handleSummaryFiles = async () => {
+  // resolves true when the files did not change, so the later steps were kept as they are
+  const handleSummaryFiles = async (): Promise<boolean> => {
     // a guest who used their syllabus would upload files for nothing
-    if (!useGuestQuotaStore().checkQuota('syllabus')) return;
+    if (!useGuestQuotaStore().checkQuota('syllabus')) return false;
 
-    setStep(1);
     reloadError.value = false;
-    selectedSources.value = [];
     const arg = Object.values(newFilesToSearch.value);
     if (!arg.length) {
       console.error('No files selected');
-      return;
+      return false;
     }
 
-    // same files as last time: keep the summaries the user may have edited
+    // same files as last time: keep the summaries, resources and syllabus the user may have
+    // edited, and only move on when the wizard is still on the documents step
     if (_isequal(searchedFiles.value, arg)) {
-      goNext();
-      return;
+      if (step.value === 1) goNext();
+      return true;
     }
 
+    // new files: everything found from the old ones is outdated
+    setStep(1);
+    selectedSources.value = [];
     tutorSearch.value = undefined;
     const startedAt = Date.now();
     try {
@@ -221,11 +229,12 @@ export const useTutorStore = defineStore('tutor', () => {
         totalSizeKb: Math.round(arg.reduce((total, file) => total + file.size, 0) / 1024)
       });
     } catch (error) {
-      if (axios.isCancel(error)) return;
+      if (axios.isCancel(error)) return false;
       console.error('get files content did not work', error);
       shouldRetryAction.value = true;
       track('Tutor Step Failed', { step: 1, durationMs: Date.now() - startedAt });
     }
+    return false;
   };
 
   const restart = () => {

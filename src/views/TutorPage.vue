@@ -24,16 +24,25 @@ const loadingKind = computed(
   () => (['extract', 'search', 'syllabus', 'feedback'] as const)[store.step - 1] || 'extract'
 );
 
+// finished steps fold into a one-line recap; "Edit" opens one again
+const expanded = ref<Record<number, boolean>>({});
+const isFolded = (n: number) => n < store.step && !expanded.value[n];
+
+// unchanged files keep the later steps: fold the documents step again and go back to where
+// the user was (the step usually stays the same, so the watcher below does not do it)
+const continueFromDocuments = async () => {
+  if (await store.handleSummaryFiles()) {
+    expanded.value[1] = false;
+    scrollToAnchor(`target-${store.step}`);
+  }
+};
+
 const stepToAction: Record<1 | 2 | 3 | 4, (arg?: any) => Promise<void>> = {
-  1: store.handleSummaryFiles,
+  1: continueFromDocuments,
   2: store.retrieveTutorSearch,
   3: store.handleCreateSyllabus,
   4: store.handleDownloadSyllabus
 };
-
-// finished steps fold into a one-line recap; "Edit" opens one again
-const expanded = ref<Record<number, boolean>>({});
-const isFolded = (n: number) => n < store.step && !expanded.value[n];
 
 const recap = computed(() => ({
   1: t('tutor.documentsStep.recap', {

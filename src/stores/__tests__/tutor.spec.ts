@@ -159,6 +159,22 @@ describe('tutor store', () => {
       store.appendSource(doc('1'));
       expect(store.selectedSources.map((s) => s.id)).toEqual(['2']);
     });
+
+    it('compares sources by id, not by object, and falls back to the document id', () => {
+      const store = useTutorStore();
+      const noId = (documentId: string) =>
+        ({ id: null, payload: { document_id: documentId } }) as unknown as Document;
+
+      store.appendSource(doc('1'));
+      store.appendSource(noId('a'));
+      store.appendSource(noId('b'));
+      expect(store.selectedSources).toHaveLength(3);
+
+      // other copies of the same documents, as a new search result would give
+      store.appendSource(doc('1'));
+      store.appendSource(noId('a'));
+      expect(store.selectedSources.map((s) => s.payload.document_id)).toEqual(['b']);
+    });
   });
 
   describe('handleSummaryFiles', () => {
@@ -167,10 +183,10 @@ describe('tutor store', () => {
       store.setStep(3);
       store.selectedSources = [doc('1')];
 
-      await store.handleSummaryFiles();
+      expect(await store.handleSummaryFiles()).toBe(false);
 
-      expect(store.step).toBe(1);
-      expect(store.selectedSources).toEqual([]);
+      expect(store.step).toBe(3);
+      expect(store.selectedSources).toEqual([doc('1')]);
       expect(basePostAxios).not.toHaveBeenCalled();
     });
 
@@ -199,17 +215,58 @@ describe('tutor store', () => {
       expect(store.step).toBe(2);
     });
 
-    it('keeps the summaries when the files did not change', async () => {
+    it('keeps every later step when the files did not change (from step 4)', async () => {
       mockPost({ status: 200, data: { extracts: [{ summary: 's1' }] } });
       const store = useTutorStore();
       store.addFiles([file('a.pdf')]);
       await store.handleSummaryFiles();
       store.updateSummary(0, 'edited');
+      const result = search([doc('1'), doc('2')]);
+      store.tutorSearch = result;
+      store.appendSource(doc('2'));
+      store.syllabi = { source: 'PedagogicalEngineerAgent', content: 'my edited syllabus' };
+      store.setStep(4);
 
-      await store.handleSummaryFiles();
+      expect(await store.handleSummaryFiles()).toBe(true);
 
       expect(basePostAxios).toHaveBeenCalledOnce();
+      expect(store.step).toBe(4);
       expect(store.summaries).toEqual(['edited']);
+      expect(store.tutorSearch).toEqual(result);
+      expect(store.selectedSources).toEqual([doc('2')]);
+      expect(store.syllabi?.content).toBe('my edited syllabus');
+    });
+
+    it('moves on to the summaries when the same files are sent again from step 1', async () => {
+      mockPost({ status: 200, data: { extracts: [{ summary: 's1' }] } });
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf')]);
+      await store.handleSummaryFiles();
+      store.setStep(1);
+
+      expect(await store.handleSummaryFiles()).toBe(true);
+
+      expect(basePostAxios).toHaveBeenCalledOnce();
+      expect(store.step).toBe(2);
+    });
+
+    it('starts over from the summaries when the files changed (from step 4)', async () => {
+      mockPost({ status: 200, data: { extracts: [{ summary: 's1' }] } });
+      mockPost({ status: 200, data: { extracts: [{ summary: 's2' }] } });
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf')]);
+      await store.handleSummaryFiles();
+      store.tutorSearch = search();
+      store.appendSource(doc('found-1'));
+      store.setStep(4);
+
+      store.addFiles([file('b.pdf')]);
+      expect(await store.handleSummaryFiles()).toBe(false);
+
+      expect(basePostAxios).toHaveBeenCalledTimes(2);
+      expect(store.summaries).toEqual(['s2']);
+      expect(store.tutorSearch).toBeUndefined();
+      expect(store.selectedSources).toEqual([]);
       expect(store.step).toBe(2);
     });
 
@@ -255,6 +312,28 @@ describe('tutor store', () => {
       expect(store.hasSearchError).toBe(false);
       expect(store.isLoading).toBe(false);
       expect(store.step).toBe(3);
+    });
+
+    it('clears the selection made in the previous result', async () => {
+      mockPost({ status: 200, data: search([doc('new-1')]) });
+      const store = useTutorStore();
+      store.tutorSearch = search([doc('old-1'), doc('old-2')]);
+      store.appendSource(doc('old-1'));
+      store.appendSource(doc('old-2'));
+
+      await store.retrieveTutorSearch();
+
+      expect(store.selectedSources).toEqual([]);
+    });
+
+    it('keeps the selection when the search has to be retried', async () => {
+      mockPost({ status: 204 });
+      const store = useTutorStore();
+      store.appendSource(doc('old-1'));
+
+      await store.retrieveTutorSearch();
+
+      expect(store.selectedSources).toEqual([doc('old-1')]);
     });
 
     it('asks for a retry on a 204', async () => {
@@ -497,11 +576,15 @@ describe('tutor store', () => {
       localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
       const store = useTutorStore();
       store.addFiles([file('a.pdf')]);
+      store.setStep(3);
+      store.selectedSources = [doc('1')];
 
-      await store.handleSummaryFiles();
+      expect(await store.handleSummaryFiles()).toBe(false);
 
       expect(auth.askToSignUp).toHaveBeenCalledWith('syllabusLimit');
       expect(basePostAxios).not.toHaveBeenCalled();
+      expect(store.step).toBe(3);
+      expect(store.selectedSources).toEqual([doc('1')]);
     });
 
     it('asks a guest who used their syllabus to sign up before generating another', async () => {
