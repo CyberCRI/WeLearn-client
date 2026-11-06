@@ -774,6 +774,11 @@ export interface components {
       content?: string | null;
       /** Docs */
       docs?: components['schemas']['EnhancedDocumentSlice'][] | null;
+      /**
+       * Message Id
+       * @description Id of the stored answer, null when data collection did not record it.
+       */
+      message_id?: string | null;
       /** Status */
       status?: string | null;
       /** Step */
@@ -1871,6 +1876,15 @@ export interface operations {
           'application/json': components['schemas']['AgentResponse'];
         };
       };
+      /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -1902,6 +1916,15 @@ export interface operations {
         };
         content: {
           'text/event-stream': string;
+        };
+      };
+      /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -1940,6 +1963,15 @@ export interface operations {
                 }[]
               | null;
           }[];
+        };
+      };
+      /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
