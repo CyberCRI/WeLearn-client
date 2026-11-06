@@ -64,6 +64,12 @@ const signalOfLastCall = () => vi.mocked(fetchStream).mock.calls.at(-1)![2]!.sig
 
 const lastBody = () => JSON.parse(vi.mocked(fetchStream).mock.calls.at(-1)![1].bodyContent);
 
+// what fetchStream and the axios helpers throw for an api error answer
+const apiError = (status: number, code: string) =>
+  Object.assign(new Error(`status ${status}`), {
+    response: { status, data: { detail: { message: 'nope', code } } }
+  });
+
 describe('chat store', () => {
   beforeEach(() => {
     auth.isGuest = false;
@@ -149,6 +155,54 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'hi' }]);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
       expect(errorLog).toHaveBeenCalled();
+    });
+
+    it('starts a new conversation when the stored thread is not found', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      localStorage.setItem('chatMessageId', 'msg-1');
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
+      vi.mocked(baseGetAxios).mockRejectedValue(apiError(404, 'THREAD_NOT_FOUND'));
+      const store = useChatStore();
+
+      await store.initializeChat();
+
+      expect(store.chatMessagesList).toEqual([]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
+      expect(localStorage.getItem('chatMessageId')).toBeNull();
+      expect(localStorage.getItem('chat')).toBeNull();
+    });
+
+    it('keeps the stored chat for another 404', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      localStorage.setItem('chatThreadId', 'thread-1');
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
+      vi.mocked(baseGetAxios).mockRejectedValue(apiError(404, 'SOMETHING_ELSE'));
+      const store = useChatStore();
+
+      await store.initializeChat();
+
+      expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'hi' }]);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
+    });
+
+    it('leaves a newer conversation alone when an old thread is not found', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      let failHistory!: (error: unknown) => void;
+      vi.mocked(baseGetAxios).mockReturnValue(new Promise((_, reject) => (failHistory = reject)));
+      mockStream([sse({ content: 'Answer', thread_id: 'thread-2' })]);
+      const store = useChatStore();
+
+      const loading = store.initializeChat();
+      await store.onSendMessage('a question');
+      failHistory(apiError(404, 'THREAD_NOT_FOUND'));
+      await loading;
+
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Answer' }
+      ]);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-2');
     });
 
     it('ignores a history that is not a list', async () => {
@@ -567,6 +621,97 @@ describe('chat store', () => {
       await store.onSendMessage('a question');
 
       expect(store.chatMessagesList.at(-1)).toEqual({ role: 'assistant', content: '' });
+    });
+
+    it('asks again on a new thread when the stored one is not found', async () => {
+      localStorage.setItem('chatThreadId', 'thread-0');
+      localStorage.setItem('chatMessageId', 'msg-0');
+      const store = useChatStore();
+      mockStream([sse({ content: 'Answer', thread_id: 'thread-1' })]);
+      vi.mocked(fetchStream).mockRejectedValueOnce(apiError(404, 'THREAD_NOT_FOUND'));
+
+      await store.onSendMessage('a question');
+
+      const bodies = vi
+        .mocked(fetchStream)
+        .mock.calls.map(([, body]) => JSON.parse(body.bodyContent));
+      expect(bodies).toHaveLength(2);
+      expect(bodies[0].thread_id).toBe('thread-0');
+      expect(bodies[1]).not.toHaveProperty('thread_id');
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Answer' }
+      ]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
+      expect(localStorage.getItem('chatMessageId')).toBeNull();
+    });
+
+    it('asks again only once', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      localStorage.setItem('chatThreadId', 'thread-0');
+      vi.mocked(fetchStream).mockRejectedValue(apiError(404, 'THREAD_NOT_FOUND'));
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(fetchStream).toHaveBeenCalledTimes(2);
+      expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
+    });
+
+    it('does not ask again for another error', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      localStorage.setItem('chatThreadId', 'thread-0');
+      vi.mocked(fetchStream).mockRejectedValue(apiError(400, 'EMPTY_QUERY'));
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(fetchStream).toHaveBeenCalledTimes(1);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-0');
+      expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
+    });
+
+    it('does not ask again once a reset happened', async () => {
+      localStorage.setItem('chatThreadId', 'thread-0');
+      const store = useChatStore();
+      vi.mocked(fetchStream).mockImplementationOnce(async () => {
+        store.$reset();
+        throw apiError(404, 'THREAD_NOT_FOUND');
+      });
+
+      await store.onSendMessage('a question');
+
+      expect(fetchStream).toHaveBeenCalledTimes(1);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+    });
+
+    it('replaces the streamed answer with the final content', async () => {
+      mockStream([
+        sse({ status: 'streaming', content: 'See [1]' }),
+        sse({ status: 'stop', content: '', final_content: 'See [[1]](https://doc)' })
+      ]);
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(store.chatMessagesList.at(-1)).toEqual({
+        role: 'assistant',
+        content: 'See [[1]](https://doc)'
+      });
+      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(store.chatMessagesList);
+    });
+
+    it('keeps the streamed answer when the final event has no final content', async () => {
+      mockStream([
+        sse({ status: 'streaming', content: 'Hello' }),
+        sse({ status: 'stop', content: '' })
+      ]);
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(store.chatMessagesList.at(-1)).toEqual({ role: 'assistant', content: 'Hello' });
     });
 
     it('sets the error state when the stream cannot be opened', async () => {
