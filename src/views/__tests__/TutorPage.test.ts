@@ -53,6 +53,37 @@ describe('TutorPage', () => {
     expect(wrapper.findComponent(CursusInfo).exists()).toBe(false);
   });
 
+  it('folds the documents step back and returns to the current step when the files did not change', async () => {
+    const store = useTutorStore();
+    store.step = 4;
+    const handleSummaryFiles = vi.spyOn(store, 'handleSummaryFiles').mockResolvedValue(true);
+    const wrapper = mount(TutorPage, { shallow: true });
+    await wrapper.find('#target-1 .recap button').trigger('click');
+
+    await (wrapper.findComponent(CursusInfo).props('action') as () => Promise<void>)();
+    await flushPromises();
+
+    expect(handleSummaryFiles).toHaveBeenCalledOnce();
+    expect(store.step).toBe(4);
+    expect(wrapper.findComponent(CursusInfo).exists()).toBe(false);
+    expect(scrollToAnchor).toHaveBeenLastCalledWith('target-4');
+  });
+
+  it('keeps the documents step open when the files were not kept as they are', async () => {
+    const store = useTutorStore();
+    store.step = 4;
+    vi.spyOn(store, 'handleSummaryFiles').mockResolvedValue(false);
+    const wrapper = mount(TutorPage, { shallow: true });
+    await wrapper.find('#target-1 .recap button').trigger('click');
+    vi.mocked(scrollToAnchor).mockClear();
+
+    await (wrapper.findComponent(CursusInfo).props('action') as () => Promise<void>)();
+    await flushPromises();
+
+    expect(wrapper.findComponent(CursusInfo).exists()).toBe(true);
+    expect(scrollToAnchor).not.toHaveBeenCalled();
+  });
+
   it('writes the course details typed in the first step to the store', async () => {
     const store = useTutorStore();
     const wrapper = mount(TutorPage, { shallow: true });

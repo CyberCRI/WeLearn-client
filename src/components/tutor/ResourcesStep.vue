@@ -5,8 +5,9 @@ import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useBookmarksStore } from '@/stores/bookmarks';
+import { sourceKey } from '@/stores/tutor';
 
-defineProps<{
+const props = defineProps<{
   sources?: Document[];
   searchError?: boolean;
   appendSource: (source: Document) => void;
@@ -15,6 +16,10 @@ defineProps<{
 }>();
 
 const bookmarks = useBookmarksStore();
+
+// by id, like the store's appendSource: the selection may hold other copies of the same documents
+const isSelected = (source: Document) =>
+  props.selectedSources.some((s) => sourceKey(s) === sourceKey(source));
 </script>
 <template>
   <div class="wrapper">
@@ -30,9 +35,9 @@ const bookmarks = useBookmarksStore();
           role="checkbox"
           tabindex="0"
           v-for="source in sources"
-          :key="source.id ?? source.payload.document_id"
-          :aria-checked="selectedSources.includes(source)"
-          :class="{ selected: selectedSources.includes(source) }"
+          :key="sourceKey(source)"
+          :aria-checked="isSelected(source)"
+          :class="{ selected: isSelected(source) }"
           @click="appendSource(source)"
           @keydown.enter.space.prevent="appendSource(source)"
         >
@@ -42,7 +47,7 @@ const bookmarks = useBookmarksStore();
             class="check"
             tabindex="-1"
             aria-hidden="true"
-            :checked="selectedSources.includes(source)"
+            :checked="isSelected(source)"
           />
           <CardSimpleComponent
             :title="source.payload.document_title"
