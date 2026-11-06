@@ -20,21 +20,37 @@ const storeLanguage = (e: Event) => {
 </script>
 
 <style scoped>
+/* same spacing as BaseNavItem (.link-wrapper + .router-link) at every width, so it lines up with the nav icons */
 .language-selector {
   all: unset;
   display: flex;
   align-items: center;
-  margin-right: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.25rem;
+  padding: 0.5rem 1rem 0.25rem;
 }
 
-@media (max-width: 650px) {
+select {
+  margin: 0 0.5rem;
+}
+
+@media (max-width: 1450px) {
   .language-selector {
-    margin-right: 0.5rem;
+    padding-inline: 0.25rem;
   }
-  select {
-    padding-inline: 0.5rem;
+}
+
+@media (max-width: 750px) {
+  .language-selector select {
+    padding-inline: 0.375rem 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .language-selector {
+    padding-inline: 0;
+  }
+  .language-selector select {
+    margin: 0;
+    padding-inline: 0.125rem 0.25rem;
   }
 }
 
