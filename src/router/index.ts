@@ -109,6 +109,9 @@ const router = createRouter({
   ]
 });
 
+// app-wide params follow the user from page to page; page params (microlearning's disc/screen/step) stay on their page
+const CARRIED_QUERY_KEYS = ['lang', 'referer', 'score'];
+
 function hasQueryParams(route: RouteLocationNormalized) {
   return !!Object.keys(route.query).length;
 }
@@ -157,8 +160,11 @@ router.beforeEach(async (to: RouteLocationNormalized, from: RouteLocationNormali
 });
 
 router.beforeEach((to, from, next) => {
-  if (!hasQueryParams(to) && hasQueryParams(from)) {
-    next({ name: to.name as string, query: from.query });
+  const carried = Object.fromEntries(
+    Object.entries(from.query).filter(([key]) => CARRIED_QUERY_KEYS.includes(key))
+  );
+  if (!hasQueryParams(to) && Object.keys(carried).length) {
+    next({ name: to.name as string, query: carried });
   } else {
     next();
   }
