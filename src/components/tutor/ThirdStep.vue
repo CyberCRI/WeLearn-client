@@ -4,6 +4,7 @@ import TurndownService from 'turndown';
 import { gfm } from 'turndown-plugin-gfm';
 import { computed, nextTick, ref } from 'vue';
 import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
+import ModalComponent from '@/components/ModalComponent.vue';
 
 const props = defineProps<{
   syllabus?: { content: string; source: string };
@@ -16,6 +17,13 @@ const props = defineProps<{
 }>();
 
 const syllabusBox = ref<HTMLElement | null>(null);
+
+// starting over drops the current syllabus, so ask first
+const confirmRestart = ref(false);
+const handleRestart = () => {
+  confirmRestart.value = false;
+  props.restart();
+};
 
 // edits happen on the rendered HTML; turn them back into markdown so headings,
 // lists and tables survive in the page and in the Word download
@@ -158,8 +166,28 @@ const sendFeedback = async () => {
       </div>
     </div>
 
+    <!-- v-if: ModalComponent only reads isOpen on mount -->
+    <ModalComponent
+      v-if="confirmRestart"
+      isOpen
+      size="small"
+      :title="$t('tutor.syllabusStep.restartConfirmTitle')"
+      :message="$t('tutor.syllabusStep.restartConfirmMessage')"
+      :onClose="() => (confirmRestart = false)"
+    >
+      <template #actions>
+        <button class="button" @click="confirmRestart = false">{{ $t('cancel') }}</button>
+        <button
+          class="button is-danger is-light"
+          data-testid="confirm-restart"
+          @click="handleRestart"
+        >
+          {{ $t('tutor.syllabusStep.restartConfirmAction') }}
+        </button>
+      </template>
+    </ModalComponent>
     <div class="actions">
-      <button class="button is-text" @click="restart">
+      <button class="button is-text" @click="confirmRestart = true">
         {{ $t('tutor.syllabusStep.restart') }}
       </button>
       <button class="button is-primary" @click="action()">

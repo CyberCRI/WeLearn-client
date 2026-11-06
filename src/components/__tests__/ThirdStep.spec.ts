@@ -151,6 +151,8 @@ describe('ThirdStep actions', () => {
   it('restarts and downloads the syllabus', async () => {
     const wrapper = mountStep('# Syllabus');
     await wrapper.find('.actions .is-text').trigger('click');
+    expect(wrapper.props('restart')).not.toHaveBeenCalled();
+    await wrapper.find('[data-testid="confirm-restart"]').trigger('click');
     await wrapper.find('.actions .is-primary').trigger('click');
     expect(wrapper.props('restart')).toHaveBeenCalledTimes(1);
     expect(wrapper.props('action')).toHaveBeenCalledTimes(1);
