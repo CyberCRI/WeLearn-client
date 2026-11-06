@@ -35,6 +35,20 @@ const router = createRouter({
       component: RegisterPage,
       meta: { requiresAuth: false }
     },
+    // keycloak sends users here once their account is set up (password set from the sign-up
+    // email): straight to the keycloak login, then back to the home page
+    {
+      path: '/login',
+      name: 'login',
+      component: { render: () => null },
+      beforeEnter: () => {
+        const authStore = useAuthStore();
+        // the auth guard above has waited for keycloak init
+        if (!authStore.shouldAuthenticate || authStore.isAuthenticated) return '/';
+        authStore.login(window.location.origin + '/');
+        return false;
+      }
+    },
     // the chat comes first: the first enabled feature route is where a disabled one redirects
     {
       path: '/q-and-a',

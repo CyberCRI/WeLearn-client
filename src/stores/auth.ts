@@ -179,7 +179,10 @@ export const useAuthStore = defineStore('auth', () => {
     const body: ApiRequestBody<'/user/signup'> = {
       email: data.email.trim(),
       first_name: data.firstName.trim(),
-      last_name: data.lastName.trim()
+      last_name: data.lastName.trim(),
+      // keycloak sends the sign-up email in this language. it is the app language, which the
+      // ?lang= of the keycloak sign-up link sets when the user comes from the login page
+      locale: i18n.global.locale.value
     };
 
     try {

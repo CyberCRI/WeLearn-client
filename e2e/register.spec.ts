@@ -23,12 +23,26 @@ test.describe('register', () => {
     expect((await signup).postDataJSON()).toEqual({
       email: 'ada@test.org',
       first_name: 'Ada',
-      last_name: 'Lovelace'
+      last_name: 'Lovelace',
+      locale: 'fr'
     });
     const status = page.getByRole('status');
     await expect(status.getByRole('heading', { name: 'Vérifiez votre boîte mail' })).toBeVisible();
     await expect(status).toContainText('ada@test.org');
     await expect(field(page, 'Adresse e-mail')).toBeHidden();
+  });
+
+  test('signs up in the language of the keycloak sign-up link', async ({ page }) => {
+    // the keycloak login page links to /register?lang=<its language>
+    await page.goto('/register?lang=en');
+    const signup = page.waitForRequest('**/user/signup');
+    await field(page, 'First name').fill('Ada');
+    await field(page, 'Last name').fill('Lovelace');
+    await field(page, 'Email').fill('ada@test.org');
+
+    await page.getByRole('button', { name: 'Sign up' }).click();
+
+    expect((await signup).postDataJSON()).toMatchObject({ locale: 'en' });
   });
 
   test('explains an invalid email without calling the API', async ({ page }) => {
