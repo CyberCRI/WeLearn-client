@@ -1,32 +1,28 @@
 <script setup lang="ts">
-defineProps<{ content: string; bgColor: string }>();
+defineProps<{ content: string }>();
 </script>
 
 <template>
-  <div class="pill" :style="{ 'background-color': `var(--${bgColor})` }">
+  <div class="pill">
     {{ content.length > 20 ? content.slice(0, 17) + '...' : content }}
     <slot name="actions"> </slot>
   </div>
 </template>
 
 <style scoped>
-.tltip {
-  display: none;
-}
-
 .pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 1.625rem;
+  padding: 0 0.375rem 0 0.625rem;
+  border: 1px solid var(--neutral-15);
+  border-radius: 999px;
+  background-color: var(--neutral-10);
+  color: var(--neutral-90);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1;
   cursor: default;
-  text-align: center;
-  padding: 0rem 0.5rem;
-  border-radius: 0.5rem;
-  color: var(--neutral-0);
-  font-size: 0.875em;
-  font-weight: 900;
-  height: 1.5rem;
-  &:hover {
-    .tltip {
-      display: block;
-    }
-  }
 }
 </style>

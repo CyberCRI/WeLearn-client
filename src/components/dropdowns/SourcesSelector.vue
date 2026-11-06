@@ -2,6 +2,7 @@
 import CheckboxCompnentVue from '@/components/CheckboxCompnent.vue';
 import ChevronDownIcon from '@/components/icons/ChevronDown.vue';
 import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
+import LineIcon from '@/components/icons/LineIcon.vue';
 import { useFiltersStore } from '@/stores/filters';
 import type { Corpus } from '@/types';
 import { idToLabel } from '@/utils/strings';
@@ -18,8 +19,7 @@ const folded = filters.foldedCategories;
 </script>
 <template>
   <div v-for="(sources, category) in availableSources" :key="category" class="category">
-    <!-- data-category: same highlight colour as the matching result cards -->
-    <div class="category-row" :data-category="category">
+    <div class="category-row">
       <CheckboxCompnentVue
         class="category-checkbox"
         :name="`all-${category}`"
@@ -32,6 +32,8 @@ const folded = filters.foldedCategories;
         @selectAll="filters.toggleCategorySources(names(sources))"
       >
         <template #test>
+          <!-- same icon as on the result cards -->
+          <LineIcon class="category-icon" :name="`${category}`" />
           <span class="category-name">{{ $t(`categories.${category}`) }}</span>
         </template>
       </CheckboxCompnentVue>
@@ -91,28 +93,44 @@ const folded = filters.foldedCategories;
   padding-left: 1.25rem;
 }
 
+.category-icon {
+  margin-right: 0.5rem;
+  color: var(--neutral-70);
+}
+
 .category-name {
-  font-weight: bold;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--neutral-90);
 }
 
 .count {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--neutral-70);
   font-variant-numeric: tabular-nums;
 }
 
 .fold {
   all: unset;
   display: flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5rem;
   height: 1.5rem;
+  color: var(--neutral-70);
   cursor: pointer;
   border-radius: 0.25rem;
   &:hover {
-    background-color: rgb(0 0 0 / 8%);
+    background-color: var(--neutral-10);
   }
   &:focus-visible {
     outline: 2px solid var(--primary);
   }
+}
+
+.fold :deep(svg) {
+  width: 0.75rem;
+  height: 0.75rem;
 }
 
 .category-sources {
