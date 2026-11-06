@@ -61,6 +61,9 @@ const isBookmarksEnabled = useFeatureFlipStore().isFeatureEnabled('bookmarks');
           >
             {{ $t('nav.bookmarks') }}
           </button>
+          <router-link to="/register" class="dropdown-item" data-testid="user-menu-signup">
+            {{ $t('authentication.signupPrompt.createAccount') }}
+          </router-link>
           <button class="dropdown-item item-button" data-testid="user-menu-login" @click="login()">
             {{ $t('login') }}
           </button>

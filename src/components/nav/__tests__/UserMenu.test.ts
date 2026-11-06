@@ -31,11 +31,12 @@ describe('UserMenu', () => {
       '/bookmarks'
     );
     expect(wrapper.find('[data-testid="user-menu-login"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="user-menu-signup"]').exists()).toBe(false);
     await wrapper.get('[data-testid="user-menu-logout"]').trigger('click');
     expect(logout).toHaveBeenCalledOnce();
   });
 
-  it('prompts a signup for bookmarks and offers login when not authenticated', async () => {
+  it('prompts a signup for bookmarks and offers signup and login when not authenticated', async () => {
     isAuthenticated.value = false;
     const wrapper = mount(UserMenu, mountOptions);
     const bookmarks = wrapper.get('[data-testid="user-menu-bookmarks"]');
@@ -44,6 +45,7 @@ describe('UserMenu', () => {
     expect(useAuthStore().signupPromptReason).toBe('bookmarks');
     expect(wrapper.find('[data-testid="user-menu-profile"]').exists()).toBe(false);
     expect(wrapper.find('[data-testid="user-menu-logout"]').exists()).toBe(false);
+    expect(wrapper.get('[data-testid="user-menu-signup"]').attributes('href')).toBe('/register');
     await wrapper.get('[data-testid="user-menu-login"]').trigger('click');
     expect(login).toHaveBeenCalledOnce();
   });

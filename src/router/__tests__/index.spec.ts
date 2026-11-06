@@ -104,6 +104,13 @@ describe('router', () => {
       expect(keycloak.login).not.toHaveBeenCalled();
     });
 
+    it('sends /login to the home page without a keycloak login', async () => {
+      await router.push('/login');
+
+      expect(router.currentRoute.value.name).toBe('q-and-a');
+      expect(keycloak.login).not.toHaveBeenCalled();
+    });
+
     it('sends the profile page back to the home page', async () => {
       await router.push('/profile');
 
@@ -159,6 +166,28 @@ describe('router', () => {
       await router.push('/register');
 
       expect(router.currentRoute.value.name).toBe('register');
+      expect(keycloak.login).not.toHaveBeenCalled();
+    });
+
+    it('sends a logged out user from /login straight to the keycloak login', async () => {
+      useAuthStore().isLoading = false;
+
+      await router.push('/login');
+
+      expect(router.currentRoute.value.name).toBe('about');
+      expect(keycloak.login).toHaveBeenCalledWith(
+        expect.objectContaining({ redirectUri: `${window.location.origin}/` })
+      );
+    });
+
+    it('sends a logged in user from /login to the home page', async () => {
+      const authStore = useAuthStore();
+      authStore.isLoading = false;
+      authStore.isAuthenticated = true;
+
+      await router.push('/login');
+
+      expect(router.currentRoute.value.name).toBe('q-and-a');
       expect(keycloak.login).not.toHaveBeenCalled();
     });
 

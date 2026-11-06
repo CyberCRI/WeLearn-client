@@ -1406,6 +1406,8 @@ export interface components {
       first_name?: string | null;
       /** Last Name */
       last_name?: string | null;
+      /** Locale */
+      locale?: string | null;
     };
     /**
      * SignUpResponse

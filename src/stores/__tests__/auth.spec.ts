@@ -430,11 +430,24 @@ describe('auth store', () => {
       expect(basePostAxios).toHaveBeenCalledWith('/user/signup', {
         email: 'ada@test.org',
         first_name: 'Ada',
-        last_name: 'Lovelace'
+        last_name: 'Lovelace',
+        locale: i18n.global.locale.value
       });
       expect(store.hasRegistered).toBe(true);
       expect(store.registerErrorCode).toBeNull();
       expect(store.isRegistering).toBe(false);
+    });
+
+    it('sends the app language, keycloak emails the user in it', async () => {
+      vi.mocked(basePostAxios).mockResolvedValue({ data: { message: 'm' } } as PostResponse);
+      i18n.global.locale.value = 'en';
+
+      await useAuthStore().register(data);
+
+      expect(basePostAxios).toHaveBeenCalledWith(
+        '/user/signup',
+        expect.objectContaining({ locale: 'en' })
+      );
     });
 
     it.each([
