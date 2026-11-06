@@ -17,6 +17,9 @@ import { getFromStorage, saveToStorage } from '@/utils/storage';
 import { calculateProgress } from '@/utils/progress';
 import { track } from '@/utils/analytics';
 
+type EvalForm = 'pre' | 'post';
+type SavedForm = true | string[];
+
 export function useMicrolearning() {
   const route = useRoute();
   const router = useRouter();
@@ -40,6 +43,12 @@ export function useMicrolearning() {
   const preAnswers = reactive<EvalAnswers>({});
   const postAnswers = reactive<EvalAnswers>({});
   const preLocked = ref(false);
+
+  // save state per form name, mirrored in storage: `true` once every answer is saved, else the
+  // questions already saved. reactive, unlike localStorage, so the screens follow a submit
+  const savedForms = reactive<Record<string, SavedForm>>({});
+  // questions whose POST is still running, so a quick Back then Next doesn't send them twice
+  const sendingQuestions = new Set<string>();
 
   const DISC_META: Record<string, DisciplineMeta> = {
     math: { id: 'math', name: 'Mathématiques', icon: '📐' },
@@ -71,17 +80,10 @@ export function useMicrolearning() {
     return currentData.value?.steps?.[step.value] ?? null;
   });
 
-  const shouldHideAutoEvalStart = computed(() => {
-    const form_storage = getFromStorage(`${current_disc.value?.id}_microlearning_pre`);
+  // a form is hidden once all its answers reached the research metrics, see registerFormAnswer
+  const shouldHideAutoEvalStart = computed(() => isFormSubmitted(formName('pre')));
 
-    return Boolean(form_storage);
-  });
-
-  const shouldHideAutoEvalEnd = computed(() => {
-    const form_storage = getFromStorage(`${current_disc.value?.id}_microlearning_post`);
-
-    return Boolean(form_storage);
-  });
+  const shouldHideAutoEvalEnd = computed(() => isFormSubmitted(formName('post')));
 
   const chosenActivity = computed(() => {
     if (!actChoice.value) return null;
@@ -114,14 +116,17 @@ export function useMicrolearning() {
   // ACTIONS
   // =====================
 
+  function clearAnswers(answers: EvalAnswers) {
+    for (const key of Object.keys(answers)) delete answers[key as keyof EvalAnswers];
+  }
+
   function resetProgress() {
     step.value = 0;
     flippedCards.value = [];
     actChoice.value = null;
     reflectionAnswers.splice(0);
-    for (const answers of [preAnswers, postAnswers]) {
-      for (const key of Object.keys(answers)) delete answers[key as keyof EvalAnswers];
-    }
+    clearAnswers(preAnswers);
+    clearAnswers(postAnswers);
     preLocked.value = false;
   }
 
@@ -150,9 +155,13 @@ export function useMicrolearning() {
     step.value = 0;
     screen.value = ScreensEnum.trail;
     track('Microlearning Started', { discipline: current_disc.value?.id ?? 'unknown' });
-    if (hasAnswers(preAnswers)) {
-      registerFormAnswer(preAnswers, `${current_disc.value?.id}_microlearning_pre`);
-    }
+    if (hasAnswers(preAnswers)) registerFormAnswer(preAnswers, formName('pre'));
+  }
+
+  // skipping discards what was filled in, so a half-answered form never reaches the metrics
+  function skipAutoEvalStart() {
+    clearAnswers(preAnswers);
+    startTrail();
   }
 
   function nextStep() {
@@ -178,9 +187,12 @@ export function useMicrolearning() {
       hasPreEval: hasAnswers(preAnswers),
       hasPostEval: hasAnswers(postAnswers)
     });
-    if (hasAnswers(postAnswers)) {
-      registerFormAnswer(postAnswers, `${current_disc.value?.id}_microlearning_post`);
-    }
+    if (hasAnswers(postAnswers)) registerFormAnswer(postAnswers, formName('post'));
+  }
+
+  function skipAutoEvalEnd() {
+    clearAnswers(postAnswers);
+    goToComplete();
   }
 
   function prevStep() {
@@ -214,34 +226,64 @@ export function useMicrolearning() {
     if (s === ScreensEnum.trail) preLocked.value = true;
   });
 
-  const registerFormAnsLocally = (form_name: string) => {
-    saveToStorage(form_name, true);
-  };
+  function formName(form: EvalForm) {
+    return `${current_disc.value?.id}_microlearning_${form}`;
+  }
+
+  function getSavedForm(form_name: string): SavedForm {
+    if (savedForms[form_name] !== undefined) return savedForms[form_name];
+    const stored = getFromStorage(form_name);
+    return stored === true || Array.isArray(stored) ? stored : [];
+  }
+
+  function setSavedForm(form_name: string, saved: SavedForm) {
+    savedForms[form_name] = saved;
+    saveToStorage(form_name, saved);
+  }
+
+  function isFormSubmitted(form_name: string) {
+    return getSavedForm(form_name) === true;
+  }
 
   const isAnswered = (value: EvalAnswers[keyof EvalAnswers]) => value !== undefined && value !== '';
 
   const hasAnswers = (ans: EvalAnswers) => Object.values(ans).some(isAnswered);
 
+  // one POST per answer, each sent at most once: a submitted form is never sent again, and after
+  // a partial failure only the answers that failed are sent on the next try
   async function registerFormAnswer(ans: EvalAnswers, form_name: string) {
-    const answers_keys = Object.keys(ans);
-    try {
-      await Promise.all(
-        answers_keys.map((key) =>
-          basePostAxios('/metric/form_data', {
-            form_name,
-            question: key,
-            answer: String(ans[key as keyof EvalAnswers] ?? ''),
-            answer_type: 'text'
-          })
-        )
-      );
+    if (isFormSubmitted(form_name)) return;
+    const questions = Object.keys(ans) as (keyof EvalAnswers)[];
+    const alreadySaved = getSavedForm(form_name) as string[];
+    const toSend = questions.filter(
+      (key) => !alreadySaved.includes(key) && !sendingQuestions.has(`${form_name}/${key}`)
+    );
+    toSend.forEach((key) => sendingQuestions.add(`${form_name}/${key}`));
 
-      registerFormAnsLocally(form_name);
+    const results = await Promise.allSettled(
+      toSend.map((key) =>
+        basePostAxios('/metric/form_data', {
+          form_name,
+          question: key,
+          answer: String(ans[key] ?? ''),
+          answer_type: 'text'
+        })
+      )
+    );
+    toSend.forEach((key) => sendingQuestions.delete(`${form_name}/${key}`));
 
-      return ans;
-    } catch {
+    // read again: another call may have saved answers while these requests ran
+    const current = getSavedForm(form_name);
+    if (current === true) return ans;
+    const saved = [...current, ...toSend.filter((_, i) => results[i].status === 'fulfilled')];
+    const isComplete = questions.every((key) => saved.includes(key));
+    if (isComplete) setSavedForm(form_name, true);
+    else if (saved.length) setSavedForm(form_name, saved);
+
+    if (results.some((result) => result.status === 'rejected')) {
       console.error('error while saving the answer');
     }
+    return isComplete ? ans : undefined;
   }
 
   // =====================
@@ -334,6 +376,8 @@ export function useMicrolearning() {
     selectDiscipline,
     goToBriefing,
     startTrail,
+    skipAutoEvalStart,
+    skipAutoEvalEnd,
     goToautoEvalStart,
     nextStep,
     prevStep,

@@ -21,7 +21,7 @@
       :skippable="!locked"
       @back="$emit('back')"
       @next="$emit('start')"
-      @skip="$emit('start')"
+      @skip="$emit('skip')"
     />
   </div>
 </template>
@@ -41,6 +41,7 @@ const answers = defineModel<EvalAnswers>('answers', { required: true });
 
 defineEmits<{
   (e: 'start'): void;
+  (e: 'skip'): void;
   (e: 'back'): void;
 }>();
 </script>

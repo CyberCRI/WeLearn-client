@@ -18,6 +18,7 @@
         :locked="ml.preLocked.value"
         @back="ml.goToBriefing"
         @start="ml.startTrail"
+        @skip="ml.skipAutoEvalStart"
         :discipline="$t(`microLearning.disciplineNames.${ml.disc.value}`)"
       />
       <TrailScreen
@@ -41,6 +42,7 @@
         :answers="ml.postAnswers"
         @back="ml.backToTrail"
         @start="ml.goToComplete"
+        @skip="ml.skipAutoEvalEnd"
         :discipline="$t(`microLearning.disciplineNames.${ml.disc.value}`)"
       />
 

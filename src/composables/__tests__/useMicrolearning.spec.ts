@@ -155,6 +155,165 @@ describe('useMicrolearning form answers', () => {
     });
   });
 
+  describe('single submission (WL-010)', () => {
+    const postsFor = (question: string) =>
+      vi
+        .mocked(basePostAxios)
+        .mock.calls.filter(([, body]) => (body as { question: string }).question === question);
+
+    it('hides the pre form as soon as it is submitted', async () => {
+      const { selectDiscipline, preAnswers, startTrail, shouldHideAutoEvalStart } =
+        useMicrolearning();
+      selectDiscipline('math');
+      expect(shouldHideAutoEvalStart.value).toBe(false);
+      preAnswers.link = 2;
+
+      startTrail();
+      await flushPromises();
+
+      expect(shouldHideAutoEvalStart.value).toBe(true);
+    });
+
+    it('posts the pre answers once after submit, Back, then Next', async () => {
+      const { selectDiscipline, preAnswers, startTrail, prevStep, goToautoEvalStart, screen } =
+        useMicrolearning();
+      selectDiscipline('math');
+      preAnswers.link = 2;
+      preAnswers.confidence = 4;
+
+      startTrail();
+      await flushPromises();
+      prevStep();
+      expect(screen.value).toBe(ScreensEnum.briefing);
+      goToautoEvalStart();
+      await flushPromises();
+
+      expect(screen.value).toBe(ScreensEnum.trail);
+      expect(basePostAxios).toHaveBeenCalledTimes(2);
+    });
+
+    it('posts the pre answers once when the form is reached again with browser Back', async () => {
+      const { selectDiscipline, preAnswers, startTrail, screen } = useMicrolearning();
+      selectDiscipline('math');
+      preAnswers.link = 2;
+
+      startTrail();
+      await flushPromises();
+      screen.value = ScreensEnum.autoEvalStart;
+      startTrail();
+      await flushPromises();
+
+      expect(basePostAxios).toHaveBeenCalledTimes(1);
+    });
+
+    it('posts the post answers once after browser Back from Complete, then Finish', async () => {
+      const { selectDiscipline, postAnswers, goToComplete, screen } = useMicrolearning();
+      selectDiscipline('math');
+      postAnswers.link = 5;
+      postAnswers.willUse = 'yes';
+
+      goToComplete();
+      await flushPromises();
+      screen.value = ScreensEnum.autoEvalEnd;
+      goToComplete();
+      await flushPromises();
+
+      expect(basePostAxios).toHaveBeenCalledTimes(2);
+      expect(localStorage.getItem('math_microlearning_post')).toBe('true');
+    });
+
+    it('does not post an answer twice while its request is still running', async () => {
+      const { selectDiscipline, preAnswers, startTrail } = useMicrolearning();
+      selectDiscipline('math');
+      preAnswers.link = 2;
+
+      startTrail();
+      startTrail();
+      await flushPromises();
+
+      expect(basePostAxios).toHaveBeenCalledTimes(1);
+      expect(localStorage.getItem('math_microlearning_pre')).toBe('true');
+    });
+
+    it('discards the pre answers on skip and posts nothing', async () => {
+      const { selectDiscipline, preAnswers, skipAutoEvalStart, screen, shouldHideAutoEvalStart } =
+        useMicrolearning();
+      selectDiscipline('math');
+      preAnswers.link = 2;
+
+      skipAutoEvalStart();
+      await flushPromises();
+
+      expect(screen.value).toBe(ScreensEnum.trail);
+      expect(preAnswers).toEqual({});
+      expect(basePostAxios).not.toHaveBeenCalled();
+      expect(shouldHideAutoEvalStart.value).toBe(false);
+    });
+
+    it('discards the post answers on skip and posts nothing', async () => {
+      const { selectDiscipline, postAnswers, skipAutoEvalEnd, screen } = useMicrolearning();
+      selectDiscipline('math');
+      postAnswers.feedback = 'half written';
+
+      skipAutoEvalEnd();
+      await flushPromises();
+
+      expect(screen.value).toBe(ScreensEnum.complete);
+      expect(postAnswers).toEqual({});
+      expect(basePostAxios).not.toHaveBeenCalled();
+      expect(localStorage.getItem('math_microlearning_post')).toBeNull();
+    });
+
+    it('only re-sends the failed answers on retry after a partial failure', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(basePostAxios).mockImplementation(async (_url, body) => {
+        if ((body as { question: string }).question === 'link') throw new Error('network');
+        return {} as Awaited<ReturnType<typeof basePostAxios>>;
+      });
+      const { selectDiscipline, preAnswers, startTrail, shouldHideAutoEvalStart } =
+        useMicrolearning();
+      selectDiscipline('math');
+      preAnswers.link = 2;
+      preAnswers.confidence = 4;
+
+      startTrail();
+      await flushPromises();
+
+      expect(console.error).toHaveBeenCalled();
+      expect(shouldHideAutoEvalStart.value).toBe(false);
+      expect(JSON.parse(localStorage.getItem('math_microlearning_pre')!)).toEqual(['confidence']);
+
+      vi.mocked(basePostAxios).mockResolvedValue({} as Awaited<ReturnType<typeof basePostAxios>>);
+      startTrail();
+      await flushPromises();
+
+      expect(postsFor('confidence')).toHaveLength(1);
+      expect(postsFor('link')).toHaveLength(2);
+      expect(shouldHideAutoEvalStart.value).toBe(true);
+      expect(localStorage.getItem('math_microlearning_pre')).toBe('true');
+    });
+
+    it('skips the answers a previous visit already saved', async () => {
+      localStorage.setItem('math_microlearning_pre', JSON.stringify(['confidence']));
+      const { registerFormAnswer } = useMicrolearning();
+
+      const result = await registerFormAnswer({ link: 2, confidence: 4 }, 'math_microlearning_pre');
+
+      expect(result).toEqual({ link: 2, confidence: 4 });
+      expect(basePostAxios).toHaveBeenCalledTimes(1);
+      expect(postsFor('link')).toHaveLength(1);
+    });
+
+    it('never posts a form already submitted on a previous visit', async () => {
+      localStorage.setItem('math_microlearning_pre', 'true');
+      const { registerFormAnswer } = useMicrolearning();
+
+      await registerFormAnswer({ link: 2 }, 'math_microlearning_pre');
+
+      expect(basePostAxios).not.toHaveBeenCalled();
+    });
+  });
+
   describe('analytics', () => {
     it('tracks the start, each step and the end of a trail', () => {
       const { selectDiscipline, startTrail, nextStep, postAnswers, goToComplete } =
