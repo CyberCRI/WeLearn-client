@@ -8,7 +8,8 @@ const parent = ref<HTMLElement | null>(null);
 const props = defineProps<{ action: (arg: string) => void }>();
 
 const onSend = (value: string) => {
-  if (value.replace(/(\r\n|\n|\r)/gm, '').trim().length === 0) {
+  // the store ignores a question sent while an answer streams, so keep the text
+  if (store.isAnswering || value.replace(/(\r\n|\n|\r)/gm, '').trim().length === 0) {
     return;
   }
   props.action(value);
@@ -31,11 +32,12 @@ const handleInput = () => {
         type="text-area"
         :placeholder="$t('chatInputPlaceholder')"
         v-model="store.chatInput"
+        :disabled="store.isAnswering"
         @keydown.enter.exact="[onSend(store.chatInput), $event.preventDefault()]"
         @input="handleInput"
       ></textarea>
     </div>
-    <div class="action">
+    <div class="action" :class="{ 'is-disabled': store.isAnswering }">
       <SendIcon @click="onSend(store.chatInput)" />
     </div>
   </div>
@@ -45,6 +47,14 @@ const handleInput = () => {
 .action {
   cursor: pointer;
   display: flex;
+}
+.action.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+textarea:disabled {
+  background-color: transparent;
+  cursor: not-allowed;
 }
 .chat-input-wrapper {
   display: flex;

@@ -78,6 +78,16 @@ describe('ChatComponent', () => {
       expect(store.chatMessagesList).toHaveLength(1);
     });
 
+    it('cannot be cleared while an answer streams', async () => {
+      store.chatStatus = CHAT_STATUS.SEARCHED;
+      const wrapper = mountChat();
+      const button = wrapper.get('.chat-toolbar button');
+
+      expect(button.attributes()).toHaveProperty('disabled');
+      await button.trigger('click');
+      expect(wrapper.find('.modal').exists()).toBe(false);
+    });
+
     it('resets the chat once confirmed', async () => {
       const reset = vi.spyOn(store, '$reset');
       const wrapper = await openConfirm();

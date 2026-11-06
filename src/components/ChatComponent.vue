@@ -33,7 +33,12 @@ const clearChat = () => {
 <template>
   <div class="chat-template">
     <div class="chat-toolbar" v-if="computedStatus !== CHAT_STATUS.EMPTY">
-      <DeleteButton :action="() => (confirmClear = true)" :delText="$t('clearChat')" />
+      <!-- disabled while an answer streams: one answer at a time, cleared once it is there -->
+      <DeleteButton
+        :action="() => (confirmClear = true)"
+        :delText="$t('clearChat')"
+        :disabled="store.isAnswering"
+      />
     </div>
     <!-- v-if: ModalComponent only reads isOpen on mount -->
     <ModalComponent

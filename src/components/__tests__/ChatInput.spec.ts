@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ChatInputVue from '../ChatInput.vue';
 import { createPinia, setActivePinia } from 'pinia';
-import { useChatStore } from '@/stores/chat';
+import { useChatStore, CHAT_STATUS } from '@/stores/chat';
 import SendIcon from '../icons/SendIcon.vue';
 
 describe('ChatInput', () => {
@@ -75,6 +75,21 @@ describe('ChatInput', () => {
 
     expect(action).not.toHaveBeenCalled();
     expect(store.chatInput).toBe('  \n\r\n ');
+  });
+
+  it('disables the input and keeps the text while an answer streams', async () => {
+    const action = vi.fn();
+    const store = useChatStore();
+    store.chatStatus = CHAT_STATUS.SEARCHED;
+    store.chatInput = 'next question';
+    const wrapper = mount(ChatInputVue, { props: { action } });
+
+    expect(wrapper.get('textarea').attributes()).toHaveProperty('disabled');
+    expect(wrapper.get('.action').classes()).toContain('is-disabled');
+    await wrapper.findComponent(SendIcon).trigger('click');
+
+    expect(action).not.toHaveBeenCalled();
+    expect(store.chatInput).toBe('next question');
   });
 
   it('copies the typed text to the wrapper so the textarea can grow', async () => {

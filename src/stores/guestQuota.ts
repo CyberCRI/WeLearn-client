@@ -36,10 +36,19 @@ export const useGuestQuotaStore = defineStore('guestQuota', () => {
     return false;
   };
 
-  // call once the action succeeded, so a failed request does not use the quota
+  // call once the action succeeded, or when it is accepted (and `refund` it on failure) so that
+  // parallel requests cannot all pass the check. true when a use was counted
   const consume = (feature: GuestQuotaFeature) => {
-    if (!useAuthStore().isGuest) return;
+    if (!useAuthStore().isGuest) return false;
     usage.value[feature] += 1;
+    saveToStorage(STORAGE_KEY, usage.value);
+    return true;
+  };
+
+  // gives back a use counted by `consume` for a request that failed
+  const refund = (feature: GuestQuotaFeature) => {
+    if (usage.value[feature] <= 0) return;
+    usage.value[feature] -= 1;
     saveToStorage(STORAGE_KEY, usage.value);
   };
 
@@ -48,5 +57,5 @@ export const useGuestQuotaStore = defineStore('guestQuota', () => {
     clearFromStorage(STORAGE_KEY);
   };
 
-  return { usage, remaining, canUse, checkQuota, consume, $reset };
+  return { usage, remaining, canUse, checkQuota, consume, refund, $reset };
 });

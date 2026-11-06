@@ -26,6 +26,14 @@ export const CHAT_STATUS = {
 
 type CHAT_STATUSES_TYPE = keyof typeof CHAT_STATUS;
 
+// every other status means an answer is on its way (SEARCHED and FORMULATED_ANSWER included)
+const SETTLED_STATUSES = [
+  CHAT_STATUS.EMPTY,
+  CHAT_STATUS.DONE,
+  CHAT_STATUS.ERROR,
+  CHAT_STATUS.NO_RESULTS
+];
+
 export const useChatStore = defineStore('chat', () => {
   const questionNumbers: Ref<number[] | undefined> = ref(undefined);
   const chatInput: Ref<string> = ref('');
@@ -42,6 +50,14 @@ export const useChatStore = defineStore('chat', () => {
     isChatEmpty.value ? CHAT_STATUS.EMPTY : CHAT_STATUS.DONE
   );
   const processingMetadata: Ref<ChatProcessingMetadata | null> = ref(null);
+  const isAnswering: ComputedRef<boolean> = computed(
+    () => !SETTLED_STATUSES.includes(chatStatus.value)
+  );
+
+  // bumped by every send and every reset: an answer or a history from an older generation
+  // must not write into the current conversation
+  let generation = 0;
+  let streamController: AbortController | null = null;
 
   const processingStatusLabel: ComputedRef<string> = computed(() => {
     const metadata = processingMetadata.value;
@@ -79,16 +95,30 @@ export const useChatStore = defineStore('chat', () => {
   };
 
   const initializeChat = async () => {
-    if (!storedThreadId.value) {
+    // an answer still streaming (the user left the page and came back) is newer than the history
+    if (!storedThreadId.value || isAnswering.value) {
       return;
     }
-    const chatThread = await baseGetAxios(`/qna/chat/history?thread_id=${storedThreadId.value}`);
+    const startedGeneration = generation;
 
-    if (chatThread.length > 0) {
-      chatStatus.value = CHAT_STATUS.DONE;
+    try {
+      const chatThread = await baseGetAxios<ChatMessage[]>(
+        `/qna/chat/history?thread_id=${encodeURIComponent(storedThreadId.value)}`
+      );
+      // a reset or a new question happened meanwhile
+      if (startedGeneration !== generation || !Array.isArray(chatThread)) {
+        return;
+      }
+
+      if (chatThread.length > 0) {
+        chatStatus.value = CHAT_STATUS.DONE;
+      }
+
+      chatMessagesList.value = chatThread;
+    } catch (error) {
+      // keep the chat restored from storage
+      console.error(error);
     }
-
-    chatMessagesList.value = chatThread;
   };
 
   const shouldFetchNewDocuments: Ref<boolean> = ref(true);
@@ -147,7 +177,13 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  async function getAgentAnswer(userMsg: string) {
+  // resolves false when the answer was dropped because a reset started a new generation
+  async function getAgentAnswer(
+    userMsg: string,
+    answerGeneration: number,
+    signal: AbortSignal
+  ): Promise<boolean> {
+    const isStale = () => answerGeneration !== generation;
     clearProcessingMetadata();
 
     const { sdgFilters, sourcesFilters: selectedCorpus } = useFiltersStore();
@@ -158,9 +194,14 @@ export const useChatStore = defineStore('chat', () => {
       sdg_filter: sdgFilters
     };
 
-    const stream = await fetchStream('/qna/chat/agent_stream', {
-      bodyContent: JSON.stringify(body)
-    });
+    const stream = await fetchStream(
+      '/qna/chat/agent_stream',
+      { bodyContent: JSON.stringify(body) },
+      { signal }
+    );
+    if (isStale()) {
+      return false;
+    }
     if (!stream) {
       throw new Error('Unable to create stream reader');
     }
@@ -260,47 +301,52 @@ export const useChatStore = defineStore('chat', () => {
         return;
       }
 
+      // only a payload that is not json is plain text: an error thrown while handling a parsed
+      // payload must fail the answer, not end up as raw json in it
+      let parsed: any;
       try {
-        const parsed = JSON.parse(payload);
-        const parsedProcessingMetadata = extractProcessingMetadata(parsed);
-
-        if (parsedProcessingMetadata) {
-          setProcessingMetadata(parsedProcessingMetadata);
-        }
-
-        const contentChunk = extractContentChunk(parsed);
-
-        if (contentChunk) {
-          if (processingMetadata.value?.step !== 'generating_answer') {
-            setProcessingMetadata({
-              status: 'processing',
-              step: 'generating_answer'
-            });
-          }
-          chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-          appendToAssistantMessage(contentChunk);
-        }
-
-        const docs = extractDocs(parsed);
-        if (docs) {
-          sourcesList.value = docs;
-          saveToStorage('chatSources', docs);
-          if (docs.length > 0) {
-            chatStatus.value = CHAT_STATUS.SEARCHED;
-          }
-        }
-
-        if (typeof parsed?.thread_id === 'string') {
-          storeThreadId(parsed.thread_id);
-        }
-
-        if (typeof parsed?.message_id === 'string') {
-          storeMessageId(parsed.message_id);
-        }
+        parsed = JSON.parse(payload);
       } catch {
         if (!payload.startsWith('event:')) {
           appendToAssistantMessage(payload);
         }
+        return;
+      }
+
+      const parsedProcessingMetadata = extractProcessingMetadata(parsed);
+
+      if (parsedProcessingMetadata) {
+        setProcessingMetadata(parsedProcessingMetadata);
+      }
+
+      const contentChunk = extractContentChunk(parsed);
+
+      if (contentChunk) {
+        if (processingMetadata.value?.step !== 'generating_answer') {
+          setProcessingMetadata({
+            status: 'processing',
+            step: 'generating_answer'
+          });
+        }
+        chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
+        appendToAssistantMessage(contentChunk);
+      }
+
+      const docs = extractDocs(parsed);
+      if (docs) {
+        sourcesList.value = docs;
+        saveToStorage('chatSources', docs);
+        if (docs.length > 0) {
+          chatStatus.value = CHAT_STATUS.SEARCHED;
+        }
+      }
+
+      if (typeof parsed?.thread_id === 'string') {
+        storeThreadId(parsed.thread_id);
+      }
+
+      if (typeof parsed?.message_id === 'string') {
+        storeMessageId(parsed.message_id);
       }
     };
 
@@ -333,6 +379,10 @@ export const useChatStore = defineStore('chat', () => {
     let isDone = false;
     while (!isDone) {
       const { done: readerDone, value } = await reader.read();
+      // the events of a chunk are handled synchronously, so checking after each read is enough
+      if (isStale()) {
+        return false;
+      }
       if (readerDone) {
         isDone = true;
         break;
@@ -356,19 +406,28 @@ export const useChatStore = defineStore('chat', () => {
 
     clearProcessingMetadata();
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
+    return true;
   }
 
   async function onSendMessage(message: string, isSuggestedQuestion = false): Promise<void> {
-    // checks if can be sent
-    if (
-      !message ||
-      [CHAT_STATUS.FORMULATING_ANSWER, CHAT_STATUS.SEARCHING].includes(chatStatus.value)
-    ) {
+    // one answer at a time
+    if (!message || isAnswering.value) {
       return;
     }
 
     const guestQuota = useGuestQuotaStore();
     if (!guestQuota.checkQuota('chat')) return;
+    // counted as soon as the question is accepted, so parallel sends cannot pass the check,
+    // and given back when no answer comes
+    const isQuotaCounted = guestQuota.consume('chat');
+    const refundQuota = () => {
+      if (isQuotaCounted) guestQuota.refund('chat');
+    };
+
+    const answerGeneration = ++generation;
+    const controller = new AbortController();
+    streamController = controller;
+    chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
 
     const { sdgFilters, sourcesFilters } = useFiltersStore();
     track('Chat Question Sent', {
@@ -382,20 +441,33 @@ export const useChatStore = defineStore('chat', () => {
 
     addToMessageList({ role: 'user', content: message });
 
+    let isAnswered: boolean;
     try {
-      chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
-      await getAgentAnswer(message);
+      isAnswered = await getAgentAnswer(message, answerGeneration, controller.signal);
     } catch (error) {
+      refundQuota();
+      // aborted by a reset: the conversation it belonged to is gone
+      if (answerGeneration !== generation) {
+        return;
+      }
       clearProcessingMetadata();
       chatStatus.value = CHAT_STATUS.ERROR;
       hasChatAnswerError.value = true;
       console.error(error);
       track('Chat Answer Failed', { durationMs: Date.now() - startedAt });
       return;
+    } finally {
+      if (streamController === controller) {
+        streamController = null;
+      }
+    }
+
+    if (!isAnswered) {
+      refundQuota();
+      return;
     }
 
     chatStatus.value = CHAT_STATUS.DONE;
-    guestQuota.consume('chat');
     track('Chat Answer Received', {
       durationMs: Date.now() - startedAt,
       sourcesCount: sourcesList.value.length
@@ -412,6 +484,10 @@ export const useChatStore = defineStore('chat', () => {
   };
 
   function $reset() {
+    // stop the answer in flight, and drop whatever it was about to write
+    generation++;
+    streamController?.abort();
+    streamController = null;
     getRandomQuestionNumber();
     clearProcessingMetadata();
     chatStatus.value = CHAT_STATUS.EMPTY;
@@ -437,6 +513,7 @@ export const useChatStore = defineStore('chat', () => {
     getRandomQuestionNumber,
     questionNumbers,
     chatStatus,
+    isAnswering,
     processingMetadata,
     processingStatusLabel,
     initializeChat,
