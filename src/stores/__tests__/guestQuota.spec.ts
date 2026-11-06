@@ -83,6 +83,25 @@ describe('guest quota store', () => {
     expect(localStorage.getItem('guestUsage')).toBeNull();
   });
 
+  it('tells whether a use was counted', () => {
+    const store = useGuestQuotaStore();
+
+    expect(store.consume('chat')).toBe(true);
+    auth.isGuest = false;
+    expect(store.consume('chat')).toBe(false);
+  });
+
+  it('gives a use back, without going below zero', () => {
+    const store = useGuestQuotaStore();
+    store.consume('chat');
+
+    store.refund('chat');
+    store.refund('chat');
+
+    expect(store.usage.chat).toBe(0);
+    expect(JSON.parse(localStorage.getItem('guestUsage')!)).toEqual({ chat: 0, syllabus: 0 });
+  });
+
   // the notice relies on the plural forms: none left | 1 left | n left
   describe('notice text', () => {
     const initialLocale = i18n.global.locale.value;

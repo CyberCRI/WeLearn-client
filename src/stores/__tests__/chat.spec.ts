@@ -36,6 +36,32 @@ const mockStream = (chunks: string[], onRead?: (index: number) => void) => {
 
 const sse = (payload: unknown) => `data: ${JSON.stringify(payload)}\n\n`;
 
+// a stream answered by hand: `push` hands out a chunk, `end` closes it
+const controlledStream = () => {
+  const encoder = new TextEncoder();
+  const waiting: ((result: { done: boolean; value?: Uint8Array }) => void)[] = [];
+  const read = vi.fn(() => new Promise((resolve) => waiting.push(resolve)));
+  vi.mocked(fetchStream).mockResolvedValue({
+    getReader: () => ({ read })
+  } as unknown as StreamBody);
+  // let the store handle the chunk and wait for the next one
+  const flush = () => new Promise((resolve) => setTimeout(resolve, 0));
+  return {
+    push: async (chunk: string) => {
+      await flush();
+      waiting.shift()!({ done: false, value: encoder.encode(chunk) });
+      await flush();
+    },
+    end: async () => {
+      await flush();
+      waiting.shift()!({ done: true });
+      await flush();
+    }
+  };
+};
+
+const signalOfLastCall = () => vi.mocked(fetchStream).mock.calls.at(-1)![2]!.signal!;
+
 const lastBody = () => JSON.parse(vi.mocked(fetchStream).mock.calls.at(-1)![1].bodyContent);
 
 describe('chat store', () => {
@@ -101,6 +127,92 @@ describe('chat store', () => {
 
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
     });
+
+    it('encodes the thread id in the url', async () => {
+      localStorage.setItem('chatThreadId', 'a b&c=d');
+      vi.mocked(baseGetAxios).mockResolvedValue([]);
+
+      await useChatStore().initializeChat();
+
+      expect(baseGetAxios).toHaveBeenCalledWith('/qna/chat/history?thread_id=a%20b%26c%3Dd');
+    });
+
+    it('keeps the stored chat when the history cannot be loaded', async () => {
+      const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
+      localStorage.setItem('chatThreadId', 'thread-1');
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
+      vi.mocked(baseGetAxios).mockRejectedValue(new Error('network'));
+      const store = useChatStore();
+
+      await expect(store.initializeChat()).resolves.toBeUndefined();
+
+      expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'hi' }]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
+      expect(errorLog).toHaveBeenCalled();
+    });
+
+    it('ignores a history that is not a list', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
+      vi.mocked(baseGetAxios).mockResolvedValue({ detail: 'nope' });
+      const store = useChatStore();
+
+      await store.initializeChat();
+
+      expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'hi' }]);
+    });
+
+    it('leaves an answer that is still streaming alone', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      const stream = controlledStream();
+      const store = useChatStore();
+      const sending = store.onSendMessage('a question');
+      await stream.push(sse({ content: 'Hel' }));
+
+      await store.initializeChat();
+      await stream.push(sse({ content: 'lo' }));
+      await stream.end();
+      await sending;
+
+      expect(baseGetAxios).not.toHaveBeenCalled();
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Hello' }
+      ]);
+    });
+
+    it('drops a history that arrives after a reset', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      let answerHistory!: (history: unknown) => void;
+      vi.mocked(baseGetAxios).mockReturnValue(new Promise((resolve) => (answerHistory = resolve)));
+      const store = useChatStore();
+
+      const loading = store.initializeChat();
+      store.$reset();
+      answerHistory([{ role: 'user', content: 'old' }]);
+      await loading;
+
+      expect(store.chatMessagesList).toEqual([]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+    });
+
+    it('drops a history that arrives after a new question was sent', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      let answerHistory!: (history: unknown) => void;
+      vi.mocked(baseGetAxios).mockReturnValue(new Promise((resolve) => (answerHistory = resolve)));
+      mockStream([sse({ content: 'Answer' })]);
+      const store = useChatStore();
+
+      const loading = store.initializeChat();
+      await store.onSendMessage('a question');
+      answerHistory([{ role: 'user', content: 'old' }]);
+      await loading;
+
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Answer' }
+      ]);
+    });
   });
 
   describe('subjects', () => {
@@ -153,18 +265,105 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual([]);
     });
 
-    it.each([CHAT_STATUS.FORMULATING_ANSWER, CHAT_STATUS.SEARCHING])(
-      'does nothing while the status is %s',
+    it.each([
+      CHAT_STATUS.REFORMULATING,
+      CHAT_STATUS.REFORMULATED,
+      CHAT_STATUS.SEARCHING,
+      CHAT_STATUS.SEARCHED,
+      CHAT_STATUS.FORMULATING_ANSWER,
+      CHAT_STATUS.FORMULATED_ANSWER
+    ])('does nothing while the status is %s', async (status) => {
+      const store = useChatStore();
+      store.chatStatus = status;
+
+      await store.onSendMessage('a question');
+
+      expect(store.isAnswering).toBe(true);
+      expect(fetchStream).not.toHaveBeenCalled();
+      expect(store.chatMessagesList).toEqual([]);
+    });
+
+    it.each([CHAT_STATUS.EMPTY, CHAT_STATUS.DONE, CHAT_STATUS.ERROR, CHAT_STATUS.NO_RESULTS])(
+      'accepts a question when the status is %s',
       async (status) => {
+        mockStream([]);
         const store = useChatStore();
         store.chatStatus = status;
 
+        expect(store.isAnswering).toBe(false);
         await store.onSendMessage('a question');
 
-        expect(fetchStream).not.toHaveBeenCalled();
-        expect(store.chatMessagesList).toEqual([]);
+        expect(fetchStream).toHaveBeenCalledTimes(1);
       }
     );
+
+    it('ignores a second question while the first answer streams', async () => {
+      auth.isGuest = true;
+      const stream = controlledStream();
+      const store = useChatStore();
+
+      const first = store.onSendMessage('first');
+      // the sources are there, the answer is not: the status is SEARCHED
+      await stream.push(sse({ docs: [{ id: 'doc-1' }] }));
+      expect(store.chatStatus).toBe(CHAT_STATUS.SEARCHED);
+      await store.onSendMessage('second');
+      await stream.push(sse({ content: 'Answer' }));
+      await stream.end();
+      await first;
+
+      expect(fetchStream).toHaveBeenCalledTimes(1);
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'first' },
+        { role: 'assistant', content: 'Answer' }
+      ]);
+      expect(useGuestQuotaStore().usage.chat).toBe(1);
+      expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
+    });
+
+    it('counts the question in the guest quota as soon as it is accepted', async () => {
+      auth.isGuest = true;
+      const stream = controlledStream();
+      const store = useChatStore();
+
+      const sending = store.onSendMessage('a question');
+      await stream.push(sse({ content: 'Hel' }));
+
+      expect(useGuestQuotaStore().usage.chat).toBe(1);
+      await stream.end();
+      await sending;
+      expect(useGuestQuotaStore().usage.chat).toBe(1);
+    });
+
+    it('gives the quota back when the stream breaks midway', async () => {
+      auth.isGuest = true;
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      const read = vi
+        .fn()
+        .mockResolvedValueOnce({
+          done: false,
+          value: new TextEncoder().encode(sse({ content: 'a' }))
+        })
+        .mockRejectedValueOnce(new Error('connection lost'));
+      vi.mocked(fetchStream).mockResolvedValue({
+        getReader: () => ({ read })
+      } as unknown as StreamBody);
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
+      expect(useGuestQuotaStore().usage.chat).toBe(0);
+    });
+
+    it('does not give back a use for a signed-in user', async () => {
+      localStorage.setItem('guestUsage', JSON.stringify({ chat: 3, syllabus: 0 }));
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(fetchStream).mockRejectedValue(new Error('boom'));
+
+      await useChatStore().onSendMessage('a question');
+
+      expect(useGuestQuotaStore().usage.chat).toBe(3);
+    });
 
     it('counts an answered question in the guest quota', async () => {
       auth.isGuest = true;
@@ -205,9 +404,11 @@ describe('chat store', () => {
 
       await store.onSendMessage('a question');
 
-      expect(fetchStream).toHaveBeenCalledWith('/qna/chat/agent_stream', {
-        bodyContent: expect.any(String)
-      });
+      expect(fetchStream).toHaveBeenCalledWith(
+        '/qna/chat/agent_stream',
+        { bodyContent: expect.any(String) },
+        { signal: expect.any(AbortSignal) }
+      );
       expect(store.chatMessagesList).toEqual([
         { role: 'user', content: 'a question' },
         { role: 'assistant', content: 'Hello world' }
@@ -338,6 +539,27 @@ describe('chat store', () => {
       expect(store.chatMessagesList.at(-1)).toEqual({ role: 'assistant', content: 'a' });
     });
 
+    it('fails the answer when handling a parsed payload throws, without appending raw json', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      const setItem = Storage.prototype.setItem;
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(function (
+        this: Storage,
+        key: string,
+        value: string
+      ) {
+        if (key === 'chatSources') throw new Error('quota exceeded');
+        setItem.call(this, key, value);
+      });
+      mockStream([sse({ content: 'Hello' }), sse({ docs: [{ id: 'doc-1' }] })]);
+      const store = useChatStore();
+
+      await store.onSendMessage('a question');
+
+      expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
+      expect(store.hasChatAnswerError).toBe(true);
+      expect(store.chatMessagesList.at(-1)).toEqual({ role: 'assistant', content: 'Hello' });
+    });
+
     it('ignores payloads without content', async () => {
       mockStream([sse({ choices: [{}] }), sse(42)]);
       const store = useChatStore();
@@ -422,6 +644,90 @@ describe('chat store', () => {
   });
 
   describe('$reset', () => {
+    it('stops the answer in flight and lets nothing from it reach the new conversation', async () => {
+      auth.isGuest = true;
+      localStorage.setItem('chatThreadId', 'old-thread');
+      const stream = controlledStream();
+      const store = useChatStore();
+
+      const sending = store.onSendMessage('old question');
+      await stream.push(sse({ content: 'Old ' }));
+      const signal = signalOfLastCall();
+      expect(signal.aborted).toBe(false);
+
+      store.$reset();
+      expect(signal.aborted).toBe(true);
+      // a mocked reader does not see the abort: the store must drop what it reads, then stop
+      await stream.push(
+        sse({
+          content: 'answer',
+          docs: [{ id: 'doc-1' }],
+          thread_id: 'old-thread',
+          message_id: 'm'
+        })
+      );
+      await sending;
+
+      expect(store.chatMessagesList).toEqual([]);
+      expect(store.sourcesList).toEqual([]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+      expect(store.hasChatAnswerError).toBe(false);
+      expect(store.processingMetadata).toBeNull();
+      for (const key of ['chat', 'chatSources', 'chatThreadId', 'chatMessageId']) {
+        expect(localStorage.getItem(key)).toBeNull();
+      }
+      // the stopped answer does not use the guest quota
+      expect(useGuestQuotaStore().usage.chat).toBe(0);
+      expect(track).not.toHaveBeenCalledWith('Chat Answer Received', expect.anything());
+
+      // the next question starts a new thread, and can be sent right away
+      mockStream([sse({ content: 'New answer' })]);
+      await store.onSendMessage('new question');
+      expect(lastBody()).not.toHaveProperty('thread_id');
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'new question' },
+        { role: 'assistant', content: 'New answer' }
+      ]);
+    });
+
+    it('drops a stream that opens after the reset', async () => {
+      let openStream!: (body: StreamBody) => void;
+      vi.mocked(fetchStream).mockReturnValue(new Promise((resolve) => (openStream = resolve)));
+      const read = vi.fn();
+      const store = useChatStore();
+
+      const sending = store.onSendMessage('a question');
+      store.$reset();
+      openStream({ getReader: () => ({ read }) } as unknown as StreamBody);
+      await sending;
+
+      expect(read).not.toHaveBeenCalled();
+      expect(store.chatMessagesList).toEqual([]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+    });
+
+    it('does not show an error for the request it aborted', async () => {
+      const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(fetchStream).mockImplementation(
+        (_endpoint, _body, { signal } = {}) =>
+          new Promise((_, reject) =>
+            signal!.addEventListener('abort', () =>
+              reject(new DOMException('aborted', 'AbortError'))
+            )
+          )
+      );
+      const store = useChatStore();
+
+      const sending = store.onSendMessage('a question');
+      store.$reset();
+      await sending;
+
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+      expect(store.hasChatAnswerError).toBe(false);
+      expect(errorLog).not.toHaveBeenCalled();
+      expect(track).not.toHaveBeenCalledWith('Chat Answer Failed', expect.anything());
+    });
+
     it('empties the chat state and its storage', async () => {
       mockStream([
         sse({ content: 'Hi', docs: [{ id: 'doc-1' }], thread_id: 't', message_id: 'm' })
