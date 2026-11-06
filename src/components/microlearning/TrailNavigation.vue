@@ -79,7 +79,7 @@ defineEmits<{
 .btn-primary {
   border: none;
   background: var(--primary);
-  color: white;
+  color: var(--neutral-100);
 }
 
 .btn-primary:hover:not(:disabled) {
