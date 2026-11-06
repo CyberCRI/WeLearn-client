@@ -70,8 +70,9 @@ describe('featureFlip preview', () => {
     return useFeatureFlipStore();
   };
 
+  // `test` keeps auth and analytics off and blocks no preview, prod's block is covered below
   beforeEach(() => {
-    env.name = 'prod';
+    env.name = 'test';
     localStorage.clear();
   });
 
@@ -131,5 +132,54 @@ describe('featureFlip preview', () => {
     const store = openWith('');
 
     expect(store.previewFeatures).toEqual([]);
+  });
+});
+
+describe('featureFlip preview blocked per environment', () => {
+  const openWith = (search: string) => {
+    window.history.replaceState({}, '', `/q-and-a${search}`);
+    setActivePinia(createPinia());
+    return useFeatureFlipStore();
+  };
+
+  beforeEach(() => {
+    localStorage.clear();
+  });
+
+  it('ignores preview=auth in prod: auth stays off, nothing is stored, no pill', () => {
+    env.name = 'prod';
+    const store = openWith('?preview=auth');
+
+    expect(store.isFeatureEnabled('auth')).toBe(false);
+    expect(store.previewFeatures).toEqual([]);
+    expect(localStorage.getItem('featurePreview')).toBe('[]');
+  });
+
+  it('still previews other features in prod', () => {
+    env.name = 'prod';
+    const store = openWith('?preview=auth,analytics');
+
+    expect(store.isFeatureEnabled('analytics')).toBe(true);
+    expect(store.isFeatureEnabled('auth')).toBe(false);
+    expect(store.previewFeatures).toEqual(['analytics']);
+    expect(JSON.parse(localStorage.getItem('featurePreview') ?? 'null')).toEqual(['analytics']);
+  });
+
+  it('drops an auth preview saved in prod before the block', () => {
+    env.name = 'prod';
+    localStorage.setItem('featurePreview', JSON.stringify(['auth', 'analytics']));
+    const store = openWith('');
+
+    expect(store.isFeatureEnabled('auth')).toBe(false);
+    expect(store.previewFeatures).toEqual(['analytics']);
+  });
+
+  it.each<Environment>(['dev', 'staging', 'test'])('keeps preview=auth in %s', (name) => {
+    env.name = name;
+    const store = openWith('?preview=auth');
+
+    expect(store.isFeatureEnabled('auth')).toBe(true);
+    expect(store.previewFeatures).toEqual(['auth']);
+    expect(JSON.parse(localStorage.getItem('featurePreview') ?? 'null')).toEqual(['auth']);
   });
 });

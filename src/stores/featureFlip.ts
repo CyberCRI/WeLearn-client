@@ -28,13 +28,24 @@ const PREVIEW_STORAGE_KEY = 'featurePreview';
 const PREVIEW_QUERY_PARAM = 'preview';
 const PREVIEW_OFF = 'off';
 
+// features `?preview=` must not turn on in an environment, because they would break there.
+// they are dropped from the param and from storage, so the nav preview pill doesn't show for them.
+// auth in prod: the prod keycloak values are dummies, login and signup would send users to an
+// invalid keycloak url (WL-001). remove the prod entry once prod has real keycloak values
+const PREVIEW_BLOCKED: Partial<Record<Environment, readonly Feature[]>> = {
+  prod: ['auth']
+};
+
 const isFeature = (value: string): value is Feature =>
   Object.prototype.hasOwnProperty.call(FEATURE_ENVIRONMENTS, value);
+
+const isPreviewable = (value: string): value is Feature =>
+  isFeature(value) && !PREVIEW_BLOCKED[ENVIRONMENT_NAME]?.includes(value);
 
 function loadPreviewFeatures(): Feature[] {
   const param = new URLSearchParams(window.location.search).get(PREVIEW_QUERY_PARAM);
   const stored: unknown = getFromStorage(PREVIEW_STORAGE_KEY);
-  const saved = Array.isArray(stored) ? stored.filter(isFeature) : [];
+  const saved = Array.isArray(stored) ? stored.filter(isPreviewable) : [];
 
   if (param === null) return saved;
   if (param === PREVIEW_OFF) {
@@ -43,7 +54,7 @@ function loadPreviewFeatures(): Feature[] {
   }
 
   const requested = param.split(',').map((name) => name.trim());
-  const features = [...new Set([...saved, ...requested.filter(isFeature)])];
+  const features = [...new Set([...saved, ...requested.filter(isPreviewable)])];
   saveToStorage(PREVIEW_STORAGE_KEY, features);
   return features;
 }
