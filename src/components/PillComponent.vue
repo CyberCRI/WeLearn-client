@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import TooltipComponent from './TooltipComponent.vue';
 
-defineProps<{ content: string; hasGrayScale?: boolean }>();
+defineProps<{ content: string }>();
 </script>
 
 <template>
-  <div
-    class="pill"
-    :class="hasGrayScale && 'gray-scale'"
-    :style="{ 'background-color': `var(--sdg-${content})` }"
-  >
+  <div class="pill" :style="{ 'background-color': `var(--sdg-${content})` }">
     {{ content }}
-    <TooltipComponent class="tltip" isRight isOnTop :tooltipText="$t(`sdgs.${content}`)" />
+    <TooltipComponent class="tltip" :tooltipText="$t(`sdgs.${content}`)" />
   </div>
 </template>
 
@@ -20,14 +16,20 @@ defineProps<{ content: string; hasGrayScale?: boolean }>();
   display: none;
 }
 
+/* flex-centred number with tabular digits, so 1 and 13 both sit dead centre */
 .pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   cursor: default;
-  text-align: center;
-  padding: 0rem 0rem;
-  border-radius: 0.5rem;
+  padding: 0;
+  border-radius: 0.375rem;
   color: var(--neutral-0);
-  font-size: 0.875em;
-  font-weight: 900;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
   height: 1.5rem;
   width: 1.5rem;
   &:hover {
@@ -37,14 +39,9 @@ defineProps<{ content: string; hasGrayScale?: boolean }>();
   }
 }
 
-.pill.gray-scale {
-  filter: grayscale(40%);
-  opacity: 0.9;
-}
-
 @media (max-width: 768px) {
   .pill {
-    font-size: 0.75em;
+    font-size: 0.7rem;
     height: 1.25rem;
     width: 1.25rem;
   }

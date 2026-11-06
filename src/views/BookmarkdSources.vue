@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import SourcesListComponent from '@/components/SourcesListComponent.vue';
 import DeleteButton from '@/components/DeleteButton.vue';
+import ModalComponent from '@/components/ModalComponent.vue';
+import LoadingComponent from '@/components/LoadingComponent.vue';
 
 const store = useBookmarksStore();
-onMounted(() => {
-  store.getBookmarks();
+const confirmClear = ref(false);
+
+const clearBookmarks = () => {
+  store.resetBookmarks();
+  confirmClear.value = false;
+};
+// don't show the empty state while the bookmarks are still loading
+const isLoading = ref(true);
+onMounted(async () => {
+  await store.getBookmarks();
+  isLoading.value = false;
 });
 </script>
 
@@ -15,13 +26,31 @@ onMounted(() => {
     <div class="clear">
       <DeleteButton
         v-if="store.bookmarkedLength"
-        :action="store.resetBookmarks"
+        :action="() => (confirmClear = true)"
         :delText="$t('clearBookmarks')"
       />
     </div>
+    <!-- v-if: ModalComponent only reads isOpen on mount -->
+    <ModalComponent
+      v-if="confirmClear"
+      isOpen
+      size="small"
+      :title="$t('confirmClearBookmarks')"
+      :message="$t('cannotBeUndone')"
+      :onClose="() => (confirmClear = false)"
+    >
+      <template #actions>
+        <button class="button" @click="confirmClear = false">{{ $t('cancel') }}</button>
+        <button class="button is-danger is-light" @click="clearBookmarks">
+          {{ $t('clearBookmarks') }}
+        </button>
+      </template>
+    </ModalComponent>
 
     <SourcesListComponent
       hideRefIndicator
+      cardType="simple"
+      hideNumber
       :sourcesList="store.sourcesBookmarked"
       :shouldDisplayScore="false"
       :isFetchingSources="false"
@@ -30,8 +59,12 @@ onMounted(() => {
       :noResults="false"
     />
   </div>
+  <div v-else-if="isLoading" class="empty">
+    <LoadingComponent />
+  </div>
   <div v-else class="empty" data-testid="noBookmarks">
-    <h1 class="title is-2 is-size-5-mobile">{{ $t('noBookmarks') }}</h1>
+    <h1 class="title is-4 is-size-5-mobile">{{ $t('noBookmarks') }}</h1>
+    <p class="hint">{{ $t('noBookmarksHint') }}</p>
   </div>
 </template>
 
@@ -45,11 +78,17 @@ onMounted(() => {
 }
 
 .empty {
-  margin-top: 2rem;
+  margin: 4rem auto 0;
+  max-width: 28rem;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  height: auto;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.hint {
+  color: var(--neutral-70);
 }
 
 .clear {

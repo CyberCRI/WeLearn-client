@@ -2,13 +2,14 @@
 import Pill from './PillComponent.vue';
 import TooltipComponent from './TooltipComponent.vue';
 import OpenUrlIcon from './icons/OpenUrlIcon.vue';
+import LineIcon from './icons/LineIcon.vue';
 import SeeDetails from './icons/SeeDetailsIcon.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import BookmarkComponent from './BookmarkComponent.vue';
 import type { DocumentDetails } from '@/types';
 import { idToLabel } from '@/utils/strings';
 
-defineProps<{
+const props = defineProps<{
   category?: string;
   number?: number;
   title: string;
@@ -26,65 +27,58 @@ defineProps<{
   docMetrics?: (docId: string) => Promise<void>;
 }>();
 
+const hasCategory = computed(() => !!props.category && props.category !== 'null');
+
 const isModalActive = ref(false);
+// escape is handled by ModalWrapper
 const handleModalClose = () => {
-  removeEventListener('keydown', () => {});
   isModalActive.value = false;
 };
 const handleModalOpen = () => {
   isModalActive.value = true;
-  addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      handleModalClose();
-    }
-  });
 };
 </script>
 
 <template>
-  <div class="block is-flex is-fullwidth pt-1 py-1 px-1">
-    <div :data-category="category" class="mr-2 is-size-7 has-text-weight-semibold px-1">
-      {{ number }}
-    </div>
-    <div class="is-flex-grow-1">
-      <div class="is-flex is-flex-direction-row">
-        <p class="is-size-6 has-text-weight-normal is-inline">{{ title }}</p>
-      </div>
-      <div class="is-flex">
-        <div class="is-flex is-flex-direction-column">
-          <p v-if="corpus" class="corpus has-text-weight-normal is-italic">
-            <span v-if="subCorpus || details.journal || details.publisher"
-              >{{
-                subCorpus
-                  ? $t(`corpus.${subCorpus}`, idToLabel(subCorpus))
-                  : details.journal || details.publisher
-              }}
-              via
-            </span>
-            {{ $t(`corpus.${corpus}`, idToLabel(corpus)) }}
-          </p>
-          <div class="is-flex is-align-items-center">
-            <div class="is-6 mr-2">
-              {{ $t('sdgsAcronym') }}
-            </div>
-            <Pill
-              class="footer-element mx-1"
-              v-for="item in sdg"
-              :key="item"
-              :content="item.toString()"
-              hasGrayScale
-            />
-          </div>
+  <!-- a list row: number, then title / source / category, then SDGs and actions -->
+  <div class="source-card" data-testid="result-row">
+    <span v-if="number" class="number">{{ number }}</span>
+    <div class="body">
+      <p class="doc-title">{{ title }}</p>
+      <p v-if="corpus" class="doc-source">
+        <template v-if="subCorpus || details.journal || details.publisher">
+          {{
+            subCorpus
+              ? $t(`corpus.${subCorpus}`, idToLabel(subCorpus))
+              : details.journal || details.publisher
+          }}
+          <span class="via">via</span>
+        </template>
+        {{ $t(`corpus.${corpus}`, idToLabel(corpus)) }}
+      </p>
+      <p v-if="hasCategory" class="category">
+        <LineIcon :name="category ?? ''" />
+        {{ $t(`categories.${category}`) }}
+      </p>
+      <div class="row-footer">
+        <div v-if="(sdg || []).length" class="sdgs">
+          <span class="sdgs-label">{{ $t('sdgsAcronym') }}</span>
+          <Pill v-for="item in sdg" :key="item" :content="item.toString()" />
         </div>
 
         <div class="card-actions" data-testid="card-actions" @click.stop>
-          <div class="icon-wrapper">
-            <SeeDetails class="icon is-small" @click.stop="handleModalOpen" />
-            <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.seeDetails')" isLeft />
-          </div>
+          <button
+            class="icon-wrapper"
+            :aria-label="$t('cardArticle.seeDetails')"
+            @click.stop="handleModalOpen"
+          >
+            <SeeDetails class="icon is-small" />
+            <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.seeDetails')" />
+          </button>
 
           <BookmarkComponent
             v-if="toggleBookmark"
+            class="icon-wrapper"
             :isBookmarked="!!isBookmarked"
             :toggleBookmark="toggleBookmark"
           />
@@ -92,95 +86,157 @@ const handleModalOpen = () => {
             class="icon-wrapper"
             target="_blank"
             :href="url"
+            :aria-label="$t('cardArticle.openArticle')"
             @click.stop
             @click="docMetrics && id && docMetrics(id)"
           >
             <OpenUrlIcon class="icon is-small" />
-            <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.openArticle')" isLeft />
+            <TooltipComponent class="tltip" :tooltipText="$t('cardArticle.openArticle')" />
           </a>
         </div>
       </div>
     </div>
-    <slot :isOpen="isModalActive" :onClose="handleModalClose" name="modal"></slot>
+    <!-- only while open: a hidden copy of every result's full card doubled the page (and its texts) -->
+    <slot
+      v-if="isModalActive"
+      :isOpen="isModalActive"
+      :onClose="handleModalClose"
+      name="modal"
+    ></slot>
   </div>
 </template>
 
 <style scoped>
-.block.is-flex.is-fullwidth {
-  --bulma-block-spacing: 0rem;
+.source-card {
+  display: flex;
+  gap: 0.75rem;
   width: 100%;
+  padding: 0.875rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s;
   &:hover {
     background-color: var(--neutral-10);
   }
 }
-.card-actions {
-  margin-left: auto;
-  margin-top: auto;
-  display: flex;
-  align-items: baseline;
+/* rows of a list are split by a hairline, so each result reads as its own block */
+.source-card + .source-card {
+  border-top: 1px solid var(--neutral-15);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* sits level with the title's first line */
+.number {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  flex-shrink: 0;
+  width: 1.375rem;
+  height: 1.375rem;
+  margin-top: 0.0625rem;
+  border-radius: 0.375rem;
+  background-color: var(--neutral-10);
+  color: var(--neutral-70);
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.source-card:hover .number {
+  background-color: var(--neutral-0);
 }
 
-.default-hidden {
-  & > * {
-    display: none;
-  }
-  animation: slideaway 500ms;
-  display: none;
+.body {
+  flex: 1;
+  min-width: 0;
 }
-
-@keyframes slideaway {
-  from {
-    display: block;
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+.doc-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--neutral-90);
 }
-.card {
-  /* display default-hidden when hover content */
-  &:hover {
-    .default-hidden {
-      & > * {
-        display: block;
-      }
-      display: block;
-    }
-  }
-}
-
-.card-content {
-  --bulma-card-content-padding: 0.5rem;
-  padding: var(--bulma-card-content-padding);
-}
-.content {
-  border-left: none;
-  padding-left: 0;
-  margin-left: 0;
-}
-a {
-  all: unset;
-  cursor: pointer;
-}
-.clock-icon {
-  height: 1.2rem;
-  margin-right: 0.5rem;
-}
-
-.corpus {
-  /* text-transform: capitalize; */
-}
-.icon-wrapper {
+.doc-source {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
   color: var(--neutral-80);
 }
+.via {
+  color: var(--neutral-70);
+}
+.category {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  color: var(--neutral-70);
+}
+.category svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
 
-:is(.icon-wrapper):has(.tltip) {
+.row-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.sdgs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+.sdgs-label {
+  margin-right: 0.125rem;
+  font-size: 0.75rem;
+  color: var(--neutral-70);
+}
+.sdgs .pill {
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: 0.7rem;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: auto;
+}
+/* a real hit area around each icon, not just the 19px glyph */
+.icon-wrapper {
+  all: unset;
+  position: relative;
+  display: flex;
+  padding: 0.1875rem;
+  border-radius: 0.375rem;
+  color: var(--neutral-70);
+  cursor: pointer;
   &:hover {
-    .tltip {
-      display: block;
-    }
+    background-color: var(--neutral-15);
+    color: var(--neutral-100);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary-dark);
+  }
+  &:hover .tltip {
+    display: block;
+  }
+}
+/* mouse and trackpad: actions appear on hover or keyboard focus (their space is kept, so nothing moves);
+   touch screens have no hover and always show them */
+@media (hover: hover) and (pointer: fine) {
+  .card-actions {
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .source-card:hover .card-actions,
+  .source-card:focus-within .card-actions {
+    opacity: 1;
   }
 }
 </style>

@@ -106,7 +106,7 @@ describe('CardComponent authors', () => {
 
   it('shows the first ten authors and reveals or hides the others on click', async () => {
     const wrapper = mountWithAuthors();
-    const toggle = wrapper.get('.authors .is-underlined');
+    const toggle = wrapper.get('.authors .more-authors-toggle');
 
     expect(wrapper.findAll('.more-authors')).toHaveLength(0);
     expect(wrapper.get('.authors').text()).toContain('Author 10');
@@ -117,9 +117,9 @@ describe('CardComponent authors', () => {
 
     expect(wrapper.findAll('.more-authors')).toHaveLength(2);
     expect(wrapper.get('.authors').text()).toContain('Author 12');
-    expect(wrapper.get('.authors .is-underlined').text()).toBe('hideAuthors');
+    expect(wrapper.get('.authors .more-authors-toggle').text()).toBe('hideAuthors');
 
-    await wrapper.get('.authors .is-underlined').trigger('click');
+    await wrapper.get('.authors .more-authors-toggle').trigger('click');
 
     expect(wrapper.findAll('.more-authors')).toHaveLength(0);
   });

@@ -180,26 +180,6 @@ body {
   scroll-behavior: smooth;
 }
 
-*[data-category='science_communication_and_outreach'] {
-  background-color: var(--lpi-yellow);
-}
-
-*[data-category='expert_reports'] {
-  background-color: var(--tertiary);
-}
-
-*[data-category='academic_scientific_publications'] {
-  background-color: var(--lpi-violet);
-}
-
-*[data-category='teaching_resources'] {
-  background-color: var(--primary);
-}
-
-*[data-category='null'] {
-  background-color: var(--neutral-10);
-}
-
 html {
   scroll-behavior: smooth;
 }
