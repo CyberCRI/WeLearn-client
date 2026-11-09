@@ -9,14 +9,14 @@ test.describe('auth', () => {
     test.use({ startUrl: '/about' });
 
     test('user menu offers to log in', async ({ page }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu-login')).toBeVisible();
       await expect(page.getByTestId('user-menu-logout')).toHaveCount(0);
       await expect(page.getByTestId('user-menu-profile')).toHaveCount(0);
     });
 
     test('bookmarks in the user menu ask to sign up', async ({ page }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await page.getByTestId('user-menu-bookmarks').click();
 
       await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
@@ -25,14 +25,14 @@ test.describe('auth', () => {
     });
 
     test('logs in from the user menu', async ({ page, keycloak }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await page.getByTestId('user-menu-login').click();
       await signInOnKeycloak(page);
 
       await expect(page.getByTestId('user-menu').getByText(fullName)).toBeAttached();
       expect(keycloak.loggedIn).toBe(true);
 
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu-logout')).toBeVisible();
     });
 
@@ -96,7 +96,7 @@ test.describe('auth', () => {
     });
 
     test('logs in from the signup prompt and comes back to the page', async ({ page }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await page.getByTestId('user-menu-bookmarks').click();
       await page.getByTestId('signup-prompt-login').click();
       await signInOnKeycloak(page);
@@ -110,17 +110,38 @@ test.describe('auth', () => {
     test.use({ loggedIn: true });
 
     test('restores the session and shows the user name', async ({ page }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu').getByText(fullName)).toBeVisible();
       await expect(page.getByTestId('user-menu-login')).toHaveCount(0);
     });
 
+    test('the user menu opens from the keyboard and closes after a choice', async ({ page }) => {
+      const trigger = page.getByTestId('user-menu-trigger');
+      const profile = page.getByTestId('user-menu-profile');
+
+      await trigger.focus();
+      await page.keyboard.press('Enter');
+      await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+      await expect(profile).toBeVisible();
+
+      await page.keyboard.press('Escape');
+      await expect(profile).toBeHidden();
+      await expect(trigger).toBeFocused();
+
+      await page.keyboard.press('Enter');
+      await profile.click();
+      await expect(page).toHaveURL(/\/profile/);
+      // still hovered and focused, but closed
+      await expect(profile).toBeHidden();
+      await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    });
+
     test('logs out from the user menu', async ({ page, keycloak }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await page.getByTestId('user-menu-logout').click();
 
       // back home as a guest
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu-login')).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
       expect(keycloak.loggedIn).toBe(false);
@@ -145,7 +166,7 @@ test.describe('auth', () => {
       await page.getByTestId('session-expired-login').click();
       await signInOnKeycloak(page);
 
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu').getByText(fullName)).toBeVisible();
       await expect(page.getByTestId('session-expired')).toHaveCount(0);
     });
