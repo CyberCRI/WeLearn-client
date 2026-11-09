@@ -1,7 +1,7 @@
 <template>
   <section class="complete-screen">
     <div class="complete-inner">
-      <div class="complete-icon">🌱</div>
+      <div class="complete-icon"><LineIcon name="complete" /></div>
 
       <h1 class="title is-spaced">{{ $t('microLearning.completeScreen.title') }}</h1>
 
@@ -21,7 +21,7 @@
         </article>
 
         <article v-if="resource" class="takeaway resource">
-          <span class="takeaway-label">📚 {{ resource.label }}</span>
+          <span class="takeaway-label"><LineIcon name="resources" /> {{ resource.label }}</span>
           <h3>{{ resource.title }}</h3>
           <p>{{ $t('microLearning.reflection.resourceSubtitle') }}</p>
           <a :href="resource.href" target="_blank" rel="noopener noreferrer">
@@ -43,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
 import { computed } from 'vue';
 import type { Activity, Discipline, ReflectionStep } from '@/types/microlearning';
 
@@ -78,6 +79,7 @@ defineEmits<{
 }
 
 .complete-icon {
+  color: var(--primary-dark);
   font-size: 4rem;
   margin-bottom: 1rem;
 }
@@ -169,12 +171,12 @@ defineEmits<{
 
 .btn-primary {
   border: none;
-  background: #2ec4a0;
-  color: white;
+  background: var(--primary);
+  color: var(--neutral-100);
 }
 
 .btn-primary:hover {
-  background: #24b18f;
+  background: var(--primary-hover);
 }
 
 .btn-secondary {

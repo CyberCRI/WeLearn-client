@@ -20,7 +20,6 @@
 
   display: flex;
   flex-direction: column;
-  gap: 0.05rem;
 }
 
 .header {

@@ -34,21 +34,16 @@ const handleLogin = () => {
     :title="$t('authentication.signupPrompt.title')"
     :message="$t(`authentication.signupPrompt.reasons.${signupPromptReason}`)"
     :isOpen="true"
+    size="small"
     :onClose="authStore.closeSignupPrompt"
   >
     <template #actions>
-      <div class="buttons is-centered mb-5">
-        <ButtonComponent
-          color="primary"
-          data-testid="signup-prompt-register"
-          @click="handleRegister"
-        >
-          {{ $t('authentication.signupPrompt.createAccount') }}
-        </ButtonComponent>
-        <ButtonComponent isDiscreet data-testid="signup-prompt-login" @click="handleLogin">
-          {{ $t('authentication.signupPrompt.login') }}
-        </ButtonComponent>
-      </div>
+      <ButtonComponent color="primary" data-testid="signup-prompt-register" @click="handleRegister">
+        {{ $t('authentication.signupPrompt.createAccount') }}
+      </ButtonComponent>
+      <ButtonComponent isDiscreet data-testid="signup-prompt-login" @click="handleLogin">
+        {{ $t('authentication.signupPrompt.login') }}
+      </ButtonComponent>
     </template>
   </ModalComponent>
 </template>

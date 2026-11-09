@@ -55,7 +55,7 @@ export const microLearning = {
   },
   activities: {
     instruction:
-      "Which of these activities would you most like to try with your students? Pick one, you'll build on it in the next step.",
+      "Which of these activities would you most like to try with your students? Pick one: you'll build on it in the next step.",
     nextHint: 'Choose an activity to continue'
   },
   competence: {

@@ -27,9 +27,12 @@ export const en = {
   clearChat: 'Clear chat',
   chatError: 'Something went wrong. Please try again later.',
   cancel: 'Cancel',
+  cannotBeUndone: "This can't be undone.",
   confirmClearChat: 'Delete this whole conversation?',
+  confirmClearBookmarks: 'Delete all your bookmarks?',
   goToBottom: 'Scroll to latest message',
   clearSearch: 'Clear search',
+  close: 'Close',
   closeSidebar: 'Hide sidebar',
   copied: 'Copied!',
   copy: 'Copy',
@@ -39,10 +42,11 @@ export const en = {
     academic_scientific_publications: 'Scientific Publications',
     teaching_resources: 'Educational Resources',
     collaborative_and_encyclopedic_knowledge: 'Collaborative and Encyclopedic Knowledge',
+    datasets: 'Datasets',
     null: 'Uncategorized'
   },
   corpus: {
-    'notre-environnement': 'notre-environnement',
+    'notre-environnement': 'Notre-Environnement',
     unesdoc: 'Unesdoc',
     'ird-le-mag': "IRD Le Mag'",
     unccelearn: 'UN CC:e-Learn',
@@ -74,8 +78,8 @@ export const en = {
     'How can business schools teach sustainability without greenwashing?',
     'What role does AI play in the ecological transition?',
     'Carbon tax vs. cap-and-trade: which works better?',
-    ' Degrowth or green growth: which makes more sense?',
-    " Nuclear vs. renewables: what's the real trade-off?"
+    'Degrowth or green growth: which makes more sense?',
+    "Nuclear vs. renewables: what's the real trade-off?"
   ],
   hintForNewQuestions: 'Here are some additional questions to explore this topic further:',
   description:
@@ -170,7 +174,7 @@ export const en = {
         description: 'Add one or more documents. These will be used to generate the syllabus.'
       },
       step3: {
-        description: 'Add course details to personalise the generated syllabus to your context.'
+        description: 'Add course details to personalize the generated syllabus to your context.'
       },
       step4: {
         description:
@@ -269,14 +273,16 @@ export const en = {
     preview: 'Preview',
     profile: 'Profile',
     microlearning: 'Micro-learning',
-    workshopForm: 'Workshop Form'
+    workshopForm: 'Workshop form'
   },
 
   next: 'Next',
   noBookmarks: 'No bookmarks yet',
+  noBookmarksHint:
+    'Save resources from the chat, the search or the syllabus with the bookmark icon to find them here.',
   noFiltersSelected: 'No filters selected',
   noResults: 'No results for this search',
-  openSidebar: 'Open sidebar',
+  openSidebar: 'Show sidebar',
   onboarding: {
     welcome: {
       title: 'Welcome to WeLearn!',
@@ -326,7 +332,7 @@ export const en = {
     9: 'Industry, Innovation and Infrastructure',
     10: 'Reduced Inequalities',
     11: 'Sustainable Cities and Communities',
-    12: 'Responsable Consumption and Production',
+    12: 'Responsible Consumption and Production',
     13: 'Climate Action',
     14: 'Life Below Water',
     15: 'Life on Land',
@@ -346,7 +352,7 @@ export const en = {
   showSources: 'Show sources',
 
   chatProcessingSteps: {
-    fetching_resources: 'Getting resources from WeLearn database',
+    fetching_resources: 'Getting resources from the WeLearn database',
     analyzing_resources: 'Analyzing relevant resources',
     generating_answer: 'Generating your answer'
   },
@@ -427,11 +433,11 @@ export const en = {
       durationPlaceholder: 'e.g. 6 weeks, 2 hours per week',
       descriptionLabel: 'Course description and goals',
       descriptionPlaceholder:
-        'e.g. Students discover the key concepts of sociolinguistics and learn to analyse language use in their own community.',
+        'e.g. Students discover the key concepts of sociolinguistics and learn to analyze language use in their own community.',
       nudge: 'Without course details, your syllabus will be generic.',
       addDetails: 'Add details',
       continueAnyway: 'Continue anyway',
-      action: 'Analyse my documents',
+      action: 'Analyze my documents',
       recap: '{files} · {lang}'
     },
     summaryStep: {
@@ -468,7 +474,11 @@ export const en = {
       feedbackHistory: 'Changes you already requested ({n})',
       openLink: 'Open',
       download: 'Download (.docx)',
-      restart: 'Start a new syllabus'
+      restart: 'Start a new syllabus',
+      restartConfirmTitle: 'Start a new syllabus?',
+      restartConfirmMessage:
+        'Your current syllabus will be lost. Download it first if you want to keep it.',
+      restartConfirmAction: 'Start over'
     },
     loading: {
       extract: {
@@ -600,7 +610,7 @@ export const en = {
   courseDescription: 'Description',
   learningObjectives: 'Learning objectives',
   learningObjectivesSubtitle:
-    'Learning objectives are specific statements that describe what students should be able to demonstrate or accomplish by the end of a course or lesson. They are measurable and observable, allowing instructors to assess whether the learning goals have been achieved.',
+    'Learning objectives are clear, concise statements that describe what students should know, understand or be able to do by the end of a course or lesson.',
   sustainabilityIntegration: 'Sustainability integration',
   sustainabilityIntegrationSubtitle:
     'Integrating sustainability into a course involves incorporating concepts, practices, and perspectives related to sustainable development into the course content, activities, and assessments. This may include exploring environmental, social, and economic issues, as well as promoting critical thinking and responsibility towards future generations.',
@@ -611,7 +621,7 @@ export const en = {
   greenCompCompetenciesSubtitle:
     'Competencies are a set of knowledge, skills, and attitudes that an individual develops and uses to perform tasks, solve problems, and adapt to different situations. They can be technical, cognitive, social, or emotional, and are essential for success in professional and personal life.',
   greenCompCompetencies: 'GreenComp Competencies',
-  provideFeedback: 'Provide a feedback',
+  provideFeedback: 'Give feedback',
   resourcesUsed: 'Resources used',
   seeConnectionExplanation: 'Connection explanation'
 };

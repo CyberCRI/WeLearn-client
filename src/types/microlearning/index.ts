@@ -42,7 +42,6 @@ export enum ScreensEnum {
 export interface DisciplineMeta {
   id: string;
   name: string;
-  icon: string;
 }
 
 export interface FlipCard {

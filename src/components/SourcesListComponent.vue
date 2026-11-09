@@ -7,6 +7,7 @@ import { useSourcesStore } from '@/stores/sources';
 import { useMetricsStore } from '@/stores/metrics';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import ModalWrapper from '@/components/ModalWrapper.vue';
+import LineIcon from '@/components/icons/LineIcon.vue';
 import i18n from '@/localisation/i18n';
 
 const sourcesStore = useSourcesStore();
@@ -25,6 +26,9 @@ const props = defineProps<{
   shouldDisplayScore?: boolean;
   cardType?: 'simple' | 'default';
   hideNumber?: boolean;
+  // export: when a list is split in two (chat: top 7 + "more"), the first part exports the whole list and the second hides its button
+  hideExport?: boolean;
+  exportList?: Document[];
 }>();
 
 const Cards = {
@@ -55,12 +59,13 @@ const ChosenCard = Cards[props.cardType || 'default'];
     <div v-if="sourcesList?.length">
       <a id="sourcesAnchor"></a>
 
-      <div class="sources-list__actions">
+      <div class="sources-list__actions" v-if="!hideExport">
         <button
-          class="button is-small is-primary"
+          class="button is-small export-button"
           :disabled="sourcesStore.isExportingBibliography"
-          @click="sourcesStore.handleBibliographyExport(sourcesList)"
+          @click="sourcesStore.handleBibliographyExport(exportList || sourcesList)"
         >
+          <LineIcon name="download" />
           {{
             sourcesStore.isExportingBibliography
               ? $t('sourcesList.exportingBibliography')
@@ -95,6 +100,7 @@ const ChosenCard = Cards[props.cardType || 'default'];
           <ModalWrapper :key="`modal-${doc.id}`" :isOpen="scope.isOpen" :onClose="scope.onClose">
             <Card
               :key="`modal-card-${doc.id}`"
+              :category="sourcesStore.sourceCategoryMap[doc.payload.document_corpus]"
               :shouldDisplayScore="shouldDisplayScore"
               :hideRefIndicator="hideRefIndicator"
               :title="doc.payload.document_title"
@@ -130,7 +136,6 @@ const ChosenCard = Cards[props.cardType || 'default'];
 .sources-list {
   position: relative;
   height: auto;
-  overflow-y: scroll;
   padding: 0.5rem 0.5rem;
 }
 
@@ -138,5 +143,17 @@ const ChosenCard = Cards[props.cardType || 'default'];
   display: flex;
   justify-content: flex-end;
   margin-bottom: 0.75rem;
+}
+
+/* secondary action: quiet outline, the results stay the focus */
+.export-button {
+  gap: 0.375rem;
+  border-color: var(--neutral-20);
+  color: var(--neutral-80);
+  font-weight: 500;
+  &:hover {
+    border-color: var(--neutral-50);
+    color: var(--neutral-100);
+  }
 }
 </style>

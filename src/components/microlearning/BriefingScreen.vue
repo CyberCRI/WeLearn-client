@@ -2,7 +2,7 @@
   <section class="briefing-screen">
     <div class="briefing-inner">
       <div class="discipline-icon">
-        {{ discipline.icon }}
+        <LineIcon :name="discipline.id" />
       </div>
 
       <span class="badge">
@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
 import type { DisciplineMeta } from '@/types/microlearning';
 import TrailNavigation from './TrailNavigation.vue';
 
@@ -69,6 +70,7 @@ defineEmits<{
 }
 
 .discipline-icon {
+  color: var(--primary-dark);
   font-size: 2rem;
 }
 

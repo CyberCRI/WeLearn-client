@@ -3,6 +3,7 @@ import GenericPillComponent from '@/components/GenericPillComponent.vue';
 import FilterSettingIcon from '@/components/icons/FilterSettingIcon.vue';
 import ChevronDownIcon from '@/components/icons/ChevronDown.vue';
 import ChevronUpIcon from '@/components/icons/ChevronUp.vue';
+import CloseIcon from '@/components/icons/CloseIcon.vue';
 import SDGSelector from '@/components/dropdowns/SDGSelector.vue';
 import SourcesSelector from '@/components/dropdowns/SourcesSelector.vue';
 import LanguagesSelector from '@/components/dropdowns/LanguagesSelector.vue';
@@ -61,81 +62,77 @@ const clearFilters = () => {
           {{ $t('removeAll') }}
         </button>
       </template>
-      <span v-else class="has-text-grey">{{ $t('noFiltersSelected') }}</span>
+      <span v-else>{{ $t('noFiltersSelected') }}</span>
     </p>
   </div>
-  <!-- phones: when the panel is collapsed the status line is the summary, the pills would eat the screen -->
-  <div v-if="filters.hasFilters" class="is-flex pills" :class="{ 'pills-collapsed': hideFilters }">
-    <div class="is-flex is-flex-direction-column">
-      <div class="is-flex flex-wrap selection mb-1" v-if="filters.sourcesFilters.length">
-        <p>{{ $t('sources') }}{{ $t(':') }}</p>
-        <GenericPillComponent
-          class="mx-1 is-capitalized mt-1"
-          bgColor="primary"
-          :key="filter"
-          v-for="filter in filters.sourcesFilters"
-          :content="$t(`corpus.${filter}`, idToLabel(filter))"
-        >
-          <template #actions>
-            <button
-              class="remove-pill"
-              :aria-label="$t('removeSelection')"
-              @click="filters.handleSourcesFilterChange(filter)"
-            >
-              ×
-            </button>
-          </template>
-        </GenericPillComponent>
-      </div>
-      <div class="is-flex flex-wrap selection mb-1" v-if="filters.sdgFilters.length">
-        <p>{{ $t('sdgsAcronym') }}{{ $t(':') }}</p>
-        <GenericPillComponent
-          class="mx-1 mt-1"
-          bgColor="primary"
-          :key="filter"
-          v-for="filter in filters.sdgFilters"
-          :content="filter.toString()"
-        >
-          <template #actions>
-            <button
-              class="remove-pill"
-              :aria-label="$t('removeSelection')"
-              @click="filters.handleSdgFilterChange(filter)"
-            >
-              ×
-            </button>
-          </template>
-        </GenericPillComponent>
-      </div>
-      <div class="is-flex flex-wrap selection mb-1" v-if="filters.languageFilters.length">
-        <p>{{ $t('languages') }}{{ $t(':') }}</p>
-        <GenericPillComponent
-          class="mx-1"
-          bgColor="primary"
-          :key="filter"
-          v-for="filter in filters.languageFilters"
-          :content="$t(`lang.${filter}`, `${filter}`)"
-        >
-          <template #actions>
-            <button
-              class="remove-pill"
-              :aria-label="$t('removeSelection')"
-              @click="filters.handleLanguageFilterChange(filter)"
-            >
-              ×
-            </button>
-          </template>
-        </GenericPillComponent>
-      </div>
+  <!-- phones: when the panel is collapsed the status line is the summary, the chips would eat the screen -->
+  <div v-if="filters.hasFilters" class="pills" :class="{ 'pills-collapsed': hideFilters }">
+    <div class="selection" v-if="filters.sourcesFilters.length">
+      <span class="selection-label">{{ $t('sources') }}</span>
+      <GenericPillComponent
+        class="is-capitalized"
+        :key="filter"
+        v-for="filter in filters.sourcesFilters"
+        :content="$t(`corpus.${filter}`, idToLabel(filter))"
+      >
+        <template #actions>
+          <button
+            class="remove-pill"
+            :aria-label="$t('removeSelection')"
+            @click="filters.handleSourcesFilterChange(filter)"
+          >
+            <CloseIcon />
+          </button>
+        </template>
+      </GenericPillComponent>
+    </div>
+    <div class="selection" v-if="filters.sdgFilters.length">
+      <span class="selection-label">{{ $t('sdgsAcronym') }}</span>
+      <GenericPillComponent
+        :key="filter"
+        v-for="filter in filters.sdgFilters"
+        :content="filter.toString()"
+      >
+        <template #actions>
+          <button
+            class="remove-pill"
+            :aria-label="$t('removeSelection')"
+            @click="filters.handleSdgFilterChange(filter)"
+          >
+            <CloseIcon />
+          </button>
+        </template>
+      </GenericPillComponent>
+    </div>
+    <div class="selection" v-if="filters.languageFilters.length">
+      <span class="selection-label">{{ $t('languages') }}</span>
+      <GenericPillComponent
+        :key="filter"
+        v-for="filter in filters.languageFilters"
+        :content="$t(`lang.${filter}`, `${filter}`)"
+      >
+        <template #actions>
+          <button
+            class="remove-pill"
+            :aria-label="$t('removeSelection')"
+            @click="filters.handleLanguageFilterChange(filter)"
+          >
+            <CloseIcon />
+          </button>
+        </template>
+      </GenericPillComponent>
     </div>
   </div>
-  <div :class="{ hide: hideFilters }" class="pr-5 filters">
+  <div :class="{ hide: hideFilters }" class="filters">
     <details
       class="filter-section"
       :open="filters.openSections.sources"
       @toggle="syncSection('sources', $event)"
     >
-      <summary>{{ $t('sources') }}</summary>
+      <summary>
+        {{ $t('sources') }}
+        <ChevronDownIcon class="summary-chevron" />
+      </summary>
       <div class="filter-options">
         <SourcesSelector :availableSources="sourcesStore.sourcesList || {}" />
       </div>
@@ -145,7 +142,10 @@ const clearFilters = () => {
       :open="filters.openSections.sdgs"
       @toggle="syncSection('sdgs', $event)"
     >
-      <summary>{{ $t('sdgsAcronym') }}</summary>
+      <summary>
+        {{ $t('sdgsAcronym') }}
+        <ChevronDownIcon class="summary-chevron" />
+      </summary>
       <div class="filter-options">
         <SDGSelector />
       </div>
@@ -155,7 +155,10 @@ const clearFilters = () => {
       :open="filters.openSections.languages"
       @toggle="syncSection('languages', $event)"
     >
-      <summary>{{ $t('languages') }}</summary>
+      <summary>
+        {{ $t('languages') }}
+        <ChevronDownIcon class="summary-chevron" />
+      </summary>
       <div class="filter-options">
         <LanguagesSelector :availableLanguages="filters.languageList" />
       </div>
@@ -164,26 +167,13 @@ const clearFilters = () => {
 </template>
 
 <style scoped>
-.remove-pill {
-  all: unset;
-  cursor: pointer;
-  margin-left: 0.25rem;
-  font-size: 1rem;
-  line-height: 1;
-}
-.remove-pill:focus-visible {
-  outline: 2px solid currentColor;
-}
-.selection {
-  flex-wrap: wrap;
-}
 .filters-head {
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 0.75rem;
   row-gap: 0.125rem;
   align-items: center;
-  margin: 1rem 0;
+  margin: 1rem 0 0.75rem;
 }
 .head-icon {
   grid-row: 1 / span 2;
@@ -197,40 +187,81 @@ const clearFilters = () => {
   display: flex;
   width: fit-content;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 1rem;
+  gap: 0.375rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--neutral-90);
   &:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
 }
-/* desktop: keep clear of the sidebar open/close button pinned to the panel's top-right */
-@media (min-width: 992px) {
-  .filters-toggle {
-    max-width: calc(100% - 4rem);
-  }
-}
 .chevron-icon {
   flex-shrink: 0;
-  height: 1.25rem;
-  width: 1.25rem;
+  height: 0.875rem;
+  width: 0.875rem;
+  color: var(--neutral-70);
+}
+/* second grid column: sits under the title text, reads as its subtitle */
+.status-line {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8rem;
+  color: var(--neutral-70);
 }
 .remove-all {
   all: unset;
   cursor: pointer;
   color: var(--primary-dark);
-  font-size: 0.875rem;
+  font-weight: 500;
   white-space: nowrap;
   &:hover,
   &:focus-visible {
     text-decoration: underline;
   }
 }
-/* sits in the grid's second column, under the "Search filters" label, so it reads as its subtitle */
-.status-line {
+
+/* selected filters: one row per kind, label then chips, all centred on one line */
+.pills {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.selection {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+}
+.selection-label {
+  min-width: 4.5rem;
+  font-size: 0.8rem;
+  color: var(--neutral-70);
+}
+.remove-pill {
+  all: unset;
+  display: flex;
+  padding: 0.125rem;
+  border-radius: 50%;
+  color: var(--neutral-70);
+  cursor: pointer;
+  &:hover {
+    background-color: var(--neutral-20);
+    color: var(--neutral-100);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary-dark);
+  }
+}
+.remove-pill :deep(svg) {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+/* options read smaller than their section and category titles */
+.filter-options :deep(.checkbox-label) {
   font-size: 0.875rem;
 }
 @media (max-width: 991px) {
@@ -238,12 +269,10 @@ const clearFilters = () => {
     display: none !important;
   }
 }
+
+/* no scroll of its own: the side panel is the one scroller, nested scrollers made the wheel stick at the ends */
 .filters {
-  max-height: 90%;
-  transition:
-    max-height 0.5s,
-    opacity 0.5s;
-  overflow-y: auto;
+  transition: opacity 0.3s;
 }
 .filters.hide {
   opacity: 0;
@@ -251,27 +280,45 @@ const clearFilters = () => {
   overflow: hidden;
 }
 
+/* sections: light rows split by hairlines, chevron on the right */
 .filter-section {
-  padding: 0.5rem;
-  position: relative;
+  border-top: 1px solid var(--neutral-15);
 }
-
+.filter-section:last-child {
+  border-bottom: 1px solid var(--neutral-15);
+}
 summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.25rem;
+  list-style: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--neutral-90);
   cursor: pointer;
-  font-weight: bold;
-  padding: 0.5rem;
-  background-color: var(--neutral-10);
-  border-radius: 0.25rem;
-  position: sticky;
+  &::-webkit-details-marker {
+    display: none;
+  }
+  &:hover {
+    color: var(--neutral-100);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary-dark);
+    outline-offset: -2px;
+    border-radius: 0.25rem;
+  }
 }
-
-.filter-section[open] {
-  max-height: 100%;
+.summary-chevron {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--neutral-70);
+  transition: transform 0.2s;
 }
-
+details[open] > summary .summary-chevron {
+  transform: rotate(180deg);
+}
 details > .filter-options {
-  max-height: 100%;
-  overflow-y: auto;
-  padding-left: 1rem;
+  padding: 0 0.25rem 0.75rem;
 }
 </style>

@@ -60,7 +60,7 @@ test.describe('auth', () => {
       await expect(page.getByText('Document one test')).toBeVisible();
 
       await page
-        .locator('header')
+        .getByTestId('result-row')
         .filter({ hasText: 'Document one test' })
         .getByTestId('toggleBookmark')
         .click();

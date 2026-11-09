@@ -20,7 +20,7 @@
           @click="select(discipline.id)"
         >
           <span class="icon">
-            {{ discipline.icon }}
+            <LineIcon :name="discipline.id" />
           </span>
 
           <span class="name">
@@ -39,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
 import type { DisciplineMeta } from '@/types/microlearning';
 import { ref } from 'vue';
 
@@ -102,9 +103,9 @@ function start() {
 }
 
 .discipline-card {
-  border: 1px solid var(--neutral-10);
+  border: 1px solid var(--neutral-20);
   border-radius: 12px;
-  background: var(neutral-0);
+  background: var(--neutral-0);
   padding: 1rem;
   cursor: pointer;
   transition: 0.2s;
@@ -124,6 +125,7 @@ function start() {
 }
 
 .icon {
+  color: var(--primary-dark);
   font-size: 1.8rem;
   margin-bottom: 0.5rem;
 }
@@ -136,10 +138,14 @@ function start() {
   padding: 0.9rem 2rem;
   border: none;
   border-radius: 10px;
-  background: var(--primary-hover);
-  color: var(--neutral-0);
+  background: var(--primary);
+  color: var(--neutral-100);
   font-size: 0.95rem;
   cursor: pointer;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--primary-hover);
 }
 
 .btn-primary:disabled {

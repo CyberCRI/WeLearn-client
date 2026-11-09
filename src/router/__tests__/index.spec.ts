@@ -236,5 +236,12 @@ describe('router', () => {
 
       expect(router.currentRoute.value.query).toEqual({ lang: 'fr' });
     });
+
+    it('leaves page-only params behind and carries only app-wide ones', async () => {
+      await router.push('/microlearning?disc=history&screen=complete&lang=en');
+      await router.push('/q-and-a');
+
+      expect(router.currentRoute.value.query).toEqual({ lang: 'en' });
+    });
   });
 });

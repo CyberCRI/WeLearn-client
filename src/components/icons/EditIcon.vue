@@ -1,11 +1,20 @@
 <template>
-  <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <!-- lucide v0.460.0 (ISC): square-pen -->
+    <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
     <path
-      d="M10.098 2.804H4.412A3.412 3.412 0 0 0 1 6.215v11.373A3.412 3.412 0 0 0 4.412 21h11.373a3.412 3.412 0 0 0 3.412-3.412v-5.686m-12.51 3.412 4.137-.834c.22-.044.422-.153.58-.311L20.667 4.9a1.137 1.137 0 0 0 0-1.608l-1.963-1.96a1.137 1.137 0 0 0-1.608 0l-9.264 9.27c-.158.157-.266.358-.31.578l-.836 4.133Z"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"
     />
   </svg>
 </template>

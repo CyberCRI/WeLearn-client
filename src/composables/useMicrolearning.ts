@@ -13,6 +13,7 @@ import { ScreensEnum } from '@/types/microlearning';
 import { DATA } from '@/stores/microlearning/data';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
+import { scrollToTop } from '@/utils/navigation';
 import { getFromStorage, saveToStorage } from '@/utils/storage';
 import { calculateProgress } from '@/utils/progress';
 import { track } from '@/utils/analytics';
@@ -51,19 +52,19 @@ export function useMicrolearning() {
   const sendingQuestions = new Set<string>();
 
   const DISC_META: Record<string, DisciplineMeta> = {
-    math: { id: 'math', name: 'Mathématiques', icon: '📐' },
-    history: { id: 'history', name: 'Histoire', icon: '🏛' },
-    economics: { id: 'economics', name: 'Économie', icon: '📊' },
-    law: { id: 'law', name: 'Droit', icon: '⚖️' },
-    philosophy: { id: 'philosophy', name: 'Philosophie', icon: '💭' },
-    psychology: { id: 'psychology', name: 'Psychologie', icon: '🧠' },
-    geography: { id: 'geography', name: 'Géographie', icon: '🗺' },
-    health: { id: 'health', name: 'Santé', icon: '🏥' },
-    staps: { id: 'staps', name: 'STAPS', icon: '🏃' },
-    letters: { id: 'letters', name: 'Lettres', icon: '📖' },
-    ecology: { id: 'ecology', name: 'Écologie', icon: '🌿' },
-    art: { id: 'art', name: 'Art', icon: '🎨' },
-    polsci: { id: 'polsci', name: 'Science politique', icon: '🏛️' }
+    math: { id: 'math', name: 'Mathématiques' },
+    history: { id: 'history', name: 'Histoire' },
+    economics: { id: 'economics', name: 'Économie' },
+    law: { id: 'law', name: 'Droit' },
+    philosophy: { id: 'philosophy', name: 'Philosophie' },
+    psychology: { id: 'psychology', name: 'Psychologie' },
+    geography: { id: 'geography', name: 'Géographie' },
+    health: { id: 'health', name: 'Santé' },
+    staps: { id: 'staps', name: 'STAPS' },
+    letters: { id: 'letters', name: 'Lettres' },
+    ecology: { id: 'ecology', name: 'Écologie' },
+    art: { id: 'art', name: 'Art' },
+    polsci: { id: 'polsci', name: 'Science politique' }
   };
 
   const DISC_LIST: DisciplineMeta[] = Object.values(DISC_META);
@@ -224,6 +225,8 @@ export function useMicrolearning() {
   // Once the user has seen trail content, "before" answers no longer reflect a baseline
   watch(screen, (s) => {
     if (s === ScreensEnum.trail) preLocked.value = true;
+    // each screen starts at its top, not at the previous screen's scroll position
+    scrollToTop();
   });
 
   function formName(form: EvalForm) {

@@ -11,7 +11,7 @@
       </div>
       <span class="item-name">{{ $t(`nav.${name}`) }}</span>
       <!-- aria-hidden: screen readers already get the name from .item-name -->
-      <TooltipComponent class="tltip" isBelow aria-hidden="true" :tooltipText="$t(`nav.${name}`)" />
+      <TooltipComponent class="tltip" aria-hidden="true" :tooltipText="$t(`nav.${name}`)" />
     </router-link>
   </div>
 </template>

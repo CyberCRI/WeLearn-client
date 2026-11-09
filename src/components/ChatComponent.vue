@@ -44,14 +44,14 @@ const clearChat = () => {
     <ModalComponent
       v-if="confirmClear"
       isOpen
+      size="small"
       :title="$t('confirmClearChat')"
+      :message="$t('cannotBeUndone')"
       :onClose="() => (confirmClear = false)"
     >
       <template #actions>
-        <div class="buttons my-4">
-          <button class="button" @click="confirmClear = false">{{ $t('cancel') }}</button>
-          <button class="button is-danger" @click="clearChat">{{ $t('clearChat') }}</button>
-        </div>
+        <button class="button" @click="confirmClear = false">{{ $t('cancel') }}</button>
+        <button class="button is-danger is-light" @click="clearChat">{{ $t('clearChat') }}</button>
       </template>
     </ModalComponent>
     <ChatArea :isEmpty="computedStatus === CHAT_STATUS.EMPTY">

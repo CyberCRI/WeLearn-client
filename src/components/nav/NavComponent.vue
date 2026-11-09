@@ -145,10 +145,7 @@ const utilityEntries = [
 
 .utilities {
   margin-left: auto;
-  padding-left: 0.5rem;
-  border-left: 1px solid var(--neutral-20);
   align-items: center;
-  gap: 0.25rem;
 }
 
 .router-link-form {

@@ -7,3 +7,8 @@ export const scrollToAnchor = (id: string) => {
     ?.getElementById(id)
     ?.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
 };
+
+// the app scrolls inside AppLayout's .main, not the window
+export const scrollToTop = () => {
+  document.querySelector('.main')?.scrollTo?.({ top: 0 });
+};
