@@ -25,7 +25,7 @@ yarn test:coverage  # single pass + v8 coverage, fails under the floors in vites
 yarn test:e2e       # playwright; builds into dist/e2e-* and serves it with `vite preview`, API calls are mocked
                     # (E2E_DEV_SERVER=1 uses the dev server instead, for quick local iterations)
 yarn lint           # eslint --fix
-yarn format         # prettier --write src/
+yarn format         # prettier --write on src/, e2e/, tests/ and the config files
 yarn type-check     # vue-tsc
 yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.json
 yarn build          # type-check + vite build

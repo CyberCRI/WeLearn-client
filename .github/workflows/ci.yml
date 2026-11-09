@@ -16,7 +16,7 @@ jobs:
   # the image is only built and pushed once every check passed
   build-docker:
     needs: lint-and-test
-    uses: CyberCRI/github-workflows/.github/workflows/build-push.yaml@main
+    uses: CyberCRI/github-workflows/.github/workflows/build-push.yaml@f87dd5976f04baac2c649172f6e8acdf4d47c447 # main @ 2025-11-07
     with:
       registry-name: ${{ vars.DOCKER_PROD_REGISTRY }}
       image-name: welearn-client
@@ -47,8 +47,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-      - name: Install Yarn
-        run: command -v yarn || npm install -g yarn
+      # corepack ships with node and provides the yarn pinned in package.json's packageManager
+      - name: Enable corepack
+        run: corepack enable
 
       # setup-node's own yarn cache needs yarn before it runs, so the cache is set up here
       - name: Locate the yarn cache
@@ -143,4 +144,4 @@ jobs:
     needs:
       - lint-and-test
       - build-docker
-    uses: CyberCRI/github-workflows/.github/workflows/tag-deploy.yaml@main
+    uses: CyberCRI/github-workflows/.github/workflows/tag-deploy.yaml@f87dd5976f04baac2c649172f6e8acdf4d47c447 # main @ 2025-11-07

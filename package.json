@@ -4,6 +4,7 @@
   "license": "CC-BY-NC-SA 4.0",
   "private": true,
   "type": "module",
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "build-dev": "vite build --mode dev",
     "dev": "vite --mode dev",
@@ -18,8 +19,8 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "lint:check": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --ignore-path .gitignore",
-    "format": "prettier --write src/",
-    "format:check": "prettier --check src/",
+    "format": "prettier --write src/ e2e/ tests/ '*.config.ts' env.d.ts .eslintrc.cjs 'tsconfig*.json'",
+    "format:check": "prettier --check src/ e2e/ tests/ '*.config.ts' env.d.ts .eslintrc.cjs 'tsconfig*.json'",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
     "gen:api": "openapi-typescript ${OPENAPI_SCHEMA:-https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json} -o src/types/generated/openapi.ts && prettier --write src/types/generated"
   },
