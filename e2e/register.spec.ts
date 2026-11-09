@@ -2,7 +2,8 @@ import type { Page } from '@playwright/test';
 import { test, expect } from './base';
 
 test.describe('register', () => {
-  test.use({ startUrl: '/register' });
+  // the welcome form waits for the next normal page
+  test.use({ startUrl: '/register', hasWelcomeModal: false });
 
   // fields are found by their accessible name, as screen readers announce them
   // (the label's visual "*" is aria-hidden, so it is not part of the name)
@@ -13,6 +14,15 @@ test.describe('register', () => {
     await field(page, 'Nom').fill('Lovelace');
     await field(page, 'Adresse e-mail').fill(email);
   };
+
+  test('does not show the welcome form on the register page', async ({ page }) => {
+    await expect(field(page, 'Adresse e-mail')).toBeVisible();
+    await expect(page.getByTestId('welcome-action')).toBeHidden();
+
+    await page.goto('/about');
+
+    await expect(page.getByTestId('welcome-action')).toBeVisible();
+  });
 
   test('signs up and asks to check the inbox', async ({ page }) => {
     const signup = page.waitForRequest('**/user/signup');
