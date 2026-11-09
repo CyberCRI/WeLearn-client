@@ -452,6 +452,29 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual([]);
     });
 
+    // the input keeps a refused question and clears an accepted one
+    it('tells whether the question was accepted', async () => {
+      const store = useChatStore();
+      expect(await store.onSendMessage('')).toBe(false);
+
+      store.chatStatus = CHAT_STATUS.SEARCHED;
+      expect(await store.onSendMessage('a question')).toBe(false);
+
+      store.chatStatus = CHAT_STATUS.DONE;
+      auth.isGuest = true;
+      localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }));
+      setActivePinia(createPinia());
+      expect(await useChatStore().onSendMessage('a question')).toBe(false);
+
+      auth.isGuest = false;
+      mockStream([sse({ content: 'Hello' })]);
+      expect(await useChatStore().onSendMessage('a question')).toBe(true);
+
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(fetchStream).mockRejectedValue(new Error('boom'));
+      expect(await useChatStore().onSendMessage('another question')).toBe(true);
+    });
+
     it('streams the answer into an assistant message and persists the chat', async () => {
       mockStream([sse({ content: 'Hello' }), sse({ delta: ' world' })]);
       const store = useChatStore();

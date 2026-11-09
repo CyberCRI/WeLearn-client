@@ -20,6 +20,8 @@ export const fr = {
   login: 'Connexion',
   chat: 'Chat',
   chatInputPlaceholder: 'Poser une question',
+  chatInputLabel: 'Votre question',
+  chatSendButton: 'Envoyer la question',
   chatNoResults:
     'Aucun résultat avec les filtres actuels. Essayez d’ajuster votre recherche ou de retirer certains filtres.',
   chatProvideValidQuestion: 'Veuillez saisir une question valide.',

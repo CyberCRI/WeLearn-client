@@ -458,14 +458,16 @@ export const useChatStore = defineStore('chat', () => {
     return true;
   }
 
-  async function onSendMessage(message: string, isSuggestedQuestion = false): Promise<void> {
+  // false when the question is refused (empty, an answer streams, guest quota used up), so the
+  // input keeps the text. true once accepted, even if the answer then fails
+  async function onSendMessage(message: string, isSuggestedQuestion = false): Promise<boolean> {
     // one answer at a time
     if (!message || isAnswering.value) {
-      return;
+      return false;
     }
 
     const guestQuota = useGuestQuotaStore();
-    if (!guestQuota.checkQuota('chat')) return;
+    if (!guestQuota.checkQuota('chat')) return false;
     // counted as soon as the question is accepted, so parallel sends cannot pass the check,
     // and given back when no answer comes
     const isQuotaCounted = guestQuota.consume('chat');
@@ -497,14 +499,14 @@ export const useChatStore = defineStore('chat', () => {
       refundQuota();
       // aborted by a reset: the conversation it belonged to is gone
       if (answerGeneration !== generation) {
-        return;
+        return true;
       }
       clearProcessingMetadata();
       chatStatus.value = CHAT_STATUS.ERROR;
       hasChatAnswerError.value = true;
       console.error(error);
       track('Chat Answer Failed', { durationMs: Date.now() - startedAt });
-      return;
+      return true;
     } finally {
       if (streamController === controller) {
         streamController = null;
@@ -513,7 +515,7 @@ export const useChatStore = defineStore('chat', () => {
 
     if (!isAnswered) {
       refundQuota();
-      return;
+      return true;
     }
 
     chatStatus.value = CHAT_STATUS.DONE;
@@ -521,6 +523,7 @@ export const useChatStore = defineStore('chat', () => {
       durationMs: Date.now() - startedAt,
       sourcesCount: sourcesList.value.length
     });
+    return true;
   }
 
   const getRandomQuestionNumber = () => {
