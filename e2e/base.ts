@@ -15,18 +15,21 @@ type Fixtures = ProjectOptions & {
   keycloak: KeycloakMock;
   // first page loaded, must not require auth when the test starts logged out with auth on
   startUrl: string;
+  // false when the start page hides the welcome modal (meta.hideWelcome, e.g. /register)
+  hasWelcomeModal: boolean;
 };
 
 export const test = base.extend<Fixtures>({
   isDevEnvironment: [false, { option: true }],
   loggedIn: [false, { option: true }],
   startUrl: ['/', { option: true }],
+  hasWelcomeModal: [true, { option: true }],
   keycloak: async ({ context, loggedIn }, use) => {
     await use(await mockKeycloak(context, loggedIn));
   },
   // depends on `keycloak` so Keycloak is mocked before the first navigation
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  page: async ({ page, keycloak, startUrl, isDevEnvironment }, use) => {
+  page: async ({ page, keycloak, startUrl, hasWelcomeModal, isDevEnvironment }, use) => {
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();
@@ -111,8 +114,10 @@ export const test = base.extend<Fixtures>({
     // Refuse analytics first: the banner sits above the welcome modal
     if (isDevEnvironment) await page.getByTestId('consent-refuse').click();
     // Close the welcome modal
-    await page.getByTestId('consent-checkbox').check();
-    await page.getByTestId('welcome-action').click();
+    if (hasWelcomeModal) {
+      await page.getByTestId('consent-checkbox').check();
+      await page.getByTestId('welcome-action').click();
+    }
     await page.waitForLoadState();
 
     await use(page);
