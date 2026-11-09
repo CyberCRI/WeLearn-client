@@ -6,7 +6,7 @@ import { cleanSyllabus } from '@/stores/tutor';
 const mountStep = (content: string, props: Record<string, unknown> = {}) => {
   const wrapper = mount(ThirdStep, {
     props: {
-      syllabus: { content, source: 'x' },
+      syllabus: content ? { content, source: 'x' } : undefined,
       giveFeedback: vi.fn(),
       feedbackHistory: [],
       action: vi.fn(),
@@ -17,7 +17,8 @@ const mountStep = (content: string, props: Record<string, unknown> = {}) => {
     }
   });
   // jsdom follows links even inside editable text, a browser doesn't
-  wrapper.find('#syllabus').element.addEventListener('click', (e) => e.preventDefault());
+  const syllabus = wrapper.find('#syllabus');
+  if (syllabus.exists()) syllabus.element.addEventListener('click', (e) => e.preventDefault());
   return wrapper;
 };
 
@@ -84,6 +85,7 @@ describe('ThirdStep feedback', () => {
   afterEach(() => {
     Element.prototype.scrollIntoView = originalScrollIntoView;
     Element.prototype.scrollTo = originalScrollTo;
+    vi.restoreAllMocks();
   });
 
   it('lists the feedback already sent', () => {
@@ -136,6 +138,24 @@ describe('ThirdStep feedback', () => {
     expect(wrapper.find('.feedback .has-text-danger').exists()).toBe(false);
   });
 
+  it('keeps the text and shows an error when sending throws', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    const giveFeedback = vi.fn().mockRejectedValue(new Error('boom'));
+    const wrapper = mountStep('# Syllabus', { giveFeedback });
+    const textarea = wrapper.find('#syllabus-feedback');
+    await textarea.setValue('more labs');
+    await wrapper.find('.feedback button').trigger('click');
+    await flushPromises();
+    expect((textarea.element as HTMLTextAreaElement).value).toBe('more labs');
+    expect(wrapper.find('.feedback .has-text-danger').exists()).toBe(true);
+  });
+
+  it('hides the feedback box without a syllabus', () => {
+    const wrapper = mountStep('');
+    expect(wrapper.find('#syllabus').exists()).toBe(false);
+    expect(wrapper.find('.feedback').exists()).toBe(false);
+  });
+
   it('does not send blank feedback', async () => {
     const giveFeedback = vi.fn();
     const wrapper = mountStep('# Syllabus', { giveFeedback });
@@ -148,13 +168,28 @@ describe('ThirdStep feedback', () => {
 });
 
 describe('ThirdStep actions', () => {
-  it('restarts and downloads the syllabus', async () => {
+  it('asks for a confirmation before restarting', async () => {
     const wrapper = mountStep('# Syllabus');
+    expect(wrapper.find('[data-testid="confirm-restart"]').exists()).toBe(false);
     await wrapper.find('.actions .is-text').trigger('click');
     expect(wrapper.props('restart')).not.toHaveBeenCalled();
     await wrapper.find('[data-testid="confirm-restart"]').trigger('click');
-    await wrapper.find('.actions .is-primary').trigger('click');
     expect(wrapper.props('restart')).toHaveBeenCalledTimes(1);
+    expect(wrapper.find('[data-testid="confirm-restart"]').exists()).toBe(false);
+  });
+
+  it('keeps the syllabus when the restart is cancelled', async () => {
+    const wrapper = mountStep('# Syllabus');
+    await wrapper.find('.actions .is-text').trigger('click');
+    const cancel = wrapper.findAll('button').find((button) => button.text() === 'cancel');
+    await cancel!.trigger('click');
+    expect(wrapper.props('restart')).not.toHaveBeenCalled();
+    expect(wrapper.find('[data-testid="confirm-restart"]').exists()).toBe(false);
+  });
+
+  it('downloads the syllabus', async () => {
+    const wrapper = mountStep('# Syllabus');
+    await wrapper.find('.actions .is-primary').trigger('click');
     expect(wrapper.props('action')).toHaveBeenCalledTimes(1);
   });
 });

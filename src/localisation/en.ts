@@ -500,6 +500,10 @@ export const en = {
         description: 'WeLearn is updating the syllabus based on your request.'
       }
     },
+    downloadError: {
+      title: 'Download failed',
+      description: "We couldn't create the Word file. Please try again."
+    },
     error: {
       title: 'Something went wrong',
       extract: "We couldn't read your documents.",

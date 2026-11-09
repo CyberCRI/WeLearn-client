@@ -14,7 +14,7 @@ import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage
 const MAX_FILES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 // a guest's syllabus, kept through the keycloak redirect and downloaded once they are logged in
-const PENDING_SYLLABUS_KEY = 'pendingSyllabus';
+export const PENDING_SYLLABUS_KEY = 'pendingSyllabus';
 
 // the LLM sometimes writes a literal "\n" (backslash + n): inside a table cell it
 // means a line break (<br>), anywhere else a real new line
@@ -55,6 +55,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const shouldRetryAction: Ref<boolean> = ref(false);
   const hasSearchError: Ref<boolean> = ref(false);
   const reloadError: Ref<boolean> = ref(false);
+  const hasDownloadError: Ref<boolean> = ref(false);
   const fileError: Ref<{ state: boolean; reason: FileErrorReason | null }> = ref({
     state: false,
     reason: null
@@ -68,6 +69,12 @@ export const useTutorStore = defineStore('tutor', () => {
     shouldRetryAction.value = false;
     isLoading.value = true;
     return { signal: controller.signal };
+  };
+
+  // a response that comes back after the request was stopped (restart, cancel) must not
+  // refill the wizard: handled like an axios cancel
+  const throwIfAborted = (signal: AbortSignal) => {
+    if (signal.aborted) throw new axios.CanceledError();
   };
 
   const isAllowedType = (file: File) =>
@@ -131,6 +138,7 @@ export const useTutorStore = defineStore('tutor', () => {
         signal
       }
     );
+    throwIfAborted(signal);
     if (resp.status === 204) {
       throw new Error('retry getFilesContent');
     }
@@ -156,6 +164,7 @@ export const useTutorStore = defineStore('tutor', () => {
         { summaries: summaries.value },
         { signal }
       );
+      throwIfAborted(signal);
       if (resp.status === 204) {
         shouldRetryAction.value = true;
         return;
@@ -238,6 +247,10 @@ export const useTutorStore = defineStore('tutor', () => {
   };
 
   const restart = () => {
+    // a request still running would come back and refill the wizard
+    stopAction();
+    reloadError.value = false;
+    hasDownloadError.value = false;
     setStep(1);
 
     //reset all refs
@@ -278,14 +291,17 @@ export const useTutorStore = defineStore('tutor', () => {
         },
         { signal }
       );
+      throwIfAborted(signal);
 
       const data = resp.data as TutorSyllabus;
 
       //keep only the syllabus from pedagogical engineer
-      const syllabus = data.syllabus.filter(({ source }) =>
+      const syllabus = data.syllabus?.find(({ source }) =>
         source.toLowerCase().includes('pedagogicalengineeragent')
-      )[0];
-      syllabi.value = syllabus && { ...syllabus, content: cleanSyllabus(syllabus.content) };
+      );
+      // nothing to show is a failure: the user can retry and a guest keeps their syllabus
+      if (!syllabus?.content) throw new Error('No syllabus in the response');
+      syllabi.value = { ...syllabus, content: cleanSyllabus(syllabus.content) };
       isLoading.value = false;
       track('Tutor Step Completed', {
         step: 3,
@@ -323,7 +339,8 @@ export const useTutorStore = defineStore('tutor', () => {
   // true = applied, false = failed, undefined = cancelled by the user
   const giveFeedback = async (feedback: string): Promise<boolean | undefined> => {
     if (!tutorSearch.value || !syllabi.value) {
-      throw new Error('Body is empty');
+      console.error('No syllabus to give feedback on');
+      return false;
     }
 
     const { signal } = startRequest();
@@ -340,6 +357,7 @@ export const useTutorStore = defineStore('tutor', () => {
         },
         { signal }
       );
+      throwIfAborted(signal);
 
       const syllabus = resp.data.syllabus[0];
       syllabi.value = { ...syllabus, content: cleanSyllabus(syllabus.content) };
@@ -352,19 +370,29 @@ export const useTutorStore = defineStore('tutor', () => {
       track('Syllabus Feedback Sent', { feedbackLength: feedback.length, isApplied: false });
       return false;
     } finally {
-      isLoading.value = false;
+      // aborted: stopAction already stopped the loading, or a newer request is running
+      if (!signal.aborted) isLoading.value = false;
     }
   };
 
-  const downloadSyllabus = async (content: string) => {
-    const docxContent = await convertMarkdownToDocx(content);
-    downloadDocx(docxContent, 'syllabus.docx');
+  // resolves false when the word file could not be made
+  const downloadSyllabus = async (content: string): Promise<boolean> => {
+    hasDownloadError.value = false;
+    try {
+      const docxContent = await convertMarkdownToDocx(content);
+      downloadDocx(docxContent, 'syllabus.docx');
+    } catch (error) {
+      console.error('Error during syllabus download:', error);
+      hasDownloadError.value = true;
+      return false;
+    }
     track('Syllabus Downloaded', {});
     try {
       await basePostAxios('/metric/syllabus_downloaded');
     } catch (error) {
       console.error('Error during metrics update:', error);
     }
+    return true;
   };
 
   const handleDownloadSyllabus = async () => {
@@ -389,8 +417,8 @@ export const useTutorStore = defineStore('tutor', () => {
     const content: unknown = getFromStorage(PENDING_SYLLABUS_KEY);
     if (useAuthStore().isGuest || typeof content !== 'string' || !content) return;
 
-    clearFromStorage(PENDING_SYLLABUS_KEY);
-    await downloadSyllabus(content);
+    // kept on a failure, so the next visit tries again
+    if (await downloadSyllabus(content)) clearFromStorage(PENDING_SYLLABUS_KEY);
   };
 
   const updateSyllabusInDB = async () => {
@@ -420,6 +448,7 @@ export const useTutorStore = defineStore('tutor', () => {
     fileError,
     restart,
     reloadError,
+    hasDownloadError,
     retrieveTutorSearch,
     tutorSearch,
     appendSource,

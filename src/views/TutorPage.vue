@@ -10,6 +10,7 @@ import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
+import ToasterComponent from '@/components/ToasterComponent.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 import { calculateProgress } from '@/utils/progress';
 
@@ -66,8 +67,8 @@ watch(
 
 onMounted(() => {
   scrollToAnchor(`target-${store.step}`);
-  // back from the login a guest started with the download button
-  store.downloadPendingSyllabus();
+  // back from the login a guest started with the download button (never rejects)
+  void store.downloadPendingSyllabus();
 });
 </script>
 <template>
@@ -82,6 +83,15 @@ onMounted(() => {
       />
     </div>
     <GuestQuotaNotice feature="syllabus" class="mb-3" />
+    <ToasterComponent
+      v-if="store.hasDownloadError"
+      class="download-error"
+      role="alert"
+      level="error"
+      headingTag="h2"
+      :title="$t('tutor.downloadError.title')"
+      :description="$t('tutor.downloadError.description')"
+    />
     <ErrorComponent v-if="store.reloadError" />
     <StatusModal
       :isLoading="store.isLoading"
@@ -200,6 +210,11 @@ onMounted(() => {
   .steps-bar :deep(.step:not(.active) .label) {
     display: none;
   }
+}
+
+.download-error {
+  width: min(100% - 2rem, 40rem);
+  margin-bottom: 0.75rem;
 }
 
 .layout-flex {

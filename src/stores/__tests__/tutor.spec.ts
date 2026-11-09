@@ -26,6 +26,14 @@ type PostResult = Awaited<ReturnType<typeof basePostAxios>>;
 const mockPost = (value: unknown) =>
   vi.mocked(basePostAxios).mockResolvedValueOnce(value as PostResult);
 const mockPostError = (error: unknown) => vi.mocked(basePostAxios).mockRejectedValueOnce(error);
+// a request that only answers when the test resolves it
+const deferredPost = () => {
+  let resolve: (value: unknown) => void = () => {};
+  vi.mocked(basePostAxios).mockImplementationOnce(
+    () => new Promise<unknown>((r) => (resolve = r)) as ReturnType<typeof basePostAxios>
+  );
+  return (value: unknown) => resolve(value);
+};
 
 const PDF = 'application/pdf';
 const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -477,6 +485,27 @@ describe('tutor store', () => {
       expect(store.step).toBe(3);
     });
 
+    it.each([
+      ['no syllabus from the pedagogical engineer', [{ source: 'OtherAgent', content: 'x' }]],
+      ['an empty syllabus', [{ source: 'PedagogicalEngineerAgent', content: '' }]],
+      ['no syllabus at all', []]
+    ])('asks for a retry and keeps the guest quota on %s', async (_, syllabus) => {
+      auth.isGuest = true;
+      mockPost({ data: { syllabus } });
+      const store = useTutorStore();
+      store.tutorSearch = search();
+
+      await store.handleCreateSyllabus();
+
+      expect(store.syllabi).toBeUndefined();
+      expect(store.shouldRetryAction).toBe(true);
+      // the retry modal shows while loading
+      expect(store.isLoading).toBe(true);
+      expect(store.step).toBe(3);
+      expect(useGuestQuotaStore().usage.syllabus).toBe(0);
+      expect(track).toHaveBeenCalledWith('Tutor Step Failed', expect.objectContaining({ step: 3 }));
+    });
+
     it('returns false quietly when the syllabus request is cancelled', async () => {
       mockPostError(new axios.CanceledError());
       const store = useTutorStore();
@@ -494,10 +523,28 @@ describe('tutor store', () => {
       return store;
     };
 
-    it('throws without a search or a syllabus', async () => {
+    it('fails without a search or a syllabus, and sends nothing', async () => {
       const store = useTutorStore();
 
-      await expect(store.giveFeedback('more')).rejects.toThrow('Body is empty');
+      expect(await store.giveFeedback('more')).toBe(false);
+      expect(basePostAxios).not.toHaveBeenCalled();
+      expect(store.isLoading).toBe(false);
+    });
+
+    it('keeps loading when a newer request replaced the feedback', async () => {
+      const resolve = deferredPost();
+      vi.mocked(basePostAxios).mockImplementationOnce(
+        () => new Promise(() => {}) as ReturnType<typeof basePostAxios>
+      );
+      const store = ready();
+      const feedback = store.giveFeedback('shorter');
+      void store.retrieveSyllabus();
+
+      resolve({ data: { syllabus: [{ source: 'agent', content: 'late' }] } });
+
+      expect(await feedback).toBeUndefined();
+      expect(store.syllabi?.content).toBe('old');
+      expect(store.isLoading).toBe(true);
     });
 
     it('applies the feedback', async () => {
@@ -571,6 +618,31 @@ describe('tutor store', () => {
       expect(console.error).toHaveBeenCalledWith('Error during metrics update:', expect.any(Error));
     });
 
+    it('shows an error and records nothing when the word file fails', async () => {
+      vi.mocked(convertMarkdownToDocx).mockRejectedValueOnce(new Error('docx'));
+      const store = useTutorStore();
+      store.syllabi = { source: 'agent', content: '# Course' };
+
+      await expect(store.handleDownloadSyllabus()).resolves.toBeUndefined();
+
+      expect(store.hasDownloadError).toBe(true);
+      expect(downloadDocx).not.toHaveBeenCalled();
+      expect(basePostAxios).not.toHaveBeenCalled();
+      expect(track).not.toHaveBeenCalled();
+    });
+
+    it('clears the download error on the next successful download', async () => {
+      vi.mocked(convertMarkdownToDocx).mockResolvedValueOnce(new Blob(['docx']));
+      mockPost({});
+      const store = useTutorStore();
+      store.syllabi = { source: 'agent', content: '# Course' };
+      store.hasDownloadError = true;
+
+      await store.handleDownloadSyllabus();
+
+      expect(store.hasDownloadError).toBe(false);
+    });
+
     it('asks a guest who used their syllabus to sign up before uploading files', async () => {
       auth.isGuest = true;
       localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
@@ -636,6 +708,17 @@ describe('tutor store', () => {
       expect(convertMarkdownToDocx).toHaveBeenCalledWith('# Course');
       expect(downloadDocx).toHaveBeenCalledOnce();
       expect(localStorage.getItem('pendingSyllabus')).toBeNull();
+    });
+
+    it('keeps the kept syllabus and shows an error when its download fails', async () => {
+      localStorage.setItem('pendingSyllabus', JSON.stringify('# Course'));
+      vi.mocked(convertMarkdownToDocx).mockRejectedValueOnce(new Error('docx'));
+      const store = useTutorStore();
+
+      await expect(store.downloadPendingSyllabus()).resolves.toBeUndefined();
+
+      expect(store.hasDownloadError).toBe(true);
+      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '')).toBe('# Course');
     });
 
     it('does not download the kept syllabus while still a guest', async () => {
@@ -717,6 +800,70 @@ describe('tutor store', () => {
       expect(store.feedbackHistory).toEqual([]);
       expect(store.hasSearchError).toBe(false);
       expect(store.fileError).toEqual({ state: false, reason: null });
+    });
+
+    it('stops the running request and clears the loading and error states', () => {
+      let signal: AbortSignal | undefined;
+      vi.mocked(basePostAxios).mockImplementationOnce((_url, _body, options) => {
+        signal = options?.signal as AbortSignal;
+        return new Promise(() => {}) as ReturnType<typeof basePostAxios>;
+      });
+      const store = useTutorStore();
+      store.tutorSearch = search();
+      void store.retrieveSyllabus();
+      store.shouldRetryAction = true;
+      store.reloadError = true;
+      store.hasDownloadError = true;
+
+      store.restart();
+
+      expect(signal?.aborted).toBe(true);
+      expect(store.isLoading).toBe(false);
+      expect(store.shouldRetryAction).toBe(false);
+      expect(store.reloadError).toBe(false);
+      expect(store.hasDownloadError).toBe(false);
+    });
+
+    it.each([
+      [
+        'syllabus',
+        { data: { syllabus: [pedagogical] } },
+        (store: ReturnType<typeof useTutorStore>) => {
+          store.tutorSearch = search();
+          store.setStep(3);
+          return store.handleCreateSyllabus();
+        }
+      ],
+      [
+        'search',
+        { status: 200, data: search() },
+        (store: ReturnType<typeof useTutorStore>) => store.retrieveTutorSearch()
+      ],
+      [
+        'files',
+        { status: 200, data: { extracts: [{ summary: 'late' }] } },
+        (store: ReturnType<typeof useTutorStore>) => {
+          store.addFiles([file('a.pdf')]);
+          return store.handleSummaryFiles();
+        }
+      ]
+    ])('ignores a %s response that comes back after the restart', async (_, response, run) => {
+      const resolve = deferredPost();
+      const store = useTutorStore();
+      const pending = run(store);
+
+      store.restart();
+      resolve(response);
+      await pending;
+
+      expect(store.step).toBe(1);
+      expect(store.syllabi).toBeUndefined();
+      expect(store.tutorSearch).toBeUndefined();
+      expect(store.summaries).toEqual([]);
+      expect(store.searchedFiles).toEqual([]);
+      expect(store.isLoading).toBe(false);
+      expect(store.shouldRetryAction).toBe(false);
+      expect(console.error).not.toHaveBeenCalled();
     });
   });
 
