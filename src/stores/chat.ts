@@ -166,6 +166,8 @@ export const useChatStore = defineStore('chat', () => {
     }
 
     chatMessagesList.value.push(message);
+    // saved now, so the question survives a reload even when no answer comes
+    saveToStorage('chat', chatMessagesList.value);
   }
 
   const setReformulatedQuery = (query: string): void => {
@@ -268,6 +270,14 @@ export const useChatStore = defineStore('chat', () => {
         content: `${currentMessage.content}${chunk}`
       };
       persistChat();
+    };
+
+    // an answer that failed or came back empty leaves no blank bubble behind
+    const dropEmptyAssistantMessage = () => {
+      const currentMessage = chatMessagesList.value[assistantMessageIndex];
+      if (currentMessage?.role === 'assistant' && !currentMessage.content.trim()) {
+        chatMessagesList.value.splice(assistantMessageIndex, 1);
+      }
     };
 
     const replaceAssistantMessage = (content: string) => {
@@ -425,30 +435,44 @@ export const useChatStore = defineStore('chat', () => {
       }
     };
 
-    let isDone = false;
-    while (!isDone) {
-      const { done: readerDone, value } = await reader.read();
-      // the events of a chunk are handled synchronously, so checking after each read is enough
-      if (isStale()) {
-        return false;
-      }
-      if (readerDone) {
-        isDone = true;
-        break;
+    try {
+      let isDone = false;
+      while (!isDone) {
+        const { done: readerDone, value } = await reader.read();
+        // the events of a chunk are handled synchronously, so checking after each read is enough
+        if (isStale()) {
+          return false;
+        }
+        if (readerDone) {
+          isDone = true;
+          break;
+        }
+
+        streamBuffer += decoder.decode(value, { stream: true });
+        const events = streamBuffer.split('\n\n');
+        streamBuffer = events.pop() || '';
+
+        for (const event of events) {
+          handleStreamEvent(event);
+        }
       }
 
-      streamBuffer += decoder.decode(value, { stream: true });
-      const events = streamBuffer.split('\n\n');
-      streamBuffer = events.pop() || '';
-
-      for (const event of events) {
-        handleStreamEvent(event);
+      const remaining = streamBuffer.trim();
+      if (remaining) {
+        handleStreamEvent(remaining);
       }
-    }
 
-    const remaining = streamBuffer.trim();
-    if (remaining) {
-      handleStreamEvent(remaining);
+      if (!chatMessagesList.value[assistantMessageIndex]?.content.trim()) {
+        throw new Error('The answer stream ended without any content');
+      }
+    } catch (error) {
+      // a reset already emptied the chat. a partial answer is kept, as it is still worth reading,
+      // and the error shown under it tells the answer is not complete
+      if (!isStale()) {
+        dropEmptyAssistantMessage();
+        persistChat(true);
+      }
+      throw error;
     }
 
     persistChat(true);
@@ -477,6 +501,8 @@ export const useChatStore = defineStore('chat', () => {
     const controller = new AbortController();
     streamController = controller;
     chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
+    // the error of the previous answer is not about this one
+    hasChatAnswerError.value = false;
 
     const { sdgFilters, sourcesFilters } = useFiltersStore();
     track('Chat Question Sent', {

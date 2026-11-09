@@ -7,7 +7,7 @@ test.describe('profile', () => {
     test.use({ loggedIn: true });
 
     test('opens from the user menu', async ({ page }) => {
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await page.getByTestId('user-menu-profile').click();
 
       await expect(page).toHaveURL(/\/profile/);
@@ -45,7 +45,7 @@ test.describe('profile', () => {
       await page.getByTestId('profile-logout').click();
 
       // back home as a guest
-      await page.getByTestId('user-menu').hover();
+      await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu-login')).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
     });
