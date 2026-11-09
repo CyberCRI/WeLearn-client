@@ -454,7 +454,7 @@ export const fr = {
         'Ces ressources WeLearn correspondent à vos documents et aident à relier votre cours aux Objectifs de développement durable. Cliquez sur une ressource pour la sélectionner.',
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
-      allHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
+      noneHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
       action: 'Générer le syllabus',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:
