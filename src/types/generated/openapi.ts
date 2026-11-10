@@ -1477,8 +1477,9 @@ export interface components {
       /**
        * Lang
        * @default en
+       * @enum {string}
        */
-      lang: string;
+      lang: 'en' | 'fr';
       /** Syllabus */
       syllabus: components['schemas']['SyllabusResponseAgent'][];
       /** Syllabus Message Id */
@@ -1500,8 +1501,7 @@ export interface components {
     };
     /**
      * SyllabusGenerationResponse
-     * @description `/tutor/api/generate` output. The orchestrator stores the BAML outputs as
-     *     is, so the sections use the BAML types, not the models above.
+     * @description `/tutor/api/generate` output: the BAML outputs the orchestrator stores.
      */
     SyllabusGenerationResponse: {
       competencies?: components['schemas']['CompetencyMappings'] | null;
@@ -1746,6 +1746,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['RowCorpusQtyDocInfo'][];
+        };
+      };
+      /** @description Metric views not populated yet (code METRICS_NOT_READY) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2033,7 +2042,7 @@ export interface operations {
         subject?: string | null;
         /** @description Weight applied to subject influence during flavored embedding. */
         influence_factor?: number;
-        /** @description Weight applied to base relevance scoring. */
+        /** @description Weight applied to base relevance scoring, from 0 (diversity only) to 1 (relevance only). */
         relevance_factor?: number;
         /** @description If true, combines query fragments before embedding. */
         concatenate?: boolean;
@@ -2177,7 +2186,7 @@ export interface operations {
         subject?: string | null;
         /** @description Weight applied to subject influence during flavored embedding. */
         influence_factor?: number;
-        /** @description Weight applied to base relevance scoring. */
+        /** @description Weight applied to base relevance scoring, from 0 (diversity only) to 1 (relevance only). */
         relevance_factor?: number;
         /** @description If true, combines query fragments before embedding. */
         concatenate?: boolean;
@@ -2279,7 +2288,7 @@ export interface operations {
   'tutor-extract_files_content': {
     parameters: {
       query?: {
-        lang?: string;
+        lang?: 'en' | 'fr';
       };
       header?: never;
       path?: never;
@@ -2300,6 +2309,24 @@ export interface operations {
           'application/json': components['schemas']['ExtractorOutputList'] | null;
         };
       };
+      /** @description Too many files (code TOO_MANY_FILES) or unreadable file */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description A file is too large (code FILE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2314,7 +2341,7 @@ export interface operations {
   'tutor-extract_files_content_baml': {
     parameters: {
       query?: {
-        lang?: string;
+        lang?: 'en' | 'fr' | 'english' | 'french';
         mode?: string;
       };
       header?: never;
@@ -2334,6 +2361,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['FileSummary'] | null;
+        };
+      };
+      /** @description Too many files (code TOO_MANY_FILES) or unreadable file */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description A file is too large (code FILE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2385,7 +2430,7 @@ export interface operations {
   'tutor-create_syllabus': {
     parameters: {
       query?: {
-        lang?: string;
+        lang?: 'en' | 'fr';
       };
       header?: never;
       path?: never;
@@ -2666,6 +2711,24 @@ export interface operations {
           'application/json': components['schemas']['BookmarksResponse'];
         };
       };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2693,6 +2756,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['BookmarksDeletedResponse'];
+        };
+      };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2726,6 +2807,24 @@ export interface operations {
           'application/json': components['schemas']['BookmarkAddedResponse'];
         };
       };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2755,6 +2854,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['BookmarkDeletedResponse'];
+        };
+      };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2788,6 +2905,24 @@ export interface operations {
           'application/json': components['schemas']['BookmarkAddedResponse'];
         };
       };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2817,6 +2952,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['BookmarkDeletedResponse'];
+        };
+      };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2943,6 +3096,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['UserAndSessionResponse'];
+        };
+      };
+      /** @description Invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
