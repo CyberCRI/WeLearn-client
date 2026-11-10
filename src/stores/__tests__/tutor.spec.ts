@@ -422,7 +422,7 @@ describe('tutor store', () => {
       expect(basePostAxios).not.toHaveBeenCalled();
     });
 
-    it('creates the syllabus from all found documents by default', async () => {
+    it('sends no WeLearn documents when none are selected', async () => {
       mockPost({
         data: { syllabus: [{ source: 'OtherAgent', content: 'x' }, pedagogical] }
       });
@@ -435,7 +435,7 @@ describe('tutor store', () => {
 
       const [url, body] = vi.mocked(basePostAxios).mock.calls[0];
       expect(url).toBe('/tutor/syllabus?lang=fr');
-      expect(body).toEqual({ ...search([doc('found-1')]), extracts: [] });
+      expect(body).toEqual({ ...search([doc('found-1')]), documents: [], extracts: [] });
       expect(store.syllabi).toEqual({
         source: 'PedagogicalEngineerAgent',
         content: '| a<br>b |\nline\nnext'
@@ -773,6 +773,7 @@ describe('tutor store', () => {
       mockPost({ data: { syllabus: [pedagogical] } });
       const store = useTutorStore();
       store.tutorSearch = search([doc('1')]);
+      store.appendSource(doc('1'));
 
       await store.handleCreateSyllabus();
       mockPostError(new Error('boom'));

@@ -455,7 +455,7 @@ export const en = {
       description:
         'These WeLearn resources match your documents and help connect your course to the Sustainable Development Goals. Click a resource to select it.',
       selected: 'No resource selected | 1 resource selected | {n} resources selected',
-      allHint: 'Nothing selected: WeLearn will use all the resources above.',
+      noneHint: 'Nothing selected: the syllabus will be based only on your uploaded documents.',
       action: 'Generate syllabus',
       noSources: 'No related resources found',
       noSourcesDescription:
@@ -495,7 +495,7 @@ export const en = {
       syllabus: {
         title: 'Writing your syllabus',
         description:
-          "WeLearn is combining your documents, course details and resources. This can take up to a minute: please don't close or reload this page."
+          "WeLearn is combining your documents, course details and selected resources. This can take up to a minute: please don't close or reload this page."
       },
       feedback: {
         title: 'Applying your changes',

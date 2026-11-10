@@ -107,7 +107,7 @@ const sourcesStore = useSourcesStore();
           {{ $t('tutor.resourcesStep.selected', selectedSources.length) }}
         </p>
         <p v-if="!selectedSources.length" class="has-text-grey">
-          {{ $t('tutor.resourcesStep.allHint') }}
+          {{ $t('tutor.resourcesStep.noneHint') }}
         </p>
       </div>
       <button data-testid="tutor-generate-button" class="button is-primary" @click="action">

@@ -462,7 +462,7 @@ export const fr = {
         'Ces ressources WeLearn correspondent à vos documents et aident à relier votre cours aux Objectifs de développement durable. Cliquez sur une ressource pour la sélectionner.',
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
-      allHint: 'Aucune sélection\u00a0: WeLearn utilisera toutes les ressources ci-dessus.',
+      noneHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
       action: 'Générer le syllabus',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:
@@ -502,7 +502,7 @@ export const fr = {
       syllabus: {
         title: 'Rédaction de votre syllabus',
         description:
-          'WeLearn combine vos documents, les informations du cours et les ressources. Cela peut prendre jusqu’à une minute\u00a0: merci de ne pas fermer ni recharger la page.'
+          'WeLearn combine vos documents, les informations du cours et les ressources sélectionnées. Cela peut prendre jusqu’à une minute : merci de ne pas fermer ni recharger la page.'
       },
       feedback: {
         title: 'Application de vos modifications',

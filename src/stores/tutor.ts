@@ -257,10 +257,6 @@ export const useTutorStore = defineStore('tutor', () => {
     fileError.value = { state: false, reason: null };
   };
 
-  // with nothing selected, all found resources are used
-  const documentsToUse = () =>
-    selectedSources.value.length ? selectedSources.value : tutorSearch.value?.documents || [];
-
   const retrieveSyllabus = async (): Promise<boolean> => {
     const { signal } = startRequest();
     const startedAt = Date.now();
@@ -269,7 +265,8 @@ export const useTutorStore = defineStore('tutor', () => {
         `/tutor/syllabus?lang=${syllabusLanguage.value}`,
         {
           ...tutorSearch.value,
-          documents: documentsToUse(),
+          // nothing selected = no WeLearn resources, only the uploaded files
+          documents: selectedSources.value,
           extracts: extracts.value,
           ...(courseTitle.value && { course_title: courseTitle.value }),
           ...(level.value && { level: level.value }),
@@ -290,7 +287,7 @@ export const useTutorStore = defineStore('tutor', () => {
       track('Tutor Step Completed', {
         step: 3,
         durationMs: Date.now() - startedAt,
-        sourcesCount: documentsToUse().length
+        sourcesCount: selectedSources.value.length
       });
       return true;
     } catch (error) {
