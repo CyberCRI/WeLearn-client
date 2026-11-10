@@ -19,6 +19,8 @@ declare module 'vue-router' {
     signupPromptReason?: SignupPromptReason;
     // the page is reachable only where this feature is on (stores/featureFlip.ts)
     feature?: Feature;
+    // no welcome form here: it waits for the next normal page (onboarding flags stay unchanged)
+    hideWelcome?: boolean;
   }
 }
 
@@ -33,7 +35,7 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterPage,
-      meta: { requiresAuth: false }
+      meta: { requiresAuth: false, hideWelcome: true }
     },
     // keycloak sends users here once their account is set up (password set from the sign-up
     // email): straight to the keycloak login, then back to the home page
@@ -41,6 +43,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: { render: () => null },
+      meta: { hideWelcome: true },
       beforeEnter: () => {
         const authStore = useAuthStore();
         // the auth guard above has waited for keycloak init

@@ -2,8 +2,19 @@
 import ModalComponent from '../ModalComponent.vue';
 import { useUserStore } from '@/stores/user';
 import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 const user = useUserStore();
+const route = useRoute();
+
+// auth pages (register, login redirect) skip it: the form shows on the next normal page.
+// no matched route = the first navigation hasn't landed yet (or /login aborted it to go to keycloak)
+const isShown = computed(
+  () =>
+    route.matched.length > 0 &&
+    !route.meta.hideWelcome &&
+    (!user.onboardingState.hasSeenWelcome || !user.onboardingState.hasSeenMetricsData)
+);
 
 const institution = ref('');
 const role = ref('');
@@ -39,7 +50,7 @@ const isDisabledCloseModal = computed(() => {
 
 <template>
   <ModalComponent
-    v-if="!user.onboardingState.hasSeenWelcome || !user.onboardingState.hasSeenMetricsData"
+    v-if="isShown"
     :title="$t('onboarding.welcome.title')"
     :message="$t('onboarding.welcome.description')"
     :isOpen="true"
