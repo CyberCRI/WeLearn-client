@@ -509,6 +509,10 @@ export const fr = {
         description: 'WeLearn met à jour le syllabus selon votre demande.'
       }
     },
+    downloadError: {
+      title: 'Échec du téléchargement',
+      description: "Nous n'avons pas pu créer le fichier Word. Veuillez réessayer."
+    },
     error: {
       title: 'Un problème est survenu',
       extract: 'Impossible de lire vos documents.',

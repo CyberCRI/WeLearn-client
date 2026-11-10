@@ -4,6 +4,7 @@ import TutorPage from '../TutorPage.vue';
 import { createPinia, setActivePinia } from 'pinia';
 import ProgressBar from '@/components/microlearning/ProgressBar.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
+import ToasterComponent from '@/components/ToasterComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { scrollToAnchor } from '@/utils/navigation';
 
@@ -82,6 +83,30 @@ describe('TutorPage', () => {
 
     expect(wrapper.findComponent(CursusInfo).exists()).toBe(true);
     expect(scrollToAnchor).not.toHaveBeenCalled();
+  });
+
+  it('downloads the syllabus a guest kept before logging in', () => {
+    const store = useTutorStore();
+    const downloadPendingSyllabus = vi.spyOn(store, 'downloadPendingSyllabus');
+    mount(TutorPage, { shallow: true });
+    expect(downloadPendingSyllabus).toHaveBeenCalledOnce();
+  });
+
+  it('shows an error when the word file could not be downloaded', async () => {
+    const store = useTutorStore();
+    const wrapper = mount(TutorPage, { shallow: true });
+    expect(wrapper.findComponent(ToasterComponent).exists()).toBe(false);
+
+    store.hasDownloadError = true;
+    await flushPromises();
+
+    const toaster = wrapper.findComponent(ToasterComponent);
+    expect(toaster.props()).toMatchObject({
+      level: 'error',
+      title: 'tutor.downloadError.title',
+      description: 'tutor.downloadError.description'
+    });
+    expect(toaster.attributes('role')).toBe('alert');
   });
 
   it('writes the course details typed in the first step to the store', async () => {

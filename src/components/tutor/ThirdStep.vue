@@ -86,7 +86,13 @@ const feedbackFailed = ref(false);
 
 const sendFeedback = async () => {
   if (!feedback.value.trim()) return;
-  const ok = await props.giveFeedback(feedback.value);
+  let ok: boolean | undefined;
+  try {
+    ok = await props.giveFeedback(feedback.value);
+  } catch (error) {
+    console.error('Error during feedback submission:', error);
+    ok = false;
+  }
   // keep the text if sending failed, so the user doesn't lose what they wrote
   feedbackFailed.value = ok === false;
   if (!ok) return;
@@ -137,7 +143,8 @@ const sendFeedback = async () => {
       </div>
     </div>
 
-    <div class="feedback box">
+    <!-- feedback needs a syllabus to change -->
+    <div v-if="syllabus?.content" class="feedback box">
       <label class="label" for="syllabus-feedback">{{
         $t('tutor.syllabusStep.feedbackLabel')
       }}</label>

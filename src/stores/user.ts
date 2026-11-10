@@ -13,6 +13,7 @@ import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 import { useChatStore } from '@/stores/chat';
 import { useSearchStore } from '@/stores/search';
+import { PENDING_SYLLABUS_KEY } from '@/stores/tutor';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 type OnboardingState = {
@@ -108,6 +109,8 @@ export const useUserStore = defineStore('user', () => {
     // storage only for the hidden TestMAS page, its in-memory state goes on reload
     clearFromStorage('courseMetadaRef');
     clearFromStorage('userMetricsData');
+    // a guest's syllabus waiting for a login must not download for someone else
+    clearFromStorage(PENDING_SYLLABUS_KEY);
   };
 
   // call with every user id the API returns. Without a sessionId, a user change

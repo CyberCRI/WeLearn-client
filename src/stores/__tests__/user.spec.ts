@@ -127,7 +127,8 @@ describe('user store', () => {
       'searchInput',
       'searchResults',
       'courseMetadaRef',
-      'userMetricsData'
+      'userMetricsData',
+      'pendingSyllabus'
     ];
 
     beforeEach(() => {
