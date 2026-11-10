@@ -1500,8 +1500,7 @@ export interface components {
     };
     /**
      * SyllabusGenerationResponse
-     * @description `/tutor/api/generate` output. The orchestrator stores the BAML outputs as
-     *     is, so the sections use the BAML types, not the models above.
+     * @description `/tutor/api/generate` output: the BAML outputs the orchestrator stores.
      */
     SyllabusGenerationResponse: {
       competencies?: components['schemas']['CompetencyMappings'] | null;
@@ -1746,6 +1745,15 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['RowCorpusQtyDocInfo'][];
+        };
+      };
+      /** @description Metric views not populated yet (code METRICS_NOT_READY) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
