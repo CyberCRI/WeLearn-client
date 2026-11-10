@@ -1,4 +1,5 @@
 import type { ApiSchema } from './api';
+import type { ModuleId } from '@/types/learn/modules';
 
 type DocumentPayload = ApiSchema<'EnhancedDocumentSlicePayloadModel'>;
 
@@ -91,7 +92,7 @@ export type AnalyticsConsent = {
   date: string;
 };
 
-export type SourceOrigin = 'chat' | 'search' | 'tutor' | 'bookmarks' | 'other';
+export type SourceOrigin = 'chat' | 'search' | 'tutor' | 'bookmarks' | 'learn' | 'other';
 
 // what a guest tried to do when the signup prompt opened (key under authentication.signupPrompt)
 export type SignupPromptReason =
@@ -146,6 +147,16 @@ export type AnalyticsEvents = {
   'Microlearning Started': { discipline: string };
   'Microlearning Step Completed': { discipline: string; stepIndex: number };
   'Microlearning Completed': { discipline: string; hasPreEval: boolean; hasPostEval: boolean };
+  'Learn Module Started': { module: ModuleId };
+  'Learn Module Completed': { module: ModuleId };
+  // 1–5 self-rating, at the start (before) or the end (after) of a module
+  'Learn Confidence Rated': { module: ModuleId; moment: 'before' | 'after'; value: number };
+  'Learn Sort Completed': {
+    module: ModuleId;
+    stepId: string;
+    firstTryCount: number;
+    total: number;
+  };
   'Login Clicked': Record<string, never>;
   'Signup Prompt Shown': { reason: SignupPromptReason };
   'Signup Prompt Clicked': { reason: SignupPromptReason; action: 'register' | 'login' };

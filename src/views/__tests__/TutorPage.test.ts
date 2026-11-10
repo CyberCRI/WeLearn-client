@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import TutorPage from '../TutorPage.vue';
 import { createPinia, setActivePinia } from 'pinia';
-import ProgressBar from '@/components/microlearning/ProgressBar.vue';
+import ProgressBar from '@/components/learn/ProgressBar.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 import { useTutorStore } from '@/stores/tutor';

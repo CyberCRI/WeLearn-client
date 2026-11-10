@@ -212,7 +212,7 @@ The WeLearn platform uses cookies and similar storage (browser local storage) th
 
 **Usage measurement (Mixpanel), only with your consent.** When you first visit WeLearn, a banner lets you accept or refuse usage measurement, with equal ease. Nothing is sent to Mixpanel and no measurement identifier is stored before you accept. If you accept:
 
-- we record which pages you visit and which features you use (for example: a question was sent, a syllabus step was completed, a resource was bookmarked), with counts and durations only. **We never record the text of your questions, your uploaded documents, your syllabi or your feedback**;
+- we record which pages you visit and which features you use (for example: a question was sent, a syllabus step was completed, a resource was bookmarked), with counts and durations only, plus the 1 to 5 confidence rating you choose in the Learn modules. **We never record the text of your questions, your uploaded documents, your syllabi or your feedback**;
 - if you are logged in, these events are linked to your random WeLearn user identifier, never to your name or email address;
 - your IP address is not used to locate you;
 - a small share of sessions may be recorded to understand how the interface is used (session replay and heatmaps). In these recordings **all text and every input field are masked**, and images and uploaded files are hidden;

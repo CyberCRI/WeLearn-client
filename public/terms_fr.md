@@ -219,7 +219,7 @@ La plateforme WeLearn utilise des cookies et des traceurs similaires (stockage l
 
 **Mesure d’utilisation (Mixpanel), uniquement avec votre consentement.** Lors de votre première visite, un bandeau vous permet d’accepter ou de refuser la mesure d’utilisation, aussi simplement l’un que l’autre. Rien n’est envoyé à Mixpanel et aucun identifiant de mesure n’est déposé avant votre acceptation. Si vous acceptez :
 
-- nous enregistrons les pages visitées et les fonctionnalités utilisées (par exemple : une question envoyée, une étape du syllabus terminée, une ressource ajoutée aux favoris), uniquement sous forme de nombres et de durées. **Nous n’enregistrons jamais le texte de vos questions, vos documents téléversés, vos syllabus ni vos retours** ;
+- nous enregistrons les pages visitées et les fonctionnalités utilisées (par exemple : une question envoyée, une étape du syllabus terminée, une ressource ajoutée aux favoris), uniquement sous forme de nombres et de durées, ainsi que la note de confiance de 1 à 5 que vous choisissez dans les modules « Se former ». **Nous n’enregistrons jamais le texte de vos questions, vos documents téléversés, vos syllabus ni vos retours** ;
 - si vous êtes connecté·e, ces événements sont associés à votre identifiant utilisateur WeLearn aléatoire, jamais à votre nom ni à votre adresse e-mail ;
 - votre adresse IP n’est pas utilisée pour vous localiser ;
 - une petite partie des sessions peut être enregistrée afin de comprendre l’usage de l’interface (enregistrement de session et cartes de chaleur). Dans ces enregistrements, **tous les textes et tous les champs de saisie sont masqués**, et les images et fichiers téléversés sont cachés ;

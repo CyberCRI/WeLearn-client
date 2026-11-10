@@ -33,6 +33,11 @@
   --info-20: #b8daff;
   --info-100: #004085;
 
+  /* learn modules: the three sustainability dimensions and the four GreenComp areas */
+  --learn-green: #2e9e5b;
+  --learn-blue: #3b7dd8;
+  --learn-violet: #8a5cc7;
+  --learn-orange: #d9822b;
   --warning-10: #fff3cd;
   --warning-20: #ffeeba;
   --warning-100: #856404;
@@ -229,4 +234,17 @@ html {
       font-weight: 600;
     }
   }
+}
+
+/* the one gap between a title and the subtitle right under it, everywhere in the app.
+   bulma 1.0 glues them together (margin 0) and `is-spaced` gives a second, larger gap: both are
+   replaced by this rule. :root wins over the cdn rules whatever the load order. pages don't set
+   this gap themselves (no mt- or mb- helpers, no is-spaced, no scoped margin on the pair): the
+   helpers are !important and would win over it */
+:root .title:has(+ .subtitle) {
+  margin-bottom: 0.75rem;
+}
+
+:root .title + .subtitle {
+  margin-top: 0;
 }

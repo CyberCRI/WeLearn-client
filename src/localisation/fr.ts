@@ -1,9 +1,8 @@
-import { microLearning } from './microLearning/fr';
+import { discipline } from './learn/discipline.fr';
 import { authentication } from './authentication/fr';
 
 export const fr = {
   authentication,
-  microLearning,
   ':': '\u00a0:',
   adaptedTo: 'Adapté à\u00a0:',
   addBookmark: 'Ajouter aux favoris',
@@ -207,7 +206,7 @@ export const fr = {
       }
     }
   },
-  hideAuthors: 'Masquer les auteurs',
+  hideAuthors: 'Masquer les auteur·rices',
   hideFilters: 'Masquer les filtres',
   hideSources: 'Masquer les sources',
   lang: {
@@ -230,7 +229,7 @@ export const fr = {
       'Explorez des ressources, apprenez et intégrez la durabilité dans vos cours grâce à l’IA.',
     aboutTitle: 'À propos de WeLearn',
     aboutDescription:
-      'WeLearn est une plateforme qui s’appuie sur l’intelligence artificielle pour aider les enseignants à intégrer la durabilité dans leurs cours. Elle repose sur une sélection de ressources ouvertes et fiables liées aux Objectifs de développement durable (ODD), qui alimentent des outils pédagogiques concrets : recherche, assistant questions-réponses, conception de syllabus et micro-learning.',
+      'WeLearn est une plateforme qui s’appuie sur l’intelligence artificielle pour aider les enseignant·es à intégrer la durabilité dans leurs cours. Elle repose sur une sélection de ressources ouvertes et fiables liées aux Objectifs de développement durable (ODD), qui alimentent des outils pédagogiques concrets : recherche, assistant questions-réponses, conception de syllabus et micro-learning.',
     partnership:
       'WeLearn est développé par le Learning Planet Institute dans le cadre du projet TEDS (« Transition écologique pour un développement soutenable »), porté conjointement avec la Fondation UVED et CY Cergy Paris Université. TEDS est financé par l’Agence nationale de la recherche au titre de France 2030 et de l’appel à projets\u00a0« Nouveaux cursus à l’université » (référence ANR-17-NCUN-0016).',
     horizontal: {
@@ -259,7 +258,7 @@ export const fr = {
       section_two: {
         title: 'Simplifier l’éducation à la durabilité',
         content:
-          'Nous nous engageons à donner aux enseignants du monde entier les moyens d’apprendre et d’enseigner la durabilité.'
+          'Nous nous engageons à donner aux enseignant·es du monde entier les moyens d’apprendre et d’enseigner la durabilité.'
       },
       section_three: {
         title: 'Respecter les principes d’une IA responsable',
@@ -269,6 +268,42 @@ export const fr = {
     }
   },
   moreDocuments: 'Explorer d’autres ressources',
+  learn: {
+    discipline,
+    title: 'Se former',
+    intro:
+      'Des modules courts pour intégrer la durabilité dans votre enseignement. Suivez-les dans l’ordre ou ouvrez celui dont vous avez besoin.',
+    cards: {
+      discipline: {
+        title: 'La durabilité dans votre discipline',
+        subtitle:
+          'Choisissez votre discipline et découvrez des pistes concrètes pour y intégrer la durabilité.',
+        duration: '≈ 5 min'
+      }
+    },
+    module: {
+      introLabel: 'Intro',
+      wrapUpLabel: 'Bilan',
+      start: 'Commencer',
+      nextHint: 'Terminez l’activité pour continuer',
+      confidenceLow: 'Pas du tout',
+      confidenceHigh: 'Tout à fait',
+      confidenceDelta: 'Votre confiance\u00a0: {before}/5 au début, {after}/5 maintenant.',
+      inHigherEd: 'Dans le supérieur\u00a0:',
+      sortPool: 'Cartes à classer',
+      sortPlaceIn: 'Placer la carte sélectionnée dans «\u00a0{bin}\u00a0»',
+      notQuite: 'Pas tout à fait. Indice\u00a0:',
+      sortDone: 'Tout est classé\u00a0! {n} sur {total} justes du premier coup.',
+      tryAnother: 'Essayez une autre intention pour comparer.',
+      pickExample: 'Choisissez un exemple ci-dessus pour voir ses trois dimensions.',
+      takeawaysTitle: 'À retenir',
+      sourcesTitle: 'Sources ({n})',
+      completed: 'Terminé',
+      notFound: 'Ce module n’existe pas.',
+      nextModule: 'Module suivant\u00a0: {title}',
+      backToLearn: 'Retour à tous les modules'
+    }
+  },
   nav: {
     chat: 'Chat',
     search: 'Recherche',
@@ -278,7 +313,7 @@ export const fr = {
     help: 'Aide',
     preview: 'Aperçu',
     profile: 'Profil',
-    microlearning: 'Micro-learning',
+    learn: 'Se former',
     workshopForm: "Formulaire d'atelier"
   },
 
@@ -305,7 +340,7 @@ export const fr = {
       },
       institutionLabel: 'Institution (université, école, organisation, etc.)',
       institutionPlaceholder: 'Université de Bordeaux',
-      roleLabel: 'Rôle (professeur, étudiant, ingénieur pédagogique, etc.)',
+      roleLabel: 'Rôle (professeur·e, étudiant·e, ingénieur·e pédagogique, etc.)',
       rolePlaceholder: 'Professeur',
       consentLabel: 'Je ne souhaite pas communiquer ces informations.'
     }
@@ -441,7 +476,7 @@ export const fr = {
       durationPlaceholder: 'ex.\u00a0: 6 semaines, 2 heures par semaine',
       descriptionLabel: 'Description et objectifs du cours',
       descriptionPlaceholder:
-        'ex.\u00a0: Les étudiants découvrent les concepts clés de la sociolinguistique et apprennent à analyser les usages de la langue dans leur environnement.',
+        'ex.\u00a0: Les étudiant·es découvrent les concepts clés de la sociolinguistique et apprennent à analyser les usages de la langue dans leur environnement.',
       nudge: 'Sans informations sur le cours, votre syllabus sera générique.',
       addDetails: 'Ajouter des informations',
       continueAnyway: 'Continuer quand même',
@@ -548,7 +583,7 @@ export const fr = {
     start: {
       badge: 'Avant de commencer',
       title: 'Deux petites questions',
-      subtitle: "30 secondes pour nous aider à mesurer l'apport pédagogique de ce parcours.",
+      subtitle: '30 secondes pour nous aider à mesurer l’apport pédagogique de ce parcours.',
       lockedNotice:
         'Vous avez commencé le parcours\u00a0: ces réponses sont donc verrouillées. Elles indiquent votre point de départ, ce qui nous permet de mesurer ce qui a changé.'
     },
@@ -556,11 +591,11 @@ export const fr = {
       badge: 'Avant de partir',
       title: 'Un dernier mot',
       subtitle:
-        "Les mêmes questions qu'au départ, plus deux autres, pour mesurer ce qui a évolué. Toujours 30 secondes."
+        'Les mêmes questions qu’au départ, plus deux autres, pour mesurer ce qui a évolué. Toujours 30 secondes.'
     },
     firstQuestion:
       'Je vois clairement le lien entre ma discipline ({discipline}) et la transition écologique.',
-    secondQuestion: "Je me sens capable d'intégrer ce sujet dans mon enseignement.",
+    secondQuestion: 'Je me sens capable d’intégrer ce sujet dans mon enseignement.',
     willUse: 'Comptez-vous utiliser ce que vous venez de voir dans un prochain cours ?',
     feedback: 'Une remarque à partager avec nous ?'
   },

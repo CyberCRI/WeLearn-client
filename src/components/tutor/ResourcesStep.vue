@@ -30,7 +30,7 @@ const sourcesStore = useSourcesStore();
     </h1>
 
     <template v-if="sources && sources.length">
-      <p class="subtitle is-6 mt-2">{{ $t('tutor.resourcesStep.description') }}</p>
+      <p class="subtitle is-6">{{ $t('tutor.resourcesStep.description') }}</p>
       <div class="sources">
         <div
           class="source"

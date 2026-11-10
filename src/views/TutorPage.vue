@@ -5,7 +5,7 @@ import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
-import ProgressBar from '@/components/microlearning/ProgressBar.vue';
+import ProgressBar from '@/components/learn/ProgressBar.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';

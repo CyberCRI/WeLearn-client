@@ -9,10 +9,12 @@ const sourcesStore = useSourcesStore();
   <div class="wrapper py-6">
     <div class="presentation is-flex is-fullwidth is-justify-content-center is-align-items-center">
       <div class="call-to-action is-flex is-flex-direction-column is-justify-content-space-between">
-        <h1 class="is-size-1 is-size-4-mobile has-text-weight-bold has-text-centered is-uppercase">
+        <h1
+          class="title is-size-1 is-size-4-mobile has-text-weight-bold has-text-centered is-uppercase"
+        >
           {{ $t('landing.slogan') }}
         </h1>
-        <p class="subtitle is-size-6-mobile has-text-centered mt-4 mb-6">
+        <p class="subtitle is-size-6-mobile has-text-centered mb-6">
           {{ $t('landing.description') }}
         </p>
       </div>
@@ -20,21 +22,17 @@ const sourcesStore = useSourcesStore();
 
     <div class="partnership">
       <div class="logos my-4">
-        <img
-          alt="Learning Planet Institute"
-          class="partner-logo mx-4"
-          src="@/assets/lpi_logo.png"
-        />
-        <img alt="Fondation UVED" class="partner-logo mx-4" src="@/assets/uved.png" />
-        <img alt="CY Cergy Paris Université" class="partner-logo mx-4" src="@/assets/cy_logo.png" />
-        <img alt="France 2030" class="partner-logo mx-4" src="@/assets/france2030.png" />
+        <img alt="Learning Planet Institute" class="partner-logo" src="@/assets/lpi_logo.png" />
+        <img alt="Fondation UVED" class="partner-logo" src="@/assets/uved.png" />
+        <img alt="CY Cergy Paris Université" class="partner-logo" src="@/assets/cy_logo.png" />
+        <img alt="France 2030" class="partner-logo" src="@/assets/france2030.png" />
       </div>
       <p class="subtitle is-6 mt-6">{{ $t('landing.partnership') }}</p>
     </div>
 
     <div class="product-description">
       <h2 class="title is-size-4 pt-6 has-text-centered">{{ $t('landing.aboutTitle') }}</h2>
-      <p class="subtitle is-size-6-mobile mt-4">
+      <p class="subtitle is-size-6-mobile">
         {{ $t('landing.aboutDescription') }}
       </p>
     </div>
@@ -190,20 +188,49 @@ const sourcesStore = useSourcesStore();
 }
 
 .partnership {
-  width: 45%;
+  width: 90%;
   margin: auto;
   text-align: left;
 }
 
+/* the logos get the full width (the old 45% box made them spill out to the right) and scale with
+   the screen: one row on wide screens, centered rows when they wrap */
 .logos {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
+  gap: clamp(1rem, 4vw, 3.5rem);
 }
 
 .partner-logo {
-  margin: auto;
-  height: 5rem;
+  height: clamp(2.5rem, 6vw, 5rem);
+  width: auto;
+  max-width: 40%;
+  object-fit: contain;
+}
+
+.partnership .subtitle {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+/* too narrow for one row: an invisible full-width break after the second logo gives 2 + 2 rows,
+   each centred at the logos' own width, rather than three logos and an orphan */
+@media (max-width: 400px) {
+  .logos {
+    row-gap: 0.5rem;
+  }
+
+  .logos::after {
+    content: '';
+    flex-basis: 100%;
+    order: 1;
+  }
+
+  .partner-logo:nth-child(n + 3) {
+    order: 2;
+  }
 }
 
 .product-description {
@@ -239,23 +266,6 @@ const sourcesStore = useSourcesStore();
 @media (max-width: 767px) {
   .presentation {
     width: 90%;
-  }
-
-  .partner-logo {
-    margin: auto;
-    height: 2.5rem;
-  }
-
-  .logos {
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-  }
-
-  .partnership {
-    width: 90%;
-    margin: auto;
-    text-align: left;
   }
 
   .product-description {

@@ -1,0 +1,199 @@
+<template>
+  <section class="complete-screen">
+    <div class="complete-inner">
+      <div class="complete-icon"><LineIcon name="complete" /></div>
+
+      <h1 class="title">{{ $t('learn.discipline.completeScreen.title') }}</h1>
+
+      <p class="subtitle">
+        {{ $t('learn.discipline.completeScreen.subtitle') }}
+      </p>
+
+      <p class="description">
+        {{ $t('learn.discipline.completeScreen.description') }}
+      </p>
+
+      <div class="takeaways">
+        <article v-if="chosenActivity" class="takeaway">
+          <span class="takeaway-label">{{ $t('learn.discipline.reflection.yourPick') }}</span>
+          <h3>{{ chosenActivity.title }}</h3>
+          <p>{{ chosenActivity.desc }}</p>
+        </article>
+
+        <article v-if="resource" class="takeaway resource">
+          <span class="takeaway-label"><LineIcon name="resources" /> {{ resource.label }}</span>
+          <h3>{{ resource.title }}</h3>
+          <p>{{ $t('learn.discipline.reflection.resourceSubtitle') }}</p>
+          <a :href="resource.href" target="_blank" rel="noopener noreferrer">
+            {{ $t('learn.discipline.reflection.ctaSource') }}
+          </a>
+        </article>
+      </div>
+
+      <div class="actions">
+        <router-link class="btn-primary" to="/tutor">
+          {{ $t('learn.discipline.completeScreen.primaryButton') }}</router-link
+        >
+        <button class="btn-secondary" @click="$emit('restart')">
+          {{ $t('learn.discipline.completeScreen.secondaryButton') }}
+        </button>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
+import { computed } from 'vue';
+import type { Activity, Discipline, ReflectionStep } from '@/types/learn/discipline';
+
+const props = defineProps<{
+  discipline: Discipline;
+  chosenActivity: Activity | null;
+}>();
+
+const resource = computed(
+  () =>
+    (props.discipline.steps.find((s) => s.type === 'votretour') as ReflectionStep | undefined)
+      ?.resource
+);
+
+defineEmits<{
+  (e: 'restart'): void;
+}>();
+</script>
+
+<style scoped>
+.complete-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+}
+
+.complete-inner {
+  width: 100%;
+  max-width: 620px;
+  text-align: center;
+}
+
+.complete-icon {
+  color: var(--primary-dark);
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 2.4rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--neutral-80);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.description {
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.takeaways {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.takeaway {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  background: var(--neutral-0);
+}
+
+.takeaway.resource {
+  border-color: transparent;
+  background: var(--primary-lighter);
+}
+
+.takeaway-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-dark);
+}
+
+.takeaway h3 {
+  margin: 0.35rem 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.takeaway p {
+  margin: 0;
+  color: var(--neutral-80);
+  line-height: 1.6;
+}
+
+.takeaway a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: var(--primary-dark);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.takeaway a:hover {
+  text-decoration: underline;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  border: none;
+  background: var(--primary);
+  color: var(--neutral-100);
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-secondary {
+  border: 1px solid #ddd;
+  background: white;
+}
+
+.btn-secondary:hover {
+  border-color: #2ec4a0;
+}
+
+@media (max-width: 768px) {
+  .complete-inner {
+    max-width: 100%;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+}
+</style>

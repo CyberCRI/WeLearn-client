@@ -11,7 +11,7 @@ const FEATURE_ENVIRONMENTS = {
   search: ENVIRONMENTS,
   bookmarks: ENVIRONMENTS,
   about: ENVIRONMENTS,
-  microlearning: ENVIRONMENTS,
+  learn: ENVIRONMENTS,
   workshop: ['dev'],
   // keycloak login is rolled out on dev and staging, not on prod yet
   auth: ['dev', 'staging'],
