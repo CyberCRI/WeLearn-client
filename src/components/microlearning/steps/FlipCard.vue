@@ -1,29 +1,28 @@
 <template>
-  <div
+  <!-- a native button: focusable, and Enter/Space flip it like a click -->
+  <button
+    type="button"
     class="flip-card"
     :class="{ flipped, [card.color]: card.color }"
+    :aria-pressed="flipped"
     @click="!flipped && $emit('flip')"
   >
-    <div class="inner">
-      <div class="front">
-        <h3>
-          {{ card.verb }}
-        </h3>
+    <!-- spans, not h3/p: a button only takes phrasing content -->
+    <span class="inner">
+      <!-- only the visible face is read, so the verb is not announced twice -->
+      <span class="front" :aria-hidden="flipped || undefined">
+        <span class="verb">{{ card.verb }}</span>
 
         <small> {{ $t('microLearning.flipCards.clickToDiscover') }} </small>
-      </div>
+      </span>
 
-      <div class="back">
-        <h3>
-          {{ card.verb }}
-        </h3>
+      <span class="back" :aria-hidden="!flipped || undefined">
+        <span class="verb">{{ card.verb }}</span>
 
-        <p>
-          {{ card.text }}
-        </p>
-      </div>
-    </div>
-  </div>
+        <span class="text">{{ card.text }}</span>
+      </span>
+    </span>
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -41,6 +40,16 @@ defineEmits<{
 
 <style scoped>
 .flip-card {
+  /* reset the native button look, the card keeps its own */
+  appearance: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+
   cursor: pointer;
   display: grid;
   min-height: 18rem;
@@ -48,6 +57,11 @@ defineEmits<{
   border-radius: 16px;
   background-color: var(--primary-hover);
   color: var(--neutral-0);
+}
+
+.flip-card:focus-visible {
+  outline: 3px solid var(--primary-dark);
+  outline-offset: 3px;
 }
 
 /* Both faces share one grid cell: the card grows to fit the longest face, no overflow */
@@ -59,6 +73,8 @@ defineEmits<{
 
 .flip-card.flipped {
   cursor: auto;
+  /* buttons default to unselectable text, the revealed text stays selectable */
+  user-select: text;
 }
 
 .flipped .inner {
@@ -114,7 +130,8 @@ defineEmits<{
   transform: rotateY(180deg);
 }
 
-h3 {
+.verb {
+  display: block;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
