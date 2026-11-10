@@ -117,16 +117,18 @@ exports[`QandA > renders properly 1`] = `
             data-v-4fef38d0=""
           >
             <textarea
-              auto-grow=""
+              aria-label="chatInputLabel"
               class="chat-input"
               data-v-4fef38d0=""
               placeholder="chatInputPlaceholder"
-              type="text-area"
             />
           </div>
-          <div
+          <button
+            aria-label="chatSendButton"
             class="action"
             data-v-4fef38d0=""
+            disabled=""
+            type="button"
           >
             <svg
               aria-hidden="true"
@@ -149,7 +151,7 @@ exports[`QandA > renders properly 1`] = `
                 d="M6 12h16"
               />
             </svg>
-          </div>
+          </button>
         </div>
       </div>
       <!--v-if-->

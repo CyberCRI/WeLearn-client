@@ -1,24 +1,43 @@
 <script setup lang="ts">
 import { useChatStore } from '@/stores/chat';
 import SendIcon from './icons/SendIcon.vue';
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const store = useChatStore();
 const parent = ref<HTMLElement | null>(null);
-const props = defineProps<{ action: (arg: string) => void }>();
+// true when the question is accepted: the text is cleared only then
+const props = defineProps<{ action: (question: string) => boolean | Promise<boolean> }>();
 
-const onSend = (value: string) => {
-  // the store ignores a question sent while an answer streams, so keep the text
-  if (store.isAnswering || value.replace(/(\r\n|\n|\r)/gm, '').trim().length === 0) {
+const isBlank = (value: string) => value.replace(/(\r\n|\n|\r)/gm, '').trim().length === 0;
+// the user can type the next question while an answer streams, only sending waits
+const canSend = computed(() => !store.isAnswering && !isBlank(store.chatInput));
+
+// the hidden copy in the wrapper sizes the textarea, so it follows every change of the text
+watch(
+  () => store.chatInput,
+  (value) => {
+    if (parent.value) {
+      parent.value.dataset.replicatedValue = value;
+    }
+  },
+  { flush: 'post' }
+);
+
+const handleSend = async () => {
+  if (!canSend.value) {
     return;
   }
-  props.action(value);
+  const question = store.chatInput;
+  const result = props.action(question);
+  if (result === false) {
+    return;
+  }
+  // the store refuses a question synchronously, but its promise only settles once the answer has
+  // streamed: clear now so the next question can be typed meanwhile, and put the text back if it
+  // was refused (the guest quota is used up) and nothing new was typed
   store.clearInput();
-};
-
-const handleInput = () => {
-  if (parent.value) {
-    parent.value.dataset.replicatedValue = store.chatInput;
+  if (result !== true && !(await result) && store.chatInput === '') {
+    store.chatInput = question;
   }
 };
 </script>
@@ -28,33 +47,41 @@ const handleInput = () => {
     <div class="grow-wrap" ref="parent">
       <textarea
         class="chat-input"
-        auto-grow
-        type="text-area"
         :placeholder="$t('chatInputPlaceholder')"
+        :aria-label="$t('chatInputLabel')"
         v-model="store.chatInput"
-        :disabled="store.isAnswering"
-        @keydown.enter.exact="[onSend(store.chatInput), $event.preventDefault()]"
-        @input="handleInput"
+        @keydown.enter.exact.prevent="handleSend"
       ></textarea>
     </div>
-    <div class="action" :class="{ 'is-disabled': store.isAnswering }">
-      <SendIcon @click="onSend(store.chatInput)" />
-    </div>
+    <button
+      type="button"
+      class="action"
+      :aria-label="$t('chatSendButton')"
+      :disabled="!canSend"
+      @click="handleSend"
+    >
+      <SendIcon />
+    </button>
   </div>
 </template>
 
 <style scoped>
 .action {
-  cursor: pointer;
   display: flex;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
 }
-.action.is-disabled {
+.action:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
-textarea:disabled {
-  background-color: transparent;
-  cursor: not-allowed;
+.action:focus-visible {
+  outline: 2px solid var(--primary-dark);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 .chat-input-wrapper {
   display: flex;
