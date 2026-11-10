@@ -23,7 +23,7 @@ describe('ChatComponent', () => {
     let store: ReturnType<typeof useChatStore>;
     beforeEach(() => {
       store = useChatStore();
-      vi.spyOn(store, 'onSendMessage').mockResolvedValue(undefined);
+      vi.spyOn(store, 'onSendMessage').mockResolvedValue(true);
     });
 
     it('sends what is typed in the input', () => {
