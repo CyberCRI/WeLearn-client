@@ -158,7 +158,6 @@ The types in `src/types/generated/` are generated from the `openapi.json` file o
 `yarn install` enables a git pre-push hook (`.githooks/pre-push`) that runs the same checks as CI before every push: lint, format, type check, unit tests with coverage and the API contract check. End-to-end tests are left to CI. It also refuses to push:
 
 - to `main`;
-- a new branch that doesn't follow the naming rule below (branches already on GitHub keep their names);
 - when there are uncommitted or untracked files, because the checks run on the working tree.
 
 To skip the hook once, use `git push --no-verify`.
