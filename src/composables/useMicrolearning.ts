@@ -64,7 +64,9 @@ export function useMicrolearning() {
     letters: { id: 'letters', name: 'Lettres' },
     ecology: { id: 'ecology', name: 'Écologie' },
     art: { id: 'art', name: 'Art' },
-    polsci: { id: 'polsci', name: 'Science politique' }
+    polsci: { id: 'polsci', name: 'Science politique' },
+    physics: { id: 'physics', name: 'Physique' },
+    anthropology: { id: 'anthropology', name: 'Anthropologie' }
   };
 
   const DISC_LIST: DisciplineMeta[] = Object.values(DISC_META);
