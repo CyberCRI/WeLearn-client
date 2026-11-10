@@ -14,7 +14,7 @@ defineProps<{ action: () => void; delText: string; toLeft?: boolean; disabled?: 
     :class="{ 'to-left': toLeft }"
   >
     <TrashIcon class="trash-icon" />
-    <Tooltip class="tltip" isLeft :tooltipText="delText" />
+    <Tooltip class="tltip" :tooltipText="delText" />
   </button>
 </template>
 <style scoped>

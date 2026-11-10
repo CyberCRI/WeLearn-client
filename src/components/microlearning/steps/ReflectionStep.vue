@@ -35,7 +35,7 @@
     </div>
 
     <aside class="resource-card">
-      <div class="resource-icon">📚</div>
+      <div class="resource-icon"><LineIcon name="resources" /></div>
 
       <div class="resource-content">
         <span class="resource-label">
@@ -56,6 +56,7 @@
 </template>
 
 <script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
 import type { Activity, ReflectionStep } from '@/types/microlearning';
 import i18n from '@/localisation/i18n';
 
@@ -186,6 +187,7 @@ function placeholderFor(index: number, fallback: string) {
 }
 
 .resource-icon {
+  color: var(--primary-dark);
   font-size: 2rem;
 }
 

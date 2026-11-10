@@ -52,7 +52,7 @@ const copyMessage = (msg: string) => {
         @click="copyMessage(message)"
       >
         <CopyIcon class="icon-action" />
-        <TooltipComponent class="tltip" :tooltipText="copied ? $t('copied') : $t('copy')" isLeft />
+        <TooltipComponent class="tltip" :tooltipText="copied ? $t('copied') : $t('copy')" />
       </DescreteButton>
     </div>
   </div>

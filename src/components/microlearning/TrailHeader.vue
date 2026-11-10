@@ -7,8 +7,8 @@
     </div>
 
     <div class="center">
-      <div v-if="discipline?.icon" class="discipline-icon">
-        {{ discipline?.icon }}
+      <div v-if="discipline" class="discipline-icon">
+        <LineIcon :name="discipline.id" />
         <h1 class="title">
           {{ $t(`microLearning.disciplineNames.${discipline.id}`) }}
         </h1>
@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
 import type { DisciplineMeta } from '@/types/microlearning';
 import i18n from '@/localisation/i18n';
 
@@ -87,6 +88,7 @@ function confirmRestart() {
 }
 
 .discipline-icon {
+  color: var(--primary-dark);
   height: 56px;
   border-radius: 12px;
   padding: 0 1rem;

@@ -1,5 +1,5 @@
 export const microLearning = {
-  hint: '4 étapes · environ 5 minutes',
+  hint: '4 étapes\u00a0· environ 5 minutes',
   welcomeScreen: {
     title: 'Votre discipline contribue déjà à la transition écologique',
     subtitle:
@@ -36,7 +36,7 @@ export const microLearning = {
     }
   },
   restart: 'Recommencer',
-  restartConfirm: 'Changer de discipline ? Votre progression sur ce parcours sera perdue.',
+  restartConfirm: 'Changer de discipline\u00a0? Votre progression sur ce parcours sera perdue.',
   step: 'Étape',
   progressBarLabels: {
     contribution: 'Les apports',
@@ -56,7 +56,7 @@ export const microLearning = {
   },
   activities: {
     instruction:
-      "Laquelle de ces activités aimeriez-vous le plus essayer avec vos étudiant·es ? Choisissez-en une, vous la retrouverez à l'étape suivante.",
+      "Laquelle de ces activités aimeriez-vous le plus essayer avec vos étudiant·es\u00a0? Choisissez-en une, vous la retrouverez à l'étape suivante.",
     nextHint: 'Choisissez une activité pour continuer'
   },
   competence: {
@@ -70,7 +70,8 @@ export const microLearning = {
     yourPick: "L'activité que vous avez choisie",
     yourPickHint: 'Gardez-la en tête pour répondre aux questions ci-dessous.',
     changePick: 'Modifier',
-    activityPlaceholder: 'Par exemple : proposer « {activity} » lors de ma prochaine séance sur…'
+    activityPlaceholder:
+      'Par exemple\u00a0: proposer\u00a0«\u00a0{activity}\u00a0» lors de ma prochaine séance sur…'
   },
   completeScreen: {
     title: 'Parcours terminé !',

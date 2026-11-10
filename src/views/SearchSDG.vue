@@ -101,6 +101,8 @@ const expandSearch = async () => {
         <div class="results-scroll" @scroll="onResultsScroll">
           <SourcesListComponent
             class="results"
+            cardType="simple"
+            hideNumber
             v-if="
               store.searchResults ||
               store.isFetchingSources ||

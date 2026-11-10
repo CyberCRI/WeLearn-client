@@ -22,21 +22,20 @@ const handleLogin = () => {
     :title="$t('authentication.sessionExpired.title')"
     :message="$t('authentication.sessionExpired.message')"
     :isOpen="true"
+    size="small"
     :onClose="authStore.closeSessionExpired"
   >
     <template #actions>
-      <div class="buttons is-centered mb-5">
-        <ButtonComponent color="primary" data-testid="session-expired-login" @click="handleLogin">
-          {{ $t('authentication.sessionExpired.login') }}
-        </ButtonComponent>
-        <ButtonComponent
-          isDiscreet
-          data-testid="session-expired-close"
-          @click="authStore.closeSessionExpired"
-        >
-          {{ $t('authentication.sessionExpired.continueAsGuest') }}
-        </ButtonComponent>
-      </div>
+      <ButtonComponent color="primary" data-testid="session-expired-login" @click="handleLogin">
+        {{ $t('authentication.sessionExpired.login') }}
+      </ButtonComponent>
+      <ButtonComponent
+        isDiscreet
+        data-testid="session-expired-close"
+        @click="authStore.closeSessionExpired"
+      >
+        {{ $t('authentication.sessionExpired.continueAsGuest') }}
+      </ButtonComponent>
     </template>
   </ModalComponent>
 </template>

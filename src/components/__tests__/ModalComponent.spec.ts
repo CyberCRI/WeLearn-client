@@ -7,7 +7,7 @@ describe('ModalComponent', () => {
     const wrapper = mount(ModalComponent, {
       props: { isOpen: true, title: 'title', message: '<img src=x onerror="alert(1)">' }
     });
-    const message = wrapper.find('.subtitle');
+    const message = wrapper.find('.dialog-message');
     expect(message.find('img').exists()).toBe(false);
     expect(message.text()).toBe('<img src=x onerror="alert(1)">');
   });

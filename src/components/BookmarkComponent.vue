@@ -1,6 +1,8 @@
 <template>
   <div class="bookmark">
+    <!-- flex: a plain block would reserve a full text line and push the icon up -->
     <div
+      class="toggle"
       @click.stop="toggleBookmark()"
       :class="isBookmarked && 'bookmarked'"
       data-testid="toggleBookmark"
@@ -11,7 +13,6 @@
     <TooltipComponent
       class="tltip"
       :tooltipText="isBookmarked ? $t('cardArticle.removeBookmark') : $t('cardArticle.addBookmark')"
-      isLeft
     />
   </div>
 </template>
@@ -36,6 +37,9 @@ defineProps<{
       display: block;
     }
   }
+}
+.toggle {
+  display: flex;
 }
 .icon {
   color: var(--neutral-80);

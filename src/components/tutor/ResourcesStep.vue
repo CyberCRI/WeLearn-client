@@ -6,6 +6,7 @@ import Card from '@/components/CardComponent.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { sourceKey } from '@/stores/tutor';
+import { useSourcesStore } from '@/stores/sources';
 
 const props = defineProps<{
   sources?: Document[];
@@ -20,6 +21,7 @@ const bookmarks = useBookmarksStore();
 // by id, like the store's appendSource: the selection may hold other copies of the same documents
 const isSelected = (source: Document) =>
   props.selectedSources.some((s) => sourceKey(s) === sourceKey(source));
+const sourcesStore = useSourcesStore();
 </script>
 <template>
   <div class="wrapper">
@@ -50,6 +52,7 @@ const isSelected = (source: Document) =>
             :checked="isSelected(source)"
           />
           <CardSimpleComponent
+            :category="sourcesStore.sourceCategoryMap[source.payload.document_corpus]"
             :title="source.payload.document_title"
             :corpus="source.payload.document_corpus"
             :subCorpus="source.payload.document_sub_corpus"
@@ -69,6 +72,7 @@ const isSelected = (source: Document) =>
               >
                 <Card
                   :key="`modal-card-${source.id}`"
+                  :category="sourcesStore.sourceCategoryMap[source.payload.document_corpus]"
                   :title="source.payload.document_title"
                   :description="source.payload.document_desc"
                   :url="source.payload.document_url"
@@ -154,38 +158,13 @@ const isSelected = (source: Document) =>
   accent-color: var(--primary-dark);
   pointer-events: none;
 }
-/* restyle the shared card: clear hierarchy, no inner hover or empty number column */
-.source :deep(.block.is-flex.is-fullwidth) {
-  padding: 0 !important;
-  &:hover {
+/* the row already has its own padding, hover and dividers */
+.source :deep(.source-card) {
+  padding: 0;
+  &:hover,
+  &:focus-within {
     background-color: transparent;
   }
-}
-.source :deep([data-category]) {
-  display: none;
-}
-.source :deep(.is-size-6.has-text-weight-normal) {
-  font-weight: 600 !important;
-  line-height: 1.35;
-}
-.source :deep(.corpus) {
-  margin-top: 0.125rem;
-  font-size: 0.8rem;
-  font-style: normal !important;
-  color: var(--neutral-70);
-}
-.source :deep(.is-6.mr-2) {
-  font-size: 0.75rem;
-  color: var(--neutral-70);
-}
-.source :deep(.pill) {
-  width: 1.25rem;
-  height: 1.25rem;
-  font-size: 0.7rem;
-  line-height: 1.25rem;
-}
-.source :deep(.is-flex.is-align-items-center) {
-  margin-top: 0.375rem;
 }
 .step-footer {
   display: flex;

@@ -4,8 +4,8 @@ import { authentication } from './authentication/fr';
 export const fr = {
   authentication,
   microLearning,
-  ':': ' :',
-  adaptedTo: 'Adapté à :',
+  ':': '\u00a0:',
+  adaptedTo: 'Adapté à\u00a0:',
   addBookmark: 'Ajouter aux favoris',
   back: 'Retour',
   bookmarks: 'Favoris',
@@ -27,11 +27,14 @@ export const fr = {
   clearChat: 'Effacer la conversation',
   chatError: "Une erreur s'est produite. Veuillez réessayer plus tard.",
   cancel: 'Annuler',
-  confirmClearChat: 'Supprimer toute cette conversation ?',
+  cannotBeUndone: 'Cette action est irréversible.',
+  confirmClearChat: 'Supprimer toute cette conversation\u00a0?',
+  confirmClearBookmarks: 'Supprimer tous vos favoris\u00a0?',
   goToBottom: 'Aller au dernier message',
   clearSearch: 'Effacer la recherche',
+  close: 'Fermer',
   closeSidebar: 'Masquer la barre latérale',
-  copied: 'Copié !',
+  copied: 'Copié\u00a0!',
   copy: 'Copier',
   categories: {
     science_communication_and_outreach: 'Vulgarisation scientifique',
@@ -39,10 +42,11 @@ export const fr = {
     academic_scientific_publications: 'Publications scientifiques',
     teaching_resources: 'Ressources éducatives',
     collaborative_and_encyclopedic_knowledge: 'Connaissances collaboratives et encyclopédiques',
+    datasets: 'Jeux de données',
     null: 'Non catégorisé'
   },
   corpus: {
-    'notre-environnement': 'notre-environnement',
+    'notre-environnement': 'Notre-Environnement',
     unesdoc: 'Unesdoc',
     'ird-le-mag': "IRD Le Mag'",
     unccelearn: 'UN CC:e-Learn',
@@ -60,40 +64,40 @@ export const fr = {
     ted: 'TED',
     uved: 'UVED',
     'fao-open-knowledge': "Organisation des Nations unies pour l'alimentation et l'agriculture",
-    'world-bank-open-knowledge-repository': 'Banque Mondiale',
+    'world-bank-open-knowledge-repository': 'Banque mondiale',
     wikipedia: 'Wikipedia'
   },
   download: 'Télécharger',
   defaultQueues: [
-    "Le changement climatique est-il causé par l'homme ?",
-    "L'énergie nucléaire est-elle une solution durable ?",
-    'La technologie peut-elle à elle seule résoudre la crise climatique ?',
-    'La croissance économique est-elle compatible avec le développement durable ?',
-    "Comment l'ingénierie contribue-t-elle à la transition écologique ?",
-    "Comment l'architecture contribue-t-elle à la transition écologique ?",
-    'Comment les écoles de commerce peuvent-elles enseigner le développement durable sans tomber dans le « greenwashing » ?',
-    "Quel rôle joue l'IA dans la transition écologique ?",
-    "Taxe carbone ou système de plafonnement et d'échange : quelle est la solution la plus efficace ?",
-    'Décroissance ou croissance verte : quelle option est la plus pertinente ?',
-    'Nucléaire ou énergies renouvelables : quel est le véritable compromis ?'
+    "Le changement climatique est-il causé par l'homme\u00a0?",
+    "L'énergie nucléaire est-elle une solution durable\u00a0?",
+    'La technologie peut-elle à elle seule résoudre la crise climatique\u00a0?',
+    'La croissance économique est-elle compatible avec le développement durable\u00a0?',
+    "Comment l'ingénierie contribue-t-elle à la transition écologique\u00a0?",
+    "Comment l'architecture contribue-t-elle à la transition écologique\u00a0?",
+    'Comment les écoles de commerce peuvent-elles enseigner le développement durable sans tomber dans le\u00a0«\u00a0greenwashing\u00a0»\u00a0?',
+    "Quel rôle joue l'IA dans la transition écologique\u00a0?",
+    "Taxe carbone ou système de plafonnement et d'échange\u00a0: quelle est la solution la plus efficace\u00a0?",
+    'Décroissance ou croissance verte\u00a0: quelle option est la plus pertinente\u00a0?',
+    'Nucléaire ou énergies renouvelables\u00a0: quel est le véritable compromis\u00a0?'
   ],
-  hintForNewQuestions: 'Voici des questions supplémentaires pour approfondir ce sujet :',
+  hintForNewQuestions: 'Voici des questions supplémentaires pour approfondir ce sujet\u00a0:',
   description:
     'Découvrez des ressources, apprenez et renforcez l’intégration de la durabilité dans vos cours avec l’IA.',
-  emptyChatAction: 'Besoin d’inspiration ? Essayez :',
+  emptyChatAction: 'Besoin d’inspiration\u00a0? Essayez\u00a0:',
   emptyChatPresentation:
-    'Bonjour ! Je suis WeLearn, votre assistant IA pour les ODD. En quoi puis-je vous aider ?',
+    'Bonjour\u00a0! Je suis WeLearn, votre assistant IA pour les ODD. En quoi puis-je vous aider\u00a0?',
   error: {
     UNKNOWN_ERROR: {
-      title: 'Oups !',
+      title: 'Oups\u00a0!',
       description: 'Un problème est survenu. Veuillez réessayer.'
     },
     COLL_NOT_FOUND: {
-      title: 'Oups !',
+      title: 'Oups\u00a0!',
       description: 'Cette collection n’est pas encore disponible dans la langue de votre recherche.'
     },
     LANG_NOT_SUPPORTED: {
-      title: 'Désolé !',
+      title: 'Désolé\u00a0!',
       description: 'Cette langue n’est pas encore prise en charge.'
     }
   },
@@ -105,11 +109,11 @@ export const fr = {
   extract: 'Extrait pertinent',
   filterBySource: 'Filtrer par source',
   filterSDG: 'Filtrer par ODD',
-  filteredBySDG: 'Filtré par l’ODD : | Filtré par les ODD :',
+  filteredBySDG: 'Filtré par l’ODD\u00a0: | Filtré par les ODD\u00a0:',
   genSyllabus: 'Générer le syllabus',
   goToSources: 'Voir les sources',
   goToTop: 'Retour en haut',
-  gotIt: 'Compris !',
+  gotIt: 'Compris\u00a0!',
 
   helpUser: {
     'q&a': {
@@ -152,7 +156,7 @@ export const fr = {
       title: 'Utiliser la fonctionnalité Recherche',
       step1: {
         description:
-          'Bienvenue sur la recherche WeLearn ! Trouvez des ressources éducatives sur les Objectifs de développement durable (ODD). Le moteur utilise une recherche sémantique : plus votre requête est longue, meilleurs seront les résultats. Pour en savoir plus sur nos sources et nos critères de sélection, consultez la section À propos.'
+          'Bienvenue sur la recherche WeLearn\u00a0! Trouvez des ressources éducatives sur les Objectifs de développement durable (ODD). Le moteur utilise une recherche sémantique\u00a0: plus votre requête est longue, meilleurs seront les résultats. Pour en savoir plus sur nos sources et nos critères de sélection, consultez la section À propos.'
       },
       step2: {
         description:
@@ -166,7 +170,7 @@ export const fr = {
       title: 'Utiliser la fonctionnalité Génération de Syllabus',
       step1: {
         description:
-          'Bienvenue sur la Génération de Syllabus sur WeLearn ! Créez un syllabus pour votre cours à partir de vos documents importés et des ressources WeLearn pertinentes. Vous pouvez ajouter des informations sur le cours pour personaliser le syllabus, et affiner le syllabus généré en donnant un retour.'
+          'Bienvenue sur la Génération de Syllabus sur WeLearn\u00a0! Créez un syllabus pour votre cours à partir de vos documents importés et des ressources WeLearn pertinentes. Vous pouvez ajouter des informations sur le cours pour personaliser le syllabus, et affiner le syllabus généré en donnant un retour.'
       },
       step2: {
         description: 'Ajoutez un ou plusieurs documents. Ils serviront à générer le syllabus.'
@@ -187,11 +191,11 @@ export const fr = {
       title: 'Utiliser la fonctionnalité Favoris',
       step1: {
         description:
-          'Bienvenue dans les Favoris WeLearn ! Retrouvez les éléments enregistrés depuis vos résultats.'
+          'Bienvenue dans les Favoris WeLearn\u00a0! Retrouvez les éléments enregistrés depuis vos résultats.'
       },
       step2: {
         description:
-          'Cliquez sur l’icône de favori pour enregistrer un résultat ; une fois enregistré, l’icône se remplit.'
+          'Cliquez sur l’icône de favori pour enregistrer un résultat\u00a0; une fois enregistré, l’icône se remplit.'
       },
       step3: {
         description: 'Cliquez de nouveau sur l’icône de favori pour supprimer le favori.'
@@ -226,7 +230,7 @@ export const fr = {
     aboutDescription:
       'WeLearn est une plateforme qui s’appuie sur l’intelligence artificielle pour aider les enseignants à intégrer la durabilité dans leurs cours. Elle repose sur une sélection de ressources ouvertes et fiables liées aux Objectifs de développement durable (ODD), qui alimentent des outils pédagogiques concrets : recherche, assistant questions-réponses, conception de syllabus et micro-learning.',
     partnership:
-      'WeLearn est développé par le Learning Planet Institute dans le cadre du projet TEDS (« Transition écologique pour un développement soutenable »), porté conjointement avec la Fondation UVED et CY Cergy Paris Université. TEDS est financé par l’Agence nationale de la recherche au titre de France 2030 et de l’appel à projets « Nouveaux cursus à l’université » (référence ANR-17-NCUN-0016).',
+      'WeLearn est développé par le Learning Planet Institute dans le cadre du projet TEDS (« Transition écologique pour un développement soutenable »), porté conjointement avec la Fondation UVED et CY Cergy Paris Université. TEDS est financé par l’Agence nationale de la recherche au titre de France 2030 et de l’appel à projets\u00a0« Nouveaux cursus à l’université » (référence ANR-17-NCUN-0016).',
     horizontal: {
       section_one: {
         title: 'Une sélection de savoirs sur la durabilité',
@@ -278,14 +282,16 @@ export const fr = {
 
   next: 'Suivant',
   noBookmarks: 'Aucun favori pour le moment',
+  noBookmarksHint:
+    "Enregistrez des ressources depuis le chat, la recherche ou le syllabus avec l'icône signet pour les retrouver ici.",
   noFiltersSelected: 'Aucun filtre sélectionné',
   noResults: 'Aucun résultat pour cette recherche',
   openSidebar: 'Afficher la barre latérale',
   onboarding: {
     welcome: {
-      title: 'Bienvenue sur WeLearn !',
+      title: 'Bienvenue sur WeLearn\u00a0!',
       description:
-        "Nous sommes ravis de vous accueillir.</br></br>WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.",
+        "Nous sommes ravis de vous accueillir. WeLearn est votre plateforme d'apprentissage alimentée par l’IA, conçue pour vous aider à intégrer la durabilité dans vos cours.",
       help: 'Pour en savoir plus sur chaque fonctionnalité de WeLearn, consultez sa rubrique <strong>Aide</strong> dédiée.',
       action: 'Commencer'
     },
@@ -320,10 +326,10 @@ export const fr = {
   sdgsAcronym: 'ODD',
   sdgs: {
     1: 'Pas de pauvreté',
-    2: 'Faim "zéro"',
+    2: 'Faim\u00a0«\u00a0zéro\u00a0»',
     3: 'Bonne santé et bien-être',
     4: 'Éducation de qualité',
-    5: 'Égalité entre sexes',
+    5: 'Égalité entre les sexes',
     6: 'Eau propre et assainissement',
     7: 'Énergie propre et d’un coût abordable',
     8: 'Travail décent et croissance économique',
@@ -345,15 +351,15 @@ export const fr = {
   selectAll: 'Tout sélectionner',
   selectSubject: 'Choisir une discipline',
   selectSubjectInfo: 'Sélectionnez une discipline pour adapter les résultats à votre domaine.',
-  selectedSource: 'Filtré par source : | Filtré par sources :',
+  selectedSource: 'Filtré par source\u00a0: | Filtré par sources\u00a0:',
   showFilters: 'Afficher les filtres',
   showMoreAuthors: 'Afficher plus',
   showSources: 'Afficher les sources',
 
   chatProcessingSteps: {
-    fetching_resources: 'Recuperation des ressources depuis la base WeLearn',
+    fetching_resources: 'Récupération des ressources depuis la base WeLearn',
     analyzing_resources: 'Analyse des ressources pertinentes',
-    generating_answer: 'Generation de votre reponse'
+    generating_answer: 'Génération de votre réponse'
   },
 
   sources: 'Sources',
@@ -392,7 +398,7 @@ export const fr = {
     Political: 'Sciences politiques',
     Psychology: 'Psychologie',
     Sociology: 'Sociologie',
-    Space: 'Science de l’espace',
+    Space: 'Sciences de l’espace',
     Theology: 'Théologie'
   },
   textLengthFeedback: 'Veuillez ajouter davantage de texte pour lancer la recherche.',
@@ -415,8 +421,8 @@ export const fr = {
         "Importez 1 à 3 documents sur lesquels repose votre cours (articles, chapitres d'ouvrage…). WeLearn construit le syllabus à partir de ceux-ci.",
       dropzone: 'Déposez vos fichiers ici ou',
       browse: 'parcourez',
-      limits: 'PDF, DOCX ou TXT · 5 Mo max · 3 fichiers maximum',
-      hint: "Cette fonctionnalité est en bêta : les articles scientifiques et les chapitres d'ouvrage donnent les meilleurs résultats.",
+      limits: 'PDF, DOCX ou TXT\u00a0· 5 Mo max\u00a0· 3 fichiers maximum',
+      hint: "Cette fonctionnalité est en bêta\u00a0: les articles scientifiques et les chapitres d'ouvrage donnent les meilleurs résultats.",
       exampleLink: 'Voir un exemple de document',
       removeFile: 'Retirer {name}',
       noFile: 'Ajoutez au moins un document pour continuer.',
@@ -426,24 +432,24 @@ export const fr = {
       detailsWhy:
         'Plus vous en dites, plus le syllabus sera adapté à votre cours. Sans ces informations, il restera générique.',
       titleLabel: 'Titre du cours',
-      titlePlaceholder: 'ex. : Introduction à la sociolinguistique',
+      titlePlaceholder: 'ex.\u00a0: Introduction à la sociolinguistique',
       levelLabel: "Niveau d'études",
-      levelPlaceholder: 'ex. : Licence 1',
+      levelPlaceholder: 'ex.\u00a0: Licence 1',
       durationLabel: 'Durée',
-      durationPlaceholder: 'ex. : 6 semaines, 2 heures par semaine',
+      durationPlaceholder: 'ex.\u00a0: 6 semaines, 2 heures par semaine',
       descriptionLabel: 'Description et objectifs du cours',
       descriptionPlaceholder:
-        'ex. : Les étudiants découvrent les concepts clés de la sociolinguistique et apprennent à analyser les usages de la langue dans leur environnement.',
+        'ex.\u00a0: Les étudiants découvrent les concepts clés de la sociolinguistique et apprennent à analyser les usages de la langue dans leur environnement.',
       nudge: 'Sans informations sur le cours, votre syllabus sera générique.',
       addDetails: 'Ajouter des informations',
       continueAnyway: 'Continuer quand même',
       action: 'Analyser mes documents',
-      recap: '{files} · {lang}'
+      recap: '{files}\u00a0· {lang}'
     },
     summaryStep: {
       title: 'Le résumé de vos documents',
       description:
-        "Voici ce que WeLearn a retenu de chaque document. Vous pouvez l'ajuster si besoin : il oriente la recherche de ressources.",
+        "Voici ce que WeLearn a retenu de chaque document. Vous pouvez l'ajuster si besoin\u00a0: il oriente la recherche de ressources.",
       noFileName: 'Document {n}',
       action: 'Trouver des ressources',
       recap: 'Aucun document résumé | 1 document résumé | {n} documents résumés'
@@ -469,13 +475,17 @@ export const fr = {
         'Cliquez sur le texte pour le modifier, demandez des modifications à WeLearn, puis téléchargez-le au format Word.',
       feedbackLabel: 'Demander des modifications',
       feedbackPlaceholder:
-        "ex. : Ajouter une semaine sur l'évaluation, raccourcir la bibliographie, rendre le cours plus pratique…",
+        "ex.\u00a0: Ajouter une semaine sur l'évaluation, raccourcir la bibliographie, rendre le cours plus pratique…",
       regenerate: 'Régénérer avec mes modifications',
       feedbackError: "Vos modifications n'ont pas pu être appliquées. Veuillez réessayer.",
       feedbackHistory: 'Modifications déjà demandées ({n})',
       openLink: 'Ouvrir',
       download: 'Télécharger (.docx)',
-      restart: 'Créer un nouveau syllabus'
+      restart: 'Créer un nouveau syllabus',
+      restartConfirmTitle: 'Créer un nouveau syllabus\u00a0?',
+      restartConfirmMessage:
+        "Le syllabus actuel sera perdu. Téléchargez-le d'abord si vous souhaitez le conserver.",
+      restartConfirmAction: 'Recommencer'
     },
     loading: {
       extract: {
@@ -534,7 +544,7 @@ export const fr = {
       title: 'Deux petites questions',
       subtitle: "30 secondes pour nous aider à mesurer l'apport pédagogique de ce parcours.",
       lockedNotice:
-        'Vous avez commencé le parcours : ces réponses sont donc verrouillées. Elles indiquent votre point de départ, ce qui nous permet de mesurer ce qui a changé.'
+        'Vous avez commencé le parcours\u00a0: ces réponses sont donc verrouillées. Elles indiquent votre point de départ, ce qui nous permet de mesurer ce qui a changé.'
     },
     end: {
       badge: 'Avant de partir',
@@ -568,27 +578,27 @@ export const fr = {
   courseMetadataAndDocument: 'Informations sur le cours + document',
   existingSyllabus: 'Syllabus existant',
   discipline: 'Matière',
-  disciplinePlaceholder: 'Exemple : Sociolinguistique',
-  disciplineExample: 'Exemple : Sociolinguistique',
+  disciplinePlaceholder: 'Exemple\u00a0: Sociolinguistique',
+  disciplineExample: 'Exemple\u00a0: Sociolinguistique',
   topic: 'Thème',
-  topicPlaceholder: 'Exemple : Sociolinguistique et justice sociale',
-  topicExample: 'Exemple : Sociolinguistique et justice sociale',
+  topicPlaceholder: 'Exemple\u00a0: Sociolinguistique et justice sociale',
+  topicExample: 'Exemple\u00a0: Sociolinguistique et justice sociale',
   level: 'Niveau d’études',
-  levelPlaceholder: 'Exemple : Licence',
-  levelExample: 'Exemple : Licence',
+  levelPlaceholder: 'Exemple\u00a0: Licence',
+  levelExample: 'Exemple\u00a0: Licence',
   num_sessions: 'Nombre de séances',
   numSessionsPlaceholder: 'Nombre de séances dans le cours',
-  numSessionsExample: 'Exemple : 6',
+  numSessionsExample: 'Exemple\u00a0: 6',
   session_duration: 'Durée d’une séance (en heures)',
   sessionDurationPlaceholder: 'Durée d’une séance en heures',
-  sessionDurationExample: 'Exemple : 1,5',
+  sessionDurationExample: 'Exemple\u00a0: 1,5',
   syllabus_mode: 'Mode de saisie du syllabus',
   session_type: 'Type de séance',
   sessionTypePlaceholder: 'Cours magistral, TD, TP, etc.',
-  sessionTypeExample: 'Exemple : Cours magistral',
+  sessionTypeExample: 'Exemple\u00a0: Cours magistral',
   class_size: 'Taille de la classe',
   classSizePlaceholder: 'Nombre d’étudiant·es',
-  classSizeExample: 'Exemple : 30',
+  classSizeExample: 'Exemple\u00a0: 30',
   session_mode: 'Mode de séance',
   inPerson: 'Présentiel',
   remote: 'Distanciel',
@@ -602,22 +612,22 @@ export const fr = {
   user_description: 'Description du cours',
   courseDescriptionPlaceholder: 'Ajoutez une brève description pour améliorer le syllabus généré.',
   descriptionExample:
-    'Exemple : Ce cours propose une introduction aux grandes questions de la sociolinguistique, en étudiant les liens entre langage et société, les politiques linguistiques, le contact des langues et les méthodes de recherche. Il permet d’acquérir les principales théories, la terminologie de base et les méthodologies du travail de terrain et de l’analyse sociolinguistique.',
+    'Exemple\u00a0: Ce cours propose une introduction aux grandes questions de la sociolinguistique, en étudiant les liens entre langage et société, les politiques linguistiques, le contact des langues et les méthodes de recherche. Il permet d’acquérir les principales théories, la terminologie de base et les méthodologies du travail de terrain et de l’analyse sociolinguistique.',
   courseDescription: 'Description',
   learningObjectives: 'Objectifs d’apprentissage',
   learningObjectivesSubtitle:
-    'Les objectifs d’apprentissage sont des énoncés clairs et concis qui décrivent ce que les étudiant·es devraient savoir, comprendre ou être capable de faire à la fin d’un cours ou d’une leçon.',
+    'Les objectifs d’apprentissage sont des énoncés clairs et concis qui décrivent ce que les étudiant·es devraient savoir, comprendre ou être capables de faire à la fin d’un cours ou d’une leçon.',
   sustainabilityIntegration: 'Intégration de la durabilité',
   sustainabilityIntegrationSubtitle:
     "L'intégration de la durabilité dans un cours consiste à incorporer des concepts, des pratiques et des perspectives liés au développement durable dans le contenu, les activités et les évaluations du cours. Cela peut inclure l'exploration des enjeux environnementaux, sociaux et économiques, ainsi que la promotion de la pensée critique et de la responsabilité envers les générations futures.",
-  resourcesUsed: 'Resources utilisées',
+  resourcesUsed: 'Ressources utilisées',
   learningOutcomes: 'Résultats d’apprentissage',
   learningOutcomesSubtitle:
-    'Les résultats d’apprentissage sont des énoncés spécifiques qui décrivent ce que les étudiant·es devraient être capable de démontrer ou d’accomplir à la fin d’un cours ou d’une leçon. Ils sont mesurables et observables, permettant aux enseignant·es d’évaluer si les objectifs d’apprentissage ont été atteints.',
+    'Les résultats d’apprentissage sont des énoncés spécifiques qui décrivent ce que les étudiant·es devraient être capables de démontrer ou d’accomplir à la fin d’un cours ou d’une leçon. Ils sont mesurables et observables, permettant aux enseignant·es d’évaluer si les objectifs d’apprentissage ont été atteints.',
   competencies: 'Compétences',
   greenCompCompetenciesSubtitle:
     'Les compétences sont un ensemble de connaissances, de savoir-faire et d’attitudes qu’un individu développe et utilise pour accomplir des tâches, résoudre des problèmes et s’adapter à différentes situations. Elles peuvent être techniques, cognitives, sociales ou émotionnelles, et sont essentielles pour réussir dans la vie professionnelle et personnelle.',
   greenCompCompetencies: 'Compétences GreenComp',
-  provideFeedback: 'Faites un retours',
+  provideFeedback: 'Faites un retour',
   seeConnectionExplanation: "Voir l'explication"
 };

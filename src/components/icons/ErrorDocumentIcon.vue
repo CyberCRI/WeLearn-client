@@ -1,11 +1,20 @@
 <template>
-  <svg width="18" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M7.6 20.2H3.4A2.4 2.4 0 0 1 1 17.8V3.4A2.4 2.4 0 0 1 3.4 1h10.8a2.4 2.4 0 0 1 2.4 2.4v7.8m0 9-2.4-2.4m0 0-2.4-2.4m2.4 2.4-2.4 2.4m2.4-2.4 2.4-2.4"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="22"
+    height="22"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.75"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <!-- lucide v0.460.0 (ISC): file-x -->
+    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+    <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+    <path d="m14.5 12.5-5 5" />
+    <path d="m9.5 12.5 5 5" />
   </svg>
 </template>

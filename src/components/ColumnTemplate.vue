@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TooltipComponent from '@/components/TooltipComponent.vue';
-import SidePanelIcon from '@/components/icons/SidePanelIcon.vue';
+import ChevronDown from '@/components/icons/ChevronDown.vue';
 
 import { ref } from 'vue';
 
@@ -18,13 +18,20 @@ const toggleOpen = () => {
     <div class="panely left scroll">
       <slot name="left-panel"></slot>
     </div>
-    <div class="outer is-outline">
-      <SidePanelIcon class="primary toggle" @click="toggleOpen" />
-      <TooltipComponent
-        class="tltip"
-        :tooltipText="isOpen ? $t('closeSidebar') : $t('openSidebar')"
-        isLeft
-      />
+    <!-- a thin divider between content and panel, with a small chevron handle on it -->
+    <div class="divider" :class="{ 'is-collapsed': !isOpen }">
+      <button
+        class="sidebar-toggle"
+        :aria-label="isOpen ? $t('closeSidebar') : $t('openSidebar')"
+        :aria-expanded="isOpen"
+        @click="toggleOpen"
+      >
+        <ChevronDown class="toggle-chevron" :class="{ 'is-collapsed': !isOpen }" />
+        <TooltipComponent
+          class="tltip"
+          :tooltipText="isOpen ? $t('closeSidebar') : $t('openSidebar')"
+        />
+      </button>
     </div>
     <div class="panely right scroll" :class="{ opened: isOpen }">
       <slot name="right-panel"></slot>
@@ -54,11 +61,11 @@ const toggleOpen = () => {
   position: relative;
 }
 
-@media (max-width: 991px) {
-  .toggle {
-    display: none;
-  }
+.divider {
+  display: none;
+}
 
+@media (max-width: 991px) {
   .right {
     grid-area: right;
     width: 95%;
@@ -88,56 +95,83 @@ const toggleOpen = () => {
   }
 
   .right {
-    width: initial;
     overflow-y: auto;
     width: 0;
     height: 100%;
     padding: 0;
     visibility: hidden;
-    transition: width 0.5s;
-    margin-left: 6rem;
-  }
-
-  .gridy-template {
-    & > .toggle {
-      margin-block: 0.5rem 15rem;
-      width: auto;
-      display: flex;
-      align-items: flex-start;
-      transition:
-        display ease-in 5s,
-        background ease-in 1s;
-
-      & > * {
-        display: block;
-      }
-    }
-  }
-
-  .tltip {
-    display: none;
-  }
-  .outer {
-    z-index: 1;
-    position: absolute;
-    top: 1rem;
-    right: 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--neutral-0);
-    &:hover {
-      .tltip {
-        display: block;
-      }
-    }
+    transition: width 0.3s ease;
   }
 
   .right.opened {
     visibility: visible;
     width: 40%;
-    margin-left: 1rem;
-    padding-left: 0.5rem;
+    padding: 0 1rem 0 1.5rem;
+  }
+
+  /* zero-width, full-height line; the handle straddles it */
+  .divider {
+    display: block;
+    position: relative;
+    flex-shrink: 0;
+    align-self: stretch;
+    width: 0;
+    margin-left: auto;
+    border-left: 1px solid var(--neutral-50);
+    z-index: 1;
+    /* collapsed: no line (it separates nothing), handle kept clear of the window edge */
+    &.is-collapsed {
+      margin-right: 1.25rem;
+      border-left-color: transparent;
+    }
+    .sidebar-toggle:hover .tltip,
+    .sidebar-toggle:focus-visible .tltip {
+      display: block;
+    }
+  }
+
+  .sidebar-toggle {
+    position: absolute;
+    top: 1.25rem;
+    left: -0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: 1px solid var(--neutral-50);
+    border-radius: 50%;
+    background-color: var(--neutral-0);
+    color: var(--neutral-70);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+    cursor: pointer;
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+    &:hover {
+      color: var(--neutral-100);
+      border-color: var(--neutral-70);
+    }
+    &:focus-visible {
+      outline: 2px solid var(--primary-dark);
+      outline-offset: 2px;
+    }
+  }
+
+  /* chevron points right (hide the panel) when open, left (show it) when closed */
+  .toggle-chevron {
+    width: 0.75rem;
+    height: 0.75rem;
+    transform: rotate(-90deg);
+    transition: transform 0.2s;
+    &.is-collapsed {
+      transform: rotate(90deg);
+    }
+  }
+
+  .tltip {
+    display: none;
   }
 }
 </style>
