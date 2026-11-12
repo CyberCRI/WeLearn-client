@@ -122,6 +122,381 @@ describe('tutor store', () => {
       expect(store.prefilled).toEqual([]);
     });
 
+    describe('readSyllabus', () => {
+      const reading = (objectives: string[], description: string | null = 'About GDP.') => ({
+        data: {
+          detected_document_type: 'syllabus',
+          confidence: 0.99,
+          summary: null,
+          description,
+          objectives,
+          reasoning: null
+        }
+      });
+
+      // the full reading's answer: one JSON object in the text, as the endpoint returns it
+      const fullReading = (fields: Record<string, unknown>) => ({
+        data: { answer: JSON.stringify({ material_type: 'syllabus', ...fields }) }
+      });
+
+      it('does nothing without a syllabus', async () => {
+        const store = useTutorStore();
+        await store.readSyllabus();
+        expect(basePostAxios).not.toHaveBeenCalled();
+      });
+
+      it('reads the syllabus in syllabus mode, in the course language', async () => {
+        const store = useTutorStore();
+        store.selectSyllabusLanguage('en');
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        mockPost(reading(['Define GDP.']));
+        await store.readSyllabus();
+        expect(vi.mocked(basePostAxios).mock.calls[0][0]).toBe(
+          '/tutor/mas_files/content?lang=en&mode=mode_2'
+        );
+        // a pdf cannot be compared here: what WeLearn read is kept, marked as not compared
+        expect(store.documentText).toBeNull();
+        expect(store.courseDescription).toEqual({
+          value: 'About GDP.',
+          origin: 'extracted',
+          original: 'About GDP.',
+          verification: 'unchecked'
+        });
+        expect(store.courseObjectives.map((objective) => objective.value)).toEqual(['Define GDP.']);
+        expect(store.detectedType).toBe('syllabus');
+        expect(store.isLoading).toBe(false);
+        expect(store.step).toBe(2);
+      });
+
+      it('reads a text syllabus fully: overview, topics, sessions, checked and sorted', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(
+          syllabusText(
+            'Course title: Macro\nFirst-year Bachelor\nAbout GDP.\nObjectives:\n1. Define GDP.\n2. Explain inflation.\nCompetencies:\n- Work in a team\nDegree objectives:\n- Think like an economist'
+          )
+        );
+        mockPost(
+          fullReading({
+            title: 'Macro',
+            discipline: 'Economics',
+            level: 'First-year Bachelor',
+            description: 'About GDP.',
+            topics: ['GDP', 'Inflation'],
+            sessions: [
+              { label: 'Session 1', title: 'GDP' },
+              { label: null, title: 'Review' }
+            ],
+            objectives: [
+              { text: 'Define GDP.', scope: 'course' },
+              { text: 'Explain inflation.', scope: 'course' },
+              { text: 'Model climate policy.', scope: 'course' },
+              { text: 'Work in a team.', scope: 'unspecified' },
+              { text: 'Think like an economist.', scope: 'programme' }
+            ]
+          })
+        );
+        await store.readSyllabus();
+        expect(vi.mocked(basePostAxios).mock.calls[0][0]).toBe('/qna/chat/answer');
+        expect(basePostAxios).toHaveBeenCalledTimes(1);
+        expect(
+          store.courseObjectives.map((field) => [field.value, field.verification, field.group])
+        ).toEqual([
+          ['Define GDP.', 'verified', 'objective'],
+          ['Explain inflation.', 'verified', 'objective'],
+          // not in the syllabus: kept and flagged
+          ['Model climate policy.', 'unverified', 'objective'],
+          // the heading tells a competency apart; the reading tells the degree-level one
+          ['Work in a team.', 'verified', 'competency'],
+          ['Think like an economist.', 'verified', 'programme']
+        ]);
+        expect(store.courseDescription?.verification).toBe('verified');
+        expect(store.courseTopics.map((topic) => [topic.value, topic.verification])).toEqual([
+          ['GDP', 'verified'],
+          ['Inflation', 'verified']
+        ]);
+        expect(store.coursePlan).toEqual(['Session 1 – GDP', 'Review']);
+        expect(store.detectedType).toBe('syllabus');
+        // found word for word: read from the syllabus; not found: read by the ai, to check
+        expect(store.teachingContext).toMatchObject({
+          title: 'Macro',
+          discipline: 'Economics',
+          level: 'l1'
+        });
+        expect(store.prefilled).toEqual(expect.arrayContaining(['title', 'level']));
+        expect(store.aiFilled).toEqual(['discipline']);
+        expect(store.readingPhase).toBe('idle');
+        expect(store.step).toBe(2);
+      });
+
+      it('shows every topic, session and objective it is given, and only those', async () => {
+        const store = useTutorStore();
+        const objectives = Array.from({ length: 23 }, (_, i) => `Objective ${i + 1}.`);
+        await store.setSyllabusFile(
+          syllabusText(
+            'Course content\n- Inflation\n- Public debt\nWeek 1: GDP\nWeek 2:\n' +
+              objectives.join('\n')
+          )
+        );
+        mockPost(
+          fullReading({
+            topics: ['Inflation', 'Public debt'],
+            sessions: [
+              { label: 'Week 1', title: 'GDP' },
+              { label: 'Week 2', title: null }
+            ],
+            objectives: objectives.map((text) => ({ text, scope: 'course' }))
+          })
+        );
+        await store.readSyllabus();
+        expect(store.courseObjectives).toHaveLength(23);
+        expect(store.courseTopics.map((topic) => [topic.value, topic.verification])).toEqual([
+          ['Inflation', 'verified'],
+          ['Public debt', 'verified']
+        ]);
+        // a week with no title is still in the plan
+        expect(store.coursePlan).toEqual(['Week 1 – GDP', 'Week 2']);
+        expect(store.isReadingPartial).toBe(false);
+
+        store.addTopic(' inflation ');
+        store.addTopic('  ');
+        store.addTopic('Growth');
+        expect(store.courseTopics.map((topic) => topic.value)).toEqual([
+          'Inflation',
+          'Public debt',
+          'Growth'
+        ]);
+        store.removeTopic(0);
+        expect(store.courseTopics.map((topic) => topic.value)).toEqual(['Public debt', 'Growth']);
+
+        store.removeSyllabusFile();
+        expect(store.courseTopics).toEqual([]);
+        expect(store.coursePlan).toEqual([]);
+      });
+
+      it('does not overwrite what the teacher or the syllabus already gave', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(syllabusText('Course title: Macro\nDefine GDP.'));
+        store.updateContext('discipline', 'Econ');
+        mockPost(fullReading({ title: 'Other title', discipline: 'Economics', objectives: [] }));
+        await store.readSyllabus();
+        expect(store.teachingContext.title).toBe('Macro');
+        expect(store.teachingContext.discipline).toBe('Econ');
+        expect(store.aiFilled).toEqual([]);
+      });
+
+      it('asks for the topics the reading could not give, keeping everything it gave', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(syllabusText('Objectives:\n1. Define GDP.\nChapter 1: GDP'));
+        // the answer stopped before its topics
+        mockPost({
+          data: {
+            answer:
+              '{"material_type": "syllabus", "objectives": [{"text": "Define GDP.", "scope": "course"}], "topics": [{"title": "GD'
+          }
+        });
+        mockPost({
+          data: {
+            answer:
+              '{"summary": "About GDP.", "topics": [{"title": "GDP", "subtopics": [], "source": "Chapter 1: GDP"}]}'
+          }
+        });
+        await store.readSyllabus();
+        expect(store.courseObjectives.map((field) => field.value)).toEqual(['Define GDP.']);
+        expect(store.courseTopics.map((topic) => topic.value)).toEqual(['GDP']);
+        expect(store.courseSummary?.value).toBe('About GDP.');
+        expect(store.step).toBe(2);
+      });
+
+      it('fills an unstated discipline with the AI suggestion, marked as such', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(syllabusText('Introduction à la gestion\nDefine GDP.'));
+        mockPost(
+          fullReading({
+            discipline: null,
+            discipline_suggested: 'Gestion',
+            topics: [{ title: 'Stratégie', subtopics: [], source: 'Stratégie' }],
+            objectives: []
+          })
+        );
+        await store.readSyllabus();
+        expect(store.teachingContext.discipline).toBe('Gestion');
+        expect(store.aiSuggested).toEqual(['discipline']);
+        expect(store.prefilled).not.toContain('discipline');
+        // the teacher's own value replaces it, and the mark goes
+        store.updateContext('discipline', 'Sciences de gestion');
+        expect(store.aiSuggested).toEqual([]);
+      });
+
+      it('falls back on the basic reading when the full reading cannot be used twice', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(syllabusText('About GDP.\nDefine GDP.'));
+        mockPost({ data: { answer: 'not json' } });
+        mockPost({ data: { answer: 'still not json' } });
+        mockPost(reading(['Define GDP.']));
+        await store.readSyllabus();
+        expect(vi.mocked(basePostAxios).mock.calls.map((call) => call[0])).toEqual([
+          '/qna/chat/answer',
+          '/qna/chat/answer',
+          expect.stringContaining('/tutor/mas_files/content')
+        ]);
+        expect(store.courseObjectives[0].verification).toBe('verified');
+        expect(store.step).toBe(2);
+      });
+
+      it('clears what the reading filled in when another syllabus is chosen', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(syllabusText('Define GDP.'));
+        mockPost(fullReading({ discipline: 'Economics', objectives: [] }));
+        await store.readSyllabus();
+        expect(store.aiFilled).toEqual(['discipline']);
+        await store.setSyllabusFile(file('other.pdf'));
+        expect(store.teachingContext.discipline).toBe('');
+        expect(store.aiFilled).toEqual([]);
+      });
+
+      it('keeps a word syllabus it cannot read, without comparing it', async () => {
+        const store = useTutorStore();
+        const docx = new File(['not really a zip'], 'syllabus.docx', {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        });
+        await store.setSyllabusFile(docx);
+        // a damaged word file is kept, its text simply not compared
+        expect(store.syllabusFile?.name).toBe('syllabus.docx');
+        expect(store.documentText).toBeNull();
+      });
+
+      it('does not read the same file again, so corrections are kept', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        mockPost(reading(['Define GDP.']));
+        await store.readSyllabus();
+        store.setObjective(0, 'Define GDP and its limits.');
+        store.setStep(1);
+        await store.readSyllabus();
+        expect(basePostAxios).toHaveBeenCalledTimes(1);
+        expect(store.courseObjectives[0].value).toBe('Define GDP and its limits.');
+        expect(store.step).toBe(2);
+      });
+
+      it('reads again when the language changes', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        mockPost(reading(['Define GDP.']));
+        await store.readSyllabus();
+        store.selectSyllabusLanguage(store.syllabusLanguage === 'fr' ? 'en' : 'fr');
+        mockPost(reading(['Définir le PIB.']));
+        await store.readSyllabus();
+        expect(basePostAxios).toHaveBeenCalledTimes(2);
+      });
+
+      it('says when WeLearn could not be reached, and when it could not read the syllabus', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        mockPost({ data: null });
+        await store.readSyllabus();
+        expect(store.readError).toBe('error');
+        expect(store.readingPhase).toBe('idle');
+        expect(store.step).toBe(1);
+
+        mockPostError(new Error('network down'));
+        await store.readSyllabus();
+        expect(store.readError).toBe('unavailable');
+
+        mockPostError({ response: { status: 500 } });
+        await store.readSyllabus();
+        expect(store.readError).toBe('error');
+      });
+
+      it('stays quiet when the reading is cancelled, and can be cancelled from the page', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        mockPostError(new axios.Cancel('cancelled'));
+        await store.readSyllabus();
+        expect(store.readError).toBeNull();
+
+        store.readingPhase = 'reading';
+        store.cancelReading();
+        expect(store.readingPhase).toBe('idle');
+        expect(store.isLoading).toBe(false);
+      });
+
+      it('shows the real progress of sending, then the reading', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        vi.mocked(basePostAxios).mockImplementationOnce(async (_url, _body, config) => {
+          config?.onUploadProgress?.({ loaded: 50, total: 100 } as never);
+          expect(store.uploadProgress).toBe(50);
+          expect(store.readingPhase).toBe('sending');
+          config?.onUploadProgress?.({ loaded: 100, total: 100 } as never);
+          expect(store.readingPhase).toBe('reading');
+          expect(store.readingStartedAt).not.toBeNull();
+          return reading(['Define GDP.']) as never;
+        });
+        await store.readSyllabus();
+        expect(store.step).toBe(2);
+      });
+
+      it('forgets the reading when another syllabus is chosen', async () => {
+        const store = useTutorStore();
+        await store.setSyllabusFile(file('syllabus.pdf'));
+        mockPost(reading(['Define GDP.']));
+        await store.readSyllabus();
+        await store.setSyllabusFile(file('other.pdf'));
+        expect(store.courseObjectives).toEqual([]);
+        expect(store.courseDescription).toBeNull();
+      });
+    });
+
+    it('applies corrections to what was read', () => {
+      const store = useTutorStore();
+      store.courseObjectives = [
+        { value: 'Define GDP.', origin: 'extracted', original: 'Define GDP.', group: 'objective' }
+      ];
+      store.setObjective(0, '  ');
+      expect(store.courseObjectives[0].value).toBe('Define GDP.');
+      store.setObjective(0, 'Define GDP and its limits.');
+      store.restoreObjective(0);
+      expect(store.courseObjectives[0].origin).toBe('extracted');
+      store.addObjective('  ');
+      store.addObjective('Read a table.');
+      expect(store.courseObjectives).toHaveLength(2);
+      store.addObjective('Work in a team.', 'competency');
+      store.setGroup(0, 'programme');
+      // an item that is not there is ignored
+      store.setGroup(9, 'programme');
+      expect(store.courseOnlyObjectives.map((objective) => objective.value)).toEqual([
+        'Read a table.'
+      ]);
+      expect(store.courseCompetencies.map((objective) => objective.value)).toEqual([
+        'Work in a team.'
+      ]);
+      store.removeObjective(1);
+      expect(store.courseOnlyObjectives).toEqual([]);
+
+      store.courseDescription = {
+        value: 'Read text.',
+        origin: 'edited',
+        original: 'Read.',
+        verification: 'verified'
+      };
+      store.removeDescription();
+      expect(store.courseDescription).toBeNull();
+      expect(store.removedDescription?.value).toBe('Read.');
+      store.bringBackDescription();
+      expect(store.courseDescription?.origin).toBe('extracted');
+      expect(store.removedDescription).toBeNull();
+
+      store.setDescription('  ');
+      expect(store.courseDescription).toBeNull();
+      store.setDescription('About GDP.');
+      store.setDescription('About GDP and growth.');
+      store.restoreDescription();
+      expect(store.courseDescription).toEqual({ value: 'About GDP and growth.', origin: 'added' });
+      // an added description is not kept when removed: it was never read from the syllabus
+      store.removeDescription();
+      expect(store.removedDescription).toBeNull();
+    });
+
     it('discards everything when the path is changed', async () => {
       const store = useTutorStore();
       store.choosePath('existing');

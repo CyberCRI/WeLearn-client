@@ -2,14 +2,13 @@
 import { ref } from 'vue';
 import type { FileErrorReason } from '@/stores/tutor';
 
-// screen 1.1 "your course": the syllabus file and the course language
+// screen 1.1 "your course": the syllabus file. the language of the updated syllabus is
+// chosen later, closer to generation (the store keeps its value)
 const props = defineProps<{
   file: File | null;
   fileError: { state: boolean; reason: FileErrorReason | null };
   setFile: (file: File) => void;
   removeFile: () => void;
-  storedLanguage: string;
-  selectLang: (lang: string) => void;
   action: () => void;
 }>();
 
@@ -26,8 +25,6 @@ const onDrop = (e: DragEvent) => {
   isDragging.value = false;
   if (e.dataTransfer?.files?.[0]) props.setFile(e.dataTransfer.files[0]);
 };
-
-const valueOf = (e: Event) => (e.target as HTMLSelectElement).value;
 </script>
 <template>
   <div class="wrapper">
@@ -66,17 +63,6 @@ const valueOf = (e: Event) => (e.target as HTMLSelectElement).value;
         :aria-label="$t('tutor.documentsStep.removeFile', { name: file.name })"
         @click="removeFile"
       />
-    </div>
-
-    <div class="field mt-5 language">
-      <label class="label" for="course-lang">{{ $t('tutor.course.languageLabel') }}</label>
-      <div class="select">
-        <select id="course-lang" :value="storedLanguage" @change="selectLang(valueOf($event))">
-          <option v-for="lang in ['fr', 'en']" :key="lang" :value="lang">
-            {{ $t(`lang.${lang}`) }}
-          </option>
-        </select>
-      </div>
     </div>
 
     <p class="is-size-7 has-text-grey mt-5" data-testid="ai-notice">
@@ -147,13 +133,6 @@ const valueOf = (e: Event) => (e.target as HTMLSelectElement).value;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.language .select {
-  min-width: 12rem;
-  select {
-    width: 100%;
-  }
 }
 
 .step-footer {

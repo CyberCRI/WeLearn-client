@@ -34,6 +34,7 @@
     "pinia": "^2.1.4",
     "turndown": "^7.2.4",
     "turndown-plugin-gfm": "^1.0.2",
+    "unpdf": "1.7.0",
     "vue": "^3.3.4",
     "vue-i18n": "9",
     "vue-router": "^4.2.4"

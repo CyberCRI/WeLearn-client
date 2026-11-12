@@ -7,6 +7,7 @@ exports[`TutorPage > renders properly 1`] = `
 >
   <!--v-if-->
   <!--v-if-->
+  <!--v-if-->
   <div
     class="layout-flex"
     data-v-8a8621cb=""
@@ -25,6 +26,12 @@ exports[`TutorPage > renders properly 1`] = `
       >
         tutor.start.question
       </h1>
+      <p
+        class="subtitle is-6 intro"
+        data-v-06951086=""
+      >
+        tutor.start.intro
+      </p>
       <div
         class="options"
         data-v-06951086=""
@@ -35,7 +42,30 @@ exports[`TutorPage > renders properly 1`] = `
           data-v-06951086=""
           type="button"
         >
-          tutor.start.yes
+          <span
+            class="option-text"
+            data-v-06951086=""
+          >
+            <span
+              class="option-title"
+              data-v-06951086=""
+            >
+              tutor.start.yes
+            </span>
+            <span
+              class="option-hint"
+              data-v-06951086=""
+            >
+              tutor.start.yesHint
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            class="option-arrow"
+            data-v-06951086=""
+          >
+            →
+          </span>
         </button>
         <button
           class="option"
@@ -43,12 +73,44 @@ exports[`TutorPage > renders properly 1`] = `
           data-v-06951086=""
           type="button"
         >
-          tutor.start.no
+          <span
+            class="option-text"
+            data-v-06951086=""
+          >
+            <span
+              class="option-title"
+              data-v-06951086=""
+            >
+              tutor.start.no 
+              <span
+                class="option-status"
+                data-testid="option-status"
+                data-v-06951086=""
+              >
+                tutor.start.inDevelopment
+              </span>
+            </span>
+            <span
+              class="option-hint"
+              data-v-06951086=""
+            >
+              tutor.start.noHint
+            </span>
+          </span>
+          <span
+            aria-hidden="true"
+            class="option-arrow"
+            data-v-06951086=""
+          >
+            →
+          </span>
         </button>
       </div>
     </div>
     
     
+    <!-- a discreet save action, after the work: never a choice imposed at the top -->
+    <!--v-if-->
   </div>
 </div>
 `;

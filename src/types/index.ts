@@ -69,6 +69,76 @@ export type TeachingContext = {
   classSize: number | null;
 };
 
+// one piece of the checked course: read from the syllabus, corrected or added by the teacher.
+// `original` keeps the syllabus wording of a corrected piece, so it can be restored
+export type CourseFieldOrigin = 'extracted' | 'edited' | 'added';
+// how an extracted piece compares with the uploaded document: found in it (verified), not found
+// word for word (unverified: reworded, translated or put together by the AI), or not compared
+// because the file's text cannot be read in the browser (unchecked, e.g. pdf)
+export type Verification = 'verified' | 'unverified' | 'unchecked';
+// course objectives, competencies, or objectives wider than the course (degree, institution,
+// general education), kept apart;
+// unsorted: neither the AI nor the syllabus's headings say whether it belongs to this course
+export type ObjectiveGroup = 'objective' | 'competency' | 'programme' | 'unsorted';
+export type CourseField = {
+  value: string;
+  origin: CourseFieldOrigin;
+  original?: string;
+  verification?: Verification;
+  group?: ObjectiveGroup;
+  // written by the AI (an overview, a topic named in its own words), not copied from the syllabus
+  isSummary?: boolean;
+  subtopics?: string[];
+  // the syllabus line a topic comes from, found word for word in it: where changes to it are placed
+  source?: string | null;
+};
+
+// a main topic as the reading names it, with the line of the syllabus it comes from
+export interface CourseTopic {
+  title: string;
+  subtopics: string[];
+  source: string | null;
+}
+
+// the structured reading of a syllabus (utils/courseReading), as in the "design your course"
+// prototype: values copied from the document, objectives with the heading level they sit under
+export type ObjectiveScope = 'course' | 'programme' | 'unspecified';
+export type MaterialType = 'syllabus' | 'course_plan' | 'lesson' | 'partial' | 'other';
+export interface CourseReading {
+  title: string | null;
+  discipline: string | null;
+  disciplineSuggested: string | null;
+  level: string | null;
+  description: string | null;
+  summary: string | null;
+  topics: CourseTopic[];
+  sessions: { label: string | null; title: string | null }[];
+  objectives: { text: string; scope: ObjectiveScope }[];
+  document_language: string | null;
+  material_type: MaterialType;
+  // titles of the distinct courses when the document holds several, copied as written
+  courses_found: string[];
+  // the answer stopped before its end: the last items may be missing
+  isAnswerCut: boolean;
+  // stopped before its objectives were complete
+  isObjectivesCut: boolean;
+}
+
+// ponytail: /qna/chat/answer is deployed on the dev API but missing from WeLearn-api main's
+// openapi.json (removed in the 29 oct cleanup), so it has no generated type yet. this mirrors
+// the live contract; replace with ApiRequestBody / ApiResponse once it is back in the contract
+export type ChatAnswerRequest = {
+  query: string;
+  history: object[];
+  lang: string;
+  sources: ApiSchema<'EnhancedDocumentSlice'>[];
+};
+export type ChatAnswerResponse = {
+  answer: string;
+  message_id: string | null;
+  conversation_id: string | null;
+};
+
 type SyllabusGeneration = ApiSchema<'SyllabusGenerationResponse'>;
 
 export type SyllabusData = {

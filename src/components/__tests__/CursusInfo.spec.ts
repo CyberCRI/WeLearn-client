@@ -12,8 +12,6 @@ const mountInfo = (props: Record<string, unknown> = {}) =>
       fileError: { state: false, reason: null },
       setFile: vi.fn(),
       removeFile: vi.fn(),
-      storedLanguage: 'fr',
-      selectLang: vi.fn(),
       action: vi.fn(),
       ...props
     }
@@ -74,10 +72,8 @@ describe('CursusInfo (screen "Your course")', () => {
     expect(ready.props('action')).toHaveBeenCalled();
   });
 
-  it('changes the course language', async () => {
-    const wrapper = mountInfo();
-    await wrapper.find('#course-lang').setValue('en');
-    expect(wrapper.props('selectLang')).toHaveBeenCalledWith('en');
+  it('does not ask for the language of the updated syllabus', () => {
+    expect(mountInfo().find('select').exists()).toBe(false);
   });
 
   it('says the syllabus is sent to WeLearn for AI analysis', () => {

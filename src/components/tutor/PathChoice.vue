@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import type { CoursePath } from '@/types';
 
-// "do you already have a course?": two options, then one discreet line with "change".
-// changing asks first when something was already added for the course
+// "how would you like to start?": two options. once chosen, a back link (adapt) or a line with
+// "change" (create); going back asks first only when a file or details would be lost
 const props = defineProps<{
   path: CoursePath | null;
   hasStarted: boolean;
@@ -29,19 +29,32 @@ const handleDiscard = () => {
 
 <template>
   <div v-if="path" class="chosen-path" data-testid="chosen-path">
-    <p v-if="!isConfirmingChange" class="chosen-line">
-      {{ path === 'existing' ? $t('tutor.start.working') : $t('tutor.start.workingNew') }}
+    <template v-if="!isConfirmingChange">
       <button
+        v-if="path === 'existing'"
         type="button"
-        class="button is-small is-text"
+        class="back-link"
         data-testid="change-path"
         @click="handleChange"
       >
-        {{ $t('tutor.start.change') }}
+        ← {{ $t('tutor.start.back') }}
       </button>
-    </p>
+      <p v-else class="chosen-line">
+        {{ $t('tutor.start.workingNew') }}
+        <button
+          type="button"
+          class="button is-small is-text"
+          data-testid="change-path"
+          @click="handleChange"
+        >
+          {{ $t('tutor.start.change') }}
+        </button>
+      </p>
+    </template>
     <div v-else class="change-warning" role="alert" data-testid="change-warning">
-      <p>{{ $t('tutor.start.changeWarning') }}</p>
+      <p>
+        {{ path === 'existing' ? $t('tutor.start.backWarning') : $t('tutor.start.changeWarning') }}
+      </p>
       <div class="change-actions">
         <button
           type="button"
@@ -49,7 +62,7 @@ const handleDiscard = () => {
           data-testid="discard-change"
           @click="handleDiscard"
         >
-          {{ $t('tutor.start.discard') }}
+          {{ path === 'existing' ? $t('tutor.start.discardBack') : $t('tutor.start.discard') }}
         </button>
         <button
           type="button"
@@ -61,12 +74,20 @@ const handleDiscard = () => {
         </button>
       </div>
     </div>
+    <p
+      v-if="path === 'scratch' && !isConfirmingChange"
+      class="is-size-7 has-text-grey"
+      data-testid="scratch-status"
+    >
+      {{ $t('tutor.start.newInProgress') }}
+    </p>
   </div>
 
   <div v-else class="question" role="group" aria-labelledby="course-question">
     <h1 id="course-question" class="title is-4 is-size-5-mobile">
       {{ $t('tutor.start.question') }}
     </h1>
+    <p class="subtitle is-6 intro">{{ $t('tutor.start.intro') }}</p>
     <div class="options">
       <button
         type="button"
@@ -74,7 +95,13 @@ const handleDiscard = () => {
         data-testid="option-existing"
         @click="emit('choose', 'existing')"
       >
-        {{ $t('tutor.start.yes') }}
+        <span class="option-text">
+          <span class="option-title">
+            {{ $t('tutor.start.yes') }}
+          </span>
+          <span class="option-hint">{{ $t('tutor.start.yesHint') }}</span>
+        </span>
+        <span class="option-arrow" aria-hidden="true">→</span>
       </button>
       <button
         type="button"
@@ -82,29 +109,51 @@ const handleDiscard = () => {
         data-testid="option-scratch"
         @click="emit('choose', 'scratch')"
       >
-        {{ $t('tutor.start.no') }}
+        <span class="option-text">
+          <span class="option-title">
+            {{ $t('tutor.start.no') }}
+            <span class="option-status" data-testid="option-status">{{
+              $t('tutor.start.inDevelopment')
+            }}</span>
+          </span>
+          <span class="option-hint">{{ $t('tutor.start.noHint') }}</span>
+        </span>
+        <span class="option-arrow" aria-hidden="true">→</span>
       </button>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* same column and alignment as the "your course" screen that follows */
 .question {
-  padding: 1.5rem 0;
+  padding: 2.5rem 0 1.5rem;
+}
+
+.intro {
+  margin-top: 0.5rem;
+  color: var(--neutral-70);
 }
 
 .options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
+/* the whole panel is the button */
 .option {
-  padding: 0.55rem 1.1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
   border: 1px solid var(--neutral-20);
-  border-radius: 999px;
+  border-radius: 0.5rem;
   background: var(--neutral-0);
   font: inherit;
+  text-align: left;
   color: var(--neutral-90);
   cursor: pointer;
   transition: border-color 0.15s;
@@ -117,8 +166,68 @@ const handleDiscard = () => {
   }
 }
 
+.option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.option-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.option-hint {
+  font-size: 0.9rem;
+  color: var(--neutral-70);
+}
+
+.option-status {
+  margin-left: 0.5rem;
+  font-weight: normal;
+  font-size: 0.75rem;
+  color: var(--neutral-70);
+}
+
+.option-arrow {
+  color: var(--primary-dark);
+  transition: transform 0.15s;
+}
+
+.option:hover .option-arrow {
+  transform: translateX(2px);
+}
+
+@media (max-width: 768px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+  .option-status {
+    display: block;
+    margin-left: 0;
+  }
+}
+
 .chosen-path {
   padding-top: 1rem;
+}
+
+/* a plain text link, like the back links elsewhere in WeLearn */
+.back-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--primary-dark);
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--primary-dark);
+    outline-offset: 2px;
+  }
 }
 
 .chosen-line {
@@ -146,7 +255,8 @@ const handleDiscard = () => {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .option {
+  .option,
+  .option-arrow {
     transition: none;
   }
 }

@@ -3,6 +3,14 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import i18n from '@/localisation/i18n';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
+import CourseCheck from '@/components/tutor/CourseCheck.vue';
+import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
+import UpdatedSyllabus from '@/components/tutor/UpdatedSyllabus.vue';
+import { useConnectionsStore } from '@/stores/connections';
+import { useDraftStore } from '@/stores/draft';
+import DraftResume from '@/components/tutor/DraftResume.vue';
+import DraftControl from '@/components/tutor/DraftControl.vue';
+import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
 import ProgressBar from '@/components/microlearning/ProgressBar.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
@@ -20,16 +28,25 @@ const SCREENS: Record<CoursePath, readonly string[]> = {
 };
 const screens = computed(() => (store.path ? SCREENS[store.path] : []));
 const stepLabels = computed(() => screens.value.map((s) => t(`tutor.steps.${s}`)));
+// the sustainability additions carry their own way back and course line: the start link and the
+// recaps of the finished steps are not repeated above them
+const isAdditions = computed(() => screens.value[store.step - 1] === 'additions');
+const isOwnHeader = computed(() =>
+  ['additions', 'updated'].includes(screens.value[store.step - 1])
+);
 
 // finished screens fold into a one-line recap; "Edit" opens one again
 const expanded = ref<Record<number, boolean>>({});
 const isFolded = (n: number) => n < store.step && !expanded.value[n];
 
+const connections = useConnectionsStore();
+
 const recaps = computed<Record<string, string>>(() => ({
-  course: t('tutor.course.recap', {
-    file: store.syllabusFile?.name || '',
-    lang: t(`lang.${store.syllabusLanguage}`)
-  })
+  additions: t('tutor.additions.acceptedCount', connections.acceptedChanges.length),
+  course: t('tutor.course.recap', { file: store.syllabusFileName }),
+  check: store.courseOnlyObjectives.length
+    ? t('tutor.check.recap', store.courseOnlyObjectives.length)
+    : t('tutor.check.recapTopics', store.courseTopics.length)
 }));
 
 watch(
@@ -41,25 +58,43 @@ watch(
   }
 );
 
+// a draft kept in this browser is offered when no course is under way
+const draft = useDraftStore();
+const isStarting = computed(() => !store.path || (store.step === 1 && !store.hasStartedCourse));
+
 onMounted(() => {
+  if (isStarting.value) draft.check();
   scrollToAnchor(`target-${store.step}`);
 });
+
+// a finished step opens again from the step bar, the work kept. steps 3 and 4 have their own
+// page: from there step 2 opens (step 1 shows above it as its recap)
+const handleStepSelect = async (index: number) => {
+  const step = index + 1;
+  if (isOwnHeader.value) {
+    store.setStep(Math.max(step, 2));
+    await nextTick();
+  }
+  scrollToAnchor(`target-${step}`);
+};
 </script>
 <template>
   <div class="content-centered-wrapper">
+    <DraftResume v-if="isStarting" />
     <div v-if="store.path" class="steps-bar" data-testid="steps-bar">
       <ProgressBar
         :currentStep="store.step - 1"
         :labels="stepLabels"
         :progress="calculateProgress(store.step - 1, stepLabels.length)"
         clickable
-        @select="(i: number) => scrollToAnchor(`target-${i + 1}`)"
+        @select="handleStepSelect"
       />
     </div>
     <ErrorComponent v-if="store.reloadError" />
 
-    <div class="layout-flex">
+    <div class="layout-flex" :class="{ 'is-wide': isAdditions }">
       <PathChoice
+        v-if="!isOwnHeader"
         :path="store.path"
         :hasStarted="store.hasStartedCourse"
         @choose="store.choosePath"
@@ -67,7 +102,11 @@ onMounted(() => {
       />
 
       <template v-for="(screen, index) in screens" :key="screen">
-        <section v-if="store.step > index" :id="`target-${index + 1}`" class="step-section">
+        <section
+          v-if="store.step > index && !(isOwnHeader && index < store.step - 1)"
+          :id="`target-${index + 1}`"
+          class="step-section"
+        >
           <div v-if="index + 1 < store.step" class="recap" :class="{ open: expanded[index + 1] }">
             <span class="recap-check" aria-hidden="true">✓</span>
             <strong>{{ stepLabels[index] }}</strong>
@@ -81,20 +120,43 @@ onMounted(() => {
           </div>
 
           <template v-if="!isFolded(index + 1)">
-            <CursusInfo
-              v-if="screen === 'course'"
-              data-test="fist-step"
-              :file="store.syllabusFile"
-              :fileError="store.fileError"
-              :setFile="store.setSyllabusFile"
-              :removeFile="store.removeSyllabusFile"
-              :storedLanguage="store.syllabusLanguage"
-              :selectLang="store.selectSyllabusLanguage"
-              :action="store.goNext"
+            <ReadingProgress
+              v-if="screen === 'course' && store.readingPhase !== 'idle'"
+              :fileName="store.syllabusFile?.name || ''"
+              :phase="store.readingPhase"
+              :uploadProgress="store.uploadProgress"
+              :startedAt="store.readingStartedAt"
+              @cancel="store.cancelReading"
             />
+            <template v-else-if="screen === 'course'">
+              <div
+                v-if="store.readError"
+                class="notification is-warning is-light"
+                role="alert"
+                data-testid="read-error"
+              >
+                <p class="has-text-weight-bold">
+                  {{ $t(`tutor.reading.${store.readError}.title`) }}
+                </p>
+                <p>{{ $t(`tutor.reading.${store.readError}.text`) }}</p>
+              </div>
+              <CursusInfo
+                data-test="fist-step"
+                :file="store.syllabusFile"
+                :fileError="store.fileError"
+                :setFile="store.setSyllabusFile"
+                :removeFile="store.removeSyllabusFile"
+                :action="store.readSyllabus"
+              />
+            </template>
+            <CourseCheck v-else-if="screen === 'check'" :action="store.confirmCourse" />
+            <SustainabilityAdditions v-else-if="screen === 'additions'" />
+            <UpdatedSyllabus v-else-if="screen === 'updated'" />
           </template>
         </section>
       </template>
+      <!-- a discreet save action, after the work: never a choice imposed at the top -->
+      <DraftControl v-if="draft.isSavable" />
     </div>
   </div>
 </template>
@@ -152,6 +214,13 @@ onMounted(() => {
   width: 100%;
   overflow-y: auto;
   padding: 1rem 20%;
+}
+
+/* the connections read better a little wider, on desktop only */
+@media (min-width: 1025px) {
+  .layout-flex.is-wide {
+    padding-inline: 14%;
+  }
 }
 
 .step-section {

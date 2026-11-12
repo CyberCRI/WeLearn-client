@@ -8,13 +8,40 @@ import {
   formatHours
 } from '@/utils/teachingContext';
 
-// the teaching context the syllabus did not give, as quick choices; all optional, and a value
-// the teacher did not give stays empty. values read from the syllabus are shown elsewhere
-const props = defineProps<{
-  context: TeachingContext;
-  prefilled: (keyof TeachingContext)[];
-  updateContext: <K extends keyof TeachingContext>(key: K, value: TeachingContext[K]) => void;
-}>();
+type Key = keyof TeachingContext;
+
+// quick choices for parts of the teaching context; all optional, a value the teacher did not give
+// stays empty. a value read from the syllabus is marked once, with the line it comes from on hover
+const props = withDefaults(
+  defineProps<{
+    context: TeachingContext;
+    prefilled: Key[];
+    evidence?: Partial<Record<Key, string>>;
+    // filled from the AI reading but not found word for word in the syllabus
+    aiFilled?: Key[];
+    updateContext: <K extends Key>(key: K, value: TeachingContext[K]) => void;
+    keys?: Key[];
+    // without a frame and heading, inside another section
+    isPlain?: boolean;
+  }>(),
+  {
+    evidence: () => ({}),
+    aiFilled: () => [],
+    keys: () => ['sessions', 'sessionLength', 'sessionType', 'sessionMode', 'classSize'],
+    isPlain: false
+  }
+);
+
+const CHOICES: Partial<Record<Key, { value: string | number; label: string }[]>> = {
+  level: LEVELS.map((level) => ({ value: level, label: `tutor.course.levels.${level}` })),
+  sessionLength: SESSION_LENGTHS.map((hours) => ({ value: hours, label: formatHours(hours) })),
+  sessionType: SESSION_TYPES.map((type) => ({
+    value: type,
+    label: `tutor.course.sessionTypes.${type}`
+  })),
+  sessionMode: SESSION_MODES.map((mode) => ({ value: mode, label: `tutor.course.modes.${mode}` }))
+};
+const COUNTS: Key[] = ['sessions', 'classSize'];
 
 const valueOf = (e: Event) => (e.target as HTMLInputElement | HTMLSelectElement).value;
 
@@ -24,139 +51,73 @@ const onCount = (key: 'sessions' | 'classSize', e: Event) => {
   props.updateContext(key, Number.isInteger(value) && value > 0 ? value : null);
 };
 
-const isAsked = (key: keyof TeachingContext) => !props.prefilled.includes(key);
+const onChoice = (key: Key, e: Event) => {
+  const value = valueOf(e);
+  if (key === 'sessionLength') props.updateContext(key, Number(value) || null);
+  else props.updateContext(key, value as never);
+};
+
+const isPrefilled = (key: Key) => props.prefilled.includes(key);
 </script>
 
 <template>
-  <section class="context box" data-testid="teaching-context">
-    <h2 class="title is-6 mb-1">
-      {{ $t('tutor.course.contextTitle') }}
-      <span class="optional">{{ $t('tutor.course.optional') }}</span>
-    </h2>
-    <p class="is-size-7 has-text-grey mb-4">{{ $t('tutor.course.contextHint') }}</p>
+  <section :class="{ 'context box': !isPlain }" data-testid="teaching-context">
+    <template v-if="!isPlain">
+      <h2 class="title is-6 mb-1">
+        {{ $t('tutor.course.contextTitle') }}
+        <span class="optional">{{ $t('tutor.course.optional') }}</span>
+      </h2>
+      <p class="is-size-7 has-text-grey mb-4">{{ $t('tutor.course.contextHint') }}</p>
+    </template>
 
     <div class="context-grid">
-      <div v-if="isAsked('title')" class="field full">
-        <label class="label" for="context-title">{{ $t('tutor.course.fields.title') }}</label>
-        <input
-          id="context-title"
-          class="input"
-          type="text"
-          :value="context.title"
-          @input="updateContext('title', valueOf($event))"
-        />
-      </div>
-
-      <div v-if="isAsked('discipline')" class="field">
-        <label class="label" for="context-discipline">
-          {{ $t('tutor.course.fields.discipline') }}
-        </label>
-        <input
-          id="context-discipline"
-          class="input"
-          type="text"
-          :placeholder="$t('tutor.course.disciplinePlaceholder')"
-          :value="context.discipline"
-          @input="updateContext('discipline', valueOf($event))"
-        />
-      </div>
-
-      <div v-if="isAsked('level')" class="field">
-        <label class="label" for="context-level">{{ $t('tutor.course.fields.level') }}</label>
-        <div class="select is-fullwidth">
+      <div v-for="key in keys" :key="key" class="field" :class="{ full: key === 'title' }">
+        <label class="label" :for="`context-${key}`">{{ $t(`tutor.course.fields.${key}`) }}</label>
+        <div v-if="CHOICES[key]" class="select is-fullwidth">
           <select
-            id="context-level"
-            :value="context.level"
-            @change="updateContext('level', valueOf($event))"
+            :id="`context-${key}`"
+            :value="context[key] ?? ''"
+            :data-testid="`context-${key}`"
+            @change="onChoice(key, $event)"
           >
             <option value="">{{ $t('tutor.course.choose') }}</option>
-            <option v-for="level in LEVELS" :key="level" :value="level">
-              {{ $t(`tutor.course.levels.${level}`) }}
+            <option v-for="choice in CHOICES[key]" :key="choice.value" :value="choice.value">
+              {{ key === 'sessionLength' ? choice.label : $t(choice.label) }}
             </option>
           </select>
         </div>
-      </div>
-
-      <div v-if="isAsked('sessions')" class="field">
-        <label class="label" for="context-sessions">
-          {{ $t('tutor.course.fields.sessions') }}
-        </label>
         <input
-          id="context-sessions"
+          v-else-if="COUNTS.includes(key)"
+          :id="`context-${key}`"
           class="input"
           type="number"
           min="1"
           step="1"
-          :value="context.sessions ?? ''"
-          @input="onCount('sessions', $event)"
+          :value="context[key] ?? ''"
+          :data-testid="`context-${key}`"
+          @input="onCount(key as 'sessions' | 'classSize', $event)"
         />
-      </div>
-
-      <div v-if="isAsked('sessionLength')" class="field">
-        <label class="label" for="context-length">
-          {{ $t('tutor.course.fields.sessionLength') }}
-        </label>
-        <div class="select is-fullwidth">
-          <select
-            id="context-length"
-            :value="context.sessionLength ?? ''"
-            @change="updateContext('sessionLength', Number(valueOf($event)) || null)"
-          >
-            <option value="">{{ $t('tutor.course.choose') }}</option>
-            <option v-for="hours in SESSION_LENGTHS" :key="hours" :value="hours">
-              {{ formatHours(hours) }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div v-if="isAsked('sessionType')" class="field">
-        <label class="label" for="context-type">
-          {{ $t('tutor.course.fields.sessionType') }}
-        </label>
-        <div class="select is-fullwidth">
-          <select
-            id="context-type"
-            :value="context.sessionType"
-            @change="updateContext('sessionType', valueOf($event))"
-          >
-            <option value="">{{ $t('tutor.course.choose') }}</option>
-            <option v-for="type in SESSION_TYPES" :key="type" :value="type">
-              {{ $t(`tutor.course.sessionTypes.${type}`) }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div v-if="isAsked('sessionMode')" class="field">
-        <label class="label" for="context-mode">{{ $t('tutor.course.fields.sessionMode') }}</label>
-        <div class="select is-fullwidth">
-          <select
-            id="context-mode"
-            :value="context.sessionMode"
-            @change="
-              updateContext('sessionMode', valueOf($event) as TeachingContext['sessionMode'])
-            "
-          >
-            <option value="">{{ $t('tutor.course.choose') }}</option>
-            <option v-for="mode in SESSION_MODES" :key="mode" :value="mode">
-              {{ $t(`tutor.course.modes.${mode}`) }}
-            </option>
-          </select>
-        </div>
-      </div>
-
-      <div v-if="isAsked('classSize')" class="field">
-        <label class="label" for="context-size">{{ $t('tutor.course.fields.classSize') }}</label>
         <input
-          id="context-size"
+          v-else
+          :id="`context-${key}`"
           class="input"
-          type="number"
-          min="1"
-          step="1"
-          :value="context.classSize ?? ''"
-          @input="onCount('classSize', $event)"
+          type="text"
+          :placeholder="key === 'discipline' ? $t('tutor.course.disciplinePlaceholder') : ''"
+          :value="context[key]"
+          :data-testid="`context-${key}`"
+          @input="updateContext(key, valueOf($event) as never)"
         />
+        <p
+          v-if="isPrefilled(key)"
+          class="help from-syllabus"
+          :title="evidence[key]"
+          data-testid="prefilled"
+        >
+          {{ $t('tutor.course.fromSyllabus') }}
+        </p>
+        <p v-else-if="aiFilled.includes(key)" class="help read-by-ai" data-testid="ai-filled">
+          {{ $t('tutor.course.readByAi') }}
+        </p>
       </div>
     </div>
   </section>
@@ -186,6 +147,16 @@ const isAsked = (key: keyof TeachingContext) => !props.prefilled.includes(key);
   .label {
     font-size: 0.875rem;
   }
+}
+
+.from-syllabus {
+  color: var(--neutral-70);
+  cursor: help;
+}
+
+.read-by-ai {
+  color: var(--neutral-90);
+  font-weight: 600;
 }
 
 @media (max-width: 1024px) {

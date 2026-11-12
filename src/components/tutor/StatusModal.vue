@@ -36,7 +36,7 @@ defineProps<{
   shouldRetryAction: boolean;
   action: () => Promise<void>;
   stopAction: () => void;
-  kind: 'extract' | 'search' | 'syllabus' | 'feedback';
+  kind: 'read' | 'extract' | 'search' | 'syllabus' | 'feedback';
 }>();
 </script>
 

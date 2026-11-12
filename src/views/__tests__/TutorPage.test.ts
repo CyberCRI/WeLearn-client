@@ -5,6 +5,8 @@ import { createPinia, setActivePinia } from 'pinia';
 import ProgressBar from '@/components/microlearning/ProgressBar.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
+import CourseCheck from '@/components/tutor/CourseCheck.vue';
+import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { scrollToAnchor } from '@/utils/navigation';
 import i18n from '@/localisation/i18n';
@@ -91,7 +93,7 @@ describe('TutorPage', () => {
     store.syllabusFile = new File(['a'], 'syllabus.pdf', { type: 'application/pdf' });
     const wrapper = mount(TutorPage, { shallow: true });
 
-    wrapper.findComponent(CursusInfo).props('action')();
+    store.goNext();
     await flushPromises();
     expect(wrapper.findComponent(CursusInfo).exists()).toBe(false);
     expect(wrapper.find('#target-1 .recap-text').text()).toContain('syllabus.pdf');
@@ -100,5 +102,38 @@ describe('TutorPage', () => {
     await toggle.trigger('click');
     expect(wrapper.findComponent(CursusInfo).exists()).toBe(true);
     expect(toggle.text()).toBe('tutor.collapse');
+  });
+
+  it('reads the syllabus from "Your course", then shows "Check your course"', async () => {
+    const store = useTutorStore();
+    store.choosePath('existing');
+    const wrapper = mount(TutorPage, { shallow: true });
+    expect(wrapper.findComponent(CursusInfo).props('action')).toBe(store.readSyllabus);
+
+    // while WeLearn reads, the reading progress takes the place of the upload, in the page
+    store.syllabusFile = new File(['a'], 'syllabus.pdf', { type: 'application/pdf' });
+    store.readingPhase = 'reading';
+    await flushPromises();
+    expect(wrapper.findComponent(CursusInfo).exists()).toBe(false);
+    expect(wrapper.findComponent(ReadingProgress).props()).toMatchObject({
+      fileName: 'syllabus.pdf',
+      phase: 'reading'
+    });
+    wrapper.findComponent(ReadingProgress).vm.$emit('cancel');
+    await flushPromises();
+    expect(store.readingPhase).toBe('idle');
+
+    // a failed reading is said above the upload, which "Continue" retries
+    store.readError = 'unavailable';
+    await flushPromises();
+    expect(wrapper.find('[data-testid="read-error"]').text()).toContain(
+      'tutor.reading.unavailable.title'
+    );
+    expect(wrapper.findComponent(CursusInfo).exists()).toBe(true);
+
+    store.setStep(2);
+    await flushPromises();
+    expect(wrapper.findComponent(CourseCheck).props('action')).toBe(store.confirmCourse);
+    expect(wrapper.find('#target-1 .recap-text').exists()).toBe(true);
   });
 });
