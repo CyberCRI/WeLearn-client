@@ -13,7 +13,9 @@ export type DiscValue =
   | 'letters'
   | 'ecology'
   | 'art'
-  | 'polsci';
+  | 'polsci'
+  | 'physics'
+  | 'anthropology';
 
 export interface EvalAnswers {
   link?: number;

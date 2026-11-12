@@ -20,7 +20,9 @@ export const microLearning = {
     letters: 'Humanities',
     ecology: 'Ecology',
     art: 'Arts',
-    polsci: 'Political science'
+    polsci: 'Political science',
+    physics: 'Physics',
+    anthropology: 'Anthropology'
   },
   briefingScreen: {
     title: 'Your learning journey is ready',
