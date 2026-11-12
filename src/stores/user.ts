@@ -113,6 +113,14 @@ export const useUserStore = defineStore('user', () => {
     clearFromStorage(PENDING_SYLLABUS_KEY);
   };
 
+  // after a logout: the next user_and_session must start a new guest, not reuse the account's
+  // session nor compare against its user id
+  const forgetUser = () => {
+    clearUserData();
+    clearFromStorage('userId');
+    clearFromStorage('sessionId');
+  };
+
   // call with every user id the API returns. Without a sessionId, a user change
   // drops the stored session: the next user_and_session stores a new one
   const syncUserId = (userId: string, sessionId?: string) => {
@@ -135,6 +143,7 @@ export const useUserStore = defineStore('user', () => {
     setHasSeenWelcome,
     userMetricsDataAction,
     syncUserId,
+    forgetUser,
     analyticsConsent,
     shouldAskAnalyticsConsent,
     applyAnalyticsConsent,

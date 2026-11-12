@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useUserStore } from '../user';
+import { useChatStore } from '../chat';
 import { basePostAxios } from '@/utils/fetch';
 import {
   grantAnalyticsConsent,
@@ -195,6 +196,36 @@ describe('user store', () => {
       useUserStore().syncUserId('user-1');
 
       expect(stored('sessionId')).toBe('session-1');
+    });
+  });
+
+  describe('forgetUser', () => {
+    beforeEach(() => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+      localStorage.setItem('sessionId', JSON.stringify('session-1'));
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'q' }]));
+      localStorage.setItem('language', 'fr');
+      localStorage.setItem('onboardingState', JSON.stringify({ hasSeenWelcome: true }));
+    });
+
+    it('drops the user and session ids so the next visit starts a new guest', () => {
+      useUserStore().forgetUser();
+
+      expect(localStorage.getItem('userId')).toBeNull();
+      expect(localStorage.getItem('sessionId')).toBeNull();
+    });
+
+    it('empties the chat but keeps the device preferences', () => {
+      const chat = useChatStore();
+      expect(chat.chatMessagesList).toHaveLength(1);
+
+      useUserStore().forgetUser();
+
+      expect(chat.chatMessagesList).toEqual([]);
+      expect(localStorage.getItem('chat')).toBeNull();
+      expect(localStorage.getItem('language')).toBe('fr');
+      expect(localStorage.getItem('onboardingState')).not.toBeNull();
+      expect(resetAnalytics).toHaveBeenCalled();
     });
   });
 
