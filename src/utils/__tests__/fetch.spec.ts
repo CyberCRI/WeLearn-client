@@ -7,6 +7,7 @@ import {
   basePostAxios,
   deleteAllBookmarks,
   deleteBookmark,
+  deleteChatThread,
   exportBibliography,
   fetchStream,
   getBookmarks,
@@ -210,6 +211,16 @@ describe('fetch helpers', () => {
         undefined
       );
       expect(result.data).toEqual([{ id: 'doc-1' }]);
+    });
+  });
+  describe('chat threads', () => {
+    it('deletes a thread, its id encoded in the url', async () => {
+      vi.spyOn(http, 'delete').mockResolvedValue({ status: 200, data: { thread_id: 'a/b' } });
+
+      const response = await deleteChatThread('a/b');
+
+      expect(http.delete).toHaveBeenCalledWith('/qna/chat/threads/a%2Fb', undefined);
+      expect(response.data).toEqual({ thread_id: 'a/b' });
     });
   });
 });

@@ -14,9 +14,11 @@ import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 import { useAuthStore } from './stores/auth';
+import { useChatStore } from '@/stores/chat';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
+const chatStore = useChatStore();
 const fetchError = ref(false);
 
 const authStore = useAuthStore();
@@ -27,7 +29,11 @@ async function initCalls() {
     await Promise.all([
       getInfoPerCorpus(),
       getSourcesList(),
-      getUserAndSession(getQueryParamValue('referer') || ''),
+      // once the session belongs to the account (a guest who logged in gets the account's user):
+      // its latest chat is looked up through that session
+      getUserAndSession(getQueryParamValue('referer') || '').then(() =>
+        chatStore.restoreLatestThread()
+      ),
       // bookmarks need an account
       ...(authStore.isGuest ? [] : [getBookmarks()])
     ]);

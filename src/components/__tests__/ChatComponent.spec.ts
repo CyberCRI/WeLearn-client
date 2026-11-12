@@ -88,11 +88,11 @@ describe('ChatComponent', () => {
       expect(wrapper.find('.modal').exists()).toBe(false);
     });
 
-    it('resets the chat once confirmed', async () => {
-      const reset = vi.spyOn(store, '$reset');
+    it('deletes the chat once confirmed', async () => {
+      const deleteChat = vi.spyOn(store, 'deleteCurrentChat');
       const wrapper = await openConfirm();
       await wrapper.find('.modal .is-danger').trigger('click');
-      expect(reset).toHaveBeenCalledTimes(1);
+      expect(deleteChat).toHaveBeenCalledTimes(1);
       expect(store.chatMessagesList).toHaveLength(0);
       expect(wrapper.find('.modal').exists()).toBe(false);
     });

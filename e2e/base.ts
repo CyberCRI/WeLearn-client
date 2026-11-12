@@ -80,6 +80,20 @@ export const test = base.extend<Fixtures>({
       }
     });
 
+    // chat threads: by default the account has no chat to restore at boot, and a deletion works.
+    // a test overrides a route with page.route, then reloads
+    await page.route('**/qna/chat/threads/**', async (route) => {
+      const request = route.request();
+      if (request.method() === 'DELETE') {
+        const threadId = decodeURIComponent(new URL(request.url()).pathname.split('/').pop()!);
+        await route.fulfill({ json: { thread_id: threadId } });
+      } else if (request.url().includes('/threads/latest')) {
+        await route.fulfill({ json: { thread_id: null } });
+      } else {
+        await route.continue();
+      }
+    });
+
     // external sdg classifier called alongside every search, it must not hang the tests when down
     await page.route('**/aurora-sdg.labs.vu.nl/**', async (route) => {
       await route.fulfill({ json: { predictions: [] } });

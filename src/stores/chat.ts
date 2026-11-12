@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ChatMessage, ChatProcessingMetadata } from '@/types';
-import { baseGetAxios, fetchStream } from '@/utils/fetch';
+import { baseGetAxios, deleteChatThread, fetchStream } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import { extractProcessingMetadata } from '@/utils/chatProcessing';
@@ -9,6 +9,8 @@ import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
 import { track } from '@/utils/analytics';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useAuthStore } from '@/stores/auth';
+import type { ApiResponse } from '@/types/api';
 
 // CHAT STATUSES
 export const CHAT_STATUS = {
@@ -61,7 +63,7 @@ export const useChatStore = defineStore('chat', () => {
     () => !SETTLED_STATUSES.includes(chatStatus.value)
   );
 
-  // bumped by every send and every reset: an answer or a history from an older generation
+  // bumped by every send, every reset and every thread opened: an answer or a history from an older generation
   // must not write into the current conversation
   let generation = 0;
   let streamController: AbortController | null = null;
@@ -101,18 +103,15 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
   };
 
-  const initializeChat = async () => {
-    // an answer still streaming (the user left the page and came back) is newer than the history
-    if (!storedThreadId.value || isAnswering.value) {
-      return;
-    }
+  // loads a thread's history into the chat. a reset, a new question or another thread opened
+  // meanwhile starts a new generation, and the history is then dropped
+  const loadHistory = async (threadId: string) => {
     const startedGeneration = generation;
 
     try {
       const chatThread = await baseGetAxios<ChatMessage[]>(
-        `/qna/chat/history?thread_id=${encodeURIComponent(storedThreadId.value)}`
+        `/qna/chat/history?thread_id=${encodeURIComponent(threadId)}`
       );
-      // a reset or a new question happened meanwhile
       if (startedGeneration !== generation || !Array.isArray(chatThread)) {
         return;
       }
@@ -122,17 +121,26 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       chatMessagesList.value = chatThread;
+      saveToStorage('chat', chatThread);
     } catch (error) {
       if (isThreadNotFound(error)) {
         // the conversation can't be continued, so a follow-up would be answered without it
         if (startedGeneration === generation) {
-          $reset();
+          startNewChat();
         }
         return;
       }
       // keep the chat restored from storage
       console.error(error);
     }
+  };
+
+  const initializeChat = async () => {
+    // an answer still streaming (the user left the page and came back) is newer than the history
+    if (!storedThreadId.value || isAnswering.value) {
+      return;
+    }
+    await loadHistory(storedThreadId.value);
   };
 
   const shouldFetchNewDocuments: Ref<boolean> = ref(true);
@@ -561,28 +569,116 @@ export const useChatStore = defineStore('chat', () => {
     questionNumbers.value = [a, b];
   };
 
-  function $reset() {
-    // stop the answer in flight, and drop whatever it was about to write
+  // stop the answer in flight, and drop whatever it was about to write
+  function stopAnswer() {
     generation++;
     streamController?.abort();
     streamController = null;
-    getRandomQuestionNumber();
     clearProcessingMetadata();
     chatStatus.value = CHAT_STATUS.EMPTY;
-    chatInput.value = '';
-    chatMessagesList.value = [];
     hasChatAnswerError.value = false;
+  }
+
+  function clearConversation() {
+    chatMessagesList.value = [];
     sourcesList.value = [];
     reformulatedQuery.value = null;
-    shouldFetchNewDocuments.value = true;
-    storedSubject.value = undefined;
     forgetThread();
     clearFromStorage('chat');
     clearFromStorage('chatSources');
-    clearFromStorage('questionQueues');
     clearFromStorage('reformulatedQuery');
+  }
+
+  function startNewChat() {
+    stopAnswer();
+    clearConversation();
+    getRandomQuestionNumber();
+    chatInput.value = '';
+    shouldFetchNewDocuments.value = true;
+    storedSubject.value = undefined;
+    clearFromStorage('questionQueues');
     clearFromStorage('chatSubject');
   }
+
+  // the input draft and the subject stay: they are not part of the conversation
+  async function openThread(threadId: string) {
+    stopAnswer();
+    clearConversation();
+    storeThreadId(threadId);
+    await loadHistory(threadId);
+  }
+
+  // "erase the chat": deleted in the api too, or the restore at the next login would bring it back
+  async function deleteCurrentChat() {
+    // one answer at a time, it is erased once it is there
+    if (isAnswering.value) {
+      return;
+    }
+    const threadId = storedThreadId.value;
+    // erased on screen first: a question asked while the api deletes starts a new thread,
+    // which the reset must not wipe
+    startNewChat();
+    if (!threadId) {
+      return;
+    }
+
+    try {
+      await deleteChatThread(threadId);
+    } catch (error) {
+      // ponytail: a failed deletion is only logged, the user still gets an empty chat. the thread
+      // may then come back with the next restore, and can be erased again
+      if (!isThreadNotFound(error)) {
+        console.error(error);
+      }
+    }
+  }
+
+  // the user id whose latest chat was already looked up: once per login, so an erased chat or
+  // a new empty one stays empty on the next reload
+  const RESTORED_FOR_KEY = 'chatRestoredFor';
+
+  // nothing on screen to overwrite: no thread, no message, no answer coming
+  const isChatUnused = () => !storedThreadId.value && isChatEmpty.value && !isAnswering.value;
+
+  // brings back the account's latest chat after a login, on any device. a guest who signs up keeps
+  // their chat (its thread is stored, so nothing is restored); a guest who logs into another
+  // account already lost theirs in user.ts syncUserId, and the new user id restores the account's
+  async function restoreLatestThread() {
+    // a guest boot (after a logout too) clears it, so the next login restores again
+    if (!useAuthStore().isAuthenticated) {
+      clearFromStorage(RESTORED_FOR_KEY);
+      return;
+    }
+    const userId = getFromStorage('userId');
+    if (getFromStorage(RESTORED_FOR_KEY) === userId) {
+      return;
+    }
+    // the chat in use is this login's chat: nothing to restore
+    if (!isChatUnused()) {
+      saveToStorage(RESTORED_FOR_KEY, userId);
+      return;
+    }
+    const startedGeneration = generation;
+
+    try {
+      const { thread_id: threadId } = await baseGetAxios<ApiResponse<'/qna/chat/threads/latest'>>(
+        '/qna/chat/threads/latest'
+      );
+      // not saved on an error, so the next boot tries again
+      saveToStorage(RESTORED_FOR_KEY, userId);
+      // the user may have asked something meanwhile
+      if (!threadId || startedGeneration !== generation || !isChatUnused()) {
+        return;
+      }
+      await openThread(threadId);
+    } catch (error) {
+      // a convenience: without it the user just starts on an empty chat
+      console.error(error);
+    }
+  }
+
+  // kept for the stores that reset every user's data (user.ts)
+  const $reset = startNewChat;
 
   return {
     getRandomQuestionNumber,
@@ -606,6 +702,10 @@ export const useChatStore = defineStore('chat', () => {
     clearSubject,
     shouldDisplaySubjects,
     hasChatAnswerError,
+    startNewChat,
+    openThread,
+    restoreLatestThread,
+    deleteCurrentChat,
     $reset
   };
 });
