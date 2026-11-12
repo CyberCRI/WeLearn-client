@@ -22,7 +22,8 @@ yarn dev:prod-api   # same, but API calls go through the vite proxy to the prod 
 yarn test:unit      # vitest (jsdom), watch mode; add `--run` for a single pass
 yarn test:unit --run src/utils/__tests__/progress.spec.ts   # one file
 yarn test:coverage  # single pass + v8 coverage, fails under the floors in vitest.config.ts (html report in coverage/)
-yarn test:e2e       # playwright; builds into dist/e2e-* and serves it with `vite preview`, API calls are mocked
+yarn test:e2e       # playwright; builds once (e2e/build.mjs), copies it to dist/e2e-test and dist/e2e-dev with
+                    # their environment filled in, and serves each with `vite preview`. API calls are mocked
                     # (E2E_DEV_SERVER=1 uses the dev server instead, for quick local iterations)
 yarn lint           # eslint --fix
 yarn format         # prettier --write src/

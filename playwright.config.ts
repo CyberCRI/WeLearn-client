@@ -21,11 +21,13 @@ const DEV_SPECS = ['auth.spec.ts', 'profile.spec.ts', 'consent.spec.ts'];
 // the tests run against a production build: the dev server compiles every module on request,
 // which on a slow runner keeps the page blank past the expect timeout.
 // E2E_DEV_SERVER=1 uses the dev server instead, for quick local iterations.
-// VITE_* variables are baked in at build time, so each environment gets its own build.
+// e2e/build.mjs builds once and makes one copy per environment (dist/e2e-test, dist/e2e-dev), so
+// only the first server builds: playwright starts the web servers one after the other, each once
+// the previous one answers, so the copies are there when the second server starts.
 const serve = (env: 'test' | 'dev', port: number) =>
   process.env.E2E_DEV_SERVER
     ? `vite --mode test --port ${port} --strictPort`
-    : `vite build --mode test --outDir dist/e2e-${env} && vite preview --outDir dist/e2e-${env} --port ${port} --strictPort`;
+    : `${env === 'test' ? 'node e2e/build.mjs && ' : ''}vite preview --outDir dist/e2e-${env} --port ${port} --strictPort`;
 // the build has to finish before the server answers
 const SERVER_TIMEOUT = 180_000;
 
@@ -83,6 +85,7 @@ export default defineConfig<{ isDevEnvironment: boolean }>({
       reuseExistingServer: !process.env.CI
     },
     {
+      // only used by the dev server (E2E_DEV_SERVER): the build gets its environment in e2e/build.mjs.
       // variables already in the environment win over .env.test
       command: serve('dev', AUTH_PORT),
       port: AUTH_PORT,
