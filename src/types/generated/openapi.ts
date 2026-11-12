@@ -658,6 +658,29 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/user/logout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * End the current session
+     * @description End the caller's session and drop its cookie, so that after a Keycloak
+     *     logout the browser is no longer identified as the account user: the next
+     *     /user_and_session without a token gets a new guest. Answers 200 with or
+     *     without a session.
+     */
+    post: operations['user-logout'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/user/signup': {
     parameters: {
       query?: never;
@@ -1266,6 +1289,11 @@ export interface components {
       description: string;
       objectives: components['schemas']['LearningObjectives'];
       sustainability_map: components['schemas']['SustainabilityIntegration'];
+    };
+    /** LogoutResponse */
+    LogoutResponse: {
+      /** Message */
+      message: string;
     };
     /** MessageResponse */
     MessageResponse: {
@@ -3131,6 +3159,35 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['InstitutionDataResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-logout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LogoutResponse'];
         };
       };
       /** @description Error */
