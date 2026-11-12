@@ -633,18 +633,29 @@ export const useChatStore = defineStore('chat', () => {
     }
   }
 
-  // nothing on screen to overwrite: no thread, no message, no answer coming
-  const canRestoreThread = () =>
-    useAuthStore().isAuthenticated &&
-    !storedThreadId.value &&
-    isChatEmpty.value &&
-    !isAnswering.value;
+  // the user id whose latest chat was already looked up: once per login, so an erased chat or
+  // a new empty one stays empty on the next reload
+  const RESTORED_FOR_KEY = 'chatRestoredFor';
 
-  // brings back the account's latest chat, on any device. a guest who signs up keeps their chat
-  // (its thread is stored, so nothing is restored); a guest who logs into another account already
-  // lost theirs in user.ts syncUserId
+  // nothing on screen to overwrite: no thread, no message, no answer coming
+  const isChatUnused = () => !storedThreadId.value && isChatEmpty.value && !isAnswering.value;
+
+  // brings back the account's latest chat after a login, on any device. a guest who signs up keeps
+  // their chat (its thread is stored, so nothing is restored); a guest who logs into another
+  // account already lost theirs in user.ts syncUserId, and the new user id restores the account's
   async function restoreLatestThread() {
-    if (!canRestoreThread()) {
+    // a guest boot (after a logout too) clears it, so the next login restores again
+    if (!useAuthStore().isAuthenticated) {
+      clearFromStorage(RESTORED_FOR_KEY);
+      return;
+    }
+    const userId = getFromStorage('userId');
+    if (getFromStorage(RESTORED_FOR_KEY) === userId) {
+      return;
+    }
+    // the chat in use is this login's chat: nothing to restore
+    if (!isChatUnused()) {
+      saveToStorage(RESTORED_FOR_KEY, userId);
       return;
     }
     const startedGeneration = generation;
@@ -653,8 +664,10 @@ export const useChatStore = defineStore('chat', () => {
       const { thread_id: threadId } = await baseGetAxios<ApiResponse<'/qna/chat/threads/latest'>>(
         '/qna/chat/threads/latest'
       );
+      // not saved on an error, so the next boot tries again
+      saveToStorage(RESTORED_FOR_KEY, userId);
       // the user may have asked something meanwhile
-      if (!threadId || startedGeneration !== generation || !canRestoreThread()) {
+      if (!threadId || startedGeneration !== generation || !isChatUnused()) {
         return;
       }
       await openThread(threadId);

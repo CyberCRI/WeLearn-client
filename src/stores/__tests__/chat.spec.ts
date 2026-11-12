@@ -1053,8 +1053,13 @@ describe('chat store', () => {
       { role: 'assistant', content: 'hello' }
     ];
 
+    // the user id is stored by user_and_session before the restore runs
+    const ACCOUNT = 'account-user';
+    const restoredFor = () => JSON.parse(localStorage.getItem('chatRestoredFor') ?? 'null');
+
     beforeEach(() => {
       auth.isAuthenticated = true;
+      localStorage.setItem('userId', JSON.stringify(ACCOUNT));
     });
 
     // answers the latest thread call with `latest`, and the history call with HISTORY
@@ -1063,21 +1068,29 @@ describe('chat store', () => {
         .mocked(baseGetAxios)
         .mockImplementation(async (url: string) => (url === LATEST ? latest : HISTORY));
 
-    it('does nothing for a guest', async () => {
+    it('does nothing for a guest, and forgets the previous login', async () => {
       auth.isAuthenticated = false;
+      localStorage.setItem('chatRestoredFor', JSON.stringify(ACCOUNT));
       const store = useChatStore();
 
       await store.restoreLatestThread();
 
       expect(baseGetAxios).not.toHaveBeenCalled();
+      expect(localStorage.getItem('chatRestoredFor')).toBeNull();
     });
 
-    it('does nothing when a thread is stored', async () => {
+    it('does nothing when a thread is stored, for the rest of the login', async () => {
       localStorage.setItem('chatThreadId', 'guest-thread');
       const store = useChatStore();
 
       await store.restoreLatestThread();
 
+      expect(baseGetAxios).not.toHaveBeenCalled();
+      expect(restoredFor()).toBe(ACCOUNT);
+
+      // erased, then reloaded: stays empty
+      store.startNewChat();
+      await store.restoreLatestThread();
       expect(baseGetAxios).not.toHaveBeenCalled();
     });
 
@@ -1088,6 +1101,40 @@ describe('chat store', () => {
       await store.restoreLatestThread();
 
       expect(baseGetAxios).not.toHaveBeenCalled();
+      expect(restoredFor()).toBe(ACCOUNT);
+    });
+
+    it('runs once per login: an erased chat stays empty after a reload', async () => {
+      localStorage.setItem('chatRestoredFor', JSON.stringify(ACCOUNT));
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(baseGetAxios).not.toHaveBeenCalled();
+    });
+
+    it('restores again for another user (a guest logged into an existing account)', async () => {
+      localStorage.setItem('chatRestoredFor', JSON.stringify('previous-user'));
+      mockApi({ thread_id: 'thread-1' });
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(store.chatMessagesList).toEqual(HISTORY);
+      expect(restoredFor()).toBe(ACCOUNT);
+    });
+
+    it('restores again after a guest boot cleared the previous login', async () => {
+      localStorage.setItem('chatRestoredFor', JSON.stringify(ACCOUNT));
+      auth.isAuthenticated = false;
+      await useChatStore().restoreLatestThread();
+      auth.isAuthenticated = true;
+      mockApi({ thread_id: 'thread-1' });
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(store.chatMessagesList).toEqual(HISTORY);
     });
 
     it('stays on the empty chat when the account has no thread', async () => {
@@ -1100,6 +1147,10 @@ describe('chat store', () => {
       expect(baseGetAxios).toHaveBeenCalledWith(LATEST);
       expect(store.chatMessagesList).toEqual([]);
       expect(localStorage.getItem('chatThreadId')).toBeNull();
+      // looked up once for this login
+      expect(restoredFor()).toBe(ACCOUNT);
+      await store.restoreLatestThread();
+      expect(baseGetAxios).toHaveBeenCalledTimes(1);
     });
 
     it('opens the latest thread of the account', async () => {
@@ -1163,6 +1214,8 @@ describe('chat store', () => {
       expect(errorLog).toHaveBeenCalled();
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
       expect(store.hasChatAnswerError).toBe(false);
+      // the next boot tries again
+      expect(localStorage.getItem('chatRestoredFor')).toBeNull();
     });
   });
 

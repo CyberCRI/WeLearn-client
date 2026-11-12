@@ -149,6 +149,9 @@ test.describe('auth', () => {
             ]
           })
         );
+        // the first boot of the fixture already looked up the latest chat (none) for this login:
+        // forget it, as on a device this account never logged in on
+        await page.evaluate(() => localStorage.removeItem('chatRestoredFor'));
         await page.reload();
       });
 
@@ -167,6 +170,16 @@ test.describe('auth', () => {
         await page.locator('.modal .is-danger').click();
 
         await deletion;
+        await expect(page.getByText('A question asked on another device')).toHaveCount(0);
+
+        // restored once per login: a reload does not look the latest chat up again
+        const latestCalls: string[] = [];
+        page.on('request', (request) => {
+          if (request.url().includes('/qna/chat/threads/latest')) latestCalls.push(request.url());
+        });
+        await page.reload();
+        await page.waitForLoadState('networkidle');
+        expect(latestCalls).toHaveLength(0);
         await expect(page.getByText('A question asked on another device')).toHaveCount(0);
       });
     });
