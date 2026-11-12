@@ -9,6 +9,8 @@ import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
 import { track } from '@/utils/analytics';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useAuthStore } from '@/stores/auth';
+import type { ApiResponse } from '@/types/api';
 
 // CHAT STATUSES
 export const CHAT_STATUS = {
@@ -606,6 +608,37 @@ export const useChatStore = defineStore('chat', () => {
     await loadHistory(threadId);
   }
 
+  // nothing on screen to overwrite: no thread, no message, no answer coming
+  const canRestoreThread = () =>
+    useAuthStore().isAuthenticated &&
+    !storedThreadId.value &&
+    isChatEmpty.value &&
+    !isAnswering.value;
+
+  // brings back the account's latest chat, on any device. a guest who signs up keeps their chat
+  // (its thread is stored, so nothing is restored); a guest who logs into another account already
+  // lost theirs in user.ts syncUserId
+  async function restoreLatestThread() {
+    if (!canRestoreThread()) {
+      return;
+    }
+    const startedGeneration = generation;
+
+    try {
+      const { thread_id: threadId } = await baseGetAxios<ApiResponse<'/qna/chat/threads/latest'>>(
+        '/qna/chat/threads/latest'
+      );
+      // the user may have asked something meanwhile
+      if (!threadId || startedGeneration !== generation || !canRestoreThread()) {
+        return;
+      }
+      await openThread(threadId);
+    } catch (error) {
+      // a convenience: without it the user just starts on an empty chat
+      console.error(error);
+    }
+  }
+
   // kept for the stores that reset every user's data (user.ts)
   const $reset = startNewChat;
 
@@ -633,6 +666,7 @@ export const useChatStore = defineStore('chat', () => {
     hasChatAnswerError,
     startNewChat,
     openThread,
+    restoreLatestThread,
     $reset
   };
 });

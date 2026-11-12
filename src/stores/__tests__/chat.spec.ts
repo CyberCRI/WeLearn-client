@@ -14,7 +14,7 @@ vi.mock('@/utils/fetch', () => ({
 
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
-const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
+const auth = vi.hoisted(() => ({ isGuest: false, isAuthenticated: false, askToSignUp: vi.fn() }));
 vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
 
 type StreamBody = Awaited<ReturnType<typeof fetchStream>>;
@@ -73,6 +73,7 @@ const apiError = (status: number, code: string) =>
 describe('chat store', () => {
   beforeEach(() => {
     auth.isGuest = false;
+    auth.isAuthenticated = false;
     auth.askToSignUp.mockReset();
     localStorage.clear();
     setActivePinia(createPinia());
@@ -1040,6 +1041,126 @@ describe('chat store', () => {
 
       expect(store.chatMessagesList).toEqual([]);
       expect(localStorage.getItem('chatThreadId')).toBeNull();
+    });
+  });
+
+  describe('restoreLatestThread', () => {
+    const LATEST = '/qna/chat/threads/latest';
+    const HISTORY = [
+      { role: 'user', content: 'hi' },
+      { role: 'assistant', content: 'hello' }
+    ];
+
+    beforeEach(() => {
+      auth.isAuthenticated = true;
+    });
+
+    // answers the latest thread call with `latest`, and the history call with HISTORY
+    const mockApi = (latest: unknown) =>
+      vi
+        .mocked(baseGetAxios)
+        .mockImplementation(async (url: string) => (url === LATEST ? latest : HISTORY));
+
+    it('does nothing for a guest', async () => {
+      auth.isAuthenticated = false;
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(baseGetAxios).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when a thread is stored', async () => {
+      localStorage.setItem('chatThreadId', 'guest-thread');
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(baseGetAxios).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when the chat has messages', async () => {
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'unanswered' }]));
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(baseGetAxios).not.toHaveBeenCalled();
+    });
+
+    it('stays on the empty chat when the account has no thread', async () => {
+      mockApi({ thread_id: null });
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(baseGetAxios).toHaveBeenCalledTimes(1);
+      expect(baseGetAxios).toHaveBeenCalledWith(LATEST);
+      expect(store.chatMessagesList).toEqual([]);
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
+    });
+
+    it('opens the latest thread of the account', async () => {
+      mockApi({ thread_id: 'thread-1' });
+      const store = useChatStore();
+
+      await store.restoreLatestThread();
+
+      expect(baseGetAxios).toHaveBeenCalledWith('/qna/chat/history?thread_id=thread-1');
+      expect(store.chatMessagesList).toEqual(HISTORY);
+      expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
+    });
+
+    it('leaves a question sent while the latest thread was looked up', async () => {
+      let answerLatest!: (latest: unknown) => void;
+      vi.mocked(baseGetAxios).mockReturnValue(new Promise((resolve) => (answerLatest = resolve)));
+      mockStream([sse({ content: 'Answer', thread_id: 'new-thread' })]);
+      const store = useChatStore();
+
+      const restoring = store.restoreLatestThread();
+      await store.onSendMessage('a question');
+      answerLatest({ thread_id: 'thread-1' });
+      await restoring;
+
+      expect(baseGetAxios).toHaveBeenCalledTimes(1);
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Answer' }
+      ]);
+      expect(localStorage.getItem('chatThreadId')).toBe('new-thread');
+    });
+
+    it('leaves a question that is still being answered', async () => {
+      let answerLatest!: (latest: unknown) => void;
+      vi.mocked(baseGetAxios).mockReturnValue(new Promise((resolve) => (answerLatest = resolve)));
+      const stream = controlledStream();
+      const store = useChatStore();
+
+      const restoring = store.restoreLatestThread();
+      const sending = store.onSendMessage('a question');
+      answerLatest({ thread_id: 'thread-1' });
+      await restoring;
+      await stream.push(sse({ content: 'Answer' }));
+      await stream.end();
+      await sending;
+
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Answer' }
+      ]);
+    });
+
+    it('only logs an error', async () => {
+      const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(baseGetAxios).mockRejectedValue(new Error('network'));
+      const store = useChatStore();
+
+      await expect(store.restoreLatestThread()).resolves.toBeUndefined();
+
+      expect(errorLog).toHaveBeenCalled();
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+      expect(store.hasChatAnswerError).toBe(false);
     });
   });
 
