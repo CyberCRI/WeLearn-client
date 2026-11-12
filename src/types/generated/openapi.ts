@@ -203,6 +203,46 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/qna/chat/threads/latest': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Latest Chat Thread
+     * @description Thread of the caller's most recent message, to reopen it after a sign-in on any device. Null without a session or without any thread.
+     */
+    get: operations['qna-get_latest_chat_thread'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/qna/chat/threads/{thread_id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Delete Chat Thread
+     * @description Delete a thread owned by the caller: its LangGraph checkpoints, blobs and writes. 404 when the thread does not exist, has no recorded owner or belongs to another user.
+     */
+    delete: operations['qna-delete_chat_thread'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/search/by_document': {
     parameters: {
       query?: never;
@@ -873,6 +913,16 @@ export interface components {
       /** Bookmarks */
       bookmarks: components['schemas']['BookmarkRead'][];
     };
+    /** ChatThreadDeletedResponse */
+    ChatThreadDeletedResponse: {
+      /**
+       * Thread Id
+       * Format: uuid
+       * @description Id of the deleted thread.
+       * @example 6fca8d02-0bc2-48a5-9c95-4942ca57e651
+       */
+      thread_id: string;
+    };
     /** CompetencyMapping */
     CompetencyMapping: {
       /** Greencomp Competencies */
@@ -1182,6 +1232,15 @@ export interface components {
       documents: components['schemas']['ScoredPoint'][];
       /** Title */
       title: string;
+    };
+    /** LatestChatThreadResponse */
+    LatestChatThreadResponse: {
+      /**
+       * Thread Id
+       * @description Thread of the caller's most recent message, null when the caller has no session or no thread.
+       * @example 6fca8d02-0bc2-48a5-9c95-4942ca57e651
+       */
+      thread_id?: string | null;
     };
     /** LearningObjective */
     LearningObjective: {
@@ -2000,6 +2059,75 @@ export interface operations {
                 }[]
               | null;
           }[];
+        };
+      };
+      /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'qna-get_latest_chat_thread': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LatestChatThreadResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'qna-delete_chat_thread': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        thread_id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ChatThreadDeletedResponse'];
         };
       };
       /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
