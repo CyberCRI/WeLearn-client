@@ -38,6 +38,8 @@ export const test = base.extend<Fixtures>({
           status: 202,
           body: JSON.stringify({ message: 'accepted' })
         });
+      } else if (url.includes('user/logout')) {
+        await route.fulfill({ status: 200, json: { message: 'logged out' } });
       } else if (url.includes('user/user')) {
         await route.fulfill({
           status: 200,

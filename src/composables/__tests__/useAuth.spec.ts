@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
+import { flushPromises } from '@vue/test-utils';
 import { useAuth } from '../useAuth';
 import { useAuthStore } from '@/stores/auth';
 import keycloak from '@/utils/keycloak';
@@ -14,6 +15,9 @@ vi.mock('@/utils/keycloak', () => ({
     logout: vi.fn()
   }
 }));
+
+// logout ends the api session first, keep it off the network
+vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 
 describe('useAuth', () => {
   beforeEach(() => {
@@ -40,11 +44,11 @@ describe('useAuth', () => {
     expect(userName.value).toBe('Ada Lovelace');
   });
 
-  it('delegates login and logout to keycloak', () => {
+  it('delegates login and logout to keycloak', async () => {
     const { login, logout } = useAuth();
 
     login('http://localhost/back');
-    logout();
+    await logout();
 
     expect(keycloak.login).toHaveBeenCalledWith(
       expect.objectContaining({ redirectUri: 'http://localhost/back' })
@@ -68,6 +72,8 @@ describe('useAuth', () => {
       vi.mocked(keycloak.updateToken).mockRejectedValue(new Error('expired'));
 
       const token = await useAuth().getValidToken();
+      // the logout is not awaited by getValidToken
+      await flushPromises();
 
       expect(token).toBeUndefined();
       expect(keycloak.logout).toHaveBeenCalledTimes(1);

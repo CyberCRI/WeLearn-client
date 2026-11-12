@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useAuthStore } from '../auth';
+import { useChatStore } from '../chat';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 import { resetAnalytics, track } from '@/utils/analytics';
@@ -345,9 +346,9 @@ describe('auth store', () => {
       });
     });
 
-    it('logs out back to the app', () => {
+    it('logs out back to the app', async () => {
       keycloak.authenticated = true;
-      useAuthStore().logout();
+      await useAuthStore().logout();
 
       expect(keycloak.logout).toHaveBeenCalledWith({ redirectUri: window.location.origin });
       expect(track).toHaveBeenCalledWith('Logged Out', {});
@@ -364,9 +365,74 @@ describe('auth store', () => {
       expect(track).toHaveBeenCalledTimes(1);
     });
 
+    describe('the api session and the user data', () => {
+      const seedUser = () => {
+        localStorage.setItem('userId', JSON.stringify('user-1'));
+        localStorage.setItem('sessionId', JSON.stringify('session-1'));
+        localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'q' }]));
+      };
+
+      it('ends the api session, then forgets the user, then leaves keycloak', async () => {
+        keycloak.authenticated = true;
+        seedUser();
+        const chat = useChatStore();
+        vi.mocked(basePostAxios).mockImplementation(async () => {
+          // the session id must still be there for the api to know which session to end
+          expect(localStorage.getItem('sessionId')).not.toBeNull();
+          return { data: { message: 'ok' } } as Awaited<ReturnType<typeof basePostAxios>>;
+        });
+        keycloak.logout.mockImplementation(async () => {
+          expect(chat.chatMessagesList).toEqual([]);
+          expect(localStorage.getItem('userId')).toBeNull();
+          expect(localStorage.getItem('sessionId')).toBeNull();
+        });
+
+        await useAuthStore().logout();
+
+        expect(basePostAxios).toHaveBeenCalledWith('/user/logout');
+        expect(keycloak.logout).toHaveBeenCalledOnce();
+      });
+
+      it('still forgets the user and leaves keycloak when the api logout fails', async () => {
+        keycloak.authenticated = true;
+        seedUser();
+        const chat = useChatStore();
+        vi.mocked(basePostAxios).mockRejectedValue(new Error('network'));
+
+        await useAuthStore().logout();
+
+        expect(console.error).toHaveBeenCalledWith('API logout failed:', expect.any(Error));
+        expect(chat.chatMessagesList).toEqual([]);
+        expect(localStorage.getItem('userId')).toBeNull();
+        expect(localStorage.getItem('sessionId')).toBeNull();
+        expect(keycloak.logout).toHaveBeenCalledWith({ redirectUri: window.location.origin });
+      });
+
+      it('does not loop when the api logout itself gets a 401', async () => {
+        keycloak.authenticated = true;
+        const store = useAuthStore();
+        // what the 401 interceptor does: log out again while the first logout is running
+        vi.mocked(basePostAxios).mockImplementation(async () => {
+          await store.logout({ isExpired: true });
+          throw new Error('401');
+        });
+
+        await store.logout();
+
+        expect(basePostAxios).toHaveBeenCalledOnce();
+        expect(keycloak.logout).toHaveBeenCalledOnce();
+      });
+    });
+
     it('does nothing for a guest or when keycloak was never initialised', async () => {
+      localStorage.setItem('userId', JSON.stringify('user-1'));
+      localStorage.setItem('sessionId', JSON.stringify('session-1'));
+
       await useAuthStore().logout();
 
+      expect(basePostAxios).not.toHaveBeenCalled();
+      expect(localStorage.getItem('userId')).not.toBeNull();
+      expect(localStorage.getItem('sessionId')).not.toBeNull();
       expect(keycloak.logout).not.toHaveBeenCalled();
       expect(track).not.toHaveBeenCalled();
       expect(resetAnalytics).not.toHaveBeenCalled();

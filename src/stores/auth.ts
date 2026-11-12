@@ -4,6 +4,8 @@ import type { KeycloakProfile, KeycloakTokenParsed } from 'keycloak-js';
 import keycloak from '@/utils/keycloak';
 import i18n from '@/localisation/i18n';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
+// only used inside logout, so the cycle (auth → user → tutor/chat → auth) is safe at load time
+import { useUserStore } from '@/stores/user';
 import { basePostAxios } from '@/utils/fetch';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import { resetAnalytics, track } from '@/utils/analytics';
@@ -147,6 +149,16 @@ export const useAuthStore = defineStore('auth', () => {
     if (isExpired) saveToStorage(SESSION_EXPIRED_KEY, true);
     track('Logged Out', {});
     resetAnalytics();
+    // the api session must end too, or its cookie keeps the browser on the account user.
+    // a 401 here can't loop: isLoggingOut is already set
+    try {
+      await basePostAxios<ApiResponse<'/user/logout', 'post'>>('/user/logout');
+    } catch (error) {
+      // the ui is still emptied below, but the old cookie may map the browser to the account
+      // until it expires
+      console.error('API logout failed:', error);
+    }
+    useUserStore().forgetUser();
     try {
       await keycloak.logout({
         redirectUri: window.location.origin
