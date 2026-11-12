@@ -61,7 +61,7 @@ export const useChatStore = defineStore('chat', () => {
     () => !SETTLED_STATUSES.includes(chatStatus.value)
   );
 
-  // bumped by every send and every reset: an answer or a history from an older generation
+  // bumped by every send, every reset and every thread opened: an answer or a history from an older generation
   // must not write into the current conversation
   let generation = 0;
   let streamController: AbortController | null = null;
@@ -101,18 +101,15 @@ export const useChatStore = defineStore('chat', () => {
     chatStatus.value = CHAT_STATUS.FORMULATING_ANSWER;
   };
 
-  const initializeChat = async () => {
-    // an answer still streaming (the user left the page and came back) is newer than the history
-    if (!storedThreadId.value || isAnswering.value) {
-      return;
-    }
+  // loads a thread's history into the chat. a reset, a new question or another thread opened
+  // meanwhile starts a new generation, and the history is then dropped
+  const loadHistory = async (threadId: string) => {
     const startedGeneration = generation;
 
     try {
       const chatThread = await baseGetAxios<ChatMessage[]>(
-        `/qna/chat/history?thread_id=${encodeURIComponent(storedThreadId.value)}`
+        `/qna/chat/history?thread_id=${encodeURIComponent(threadId)}`
       );
-      // a reset or a new question happened meanwhile
       if (startedGeneration !== generation || !Array.isArray(chatThread)) {
         return;
       }
@@ -122,17 +119,26 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       chatMessagesList.value = chatThread;
+      saveToStorage('chat', chatThread);
     } catch (error) {
       if (isThreadNotFound(error)) {
         // the conversation can't be continued, so a follow-up would be answered without it
         if (startedGeneration === generation) {
-          $reset();
+          startNewChat();
         }
         return;
       }
       // keep the chat restored from storage
       console.error(error);
     }
+  };
+
+  const initializeChat = async () => {
+    // an answer still streaming (the user left the page and came back) is newer than the history
+    if (!storedThreadId.value || isAnswering.value) {
+      return;
+    }
+    await loadHistory(storedThreadId.value);
   };
 
   const shouldFetchNewDocuments: Ref<boolean> = ref(true);
@@ -561,28 +567,47 @@ export const useChatStore = defineStore('chat', () => {
     questionNumbers.value = [a, b];
   };
 
-  function $reset() {
-    // stop the answer in flight, and drop whatever it was about to write
+  // stop the answer in flight, and drop whatever it was about to write
+  function stopAnswer() {
     generation++;
     streamController?.abort();
     streamController = null;
-    getRandomQuestionNumber();
     clearProcessingMetadata();
     chatStatus.value = CHAT_STATUS.EMPTY;
-    chatInput.value = '';
-    chatMessagesList.value = [];
     hasChatAnswerError.value = false;
+  }
+
+  function clearConversation() {
+    chatMessagesList.value = [];
     sourcesList.value = [];
     reformulatedQuery.value = null;
-    shouldFetchNewDocuments.value = true;
-    storedSubject.value = undefined;
     forgetThread();
     clearFromStorage('chat');
     clearFromStorage('chatSources');
-    clearFromStorage('questionQueues');
     clearFromStorage('reformulatedQuery');
+  }
+
+  function startNewChat() {
+    stopAnswer();
+    clearConversation();
+    getRandomQuestionNumber();
+    chatInput.value = '';
+    shouldFetchNewDocuments.value = true;
+    storedSubject.value = undefined;
+    clearFromStorage('questionQueues');
     clearFromStorage('chatSubject');
   }
+
+  // the input draft and the subject stay: they are not part of the conversation
+  async function openThread(threadId: string) {
+    stopAnswer();
+    clearConversation();
+    storeThreadId(threadId);
+    await loadHistory(threadId);
+  }
+
+  // kept for the stores that reset every user's data (user.ts)
+  const $reset = startNewChat;
 
   return {
     getRandomQuestionNumber,
@@ -606,6 +631,8 @@ export const useChatStore = defineStore('chat', () => {
     clearSubject,
     shouldDisplaySubjects,
     hasChatAnswerError,
+    startNewChat,
+    openThread,
     $reset
   };
 });
