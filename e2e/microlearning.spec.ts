@@ -14,6 +14,9 @@ test.describe('microlearning flip cards', () => {
     await press('Mathématiques');
     await press('Voir mon parcours');
     await press('Commencer');
+    // briefing and self-eval share the "Commencer" label; with the out-in fade the leaving
+    // briefing button is still in the dom, so wait for the self-eval screen first
+    await expect(page.getByText('Deux petites questions')).toBeVisible();
     await press('Commencer');
 
     const cards = page.locator('button.flip-card');
