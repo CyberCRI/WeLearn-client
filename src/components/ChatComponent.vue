@@ -25,7 +25,7 @@ const scrollToSources = () =>
 
 const confirmClear = ref(false);
 const clearChat = () => {
-  store.$reset();
+  store.deleteCurrentChat();
   track('Chat Reset', {});
   confirmClear.value = false;
 };

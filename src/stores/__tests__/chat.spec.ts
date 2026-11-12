@@ -3,12 +3,13 @@ import { createPinia, setActivePinia } from 'pinia';
 import { CHAT_STATUS, useChatStore } from '../chat';
 import { useFiltersStore } from '../filters';
 import { useGuestQuotaStore } from '../guestQuota';
-import { baseGetAxios, fetchStream } from '@/utils/fetch';
+import { baseGetAxios, deleteChatThread, fetchStream } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   baseGetAxios: vi.fn(),
+  deleteChatThread: vi.fn(),
   fetchStream: vi.fn()
 }));
 
@@ -82,6 +83,7 @@ describe('chat store', () => {
   afterEach(() => {
     vi.mocked(fetchStream).mockReset();
     vi.mocked(baseGetAxios).mockReset();
+    vi.mocked(deleteChatThread).mockReset();
     vi.mocked(track).mockReset();
     vi.restoreAllMocks();
   });
@@ -1161,6 +1163,107 @@ describe('chat store', () => {
       expect(errorLog).toHaveBeenCalled();
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
       expect(store.hasChatAnswerError).toBe(false);
+    });
+  });
+
+  describe('deleteCurrentChat', () => {
+    // a conversation on thread-1, answered and persisted
+    const chatOnThread = async () => {
+      mockStream([sse({ content: 'Hi', docs: [{ id: 'doc-1' }], thread_id: 'thread-1' })]);
+      const store = useChatStore();
+      await store.onSendMessage('a question');
+      return store;
+    };
+
+    const expectEmptyChat = (store: ReturnType<typeof useChatStore>) => {
+      expect(store.chatMessagesList).toEqual([]);
+      expect(store.sourcesList).toEqual([]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+      for (const key of ['chat', 'chatSources', 'chatThreadId']) {
+        expect(localStorage.getItem(key)).toBeNull();
+      }
+    };
+
+    it('deletes the thread in the api and empties the chat', async () => {
+      vi.mocked(deleteChatThread).mockResolvedValue({} as never);
+      const store = await chatOnThread();
+
+      await store.deleteCurrentChat();
+
+      expect(deleteChatThread).toHaveBeenCalledWith('thread-1');
+      expectEmptyChat(store);
+    });
+
+    it('empties the chat when the thread is already gone', async () => {
+      const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(deleteChatThread).mockRejectedValue(apiError(404, 'THREAD_NOT_FOUND'));
+      const store = await chatOnThread();
+
+      await expect(store.deleteCurrentChat()).resolves.toBeUndefined();
+
+      expectEmptyChat(store);
+      expect(errorLog).not.toHaveBeenCalled();
+    });
+
+    it('logs another error and still empties the chat', async () => {
+      const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.mocked(deleteChatThread).mockRejectedValue(new Error('network'));
+      const store = await chatOnThread();
+
+      await expect(store.deleteCurrentChat()).resolves.toBeUndefined();
+
+      expectEmptyChat(store);
+      expect(errorLog).toHaveBeenCalled();
+    });
+
+    it('calls nothing without a thread', async () => {
+      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'unanswered' }]));
+      const store = useChatStore();
+
+      await store.deleteCurrentChat();
+
+      expect(deleteChatThread).not.toHaveBeenCalled();
+      expectEmptyChat(store);
+    });
+
+    it('does nothing while an answer streams', async () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
+      const stream = controlledStream();
+      const store = useChatStore();
+      const sending = store.onSendMessage('a question');
+      await stream.push(sse({ content: 'Hel' }));
+
+      await store.deleteCurrentChat();
+      await stream.push(sse({ content: 'lo' }));
+      await stream.end();
+      await sending;
+
+      expect(deleteChatThread).not.toHaveBeenCalled();
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'a question' },
+        { role: 'assistant', content: 'Hello' }
+      ]);
+    });
+
+    it('keeps a question asked while the api deletes the thread', async () => {
+      let endDeletion!: () => void;
+      vi.mocked(deleteChatThread).mockReturnValue(
+        new Promise((resolve) => (endDeletion = () => resolve({} as never)))
+      );
+      const store = await chatOnThread();
+
+      const deleting = store.deleteCurrentChat();
+      mockStream([sse({ content: 'New answer', thread_id: 'thread-2' })]);
+      await store.onSendMessage('new question');
+      endDeletion();
+      await deleting;
+
+      expect(lastBody()).not.toHaveProperty('thread_id');
+      expect(store.chatMessagesList).toEqual([
+        { role: 'user', content: 'new question' },
+        { role: 'assistant', content: 'New answer' }
+      ]);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-2');
     });
   });
 

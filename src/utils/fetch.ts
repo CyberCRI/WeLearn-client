@@ -173,6 +173,12 @@ export const getBookmarks = async () => {
   return docsPayloads;
 };
 
+// 404 THREAD_NOT_FOUND when the thread is already gone or not the caller's
+export const deleteChatThread = async (threadId: string) =>
+  baseDeleteAxios<ApiResponse<'/qna/chat/threads/{thread_id}', 'delete'>>(
+    `/qna/chat/threads/${encodeURIComponent(threadId)}`
+  );
+
 export const exportBibliography = async (documentsIds: string[]) => {
   if (!documentsIds.length) throw new Error('No document ids provided');
 

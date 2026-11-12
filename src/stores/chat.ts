@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ChatMessage, ChatProcessingMetadata } from '@/types';
-import { baseGetAxios, fetchStream } from '@/utils/fetch';
+import { baseGetAxios, deleteChatThread, fetchStream } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
 import { extractProcessingMetadata } from '@/utils/chatProcessing';
@@ -608,6 +608,31 @@ export const useChatStore = defineStore('chat', () => {
     await loadHistory(threadId);
   }
 
+  // "erase the chat": deleted in the api too, or the restore at the next login would bring it back
+  async function deleteCurrentChat() {
+    // one answer at a time, it is erased once it is there
+    if (isAnswering.value) {
+      return;
+    }
+    const threadId = storedThreadId.value;
+    // erased on screen first: a question asked while the api deletes starts a new thread,
+    // which the reset must not wipe
+    startNewChat();
+    if (!threadId) {
+      return;
+    }
+
+    try {
+      await deleteChatThread(threadId);
+    } catch (error) {
+      // ponytail: a failed deletion is only logged, the user still gets an empty chat. the thread
+      // may then come back with the next restore, and can be erased again
+      if (!isThreadNotFound(error)) {
+        console.error(error);
+      }
+    }
+  }
+
   // nothing on screen to overwrite: no thread, no message, no answer coming
   const canRestoreThread = () =>
     useAuthStore().isAuthenticated &&
@@ -667,6 +692,7 @@ export const useChatStore = defineStore('chat', () => {
     startNewChat,
     openThread,
     restoreLatestThread,
+    deleteCurrentChat,
     $reset
   };
 });

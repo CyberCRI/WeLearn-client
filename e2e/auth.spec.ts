@@ -136,22 +136,39 @@ test.describe('auth', () => {
       await expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
 
-    test("gets the account's latest chat back", async ({ page }) => {
-      await page.route('**/qna/chat/threads/latest', (route) =>
-        route.fulfill({ json: { thread_id: 'account-thread' } })
-      );
-      await page.route('**/qna/chat/history**', (route) =>
-        route.fulfill({
-          json: [
-            { role: 'user', content: 'A question asked on another device' },
-            { role: 'assistant', content: 'Its answer' }
-          ]
-        })
-      );
-      await page.reload();
+    test.describe('with a chat on the account', () => {
+      test.beforeEach(async ({ page }) => {
+        await page.route('**/qna/chat/threads/latest', (route) =>
+          route.fulfill({ json: { thread_id: 'account-thread' } })
+        );
+        await page.route('**/qna/chat/history**', (route) =>
+          route.fulfill({
+            json: [
+              { role: 'user', content: 'A question asked on another device' },
+              { role: 'assistant', content: 'Its answer' }
+            ]
+          })
+        );
+        await page.reload();
+      });
 
-      await expect(page.getByText('A question asked on another device')).toBeVisible();
-      await expect(page.getByText('Its answer')).toBeVisible();
+      test('gets it back', async ({ page }) => {
+        await expect(page.getByText('A question asked on another device')).toBeVisible();
+        await expect(page.getByText('Its answer')).toBeVisible();
+      });
+
+      test('erases it in the api too', async ({ page }) => {
+        await page.locator('.chat-toolbar button').click();
+        const deletion = page.waitForRequest(
+          (request) =>
+            request.method() === 'DELETE' &&
+            request.url().endsWith('/qna/chat/threads/account-thread')
+        );
+        await page.locator('.modal .is-danger').click();
+
+        await deletion;
+        await expect(page.getByText('A question asked on another device')).toHaveCount(0);
+      });
     });
 
     test('logs out from the user menu', async ({ page, keycloak }) => {
