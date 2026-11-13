@@ -3,16 +3,16 @@
 exports[`TutorPage > renders properly 1`] = `
 <div
   class="content-centered-wrapper"
-  data-v-8a8621cb=""
+  data-v-6483a8ca=""
 >
   <div
     class="steps-bar"
-    data-v-8a8621cb=""
+    data-v-6483a8ca=""
   >
     <div
       class="progress-wrapper"
       data-v-49a355d6=""
-      data-v-8a8621cb=""
+      data-v-6483a8ca=""
     >
       <div
         class="progress-track"
@@ -123,13 +123,13 @@ exports[`TutorPage > renders properly 1`] = `
   <!--v-if-->
   <div
     class="layout-flex"
-    data-v-8a8621cb=""
+    data-v-6483a8ca=""
   >
     
     
     <section
       class="step-section"
-      data-v-8a8621cb=""
+      data-v-6483a8ca=""
       id="target-1"
     >
       <!--v-if-->
@@ -138,7 +138,7 @@ exports[`TutorPage > renders properly 1`] = `
         class="wrapper"
         data-test="fist-step"
         data-v-5582d651=""
-        data-v-8a8621cb=""
+        data-v-6483a8ca=""
       >
         <h1
           class="title is-4 is-size-5-mobile"
