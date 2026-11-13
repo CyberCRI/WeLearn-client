@@ -74,7 +74,7 @@ describe('router', () => {
     });
 
     it('cancels the navigation when no page is enabled', async () => {
-      flags.disabled = ['chat', 'search', 'bookmarks', 'tutor', 'microlearning', 'about'];
+      flags.disabled = ['chat', 'search', 'bookmarks', 'tutor', 'learn', 'about'];
 
       await router.push('/tutor');
 
@@ -135,7 +135,7 @@ describe('router', () => {
       );
     });
 
-    it.each(['/q-and-a', '/search', '/tutor', '/microlearning', '/terms'])(
+    it.each(['/q-and-a', '/search', '/tutor', '/learn', '/learn/foundations', '/terms'])(
       'lets a guest open %s',
       async (path) => {
         const authStore = useAuthStore();
@@ -237,8 +237,23 @@ describe('router', () => {
       expect(router.currentRoute.value.query).toEqual({ lang: 'fr' });
     });
 
+    it('sends the old micro-learning url to the discipline module, with its params', async () => {
+      await router.push('/microlearning?disc=history&lang=en');
+
+      expect(router.currentRoute.value.path).toBe('/learn/discipline');
+      expect(router.currentRoute.value.query).toEqual({ disc: 'history', lang: 'en' });
+    });
+
+    it('keeps the module id when carrying app-wide params', async () => {
+      await router.push('/search?lang=en');
+      await router.push('/learn/frameworks');
+
+      expect(router.currentRoute.value.path).toBe('/learn/frameworks');
+      expect(router.currentRoute.value.query).toEqual({ lang: 'en' });
+    });
+
     it('leaves page-only params behind and carries only app-wide ones', async () => {
-      await router.push('/microlearning?disc=history&screen=complete&lang=en');
+      await router.push('/learn/discipline?disc=history&screen=complete&lang=en');
       await router.push('/q-and-a');
 
       expect(router.currentRoute.value.query).toEqual({ lang: 'en' });

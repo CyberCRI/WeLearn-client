@@ -1,9 +1,8 @@
-import { microLearning } from './microLearning/en';
+import { discipline } from './learn/discipline.en';
 import { authentication } from './authentication/en';
 
 export const en = {
   authentication,
-  microLearning,
   ':': ':',
   adaptedTo: 'Adapted to:',
   addBookmark: 'Add to bookmarks',
@@ -265,6 +264,41 @@ export const en = {
     }
   },
   moreDocuments: 'Explore more documents',
+  learn: {
+    discipline,
+    title: 'Learn',
+    intro:
+      'Short modules to bring sustainability into your teaching. Follow them in order or open the one you need.',
+    cards: {
+      discipline: {
+        title: 'Sustainability in your discipline',
+        subtitle: 'Pick your discipline and explore concrete ways to bring sustainability into it.',
+        duration: '≈ 5 min'
+      }
+    },
+    module: {
+      introLabel: 'Intro',
+      wrapUpLabel: 'Wrap-up',
+      start: 'Start',
+      nextHint: 'Complete the activity to continue',
+      confidenceLow: 'Not at all',
+      confidenceHigh: 'Very confident',
+      confidenceDelta: 'Your confidence: {before}/5 at the start, {after}/5 now.',
+      inHigherEd: 'In higher education:',
+      sortPool: 'Cards to sort',
+      sortPlaceIn: 'Place the selected card in “{bin}”',
+      notQuite: 'Not quite. Hint:',
+      sortDone: 'All sorted! {n} of {total} right on the first try.',
+      tryAnother: 'Try another intention to compare.',
+      pickExample: 'Choose an example above to see its three sides.',
+      takeawaysTitle: 'What to remember',
+      sourcesTitle: 'Sources ({n})',
+      completed: 'Completed',
+      notFound: 'This module does not exist.',
+      nextModule: 'Next module: {title}',
+      backToLearn: 'Back to all modules'
+    }
+  },
   nav: {
     chat: 'Chat',
     search: 'Search',
@@ -274,7 +308,7 @@ export const en = {
     help: 'Help',
     preview: 'Preview',
     profile: 'Profile',
-    microlearning: 'Micro-learning',
+    learn: 'Learn',
     workshopForm: 'Workshop form'
   },
 
@@ -544,7 +578,7 @@ export const en = {
       subtitle:
         'This takes 30 seconds and helps us measure the educational impact of this learning journey.',
       lockedNotice:
-        "You've started the journey, so these answers are now locked. They record where you started, which is how we measure what changed."
+        'You’ve started the journey, so these answers are now locked. They record where you started, which is how we measure what changed.'
     },
     end: {
       badge: 'Before you go',
@@ -556,7 +590,7 @@ export const en = {
       'I clearly see the connection between my discipline ({discipline}) and sustainability.',
     secondQuestion: 'I feel confident bringing this topic into my teaching.',
     willUse: 'Do you plan to use what you have learned in an upcoming class?',
-    feedback: "Is there anything else you'd like to tell us?"
+    feedback: 'Is there anything else you’d like to tell us?'
   },
   previous: 'Previous',
   previous_page: 'Previous page',

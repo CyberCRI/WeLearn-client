@@ -31,7 +31,7 @@ esac
 
 case "$rel" in
   src/types/generated/*) decide deny "src/types/generated is never edited by hand, run yarn gen:api" ;;
-  src/stores/microlearning/data.ts) decide deny "src/stores/microlearning/data.ts is static content and is never edited" ;;
+  src/learn/modules/discipline.ts) decide deny "src/learn/modules/discipline.ts is static content and is never edited" ;;
   devops-toolbox/*) decide deny "devops-toolbox is a git submodule, don't edit it" ;;
   package.json | yarn.lock) decide ask "Changing package.json or yarn.lock needs human confirmation" ;;
 esac

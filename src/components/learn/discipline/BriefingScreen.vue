@@ -1,0 +1,134 @@
+<template>
+  <section class="briefing-screen">
+    <div class="briefing-inner">
+      <div class="discipline-icon">
+        <LineIcon :name="discipline.id" />
+      </div>
+
+      <span class="badge">
+        {{ $t(`learn.discipline.disciplineNames.${discipline.id}`) }}
+      </span>
+
+      <h2>{{ $t('learn.discipline.briefingScreen.title') }}</h2>
+
+      <p class="intro">{{ $t('learn.discipline.briefingScreen.intro') }}</p>
+
+      <div class="objectives">
+        <article v-for="(objective, index) in obj" :key="index" class="objective">
+          <span class="number">
+            {{ String(index + 1).padStart(2, '0') }}
+          </span>
+
+          <span class="text">
+            {{ $t(`learn.discipline.briefingScreen.objectives.${objective}`) }}
+          </span>
+        </article>
+      </div>
+
+      <div class="meta">
+        {{ $t('learn.discipline.hint') }}
+      </div>
+
+      <TrailNavigation
+        next-label="learn.discipline.briefingScreen.primaryButton"
+        @back="$emit('back')"
+        @next="$emit('start')"
+      />
+    </div>
+  </section>
+</template>
+
+<script setup lang="ts">
+import LineIcon from '@/components/icons/LineIcon.vue';
+import type { DisciplineMeta } from '@/types/learn/discipline';
+import TrailNavigation from '../TrailNavigation.vue';
+
+const obj = ['understand', 'identify', 'discover'];
+defineProps<{
+  discipline: DisciplineMeta;
+}>();
+
+defineEmits<{
+  (e: 'start'): void;
+  (e: 'back'): void;
+}>();
+</script>
+
+<style scoped>
+.briefing-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 1rem 1rem;
+}
+
+.briefing-inner {
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+}
+
+.discipline-icon {
+  color: var(--primary-dark);
+  font-size: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 12px;
+  border-radius: 8px;
+  background: var(--primary-lighter);
+  color: var(--primary-hover);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+.intro {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.objective {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--neutral-20);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.number {
+  color: var(--primary-hover);
+  font-weight: 700;
+  min-width: 24px;
+}
+
+.text {
+  flex: 1;
+  line-height: 1.6;
+}
+
+.meta {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--neutral-70);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+</style>

@@ -79,7 +79,7 @@ defineProps<{
     </div>
     <div v-else class="has-text-centered mt-6">
       <p class="title is-4">{{ $t('tutor.secondStep.noSources') }}</p>
-      <p class="subtitle is-6 mt-6">{{ $t('tutor.secondStep.noSourcesDescription') }}</p>
+      <p class="subtitle is-6">{{ $t('tutor.secondStep.noSourcesDescription') }}</p>
       <img class="image" src="@/assets/no-sources.svg" alt="No sources found" />
     </div>
   </div>

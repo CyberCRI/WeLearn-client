@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <button :disabled="disabled" class="button" :class="[isDiscreet && 'is-outline', `is-${color}`]">
+  <button :disabled="disabled" class="button" :class="[isDiscreet && 'is-outlined', `is-${color}`]">
     <slot></slot>
   </button>
 </template>

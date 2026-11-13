@@ -12,7 +12,7 @@ vi.mock('@/utils/env', () => ({
   }
 }));
 
-const PAGE_FEATURES = ['chat', 'tutor', 'search', 'bookmarks', 'about', 'microlearning'] as const;
+const PAGE_FEATURES = ['chat', 'tutor', 'search', 'bookmarks', 'about', 'learn'] as const;
 
 describe('featureFlip store', () => {
   beforeEach(() => {

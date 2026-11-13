@@ -68,7 +68,7 @@ const focusDetails = () => {
 <template>
   <div class="wrapper">
     <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.documentsStep.title') }}</h1>
-    <p class="subtitle is-6 mt-2">{{ $t('tutor.documentsStep.description') }}</p>
+    <p class="subtitle is-6">{{ $t('tutor.documentsStep.description') }}</p>
 
     <label
       class="dropzone"

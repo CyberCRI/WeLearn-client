@@ -11,104 +11,104 @@ exports[`TutorPage > renders properly 1`] = `
   >
     <div
       class="progress-wrapper"
-      data-v-49a355d6=""
+      data-v-57498419=""
       data-v-8a8621cb=""
     >
       <div
         class="progress-track"
-        data-v-49a355d6=""
+        data-v-57498419=""
       >
         <div
           class="progress-fill"
-          data-v-49a355d6=""
+          data-v-57498419=""
           style="width: 5%;"
         />
       </div>
       <div
         class="steps"
-        data-v-49a355d6=""
+        data-v-57498419=""
       >
         
         <div
           class="step active"
-          data-v-49a355d6=""
+          data-v-57498419=""
         >
           <div
             class="circle"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             <span
-              data-v-49a355d6=""
+              data-v-57498419=""
             >
               1
             </span>
           </div>
           <span
             class="label"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             Documents
           </span>
         </div>
         <div
           class="step"
-          data-v-49a355d6=""
+          data-v-57498419=""
         >
           <div
             class="circle"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             <span
-              data-v-49a355d6=""
+              data-v-57498419=""
             >
               2
             </span>
           </div>
           <span
             class="label"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             Résumé
           </span>
         </div>
         <div
           class="step"
-          data-v-49a355d6=""
+          data-v-57498419=""
         >
           <div
             class="circle"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             <span
-              data-v-49a355d6=""
+              data-v-57498419=""
             >
               3
             </span>
           </div>
           <span
             class="label"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             Ressources
           </span>
         </div>
         <div
           class="step"
-          data-v-49a355d6=""
+          data-v-57498419=""
         >
           <div
             class="circle"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             <span
-              data-v-49a355d6=""
+              data-v-57498419=""
             >
               4
             </span>
           </div>
           <span
             class="label"
-            data-v-49a355d6=""
+            data-v-57498419=""
           >
             Syllabus
           </span>
@@ -147,7 +147,7 @@ exports[`TutorPage > renders properly 1`] = `
           tutor.documentsStep.title
         </h1>
         <p
-          class="subtitle is-6 mt-2"
+          class="subtitle is-6"
           data-v-5582d651=""
         >
           tutor.documentsStep.description

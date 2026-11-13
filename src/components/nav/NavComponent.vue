@@ -34,10 +34,10 @@ const toolEntries = [
     isFeatureEnabled: featureFlip.isFeatureEnabled('tutor')
   },
   {
-    name: 'microlearning',
-    to: '/microlearning',
+    name: 'learn',
+    to: '/learn',
     icon: LinesLeaningIcon,
-    isFeatureEnabled: featureFlip.isFeatureEnabled('microlearning')
+    isFeatureEnabled: featureFlip.isFeatureEnabled('learn')
   },
   {
     name: 'search',
