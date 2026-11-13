@@ -85,6 +85,9 @@ export type UserRegisterData = {
 // the deploy targets, read from VITE_ENVIRONMENT (see utils/env.ts)
 export type Environment = 'dev' | 'staging' | 'test' | 'prod';
 
+// syllabus v2: improve a course the teacher already has, or create one from scratch
+export type CoursePath = 'existing' | 'scratch';
+
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {
   status: 'granted' | 'denied';

@@ -72,6 +72,52 @@ describe('tutor store', () => {
     });
   });
 
+  describe('path (syllabus v2)', () => {
+    it('starts with no path and keeps the one chosen', () => {
+      const store = useTutorStore();
+      expect(store.path).toBeNull();
+      store.choosePath('existing');
+      expect(store.path).toBe('existing');
+    });
+
+    it('counts files, course details or a later step as started work', () => {
+      const store = useTutorStore();
+      expect(store.hasStartedCourse).toBe(false);
+
+      store.courseTitle = 'Sociolinguistics';
+      expect(store.hasStartedCourse).toBe(true);
+      store.courseTitle = '';
+
+      store.addFiles([new File(['a'], 'a.pdf', { type: 'application/pdf' })]);
+      expect(store.hasStartedCourse).toBe(true);
+      store.newFilesToSearch = {};
+
+      store.setStep(2);
+      expect(store.hasStartedCourse).toBe(true);
+    });
+
+    it('goes back to the question and drops the work of the path', () => {
+      const store = useTutorStore();
+      store.choosePath('scratch');
+      store.courseTitle = 'Sociolinguistics';
+      store.setStep(3);
+
+      store.resetPath();
+
+      expect(store.path).toBeNull();
+      expect(store.step).toBe(1);
+      expect(store.courseTitle).toBe('');
+      expect(store.hasStartedCourse).toBe(false);
+    });
+
+    it('keeps the path when the wizard starts over', () => {
+      const store = useTutorStore();
+      store.choosePath('scratch');
+      store.restart();
+      expect(store.path).toBe('scratch');
+    });
+  });
+
   describe('files', () => {
     it('adds pdf, text and docx files', () => {
       const store = useTutorStore();
