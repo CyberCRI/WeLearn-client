@@ -415,7 +415,27 @@ export const fr = {
       documents: 'Documents',
       summary: 'Résumé',
       resources: 'Ressources',
-      syllabus: 'Syllabus'
+      syllabus: 'Syllabus',
+      course: 'Importer le syllabus',
+      check: 'Vérifier le cours',
+      additions: 'Ajouts de durabilité',
+      updated: 'Syllabus mis à jour'
+    },
+    start: {
+      question: 'Avez-vous déjà un cours\u00a0?',
+      yes: "Oui, j'ai un cours",
+      no: 'Non, je pars de zéro',
+      working: "À partir d'un cours existant",
+      workingNew: "Création d'un cours à partir de zéro",
+      change: 'Changer',
+      changeTitle: 'Changer de parcours\u00a0?',
+      changeWarning: 'Changer effacera ce que vous avez ajouté pour ce cours.',
+      discard: 'Effacer et changer',
+      keepWorking: 'Continuer mon travail'
+    },
+    existingCourse: {
+      comingSoon:
+        'Ce parcours est en cours de construction\u00a0: ses écrans ne sont pas encore disponibles.'
     },
     documentsStep: {
       title: 'Ajoutez vos supports de cours',

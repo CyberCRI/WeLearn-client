@@ -1,20 +1,19 @@
 <script setup lang="ts">
 // the current syllabus creator: files → summaries → resources → syllabus. TutorPage renders it,
-// and syllabus v2 makes it the "from scratch" path
+// and syllabus v2 makes it the "from scratch" path, with the path choice in its `intro` slot
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import i18n from '@/localisation/i18n';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
-import ProgressBar from '@/components/microlearning/ProgressBar.vue';
+import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import StatusModal from '@/components/tutor/StatusModal.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 import { scrollToAnchor } from '@/utils/navigation';
-import { calculateProgress } from '@/utils/progress';
 
 const store = useTutorStore();
 const { t } = i18n.global;
@@ -69,21 +68,11 @@ watch(
 
 onMounted(() => {
   scrollToAnchor(`target-${store.step}`);
-  // back from the login a guest started with the download button (never rejects)
-  void store.downloadPendingSyllabus();
 });
 </script>
 <template>
   <div class="content-centered-wrapper">
-    <div class="steps-bar">
-      <ProgressBar
-        :currentStep="store.step - 1"
-        :labels="stepLabels"
-        :progress="calculateProgress(store.step - 1, STEPS.length)"
-        clickable
-        @select="(i: number) => scrollToAnchor(`target-${i + 1}`)"
-      />
-    </div>
+    <TutorStepsBar :labels="stepLabels" :step="store.step" />
     <GuestQuotaNotice feature="syllabus" class="mb-3" />
     <ToasterComponent
       v-if="store.hasDownloadError"
@@ -104,6 +93,7 @@ onMounted(() => {
     />
 
     <div class="layout-flex">
+      <slot name="intro" />
       <template v-for="n in 4" :key="n">
         <section v-if="store.step >= n" :id="`target-${n}`" class="step-section">
           <div v-if="n < store.step" class="recap" :class="{ open: expanded[n] }">
@@ -174,46 +164,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.steps-bar {
-  width: 100%;
-  padding: 0 20%;
-  border-bottom: 1px solid var(--neutral-20);
-}
-
-/* compact version of the micro-learning progress bar */
-.steps-bar :deep(.progress-wrapper) {
-  margin: 0.75rem 0 0.5rem;
-}
-.steps-bar :deep(.steps) {
-  margin-top: 0.5rem;
-}
-.steps-bar :deep(.step) {
-  flex-direction: row;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.steps-bar :deep(.circle) {
-  width: 1.5rem;
-  height: 1.5rem;
-  font-size: 0.75rem;
-  border-width: 1.5px;
-}
-.steps-bar :deep(.check) {
-  width: 0.8rem;
-  height: 0.8rem;
-}
-.steps-bar :deep(.label) {
-  margin-top: 0;
-  max-width: none;
-  font-size: 0.8rem;
-}
-@media (max-width: 640px) {
-  /* only the current step keeps its name */
-  .steps-bar :deep(.step:not(.active) .label) {
-    display: none;
-  }
-}
-
 .download-error {
   width: min(100% - 2rem, 40rem);
   margin-bottom: 0.75rem;
@@ -259,15 +209,13 @@ onMounted(() => {
 }
 
 @media (max-width: 1024px) {
-  .layout-flex,
-  .steps-bar {
+  .layout-flex {
     padding-inline: 10%;
   }
 }
 
 @media (max-width: 768px) {
-  .layout-flex,
-  .steps-bar {
+  .layout-flex {
     padding-inline: 1rem;
   }
 }

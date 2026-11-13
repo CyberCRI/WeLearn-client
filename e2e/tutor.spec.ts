@@ -193,3 +193,30 @@ test.describe('Tutor', () => {
   //   await expect(page.getByTestId('documents-list-title')).toBeVisible();
   // });
 });
+
+test.describe('Tutor path choice (syllabusV2)', () => {
+  test('is not there without the flag: the page is the current creator', async ({ page }) => {
+    await page.goto('/tutor');
+    await expect(page.getByTestId('file-input')).toBeAttached();
+    await expect(page.getByTestId('option-scratch')).toHaveCount(0);
+  });
+
+  test('asks first, then opens the current creator from scratch', async ({ page }) => {
+    await page.goto('/tutor?preview=syllabusV2');
+    await expect(page.getByTestId('file-input')).toHaveCount(0);
+
+    await page.getByTestId('option-scratch').click();
+    await expect(page.getByTestId('chosen-path')).toBeVisible();
+    await expect(page.getByTestId('file-input')).toBeAttached();
+  });
+
+  test('opens the existing course path and can go back to the question', async ({ page }) => {
+    await page.goto('/tutor?preview=syllabusV2');
+    await page.getByTestId('option-existing').click();
+    await expect(page.getByTestId('chosen-path')).toBeVisible();
+    await expect(page.getByTestId('file-input')).toHaveCount(0);
+
+    await page.getByTestId('change-path').click();
+    await expect(page.getByTestId('option-existing')).toBeVisible();
+  });
+});

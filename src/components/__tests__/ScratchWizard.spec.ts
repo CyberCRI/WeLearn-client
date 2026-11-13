@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import ScratchWizard from '@/components/tutor/ScratchWizard.vue';
 import { createPinia, setActivePinia } from 'pinia';
-import ProgressBar from '@/components/microlearning/ProgressBar.vue';
+import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
@@ -16,12 +16,21 @@ describe('ScratchWizard', () => {
     setActivePinia(createPinia());
     vi.mocked(scrollToAnchor).mockClear();
   });
-  it('scrolls to a finished step picked in the steps indicator', async () => {
+  it('shows its four steps in the steps bar', () => {
     const store = useTutorStore();
     store.step = 3;
     const wrapper = mount(ScratchWizard, { shallow: true });
-    wrapper.findComponent(ProgressBar).vm.$emit('select', 0);
-    expect(scrollToAnchor).toHaveBeenLastCalledWith('target-1');
+    const bar = wrapper.findComponent(TutorStepsBar);
+    expect(bar.props('labels')).toHaveLength(4);
+    expect(bar.props('step')).toBe(3);
+  });
+
+  it('puts what it is given before the steps', () => {
+    const wrapper = mount(ScratchWizard, {
+      shallow: true,
+      slots: { intro: '<p data-testid="intro">intro</p>' }
+    });
+    expect(wrapper.find('[data-testid="intro"]').exists()).toBe(true);
   });
 
   it('scrolls to the new step when the step changes', async () => {
@@ -78,13 +87,6 @@ describe('ScratchWizard', () => {
 
     expect(wrapper.findComponent(CursusInfo).exists()).toBe(true);
     expect(scrollToAnchor).not.toHaveBeenCalled();
-  });
-
-  it('downloads the syllabus a guest kept before logging in', () => {
-    const store = useTutorStore();
-    const downloadPendingSyllabus = vi.spyOn(store, 'downloadPendingSyllabus');
-    mount(ScratchWizard, { shallow: true });
-    expect(downloadPendingSyllabus).toHaveBeenCalledOnce();
   });
 
   it('shows an error when the word file could not be downloaded', async () => {

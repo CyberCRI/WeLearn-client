@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
-import { type Ref, ref } from 'vue';
-import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
+import { type Ref, computed, ref } from 'vue';
+import { type CoursePath, type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
@@ -50,6 +50,9 @@ export const useTutorStore = defineStore('tutor', () => {
 
   const goNext = () => (step.value = step.value + 1);
   const setStep = (newStep: number) => (step.value = newStep);
+
+  // syllabus v2 (flag syllabusV2): the path chosen on "do you already have a course?"
+  const path: Ref<CoursePath | null> = ref(null);
 
   // ERROR STATES
   const shouldRetryAction: Ref<boolean> = ref(false);
@@ -270,6 +273,24 @@ export const useTutorStore = defineStore('tutor', () => {
     fileError.value = { state: false, reason: null };
   };
 
+  // something the user would lose by changing path
+  const hasStartedCourse = computed(
+    () =>
+      step.value > 1 ||
+      Object.keys(newFilesToSearch.value).length > 0 ||
+      !!(courseTitle.value || level.value || duration.value || description.value)
+  );
+
+  const choosePath = (chosen: CoursePath) => {
+    path.value = chosen;
+  };
+
+  // back to the question: drops the work of the current path
+  const resetPath = () => {
+    restart();
+    path.value = null;
+  };
+
   const retrieveSyllabus = async (): Promise<boolean> => {
     const { signal } = startRequest();
     const startedAt = Date.now();
@@ -444,6 +465,10 @@ export const useTutorStore = defineStore('tutor', () => {
     removeFile,
     fileError,
     restart,
+    path,
+    hasStartedCourse,
+    choosePath,
+    resetPath,
     reloadError,
     hasDownloadError,
     retrieveTutorSearch,

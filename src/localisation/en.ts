@@ -409,7 +409,26 @@ export const en = {
       documents: 'Documents',
       summary: 'Summary',
       resources: 'Resources',
-      syllabus: 'Syllabus'
+      syllabus: 'Syllabus',
+      course: 'Upload syllabus',
+      check: 'Review course',
+      additions: 'Sustainability additions',
+      updated: 'Updated syllabus'
+    },
+    start: {
+      question: 'Do you already have a course?',
+      yes: 'Yes, I have a course',
+      no: "No, I'm starting from scratch",
+      working: 'Working from an existing course',
+      workingNew: 'Creating a course from scratch',
+      change: 'Change',
+      changeTitle: 'Change path?',
+      changeWarning: 'Changing will discard what you have added for this course.',
+      discard: 'Discard and change',
+      keepWorking: 'Keep working'
+    },
+    existingCourse: {
+      comingSoon: 'This path is still being built: its screens are not available yet.'
     },
     documentsStep: {
       title: 'Add your course materials',
