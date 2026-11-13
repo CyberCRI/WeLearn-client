@@ -428,6 +428,7 @@ export const fr = {
       working: "À partir d'un cours existant",
       workingNew: "Création d'un cours à partir de zéro",
       change: 'Changer',
+      changeTitle: 'Changer de parcours\u00a0?',
       changeWarning: 'Changer effacera ce que vous avez ajouté pour ce cours.',
       discard: 'Effacer et changer',
       keepWorking: 'Continuer mon travail'

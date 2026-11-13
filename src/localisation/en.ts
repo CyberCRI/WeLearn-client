@@ -422,6 +422,7 @@ export const en = {
       working: 'Working from an existing course',
       workingNew: 'Creating a course from scratch',
       change: 'Change',
+      changeTitle: 'Change path?',
       changeWarning: 'Changing will discard what you have added for this course.',
       discard: 'Discard and change',
       keepWorking: 'Keep working'
