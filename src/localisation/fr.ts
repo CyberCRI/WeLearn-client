@@ -471,6 +471,7 @@ export const fr = {
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
       noneHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
+      passageLabel: 'Passage qui correspond à vos documents',
       action: 'Générer le syllabus',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:

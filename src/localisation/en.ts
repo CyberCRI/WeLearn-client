@@ -464,6 +464,7 @@ export const en = {
         'These WeLearn resources match your documents and help connect your course to the Sustainable Development Goals. Click a resource to select it.',
       selected: 'No resource selected | 1 resource selected | {n} resources selected',
       noneHint: 'Nothing selected: the syllabus will be based only on your uploaded documents.',
+      passageLabel: 'Passage that matches your documents',
       action: 'Generate syllabus',
       noSources: 'No related resources found',
       noSourcesDescription:
