@@ -4,15 +4,17 @@ exports[`TutorPage > renders properly 1`] = `
 <div
   class="content-centered-wrapper"
   data-v-6483a8ca=""
+  data-v-8a8621cb=""
 >
   <div
     class="steps-bar"
+    data-v-25f6b54b=""
     data-v-6483a8ca=""
   >
     <div
       class="progress-wrapper"
+      data-v-25f6b54b=""
       data-v-49a355d6=""
-      data-v-6483a8ca=""
     >
       <div
         class="progress-track"
@@ -125,6 +127,8 @@ exports[`TutorPage > renders properly 1`] = `
     class="layout-flex"
     data-v-6483a8ca=""
   >
+    
+    
     
     
     <section
