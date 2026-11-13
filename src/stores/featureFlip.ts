@@ -16,7 +16,9 @@ const FEATURE_ENVIRONMENTS = {
   // keycloak login is rolled out on dev and staging, not on prod yet
   auth: ['dev', 'staging'],
   // mixpanel + consent banner, dev only until the rollout is validated
-  analytics: ['dev']
+  analytics: ['dev'],
+  // syllabus v2 (/tutor): every change of the rework, even small text ones, so prod stays as it is
+  syllabusV2: ['dev']
 } satisfies Record<string, readonly Environment[]>;
 
 export type Feature = keyof typeof FEATURE_ENVIRONMENTS;

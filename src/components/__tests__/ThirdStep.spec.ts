@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
+import { createPinia, setActivePinia } from 'pinia';
 import ThirdStep from '@/components/tutor/ThirdStep.vue';
 import { cleanSyllabus } from '@/stores/tutor';
 
@@ -21,6 +22,27 @@ const mountStep = (content: string, props: Record<string, unknown> = {}) => {
   if (syllabus.exists()) syllabus.element.addEventListener('click', (e) => e.preventDefault());
   return wrapper;
 };
+
+beforeEach(() => {
+  setActivePinia(createPinia());
+});
+
+afterEach(() => {
+  localStorage.removeItem('featurePreview');
+});
+
+describe('ThirdStep AI label', () => {
+  it('stays hidden while the syllabusV2 flag is off', () => {
+    expect(mountStep('# Syllabus').find('[data-testid="ai-label"]').exists()).toBe(false);
+  });
+
+  it('says WeLearn AI wrote the syllabus when the flag is on', () => {
+    localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+    expect(mountStep('# Syllabus').find('[data-testid="ai-label"]').text()).toBe(
+      'tutor.syllabusStep.aiLabel'
+    );
+  });
+});
 
 describe('ThirdStep link bubble', () => {
   it('shows an "open" bubble in a new tab when a link is clicked', async () => {

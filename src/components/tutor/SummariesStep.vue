@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { useFeatureFlipStore } from '@/stores/featureFlip';
+
 defineProps<{
   summaries: string[];
   files: Record<string, File>;
   updateSummary: (index: number, content: string) => void;
   action: () => void;
 }>();
+
+const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
 </script>
 <template>
   <div class="summaries-section">
@@ -12,6 +16,9 @@ defineProps<{
       {{ $t('tutor.summaryStep.title') }}
     </h2>
     <p class="subtitle is-6 mt-2">{{ $t('tutor.summaryStep.description') }}</p>
+    <p v-if="isSyllabusV2" class="is-size-7 has-text-grey mb-4" data-testid="ai-label">
+      {{ $t('tutor.summaryStep.aiLabel') }}
+    </p>
 
     <div class="field" v-for="(summary, index) in summaries" :key="index">
       <label class="label" :for="`summary_${index}`">

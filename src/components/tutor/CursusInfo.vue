@@ -2,6 +2,7 @@
 import { ref, computed, nextTick } from 'vue';
 import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
 import type { FileErrorReason } from '@/stores/tutor';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 interface Props {
   files: Record<string, File>;
@@ -24,6 +25,8 @@ const emit = defineEmits<{
   'update:duration': [value: string];
   'update:description': [value: string];
 }>();
+
+const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
 
 const isDragging = ref(false);
 const showNudge = ref(false);
@@ -205,6 +208,10 @@ const focusDetails = () => {
         </button>
       </div>
     </div>
+
+    <p v-if="isSyllabusV2" class="is-size-7 has-text-grey mt-5" data-testid="ai-notice">
+      {{ $t('tutor.documentsStep.aiNotice') }}
+    </p>
 
     <div class="step-footer">
       <span v-if="!fileNames.length" class="has-text-grey is-size-7">
