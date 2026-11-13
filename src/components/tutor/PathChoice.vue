@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
+import ModalComponent from '@/components/ModalComponent.vue';
 import type { CoursePath } from '@/types';
 
 // "do you already have a course?": two options, then one discreet line with "change".
-// changing asks first when something was already added for the course
+// changing asks first when something was already added for the course, with the same
+// confirmation as "start over" in the syllabus step
 const props = defineProps<{
   path: CoursePath | null;
   hasStarted: boolean;
@@ -30,38 +32,35 @@ const handleDiscard = () => {
 
 <template>
   <div v-if="path" class="chosen-path" data-testid="chosen-path">
-    <p v-if="!isConfirmingChange" class="chosen-line">
+    <span>
       {{ path === 'existing' ? $t('tutor.start.working') : $t('tutor.start.workingNew') }}
-      <ButtonComponent
-        type="button"
-        class="is-small is-text"
-        data-testid="change-path"
-        @click="handleChange"
-      >
-        {{ $t('tutor.start.change') }}
-      </ButtonComponent>
-    </p>
-    <div v-else class="change-warning" role="alert" data-testid="change-warning">
-      <p>{{ $t('tutor.start.changeWarning') }}</p>
-      <div class="buttons mt-2">
+    </span>
+    <ButtonComponent class="is-small is-text" data-testid="change-path" @click="handleChange">
+      {{ $t('tutor.start.change') }}
+    </ButtonComponent>
+
+    <!-- v-if: ModalComponent only reads isOpen on mount -->
+    <ModalComponent
+      v-if="isConfirmingChange"
+      isOpen
+      size="small"
+      :title="$t('tutor.start.changeTitle')"
+      :message="$t('tutor.start.changeWarning')"
+      :onClose="() => (isConfirmingChange = false)"
+    >
+      <template #actions>
+        <ButtonComponent data-testid="keep-working" @click="isConfirmingChange = false">
+          {{ $t('tutor.start.keepWorking') }}
+        </ButtonComponent>
         <ButtonComponent
-          type="button"
-          class="is-small"
+          class="is-danger is-light"
           data-testid="discard-change"
           @click="handleDiscard"
         >
           {{ $t('tutor.start.discard') }}
         </ButtonComponent>
-        <ButtonComponent
-          type="button"
-          class="is-small is-text"
-          data-testid="keep-working"
-          @click="isConfirmingChange = false"
-        >
-          {{ $t('tutor.start.keepWorking') }}
-        </ButtonComponent>
-      </div>
-    </div>
+      </template>
+    </ModalComponent>
   </div>
 
   <div v-else class="question" role="group" aria-labelledby="course-question">
@@ -69,20 +68,10 @@ const handleDiscard = () => {
       {{ $t('tutor.start.question') }}
     </h1>
     <div class="buttons">
-      <ButtonComponent
-        type="button"
-        class="option"
-        data-testid="option-existing"
-        @click="emit('choose', 'existing')"
-      >
+      <ButtonComponent data-testid="option-existing" @click="emit('choose', 'existing')">
         {{ $t('tutor.start.yes') }}
       </ButtonComponent>
-      <ButtonComponent
-        type="button"
-        class="option"
-        data-testid="option-scratch"
-        @click="emit('choose', 'scratch')"
-      >
+      <ButtonComponent data-testid="option-scratch" @click="emit('choose', 'scratch')">
         {{ $t('tutor.start.no') }}
       </ButtonComponent>
     </div>
@@ -94,32 +83,12 @@ const handleDiscard = () => {
   padding: 1.5rem 0;
 }
 
-.option {
-  border-color: var(--neutral-20);
-  border-radius: 999px;
-  &:hover {
-    border-color: var(--primary-dark);
-  }
-}
-
+/* same look as the recap line of a finished step */
 .chosen-path {
-  padding-top: 1rem;
-}
-
-.chosen-line {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: 0.75rem;
+  padding-top: 1rem;
   color: var(--neutral-70);
-}
-
-.change-warning {
-  max-width: 40rem;
-  padding: 0.75rem 1rem;
-  border-left: 4px solid var(--lpi-yellow);
-  border-radius: 4px;
-  background: var(--lpi-yellow-lighter);
 }
 </style>

@@ -27,11 +27,12 @@ describe('PathChoice', () => {
   it('warns before discarding work, and can keep working', async () => {
     const wrapper = mount(PathChoice, { props: { path: 'existing', hasStarted: true } });
     await wrapper.find('[data-testid="change-path"]').trigger('click');
-    expect(wrapper.find('[data-testid="change-warning"]').exists()).toBe(true);
+    expect(wrapper.find('[data-testid="discard-change"]').exists()).toBe(true);
+    expect(wrapper.text()).toContain('tutor.start.changeWarning');
     expect(wrapper.emitted('reset')).toBeUndefined();
 
     await wrapper.find('[data-testid="keep-working"]').trigger('click');
-    expect(wrapper.find('[data-testid="change-warning"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="discard-change"]').exists()).toBe(false);
 
     await wrapper.find('[data-testid="change-path"]').trigger('click');
     await wrapper.find('[data-testid="discard-change"]').trigger('click');
