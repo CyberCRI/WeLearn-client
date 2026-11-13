@@ -441,7 +441,13 @@ export const en = {
       continueAnyway: 'Continue anyway',
       aiNotice: 'Your files are sent to WeLearn for AI analysis.',
       action: 'Analyze my documents',
-      recap: '{files} · {lang}'
+      recap: '{files} · {lang}',
+      v2: {
+        title: 'Add your syllabus or course materials',
+        description:
+          'Upload 1 to 3 documents: your current syllabus, if you have one, and the materials your course is based on (articles, book chapters…). WeLearn builds a new syllabus from them.',
+        hint: 'This feature is in beta.'
+      }
     },
     summaryStep: {
       title: 'Your document summary',

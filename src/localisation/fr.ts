@@ -447,7 +447,13 @@ export const fr = {
       continueAnyway: 'Continuer quand même',
       aiNotice: "Vos fichiers sont envoyés à WeLearn pour être analysés par l'IA.",
       action: 'Analyser mes documents',
-      recap: '{files}\u00a0· {lang}'
+      recap: '{files}\u00a0· {lang}',
+      v2: {
+        title: 'Ajoutez votre syllabus ou vos supports de cours',
+        description:
+          "Importez 1 à 3 documents\u00a0: votre syllabus actuel, si vous en avez un, et les supports sur lesquels repose votre cours (articles, chapitres d'ouvrage…). WeLearn construit un nouveau syllabus à partir de ceux-ci.",
+        hint: 'Cette fonctionnalité est en bêta.'
+      }
     },
     summaryStep: {
       title: 'Le résumé de vos documents',

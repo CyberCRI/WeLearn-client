@@ -27,6 +27,9 @@ const emit = defineEmits<{
 }>();
 
 const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
+// syllabus v2 invites the teacher's own syllabus; prod keeps the current texts
+const introKey = (key: 'title' | 'description' | 'hint') =>
+  isSyllabusV2 ? `tutor.documentsStep.v2.${key}` : `tutor.documentsStep.${key}`;
 
 const isDragging = ref(false);
 const showNudge = ref(false);
@@ -70,8 +73,8 @@ const focusDetails = () => {
 
 <template>
   <div class="wrapper">
-    <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.documentsStep.title') }}</h1>
-    <p class="subtitle is-6 mt-2">{{ $t('tutor.documentsStep.description') }}</p>
+    <h1 class="title is-4 is-size-5-mobile">{{ $t(introKey('title')) }}</h1>
+    <p class="subtitle is-6 mt-2">{{ $t(introKey('description')) }}</p>
 
     <label
       class="dropzone"
@@ -111,7 +114,7 @@ const focusDetails = () => {
     </ul>
 
     <p class="is-size-7 has-text-grey mt-2">
-      {{ $t('tutor.documentsStep.hint') }}
+      {{ $t(introKey('hint')) }}
       <a
         class="example-link"
         href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
