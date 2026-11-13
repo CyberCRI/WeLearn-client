@@ -439,14 +439,22 @@ export const en = {
       nudge: 'Without course details, your syllabus will be generic.',
       addDetails: 'Add details',
       continueAnyway: 'Continue anyway',
+      aiNotice: 'Your files are sent to WeLearn for AI analysis.',
       action: 'Analyze my documents',
-      recap: '{files} · {lang}'
+      recap: '{files} · {lang}',
+      v2: {
+        title: 'Add your syllabus or course materials',
+        description:
+          'Upload 1 to 3 documents: your current syllabus, if you have one, and the materials your course is based on (articles, book chapters…). WeLearn builds a new syllabus from them.',
+        hint: 'This feature is in beta.'
+      }
     },
     summaryStep: {
       title: 'Your document summary',
       description:
         "Here's what WeLearn understood from each document. You can adjust it if needed: it guides the search for related resources.",
       noFileName: 'Document {n}',
+      aiLabel: 'Analyzed by WeLearn AI',
       action: 'Find related resources',
       recap: 'No document summarized | 1 document summarized | {n} documents summarized'
     },
@@ -456,6 +464,7 @@ export const en = {
         'These WeLearn resources match your documents and help connect your course to the Sustainable Development Goals. Click a resource to select it.',
       selected: 'No resource selected | 1 resource selected | {n} resources selected',
       noneHint: 'Nothing selected: the syllabus will be based only on your uploaded documents.',
+      passageLabel: 'Passage that matches your documents',
       action: 'Generate syllabus',
       noSources: 'No related resources found',
       noSourcesDescription:
@@ -468,6 +477,7 @@ export const en = {
       title: 'Your syllabus is ready',
       description:
         'Click the text to edit it, ask WeLearn for changes, then download it as a Word file.',
+      aiLabel: 'Written by WeLearn AI. Review it and keep what fits your course.',
       feedbackLabel: 'Ask for changes',
       feedbackPlaceholder:
         'e.g. Add a week on assessment methods, shorten the reading list, make it more hands-on…',

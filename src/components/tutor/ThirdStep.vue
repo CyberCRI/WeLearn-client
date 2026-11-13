@@ -5,6 +5,7 @@ import { gfm } from 'turndown-plugin-gfm';
 import { computed, nextTick, ref } from 'vue';
 import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
 import ModalComponent from '@/components/ModalComponent.vue';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 const props = defineProps<{
   syllabus?: { content: string; source: string };
@@ -15,6 +16,8 @@ const props = defineProps<{
   restart: () => void;
   updateSyllabusInDB: () => void;
 }>();
+
+const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
 
 const syllabusBox = ref<HTMLElement | null>(null);
 
@@ -109,6 +112,9 @@ const sendFeedback = async () => {
       {{ $t('tutor.syllabusStep.title') }}
     </h1>
     <p class="subtitle is-6 mt-2">{{ $t('tutor.syllabusStep.description') }}</p>
+    <p v-if="isSyllabusV2" class="is-size-7 has-text-grey mb-4" data-testid="ai-label">
+      {{ $t('tutor.syllabusStep.aiLabel') }}
+    </p>
 
     <div ref="syllabusBox" class="editable-syllabus-wrapper">
       <div

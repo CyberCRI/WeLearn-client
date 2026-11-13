@@ -1,14 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
 import type { Document } from '@/types';
 
-const doc = (id: string) =>
+const doc = (id: string, sliceContent?: string) =>
   ({
     id,
     score: 1,
     payload: {
+      slice_content: sliceContent,
       document_id: `doc-${id}`,
       document_title: `Title ${id}`,
       document_corpus: 'corpus',
@@ -27,6 +28,28 @@ const mountStep = (sources: Document[], selectedSources: Document[]) =>
 describe('ResourcesStep', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+  });
+
+  afterEach(() => {
+    localStorage.removeItem('featurePreview');
+  });
+
+  it('shows no matched passage while the syllabusV2 flag is off', () => {
+    const wrapper = mountStep([doc('1', 'A matched passage')], []);
+    expect(wrapper.find('[data-testid="passage"]').exists()).toBe(false);
+    expect(wrapper.find('.passage-label').exists()).toBe(false);
+  });
+
+  it('shows the passage the search matched under each resource when the flag is on', () => {
+    localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+    const wrapper = mountStep([doc('1', 'A matched passage'), doc('2')], []);
+
+    const rows = wrapper.findAll('.source');
+    expect(rows[0].find('.passage-label').text()).toBe('tutor.resourcesStep.passageLabel');
+    expect(rows[0].find('[data-testid="passage"]').text()).toBe('A matched passage');
+    // nothing to show without a passage
+    expect(rows[1].find('[data-testid="passage"]').exists()).toBe(false);
+    expect(rows[1].find('.passage-label').exists()).toBe(false);
   });
 
   it('ticks a source selected as another copy of the same document', () => {

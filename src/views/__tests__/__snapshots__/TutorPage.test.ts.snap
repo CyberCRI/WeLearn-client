@@ -371,6 +371,7 @@ exports[`TutorPage > renders properly 1`] = `
           </div>
         </div>
         <!--v-if-->
+        <!--v-if-->
         <div
           class="step-footer"
           data-v-5582d651=""

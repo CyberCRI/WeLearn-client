@@ -445,14 +445,22 @@ export const fr = {
       nudge: 'Sans informations sur le cours, votre syllabus sera générique.',
       addDetails: 'Ajouter des informations',
       continueAnyway: 'Continuer quand même',
+      aiNotice: "Vos fichiers sont envoyés à WeLearn pour être analysés par l'IA.",
       action: 'Analyser mes documents',
-      recap: '{files}\u00a0· {lang}'
+      recap: '{files}\u00a0· {lang}',
+      v2: {
+        title: 'Ajoutez votre syllabus ou vos supports de cours',
+        description:
+          "Importez 1 à 3 documents\u00a0: votre syllabus actuel, si vous en avez un, et les supports sur lesquels repose votre cours (articles, chapitres d'ouvrage…). WeLearn construit un nouveau syllabus à partir de ceux-ci.",
+        hint: 'Cette fonctionnalité est en bêta.'
+      }
     },
     summaryStep: {
       title: 'Le résumé de vos documents',
       description:
         "Voici ce que WeLearn a retenu de chaque document. Vous pouvez l'ajuster si besoin\u00a0: il oriente la recherche de ressources.",
       noFileName: 'Document {n}',
+      aiLabel: "Analysé par l'IA de WeLearn",
       action: 'Trouver des ressources',
       recap: 'Aucun document résumé | 1 document résumé | {n} documents résumés'
     },
@@ -463,6 +471,7 @@ export const fr = {
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
       noneHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
+      passageLabel: 'Passage qui correspond à vos documents',
       action: 'Générer le syllabus',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:
@@ -475,6 +484,7 @@ export const fr = {
       title: 'Votre syllabus est prêt',
       description:
         'Cliquez sur le texte pour le modifier, demandez des modifications à WeLearn, puis téléchargez-le au format Word.',
+      aiLabel: "Rédigé par l'IA de WeLearn. Relisez-le et gardez ce qui convient à votre cours.",
       feedbackLabel: 'Demander des modifications',
       feedbackPlaceholder:
         "ex.\u00a0: Ajouter une semaine sur l'évaluation, raccourcir la bibliographie, rendre le cours plus pratique…",
