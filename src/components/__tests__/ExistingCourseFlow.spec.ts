@@ -4,6 +4,8 @@ import { createPinia, setActivePinia } from 'pinia';
 import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import CourseUpload from '@/components/tutor/CourseUpload.vue';
 import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
+import CourseReview from '@/components/tutor/review/CourseReview.vue';
+import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import { useCourseStore } from '@/stores/course';
 import type { CourseReadResponse } from '@/types';
 
@@ -51,10 +53,46 @@ describe('ExistingCourseFlow', () => {
     const wrapper = mount(ExistingCourseFlow);
 
     expect(wrapper.find('[data-testid="course-recap"]').text()).toContain('syllabus.pdf');
-    expect(wrapper.find('[data-testid="read-title"]').text()).toBe('Ecology');
+    expect(wrapper.findComponent(CourseReview).exists()).toBe(true);
 
     await wrapper.find('[data-testid="course-recap"] button').trigger('click');
     expect(course.step).toBe(1);
     expect(wrapper.findComponent(CourseUpload).exists()).toBe(true);
+  });
+
+  it('folds the confirmed course into a recap, reopened from it or from the step bar', async () => {
+    const course = useCourseStore();
+    course.setFile(pdf);
+    course.reading = READ;
+    course.teachingContext = { ...course.teachingContext, title: 'Ecology' };
+    course.courseTopics = [{ value: 'Soils', origin: 'extracted' }];
+    course.setStep(3);
+    const wrapper = mount(ExistingCourseFlow);
+
+    const recap = wrapper.find('[data-testid="review-recap"]');
+    expect(recap.text()).toContain('Ecology');
+    expect(recap.text()).toContain('tutor.check.recapTopics');
+    expect(wrapper.findComponent(CourseReview).exists()).toBe(false);
+    expect(wrapper.find('#target-3').exists()).toBe(true);
+
+    await recap.find('button').trigger('click');
+    expect(course.step).toBe(2);
+    expect(wrapper.findComponent(CourseReview).exists()).toBe(true);
+
+    course.setStep(3);
+    wrapper.findComponent(TutorStepsBar).vm.$emit('select', 2);
+    expect(course.step).toBe(2);
+  });
+
+  it('shows the progress in the review while one course of several is read again', () => {
+    const course = useCourseStore();
+    course.setFile(pdf);
+    course.reading = READ;
+    course.setStep(2);
+    course.phase = 'sending';
+    const wrapper = mount(ExistingCourseFlow);
+
+    expect(wrapper.find('#target-2').findComponent(ReadingProgress).exists()).toBe(true);
+    expect(wrapper.findComponent(CourseReview).exists()).toBe(false);
   });
 });

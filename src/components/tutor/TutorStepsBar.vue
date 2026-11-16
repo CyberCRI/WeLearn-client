@@ -3,12 +3,20 @@ import ProgressBar from '@/components/microlearning/ProgressBar.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 import { calculateProgress } from '@/utils/progress';
 
-// the step bar on top of each syllabus path; a step scrolls to its `target-<n>` section
+// the step bar on top of each syllabus path; a finished step scrolls to its `target-<n>` section
+// and is emitted (1-based), so a path can reopen it
 defineProps<{
   labels: string[];
   // 1-based, like the tutor store's step
   step: number;
 }>();
+
+const emit = defineEmits<{ select: [step: number] }>();
+
+const handleSelect = (index: number) => {
+  scrollToAnchor(`target-${index + 1}`);
+  emit('select', index + 1);
+};
 </script>
 <template>
   <div class="steps-bar">
@@ -17,7 +25,7 @@ defineProps<{
       :labels="labels"
       :progress="calculateProgress(step - 1, labels.length)"
       clickable
-      @select="(i: number) => scrollToAnchor(`target-${i + 1}`)"
+      @select="handleSelect"
     />
   </div>
 </template>

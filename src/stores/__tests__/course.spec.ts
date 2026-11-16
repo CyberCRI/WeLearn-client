@@ -255,4 +255,159 @@ describe('course store', () => {
       expect(store.step).toBe(1);
     });
   });
+
+  describe('the review', () => {
+    const TEXT = 'Macroeconomics\nLicence 1\nObjectives:\n- Define GDP.\nTheme 1: GDP';
+    const FULL: CourseReadResponse = {
+      text: TEXT,
+      is_text_truncated: false,
+      is_partial: false,
+      reading: {
+        title: 'Macroeconomics',
+        level: 'Licence 1',
+        discipline_suggested: 'Economics',
+        description: 'A course on growth.',
+        material_type: 'syllabus',
+        courses_found: [],
+        objectives: [{ text: 'Define GDP.', scope: 'course' }],
+        topics: [{ title: 'GDP', subtopics: [], source: 'Theme 1: GDP' }],
+        sessions: [{ label: 'Week 1', title: 'GDP' }]
+      }
+    };
+
+    const readFull = async (response: CourseReadResponse = FULL) => {
+      const store = useCourseStore();
+      store.setFile(file());
+      mockPost({ data: response });
+      await store.readCourse();
+      return store;
+    };
+
+    it('fills the review and the course information from the reading', async () => {
+      const store = await readFull();
+      expect(store.courseObjectives).toEqual([
+        expect.objectContaining({ value: 'Define GDP.', group: 'objective' })
+      ]);
+      expect(store.courseTopics.map(({ value }) => value)).toEqual(['GDP']);
+      expect(store.coursePlan).toEqual(['Week 1 – GDP']);
+      expect(store.courseDescription?.verification).toBe('unverified');
+      expect(store.teachingContext).toMatchObject({
+        title: 'Macroeconomics',
+        level: 'l1',
+        discipline: 'Economics'
+      });
+      expect(store.prefilled).toEqual(['title', 'level']);
+      expect(store.aiSuggested).toEqual(['discipline']);
+      expect(store.contextEvidence).toEqual({ title: 'Macroeconomics', level: 'Licence 1' });
+      expect(store.canConfirm).toBe(true);
+    });
+
+    it("keeps the teacher's own course information when another reading comes", async () => {
+      const store = await readFull();
+      store.updateContext('title', 'My macro course');
+      expect(store.prefilled).toEqual(['level']);
+      expect(store.contextEvidence).toEqual({ level: 'Licence 1' });
+
+      store.setFile(file('other.pdf'));
+      mockPost({ data: { ...FULL, reading: { ...FULL.reading, discipline_suggested: null } } });
+      await store.readCourse();
+
+      expect(store.teachingContext.title).toBe('My macro course');
+      // the suggestion of the previous reading is gone
+      expect(store.teachingContext.discipline).toBe('');
+    });
+
+    it('reads again, alone, the course the teacher picks in a document holding several', async () => {
+      const store = await readFull({
+        ...FULL,
+        reading: { ...FULL.reading, courses_found: ['UE 1 Economics', 'UE 2 Law'] }
+      });
+      expect(store.coursesFound).toEqual(['UE 1 Economics', 'UE 2 Law']);
+
+      mockPost({ data: FULL });
+      await store.chooseCourse('UE 2 Law');
+
+      const body = vi.mocked(basePostAxios).mock.calls[1][1] as FormData;
+      expect(body.get('focus')).toBe('UE 2 Law');
+      expect(store.focus).toBe('UE 2 Law');
+      expect(store.coursesFound).toEqual([]);
+      expect(store.step).toBe(2);
+
+      // a new file: no course chosen in it
+      store.setFile(file('other.pdf'));
+      expect(store.focus).toBeNull();
+    });
+
+    it("applies the teacher's corrections", async () => {
+      const store = await readFull();
+
+      store.setDescription('About growth.');
+      expect(store.courseDescription).toMatchObject({ value: 'About growth.', origin: 'edited' });
+      store.restoreDescription();
+      expect(store.courseDescription?.value).toBe('A course on growth.');
+      store.setDescription('  ');
+      expect(store.courseDescription).toBeNull();
+      store.setDescription('Mine.');
+      expect(store.courseDescription).toEqual({ value: 'Mine.', origin: 'added' });
+
+      store.setObjective(0, 'Define GDP and its limits.');
+      expect(store.courseObjectives[0].origin).toBe('edited');
+      store.setObjective(0, '  ');
+      expect(store.courseObjectives[0].value).toBe('Define GDP and its limits.');
+      store.restoreObjective(0);
+      expect(store.courseObjectives[0].value).toBe('Define GDP.');
+      store.addObjective(' Work in a team. ', 'competency');
+      store.addObjective('  ');
+      expect(store.courseObjectives[1]).toEqual({
+        value: 'Work in a team.',
+        origin: 'added',
+        group: 'competency'
+      });
+      store.setGroup(0, 'programme');
+      expect(store.courseToUpdate.objectives).toEqual([]);
+      expect(store.courseToUpdate.competencies).toEqual(['Work in a team.']);
+      store.removeObjective(1);
+      expect(store.courseObjectives).toHaveLength(1);
+
+      store.saveTopics([{ from: 0, title: 'GDP', subtopics: ['Measure'] }]);
+      expect(store.courseTopics[0].subtopics).toEqual(['Measure']);
+      store.setCoursePlan(['Week 1', ' ', 'Week 2 ']);
+      expect(store.coursePlan).toEqual(['Week 1', 'Week 2']);
+      expect(store.courseParts).toEqual(['GDP', 'Measure', 'Week 1', 'Week 2']);
+      expect(store.confirmedCourse.topics).toEqual(['GDP (Measure)']);
+    });
+
+    it('edits the summary only with words, and restores it', async () => {
+      const store = await readFull({
+        ...FULL,
+        reading: { ...FULL.reading, summary: 'WeLearn summary.' }
+      });
+      store.setSummary(' ');
+      expect(store.courseSummary?.value).toBe('WeLearn summary.');
+      store.setSummary('Mine.');
+      expect(store.courseSummary?.origin).toBe('edited');
+      store.restoreSummary();
+      expect(store.courseSummary?.value).toBe('WeLearn summary.');
+    });
+
+    it('moves on only with something to work on', async () => {
+      const store = useCourseStore();
+      store.confirmReview();
+      expect(store.step).toBe(1);
+
+      await readFull();
+      store.confirmReview();
+      expect(store.step).toBe(3);
+    });
+
+    it('drops the review on reset', async () => {
+      const store = await readFull();
+      store.$reset();
+      expect(store.courseObjectives).toEqual([]);
+      expect(store.courseTopics).toEqual([]);
+      expect(store.teachingContext.title).toBe('');
+      expect(store.prefilled).toEqual([]);
+      expect(store.focus).toBeNull();
+    });
+  });
 });

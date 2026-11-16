@@ -20,5 +20,7 @@ describe('TutorStepsBar', () => {
     const wrapper = mount(TutorStepsBar, { props: { labels: ['a', 'b'], step: 2 } });
     wrapper.findComponent(ProgressBar).vm.$emit('select', 0);
     expect(scrollToAnchor).toHaveBeenLastCalledWith('target-1');
+    // and tells the path, which may reopen it
+    expect(wrapper.emitted('select')).toEqual([[1]]);
   });
 });

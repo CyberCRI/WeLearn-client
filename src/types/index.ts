@@ -91,6 +91,62 @@ export type CoursePath = 'existing' | 'scratch';
 // syllabus v2, "I have a course": the course as WeLearn read it from the teacher's file
 export type CourseReadResponse = ApiSchema<'CourseReadResponse'>;
 export type CourseReading = ApiSchema<'CourseReading'>;
+export type ObjectiveScope = ApiSchema<'ReadObjective'>['scope'];
+
+// one piece of the checked course: read from the syllabus, corrected or added by the teacher.
+// `original` keeps the syllabus wording of a corrected piece, so it can be restored
+export type CourseFieldOrigin = 'extracted' | 'edited' | 'added';
+// how an extracted piece compares with the syllabus text: found in it word for word (verified),
+// or not (unverified: reworded, translated or put together by the AI). unchecked: no text to
+// compare with
+export type Verification = 'verified' | 'unverified' | 'unchecked';
+// course objectives, competencies, or objectives wider than the course (degree, institution,
+// general education), kept apart; unsorted: neither the AI nor the syllabus's headings say
+// whether it belongs to this course
+export type ObjectiveGroup = 'objective' | 'competency' | 'programme' | 'unsorted';
+export type CourseField = {
+  value: string;
+  origin: CourseFieldOrigin;
+  original?: string;
+  verification?: Verification;
+  group?: ObjectiveGroup;
+  // written by the AI (an overview, a topic named in its own words), not copied from the syllabus
+  isSummary?: boolean;
+  subtopics?: string[];
+  // the syllabus line a topic comes from, found word for word in it: where changes to it go
+  source?: string | null;
+};
+
+// how the course is taught; empty means the teacher did not say, never a default
+export type TeachingContext = {
+  title: string;
+  discipline: string;
+  level: string;
+  sessions: number | null;
+  sessionLength: number | null; // hours
+  sessionType: string;
+  sessionMode: ApiSchema<'SessionMode'> | '';
+  classSize: number | null;
+};
+
+// the course as the teacher confirmed it on the review screen, for the sustainability additions:
+// their corrections included, degree-level objectives left out
+export type ConfirmedCourse = {
+  title: string | null;
+  discipline: string | null;
+  level: string | null;
+  overview: string | null;
+  topics: string[];
+  objectives: string[];
+  competencies: string[];
+  sessions: string[];
+};
+
+// the confirmed course as the updated syllabus uses it: topics keep their subtopics and the
+// syllabus line they come from
+export type CourseToUpdate = Omit<ConfirmedCourse, 'topics'> & {
+  topics: { title: string; subtopics: string[]; source: string | null }[];
+};
 
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {
