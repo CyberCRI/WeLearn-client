@@ -88,6 +88,10 @@ export type Environment = 'dev' | 'staging' | 'test' | 'prod';
 // syllabus v2: improve a course the teacher already has, or create one from scratch
 export type CoursePath = 'existing' | 'scratch';
 
+// syllabus v2, "I have a course": the course as WeLearn read it from the teacher's file
+export type CourseReadResponse = ApiSchema<'CourseReadResponse'>;
+export type CourseReading = ApiSchema<'CourseReading'>;
+
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {
   status: 'granted' | 'denied';

@@ -394,6 +394,31 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/tutor/course/read': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Read a course document (syllabus v2)
+     * @description The course in the uploaded document: title, objectives, topics, sessions... and the
+     *     extracted text, so the client checks each value word for word. `lang` is the teacher's
+     *     language (the answer's); `focus` reads one course of a document that holds several.
+     *
+     *     A guest's reading counts as one of their daily syllabi, refunded if it fails. A
+     *     file rejected before the reading (size, type, no text) costs nothing.
+     */
+    post: operations['tutor-read_course_document'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/files/content': {
     parameters: {
       query?: never;
@@ -880,6 +905,22 @@ export interface components {
       /** Files */
       files: string[];
     };
+    /** Body_tutor-read_course_document */
+    'Body_tutor-read_course_document': {
+      /**
+       * File
+       * Format: binary
+       */
+      file: string;
+      /** Focus */
+      focus?: string | null;
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
     /** BookmarkAddedResponse */
     BookmarkAddedResponse: {
       /**
@@ -1014,6 +1055,74 @@ export interface components {
       topic: string;
       /** User Description */
       user_description?: string | null;
+    };
+    /** CourseReadResponse */
+    CourseReadResponse: {
+      /**
+       * Is Partial
+       * @description A part of a long document could not be read for its topics
+       */
+      is_partial: boolean;
+      /**
+       * Is Text Truncated
+       * @description The document is longer than one reading: title, objectives and sessions come from its first part only (topics and summary cover every part)
+       */
+      is_text_truncated: boolean;
+      reading: components['schemas']['CourseReading'];
+      /**
+       * Text
+       * @description Text extracted from the file, to check the reading word for word
+       */
+      text: string;
+    };
+    /**
+     * CourseReading
+     * @description Answer of the `read` prompt.
+     */
+    CourseReading: {
+      /**
+       * Courses Found
+       * @default []
+       */
+      courses_found: string[];
+      /** Description */
+      description?: string | null;
+      /** Discipline */
+      discipline?: string | null;
+      /** Discipline Suggested */
+      discipline_suggested?: string | null;
+      /**
+       * Document Language
+       * @description ISO 639-1 code of the main language of the document, e.g. "fr"
+       */
+      document_language?: string | null;
+      /** Level */
+      level?: string | null;
+      /**
+       * Material Type
+       * @default other
+       * @enum {string}
+       */
+      material_type: 'syllabus' | 'course_plan' | 'lesson' | 'partial' | 'other';
+      /**
+       * Objectives
+       * @default []
+       */
+      objectives: components['schemas']['ReadObjective'][];
+      /**
+       * Sessions
+       * @default []
+       */
+      sessions: components['schemas']['ReadSession'][];
+      /** Summary */
+      summary?: string | null;
+      /** Title */
+      title?: string | null;
+      /**
+       * Topics
+       * @default []
+       */
+      topics: components['schemas']['ReadTopic'][];
     };
     /** Document */
     Document: {
@@ -1346,6 +1455,42 @@ export interface components {
      * @enum {string}
      */
     QuestionType: 'text' | 'checkbox' | 'predefined_text';
+    /** ReadObjective */
+    ReadObjective: {
+      /**
+       * Scope
+       * @default unspecified
+       * @enum {string}
+       */
+      scope: 'course' | 'programme' | 'unspecified';
+      /**
+       * Text
+       * @description The objective, word for word, without number or bullet
+       */
+      text: string;
+    };
+    /** ReadSession */
+    ReadSession: {
+      /** Label */
+      label?: string | null;
+      /** Title */
+      title?: string | null;
+    };
+    /** ReadTopic */
+    ReadTopic: {
+      /**
+       * Source
+       * @description The heading or line of the document the topic comes from, word for word
+       */
+      source?: string | null;
+      /**
+       * Subtopics
+       * @default []
+       */
+      subtopics: string[];
+      /** Title */
+      title: string;
+    };
     /** RegisterFormAnswerBody */
     RegisterFormAnswerBody: {
       /** Answer */
@@ -2554,6 +2699,93 @@ export interface operations {
       };
       /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-read_course_document': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': components['schemas']['Body_tutor-read_course_document'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CourseReadResponse'];
+        };
+      };
+      /** @description Unsupported or unreadable file */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The file is too large (code FILE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description No text in the file, e.g. a scanned PDF (code EMPTY_DOCUMENT_TEXT), or invalid form fields */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The document could not be read (code UNUSABLE_READING) */
+      502: {
         headers: {
           [name: string]: unknown;
         };

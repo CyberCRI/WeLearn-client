@@ -9,6 +9,7 @@ import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
 import { useAuthStore } from '@/stores/auth';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useCourseStore } from '@/stores/course';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 
 const MAX_FILES = 3;
@@ -278,7 +279,8 @@ export const useTutorStore = defineStore('tutor', () => {
     () =>
       step.value > 1 ||
       Object.keys(newFilesToSearch.value).length > 0 ||
-      !!(courseTitle.value || level.value || duration.value || description.value)
+      !!(courseTitle.value || level.value || duration.value || description.value) ||
+      useCourseStore().hasStarted
   );
 
   const choosePath = (chosen: CoursePath) => {
@@ -288,6 +290,7 @@ export const useTutorStore = defineStore('tutor', () => {
   // back to the question: drops the work of the current path
   const resetPath = () => {
     restart();
+    useCourseStore().$reset();
     path.value = null;
   };
 
