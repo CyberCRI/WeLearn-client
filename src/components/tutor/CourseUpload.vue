@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
+import FileDropzone from '@/components/tutor/FileDropzone.vue';
 import type { FileErrorReason } from '@/stores/tutor';
 import type { CourseLanguage, ReadError } from '@/stores/course';
 
-// syllabus v2, screen 1 "your course": one syllabus file and the teacher's language.
-// ponytail: the dropzone repeats CursusInfo's markup rather than sharing a component, so the
-// "from scratch" path (CursusInfo, up to 3 files) stays exactly as it was
+// syllabus v2, screen 1 "your course": one syllabus file and the teacher's language
 const props = defineProps<{
   file: File | null;
   fileError: FileErrorReason | null;
@@ -20,19 +18,8 @@ const props = defineProps<{
 
 const LANGUAGES: CourseLanguage[] = ['fr', 'en'];
 
-const isDragging = ref(false);
-
-const onPick = (e: Event) => {
-  const input = e.target as HTMLInputElement;
-  if (input.files?.[0]) props.setFile(input.files[0]);
-  // allows picking the same file again after removing it
-  input.value = '';
-};
-
-const onDrop = (e: DragEvent) => {
-  isDragging.value = false;
-  if (e.dataTransfer?.files?.[0]) props.setFile(e.dataTransfer.files[0]);
-};
+// one syllabus: the first file when several are dropped
+const onPick = (files: File[]) => props.setFile(files[0]);
 </script>
 
 <template>
@@ -40,26 +27,12 @@ const onDrop = (e: DragEvent) => {
     <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.course.title') }}</h1>
     <p class="subtitle is-6 mt-2">{{ $t('tutor.course.description') }}</p>
 
-    <label
-      class="dropzone"
-      :class="{ dragging: isDragging }"
-      @dragover.prevent="isDragging = true"
-      @dragleave="isDragging = false"
-      @drop.prevent="onDrop"
-    >
-      <input
-        class="is-sr-only"
-        type="file"
-        accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        data-testid="course-file-input"
-        @change="onPick"
-      />
-      <span>
-        {{ $t('tutor.course.dropzone') }}
-        <span class="browse">{{ $t('tutor.documentsStep.browse') }}</span>
-      </span>
-      <span class="is-size-7 has-text-grey">{{ $t('tutor.course.limits') }}</span>
-    </label>
+    <FileDropzone
+      :label="$t('tutor.course.dropzone')"
+      :limits="$t('tutor.course.limits')"
+      inputTestId="course-file-input"
+      @pick="onPick"
+    />
 
     <p v-if="fileError" class="has-text-danger mt-2" data-testid="course-file-error">
       {{ $t(`tutor.${fileError}`) }}
@@ -118,32 +91,6 @@ const onDrop = (e: DragEvent) => {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.dropzone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 1.5rem 1rem;
-  border: 2px dashed var(--neutral-20);
-  border-radius: 0.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition:
-    border-color 0.2s,
-    background-color 0.2s;
-  &:hover,
-  &.dragging,
-  &:focus-within {
-    border-color: var(--primary);
-    background-color: var(--neutral-10);
-  }
-}
-
-.browse {
-  color: var(--primary-dark);
-  text-decoration: underline;
 }
 
 .picked-file {

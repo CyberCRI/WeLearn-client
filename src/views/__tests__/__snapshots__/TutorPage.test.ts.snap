@@ -159,29 +159,30 @@ exports[`TutorPage > renders properly 1`] = `
         <label
           class="dropzone"
           data-v-5582d651=""
+          data-v-8e439d67=""
         >
           <input
             accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             class="is-sr-only"
             data-testid="file-input"
-            data-v-5582d651=""
+            data-v-8e439d67=""
             multiple=""
             type="file"
           />
           <span
-            data-v-5582d651=""
+            data-v-8e439d67=""
           >
             tutor.documentsStep.dropzone 
             <span
               class="browse"
-              data-v-5582d651=""
+              data-v-8e439d67=""
             >
               tutor.documentsStep.browse
             </span>
           </span>
           <span
             class="is-size-7 has-text-grey"
-            data-v-5582d651=""
+            data-v-8e439d67=""
           >
             tutor.documentsStep.limits
           </span>
