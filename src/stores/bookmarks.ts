@@ -9,6 +9,7 @@ import {
 } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
 import { useAuthStore } from '@/stores/auth';
+import { isAccountRequired } from '@/utils/apiErrors';
 
 export const useBookmarksStore = defineStore('bookmarks', () => {
   const sourcesBookmarked: Ref<Document[]> = ref([]);
@@ -27,6 +28,11 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
         bookmarksCount: idsBookmarked.value.length
       });
     } catch (error) {
+      // the API keeps bookmarks for accounts, even when the client took the user for one
+      if (isAccountRequired(error)) {
+        useAuthStore().askToSignUp('bookmark');
+        return;
+      }
       console.error('Failed to add bookmark:', error);
       return;
     }

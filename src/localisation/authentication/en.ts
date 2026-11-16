@@ -40,16 +40,16 @@ export const authentication = {
         'Your syllabus is ready. Create a free account to download it, or log in: it will download right after.',
       bibliography: 'Create a free account to export your bibliography.',
       chatLimit:
-        'You have used all the free questions of the guest access. Create a free account to keep chatting.',
+        'You have used today’s free questions of the guest access. Come back tomorrow, or create a free account to keep chatting.',
       syllabusLimit:
-        'You have used the free syllabus of the guest access. Create a free account to create more.'
+        'You have used today’s free syllabus of the guest access. Come back tomorrow, or create a free account to create more.'
     }
   },
   // plural forms: none left | 1 left | n left
   guestQuota: {
-    chat: 'Guest access: you have used your {limit} free questions. | Guest access: 1 free question left out of {limit}. | Guest access: {n} free questions left out of {limit}.',
+    chat: 'Guest access: you have used your {limit} free questions for today, come back tomorrow. | Guest access: 1 free question left out of {limit} today. | Guest access: {n} free questions left out of {limit} today.',
     syllabus:
-      'Guest access: you have used your free syllabus. | Guest access: you can create 1 free syllabus. | Guest access: you can create {n} free syllabi.',
-    createAccount: 'Create a free account for unlimited use'
+      'Guest access: you have used your free syllabus for today, come back tomorrow. | Guest access: you can create 1 free syllabus today. | Guest access: you can create {n} free syllabi today.',
+    createAccount: 'Or create a free account for unlimited use'
   }
 };

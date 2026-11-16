@@ -105,7 +105,7 @@ export type SignupPromptReason =
   | 'chatLimit'
   | 'syllabusLimit';
 
-// what a guest can do a limited number of times (stores/guestQuota.ts)
+// what a guest can do a limited number of times a day (counted by the API, stores/guestQuota.ts)
 export type GuestQuotaFeature = 'chat' | 'syllabus';
 
 // event name -> props. Only counts, lengths, enums and ids: never free text or document content

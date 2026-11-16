@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import GuestQuotaNotice from '../GuestQuotaNotice.vue';
 import { track } from '@/utils/analytics';
+import { useGuestQuotaStore } from '@/stores/guestQuota';
 
 const push = vi.fn();
 vi.mock('vue-router', () => ({ useRouter: () => ({ push }) }));
@@ -11,11 +12,20 @@ vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 const auth = vi.hoisted(() => ({ isGuest: true, askToSignUp: vi.fn() }));
 vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
 
+// what GET /user/guest_quota answered
+const setQuota = (chat: number, syllabus: number) => {
+  useGuestQuotaStore().quota = {
+    limited: true,
+    chat: { limit: 5, remaining: chat, resets_in: 0 },
+    syllabus: { limit: 1, remaining: syllabus, resets_in: 0 }
+  };
+};
+
 describe('GuestQuotaNotice', () => {
   beforeEach(() => {
     auth.isGuest = true;
-    localStorage.clear();
     setActivePinia(createPinia());
+    setQuota(5, 1);
   });
 
   afterEach(() => {
@@ -24,6 +34,14 @@ describe('GuestQuotaNotice', () => {
 
   it('is hidden for a logged in user', () => {
     auth.isGuest = false;
+
+    const wrapper = mount(GuestQuotaNotice, { props: { feature: 'chat' } });
+
+    expect(wrapper.find('[data-testid="guest-quota-notice"]').exists()).toBe(false);
+  });
+
+  it('waits for the quota of the API', () => {
+    useGuestQuotaStore().quota = null;
 
     const wrapper = mount(GuestQuotaNotice, { props: { feature: 'chat' } });
 
@@ -40,7 +58,7 @@ describe('GuestQuotaNotice', () => {
   });
 
   it('stands out once the quota is used', () => {
-    localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }));
+    setQuota(0, 1);
 
     const wrapper = mount(GuestQuotaNotice, { props: { feature: 'chat' } });
 
@@ -48,7 +66,7 @@ describe('GuestQuotaNotice', () => {
   });
 
   it('sends the guest to the register page', async () => {
-    localStorage.setItem('guestUsage', JSON.stringify({ chat: 3, syllabus: 0 }));
+    setQuota(2, 1);
     const wrapper = mount(GuestQuotaNotice, { props: { feature: 'chat' } });
 
     await wrapper.get('a').trigger('click');

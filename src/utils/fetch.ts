@@ -163,6 +163,10 @@ export const deleteAllBookmarks = async () => {
   await http.delete(`/user/bookmarks`);
 };
 
+// the daily guest quotas left; `limited` is false for an account
+export const getGuestQuota = () =>
+  baseGetAxios<ApiResponse<'/user/guest_quota'>>('/user/guest_quota');
+
 export const getBookmarks = async () => {
   const bookmarksIds = await baseGetAxios<ApiResponse<'/user/bookmarks'>>(`/user/bookmarks`);
   const ids = bookmarksIds.bookmarks.map((bookmark) => bookmark.document_id);
