@@ -8,6 +8,7 @@ import CoursePlanReview from '@/components/tutor/review/CoursePlanReview.vue';
 import MissingOverview from '@/components/tutor/review/MissingOverview.vue';
 import ObjectivesReview from '@/components/tutor/review/ObjectivesReview.vue';
 import TopicsReview from '@/components/tutor/review/TopicsReview.vue';
+import TeachingContext from '@/components/tutor/TeachingContext.vue';
 import { useCourseStore } from '@/stores/course';
 import type { OverviewKey } from '@/utils/courseReview';
 
@@ -20,6 +21,16 @@ const store = useCourseStore();
 const isSyllabus = computed(
   () => !store.detectedType || ['syllabus', 'course_plan'].includes(store.detectedType)
 );
+
+// how the course is taught: optional, folded unless the syllabus stated some of it
+const CONTEXT_KEYS = [
+  'sessions',
+  'sessionLength',
+  'sessionType',
+  'sessionMode',
+  'classSize'
+] as const;
+const hasReadContext = computed(() => CONTEXT_KEYS.some((key) => store.prefilled.includes(key)));
 
 // the course information line being added or corrected, shared by its two parts
 const editingKey = ref<OverviewKey | null>(null);
@@ -83,6 +94,23 @@ const fileSize = computed(() =>
     </div>
 
     <ObjectivesReview />
+
+    <details class="context" :open="hasReadContext" data-testid="teaching-context-more">
+      <summary>
+        {{ $t('tutor.course.contextTitle') }}
+        <span class="muted">{{ $t('tutor.course.optional') }}</span>
+      </summary>
+      <p class="muted mt-1 mb-3">{{ $t('tutor.course.contextHint') }}</p>
+      <TeachingContext
+        isPlain
+        :keys="[...CONTEXT_KEYS]"
+        :context="store.teachingContext"
+        :prefilled="store.prefilled"
+        :evidence="store.contextEvidence"
+        :aiFilled="store.aiFilled"
+        :updateContext="store.updateContext"
+      />
+    </details>
 
     <p class="local-note" data-testid="local-note">{{ $t('tutor.check.localNote') }}</p>
 
@@ -148,6 +176,16 @@ const fileSize = computed(() =>
 .course-card {
   margin-top: 1.25rem;
   padding-bottom: 0.75rem;
+}
+
+.context {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--neutral-20);
+  summary {
+    font-weight: 600;
+    cursor: pointer;
+  }
 }
 
 .local-note {

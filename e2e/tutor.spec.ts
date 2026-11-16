@@ -245,7 +245,7 @@ test.describe('Tutor path choice (syllabusV2)', () => {
       sent = route.request().postData();
       await route.fulfill({
         json: {
-          text: 'Ecology\nTheme 1: Soils',
+          text: 'Ecology\nTheme 1: Soils\n12 sessions',
           is_text_truncated: false,
           is_partial: false,
           reading: {
@@ -273,6 +273,8 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     // screen 2: what WeLearn read, correctable, then confirmed and folded
     await expect(page.getByTestId('overview-title')).toContainText('Ecology');
     await expect(page.getByTestId('topic')).toHaveText(['Soils']);
+    // the teaching context the syllabus states, read from its text and open for checking
+    await expect(page.locator('#context-sessions')).toHaveValue('12');
     await page.getByTestId('edit-topics').click();
     await page.getByTestId('add-topic').click();
     await page.getByTestId('topic-title').last().fill('Water');

@@ -396,10 +396,21 @@ describe('CourseReview (screen "Check your course")', () => {
     await wrapper.find('[data-testid="done-overview"]').trigger('click');
     expect(wrapper.find('#context-title').exists()).toBe(false);
 
-    // the teaching context is not asked here; what was read stays in the store
-    expect(wrapper.findAllComponents(TeachingContext)).toHaveLength(0);
-    expect(wrapper.find('#context-sessions').exists()).toBe(false);
-    expect(store.teachingContext.sessions).toBe(12);
+    // the teaching context, folded below, open since the syllabus stated some of it
+    const more = wrapper.find('[data-testid="teaching-context-more"]');
+    expect(more.element.tagName).toBe('DETAILS');
+    expect((more.element as HTMLDetailsElement).open).toBe(true);
+    expect(more.findComponent(TeachingContext).props('keys')).toEqual([
+      'sessions',
+      'sessionLength',
+      'sessionType',
+      'sessionMode',
+      'classSize'
+    ]);
+    expect((more.find('#context-sessions').element as HTMLInputElement).value).toBe('12');
+    await more.find('#context-sessions').setValue('10');
+    expect(store.teachingContext.sessions).toBe(10);
+    expect(store.prefilled).not.toContain('sessions');
   });
 
   it('edits with small pencil buttons that say what they edit, and still corrects everything', async () => {
@@ -459,5 +470,11 @@ describe('CourseReview (screen "Check your course")', () => {
     wrapper.unmount();
     expect(revokeObjectURL).toHaveBeenCalledWith('blob:local');
     vi.unstubAllGlobals();
+  });
+
+  it('keeps the teaching context folded when the syllabus states none of it', () => {
+    readCourse();
+    const more = mountCheck().find('[data-testid="teaching-context-more"]');
+    expect((more.element as HTMLDetailsElement).open).toBe(false);
   });
 });

@@ -390,6 +390,32 @@ describe('course store', () => {
       expect(store.courseSummary?.value).toBe('WeLearn summary.');
     });
 
+    it('reads the teaching context the syllabus states, without overwriting anything', async () => {
+      const text = 'Titre du cours : Macro\nLicence 1\n12 séances de 3 h, en présentiel\nTD';
+      const store = useCourseStore();
+      store.setFile(file());
+      store.updateContext('sessionMode', 'HYBRIDE');
+      mockPost({ data: { ...FULL, text, reading: { ...FULL.reading, title: 'Macro' } } });
+      await store.readCourse();
+
+      expect(store.teachingContext).toMatchObject({
+        title: 'Macro',
+        level: 'l1',
+        sessions: 12,
+        sessionLength: 3,
+        sessionType: 'tutorial',
+        // the teacher's own choice stays
+        sessionMode: 'HYBRIDE'
+      });
+      expect(store.prefilled).toEqual(
+        expect.arrayContaining(['title', 'level', 'sessions', 'sessionLength', 'sessionType'])
+      );
+      expect(store.prefilled).not.toContain('sessionMode');
+      // WeLearn's reading of the title comes first, its line kept as evidence
+      expect(store.contextEvidence.title).toBe('Macro');
+      expect(store.contextEvidence.sessions).toBe('12 séances de 3 h, en présentiel');
+    });
+
     it('moves on only with something to work on', async () => {
       const store = useCourseStore();
       store.confirmReview();

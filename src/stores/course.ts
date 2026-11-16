@@ -15,7 +15,7 @@ import {
   reviewFromReading,
   toConfirmedCourse
 } from '@/utils/courseReview';
-import { emptyTeachingContext } from '@/utils/teachingContext';
+import { emptyTeachingContext, readTeachingContext } from '@/utils/teachingContext';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
 import type { FileErrorReason } from '@/stores/tutor';
 import type {
@@ -152,10 +152,20 @@ export const useCourseStore = defineStore('course', () => {
     [...prefilled.value, ...aiFilled.value, ...aiSuggested.value].forEach((key) => {
       (context as Record<string, unknown>)[key] = fill.values[key];
     });
-    teachingContext.value = context;
-    contextEvidence.value = Object.fromEntries(
+    const evidence: Partial<Record<ContextKey, string>> = Object.fromEntries(
       prefilled.value.map((key) => [key, fill.evidence[key]])
     );
+
+    // what the syllabus states plainly (sessions, their length and type, format, class size),
+    // read from its text where the reading left the field empty: nothing is guessed
+    const fromText = readTeachingContext(read.text);
+    (Object.keys(fromText.values) as ContextKey[]).filter(isEmpty).forEach((key) => {
+      (context as Record<string, unknown>)[key] = fromText.values[key];
+      prefilled.value = [...prefilled.value, key];
+      if (fromText.evidence[key]) evidence[key] = fromText.evidence[key];
+    });
+    teachingContext.value = context;
+    contextEvidence.value = evidence;
   };
 
   let controller: AbortController | undefined;
