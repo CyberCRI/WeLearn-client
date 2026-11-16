@@ -8,8 +8,6 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import { useCourseStore } from '@/stores/course';
 
-// syllabus v2, "I have a course": screen 1 reads the teacher's syllabus (SY-09); the next
-// screens come with SY-10 → SY-17
 const SCREENS = ['course', 'check', 'additions', 'updated'] as const;
 
 const { t } = i18n.global;
