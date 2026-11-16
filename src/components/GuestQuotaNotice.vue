@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import ClickableText from '@/components/ClickableText.vue';
 import { useAuthStore } from '@/stores/auth';
-import { GUEST_LIMITS, useGuestQuotaStore } from '@/stores/guestQuota';
+import { useGuestQuotaStore } from '@/stores/guestQuota';
 import { track } from '@/utils/analytics';
 import type { GuestQuotaFeature } from '@/types';
 
@@ -16,28 +16,23 @@ const authStore = useAuthStore();
 const guestQuota = useGuestQuotaStore();
 
 const remaining = computed(() => guestQuota.remaining(props.feature));
+const limit = computed(() => guestQuota.limit(props.feature));
 
 const handleCreateAccount = () => {
-  track('Guest Quota Notice Clicked', { feature: props.feature, remaining: remaining.value });
+  track('Guest Quota Notice Clicked', { feature: props.feature, remaining: remaining.value ?? 0 });
   router.push('/register');
 };
 </script>
 
 <template>
   <p
-    v-if="authStore.isGuest"
+    v-if="authStore.isGuest && remaining !== undefined"
     class="guest-quota is-size-7"
     :class="{ 'is-used-up': remaining === 0 }"
     data-testid="guest-quota-notice"
   >
     <span data-testid="guest-quota-text">
-      {{
-        $t(
-          `authentication.guestQuota.${feature}`,
-          { n: remaining, limit: GUEST_LIMITS[feature] },
-          remaining
-        )
-      }}
+      {{ $t(`authentication.guestQuota.${feature}`, { n: remaining, limit }, remaining) }}
     </span>
     <ClickableText
       :text="$t('authentication.guestQuota.createAccount')"

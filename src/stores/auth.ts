@@ -33,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
   const featureFlip = useFeatureFlipStore();
   const shouldAuthenticate = computed(() => featureFlip.isFeatureEnabled('auth'));
   // a guest can use the tools but not keep their work (bookmarks, downloads, exports).
-  // gated in the client only, the API does not check the token yet
+  // the API enforces it too where its GUEST_RESTRICTIONS_ENABLED flag is on
   const isGuest = computed(() => shouldAuthenticate.value && !isAuthenticated.value);
 
   // set when a guest hits something that needs an account, SignupPromptModal shows it

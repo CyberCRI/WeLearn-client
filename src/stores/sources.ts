@@ -6,6 +6,7 @@ import type { ApiResponse } from '@/types/api';
 import { exportBibliography } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
 import { useAuthStore } from '@/stores/auth';
+import { isAccountRequired } from '@/utils/apiErrors';
 
 export const useSourcesStore = defineStore('sources', () => {
   const categorySourceMap = ref<Record<string, Corpus[]> | null>(null);
@@ -113,6 +114,10 @@ export const useSourcesStore = defineStore('sources', () => {
       downloadBlob(fileBlob, fileName);
       track('Bibliography Exported', { count: ids.length });
     } catch (error) {
+      if (isAccountRequired(error)) {
+        authStore.askToSignUp('bibliography');
+        return;
+      }
       console.error('Unable to export bibliography:', error);
     } finally {
       isExportingBibliography.value = false;

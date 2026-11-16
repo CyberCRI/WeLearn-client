@@ -84,8 +84,31 @@ test.describe('auth', () => {
     });
 
     test('is asked to sign up after the last free question', async ({ page }) => {
-      await page.evaluate(() =>
-        localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }))
+      await page.route('**/user/guest_quota', (route) =>
+        route.fulfill({
+          json: {
+            limited: true,
+            chat: { limit: 5, remaining: 0, resets_in: 3600 },
+            syllabus: { limit: 1, remaining: 1, resets_in: 0 }
+          }
+        })
+      );
+      await page.goto('/q-and-a');
+      await expect(page.getByTestId('guest-quota-text')).toContainText('5');
+
+      await page.fill('textarea', 'one more question');
+      await page.keyboard.press('Enter');
+
+      await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+    });
+
+    // the browser thought there was one left (another tab or device used it): the API decides
+    test('is asked to sign up when the API refuses the question', async ({ page }) => {
+      await page.route('**/qna/chat/agent_stream', (route) =>
+        route.fulfill({
+          status: 403,
+          json: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'chat', retry_after: 3600 } }
+        })
       );
       await page.goto('/q-and-a');
 
@@ -93,6 +116,7 @@ test.describe('auth', () => {
       await page.keyboard.press('Enter');
 
       await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+      await expect(page.locator('textarea')).toHaveValue('one more question');
     });
 
     test('logs in from the signup prompt and comes back to the page', async ({ page }) => {

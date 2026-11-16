@@ -329,6 +329,11 @@ export const useTutorStore = defineStore('tutor', () => {
       return true;
     } catch (error) {
       if (axios.isCancel(error)) return false;
+      // the guest used their syllabus of the day: the signup prompt is open, retrying won't help
+      if (useGuestQuotaStore().handleQuotaError(error)) {
+        isLoading.value = false;
+        return false;
+      }
       console.error('Error during syllabus retrieval:', error);
       track('Tutor Step Failed', { step: 3, durationMs: Date.now() - startedAt });
       shouldRetryAction.value = true;
@@ -347,8 +352,10 @@ export const useTutorStore = defineStore('tutor', () => {
     const guestQuota = useGuestQuotaStore();
     if (!guestQuota.checkQuota('syllabus')) return;
 
-    if (await retrieveSyllabus()) {
-      guestQuota.consume('syllabus');
+    // counted by the API, which gives it back when the generation fails
+    const isCreated = await retrieveSyllabus();
+    void guestQuota.refresh();
+    if (isCreated) {
       feedbackHistory.value = [];
       goNext();
     }

@@ -42,16 +42,16 @@ export const authentication = {
         'Votre syllabus est prêt. Créez un compte gratuit pour le télécharger, ou connectez-vous : il se téléchargera juste après.',
       bibliography: 'Créez un compte gratuit pour exporter votre bibliographie.',
       chatLimit:
-        'Vous avez utilisé toutes les questions gratuites de l’accès invité. Créez un compte gratuit pour continuer à discuter.',
+        'Vous avez utilisé les questions gratuites du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour continuer à discuter.',
       syllabusLimit:
-        'Vous avez utilisé le syllabus gratuit de l’accès invité. Créez un compte gratuit pour en créer d’autres.'
+        'Vous avez utilisé le syllabus gratuit du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour en créer d’autres.'
     }
   },
   // formes du pluriel : aucune restante | 1 restante | n restantes
   guestQuota: {
-    chat: 'Accès invité : vous avez utilisé vos {limit} questions gratuites. | Accès invité : il vous reste 1 question gratuite sur {limit}. | Accès invité : il vous reste {n} questions gratuites sur {limit}.',
+    chat: 'Accès invité : vous avez utilisé vos {limit} questions gratuites du jour, revenez demain. | Accès invité : il vous reste 1 question gratuite sur {limit} aujourd’hui. | Accès invité : il vous reste {n} questions gratuites sur {limit} aujourd’hui.',
     syllabus:
-      'Accès invité : vous avez utilisé votre syllabus gratuit. | Accès invité : vous pouvez créer 1 syllabus gratuit. | Accès invité : vous pouvez créer {n} syllabus gratuits.',
-    createAccount: 'Créez un compte gratuit pour un usage illimité'
+      'Accès invité : vous avez utilisé votre syllabus gratuit du jour, revenez demain. | Accès invité : vous pouvez créer 1 syllabus gratuit aujourd’hui. | Accès invité : vous pouvez créer {n} syllabus gratuits aujourd’hui.',
+    createAccount: 'Ou créez un compte gratuit pour un usage illimité'
   }
 };

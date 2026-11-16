@@ -106,6 +106,22 @@ describe('bookmarks store', () => {
     expect(store.isBookmarked('doc-1')).toBe(false);
   });
 
+  // the API refuses guests too, e.g. when the client did not know the user was one
+  it('asks to sign up when the API requires an account', async () => {
+    vi.mocked(postBookmark).mockRejectedValue({
+      response: {
+        status: 401,
+        data: { detail: { code: 'ACCOUNT_REQUIRED', message: 'An account is required' } }
+      }
+    });
+    const store = useBookmarksStore();
+
+    await store.addBookmark(doc('doc-1'));
+
+    expect(auth.askToSignUp).toHaveBeenCalledWith('bookmark');
+    expect(store.isBookmarked('doc-1')).toBe(false);
+  });
+
   it('removes a bookmark', async () => {
     mockGetBookmarks([doc('doc-1'), doc('doc-2')]);
     const store = useBookmarksStore();

@@ -15,10 +15,12 @@ import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 import { useAuthStore } from './stores/auth';
 import { useChatStore } from '@/stores/chat';
+import { useGuestQuotaStore } from '@/stores/guestQuota';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
 const chatStore = useChatStore();
+const guestQuota = useGuestQuotaStore();
 const fetchError = ref(false);
 
 const authStore = useAuthStore();
@@ -31,8 +33,9 @@ async function initCalls() {
       getSourcesList(),
       // once the session belongs to the account (a guest who logged in gets the account's user):
       // its latest chat is looked up through that session
+      // the guest quota is counted per session user, so it is read once the session exists
       getUserAndSession(getQueryParamValue('referer') || '').then(() =>
-        chatStore.restoreLatestThread()
+        Promise.all([chatStore.restoreLatestThread(), guestQuota.refresh()])
       ),
       // bookmarks need an account
       ...(authStore.isGuest ? [] : [getBookmarks()])

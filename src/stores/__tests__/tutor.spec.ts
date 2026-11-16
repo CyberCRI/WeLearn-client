@@ -3,14 +3,22 @@ import { createPinia, setActivePinia } from 'pinia';
 import axios from 'axios';
 import { useTutorStore } from '../tutor';
 import { useGuestQuotaStore } from '../guestQuota';
-import { basePostAxios } from '@/utils/fetch';
+import { basePostAxios, getGuestQuota } from '@/utils/fetch';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import type { Document, TutorSearch } from '@/types';
 import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
-  basePostAxios: vi.fn()
+  basePostAxios: vi.fn(),
+  getGuestQuota: vi.fn()
 }));
+
+// what GET /user/guest_quota answers to a guest
+const guestQuota = (syllabus: number) => ({
+  limited: true,
+  chat: { limit: 5, remaining: 5, resets_in: 0 },
+  syllabus: { limit: 1, remaining: syllabus, resets_in: 0 }
+});
 
 vi.mock('@/utils/md-to-docx', () => ({
   convertMarkdownToDocx: vi.fn(),
@@ -535,7 +543,7 @@ describe('tutor store', () => {
       ['no syllabus from the pedagogical engineer', [{ source: 'OtherAgent', content: 'x' }]],
       ['an empty syllabus', [{ source: 'PedagogicalEngineerAgent', content: '' }]],
       ['no syllabus at all', []]
-    ])('asks for a retry and keeps the guest quota on %s', async (_, syllabus) => {
+    ])('asks for a retry on %s', async (_, syllabus) => {
       auth.isGuest = true;
       mockPost({ data: { syllabus } });
       const store = useTutorStore();
@@ -548,7 +556,6 @@ describe('tutor store', () => {
       // the retry modal shows while loading
       expect(store.isLoading).toBe(true);
       expect(store.step).toBe(3);
-      expect(useGuestQuotaStore().usage.syllabus).toBe(0);
       expect(track).toHaveBeenCalledWith('Tutor Step Failed', expect.objectContaining({ step: 3 }));
     });
 
@@ -691,7 +698,7 @@ describe('tutor store', () => {
 
     it('asks a guest who used their syllabus to sign up before uploading files', async () => {
       auth.isGuest = true;
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
+      useGuestQuotaStore().quota = guestQuota(0);
       const store = useTutorStore();
       store.addFiles([file('a.pdf')]);
       store.setStep(3);
@@ -707,7 +714,7 @@ describe('tutor store', () => {
 
     it('asks a guest who used their syllabus to sign up before generating another', async () => {
       auth.isGuest = true;
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
+      useGuestQuotaStore().quota = guestQuota(0);
       const store = useTutorStore();
       store.tutorSearch = search();
 
@@ -717,16 +724,41 @@ describe('tutor store', () => {
       expect(basePostAxios).not.toHaveBeenCalled();
     });
 
-    it('counts a generated syllabus in the guest quota', async () => {
+    it('reloads the guest quota after generating a syllabus', async () => {
       auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0));
       mockPost({ data: { syllabus: [pedagogical] } });
       const store = useTutorStore();
       store.tutorSearch = search();
 
       await store.handleCreateSyllabus();
+      await Promise.resolve();
 
       expect(store.step).toBe(4);
-      expect(useGuestQuotaStore().usage.syllabus).toBe(1);
+      expect(getGuestQuota).toHaveBeenCalledTimes(1);
+      expect(useGuestQuotaStore().remaining('syllabus')).toBe(0);
+    });
+
+    // another tab or device used it: the API refuses, retrying would not help
+    it('asks to sign up when the API refuses the syllabus of the day', async () => {
+      auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0));
+      mockPostError({
+        response: {
+          status: 403,
+          data: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'syllabus', retry_after: 60 } }
+        }
+      });
+      const store = useTutorStore();
+      store.tutorSearch = search();
+
+      await store.handleCreateSyllabus();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('syllabusLimit');
+      expect(store.shouldRetryAction).toBe(false);
+      expect(store.isLoading).toBe(false);
+      expect(store.syllabi).toBeUndefined();
+      expect(store.step).toBe(3);
     });
 
     it('keeps a guest syllabus and asks to sign up instead of downloading', async () => {

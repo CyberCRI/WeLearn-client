@@ -38,6 +38,15 @@ export const test = base.extend<Fixtures>({
           status: 202,
           body: JSON.stringify({ message: 'accepted' })
         });
+      } else if (url.includes('user/guest_quota')) {
+        // a guest who has not used anything today; a test overrides it with page.route
+        await route.fulfill({
+          json: {
+            limited: true,
+            chat: { limit: 5, remaining: 5, resets_in: 0 },
+            syllabus: { limit: 1, remaining: 1, resets_in: 0 }
+          }
+        });
       } else if (url.includes('user/logout')) {
         await route.fulfill({ status: 200, json: { message: 'logged out' } });
       } else if (url.includes('user/user')) {
