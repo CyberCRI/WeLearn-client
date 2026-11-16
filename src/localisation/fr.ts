@@ -437,6 +437,36 @@ export const fr = {
       comingSoon:
         'Ce parcours est en cours de construction\u00a0: ses écrans ne sont pas encore disponibles.'
     },
+    course: {
+      title: 'Votre cours',
+      description: 'Importez votre syllabus pour commencer.',
+      dropzone: 'Déposez votre syllabus ici ou',
+      limits: 'Un fichier · PDF, DOCX ou TXT · 5 Mo max',
+      languageLabel: 'Langue des réponses de WeLearn',
+      aiNotice:
+        "WeLearn utilise l'IA pour lire votre syllabus. Vous pourrez vérifier et corriger les informations avant de continuer.",
+      noFile: 'Importez un syllabus pour continuer.',
+      action: 'Continuer'
+    },
+    reading: {
+      sending: 'Envoi de votre syllabus',
+      sent: 'Syllabus envoyé',
+      reading: 'WeLearn lit votre cours',
+      elapsed: '{seconds} s',
+      cancel: 'Annuler',
+      unavailable: {
+        title: 'WeLearn est injoignable',
+        text: "Votre syllabus n'a pas été lu. Réessayez dans un moment."
+      },
+      error: {
+        title: "WeLearn n'a pas pu lire ce syllabus",
+        text: 'Réessayez, ou choisissez un autre fichier.'
+      },
+      emptyText: {
+        title: "WeLearn n'a trouvé aucun texte dans ce fichier",
+        text: 'Il s’agit peut-être d’un PDF scanné. Choisissez un PDF dont le texte peut être sélectionné, un DOCX ou un TXT.'
+      }
+    },
     documentsStep: {
       title: 'Ajoutez vos supports de cours',
       description:

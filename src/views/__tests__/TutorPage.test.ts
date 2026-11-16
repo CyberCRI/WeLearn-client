@@ -69,7 +69,8 @@ describe('TutorPage', () => {
       await wrapper.find('[data-testid="option-existing"]').trigger('click');
       const flow = wrapper.findComponent(ExistingCourseFlow);
       expect(flow.exists()).toBe(true);
-      expect(flow.text()).toContain('tutor.existingCourse.comingSoon');
+      // its first screen: the upload of the course
+      expect(flow.find('[data-testid="course-file-input"]').exists()).toBe(true);
       expect(flow.findComponent(PathChoice).props('path')).toBe('existing');
     });
 

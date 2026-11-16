@@ -430,6 +430,36 @@ export const en = {
     existingCourse: {
       comingSoon: 'This path is still being built: its screens are not available yet.'
     },
+    course: {
+      title: 'Your course',
+      description: 'Upload your syllabus to get started.',
+      dropzone: 'Drop your syllabus here or',
+      limits: 'One file · PDF, DOCX or TXT · 5 MB max',
+      languageLabel: 'Language WeLearn answers in',
+      aiNotice:
+        "WeLearn uses AI to read your syllabus. You'll be able to review and correct the information before continuing.",
+      noFile: 'Upload a syllabus to continue.',
+      action: 'Continue'
+    },
+    reading: {
+      sending: 'Sending your syllabus',
+      sent: 'Syllabus sent',
+      reading: 'WeLearn is reading your course',
+      elapsed: '{seconds} s',
+      cancel: 'Cancel',
+      unavailable: {
+        title: 'WeLearn could not be reached',
+        text: 'Your syllabus was not read. Please try again in a moment.'
+      },
+      error: {
+        title: 'WeLearn could not read this syllabus',
+        text: 'Please try again, or choose another file.'
+      },
+      emptyText: {
+        title: 'WeLearn found no text in this file',
+        text: 'It may be a scanned PDF. Choose a PDF whose text can be selected, a DOCX or a TXT file.'
+      }
+    },
     documentsStep: {
       title: 'Add your course materials',
       description:

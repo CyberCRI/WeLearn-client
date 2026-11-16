@@ -219,4 +219,72 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     await page.getByTestId('change-path').click();
     await expect(page.getByTestId('option-existing')).toBeVisible();
   });
+
+  test('from scratch still takes up to 3 course materials', async ({ page }) => {
+    await page.goto('/tutor?preview=syllabusV2');
+    await page.getByTestId('option-scratch').click();
+    await page.getByTestId('file-input').setInputFiles(
+      ['a', 'b', 'c'].map((name) => ({
+        name: `${name}.txt`,
+        mimeType: 'text/plain',
+        buffer: Buffer.from(`material ${name}`)
+      }))
+    );
+    await expect(page.getByTestId('file-list').locator('li')).toHaveCount(3);
+  });
+
+  const syllabusFile = {
+    name: 'syllabus.txt',
+    mimeType: 'text/plain',
+    buffer: Buffer.from('Ecology\nTheme 1: Soils')
+  };
+
+  test("reads the teacher's course and opens its review", async ({ page }) => {
+    let sent: string | null = null;
+    await page.route('**/tutor/course/read', async (route) => {
+      sent = route.request().postData();
+      await route.fulfill({
+        json: {
+          text: 'Ecology\nTheme 1: Soils',
+          is_text_truncated: false,
+          is_partial: false,
+          reading: {
+            title: 'Ecology',
+            material_type: 'syllabus',
+            courses_found: [],
+            objectives: [],
+            topics: [{ title: 'Soils', subtopics: [], source: 'Theme 1: Soils' }],
+            sessions: []
+          }
+        }
+      });
+    });
+    await page.goto('/tutor?preview=syllabusV2');
+    await page.getByTestId('option-existing').click();
+    await expect(page.getByTestId('read-course-button')).toBeDisabled();
+
+    await page.getByTestId('course-file-input').setInputFiles(syllabusFile);
+    await page.getByTestId('course-lang').selectOption('en');
+    await page.getByTestId('read-course-button').click();
+
+    await expect(page.getByTestId('course-recap')).toContainText('syllabus.txt');
+    await expect(page.getByTestId('read-title')).toHaveText('Ecology');
+    expect(sent).toContain('name="lang"');
+  });
+
+  test('tells a file without text (a scanned pdf)', async ({ page }) => {
+    await page.route('**/tutor/course/read', (route) =>
+      route.fulfill({
+        status: 422,
+        json: { detail: { message: 'No text', code: 'EMPTY_DOCUMENT_TEXT' } }
+      })
+    );
+    await page.goto('/tutor?preview=syllabusV2');
+    await page.getByTestId('option-existing').click();
+    await page.getByTestId('course-file-input').setInputFiles(syllabusFile);
+    await page.getByTestId('read-course-button').click();
+
+    await expect(page.getByTestId('read-error')).toBeVisible();
+    await expect(page.getByTestId('course-file')).toContainText('syllabus.txt');
+  });
 });
