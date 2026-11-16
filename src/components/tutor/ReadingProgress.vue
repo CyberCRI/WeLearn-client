@@ -2,9 +2,6 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 
-// while WeLearn reads the syllabus: only real operations, sending the syllabus (its real
-// progress) then WeLearn reading it (seconds elapsed, never a made-up percentage).
-// adapted from the reading view of the "design your course" prototype
 const props = defineProps<{
   fileName: string;
   phase: 'sending' | 'reading';
