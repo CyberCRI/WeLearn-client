@@ -46,7 +46,11 @@ export const authentication = {
       syllabusLimit:
         'Vous avez utilisé le syllabus gratuit du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour en créer d’autres.',
       tooManyGuests:
-        'Beaucoup de nouveaux invités se connectent depuis votre réseau en ce moment. Connectez-vous ou créez un compte gratuit pour continuer, ou revenez dans une heure.'
+        'Beaucoup de nouveaux invités se connectent depuis votre réseau en ce moment. Connectez-vous ou créez un compte gratuit pour continuer, ou revenez dans une heure.',
+      feedbackLimit:
+        'Vous avez utilisé les modifications gratuites du jour de votre syllabus avec l’accès invité. Revenez demain, ou créez un compte gratuit pour continuer à l’améliorer.',
+      filesLimit:
+        'Vous avez envoyé les documents gratuits du jour avec l’accès invité. Revenez demain, ou créez un compte gratuit pour en envoyer d’autres.'
     }
   },
   // formes du pluriel : aucune restante | 1 restante | n restantes

@@ -119,6 +119,25 @@ test.describe('auth', () => {
       await expect(page.locator('textarea')).toHaveValue('one more question');
     });
 
+    test('is asked to sign up when the API refuses the file summaries', async ({ page }) => {
+      await page.route('**/tutor/files/content**', (route) =>
+        route.fulfill({
+          status: 403,
+          json: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'files', retry_after: 3600 } }
+        })
+      );
+      await page.goto('/tutor');
+      // dev asks first whether the teacher already has a course
+      await page.getByTestId('option-scratch').click();
+
+      await page.getByTestId('file-input').setInputFiles('./e2e/files/test_tutor.pdf');
+      await page.getByTestId('tutor-next-button').click();
+      // no course details were filled in: dev warns first
+      await page.getByRole('button', { name: 'Continuer quand même' }).click();
+
+      await expect(page.getByTestId('signup-prompt')).toContainText('documents gratuits du jour');
+    });
+
     test('is asked to sign up when the API refuses a new guest', async ({ page }) => {
       await page.route('**/user/user_and_session', (route) =>
         route.fulfill({
