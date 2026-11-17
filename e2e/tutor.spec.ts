@@ -302,7 +302,7 @@ test.describe('Tutor path choice (syllabusV2)', () => {
       sent = route.request().postData();
       await route.fulfill({
         json: {
-          text: 'Ecology\nTheme 1: Soils',
+          text: 'Ecology\nTheme 1: Soils\n12 sessions',
           is_text_truncated: false,
           is_partial: false,
           reading: {
@@ -325,8 +325,56 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     await page.getByTestId('read-course-button').click();
 
     await expect(page.getByTestId('course-recap')).toContainText('syllabus.txt');
-    await expect(page.getByTestId('read-title')).toHaveText('Ecology');
     expect(sent).toContain('name="lang"');
+
+    // screen 2: what WeLearn read, correctable, then confirmed and folded
+    await expect(page.getByTestId('overview-title')).toContainText('Ecology');
+    await expect(page.getByTestId('topic')).toHaveText(['Soils']);
+    // the teaching context the syllabus states, read from its text and open for checking
+    await expect(page.locator('#context-sessions')).toHaveValue('12');
+    await page.getByTestId('edit-topics').click();
+    await page.getByTestId('add-topic').click();
+    await page.getByTestId('topic-title').last().fill('Water');
+    await page.getByTestId('save-topics').click();
+    await expect(page.getByTestId('topic')).toHaveText(['Soils', 'Water']);
+
+    await page.getByTestId('confirm-course').click();
+    await expect(page.getByTestId('review-recap')).toContainText('Ecology');
+    await page.getByTestId('review-recap').getByRole('button').click();
+    await expect(page.getByTestId('confirm-course')).toBeVisible();
+  });
+
+  test('reads again, alone, the course picked in a document holding several', async ({ page }) => {
+    const focuses: (string | null)[] = [];
+    await page.route('**/tutor/course/read', async (route) => {
+      const body = route.request().postData() || '';
+      const focus = body.match(/name="focus"\r\n\r\n([^\r]*)/)?.[1] ?? null;
+      focuses.push(focus);
+      await route.fulfill({
+        json: {
+          text: 'UE 1 Economics\nEverything\nUE 2 Law\nWater law',
+          is_text_truncated: false,
+          is_partial: false,
+          reading: {
+            title: focus,
+            material_type: 'course_plan',
+            courses_found: focus ? [] : ['UE 1 Economics', 'UE 2 Law'],
+            objectives: [],
+            topics: [{ title: focus ? 'Water law' : 'Everything', subtopics: [], source: null }],
+            sessions: []
+          }
+        }
+      });
+    });
+    await page.goto('/tutor?preview=syllabusV2');
+    await page.getByTestId('option-existing').click();
+    await page.getByTestId('course-file-input').setInputFiles(syllabusFile);
+    await page.getByTestId('read-course-button').click();
+
+    await page.getByTestId('choose-course').filter({ hasText: 'UE 2 Law' }).click();
+    await expect(page.getByTestId('topic')).toHaveText(['Water law']);
+    await expect(page.getByTestId('course-choice')).toHaveCount(0);
+    expect(focuses).toEqual([null, 'UE 2 Law']);
   });
 
   test('tells a file without text (a scanned pdf)', async ({ page }) => {

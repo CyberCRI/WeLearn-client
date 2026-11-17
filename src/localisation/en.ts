@@ -440,7 +440,137 @@ export const en = {
       aiNotice:
         "WeLearn uses AI to read your syllabus. You'll be able to review and correct the information before continuing.",
       noFile: 'Upload a syllabus to continue.',
-      action: 'Continue'
+      action: 'Continue',
+      contextTitle: 'Teaching context',
+      optional: '(optional)',
+      contextHint:
+        'How the course is taught. Filled in from your syllabus where it says so; complete the rest if you wish.',
+      fields: {
+        title: 'Course title',
+        discipline: 'Discipline',
+        level: 'Level',
+        sessions: 'Number of sessions',
+        sessionLength: 'Session length',
+        sessionType: 'Session type',
+        sessionMode: 'Format',
+        classSize: 'Number of students'
+      },
+      disciplinePlaceholder: 'e.g. Economics',
+      choose: 'Choose…',
+      readByAi: 'Read by WeLearn AI: please check',
+      suggestedByAi: 'not stated in your syllabus: suggested by WeLearn from the course content',
+      fromSyllabus: 'From your syllabus',
+      levels: {
+        l1: 'Bachelor, year 1',
+        l2: 'Bachelor, year 2',
+        l3: 'Bachelor, year 3',
+        m1: 'Master, year 1',
+        m2: 'Master, year 2',
+        doctorate: 'Doctorate',
+        other: 'Other'
+      },
+      sessionTypes: {
+        lecture: 'Lecture',
+        tutorial: 'Tutorial',
+        practical: 'Practical or lab',
+        seminar: 'Seminar',
+        project: 'Project',
+        mixed: 'Mixed'
+      },
+      modes: {
+        PRESENTIEL: 'In person',
+        DISTANCIEL: 'Remote',
+        HYBRIDE: 'Hybrid'
+      }
+    },
+    check: {
+      title: 'Check your course',
+      description:
+        'Review what WeLearn understood from your syllabus. You can correct anything before exploring sustainability adaptations.',
+      showSubtopics: 'Show subtopics',
+      editField: 'Edit: {field}',
+      editObjective: 'Edit this item',
+      outlineName: 'course outline',
+      hideSubtopics: 'Hide subtopics',
+      readingPartial:
+        'Some course information may be missing. Please check the extracted topics and objectives against your syllabus.',
+      notSyllabus:
+        'WeLearn is not sure this file is a syllabus (it looks like: {type}). Check what it read, or go back and add your syllabus.',
+      topicsLabel: 'Main topics',
+      addTopic: 'Add a topic',
+      removeTopic: 'Remove {topic}',
+      objectivesTitle: 'Learning objectives',
+      types: {
+        syllabus: 'a syllabus',
+        course_plan: 'a course plan',
+        lesson: 'a single lesson',
+        partial: 'a partial course description',
+        other: 'another kind of document',
+        article: 'an article',
+        unknown: 'unclear',
+        none: 'empty'
+      },
+      groups: {
+        objective: 'Course objectives',
+        competency: 'Competencies',
+        programme: 'Degree-level objectives'
+      },
+      moveTo: 'Move to',
+      addObjective: 'Add a course objective',
+      addCompetency: 'Add a competency',
+      origin: {
+        extracted: 'From your syllabus',
+        unverified: 'Not found word for word in your syllabus: please check',
+        unchecked: 'Read by WeLearn AI',
+        edited: 'Corrected by you',
+        added: 'Added by you'
+      },
+      edit: 'Edit',
+      save: 'Save',
+      cancel: 'Cancel',
+      remove: 'Remove',
+      restore: 'Restore original',
+      showMore: 'Show full text',
+      showLess: 'Show less',
+      localNote: 'Your corrections stay in this browser tab.',
+      openOriginal: 'Open the original',
+      notFoundOverview: 'Not identified by WeLearn:',
+      tag: {
+        suggested: 'Suggested by WeLearn',
+        generated: 'Written by WeLearn',
+        identified: 'Identified by WeLearn',
+        check: 'To check'
+      },
+      noTopicsFound:
+        'WeLearn did not identify main topics. Adding them helps WeLearn suggest connections that fit your course.',
+      addTopics: 'Add main topics',
+      outlineTitle: 'Course outline ({n})',
+      outlineHint: 'One session, week or chapter per line.',
+      showAll: 'Show all {n} objectives',
+      showFewer: 'Show fewer',
+      done: 'Done',
+      overviewLabel: 'Overview',
+      topicTitle: 'Topic',
+      subtopics: 'Subtopics, separated by commas',
+      saveChanges: 'Save changes',
+      pleaseCheck: 'not found in your syllabus: please check',
+      noObjectives:
+        'No explicit learning objectives were found in your syllabus. You can continue using your course description and topics, or add objectives if you wish.',
+      programmeAside: 'Degree-level objectives kept aside ({n})',
+      programmeAsideHint:
+        'They concern the whole degree, not this course: WeLearn does not use them for your course.',
+      moveToCourse: 'Move to course objectives',
+      unsortedTitle: 'To check: objectives WeLearn could not place ({n})',
+      unsortedHint:
+        'Your syllabus does not say clearly whether these belong to this course or to the wider programme or institution. WeLearn does not use them until you sort them.',
+      sortToCourse: 'Course objective',
+      sortAside: 'Not for this course',
+      needObjective: 'Add a course overview, a topic or an objective to continue.',
+      action: 'Confirm my course',
+      recap: 'No course objective | 1 course objective | {n} course objectives',
+      recapTopics: 'No main topic | 1 main topic | {n} main topics',
+      severalCourses: 'This document holds several courses. Which one is yours?',
+      severalCoursesHint: 'WeLearn will read that course only.'
     },
     reading: {
       sending: 'Sending your syllabus',
