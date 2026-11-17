@@ -394,6 +394,31 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/tutor/course/read': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Read a course document (syllabus v2)
+     * @description The course in the uploaded document: title, objectives, topics, sessions... and the
+     *     extracted text, so the client checks each value word for word. `lang` is the teacher's
+     *     language (the answer's); `focus` reads one course of a document that holds several.
+     *
+     *     A guest's reading counts as one of their daily syllabi, refunded if it fails. A
+     *     file rejected before the reading (size, type, no text) costs nothing.
+     */
+    post: operations['tutor-read_course_document'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/files/content': {
     parameters: {
       query?: never;
@@ -403,7 +428,12 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Extract Files Content */
+    /**
+     * Extract Files Content
+     * @description Summaries of the uploaded files, the first step towards a syllabus. A guest
+     *     whose syllabus of the day is used is refused (feature `syllabus`), and the
+     *     summaries count against their own daily limit, refunded if they fail.
+     */
     post: operations['tutor-extract_files_content'];
     delete?: never;
     options?: never;
@@ -422,6 +452,23 @@ export interface paths {
     put?: never;
     /** Extract Files Content Baml */
     post: operations['tutor-extract_files_content_baml'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tutor/search_datasets': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Tutor Search Datasets */
+    post: operations['tutor-tutor_search_datasets'];
     delete?: never;
     options?: never;
     head?: never;
@@ -505,7 +552,11 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** Handle Syllabus Feedback */
+    /**
+     * Handle Syllabus Feedback
+     * @description The syllabus regenerated with the user's change. A guest gets a few a day,
+     *     and a change that fails is refunded.
+     */
     post: operations['tutor-handle_syllabus_feedback'];
     delete?: never;
     options?: never;
@@ -636,6 +687,27 @@ export interface paths {
     post: operations['user-add_user_bookmark'];
     /** Delete a user bookmark */
     delete: operations['user-delete_user_bookmark'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/user/guest_quota': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Daily guest quotas left
+     * @description What the caller has left today of each guest quota, without using any.
+     *     Not limited (an account, or guest restrictions off): `limited` is false.
+     */
+    get: operations['user-get_guest_quota'];
+    put?: never;
+    post?: never;
+    delete?: never;
     options?: never;
     head?: never;
     patch?: never;
@@ -859,6 +931,22 @@ export interface components {
       /** Files */
       files: string[];
     };
+    /** Body_tutor-read_course_document */
+    'Body_tutor-read_course_document': {
+      /**
+       * File
+       * Format: binary
+       */
+      file: string;
+      /** Focus */
+      focus?: string | null;
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
     /** BookmarkAddedResponse */
     BookmarkAddedResponse: {
       /**
@@ -954,6 +1042,8 @@ export interface components {
       category: string | null;
       /** Is Active */
       is_active: boolean;
+      /** Is Hidden */
+      is_hidden: boolean;
       /** Name */
       name: string;
     };
@@ -993,6 +1083,74 @@ export interface components {
       topic: string;
       /** User Description */
       user_description?: string | null;
+    };
+    /** CourseReadResponse */
+    CourseReadResponse: {
+      /**
+       * Is Partial
+       * @description A part of a long document could not be read for its topics
+       */
+      is_partial: boolean;
+      /**
+       * Is Text Truncated
+       * @description The document is longer than one reading: title, objectives and sessions come from its first part only (topics and summary cover every part)
+       */
+      is_text_truncated: boolean;
+      reading: components['schemas']['CourseReading'];
+      /**
+       * Text
+       * @description Text extracted from the file, to check the reading word for word
+       */
+      text: string;
+    };
+    /**
+     * CourseReading
+     * @description Answer of the `read` prompt.
+     */
+    CourseReading: {
+      /**
+       * Courses Found
+       * @default []
+       */
+      courses_found: string[];
+      /** Description */
+      description?: string | null;
+      /** Discipline */
+      discipline?: string | null;
+      /** Discipline Suggested */
+      discipline_suggested?: string | null;
+      /**
+       * Document Language
+       * @description ISO 639-1 code of the main language of the document, e.g. "fr"
+       */
+      document_language?: string | null;
+      /** Level */
+      level?: string | null;
+      /**
+       * Material Type
+       * @default other
+       * @enum {string}
+       */
+      material_type: 'syllabus' | 'course_plan' | 'lesson' | 'partial' | 'other';
+      /**
+       * Objectives
+       * @default []
+       */
+      objectives: components['schemas']['ReadObjective'][];
+      /**
+       * Sessions
+       * @default []
+       */
+      sessions: components['schemas']['ReadSession'][];
+      /** Summary */
+      summary?: string | null;
+      /** Title */
+      title?: string | null;
+      /**
+       * Topics
+       * @default []
+       */
+      topics: components['schemas']['ReadTopic'][];
     };
     /** Document */
     Document: {
@@ -1186,6 +1344,28 @@ export interface components {
       /** Summary */
       summary?: string | null;
     };
+    /** GuestFeatureQuota */
+    GuestFeatureQuota: {
+      /** Limit */
+      limit: number;
+      /** Remaining */
+      remaining: number;
+      /** Resets In */
+      resets_in: number;
+    };
+    /**
+     * GuestQuotaResponse
+     * @description The caller's daily guest quotas. `limited` is false for an account, or when
+     *     guest restrictions are off: the features are then null.
+     */
+    GuestQuotaResponse: {
+      chat?: components['schemas']['GuestFeatureQuota'] | null;
+      feedback?: components['schemas']['GuestFeatureQuota'] | null;
+      files?: components['schemas']['GuestFeatureQuota'] | null;
+      /** Limited */
+      limited: boolean;
+      syllabus?: components['schemas']['GuestFeatureQuota'] | null;
+    };
     /**
      * HealthCheck
      * @description Response model to validate and return when performing a health check.
@@ -1305,6 +1485,42 @@ export interface components {
      * @enum {string}
      */
     QuestionType: 'text' | 'checkbox' | 'predefined_text';
+    /** ReadObjective */
+    ReadObjective: {
+      /**
+       * Scope
+       * @default unspecified
+       * @enum {string}
+       */
+      scope: 'course' | 'programme' | 'unspecified';
+      /**
+       * Text
+       * @description The objective, word for word, without number or bullet
+       */
+      text: string;
+    };
+    /** ReadSession */
+    ReadSession: {
+      /** Label */
+      label?: string | null;
+      /** Title */
+      title?: string | null;
+    };
+    /** ReadTopic */
+    ReadTopic: {
+      /**
+       * Source
+       * @description The heading or line of the document the topic comes from, word for word
+       */
+      source?: string | null;
+      /**
+       * Subtopics
+       * @default []
+       */
+      subtopics: string[];
+      /** Title */
+      title: string;
+    };
     /** RegisterFormAnswerBody */
     RegisterFormAnswerBody: {
       /** Answer */
@@ -1740,6 +1956,24 @@ export interface operations {
           'text/plain': string;
         };
       };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'text/plain': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'text/plain': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -1873,6 +2107,24 @@ export interface operations {
           'application/json': string;
         };
       };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -1972,6 +2224,24 @@ export interface operations {
           'application/json': components['schemas']['AgentResponse'];
         };
       };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
       404: {
         headers: {
@@ -2012,6 +2282,24 @@ export interface operations {
         };
         content: {
           'text/event-stream': string;
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Thread not found or owned by another user (code THREAD_NOT_FOUND) */
@@ -2430,6 +2718,111 @@ export interface operations {
           'application/json': components['schemas']['SyllabusGenerationResponse'];
         };
       };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-read_course_document': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'multipart/form-data': components['schemas']['Body_tutor-read_course_document'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['CourseReadResponse'];
+        };
+      };
+      /** @description Unsupported or unreadable file */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The file is too large (code FILE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description No text in the file, e.g. a scanned PDF (code EMPTY_DOCUMENT_TEXT), or invalid form fields */
+      422: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The document could not be read (code UNUSABLE_READING) */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2467,6 +2860,24 @@ export interface operations {
       };
       /** @description Too many files (code TOO_MANY_FILES) or unreadable file */
       400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -2528,6 +2939,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description A file is too large (code FILE_TOO_LARGE) */
       413: {
         headers: {
@@ -2535,6 +2955,50 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-tutor_search_datasets': {
+    parameters: {
+      query?: {
+        nb_results?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SummariesList'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TutorSearchResponse'];
         };
       };
       /** @description Error */
@@ -2607,6 +3071,24 @@ export interface operations {
           'application/json': components['schemas']['SyllabusResponse'];
         };
       };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2638,6 +3120,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['CompetencyMappings'];
+        };
+      };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2673,6 +3173,24 @@ export interface operations {
           'application/json': components['schemas']['CourseDescription'];
         };
       };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2704,6 +3222,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['SyllabusResponse'];
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2739,6 +3275,24 @@ export interface operations {
           'application/json': components['schemas']['LearningObjectives'];
         };
       };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2772,6 +3326,24 @@ export interface operations {
           'application/json': components['schemas']['LearningOutcomes'];
         };
       };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -2803,6 +3375,24 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['SustainabilityIntegration'];
+        };
+      };
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -2867,7 +3457,7 @@ export interface operations {
           'application/json': components['schemas']['BookmarksResponse'];
         };
       };
-      /** @description Invalid or expired token */
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
         headers: {
           [name: string]: unknown;
@@ -2914,7 +3504,7 @@ export interface operations {
           'application/json': components['schemas']['BookmarksDeletedResponse'];
         };
       };
-      /** @description Invalid or expired token */
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
         headers: {
           [name: string]: unknown;
@@ -2963,7 +3553,7 @@ export interface operations {
           'application/json': components['schemas']['BookmarkAddedResponse'];
         };
       };
-      /** @description Invalid or expired token */
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
         headers: {
           [name: string]: unknown;
@@ -3012,7 +3602,7 @@ export interface operations {
           'application/json': components['schemas']['BookmarkDeletedResponse'];
         };
       };
-      /** @description Invalid or expired token */
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
         headers: {
           [name: string]: unknown;
@@ -3061,7 +3651,7 @@ export interface operations {
           'application/json': components['schemas']['BookmarkAddedResponse'];
         };
       };
-      /** @description Invalid or expired token */
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
         headers: {
           [name: string]: unknown;
@@ -3110,7 +3700,54 @@ export interface operations {
           'application/json': components['schemas']['BookmarkDeletedResponse'];
         };
       };
-      /** @description Invalid or expired token */
+      /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-get_guest_quota': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GuestQuotaResponse'];
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
       401: {
         headers: {
           [name: string]: unknown;
@@ -3285,6 +3922,15 @@ export interface operations {
       };
       /** @description Invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Too many new guests from this IP (code RATE_LIMITED, with a Retry-After header); a request with a known session is not counted */
+      429: {
         headers: {
           [name: string]: unknown;
         };
