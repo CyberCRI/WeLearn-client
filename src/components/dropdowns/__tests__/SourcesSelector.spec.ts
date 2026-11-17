@@ -8,7 +8,8 @@ import type { Corpus } from '@/types';
 const corpus = (name: string, category: string): Corpus => ({
   name,
   category,
-  is_active: true
+  is_active: true,
+  is_hidden: false
 });
 
 const AVAILABLE_SOURCES: Record<string, Corpus[]> = {
