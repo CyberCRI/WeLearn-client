@@ -119,6 +119,20 @@ test.describe('auth', () => {
       await expect(page.locator('textarea')).toHaveValue('one more question');
     });
 
+    test('is asked to sign up when the API refuses a new guest', async ({ page }) => {
+      await page.route('**/user/user_and_session', (route) =>
+        route.fulfill({
+          status: 429,
+          headers: { 'Retry-After': '3600' },
+          json: { detail: { code: 'RATE_LIMITED', message: 'Too many new sessions' } }
+        })
+      );
+      await page.goto('/q-and-a');
+
+      await expect(page.getByTestId('signup-prompt')).toContainText('nouveaux invités');
+      await expect(page.getByTestId('signup-prompt-login')).toBeVisible();
+    });
+
     test('logs in from the signup prompt and comes back to the page', async ({ page }) => {
       await page.getByTestId('user-menu-trigger').click();
       await page.getByTestId('user-menu-bookmarks').click();

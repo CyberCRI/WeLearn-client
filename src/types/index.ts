@@ -107,7 +107,9 @@ export type SignupPromptReason =
   | 'download'
   | 'bibliography'
   | 'chatLimit'
-  | 'syllabusLimit';
+  | 'syllabusLimit'
+  // the API refused a new guest: too many from the same network (IP) this hour
+  | 'tooManyGuests';
 
 // what a guest can do a limited number of times a day (counted by the API, stores/guestQuota.ts)
 export type GuestQuotaFeature = 'chat' | 'syllabus';
