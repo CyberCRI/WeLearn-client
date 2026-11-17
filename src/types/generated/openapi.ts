@@ -1016,6 +1016,8 @@ export interface components {
       category: string | null;
       /** Is Active */
       is_active: boolean;
+      /** Is Hidden */
+      is_hidden: boolean;
       /** Name */
       name: string;
     };
