@@ -446,7 +446,138 @@ export const fr = {
       aiNotice:
         "WeLearn utilise l'IA pour lire votre syllabus. Vous pourrez vérifier et corriger les informations avant de continuer.",
       noFile: 'Importez un syllabus pour continuer.',
-      action: 'Continuer'
+      action: 'Continuer',
+      contextTitle: "Contexte d'enseignement",
+      optional: '(facultatif)',
+      contextHint:
+        'Comment le cours est enseigné. Rempli à partir de votre syllabus quand il le précise ; complétez le reste si vous le souhaitez.',
+      fields: {
+        title: 'Titre du cours',
+        discipline: 'Discipline',
+        level: 'Niveau',
+        sessions: 'Nombre de séances',
+        sessionLength: "Durée d'une séance",
+        sessionType: 'Type de séance',
+        sessionMode: 'Format',
+        classSize: "Nombre d'étudiants"
+      },
+      disciplinePlaceholder: 'ex. : Économie',
+      choose: 'Choisir…',
+      readByAi: "Lu par l'IA de WeLearn : à vérifier",
+      suggestedByAi:
+        'non précisée dans votre syllabus : suggérée par WeLearn à partir du contenu du cours',
+      fromSyllabus: 'Lu dans votre syllabus',
+      levels: {
+        l1: 'Licence 1',
+        l2: 'Licence 2',
+        l3: 'Licence 3',
+        m1: 'Master 1',
+        m2: 'Master 2',
+        doctorate: 'Doctorat',
+        other: 'Autre'
+      },
+      sessionTypes: {
+        lecture: 'Cours magistral',
+        tutorial: 'Travaux dirigés',
+        practical: 'Travaux pratiques',
+        seminar: 'Séminaire',
+        project: 'Projet',
+        mixed: 'Mixte'
+      },
+      modes: {
+        PRESENTIEL: 'Présentiel',
+        DISTANCIEL: 'Distanciel',
+        HYBRIDE: 'Hybride'
+      }
+    },
+    check: {
+      title: 'Vérifiez votre cours',
+      description:
+        'Relisez ce que WeLearn a compris de votre syllabus. Vous pouvez tout corriger avant d’explorer les adaptations liées à la durabilité.',
+      showSubtopics: 'Afficher les sous-thèmes',
+      editField: 'Modifier : {field}',
+      editObjective: 'Modifier cet élément',
+      outlineName: 'plan du cours',
+      hideSubtopics: 'Masquer les sous-thèmes',
+      readingPartial:
+        'Certaines informations du cours peuvent manquer. Vérifiez les thèmes et les objectifs identifiés au regard de votre syllabus.',
+      notSyllabus:
+        "WeLearn n'est pas sûr que ce fichier soit un syllabus (il ressemble à : {type}). Vérifiez ce qu'il a lu, ou revenez en arrière pour ajouter votre syllabus.",
+      topicsLabel: 'Thèmes principaux',
+      addTopic: 'Ajouter un thème',
+      removeTopic: 'Retirer {topic}',
+      objectivesTitle: "Objectifs d'apprentissage",
+      types: {
+        syllabus: 'un syllabus',
+        course_plan: 'un plan de cours',
+        lesson: 'une séance seule',
+        partial: "une description partielle d'un cours",
+        other: 'un autre type de document',
+        article: 'un article',
+        unknown: 'incertain',
+        none: 'vide'
+      },
+      groups: {
+        objective: 'Objectifs du cours',
+        competency: 'Compétences',
+        programme: 'Objectifs de niveau diplôme'
+      },
+      moveTo: 'Déplacer vers',
+      addObjective: 'Ajouter un objectif du cours',
+      addCompetency: 'Ajouter une compétence',
+      origin: {
+        extracted: 'Lu dans votre syllabus',
+        unverified: 'Non retrouvé mot pour mot dans votre syllabus : à vérifier',
+        unchecked: "Lu par l'IA de WeLearn",
+        edited: 'Corrigé par vous',
+        added: 'Ajouté par vous'
+      },
+      edit: 'Modifier',
+      save: 'Enregistrer',
+      cancel: 'Annuler',
+      remove: 'Retirer',
+      restore: "Rétablir l'original",
+      showMore: 'Afficher tout le texte',
+      showLess: 'Afficher moins',
+      openOriginal: 'Ouvrir l’original',
+      notFoundOverview: 'Non identifié par WeLearn :',
+      tag: {
+        suggested: 'Suggestion de WeLearn',
+        generated: 'Rédigé par WeLearn',
+        identified: 'Identifiés par WeLearn',
+        check: 'À vérifier'
+      },
+      noTopicsFound:
+        "WeLearn n'a pas identifié de thèmes principaux. Les ajouter aide WeLearn à proposer des liens adaptés à votre cours.",
+      addTopics: 'Ajouter les thèmes principaux',
+      outlineTitle: 'Plan du cours ({n})',
+      outlineHint: 'Une séance, une semaine ou un chapitre par ligne.',
+      showAll: 'Afficher les {n} objectifs',
+      showFewer: 'Afficher moins',
+      done: 'Terminé',
+      overviewLabel: 'Présentation',
+      topicTitle: 'Thème',
+      subtopics: 'Sous-thèmes, séparés par des virgules',
+      saveChanges: 'Enregistrer les modifications',
+      pleaseCheck: 'introuvable dans votre syllabus : à vérifier',
+      noObjectives:
+        "Aucun objectif d'apprentissage explicite n'a été trouvé dans votre syllabus. Vous pouvez continuer avec la description et les thèmes de votre cours, ou ajouter des objectifs si vous le souhaitez.",
+      programmeAside: 'Objectifs de la formation mis de côté ({n})',
+      programmeAsideHint:
+        'Ils concernent toute la formation, pas ce cours : WeLearn ne les utilise pas pour votre cours.',
+      moveToCourse: 'Remettre dans les objectifs du cours',
+      unsortedTitle: 'À vérifier : objectifs que WeLearn n’a pas pu classer ({n})',
+      unsortedHint:
+        'Votre syllabus ne dit pas clairement s’ils relèvent de ce cours ou de la formation ou de l’établissement. WeLearn ne les utilise pas tant que vous ne les avez pas classés.',
+      sortToCourse: 'Objectif du cours',
+      sortAside: 'Pas pour ce cours',
+      localNote: 'Vos corrections restent dans cet onglet du navigateur.',
+      needObjective: 'Ajoutez une présentation, un thème ou un objectif du cours pour continuer.',
+      action: 'Confirmer mon cours',
+      recap: 'Aucun objectif du cours | 1 objectif du cours | {n} objectifs du cours',
+      recapTopics: 'Aucun thème principal | 1 thème principal | {n} thèmes principaux',
+      severalCourses: 'Ce document contient plusieurs cours. Lequel est le vôtre ?',
+      severalCoursesHint: 'WeLearn lira uniquement ce cours.'
     },
     reading: {
       sending: 'Envoi de votre syllabus',
