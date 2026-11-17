@@ -42,7 +42,9 @@ export const authentication = {
       chatLimit:
         'You have used today’s free questions of the guest access. Come back tomorrow, or create a free account to keep chatting.',
       syllabusLimit:
-        'You have used today’s free syllabus of the guest access. Come back tomorrow, or create a free account to create more.'
+        'You have used today’s free syllabus of the guest access. Come back tomorrow, or create a free account to create more.',
+      tooManyGuests:
+        'Many new guests are connecting from your network right now. Log in or create a free account to continue, or come back in an hour.'
     }
   },
   // plural forms: none left | 1 left | n left

@@ -44,7 +44,9 @@ export const authentication = {
       chatLimit:
         'Vous avez utilisé les questions gratuites du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour continuer à discuter.',
       syllabusLimit:
-        'Vous avez utilisé le syllabus gratuit du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour en créer d’autres.'
+        'Vous avez utilisé le syllabus gratuit du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour en créer d’autres.',
+      tooManyGuests:
+        'Beaucoup de nouveaux invités se connectent depuis votre réseau en ce moment. Connectez-vous ou créez un compte gratuit pour continuer, ou revenez dans une heure.'
     }
   },
   // formes du pluriel : aucune restante | 1 restante | n restantes
