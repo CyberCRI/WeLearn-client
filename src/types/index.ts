@@ -165,10 +165,12 @@ export type SignupPromptReason =
   | 'chatLimit'
   | 'syllabusLimit'
   // the API refused a new guest: too many from the same network (IP) this hour
-  | 'tooManyGuests';
+  | 'tooManyGuests'
+  | 'feedbackLimit'
+  | 'filesLimit';
 
 // what a guest can do a limited number of times a day (counted by the API, stores/guestQuota.ts)
-export type GuestQuotaFeature = 'chat' | 'syllabus';
+export type GuestQuotaFeature = 'chat' | 'syllabus' | 'feedback' | 'files';
 
 // event name -> props. Only counts, lengths, enums and ids: never free text or document content
 export type AnalyticsEvents = {

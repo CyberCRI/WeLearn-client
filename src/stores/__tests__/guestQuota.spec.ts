@@ -131,6 +131,16 @@ describe('guest quota store', () => {
       expect(store.remaining('syllabus')).toBe(0);
     });
 
+    it.each([
+      ['feedback', 'feedbackLimit'],
+      ['files', 'filesLimit']
+    ])('opens the prompt for the %s limit of the tutor', (feature, reason) => {
+      const store = useGuestQuotaStore();
+
+      expect(store.handleQuotaError(quotaExceeded(feature))).toBe(true);
+      expect(auth.askToSignUp).toHaveBeenCalledWith(reason);
+    });
+
     it('reads the error of a refused stream', () => {
       const store = useGuestQuotaStore();
       const error = new StreamResponseError(403, quotaExceeded('chat').response.data);
