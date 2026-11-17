@@ -14,7 +14,15 @@ const BEFORE = JSON.parse(
 );
 
 // fields that left the content on purpose (UI labels now in i18n), as paths with numeric indices
-const MOVED: RegExp[] = [];
+const MOVED: RegExp[] = [
+  /^(foundations|frameworks)\.\w+\.steps\.\d+\.(mapTitle|labels|groupLabel|ungroupLabel)$/,
+  /^(foundations|frameworks)\.\w+\.steps\.\d+\.(challengeLabel|trueLabel|falseLabel)$/,
+  /^discipline\.\w+\.\w+\.steps\.0\.hint$/,
+  /^discipline\.\w+\.\w+\.steps\.2\.intro$/,
+  /^discipline\.\w+\.\w+\.steps\.3\.statement$/,
+  /^discipline\.\w+\.\w+\.steps\.3\.resource\.label$/,
+  /^discipline\.\w+\.\w+\.steps\.1\.featured\.\d+\.tag$/
+];
 
 const strip = (value: unknown, path = ''): unknown => {
   if (Array.isArray(value)) return value.map((v, i) => strip(v, `${path}.${i}`));

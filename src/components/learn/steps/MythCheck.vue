@@ -30,7 +30,7 @@ function handleAnswer(i: number, value: boolean) {
           :aria-pressed="answers[i] === value"
           @click="handleAnswer(i, value)"
         >
-          {{ value ? step.trueLabel : step.falseLabel }}
+          {{ value ? $t('learn.module.answerTrue') : $t('learn.module.answerFalse') }}
         </button>
       </div>
       <Transition name="reveal">

@@ -31,8 +31,6 @@ const en: ModuleContent = {
         { id: 'partnership', label: 'Partnership', goals: [17] }
       ],
       psCite: [{ src: 'agenda', loc: 'preamble' }],
-      groupLabel: 'Group by the 5 Ps',
-      ungroupLabel: 'Show in order',
       focus: {
         goal: 12,
         linked: [8, 10, 11],
@@ -188,7 +186,6 @@ const en: ModuleContent = {
       title: 'Using them together',
       short: 'Example',
       instruction: 'Take one course topic and ask two questions.',
-      challengeLabel: 'The sustainability challenge',
       challenge: 'Responsible use of resources',
       sdg: { goal: 12, text: 'Can connect to SDG 12: Responsible consumption and production' },
       question: 'Now, what will students actually do? Pick a learning intention:',
@@ -222,8 +219,6 @@ const en: ModuleContent = {
       id: 'myth',
       title: 'True or false?',
       short: 'Myths',
-      trueLabel: 'True',
-      falseLabel: 'False',
       statements: [
         {
           text: 'Adding SDG logos to my syllabus is enough to make it an ESD course.',
@@ -284,8 +279,6 @@ const fr: ModuleContent = {
         { id: 'partnership', label: 'Partenariats', goals: [17] }
       ],
       psCite: [{ src: 'agenda', loc: 'préambule' }],
-      groupLabel: 'Regrouper par les 5 P',
-      ungroupLabel: 'Afficher dans l’ordre',
       focus: {
         goal: 12,
         linked: [8, 10, 11],
@@ -441,7 +434,6 @@ const fr: ModuleContent = {
       title: 'Les utiliser ensemble',
       short: 'Exemple',
       instruction: 'Partez d’un thème de cours et posez deux questions.',
-      challengeLabel: 'L’enjeu de durabilité',
       challenge: 'L’utilisation responsable des ressources',
       sdg: {
         goal: 12,
@@ -480,8 +472,6 @@ const fr: ModuleContent = {
       id: 'myth',
       title: 'Vrai ou faux\u00a0?',
       short: 'Idées reçues',
-      trueLabel: 'Vrai',
-      falseLabel: 'Faux',
       statements: [
         {
           text: 'Ajouter des logos ODD à mon syllabus suffit à en faire un cours d’EDD.',

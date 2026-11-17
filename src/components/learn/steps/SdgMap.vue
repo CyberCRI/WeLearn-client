@@ -54,7 +54,7 @@ function handleToggleFocus() {
 
     <div class="buttons mb-3">
       <button class="button is-small" :aria-pressed="isGrouped" @click="handleToggleGroup">
-        {{ isGrouped ? step.ungroupLabel : step.groupLabel }}
+        {{ isGrouped ? $t('learn.module.showInOrder') : $t('learn.module.groupByPs') }}
       </button>
       <button class="button is-small" :aria-pressed="isFocused" @click="handleToggleFocus">
         {{ step.focus.button }}

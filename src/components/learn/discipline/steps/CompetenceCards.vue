@@ -11,7 +11,7 @@
     <div class="competence-grid">
       <article v-for="competence in step.featured" :key="competence.name" class="competence-card">
         <span class="competence-tag" :class="competence.tagClass">
-          {{ competence.tag }}
+          {{ $t(`learn.discipline.competence.tags.${competence.tagClass}`) }}
         </span>
 
         <h3 class="competence-name">

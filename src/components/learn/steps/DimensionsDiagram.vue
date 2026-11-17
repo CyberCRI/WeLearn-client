@@ -37,9 +37,9 @@ function handlePick(id: string) {
         <circle class="c env" cx="150" cy="95" r="80" />
         <circle class="c soc" cx="100" cy="180" r="80" />
         <circle class="c eco" cx="200" cy="180" r="80" />
-        <text x="150" y="68" class="t">{{ step.labels.env }}</text>
-        <text x="76" y="198" class="t">{{ step.labels.soc }}</text>
-        <text x="224" y="198" class="t">{{ step.labels.eco }}</text>
+        <text x="150" y="68" class="t">{{ $t('learn.module.dimensions.env') }}</text>
+        <text x="76" y="198" class="t">{{ $t('learn.module.dimensions.soc') }}</text>
+        <text x="224" y="198" class="t">{{ $t('learn.module.dimensions.eco') }}</text>
         <circle class="core" cx="150" cy="152" r="10" />
       </svg>
 
@@ -52,7 +52,7 @@ function handlePick(id: string) {
             :class="d"
             :style="{ animationDelay: `${i * 0.15}s` }"
           >
-            <strong>{{ step.labels[d] }}</strong> {{ selected[d] }}
+            <strong>{{ $t(`learn.module.dimensions.${d}`) }}</strong> {{ selected[d] }}
           </p>
           <p class="link">{{ selected.link }}</p>
         </div>

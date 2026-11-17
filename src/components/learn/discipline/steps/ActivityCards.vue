@@ -2,7 +2,7 @@
   <section class="activity-step">
     <header class="step-header">
       <p class="step-intro">
-        {{ step.intro }}
+        {{ $t('learn.discipline.activities.intro') }}
       </p>
       <p class="step-instruction">{{ $t('learn.discipline.activities.instruction') }}</p>
     </header>

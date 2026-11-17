@@ -2,7 +2,7 @@
   <section class="reflection-step">
     <header class="reflection-header">
       <h2 class="title is-5 reflection-title">
-        {{ step.statement }}
+        {{ $t('learn.discipline.reflection.title') }}
       </h2>
 
       <p class="reflection-subtitle">
@@ -39,7 +39,7 @@
 
       <div class="resource-content">
         <span class="resource-label">
-          {{ step.resource.label }}
+          {{ $t('learn.discipline.reflection.resourceLabel') }}
         </span>
 
         <h3>

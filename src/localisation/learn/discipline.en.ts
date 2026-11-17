@@ -57,6 +57,7 @@ export const discipline = {
     subtitle: 'By teaching this discipline, you are already contributing to sustainability.'
   },
   activities: {
+    intro: 'Here are practical activities you can add to a class you already teach.',
     instruction:
       'Which of these activities would you most like to try with your students? Pick one: you’ll build on it in the next step.',
     nextHint: 'Choose an activity to continue'
@@ -64,9 +65,12 @@ export const discipline = {
   competence: {
     title: 'Skills your students develop',
     concretely: 'In practice',
-    alsoTitle: 'Other skills developed'
+    alsoTitle: 'Other skills developed',
+    tags: { transversal: 'transversal', disciplinary: 'disciplinary' }
   },
   reflection: {
+    title: 'Your turn',
+    resourceLabel: 'Further reading from UVED',
     ctaSource: 'View the resource →',
     resourceSubtitle: 'Mutual contributions and impacts',
     yourPick: 'The activity you picked',

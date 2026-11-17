@@ -26,14 +26,12 @@ export type ConceptsStep = StepBase & {
     relation: string;
     cite: Cite[];
   }[];
-  mapTitle: string;
   // concept ids, in the order shown on each row of the map, with the arrow labels between them
   map: { ids: string[]; arrows: string[] }[];
 };
 
 export type DimensionsStep = StepBase & {
   type: 'dimensions';
-  labels: { env: string; soc: string; eco: string };
   examples: { id: string; label: string; env: string; soc: string; eco: string; link: string }[];
   closing: string;
 };
@@ -58,8 +56,6 @@ export type SdgsStep = StepBase & {
   explanation: string;
   ps: { id: string; label: string; goals: number[] }[];
   psCite: Cite[];
-  groupLabel: string;
-  ungroupLabel: string;
   focus: { goal: number; linked: number[]; button: string; text: string; cite: Cite[] };
   note: string;
 };
@@ -75,7 +71,6 @@ export type GreenCompStep = StepBase & {
 
 export type ExampleStep = StepBase & {
   type: 'example';
-  challengeLabel: string;
   challenge: string;
   sdg: { goal: number; text: string };
   question: string;
@@ -85,8 +80,6 @@ export type ExampleStep = StepBase & {
 
 export type MythStep = StepBase & {
   type: 'myth';
-  trueLabel: string;
-  falseLabel: string;
   statements: { text: string; answer: boolean; feedback: string; cite?: Cite[] }[];
 };
 

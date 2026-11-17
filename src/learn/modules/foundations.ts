@@ -114,7 +114,6 @@ const en: ModuleContent = {
           ]
         }
       ],
-      mapTitle: 'How they fit together',
       map: [
         {
           ids: ['transition', 'sd', 'sustainability'],
@@ -139,11 +138,6 @@ const en: ModuleContent = {
           loc: 'preamble'
         }
       ],
-      labels: {
-        env: 'Environmental',
-        soc: 'Social',
-        eco: 'Economic'
-      },
       examples: [
         {
           id: 'canteen',
@@ -525,7 +519,6 @@ const fr: ModuleContent = {
           ]
         }
       ],
-      mapTitle: 'Comment ils s’articulent',
       map: [
         {
           ids: ['transition', 'sd', 'sustainability'],
@@ -550,11 +543,6 @@ const fr: ModuleContent = {
           loc: 'préambule'
         }
       ],
-      labels: {
-        env: 'Environnemental',
-        soc: 'Social',
-        eco: 'Économique'
-      },
       examples: [
         {
           id: 'canteen',

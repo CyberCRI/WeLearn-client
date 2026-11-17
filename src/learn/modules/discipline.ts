@@ -7,7 +7,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Vous enseignez déjà les outils de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Mesurer et représenter',
@@ -41,21 +40,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Pensée critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Vos étudiant·es apprennent à interroger les choix de paramètres dans un modèle climatique : pourquoi ces données et pas d'autres ? Quelles sont les limites et les incertitudes du modèle ?"
             },
             {
               name: 'Interdisciplinarité',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "En croisant mathématiques et climatologie, vos étudiant·es comprennent pourquoi les marges d'incertitude du GIEC sont exprimées en probabilités et comment différentes disciplines collaborent pour produire des connaissances."
             },
             {
               name: 'Responsabilité et éthique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Vos étudiant·es s'interrogent sur ce qu'un modèle peut ou non dire : où passe la frontière entre l'efficace, le probable et le souhaitable en matière de politiques climatiques ?"
@@ -74,7 +70,6 @@ export const DATA: DataByLang = {
         // STEP 3: ACTIVITIES
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Mesurer et représenter',
@@ -139,7 +134,6 @@ export const DATA: DataByLang = {
         // STEP 4: A VOTRE TOUR
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment les mathématiques s'inscrivent dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -154,7 +148,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Mathématiques & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Mathematiques_et_TEDS.pdf'
           }
@@ -166,7 +159,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: "L'histoire éclaire déjà les enjeux de la transition écologique.",
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Comprendre',
@@ -199,21 +191,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Pensée critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es apprennent à identifier et croiser plusieurs types de sources sur les crises environnementales passées.'
             },
             {
               name: 'Analyse systémique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'En croisant les apports de plusieurs disciplines pour analyser le passé, les étudiant·es comprennent les interactions complexes entre sociétés et environnement.'
             },
             {
               name: 'Conscience citoyenne',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es situent leur responsabilité, individuelle et collective, face aux transformations à engager.'
@@ -229,7 +218,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Comprendre',
@@ -292,7 +280,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment l'histoire s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -307,7 +294,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Histoire & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Histoire_et_TEDS.pdf'
           }
@@ -319,7 +305,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Vous enseignez déjà les outils de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Diagnostiquer',
@@ -352,21 +337,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analyse systémique',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es intègrent les limites planétaires dans l'analyse économique, dans une perspective interdisciplinaire qui va au-delà des modèles standard."
             },
             {
               name: 'Analyse prospective',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es décrivent les hypothèses économiques des différents scénarios de transition et anticipent les réactions des acteur·rices face aux politiques environnementales.'
             },
             {
               name: 'Capacité à agir',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es appliquent des analyses coûts-bénéfices à des politiques climatiques réelles et évaluent l'efficacité d'une fiscalité environnementale."
@@ -382,7 +364,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Diagnostiquer',
@@ -446,7 +427,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment l'économie s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -461,7 +441,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Économie & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Economie_et_TEDS.pdf'
           }
@@ -473,7 +452,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Le droit est au cœur de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Définir',
@@ -506,21 +484,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analyse critique',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es interprètent une loi sur l'énergie ou le climat et distinguent ce qui relève du droit national, européen et international."
             },
             {
               name: 'Analyse systémique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es reconnaissent le droit comme un outil de transformation sociale et comprennent les liens entre le droit de l'environnement et les autres domaines juridiques."
             },
             {
               name: 'Action collective',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es mobilisent le vocabulaire juridique pour argumenter en faveur de la protection de l'environnement dans des cas concrets."
@@ -537,7 +512,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Définir',
@@ -601,7 +575,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment le droit s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -616,7 +589,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Droit & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Droit_et_TEDS.pdf'
           }
@@ -628,7 +600,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'La philosophie pense déjà les enjeux de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Questionner',
@@ -661,21 +632,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Problématisation',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es posent des questions fondamentales sur la responsabilité envers les générations futures, sur la valeur intrinsèque de la nature, sur ce que signifie le progrès.'
             },
             {
               name: 'Esprit critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es distinguent les connaissances des opinions et remettent en question les évidences, notamment les grands récits du progrès et de la croissance.'
             },
             {
               name: 'Réflexivité citoyenne',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es articulent plusieurs dimensions de la responsabilité : individuelle, collective, historique, intergénérationnelle, morale et juridique.'
@@ -692,7 +660,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Questionner',
@@ -756,7 +723,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment la philosophie s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -771,7 +737,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Philosophie & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Philosophie_et_TEDS.pdf'
           }
@@ -783,7 +748,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'La psychologie éclaire les dimensions humaines de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Comprendre',
@@ -816,21 +780,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Pensée complexe et systémique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es identifient les liens entre émotions, comportements pro-environnementaux et politiques de durabilité, et saisissent la complexité des représentations liées à l'environnement."
             },
             {
               name: 'Analyse critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es comprennent ce qui sous-tend les discours et les comportements environnementaux et identifient leur propre posture par rapport à ces enjeux.'
             },
             {
               name: 'Capacité à transformer',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es conçoivent des stratégies de changement et accompagnent les individus pour transformer la vulnérabilité et l'anxiété en action et en résilience."
@@ -846,7 +807,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Comprendre',
@@ -910,7 +870,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment la psychologie s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -925,7 +884,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Psychologie & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Psychologie_et_TEDS.pdf'
           }
@@ -937,7 +895,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'La géographie est au cœur de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Localiser et cartographier',
@@ -970,21 +927,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Lecture et production de cartes',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es réalisent une carte des vulnérabilités climatiques d'un territoire, en identifiant les zones à risque et les populations exposées à des événements extrêmes."
             },
             {
               name: 'Esprit critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es analysent des enjeux complexes comme les conflits d'usage autour de l'eau ou les tensions entre développement touristique et préservation des littoraux."
             },
             {
               name: 'Pensée multiscalaire',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es relient les décisions locales (un projet d'écoquartier) aux dynamiques nationales et mondiales (politiques climatiques, flux migratoires liés au climat)."
@@ -1001,7 +955,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Localiser et cartographier',
@@ -1066,7 +1019,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment la géographie s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -1081,7 +1033,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Géographie & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Geographie_et_TEDS.pdf'
           }
@@ -1093,7 +1044,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Les sciences de la santé sont un levier central de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Identifier les risques',
@@ -1126,21 +1076,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Approche One Health',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es apprennent à penser la santé humaine comme liée à celle des écosystèmes et des autres vivants. Par exemple, analyser l'émergence de maladies vectorielles liées au réchauffement climatique."
             },
             {
               name: 'Interdisciplinarité',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es croisent médecine, écologie, psychologie et sociologie pour analyser les déterminants environnementaux de la santé d'une population dans un territoire donné."
             },
             {
               name: 'Esprit critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es distinguent les discours politiques et médiatiques des faits scientifiques établis en santé environnementale, et développent des compétences éthiques face aux enjeux de justice sanitaire.'
@@ -1157,7 +1104,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Identifier les risques',
@@ -1222,7 +1168,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment les sciences de la santé s'inscrivent dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -1237,7 +1182,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Santé & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Sante_et_TEDS.pdf'
           }
@@ -1250,7 +1194,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'Les STAPS sont au cœur des enjeux sanitaires, sociaux et environnementaux contemporains.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Comprendre les effets du climat',
@@ -1283,21 +1226,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Pensée systémique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es décrivent les interactions entre santé, climat, infrastructures sportives et économie du sport. Par exemple, analyser comment la montée des températures affecte les pratiques et les performances.'
             },
             {
               name: 'Analyse critique',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es analysent un objet sportif à l'ère des limites planétaires, en renseignant et en interprétant les indicateurs de performance environnementale d'une infrastructure ou d'un événement sportif."
             },
             {
               name: 'Capacité à concevoir',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es conçoivent un programme d'EPS ou d'entraînement tenant compte des aléas climatiques (canicule, qualité de l'air, inondation) et économe en ressources."
@@ -1314,7 +1254,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Comprendre les effets du climat',
@@ -1378,7 +1317,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment les STAPS s'inscrivent dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -1393,7 +1331,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'STAPS & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_STAPS_et_TEDS.pdf'
           }
@@ -1405,7 +1342,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Les lettres jouent un rôle essentiel dans la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Analyser les imaginaires',
@@ -1438,21 +1374,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Lecture critique et contextualisée',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es analysent les origines historiques et sociales d'une œuvre liée à la nature, et clarifient les valeurs et idéologies rattachées aux récits sur l'environnement."
             },
             {
               name: 'Pensée critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es analysent les discours publicitaires et politiques sur l'écologie, et distinguent ce qui relève de la rhétorique du greenwashing de ce qui est scientifiquement fondé."
             },
             {
               name: 'Expression et créativité',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es utilisent la littérature et la langue pour exprimer émotions, valeurs et visions de l'avenir face aux enjeux climatiques, en transformant des savoirs complexes en récits accessibles."
@@ -1469,7 +1402,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Analyser les imaginaires',
@@ -1533,7 +1465,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment les lettres s'inscrivent dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -1548,7 +1479,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Lettres & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Lettres_et_TEDS.pdf'
           }
@@ -1561,7 +1491,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             "L'écologie scientifique fournit les connaissances fondamentales de la transition.",
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Décrire et comprendre',
@@ -1594,21 +1523,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analyse systémique',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es décrivent un écosystème sous l'angle de ses réseaux d'interaction, identifient les réactions en cascade lors d'une perturbation, et expliquent les notions de résilience et d'irréversibilité."
             },
             {
               name: 'Analyse critique',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es identifient les facteurs naturels et anthropiques responsables de la dynamique des écosystèmes, et mesurent l'intérêt et les limites des outils de collecte et de modélisation."
             },
             {
               name: 'Capacité à agir',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es proposent des programmes d'action pour la conservation ou la restauration de la biodiversité, et s'appuient sur la nature pour concevoir des solutions d'atténuation ou d'adaptation."
@@ -1625,7 +1551,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Décrire et comprendre',
@@ -1691,7 +1616,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment l'écologie scientifique s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -1706,7 +1630,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Écologie & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Ecologie_et_TEDS.pdf'
           }
@@ -1718,7 +1641,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: "L'art joue un rôle clé et singulier dans la transition écologique.",
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Changer les regards',
@@ -1751,21 +1673,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analyse critique des œuvres',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es comprennent comment les artistes traitent des enjeux écologiques dans différents contextes culturels, et décryptent l'évolution des sensibilités artistiques face à la nature et à l'artificialisation."
             },
             {
               name: 'Créativité et innovation',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es explorent de nouveaux matériaux (recyclés, naturels, durables) et expérimentent des formes artistiques sobres ou collaboratives en lien avec les enjeux de la transition.'
             },
             {
               name: 'Pensée critique et éthique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es analysent les contradictions entre art, société de consommation et transition écologique, et questionnent l'impact écologique de leurs propres pratiques artistiques (transport, exposition, diffusion)."
@@ -1782,7 +1701,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Changer les regards',
@@ -1846,7 +1764,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment les arts s'inscrivent dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -1861,7 +1778,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Art & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Art_et_TEDS.pdf'
           }
@@ -1874,7 +1790,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'La science politique est indispensable pour comprendre et piloter la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Comprendre la gouvernance',
@@ -1907,21 +1822,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analyse des politiques publiques',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es conçoivent et évaluent des politiques de transition, comparent des instruments (taxes carbone, marchés de droits à polluer, réglementations) et identifient ce qui fonctionne selon les contextes.'
             },
             {
               name: 'Analyse critique des récits politiques',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es identifient les récits, croyances et idéologies mobilisés dans les prises de décision politiques sur la transition (croissance verte ou décroissance) et analysent les visions qui orientent les choix collectifs.'
             },
             {
               name: 'Citoyenneté et engagement',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es comprennent le rôle des mobilisations citoyennes et des nouvelles formes de gouvernance partagée, et développent leur capacité à participer aux débats démocratiques sur les enjeux écologiques.'
@@ -1938,7 +1850,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Comprendre la gouvernance',
@@ -2002,7 +1913,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment la science politique s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -2017,7 +1927,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Science politique & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Science_politique_et_TEDS.pdf'
           }
@@ -2029,7 +1938,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'La physique est au cœur de la transition écologique.',
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Comprendre le système Terre',
@@ -2062,21 +1970,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Pensée systémique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es articulent climat, énergie, ressources et technologies, identifient les boucles de rétroaction des systèmes biophysiques et considèrent le cycle de vie complet d'un matériau ou d'un procédé."
             },
             {
               name: 'Analyse critique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es produisent une analyse bénéfices/risques d'une solution technologique, questionnent les hypothèses d'un modèle, évaluent les incertitudes et articulent efficacité et sobriété."
             },
             {
               name: 'Responsabilité et engagement scientifique',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Les étudiant·es réfléchissent aux usages des technologies étudiées, aux implications sociétales des choix scientifiques et techniques, et se situent comme futur·es acteur·rices des transitions.'
@@ -2093,7 +1998,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Comprendre le système Terre',
@@ -2157,7 +2061,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment la physique s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -2172,7 +2075,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Physique & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Physique_et_TEDS.pdf'
           }
@@ -2184,7 +2086,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: "L'anthropologie éclaire la dimension humaine de la transition écologique.",
-          hint: 'Cliquez sur chaque carte pour découvrir le lien.',
           cards: [
             {
               verb: 'Révéler la diversité des rapports à la nature',
@@ -2217,21 +2118,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analyse des représentations de la nature',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 'Les étudiant·es décrivent la diversité des rapports au vivant, interprètent les imaginaires, croyances et systèmes de valeurs associés à la nature et analysent leur influence sur les modes de vie.'
             },
             {
               name: 'Accompagnement du changement et dialogue',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Les étudiant·es identifient les freins et leviers sociaux à l'appropriation des enjeux écologiques, traduisent des savoirs complexes pour différents publics et intègrent les savoirs locaux dans les prises de décision."
             },
             {
               name: 'Conduite éthique et responsable du terrain',
-              tag: 'disciplinaire',
               tagClass: 'disciplinary',
               concrete:
                 "Les étudiant·es mobilisent l'observation participante, les entretiens et les enquêtes ethnographiques, et questionnent leur propre position, leurs biais et les rapports de domination historiques."
@@ -2248,7 +2146,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
           apports: [
             {
               label: 'Révéler la diversité des rapports à la nature',
@@ -2312,7 +2209,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'À vous de jouer',
           sub: "Vous venez de découvrir comment l'anthropologie s'inscrit dans la transition écologique. Prenez un moment pour faire le lien avec votre propre enseignement.",
           prompts: [
             {
@@ -2327,7 +2223,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Une ressource UVED pour aller plus loin',
             title: 'Anthropologie & Transition écologique',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Anthropologie_et_TEDS.pdf'
           }
@@ -2342,7 +2237,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'You are already teaching the tools of the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Measuring and representing',
@@ -2377,21 +2271,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Critical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Students learn to question the parameters behind a climate model: why this data and not other data? What are the model's limits and uncertainties?"
             },
             {
               name: 'Interdisciplinary thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'By combining mathematics and climate science, students see why IPCC uncertainty ranges are expressed as probabilities and how different disciplines work together to build knowledge.'
             },
             {
               name: 'Responsibility and ethics',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students examine what a model can and cannot tell us, and where the line falls between what is effective, what is likely, and what is desirable in climate policy.'
@@ -2411,7 +2302,6 @@ export const DATA: DataByLang = {
         // STEP 3: ACTIVITIES
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Measuring and representing',
@@ -2477,7 +2367,6 @@ export const DATA: DataByLang = {
         // STEP 4: YOUR TURN
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how mathematics connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -2490,7 +2379,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Mathematics & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Mathematiques_et_TEDS.pdf'
           }
@@ -2503,7 +2391,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'History already helps us understand the challenges of the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understanding',
@@ -2536,21 +2423,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Critical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students learn to identify and cross-check different types of sources on past environmental crises.'
             },
             {
               name: 'Systems thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'By drawing on several disciplines, students grasp how societies and their environments interact in complex ways.'
             },
             {
               name: 'Civic awareness',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students think through their individual and collective responsibility for the changes ahead.'
@@ -2566,7 +2450,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Understanding',
@@ -2629,7 +2512,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how history connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -2643,7 +2525,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'History & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Histoire_et_TEDS.pdf'
           }
@@ -2655,7 +2536,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'You are already teaching the tools of the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Diagnosing',
@@ -2688,21 +2568,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Systems thinking',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students build planetary boundaries into their economic analysis, taking an interdisciplinary view that goes beyond standard models.'
             },
             {
               name: 'Foresight analysis',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students unpack the economic assumptions behind different transition scenarios and anticipate how stakeholders might respond to environmental policies.'
             },
             {
               name: 'Capacity to act',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students apply cost-benefit analysis to real climate policies and assess how effective environmental taxes are.'
@@ -2718,7 +2595,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Diagnosing',
@@ -2782,7 +2658,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how economics connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -2796,7 +2671,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Economics & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Economie_et_TEDS.pdf'
           }
@@ -2808,7 +2682,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Law is central to the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Defining',
@@ -2841,21 +2714,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Critical analysis',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students interpret an energy or climate law and sort out what falls under national, European, and international law.'
             },
             {
               name: 'Systems thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students see law as a tool for social change and understand how environmental law connects to other areas of law.'
             },
             {
               name: 'Collective action',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students use legal arguments to make the case for environmental protection in real situations.'
@@ -2872,7 +2742,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Defining',
@@ -2936,7 +2805,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how law connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -2950,7 +2818,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Law & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Droit_et_TEDS.pdf'
           }
@@ -2963,7 +2830,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'Philosophy is already grappling with the challenges of the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Questioning',
@@ -2996,21 +2862,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Problem framing',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students ask fundamental questions about our responsibility to future generations, the intrinsic value of nature, and the meaning of progress.'
             },
             {
               name: 'Critical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students distinguish knowledge from opinion and question assumptions, especially the grand narratives of progress and growth.'
             },
             {
               name: 'Civic reflection',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students distinguish and connect the dimensions of responsibility: individual, collective, historical, intergenerational, moral, and legal.'
@@ -3027,7 +2890,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Questioning',
@@ -3091,7 +2953,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how philosophy connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -3105,7 +2966,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Philosophy & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Philosophie_et_TEDS.pdf'
           }
@@ -3117,7 +2977,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Psychology helps explain the human side of the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understanding',
@@ -3150,21 +3009,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Complex systems thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students identify the links between emotions, pro-environmental behavior, and sustainability policies, and see how complex our views of the environment can be.'
             },
             {
               name: 'Critical analysis',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students understand what underlies environmental discourse and behavior, and recognize where they themselves stand on these issues.'
             },
             {
               name: 'Capacity to drive change',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students design strategies for change and help people turn vulnerability and anxiety into action and resilience.'
@@ -3180,7 +3036,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Understanding',
@@ -3244,7 +3099,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how psychology connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -3259,7 +3113,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Psychology & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Psychologie_et_TEDS.pdf'
           }
@@ -3271,7 +3124,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Geography is essential to the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Locating and mapping',
@@ -3304,21 +3156,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Reading and making maps',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 "Students map an area's climate vulnerabilities, pinpointing high-risk zones and the populations exposed to extreme weather."
             },
             {
               name: 'Critical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students untangle complex issues, such as conflicts over water use or tensions between tourism development and coastal protection.'
             },
             {
               name: 'Thinking across scales',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students link local decisions (such as an eco-district project) to national and global dynamics (climate policy, climate-driven migration).'
@@ -3335,7 +3184,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Locating and mapping',
@@ -3399,7 +3247,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how geography connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -3414,7 +3261,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Geography & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Geographie_et_TEDS.pdf'
           }
@@ -3426,7 +3272,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Health sciences have a central part to play in the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Identifying risks',
@@ -3459,21 +3304,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'One Health approach',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students learn to see human health as closely tied to the health of ecosystems and other species, for example by analyzing how global warming drives the spread of vector-borne diseases.'
             },
             {
               name: 'Interdisciplinary thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 "Students combine medicine, ecology, psychology, and sociology to analyze the environmental factors that shape a region's health."
             },
             {
               name: 'Critical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students distinguish political and media narratives from established science in environmental health, and build ethical reasoning skills for questions of health justice.'
@@ -3490,7 +3332,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Identifying risks',
@@ -3554,7 +3395,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how health sciences connect to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -3569,7 +3409,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Health & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Sante_et_TEDS.pdf'
           }
@@ -3582,7 +3421,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             "Sports science sits where today's health, social, and environmental challenges meet.",
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understanding climate impacts',
@@ -3615,21 +3453,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Systems thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students describe how health, climate, sports facilities, and the sports economy interact, for example by analyzing how rising temperatures affect training and performance.'
             },
             {
               name: 'Critical analysis',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students examine sport in an era of planetary boundaries, identifying and interpreting the environmental performance indicators of a sports facility or event.'
             },
             {
               name: 'Design skills',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students design a PE or training program that accounts for climate hazards (heatwaves, air quality, flooding) and uses resources responsibly.'
@@ -3646,7 +3481,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Understanding climate impacts',
@@ -3710,7 +3544,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how sports science connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -3725,7 +3558,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Sports Science & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_STAPS_et_TEDS.pdf'
           }
@@ -3738,7 +3570,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'The humanities and literature have an essential role to play in the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Analyzing worldviews',
@@ -3771,21 +3602,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Critical and contextual reading',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students analyze the historical and social context of a work about nature and uncover the values and ideologies behind environmental stories.'
             },
             {
               name: 'Critical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students examine advertising and political messaging on ecology, telling greenwashing apart from scientifically grounded claims.'
             },
             {
               name: 'Expression and creativity',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students use literature and language to express emotions, values, and visions of the future in response to the climate crisis, turning complex knowledge into accessible stories.'
@@ -3802,7 +3630,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Analyzing worldviews',
@@ -3866,7 +3693,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how the humanities connect to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -3881,7 +3707,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Humanities & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Lettres_et_TEDS.pdf'
           }
@@ -3893,7 +3718,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Scientific ecology provides the foundational knowledge for the transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Describing and understanding',
@@ -3926,21 +3750,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Systems analysis',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students describe an ecosystem as a network of interactions, trace cascading responses to disturbance, and explain the concepts of resilience and irreversibility.'
             },
             {
               name: 'Critical analysis',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students identify the natural and human factors that drive ecosystem dynamics and recognize the strengths and limits of data collection and modeling tools.'
             },
             {
               name: 'Taking action',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students propose action plans to conserve or restore biodiversity and draw on nature to design mitigation and adaptation solutions.'
@@ -3957,7 +3778,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Describing and understanding',
@@ -4021,7 +3841,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how ecology connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -4036,7 +3855,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Ecology & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Ecologie_et_TEDS.pdf'
           }
@@ -4048,7 +3866,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Art plays a unique and vital role in the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Shifting perspectives',
@@ -4081,21 +3898,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Critical analysis of artworks',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students explore how artists address ecological issues in different cultural contexts and trace how artistic attitudes toward nature and the built environment have changed over time.'
             },
             {
               name: 'Creativity and innovation',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students try out new materials (recycled, natural, sustainable) and experiment with low-impact or collaborative art forms tied to sustainability issues.'
             },
             {
               name: 'Critical and ethical thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students analyze the tensions between art, consumer society, and sustainability, and question the environmental impact of their own artistic practice (transportation, exhibitions, distribution).'
@@ -4112,7 +3926,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Shifting perspectives',
@@ -4176,7 +3989,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how the arts connect to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -4191,7 +4003,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Art & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Art_et_TEDS.pdf'
           }
@@ -4204,7 +4015,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'Political science is essential for understanding and guiding the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understanding governance',
@@ -4237,21 +4047,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Public policy analysis',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students design and evaluate sustainability policies, compare instruments (carbon taxes, emissions trading, regulation), and identify what works in which context.'
             },
             {
               name: 'Critical analysis of political narratives',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students identify the narratives, beliefs, and ideologies that shape political decisions on sustainability (green growth versus degrowth) and examine the visions of society behind collective choices.'
             },
             {
               name: 'Citizenship and engagement',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students learn about the role of citizen movements and new models of shared governance, and build the capacity to take part in democratic debate on ecological issues.'
@@ -4268,7 +4075,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Understanding governance',
@@ -4332,7 +4138,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how political science connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -4347,7 +4152,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Political Science & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Science_politique_et_TEDS.pdf'
           }
@@ -4359,7 +4163,6 @@ export const DATA: DataByLang = {
         {
           type: 'flip',
           statement: 'Physics is fundamental to the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Understanding the Earth system',
@@ -4392,21 +4195,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Systems thinking',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students connect climate, energy, resources, and technology, identify feedback loops in biophysical systems, and consider the full life cycle of a material or process.'
             },
             {
               name: 'Critical analysis',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students produce a risk–benefit analysis of a technological solution, question the assumptions behind a model, assess uncertainty, and weigh efficiency against sufficiency.'
             },
             {
               name: 'Scientific responsibility and engagement',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students reflect on how the technologies they study are used and on what scientific and technical choices mean for society, and see themselves as future contributors to the transition.'
@@ -4423,7 +4223,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Understanding the Earth system',
@@ -4487,7 +4286,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how physics connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -4500,7 +4298,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Physics & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Physique_et_TEDS.pdf'
           }
@@ -4513,7 +4310,6 @@ export const DATA: DataByLang = {
           type: 'flip',
           statement:
             'Anthropology helps us understand the human side of the ecological transition.',
-          hint: 'Click on each card to discover the connection.',
           cards: [
             {
               verb: 'Revealing the diversity of relationships with nature',
@@ -4546,21 +4342,18 @@ export const DATA: DataByLang = {
           featured: [
             {
               name: 'Analysis of how people represent nature',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students describe the diversity of relationships with the natural world, interpret the beliefs, stories, and value systems associated with nature, and analyze how they shape ways of life.'
             },
             {
               name: 'Supporting change and fostering dialogue',
-              tag: 'transversal',
               tagClass: 'transversal',
               concrete:
                 'Students identify the social barriers to and drivers of engagement with ecological issues, translate complex knowledge for different audiences, and bring local knowledge into decision-making.'
             },
             {
               name: 'Ethical and responsible fieldwork',
-              tag: 'disciplinary',
               tagClass: 'disciplinary',
               concrete:
                 'Students use participant observation, interviews, and ethnographic surveys, and examine their own position, their biases, and historical power imbalances.'
@@ -4577,7 +4370,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'activities',
-          intro: 'Here are practical activities you can add to a class you already teach.',
           apports: [
             {
               label: 'Revealing the diversity of relationships with nature',
@@ -4641,7 +4433,6 @@ export const DATA: DataByLang = {
         },
         {
           type: 'votretour',
-          statement: 'Your turn',
           sub: "You've just seen how anthropology connects to sustainability. Now take a moment to think about how this applies to your own teaching.",
           prompts: [
             {
@@ -4656,7 +4447,6 @@ export const DATA: DataByLang = {
             }
           ],
           resource: {
-            label: 'Further reading from UVED',
             title: 'Anthropology & Ecological Transition',
             href: 'https://www.uved.fr/fileadmin/user_upload/Documents/pdf/Fiches/Fiche_Anthropologie_et_TEDS.pdf'
           }

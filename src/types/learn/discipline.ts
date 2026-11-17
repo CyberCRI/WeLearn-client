@@ -54,8 +54,7 @@ export interface FlipCard {
 
 export interface Competence {
   name: string;
-  // displayed label, written in the data's language: 'disciplinaire' in fr, 'disciplinary' in en
-  tag: 'transversal' | 'disciplinaire' | 'disciplinary';
+  // its label is translated in learn.discipline.competence.tags
   tagClass: 'transversal' | 'disciplinary';
   concrete: string;
 }
@@ -83,7 +82,6 @@ export interface StepBase {
 export interface FlipStep extends StepBase {
   type: 'flip';
   statement: string;
-  hint: string;
   cards: FlipCard[];
   closing: string;
 }
@@ -97,18 +95,15 @@ export interface CompetencesStep extends StepBase {
 
 export interface ActivitiesStep extends StepBase {
   type: 'activities';
-  intro: string;
   apports: Apport[];
   feedback: string;
 }
 
 export interface ReflectionStep extends StepBase {
   type: 'votretour';
-  statement: string;
   sub: string;
   prompts: { q: string; placeholder: string }[];
   resource: {
-    label: string;
     title: string;
     href: string;
   };
