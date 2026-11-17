@@ -132,8 +132,11 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: yarn format:check
 
+      # vue-tsc needs about 500 MB of heap, right at the runner's default limit
       - name: Run type check
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        env:
+          NODE_OPTIONS: --max-old-space-size=1024
         run: yarn type-check
 
       - name: Run unit tests with coverage
