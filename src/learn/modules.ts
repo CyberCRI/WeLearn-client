@@ -1,11 +1,15 @@
 import { computed } from 'vue';
 import i18n from '@/localisation/i18n';
-import { foundations } from './modules/foundations';
-import { frameworks } from './modules/frameworks';
+import { buildModule } from './buildModule';
+import { FOUNDATIONS } from './modules/foundations';
+import { FRAMEWORKS } from './modules/frameworks';
+import { foundations as foundationsEn } from '@/localisation/learn/content/foundations.en';
+import { foundations as foundationsFr } from '@/localisation/learn/content/foundations.fr';
+import { frameworks as frameworksEn } from '@/localisation/learn/content/frameworks.en';
+import { frameworks as frameworksFr } from '@/localisation/learn/content/frameworks.fr';
 import type { LearnModuleId, ModuleContent, ModuleId } from '@/types/learn/modules';
 
-// ponytail: local list and content until the API serves them (GET /learn/modules, GET /learn/modules/{id}).
-// only this file should change then: components get content through getModuleContent / useModuleContent
+// components get content only through getModuleContent / useModuleContent
 
 // order shown on the Learn page, also the "next module" order. nothing is locked.
 export const MODULES: { id: LearnModuleId; to: string }[] = [
@@ -14,9 +18,16 @@ export const MODULES: { id: LearnModuleId; to: string }[] = [
   { id: 'discipline', to: '/learn/discipline' }
 ];
 
+// built once: each module's structure merged with its text in each language
 const CONTENT: Record<ModuleId, { en: ModuleContent; fr: ModuleContent }> = {
-  foundations,
-  frameworks
+  foundations: {
+    en: buildModule(FOUNDATIONS, foundationsEn),
+    fr: buildModule(FOUNDATIONS, foundationsFr)
+  },
+  frameworks: {
+    en: buildModule(FRAMEWORKS, frameworksEn),
+    fr: buildModule(FRAMEWORKS, frameworksFr)
+  }
 };
 
 export const isModuleId = (id: unknown): id is ModuleId =>

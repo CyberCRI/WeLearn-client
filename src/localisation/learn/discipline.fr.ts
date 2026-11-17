@@ -58,6 +58,7 @@ export const discipline = {
     subtitle: 'En enseignant cette discipline, vous contribuez déjà à la transition écologique.'
   },
   activities: {
+    intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
     instruction:
       'Laquelle de ces activités aimeriez-vous le plus essayer avec vos étudiant·es\u00a0? Choisissez-en une, vous la retrouverez à l’étape suivante.',
     nextHint: 'Choisissez une activité pour continuer'
@@ -65,9 +66,12 @@ export const discipline = {
   competence: {
     title: 'Les compétences que vos étudiant·es développent',
     concretely: 'Concrètement',
-    alsoTitle: 'Autres compétences développées'
+    alsoTitle: 'Autres compétences développées',
+    tags: { transversal: 'transversal', disciplinary: 'disciplinaire' }
   },
   reflection: {
+    title: 'À vous de jouer',
+    resourceLabel: 'Une ressource UVED pour aller plus loin',
     ctaSource: 'Consulter la ressource →',
     resourceSubtitle: 'Apports croisés et impacts',
     yourPick: 'L’activité que vous avez choisie',

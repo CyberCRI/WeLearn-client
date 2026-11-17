@@ -64,9 +64,11 @@ describe('Learn step components', () => {
     const wrapper = mount(SortActivity, { props: { step, moduleId: 'foundations' } });
     const binButton = (id: string) => wrapper.find(`[data-bin="${id}"]`);
 
-    const first = step.cards[0];
+    // the pool is shuffled: take the wrong bin of the card actually clicked
+    const firstButton = wrapper.find('.pool button');
+    const first = step.cards.find((c) => c.text === firstButton.text())!;
     const wrongBin = step.bins.find((b) => b.id !== first.bin)!;
-    await wrapper.find('.pool button').trigger('click');
+    await firstButton.trigger('click');
     await binButton(wrongBin.id).trigger('click');
     expect(wrapper.text()).toContain('learn.module.notQuite');
 

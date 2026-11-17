@@ -54,8 +54,7 @@ export interface FlipCard {
 
 export interface Competence {
   name: string;
-  // displayed label, written in the data's language: 'disciplinaire' in fr, 'disciplinary' in en
-  tag: 'transversal' | 'disciplinaire' | 'disciplinary';
+  // its label is translated in learn.discipline.competence.tags
   tagClass: 'transversal' | 'disciplinary';
   concrete: string;
 }
@@ -83,7 +82,6 @@ export interface StepBase {
 export interface FlipStep extends StepBase {
   type: 'flip';
   statement: string;
-  hint: string;
   cards: FlipCard[];
   closing: string;
 }
@@ -97,18 +95,15 @@ export interface CompetencesStep extends StepBase {
 
 export interface ActivitiesStep extends StepBase {
   type: 'activities';
-  intro: string;
   apports: Apport[];
   feedback: string;
 }
 
 export interface ReflectionStep extends StepBase {
   type: 'votretour';
-  statement: string;
   sub: string;
   prompts: { q: string; placeholder: string }[];
   resource: {
-    label: string;
     title: string;
     href: string;
   };
@@ -126,3 +121,36 @@ export type Step = FlipStep | CompetencesStep | ActivitiesStep | ReflectionStep;
 export interface Discipline {
   steps: Step[];
 }
+
+// ---- how the content is written: one structure for every language, one text per language ----
+// buildDiscipline (src/learn/modules/discipline.ts) merges them into `Data` above
+
+// what does not depend on the language: the kind of each featured competence and the UVED sheet
+export type DisciplineStructure = {
+  featured: readonly Competence['tagClass'][];
+  resource: string;
+};
+
+// one of the four ways a discipline contributes: its flip card, then the activities built on it.
+// the card colour comes from its position
+export type ContributionText = { verb: string; text: string; activities: Activity[] };
+
+type FeaturedText<L extends readonly unknown[]> = {
+  -readonly [K in keyof L]: { name: string; concrete: string };
+};
+
+export type DisciplineText<S extends DisciplineStructure> = {
+  flip: { statement: string; closing: string };
+  contributions: [ContributionText, ContributionText, ContributionText, ContributionText];
+  competences: { intro: string; featured: FeaturedText<S['featured']>; also: string[] };
+  activities: { feedback: string };
+  reflection: {
+    sub: string;
+    prompts: { q: string; placeholder: string }[];
+    resourceTitle: string;
+  };
+};
+
+export type DisciplinesText<S extends Record<DiscValue, DisciplineStructure>> = {
+  [D in DiscValue]: DisciplineText<S[D]>;
+};

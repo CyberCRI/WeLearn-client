@@ -21,7 +21,10 @@
         </article>
 
         <article v-if="resource" class="takeaway resource">
-          <span class="takeaway-label"><LineIcon name="resources" /> {{ resource.label }}</span>
+          <span class="takeaway-label"
+            ><LineIcon name="resources" />
+            {{ $t('learn.discipline.reflection.resourceLabel') }}</span
+          >
           <h3>{{ resource.title }}</h3>
           <p>{{ $t('learn.discipline.reflection.resourceSubtitle') }}</p>
           <a :href="resource.href" target="_blank" rel="noopener noreferrer">

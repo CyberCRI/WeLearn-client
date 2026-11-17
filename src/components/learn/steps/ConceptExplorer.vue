@@ -50,7 +50,7 @@ const openItem = computed(() => (openKey.value ? byId.value[openKey.value] : nul
 
     <Transition name="fade">
       <section v-if="isAllOpened" class="map" aria-live="polite">
-        <h3 class="map-title">{{ step.mapTitle }}</h3>
+        <h3 class="map-title">{{ $t('learn.module.conceptsMapTitle') }}</h3>
         <div v-for="(row, r) in step.map" :key="r" class="map-row">
           <template v-for="(id, i) in row.ids" :key="id">
             <span class="node" :style="{ animationDelay: `${(r * 3 + i) * 0.25}s` }">

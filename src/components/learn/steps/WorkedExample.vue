@@ -21,7 +21,7 @@ function handleChoose(id: string) {
   <div class="worked">
     <div class="flow">
       <div class="box-step challenge">
-        <span class="kicker">{{ step.challengeLabel }}</span>
+        <span class="kicker">{{ $t('learn.module.challengeLabel') }}</span>
         <strong>{{ step.challenge }}</strong>
       </div>
       <span class="arrow" aria-hidden="true">→</span>
