@@ -9,6 +9,7 @@ WeLearn client: a Vue 3 + TypeScript SPA that helps university teachers bring su
 These rules are strict and apply to every agent and subagent working in this repo.
 
 - **Never install, add, remove or upgrade a package without the human confirming it first.** This covers `yarn add`, `yarn remove`, `yarn upgrade`, `npm install <pkg>`, `npx playwright install`, and editing dependency versions in `package.json` or `yarn.lock`. Say which package and version you want and why, then wait for a yes. Running `yarn install` to restore the existing lockfile is fine.
+- **Never change the learn module text without the human confirming it first.** This is `src/localisation/learn/content/` (foundations, frameworks and discipline, in every language): it is written with the researchers. Say which text you want to change and why, then wait for a yes.
 - **Never commit to `main`, and never push to it.** Work on a feature branch; if you are on `main`, create a branch before your first commit. Changes reach `main` only through a PR.
 - The hooks in `.claude/hooks/` (wired in `.claude/settings.json`, they need `jq`) enforce these rules and the "never edit" ones below. They also run prettier on each file you edit in `src/`. If a hook blocks you, ask the human. Don't work around it.
 

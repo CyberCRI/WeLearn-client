@@ -3,6 +3,7 @@
 # - denies reading .env.local, its values must never be printed
 # - denies edits to generated types and the devops submodule
 # - asks the human before package.json or yarn.lock change (dependency versions live there)
+# - asks the human before the learn module text changes (src/localisation/learn/content/)
 
 if ! command -v jq >/dev/null 2>&1; then
   echo "guard-files: jq is missing, so the file can't be checked. Install jq (CLAUDE.md, Agent rules)." >&2
@@ -33,6 +34,7 @@ case "$rel" in
   src/types/generated/*) decide deny "src/types/generated is never edited by hand, run yarn gen:api" ;;
   devops-toolbox/*) decide deny "devops-toolbox is a git submodule, don't edit it" ;;
   package.json | yarn.lock) decide ask "Changing package.json or yarn.lock needs human confirmation" ;;
+  src/localisation/learn/content/*) decide ask "The learn module text (foundations, frameworks, discipline) is written with the researchers, changing it needs human confirmation" ;;
 esac
 
 exit 0
