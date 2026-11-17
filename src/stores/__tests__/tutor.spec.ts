@@ -14,10 +14,19 @@ vi.mock('@/utils/fetch', () => ({
 }));
 
 // what GET /user/guest_quota answers to a guest
-const guestQuota = (syllabus: number) => ({
+const guestQuota = (syllabus: number, feedback = 2) => ({
   limited: true,
   chat: { limit: 5, remaining: 5, resets_in: 0 },
-  syllabus: { limit: 1, remaining: syllabus, resets_in: 0 }
+  syllabus: { limit: 1, remaining: syllabus, resets_in: 0 },
+  feedback: { limit: 2, remaining: feedback, resets_in: 0 },
+  files: { limit: 5, remaining: 5, resets_in: 0 }
+});
+
+const quotaExceeded = (feature: string) => ({
+  response: {
+    status: 403,
+    data: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature, retry_after: 60 } }
+  }
 });
 
 vi.mock('@/utils/md-to-docx', () => ({
@@ -732,6 +741,44 @@ describe('tutor store', () => {
       expect(await store.giveFeedback('shorter')).toBeUndefined();
       expect(console.error).not.toHaveBeenCalled();
     });
+    it('asks a guest who used their changes of the day to sign up, and sends nothing', async () => {
+      auth.isGuest = true;
+      useGuestQuotaStore().quota = guestQuota(0, 0);
+      const store = ready();
+
+      expect(await store.giveFeedback('shorter')).toBeUndefined();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('feedbackLimit');
+      expect(basePostAxios).not.toHaveBeenCalled();
+    });
+
+    // another tab used them: the API refuses, and the text stays without an error
+    it('asks to sign up when the API refuses the change', async () => {
+      auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0, 0));
+      mockPostError(quotaExceeded('feedback'));
+      const store = ready();
+
+      expect(await store.giveFeedback('shorter')).toBeUndefined();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('feedbackLimit');
+      expect(console.error).not.toHaveBeenCalled();
+      expect(store.syllabi?.content).toBe('old');
+      expect(store.isLoading).toBe(false);
+    });
+
+    it("reloads a guest's quota after a change", async () => {
+      auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0, 1));
+      mockPost({ data: { syllabus: [{ source: 'agent', content: 'new' }] } });
+      const store = ready();
+
+      expect(await store.giveFeedback('shorter')).toBe(true);
+      await Promise.resolve();
+
+      expect(getGuestQuota).toHaveBeenCalledTimes(1);
+      expect(useGuestQuotaStore().remaining('feedback')).toBe(1);
+    });
   });
 
   describe('download and save', () => {
@@ -809,6 +856,20 @@ describe('tutor store', () => {
       expect(basePostAxios).not.toHaveBeenCalled();
       expect(store.step).toBe(3);
       expect(store.selectedSources).toEqual([doc('1')]);
+    });
+
+    it('asks to sign up when the API refuses the file summaries', async () => {
+      auth.isGuest = true;
+      useGuestQuotaStore().quota = guestQuota(1);
+      mockPostError(quotaExceeded('files'));
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf')]);
+
+      expect(await store.handleSummaryFiles()).toBe(false);
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('filesLimit');
+      expect(store.shouldRetryAction).toBe(false);
+      expect(console.error).not.toHaveBeenCalled();
     });
 
     it('asks a guest who used their syllabus to sign up before generating another', async () => {

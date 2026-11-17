@@ -7,7 +7,12 @@ import { clearFromStorage } from '@/utils/storage';
 import type { ApiSchema } from '@/types/api';
 import type { GuestQuotaFeature } from '@/types';
 
-const SIGNUP_REASONS = { chat: 'chatLimit', syllabus: 'syllabusLimit' } as const;
+const SIGNUP_REASONS = {
+  chat: 'chatLimit',
+  syllabus: 'syllabusLimit',
+  feedback: 'feedbackLimit',
+  files: 'filesLimit'
+} as const;
 
 // the browser counter used before the API counted the quota: nothing reads it anymore
 const LEGACY_STORAGE_KEY = 'guestUsage';

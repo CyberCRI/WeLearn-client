@@ -44,7 +44,11 @@ export const authentication = {
       syllabusLimit:
         'You have used today’s free syllabus of the guest access. Come back tomorrow, or create a free account to create more.',
       tooManyGuests:
-        'Many new guests are connecting from your network right now. Log in or create a free account to continue, or come back in an hour.'
+        'Many new guests are connecting from your network right now. Log in or create a free account to continue, or come back in an hour.',
+      feedbackLimit:
+        'You have used today’s free changes to your syllabus with the guest access. Come back tomorrow, or create a free account to keep improving it.',
+      filesLimit:
+        'You have sent today’s free documents with the guest access. Come back tomorrow, or create a free account to send more.'
     }
   },
   // plural forms: none left | 1 left | n left

@@ -294,6 +294,8 @@ export const useTutorStore = defineStore('tutor', () => {
       });
     } catch (error) {
       if (axios.isCancel(error)) return false;
+      // past the guest's daily limit: the signup prompt is open, retrying won't help
+      if (useGuestQuotaStore().handleQuotaError(error)) return false;
       console.error('get files content did not work', error);
       shouldRetryAction.value = true;
       track('Tutor Step Failed', { step: 1, durationMs: Date.now() - startedAt });
@@ -425,6 +427,10 @@ export const useTutorStore = defineStore('tutor', () => {
       return false;
     }
 
+    // a guest gets a few changes a day; undefined keeps the text without showing an error
+    const guestQuota = useGuestQuotaStore();
+    if (!guestQuota.checkQuota('feedback')) return undefined;
+
     const { signal } = startRequest();
 
     try {
@@ -448,12 +454,15 @@ export const useTutorStore = defineStore('tutor', () => {
       return true;
     } catch (error) {
       if (axios.isCancel(error)) return undefined;
+      if (guestQuota.handleQuotaError(error)) return undefined;
       console.error('Error during feedback submission:', error);
       track('Syllabus Feedback Sent', { feedbackLength: feedback.length, isApplied: false });
       return false;
     } finally {
       // aborted: stopAction already stopped the loading, or a newer request is running
       if (!signal.aborted) isLoading.value = false;
+      // counted by the API, which gives it back when the change fails
+      void guestQuota.refresh();
     }
   };
 
