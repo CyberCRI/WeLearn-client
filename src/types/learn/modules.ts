@@ -1,6 +1,6 @@
 // learn modules built from typed steps (foundations, frameworks); the discipline module has its own
 // types (discipline.ts). each module is written in two parts:
-// - its structure (src/learn/modules/<id>.ts): ids, order, answers, citations, the same in every language
+// - its structure (src/learn/modules/<id>.ts): ids, order and answers, the same in every language
 // - its text (src/localisation/learn/content/<id>.<lang>.ts): typed from the structure's ids, so a
 //   missing or extra id in one language fails type-check
 // buildModule (src/learn/modules.ts) merges them into the `ModuleContent` the components read.

@@ -53,11 +53,11 @@ src/
   router/index.ts    # routes + auth guard + query-param carry-over
   views/             # one per route
   components/        # shared UI; feature subfolders: tutor/, learn/ (steps/, discipline/), MAS_tutor/, nav/, dropdowns/, icons/, modals/
-  learn/             # Learn hub: modules list, progress, per-module content (modules/<id>.ts)
+  learn/             # Learn hub: modules list, progress, per-module structure (modules/<id>.ts)
   stores/            # one Pinia store per feature (chat, search, tutor, bookmarks, sources, filters, user, auth, metrics, featureFlip)
   composables/       # useAuth, useDisciplineModule (screen state machine), useGoTo
   utils/             # api.ts (axios instance), fetch.ts (API helpers), storage.ts, md-to-docx/, ...
-  localisation/      # en.ts / fr.ts (+ authentication/, learn/ sub-namespaces)
+  localisation/      # en.ts / fr.ts (+ authentication/, learn/ sub-namespaces); learn/content/ holds the learn module text, outside vue-i18n
   types/             # shared types; learn/discipline.ts has the discipline module's
 e2e/                 # Playwright specs; e2e/base.ts mocks every API route
 tests/unit.setup.ts  # global $t mock → returns the key
@@ -77,7 +77,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
 
    `TutorPage.vue` maps each step to a store action (`stepToAction`). Only one request runs at a time (`AbortController` in `startRequest`). Finished steps fold into a recap.
 
-5. **`/learn` (Learn / Se former):** a hub of short modules listed in `src/learn/modules.ts`. `foundations` and `frameworks` run in `LearnModule.vue` from typed steps (`src/learn/modules/<id>.ts`, EN+FR in one file, progress through `src/learn/progress.ts`). Content and progress are meant to move to the API soon, so components only go through those two files. `/learn/discipline` (old `/microlearning`, which redirects) is the discipline module: a screen state machine in `useDisciplineModule` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). The content lives in the static `src/learn/modules/discipline.ts`, keyed by language and then discipline. Answers are kept in memory only.
+5. **`/learn` (Learn / Se former):** a hub of short modules listed in `src/learn/modules.ts`. `foundations` and `frameworks` run in `LearnModule.vue` from typed steps, with progress through `src/learn/progress.ts`. Module content stays in the front, in two parts: the structure (`src/learn/modules/<id>.ts`: ids, order, answers, the same in every language) and one text file per language (`src/localisation/learn/content/<id>.<lang>.ts`, typed from the structure's ids, not in vue-i18n). `buildModule` merges them, and components only read content through `getModuleContent` / `useModuleContent`. UI labels (buttons, kickers, tags) go in vue-i18n under `learn.module.*` / `learn.discipline.*`, never in the content. `/learn/discipline` (old `/microlearning`, which redirects) is the discipline module: a screen state machine in `useDisciplineModule` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). Its content follows the same split: `DISCIPLINES` and `buildDiscipline` in `src/learn/modules/discipline.ts`, the text in `src/localisation/learn/content/discipline.<lang>.ts`. Answers are kept in memory only.
 6. **`/search`:** document similarity search (the query needs >5 words or >50 chars) plus SDG detection from an external classifier.
 7. **`/bookmarks`:** the saved documents, with a bibliography export.
 8. `/tutor_test` (TestMAS) is a hidden experimental page. Don't remove it or `SecondStep.vue`, which it depends on.
