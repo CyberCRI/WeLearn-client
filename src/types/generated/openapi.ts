@@ -458,6 +458,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/tutor/search_datasets': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Tutor Search Datasets */
+    post: operations['tutor-tutor_search_datasets'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/search_extracts': {
     parameters: {
       query?: never;
@@ -609,6 +626,28 @@ export interface paths {
     put?: never;
     /** Register Syllabus User Update */
     post: operations['tutor-register_syllabus_user_update'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/user/access': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * How long the account's access lasts
+     * @description Whether the caller's account is time-limited (Google or email/password
+     *     login) and until when. Needs a bearer token; an account whose access has
+     *     ended gets 403 ACCESS_EXPIRED.
+     */
+    get: operations['user-get_access'];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -830,6 +869,21 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    /**
+     * AccountAccessResponse
+     * @description Whether the account's access is time-limited (a Google or email/password
+     *     login, not an institution one) and until when. `access_until` is the last
+     *     day of access, `days_left` counts today; both are null when the account is
+     *     not limited, or when the end date could not be stored yet.
+     */
+    AccountAccessResponse: {
+      /** Access Until */
+      access_until?: string | null;
+      /** Days Left */
+      days_left?: number | null;
+      /** Limited */
+      limited: boolean;
+    };
     /**
      * AgentContext
      * @example {
@@ -1948,6 +2002,15 @@ export interface operations {
           'text/plain': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'text/plain': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -2099,6 +2162,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -2216,7 +2288,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2276,7 +2348,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2710,7 +2782,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2770,7 +2842,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2859,7 +2931,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2931,6 +3003,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description A file is too large (code FILE_TOO_LARGE) */
       413: {
         headers: {
@@ -2947,6 +3028,41 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-tutor_search_datasets': {
+    parameters: {
+      query?: {
+        nb_results?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SummariesList'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['TutorSearchResponse'];
         };
       };
       /** @description Error */
@@ -3028,7 +3144,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3072,6 +3188,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3130,6 +3255,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3181,7 +3315,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3225,6 +3359,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3283,6 +3426,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3327,6 +3479,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3387,6 +3548,62 @@ export interface operations {
       };
     };
   };
+  'user-get_access': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['AccountAccessResponse'];
+        };
+      };
+      /** @description No bearer token (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   'user-get_user_bookmarks': {
     parameters: {
       query?: never;
@@ -3407,6 +3624,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3454,6 +3680,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3510,6 +3745,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3552,6 +3796,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3608,6 +3861,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3657,6 +3919,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3697,6 +3968,15 @@ export interface operations {
       };
       /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3870,6 +4150,15 @@ export interface operations {
       };
       /** @description Invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };

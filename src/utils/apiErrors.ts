@@ -7,6 +7,9 @@ export const apiErrorDetail = (error: unknown): Record<string, unknown> | undefi
     : undefined;
 };
 
+// 403 for an account whose time-limited access (Google or email login) has ended
+export const ACCESS_EXPIRED_CODE = 'ACCESS_EXPIRED';
+
 export const apiErrorCode = (error: unknown): string | undefined => {
   const code = apiErrorDetail(error)?.code;
   return typeof code === 'string' ? code : undefined;

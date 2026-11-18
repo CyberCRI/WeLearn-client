@@ -5,6 +5,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import i18n from '@/localisation/i18n';
 import ProfilePage from '../ProfilePage.vue';
 import { useUserStore } from '@/stores/user';
+import { useAccountAccessStore } from '@/stores/accountAccess';
 import type { Environment } from '@/types';
 
 const login = vi.fn();
@@ -40,6 +41,50 @@ describe('ProfilePage', () => {
     const wrapper = mount(ProfilePage, { global: { plugins: [i18n] } });
     expect(wrapper.get('[data-testid="profile-name"]').text()).toBe('Jane Doe');
     expect(wrapper.get('[data-testid="profile-email"]').text()).toBe('jane.doe@example.org');
+  });
+
+  it('shows how long a limited access lasts', () => {
+    useAccountAccessStore().access = {
+      limited: true,
+      access_until: '2027-05-20',
+      days_left: 184
+    };
+    const wrapper = mount(ProfilePage, { global: { plugins: [i18n] } });
+    const access = wrapper.get('[data-testid="profile-access"]').text();
+    expect(access).toContain('profile.accessUntil');
+    expect(access).toContain('profile.accessHint');
+  });
+
+  it('words the days left in both languages', () => {
+    const { t } = i18n.global;
+    i18n.global.locale.value = 'en';
+    expect(t('profile.accessUntil', { date: 'May 20, 2027', n: 184 }, 184)).toBe(
+      'Until May 20, 2027 (184 days left)'
+    );
+    expect(t('profile.accessUntil', { date: 'Nov 18, 2026', n: 1 }, 1)).toBe(
+      'Until Nov 18, 2026 (1 day left)'
+    );
+    i18n.global.locale.value = 'fr';
+    expect(t('profile.accessUntil', { date: '20 mai 2027', n: 184 }, 184)).toBe(
+      "Jusqu'au 20 mai 2027 (184 jours restants)"
+    );
+    expect(t('profile.accessUntil', { date: '18 nov. 2026', n: 1 }, 1)).toBe(
+      "Jusqu'au 18 nov. 2026 (1 jour restant)"
+    );
+  });
+
+  it('says the access is temporary when its end is not known yet', () => {
+    useAccountAccessStore().access = { limited: true };
+    const wrapper = mount(ProfilePage, { global: { plugins: [i18n] } });
+    expect(wrapper.get('[data-testid="profile-access"]').text()).toContain(
+      'profile.accessTemporary'
+    );
+  });
+
+  it('shows no access line for an institution account', () => {
+    useAccountAccessStore().access = { limited: false };
+    const wrapper = mount(ProfilePage, { global: { plugins: [i18n] } });
+    expect(wrapper.find('[data-testid="profile-access"]').exists()).toBe(false);
   });
 
   it('falls back when the email is missing', () => {

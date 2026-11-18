@@ -16,6 +16,8 @@ import type { SignupPromptReason, UserRegisterData } from '@/types';
 const LOGIN_PENDING_KEY = 'loginPending';
 // set before a forced logout, so the app can say why once it is back from keycloak
 const SESSION_EXPIRED_KEY = 'sessionExpired';
+// same, after the API ended the access of a time-limited account (Google or email login)
+const ACCESS_ENDED_KEY = 'accessEnded';
 
 export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = ref(false);
@@ -55,6 +57,13 @@ export const useAuthStore = defineStore('auth', () => {
     isSessionExpired.value = false;
   }
 
+  // true after the API answered 403 ACCESS_EXPIRED, AccessEndedModal shows it
+  const isAccessEnded = ref(false);
+
+  function closeAccessEnded(): void {
+    isAccessEnded.value = false;
+  }
+
   async function init(): Promise<boolean> {
     // where the auth feature is off, keycloak is never contacted
     if (!shouldAuthenticate.value) {
@@ -83,6 +92,8 @@ export const useAuthStore = defineStore('auth', () => {
       clearFromStorage(LOGIN_PENDING_KEY);
       isSessionExpired.value = !authenticated && getFromStorage(SESSION_EXPIRED_KEY) === true;
       clearFromStorage(SESSION_EXPIRED_KEY);
+      isAccessEnded.value = !authenticated && getFromStorage(ACCESS_ENDED_KEY) === true;
+      clearFromStorage(ACCESS_ENDED_KEY);
 
       if (authenticated) {
         syncToken();
@@ -140,13 +151,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   // a guest, or keycloak never initialised (auth off), has no session to end: keycloak-js
   // would throw on an uninitialised adapter
-  // isExpired: the app ends the session itself, not the user, so it explains why after the redirect.
-  // an options object, so a click event passed by `@click="logout"` can't turn it on
-  async function logout({ isExpired = false }: { isExpired?: boolean } = {}): Promise<void> {
+  // isExpired / isAccessEnded: the app ends the session itself, not the user, so it explains why
+  // after the redirect. an options object, so a click event passed by `@click="logout"` can't
+  // turn them on
+  async function logout({
+    isExpired = false,
+    isAccessEnded = false
+  }: { isExpired?: boolean; isAccessEnded?: boolean } = {}): Promise<void> {
     if (isLoggingOut || !keycloak.authenticated) return;
 
     isLoggingOut = true;
     if (isExpired) saveToStorage(SESSION_EXPIRED_KEY, true);
+    if (isAccessEnded) saveToStorage(ACCESS_ENDED_KEY, true);
     track('Logged Out', {});
     resetAnalytics();
     // the api session must end too, or its cookie keeps the browser on the account user.
@@ -166,6 +182,7 @@ export const useAuthStore = defineStore('auth', () => {
     } catch (error) {
       isLoggingOut = false;
       clearFromStorage(SESSION_EXPIRED_KEY);
+      clearFromStorage(ACCESS_ENDED_KEY);
       console.error('Keycloak logout failed:', error);
     }
   }
@@ -226,6 +243,8 @@ export const useAuthStore = defineStore('auth', () => {
     closeSignupPrompt,
     isSessionExpired,
     closeSessionExpired,
+    isAccessEnded,
+    closeAccessEnded,
     user,
     token,
     tokenParsed,

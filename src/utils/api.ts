@@ -1,5 +1,6 @@
 import axios from 'axios';
 import keycloak from '@/utils/keycloak';
+import { ACCESS_EXPIRED_CODE } from '@/utils/apiErrors';
 // only used inside the handlers, so the cycle (auth store → fetch → api) is safe at load time
 import { useAuthStore } from '@/stores/auth';
 
@@ -51,21 +52,25 @@ http.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// shared by the axios instance and fetchStream. a guest's 401 is just an error, and logging out
-// must never throw, so the caller always gets the original error
-export const handleUnauthorized = (status?: number): void => {
-  if (status !== 401 || !keycloak.authenticated) return;
+// shared by the axios instance and fetchStream. a 401 means the token no longer works, a 403
+// ACCESS_EXPIRED that the access of a time-limited account (Google or email login) has ended:
+// both log the user out and the app goes on as a guest. a guest's error is just an error, and
+// logging out must never throw, so the caller always gets the original error
+export const handleUnauthorized = (status?: number, code?: string): void => {
+  if (!keycloak.authenticated) return;
+  const isAccessEnded = status === 403 && code === ACCESS_EXPIRED_CODE;
+  if (status !== 401 && !isAccessEnded) return;
   try {
-    useAuthStore().logout({ isExpired: true });
+    useAuthStore().logout(isAccessEnded ? { isAccessEnded } : { isExpired: true });
   } catch (logoutError) {
-    console.error('Logout after a 401 failed:', logoutError);
+    console.error(`Logout after a ${status} failed:`, logoutError);
   }
 };
 
 http.interceptors.response.use(
   (response) => response,
   (error) => {
-    handleUnauthorized(error.response?.status);
+    handleUnauthorized(error.response?.status, error.response?.data?.detail?.code);
     return Promise.reject(error);
   }
 );

@@ -29,6 +29,21 @@ export const authentication = {
     login: 'Se reconnecter',
     continueAsGuest: 'Continuer sans compte'
   },
+  limitedAccess: {
+    title: 'Votre accès est temporaire',
+    message:
+      "Vous ne vous êtes pas connecté·e avec le compte de votre établissement : votre accès à WeLearn est donc limité à 6 mois et se termine le {date}. Pour continuer à utiliser WeLearn ensuite, connectez-vous avec le compte de votre établissement. Votre profil indique le temps qu'il vous reste.",
+    messageWithoutDate:
+      "Vous ne vous êtes pas connecté·e avec le compte de votre établissement : votre accès à WeLearn est donc limité à 6 mois. Pour continuer à utiliser WeLearn ensuite, connectez-vous avec le compte de votre établissement. Votre profil indique le temps qu'il vous reste.",
+    ok: "J'ai compris"
+  },
+  accessEnded: {
+    title: 'Votre accès temporaire est terminé',
+    message:
+      "L'accès avec un compte Google ou une adresse e-mail est temporaire, et le vôtre est arrivé à son terme. Connectez-vous avec le compte de votre établissement pour continuer à utiliser tout WeLearn.",
+    login: 'Me connecter avec mon établissement',
+    continueAsGuest: 'Continuer sans compte'
+  },
   signupPrompt: {
     title: 'Créez votre compte gratuit',
     createAccount: 'Créer un compte',
