@@ -28,6 +28,21 @@ export const authentication = {
     login: 'Log in again',
     continueAsGuest: 'Continue without an account'
   },
+  limitedAccess: {
+    title: 'Your access is temporary',
+    message:
+      'You did not log in with your school or university account, so your access to WeLearn is limited to 6 months: it ends on {date}. To keep using WeLearn after that, log in with your institution account. Your profile shows how much time you have left.',
+    messageWithoutDate:
+      'You did not log in with your school or university account, so your access to WeLearn is limited to 6 months. To keep using WeLearn after that, log in with your institution account. Your profile shows how much time you have left.',
+    ok: 'I understand'
+  },
+  accessEnded: {
+    title: 'Your temporary access has ended',
+    message:
+      'Access with a Google account or an email address is temporary, and yours has ended. Log in with your school or university account to keep using all of WeLearn.',
+    login: 'Log in with my institution',
+    continueAsGuest: 'Continue without an account'
+  },
   signupPrompt: {
     title: 'Create your free account',
     createAccount: 'Create an account',

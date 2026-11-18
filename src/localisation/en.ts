@@ -313,7 +313,11 @@ export const en = {
     language: 'Language',
     cookies: 'Cookies',
     notAvailable: 'Not available',
-    notAuthenticated: 'You are not logged in.'
+    notAuthenticated: 'You are not logged in.',
+    access: 'Access',
+    accessUntil: 'Until {date} ({n} day left) | Until {date} ({n} days left)',
+    accessTemporary: 'Temporary (6 months)',
+    accessHint: 'Log in with your school or university account to keep using WeLearn after that.'
   },
   reload: 'Reload',
   clearFilters: 'Clear all filters',

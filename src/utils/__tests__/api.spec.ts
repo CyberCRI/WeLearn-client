@@ -59,16 +59,18 @@ describe('getAuthHeaders', () => {
 
 describe('response interceptor', () => {
   // the adapter answers instead of the network, with the error axios would build for a status
-  const failWith = (status: number) => (config: InternalAxiosRequestConfig) =>
-    Promise.reject(
-      new AxiosError('Request failed', 'ERR_BAD_REQUEST', config, null, {
-        status,
-        statusText: '',
-        headers: {},
-        config,
-        data: { detail: { code: 'SOME_CODE' } }
-      } as AxiosResponse)
-    );
+  const failWith =
+    (status: number, code = 'SOME_CODE') =>
+    (config: InternalAxiosRequestConfig) =>
+      Promise.reject(
+        new AxiosError('Request failed', 'ERR_BAD_REQUEST', config, null, {
+          status,
+          statusText: '',
+          headers: {},
+          config,
+          data: { detail: { code } }
+        } as AxiosResponse)
+      );
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -115,6 +117,27 @@ describe('response interceptor', () => {
 
     expect(error).toBeInstanceOf(AxiosError);
     expect(error.response.status).toBe(401);
+  });
+
+  it('logs out on a 403 ACCESS_EXPIRED, to say the time-limited access has ended', async () => {
+    keycloakMock.authenticated = true;
+    keycloakMock.updateToken.mockResolvedValue(false);
+
+    const error = await http
+      .get('/x', { adapter: failWith(403, 'ACCESS_EXPIRED') })
+      .catch((e) => e);
+
+    expect(error.response.status).toBe(403);
+    expect(logout).toHaveBeenCalledWith({ isAccessEnded: true });
+  });
+
+  it('does not log out on another 403', async () => {
+    keycloakMock.authenticated = true;
+    keycloakMock.updateToken.mockResolvedValue(false);
+
+    await http.get('/x', { adapter: failWith(403, 'GUEST_QUOTA_EXCEEDED') }).catch((e) => e);
+
+    expect(logout).not.toHaveBeenCalled();
   });
 
   it('does not log out on other errors', async () => {

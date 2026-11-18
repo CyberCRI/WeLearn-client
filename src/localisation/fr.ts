@@ -317,7 +317,12 @@ export const fr = {
     language: 'Langue',
     cookies: 'Cookies',
     notAvailable: 'Non disponible',
-    notAuthenticated: "Vous n'êtes pas connecté·e."
+    notAuthenticated: "Vous n'êtes pas connecté·e.",
+    access: 'Accès',
+    accessUntil: "Jusqu'au {date} ({n} jour restant) | Jusqu'au {date} ({n} jours restants)",
+    accessTemporary: 'Temporaire (6 mois)',
+    accessHint:
+      'Connectez-vous avec le compte de votre établissement pour continuer à utiliser WeLearn ensuite.'
   },
   reload: 'Recharger',
   clearFilters: 'Effacer tous les filtres',

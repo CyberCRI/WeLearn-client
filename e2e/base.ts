@@ -47,6 +47,9 @@ export const test = base.extend<Fixtures>({
             syllabus: { limit: 1, remaining: 1, resets_in: 0 }
           }
         });
+      } else if (url.includes('user/access')) {
+        // an institution account: no time limit
+        await route.fulfill({ json: { limited: false } });
       } else if (url.includes('user/logout')) {
         await route.fulfill({ status: 200, json: { message: 'logged out' } });
       } else if (url.includes('user/user')) {
