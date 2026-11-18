@@ -275,6 +275,52 @@ describe('auth store', () => {
     });
   });
 
+  describe('access ended', () => {
+    it('tells the user once they are back from the logout', async () => {
+      localStorage.setItem('accessEnded', 'true');
+      keycloak.init.mockResolvedValue(false);
+      const store = useAuthStore();
+
+      await store.init();
+
+      expect(store.isAccessEnded).toBe(true);
+      expect(store.isSessionExpired).toBe(false);
+      expect(localStorage.getItem('accessEnded')).toBeNull();
+
+      store.closeAccessEnded();
+      expect(store.isAccessEnded).toBe(false);
+    });
+
+    it('says nothing when the user is logged in again', async () => {
+      localStorage.setItem('accessEnded', 'true');
+      authenticate();
+      const store = useAuthStore();
+
+      await store.init();
+
+      expect(store.isAccessEnded).toBe(false);
+      expect(localStorage.getItem('accessEnded')).toBeNull();
+    });
+
+    it('remembers the reason across the keycloak redirect', async () => {
+      keycloak.authenticated = true;
+
+      await useAuthStore().logout({ isAccessEnded: true });
+
+      expect(localStorage.getItem('accessEnded')).toBe('true');
+      expect(localStorage.getItem('sessionExpired')).toBeNull();
+    });
+
+    it('drops the flag when the logout fails', async () => {
+      keycloak.authenticated = true;
+      keycloak.logout.mockRejectedValueOnce(new Error('network'));
+
+      await useAuthStore().logout({ isAccessEnded: true });
+
+      expect(localStorage.getItem('accessEnded')).toBeNull();
+    });
+  });
+
   describe('token refresh', () => {
     it('sets the keycloak handlers before init, and starts no timer', async () => {
       authenticate();

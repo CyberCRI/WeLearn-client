@@ -348,6 +348,16 @@ describe('fetchStream', () => {
       expect(logout).toHaveBeenCalledWith({ isExpired: true });
     });
 
+    it('logs a signed-in user out when their time-limited access has ended', async () => {
+      keycloakMock.authenticated = true;
+      failWith(403, JSON.stringify({ detail: { message: 'ended', code: 'ACCESS_EXPIRED' } }));
+
+      const error = await fetchStream('/endpoint', { bodyContent: '{}' }).catch((e) => e);
+
+      expect(error.response.status).toBe(403);
+      expect(logout).toHaveBeenCalledWith({ isAccessEnded: true });
+    });
+
     it('does not log a guest out on a 401', async () => {
       failWith(401, '');
 

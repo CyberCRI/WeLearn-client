@@ -39,6 +39,25 @@ test.describe('profile', () => {
       await expect(page.getByTestId('consent-banner')).toBeVisible();
     });
 
+    test('tells a Google or email account once that its access is limited', async ({ page }) => {
+      await page.route('**/user/access', (route) =>
+        route.fulfill({ json: { limited: true, access_until: '2027-05-20', days_left: 184 } })
+      );
+      await page.goto('/profile');
+
+      const notice = page.getByTestId('limited-access');
+      await expect(notice).toContainText('20 mai 2027');
+      await page.getByTestId('limited-access-ok').click();
+      await expect(notice).toHaveCount(0);
+      await expect(page.getByTestId('profile-access')).toContainText(
+        "Jusqu'au 20 mai 2027 (184 jours restants)"
+      );
+
+      await page.reload();
+      await expect(page.getByTestId('profile-access')).toBeVisible();
+      await expect(notice).toHaveCount(0);
+    });
+
     test('logs out', async ({ page, keycloak }) => {
       await page.goto('/profile');
 
