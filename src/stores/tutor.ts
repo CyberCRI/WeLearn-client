@@ -9,6 +9,7 @@ import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
 import { useAuthStore } from '@/stores/auth';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 
@@ -296,6 +297,7 @@ export const useTutorStore = defineStore('tutor', () => {
   const resetPath = () => {
     restart();
     useCourseStore().$reset();
+    useConnectionsStore().$reset();
     path.value = null;
   };
 

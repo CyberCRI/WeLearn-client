@@ -320,6 +320,99 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     expect(focuses).toEqual([null, 'UE 2 Law']);
   });
 
+  test('suggests sustainability connections for the confirmed course', async ({ page }) => {
+    await page.route('**/tutor/course/read', (route) =>
+      route.fulfill({
+        json: {
+          text: 'Ecology\nTheme 1: Soils',
+          is_text_truncated: false,
+          is_partial: false,
+          reading: {
+            title: 'Ecology',
+            material_type: 'syllabus',
+            courses_found: [],
+            objectives: [],
+            topics: [{ title: 'Soils', subtopics: [], source: 'Theme 1: Soils' }],
+            sessions: []
+          }
+        }
+      })
+    );
+    let sentCourse: unknown = null;
+    const idea = (id: string, title: string) => ({
+      id,
+      title,
+      anchor: 'Soils',
+      anchor_label: null,
+      why: `${title} matters.`,
+      use: null,
+      queries: ['soil carbon', 'soil erosion']
+    });
+    await page.route('**/tutor/course/connection_ideas', async (route) => {
+      sentCourse = route.request().postDataJSON().course;
+      await route.fulfill({
+        json: {
+          ideas: [idea('idea-1', 'Soil carbon'), idea('idea-2', 'Erosion')],
+          none_reason: null
+        }
+      });
+    });
+    await page.route('**/tutor/course/connection_evidence', async (route) => {
+      const { idea } = route.request().postDataJSON();
+      const supported = idea.id === 'idea-1';
+      await route.fulfill({
+        json: {
+          status: supported ? 'supported' : 'unsupported',
+          concept: null,
+          why: idea.why,
+          candidate_count: 6,
+          background: [],
+          resources: supported
+            ? [
+                {
+                  usefulness: 'Shows how soils store carbon.',
+                  evidence: 'Soils store more carbon than the atmosphere.',
+                  document: {
+                    score: 0.9,
+                    payload: {
+                      document_id: 'doc-1',
+                      document_title: 'Soils and carbon',
+                      document_url: 'https://example.org/soils',
+                      document_corpus: 'conversation',
+                      document_desc: '',
+                      document_details: {},
+                      document_lang: 'en',
+                      document_sdg: [13],
+                      slice_content: 'Soils store more carbon than the atmosphere.',
+                      slice_sdg: null
+                    }
+                  }
+                }
+              ]
+            : []
+        }
+      });
+    });
+    await page.goto('/tutor?preview=syllabusV2');
+    await page.getByTestId('option-existing').click();
+    await page.getByTestId('course-file-input').setInputFiles(syllabusFile);
+    await page.getByTestId('read-course-button').click();
+    await page.getByTestId('confirm-course').click();
+
+    await expect(page.getByTestId('selected-count')).toBeVisible();
+    expect(sentCourse).toMatchObject({
+      title: 'Ecology',
+      topics: [{ title: 'Soils', subtopics: [] }]
+    });
+    const cards = page.locator('.connection-list').first().getByTestId('connection');
+    await expect(cards).toHaveCount(1);
+    await expect(cards.first()).toContainText('Soil carbon');
+    await expect(page.getByTestId('unsupported-list')).toContainText('1');
+
+    await cards.first().getByTestId('select').click();
+    await expect(cards.first().getByTestId('selected')).toBeVisible();
+  });
+
   test('tells a file without text (a scanned pdf)', async ({ page }) => {
     await page.route('**/tutor/course/read', (route) =>
       route.fulfill({

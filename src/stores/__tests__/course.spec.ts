@@ -374,7 +374,7 @@ describe('course store', () => {
       store.setCoursePlan(['Week 1', ' ', 'Week 2 ']);
       expect(store.coursePlan).toEqual(['Week 1', 'Week 2']);
       expect(store.courseParts).toEqual(['GDP', 'Measure', 'Week 1', 'Week 2']);
-      expect(store.confirmedCourse.topics).toEqual(['GDP (Measure)']);
+      expect(store.confirmedCourse.topics).toEqual([{ title: 'GDP', subtopics: ['Measure'] }]);
     });
 
     it('edits the summary only with words, and restores it', async () => {

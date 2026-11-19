@@ -3,6 +3,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import axios from 'axios';
 import { useTutorStore } from '../tutor';
 import { useGuestQuotaStore } from '../guestQuota';
+import { useConnectionsStore } from '../connections';
 import { basePostAxios, getGuestQuota } from '@/utils/fetch';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import type { Document, TutorSearch } from '@/types';
@@ -118,10 +119,13 @@ describe('tutor store', () => {
       store.choosePath('scratch');
       store.courseTitle = 'Sociolinguistics';
       store.setStep(3);
+      const connections = useConnectionsStore();
+      connections.status = 'ready';
 
       store.resetPath();
 
       expect(store.path).toBeNull();
+      expect(connections.status).toBe('idle');
       expect(store.step).toBe(1);
       expect(store.courseTitle).toBe('');
       expect(store.hasStartedCourse).toBe(false);

@@ -157,8 +157,8 @@ describe('the confirmed course', () => {
     expect(course.level).toBeTruthy();
   });
 
-  it('puts each topic and its subtopics on one line for the connections', () => {
-    expect(toConfirmedCourse(course).topics).toEqual(['GDP (Measure)']);
+  it('gives the connections each topic with its subtopics, without its syllabus line', () => {
+    expect(toConfirmedCourse(course).topics).toEqual([{ title: 'GDP', subtopics: ['Measure'] }]);
   });
 
   it('lists the parts of the course a connection may build on', () => {

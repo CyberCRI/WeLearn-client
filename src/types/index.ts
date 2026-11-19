@@ -131,22 +131,25 @@ export type TeachingContext = {
 
 // the course as the teacher confirmed it on the review screen, for the sustainability additions:
 // their corrections included, degree-level objectives left out
-export type ConfirmedCourse = {
-  title: string | null;
-  discipline: string | null;
-  level: string | null;
-  overview: string | null;
-  topics: string[];
-  objectives: string[];
-  competencies: string[];
-  sessions: string[];
+export type ConfirmedCourse = ApiSchema<'ConfirmedCourse'>;
+
+// the confirmed course as the updated syllabus uses it: topics keep the syllabus line they come
+// from
+export type CourseToUpdate = Required<Omit<ConfirmedCourse, 'topics'>> & {
+  topics: (ApiSchema<'CourseTopic'> & { source: string | null })[];
 };
 
-// the confirmed course as the updated syllabus uses it: topics keep their subtopics and the
-// syllabus line they come from
-export type CourseToUpdate = Omit<ConfirmedCourse, 'topics'> & {
-  topics: { title: string; subtopics: string[]; source: string | null }[];
+// a sustainability connection suggested for the confirmed course, and the WeLearn resources
+// found and judged for it
+export type ConnectionIdea = ApiSchema<'ConnectionIdea'>;
+// ponytail: `document` refined to the client's Document, as for search results
+export type EvidencedResource = Omit<ApiSchema<'EvidencedResource'>, 'document'> & {
+  document: Document;
 };
+export type ConnectionEvidence = Omit<
+  ApiSchema<'ConnectionEvidenceResponse'>,
+  'resources' | 'background'
+> & { resources: EvidencedResource[]; background: EvidencedResource[] };
 
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {

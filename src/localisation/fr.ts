@@ -438,9 +438,47 @@ export const fr = {
       discard: 'Effacer et changer',
       keepWorking: 'Continuer mon travail'
     },
-    existingCourse: {
-      comingSoon:
-        'Ce parcours est en cours de construction\u00a0: ses écrans ne sont pas encore disponibles.'
+    additions: {
+      title: 'Explorer les liens avec la durabilité',
+      intro:
+        'WeLearn a identifié des liens possibles avec votre cours. Parcourez les idées et les ressources qui les appuient, puis choisissez celles que vous souhaitez développer.',
+      courseChanged: "Votre cours a changé à l'étape 2. Vos liens et vos choix sont conservés.",
+      findAgain: 'Chercher de nouveaux liens',
+      thinking: 'Recherche de liens pertinents dans votre cours…',
+      searching: 'Recherche et sélection des ressources WeLearn pour chaque lien ({done}/{total})…',
+      pending: 'Recherche de ressources dans WeLearn…',
+      unavailable: "WeLearn n'a pas pu être joint. Réessayez dans un instant.",
+      error:
+        "WeLearn n'a pas pu proposer de liens cette fois-ci : sa réponse était inutilisable. C'est un problème technique, pas un jugement sur votre cours.",
+      retry: 'Réessayer',
+      noConnections: "WeLearn n'a trouvé aucun lien avec la durabilité assez solide pour ce cours.",
+      noneReason: 'Raison donnée par WeLearn : {reason}',
+      noSupport:
+        "WeLearn n'a trouvé aucune ressource qui appuie assez bien ses idées. Vous pouvez tout de même les consulter ci-dessous.",
+      connectsTo: 'Lien avec',
+      objectiveRef: "Objectif d'apprentissage {n}",
+      competencyRef: 'Compétence {n}',
+      why: 'Pourquoi cela pourrait être utile',
+      sources: 'Sources',
+      sourceCount: '1 source à l’appui | {n} sources à l’appui',
+      passage: 'Passage retenu',
+      unsupported: 'Aucune source à l’appui trouvée dans WeLearn pour cette idée.',
+      background: 'Pour aller plus loin ({count})',
+      backgroundHint:
+        "Un contexte sur l'enjeu de durabilité plus large. Ces lectures ne traitent pas directement cette partie de votre cours et ne constituent pas une preuve pour ce lien.",
+      unchecked:
+        "WeLearn n'a pas pu vérifier les ressources de cette idée (un problème technique, pas un jugement sur l'idée).",
+      rechecking: 'Nouvelle vérification des ressources de cette idée…',
+      leftOut:
+        "WeLearn a écarté une idée qu'il a jugée trop lâche pour cette discipline (une analogie, ou un mot employé dans un autre sens). | WeLearn a écarté {n} idées qu'il a jugées trop lâches pour cette discipline (des analogies, ou des mots employés dans un autre sens).",
+      unsupportedTitle: 'Idées sans appui solide dans les ressources WeLearn ({count})',
+      select: 'Retenir ce lien',
+      selected: 'Lien retenu',
+      undo: 'Annuler',
+      setAside: 'Pas pour mon cours',
+      setAsideTitle: 'Mis de côté ({count})',
+      bringBack: 'Remettre',
+      selectedCount: 'Aucun lien retenu pour le moment | 1 lien retenu | {n} liens retenus'
     },
     course: {
       title: 'Votre cours',
