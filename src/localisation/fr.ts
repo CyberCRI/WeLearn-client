@@ -480,6 +480,20 @@ export const fr = {
       discard: 'Effacer et changer',
       keepWorking: 'Continuer mon travail'
     },
+    greencomp: {
+      valuing_sustainability: 'Valoriser la durabilité',
+      supporting_fairness: 'Défendre l’équité',
+      promoting_nature: 'Promouvoir la nature',
+      systems_thinking: 'Pensée systémique',
+      critical_thinking: 'Pensée critique',
+      problem_framing: 'Cadrage des problèmes',
+      futures_literacy: 'Littératie des futurs',
+      adaptability: 'Adaptabilité',
+      exploratory_thinking: 'Pensée exploratoire',
+      political_agency: 'Capacité d’action politique',
+      collective_action: 'Action collective',
+      individual_initiative: 'Initiative individuelle'
+    },
     additions: {
       title: 'Explorer les liens avec la durabilité',
       intro:
@@ -520,7 +534,68 @@ export const fr = {
       setAside: 'Pas pour mon cours',
       setAsideTitle: 'Mis de côté ({count})',
       bringBack: 'Remettre',
-      selectedCount: 'Aucun lien retenu pour le moment | 1 lien retenu | {n} liens retenus'
+      selectedCount: 'Aucun lien retenu pour le moment | 1 lien retenu | {n} liens retenus',
+      develop: 'Développer ce lien',
+      contextTag: 'Lecture connexe, pas une preuve directe',
+      acceptedCount:
+        'Aucune modification acceptée pour le moment | 1 modification acceptée pour votre syllabus mis à jour | {n} modifications acceptées pour votre syllabus mis à jour',
+      change: {
+        thinking: 'WeLearn prépare une modification concrète de votre cours…',
+        unavailable: "WeLearn n'a pas pu être joint. Vos choix sont conservés : réessayez.",
+        error:
+          "WeLearn n'a pas pu proposer de modification cette fois-ci. Vos choix sont conservés : réessayez.",
+        busy: 'WeLearn traite encore vos autres demandes. Réessayez dans quelques secondes.',
+        tooLarge:
+          "Votre cours est trop long pour que WeLearn propose une modification. Raccourcissez-le à l'étape 2, puis réessayez.",
+        title: 'Modification suggérée du syllabus',
+        whereLabel: 'Où se place-t-elle dans votre cours ? Choisissez…',
+        placement: 'Où elle se place',
+        revisesObjective: "Reformule l'objectif d'apprentissage {n}",
+        revisesCompetency: 'Reformule la compétence {n}',
+        revises: 'Reformule',
+        notPlaced: 'Pas encore placée',
+        changePlace: "Changer d'emplacement",
+        stalePlace:
+          "Son emplacement, « {place} », ne figure plus dans votre cours tel que confirmé à l'étape 2. Choisissez où elle se place.",
+        staleObjective:
+          "L'objectif qu'elle reformule ne figure plus dans votre cours tel que confirmé à l'étape 2. Vérifiez-la, ou gardez l'original.",
+        suggested: 'Formulation proposée',
+        why: 'Pourquoi cela pourrait être utile',
+        basedOn: 'Sources et preuves',
+        checkTitle: 'Ce que la vérification de cette modification a relevé',
+        evidence: {
+          strong: 'Appuyée par les sources.',
+          strongDetail:
+            'Les sources citées appuient directement cette formulation. WeLearn a vérifié les sources, pas la science : relisez-la comme toute suggestion.',
+          partial: 'Preuves limitées.',
+          partialDefault:
+            "Les sources donnent un contexte mais n'appuient pas directement cette formulation.",
+          none: 'Non appuyée par les sources WeLearn.',
+          noneDefault:
+            "Aucune source n'appuie cette formulation : vérifiez-la avant de l'utiliser.",
+          unchecked: "Les preuves n'ont pas pu être vérifiées.",
+          uncheckedDetail:
+            "Un problème technique a empêché la vérification : relisez cette formulation avant de l'utiliser."
+        },
+        unchecked:
+          "Ses affirmations n'ont pas pu être vérifiées dans les ressources (un problème technique) : vérifiez-la avant de l'utiliser.",
+        unbackedNames: "Nommé ici mais absent des ressources d'appui direct : {names}.",
+        notes: {
+          title: 'Repères pédagogiques (facultatifs)',
+          hint: "Pour vous aider à juger cette modification. Ils n'en font pas partie et ne sont pas ajoutés à votre syllabus.",
+          learning: 'Apprentissage visé',
+          greencomp: 'GreenComp',
+          teaching: "Idée d'enseignement",
+          check: "Vérifier l'apprentissage"
+        },
+        accept: 'Accepter',
+        keepOriginal: "Garder l'original",
+        skip: 'Passer',
+        skipped: "Passée : rien n'est ajouté à votre syllabus.",
+        saveAndAccept: 'Enregistrer et accepter',
+        accepted: 'Acceptée pour votre syllabus mis à jour',
+        kept: 'Original conservé : votre cours reste tel quel.'
+      }
     },
     course: {
       title: 'Votre cours',

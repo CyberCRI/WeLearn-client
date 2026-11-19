@@ -51,6 +51,7 @@ const connection = (id: string, extra: Partial<Connection> = {}): Connection => 
   evidence: null,
   isChecking: false,
   hasCheckFailed: false,
+  development: null,
   ...extra
 });
 
@@ -167,6 +168,26 @@ describe('SustainabilityAdditions (screen 3a)', () => {
     await wrapper.find('[data-testid="bring-back"]').trigger('click');
     expect(ids(wrapper, '.connection-list')).toEqual(['idea-1', 'idea-2']);
   });
+
+  it('counts the accepted changes once a chosen connection is developed', async () => {
+    const store = prepare('ready', [
+      connection('idea-1', { decision: 'selected', evidence: evidence('supported', [resource]) })
+    ]);
+    const wrapper = mount(SustainabilityAdditions);
+    expect(wrapper.find('[data-testid="accepted-count"]').exists()).toBe(false);
+
+    store.connections[0].development = {
+      status: 'thinking',
+      proposal: null,
+      decision: 'pending',
+      edited: null,
+      placement: null
+    };
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find('[data-testid="accepted-count"]').text()).toBe(
+      'tutor.additions.acceptedCount'
+    );
+  });
 });
 
 describe('ConnectionCard', () => {
@@ -227,6 +248,41 @@ describe('ConnectionCard', () => {
       'tutor.additions.rechecking'
     );
     expect(wrapper.find('[data-testid="recheck"]').exists()).toBe(false);
+  });
+
+  it('develops a chosen connection once its resources are judged, then shows the change', async () => {
+    const store = useConnectionsStore();
+    const develop = vi.spyOn(store, 'develop').mockResolvedValue();
+    const wrapper = mount(ConnectionCard, {
+      props: { connection: connection('idea-1', { decision: 'selected' }) }
+    });
+    // still being judged: nothing to develop it from yet
+    expect(wrapper.find('[data-testid="develop"]').attributes('disabled')).toBeDefined();
+
+    await wrapper.setProps({
+      connection: connection('idea-1', {
+        decision: 'selected',
+        evidence: evidence('supported', [resource])
+      })
+    });
+    await wrapper.find('[data-testid="develop"]').trigger('click');
+    expect(develop).toHaveBeenCalledWith('idea-1');
+
+    await wrapper.setProps({
+      connection: connection('idea-1', {
+        decision: 'selected',
+        evidence: evidence('supported', [resource]),
+        development: {
+          status: 'thinking',
+          proposal: null,
+          decision: 'pending',
+          edited: null,
+          placement: null
+        }
+      })
+    });
+    expect(wrapper.find('[data-testid="develop"]').exists()).toBe(false);
+    expect(wrapper.find('[data-testid="development"]').exists()).toBe(true);
   });
 
   it('says plainly that an idea has no supporting source', () => {

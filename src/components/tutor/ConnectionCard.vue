@@ -2,6 +2,7 @@
 import { computed } from 'vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import ResourceList from '@/components/tutor/ResourceList.vue';
+import ConnectionDevelopment from '@/components/tutor/development/ConnectionDevelopment.vue';
 import { type Connection, useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 import { evidenceState, placeInCourse, sourceName } from '@/utils/connections';
@@ -34,6 +35,11 @@ const place = computed(() => {
 });
 const isNumbered = computed(
   () => place.value?.kind === 'objective' || place.value?.kind === 'competency'
+);
+
+// developed from its judged resources only: not while they are being searched or judged again
+const canDevelop = computed(
+  () => !props.connection.development && state.value !== 'pending' && !props.connection.isChecking
 );
 
 const sourceNames = computed(() =>
@@ -121,6 +127,16 @@ const sourceNames = computed(() =>
       >
         {{ $t('tutor.additions.undo') }}
       </ButtonComponent>
+      <ButtonComponent
+        v-if="!connection.development"
+        color="primary"
+        class="is-small develop"
+        :disabled="!canDevelop"
+        data-testid="develop"
+        @click="store.develop(connection.id)"
+      >
+        {{ $t('tutor.additions.develop') }}
+      </ButtonComponent>
     </div>
     <div v-else class="actions">
       <ButtonComponent
@@ -140,6 +156,11 @@ const sourceNames = computed(() =>
         {{ $t('tutor.additions.setAside') }}
       </ButtonComponent>
     </div>
+
+    <ConnectionDevelopment
+      v-if="connection.decision === 'selected' && connection.development"
+      :connection="connection"
+    />
   </article>
 </template>
 
@@ -246,6 +267,10 @@ details summary {
   align-items: center;
   gap: 0.5rem;
   margin-top: 1rem;
+}
+
+.develop {
+  margin-left: auto;
 }
 
 .selected-tag {

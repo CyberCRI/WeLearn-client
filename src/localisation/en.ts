@@ -471,6 +471,20 @@ export const en = {
       discard: 'Discard and change',
       keepWorking: 'Keep working'
     },
+    greencomp: {
+      valuing_sustainability: 'Valuing sustainability',
+      supporting_fairness: 'Supporting fairness',
+      promoting_nature: 'Promoting nature',
+      systems_thinking: 'Systems thinking',
+      critical_thinking: 'Critical thinking',
+      problem_framing: 'Problem framing',
+      futures_literacy: 'Futures literacy',
+      adaptability: 'Adaptability',
+      exploratory_thinking: 'Exploratory thinking',
+      political_agency: 'Political agency',
+      collective_action: 'Collective action',
+      individual_initiative: 'Individual initiative'
+    },
     additions: {
       title: 'Explore sustainability connections',
       intro:
@@ -512,7 +526,65 @@ export const en = {
       setAside: 'Not for my course',
       setAsideTitle: 'Set aside ({count})',
       bringBack: 'Bring back',
-      selectedCount: 'No connection chosen yet | 1 connection chosen | {n} connections chosen'
+      selectedCount: 'No connection chosen yet | 1 connection chosen | {n} connections chosen',
+      develop: 'Develop this connection',
+      contextTag: 'Related reading, not direct evidence',
+      acceptedCount:
+        'No change accepted yet | 1 change accepted for your updated syllabus | {n} changes accepted for your updated syllabus',
+      change: {
+        thinking: 'WeLearn is preparing a concrete change for your course…',
+        unavailable: 'WeLearn could not be reached. Your choices are kept: try again.',
+        error: 'WeLearn could not propose a change this time. Your choices are kept: try again.',
+        busy: 'WeLearn is still working on your other requests. Try again in a few seconds.',
+        tooLarge:
+          'Your course is too long for WeLearn to propose a change. Shorten it in step 2, then try again.',
+        title: 'Suggested syllabus change',
+        whereLabel: 'Where does this fit in your course? Choose…',
+        placement: 'Where it fits',
+        revisesObjective: 'Revises learning objective {n}',
+        revisesCompetency: 'Revises competency {n}',
+        revises: 'Revises',
+        notPlaced: 'Not placed yet',
+        changePlace: 'Change place',
+        stalePlace:
+          'Its place, “{place}”, is no longer in your course as confirmed in step 2. Choose where it goes.',
+        staleObjective:
+          'The objective it revises is no longer in your course as confirmed in step 2. Check it, or keep the original.',
+        suggested: 'Suggested wording',
+        why: 'Why this could be useful',
+        basedOn: 'Sources and evidence',
+        checkTitle: 'What the check of this change found',
+        evidence: {
+          strong: 'Supported by the sources.',
+          strongDetail:
+            'The cited sources directly back this wording. WeLearn checked the sources, not the science: review it as you would any suggestion.',
+          partial: 'Evidence is limited.',
+          partialDefault: 'The sources give context but do not directly support this wording.',
+          none: 'Not supported by WeLearn sources.',
+          noneDefault: 'No source backs this wording: check it before using it.',
+          unchecked: 'Evidence could not be checked.',
+          uncheckedDetail:
+            'A technical problem stopped the check: review this wording before using it.'
+        },
+        unchecked:
+          'Its claims could not be checked against the resources (a technical problem): check it before using it.',
+        unbackedNames: 'Named here but not found in a directly supporting resource: {names}.',
+        notes: {
+          title: 'Pedagogical notes (optional)',
+          hint: 'To help you weigh this change. They are not part of it and are not added to your syllabus.',
+          learning: 'Intended student learning',
+          greencomp: 'GreenComp',
+          teaching: 'Teaching idea',
+          check: 'Checking learning'
+        },
+        accept: 'Accept',
+        keepOriginal: 'Keep original',
+        skip: 'Skip',
+        skipped: 'Skipped: nothing is added to your syllabus.',
+        saveAndAccept: 'Save and accept',
+        accepted: 'Accepted for your updated syllabus',
+        kept: 'Original kept: your course stays as it is.'
+      }
     },
     course: {
       title: 'Your course',

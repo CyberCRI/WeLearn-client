@@ -65,7 +65,9 @@ export const authentication = {
       feedbackLimit:
         'Vous avez utilisé les modifications gratuites du jour de votre syllabus avec l’accès invité. Revenez demain, ou créez un compte gratuit pour continuer à l’améliorer.',
       filesLimit:
-        'Vous avez envoyé les documents gratuits du jour avec l’accès invité. Revenez demain, ou créez un compte gratuit pour en envoyer d’autres.'
+        'Vous avez envoyé les documents gratuits du jour avec l’accès invité. Revenez demain, ou créez un compte gratuit pour en envoyer d’autres.',
+      adaptationLimit:
+        'Vous avez utilisé les modifications de cours gratuites du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour développer d’autres liens.'
     }
   },
   // formes du pluriel : aucune restante | 1 restante | n restantes
