@@ -2,13 +2,15 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import _isequal from 'lodash.isequal';
-import { type Ref, ref } from 'vue';
-import { type Document, type TutorSearch, type TutorSyllabus } from '@/types';
+import { type Ref, computed, ref } from 'vue';
+import { type CoursePath, type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
 import { useAuthStore } from '@/stores/auth';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useConnectionsStore } from '@/stores/connections';
+import { useCourseStore } from '@/stores/course';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 
 const MAX_FILES = 3;
@@ -50,6 +52,9 @@ export const useTutorStore = defineStore('tutor', () => {
 
   const goNext = () => (step.value = step.value + 1);
   const setStep = (newStep: number) => (step.value = newStep);
+
+  // syllabus v2 (flag syllabusV2): the path chosen on "do you already have a course?"
+  const path: Ref<CoursePath | null> = ref(null);
 
   // ERROR STATES
   const shouldRetryAction: Ref<boolean> = ref(false);
@@ -239,6 +244,11 @@ export const useTutorStore = defineStore('tutor', () => {
       });
     } catch (error) {
       if (axios.isCancel(error)) return false;
+      // past the guest's daily limit: the signup prompt is open, retrying won't help
+      if (useGuestQuotaStore().handleQuotaError(error)) {
+        isLoading.value = false;
+        return false;
+      }
       console.error('get files content did not work', error);
       shouldRetryAction.value = true;
       track('Tutor Step Failed', { step: 1, durationMs: Date.now() - startedAt });
@@ -268,6 +278,27 @@ export const useTutorStore = defineStore('tutor', () => {
     feedbackHistory.value = [];
     hasSearchError.value = false;
     fileError.value = { state: false, reason: null };
+  };
+
+  // something the user would lose by changing path
+  const hasStartedCourse = computed(
+    () =>
+      step.value > 1 ||
+      Object.keys(newFilesToSearch.value).length > 0 ||
+      !!(courseTitle.value || level.value || duration.value || description.value) ||
+      useCourseStore().hasStarted
+  );
+
+  const choosePath = (chosen: CoursePath) => {
+    path.value = chosen;
+  };
+
+  // back to the question: drops the work of the current path
+  const resetPath = () => {
+    restart();
+    useCourseStore().$reset();
+    useConnectionsStore().$reset();
+    path.value = null;
   };
 
   const retrieveSyllabus = async (): Promise<boolean> => {
@@ -308,6 +339,11 @@ export const useTutorStore = defineStore('tutor', () => {
       return true;
     } catch (error) {
       if (axios.isCancel(error)) return false;
+      // the guest used their syllabus of the day: the signup prompt is open, retrying won't help
+      if (useGuestQuotaStore().handleQuotaError(error)) {
+        isLoading.value = false;
+        return false;
+      }
       console.error('Error during syllabus retrieval:', error);
       track('Tutor Step Failed', { step: 3, durationMs: Date.now() - startedAt });
       shouldRetryAction.value = true;
@@ -326,8 +362,10 @@ export const useTutorStore = defineStore('tutor', () => {
     const guestQuota = useGuestQuotaStore();
     if (!guestQuota.checkQuota('syllabus')) return;
 
-    if (await retrieveSyllabus()) {
-      guestQuota.consume('syllabus');
+    // counted by the API, which gives it back when the generation fails
+    const isCreated = await retrieveSyllabus();
+    void guestQuota.refresh();
+    if (isCreated) {
       feedbackHistory.value = [];
       goNext();
     }
@@ -339,6 +377,10 @@ export const useTutorStore = defineStore('tutor', () => {
       console.error('No syllabus to give feedback on');
       return false;
     }
+
+    // a guest gets a few changes a day; undefined keeps the text without showing an error
+    const guestQuota = useGuestQuotaStore();
+    if (!guestQuota.checkQuota('feedback')) return undefined;
 
     const { signal } = startRequest();
 
@@ -363,12 +405,15 @@ export const useTutorStore = defineStore('tutor', () => {
       return true;
     } catch (error) {
       if (axios.isCancel(error)) return undefined;
+      if (guestQuota.handleQuotaError(error)) return undefined;
       console.error('Error during feedback submission:', error);
       track('Syllabus Feedback Sent', { feedbackLength: feedback.length, isApplied: false });
       return false;
     } finally {
       // aborted: stopAction already stopped the loading, or a newer request is running
       if (!signal.aborted) isLoading.value = false;
+      // counted by the API, which gives it back when the change fails
+      void guestQuota.refresh();
     }
   };
 
@@ -444,6 +489,10 @@ export const useTutorStore = defineStore('tutor', () => {
     removeFile,
     fileError,
     restart,
+    path,
+    hasStartedCourse,
+    choosePath,
+    resetPath,
     reloadError,
     hasDownloadError,
     retrieveTutorSearch,

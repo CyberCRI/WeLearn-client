@@ -1,5 +1,6 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
 import http, { getAuthHeaders, handleUnauthorized } from './api';
+import { apiErrorCode } from './apiErrors';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
 
 // pass the response type from `@/types/api`, e.g. baseGetAxios<ApiResponse<'/user/bookmarks'>>
@@ -136,8 +137,9 @@ export const fetchStream = async (
 
   // an error body must never be streamed as the answer
   if (!response.ok) {
-    handleUnauthorized(response.status);
-    throw new StreamResponseError(response.status, await readErrorBody(response));
+    const error = new StreamResponseError(response.status, await readErrorBody(response));
+    handleUnauthorized(response.status, apiErrorCode(error));
+    throw error;
   }
 
   if (!response.body) throw new Error('Error fetching data');
@@ -162,6 +164,12 @@ export const deleteBookmark = async (documentId: string) => {
 export const deleteAllBookmarks = async () => {
   await http.delete(`/user/bookmarks`);
 };
+
+// the daily guest quotas left; `limited` is false for an account
+export const getGuestQuota = () =>
+  baseGetAxios<ApiResponse<'/user/guest_quota'>>('/user/guest_quota');
+
+export const getAccountAccess = () => baseGetAxios<ApiResponse<'/user/access'>>('/user/access');
 
 export const getBookmarks = async () => {
   const bookmarksIds = await baseGetAxios<ApiResponse<'/user/bookmarks'>>(`/user/bookmarks`);

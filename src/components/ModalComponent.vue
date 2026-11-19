@@ -78,14 +78,20 @@ const handleModalClose = () => {
     margin-bottom: 0;
     font-size: 0.95rem;
   }
+  /* side by side when they fit, stacked when a label is too long (french, phones) */
   .buttons {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 0.75rem;
   }
+  /* each button starts at its label's width and shares the space left. a label wider than the
+     dialog (a phone) wraps instead of overflowing */
   .buttons :deep(.button) {
-    flex: 1;
+    flex: 1 1 auto;
+    max-width: 100%;
     margin: 0;
+    white-space: normal;
+    height: auto;
   }
 }
 </style>

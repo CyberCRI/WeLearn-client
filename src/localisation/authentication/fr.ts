@@ -29,6 +29,21 @@ export const authentication = {
     login: 'Se reconnecter',
     continueAsGuest: 'Continuer sans compte'
   },
+  limitedAccess: {
+    title: 'Votre accès est temporaire',
+    message:
+      "Vous ne vous êtes pas connecté·e avec le compte de votre établissement : votre accès à WeLearn est donc limité à 6 mois et se termine le {date}. Pour continuer à utiliser WeLearn ensuite, connectez-vous avec le compte de votre établissement. Votre profil indique le temps qu'il vous reste.",
+    messageWithoutDate:
+      "Vous ne vous êtes pas connecté·e avec le compte de votre établissement : votre accès à WeLearn est donc limité à 6 mois. Pour continuer à utiliser WeLearn ensuite, connectez-vous avec le compte de votre établissement. Votre profil indique le temps qu'il vous reste.",
+    ok: "J'ai compris"
+  },
+  accessEnded: {
+    title: 'Votre accès temporaire est terminé',
+    message:
+      "L'accès avec un compte Google ou une adresse e-mail est temporaire, et le vôtre est arrivé à son terme. Connectez-vous avec le compte de votre établissement pour continuer à utiliser tout WeLearn.",
+    login: 'Me connecter avec mon établissement',
+    continueAsGuest: 'Continuer sans compte'
+  },
   signupPrompt: {
     title: 'Créez votre compte gratuit',
     createAccount: 'Créer un compte',
@@ -42,16 +57,22 @@ export const authentication = {
         'Votre syllabus est prêt. Créez un compte gratuit pour le télécharger, ou connectez-vous : il se téléchargera juste après.',
       bibliography: 'Créez un compte gratuit pour exporter votre bibliographie.',
       chatLimit:
-        'Vous avez utilisé toutes les questions gratuites de l’accès invité. Créez un compte gratuit pour continuer à discuter.',
+        'Vous avez utilisé les questions gratuites du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour continuer à discuter.',
       syllabusLimit:
-        'Vous avez utilisé le syllabus gratuit de l’accès invité. Créez un compte gratuit pour en créer d’autres.'
+        'Vous avez utilisé le syllabus gratuit du jour de l’accès invité. Revenez demain, ou créez un compte gratuit pour en créer d’autres.',
+      tooManyGuests:
+        'Beaucoup de nouveaux invités se connectent depuis votre réseau en ce moment. Connectez-vous ou créez un compte gratuit pour continuer, ou revenez dans une heure.',
+      feedbackLimit:
+        'Vous avez utilisé les modifications gratuites du jour de votre syllabus avec l’accès invité. Revenez demain, ou créez un compte gratuit pour continuer à l’améliorer.',
+      filesLimit:
+        'Vous avez envoyé les documents gratuits du jour avec l’accès invité. Revenez demain, ou créez un compte gratuit pour en envoyer d’autres.'
     }
   },
   // formes du pluriel : aucune restante | 1 restante | n restantes
   guestQuota: {
-    chat: 'Accès invité : vous avez utilisé vos {limit} questions gratuites. | Accès invité : il vous reste 1 question gratuite sur {limit}. | Accès invité : il vous reste {n} questions gratuites sur {limit}.',
+    chat: 'Accès invité : vous avez utilisé vos {limit} questions gratuites du jour, revenez demain. | Accès invité : il vous reste 1 question gratuite sur {limit} aujourd’hui. | Accès invité : il vous reste {n} questions gratuites sur {limit} aujourd’hui.',
     syllabus:
-      'Accès invité : vous avez utilisé votre syllabus gratuit. | Accès invité : vous pouvez créer 1 syllabus gratuit. | Accès invité : vous pouvez créer {n} syllabus gratuits.',
-    createAccount: 'Créez un compte gratuit pour un usage illimité'
+      'Accès invité : vous avez utilisé votre syllabus gratuit du jour, revenez demain. | Accès invité : vous pouvez créer 1 syllabus gratuit aujourd’hui. | Accès invité : vous pouvez créer {n} syllabus gratuits aujourd’hui.',
+    createAccount: 'Ou créez un compte gratuit pour un usage illimité'
   }
 };

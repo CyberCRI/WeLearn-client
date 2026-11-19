@@ -33,6 +33,29 @@ describe('CursusInfo', () => {
   afterEach(() => {
     Element.prototype.scrollIntoView = originalScrollIntoView;
     document.body.innerHTML = '';
+    localStorage.removeItem('featurePreview');
+  });
+
+  it('keeps the current texts while the syllabusV2 flag is off', () => {
+    const wrapper = mountInfo();
+    expect(wrapper.find('[data-testid="ai-notice"]').exists()).toBe(false);
+    expect(wrapper.find('h1').text()).toBe('tutor.documentsStep.title');
+    expect(wrapper.text()).toContain('tutor.documentsStep.description');
+    expect(wrapper.text()).toContain('tutor.documentsStep.hint');
+  });
+
+  it("invites the teacher's own syllabus when the flag is on", () => {
+    localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+    const wrapper = mountInfo();
+    expect(wrapper.find('h1').text()).toBe('tutor.documentsStep.v2.title');
+    expect(wrapper.text()).toContain('tutor.documentsStep.v2.description');
+    expect(wrapper.text()).toContain('tutor.documentsStep.v2.hint');
+  });
+
+  it('says the files are sent for AI analysis when the flag is on', () => {
+    localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+    const wrapper = mountInfo();
+    expect(wrapper.find('[data-testid="ai-notice"]').text()).toBe('tutor.documentsStep.aiNotice');
   });
 
   it('adds the picked files and clears the input so the same file can be picked again', async () => {

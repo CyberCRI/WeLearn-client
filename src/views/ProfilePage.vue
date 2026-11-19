@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { storeToRefs } from 'pinia';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import LanguageSelector from '@/components/nav/LanguageSelector.vue';
 import { useAuth } from '@/composables/useAuth';
+import { useAccountAccessStore } from '@/stores/accountAccess';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { useUserStore } from '@/stores/user';
 
@@ -13,6 +15,9 @@ const userStore = useUserStore();
 const isAnalyticsEnabled = useFeatureFlipStore().isFeatureEnabled('analytics');
 
 const email = computed(() => user.value?.email);
+
+// only for a Google or email login, limited in time
+const { isLimited, accessUntilLabel, daysLeft } = storeToRefs(useAccountAccessStore());
 </script>
 
 <template>
@@ -31,6 +36,16 @@ const email = computed(() => user.value?.email);
         <dd data-testid="profile-name">{{ userName }}</dd>
         <dt class="has-text-weight-semibold">{{ $t('profile.email') }}</dt>
         <dd data-testid="profile-email">{{ email || $t('profile.notAvailable') }}</dd>
+        <template v-if="isLimited">
+          <dt class="has-text-weight-semibold">{{ $t('profile.access') }}</dt>
+          <dd data-testid="profile-access">
+            <span v-if="accessUntilLabel && daysLeft !== null">
+              {{ $t('profile.accessUntil', { date: accessUntilLabel, n: daysLeft }, daysLeft) }}
+            </span>
+            <span v-else>{{ $t('profile.accessTemporary') }}</span>
+            <p class="is-size-7 has-text-grey mt-1">{{ $t('profile.accessHint') }}</p>
+          </dd>
+        </template>
         <dt class="has-text-weight-semibold">{{ $t('profile.language') }}</dt>
         <dd><LanguageSelector /></dd>
         <template v-if="isAnalyticsEnabled">

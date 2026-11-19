@@ -153,6 +153,22 @@ describe('sources store', () => {
       expect(exportBibliography).not.toHaveBeenCalled();
     });
 
+    it('asks to sign up when the API requires an account', async () => {
+      vi.mocked(exportBibliography).mockRejectedValue({
+        response: {
+          status: 401,
+          data: { detail: { code: 'ACCOUNT_REQUIRED', message: 'An account is required' } }
+        }
+      });
+      const store = useSourcesStore();
+
+      await store.handleBibliographyExport([doc('doc-1')]);
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('bibliography');
+      expect(store.isExportingBibliography).toBe(false);
+      expect(window.URL.createObjectURL).not.toHaveBeenCalled();
+    });
+
     it('ends the export when the request fails', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
       vi.mocked(exportBibliography).mockRejectedValue(new Error('Network Error'));

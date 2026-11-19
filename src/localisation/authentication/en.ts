@@ -28,6 +28,21 @@ export const authentication = {
     login: 'Log in again',
     continueAsGuest: 'Continue without an account'
   },
+  limitedAccess: {
+    title: 'Your access is temporary',
+    message:
+      'You did not log in with your school or university account, so your access to WeLearn is limited to 6 months: it ends on {date}. To keep using WeLearn after that, log in with your institution account. Your profile shows how much time you have left.',
+    messageWithoutDate:
+      'You did not log in with your school or university account, so your access to WeLearn is limited to 6 months. To keep using WeLearn after that, log in with your institution account. Your profile shows how much time you have left.',
+    ok: 'I understand'
+  },
+  accessEnded: {
+    title: 'Your temporary access has ended',
+    message:
+      'Access with a Google account or an email address is temporary, and yours has ended. Log in with your school or university account to keep using all of WeLearn.',
+    login: 'Log in with my institution',
+    continueAsGuest: 'Continue without an account'
+  },
   signupPrompt: {
     title: 'Create your free account',
     createAccount: 'Create an account',
@@ -40,16 +55,22 @@ export const authentication = {
         'Your syllabus is ready. Create a free account to download it, or log in: it will download right after.',
       bibliography: 'Create a free account to export your bibliography.',
       chatLimit:
-        'You have used all the free questions of the guest access. Create a free account to keep chatting.',
+        'You have used today’s free questions of the guest access. Come back tomorrow, or create a free account to keep chatting.',
       syllabusLimit:
-        'You have used the free syllabus of the guest access. Create a free account to create more.'
+        'You have used today’s free syllabus of the guest access. Come back tomorrow, or create a free account to create more.',
+      tooManyGuests:
+        'Many new guests are connecting from your network right now. Log in or create a free account to continue, or come back in an hour.',
+      feedbackLimit:
+        'You have used today’s free changes to your syllabus with the guest access. Come back tomorrow, or create a free account to keep improving it.',
+      filesLimit:
+        'You have sent today’s free documents with the guest access. Come back tomorrow, or create a free account to send more.'
     }
   },
   // plural forms: none left | 1 left | n left
   guestQuota: {
-    chat: 'Guest access: you have used your {limit} free questions. | Guest access: 1 free question left out of {limit}. | Guest access: {n} free questions left out of {limit}.',
+    chat: 'Guest access: you have used your {limit} free questions for today, come back tomorrow. | Guest access: 1 free question left out of {limit} today. | Guest access: {n} free questions left out of {limit} today.',
     syllabus:
-      'Guest access: you have used your free syllabus. | Guest access: you can create 1 free syllabus. | Guest access: you can create {n} free syllabi.',
-    createAccount: 'Create a free account for unlimited use'
+      'Guest access: you have used your free syllabus for today, come back tomorrow. | Guest access: you can create 1 free syllabus today. | Guest access: you can create {n} free syllabi today.',
+    createAccount: 'Or create a free account for unlimited use'
   }
 };

@@ -7,10 +7,21 @@ vi.mock('@/utils/fetch', () => ({
   basePostAxios: vi.fn()
 }));
 
+const auth = vi.hoisted(() => ({ isGuest: true, askToSignUp: vi.fn() }));
+vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
+
+const tooManyGuests = {
+  response: {
+    status: 429,
+    data: { detail: { code: 'RATE_LIMITED', message: 'Too many new sessions' } }
+  }
+};
+
 type PostResponse = Awaited<ReturnType<typeof basePostAxios>>;
 
 describe('getUserAndSession', () => {
   beforeEach(() => {
+    auth.isGuest = true;
     localStorage.clear();
     setActivePinia(createPinia());
     vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -18,6 +29,7 @@ describe('getUserAndSession', () => {
 
   afterEach(() => {
     vi.mocked(basePostAxios).mockReset();
+    auth.askToSignUp.mockReset();
     vi.restoreAllMocks();
   });
 
@@ -73,5 +85,22 @@ describe('getUserAndSession', () => {
 
     await expect(getUserAndSession()).rejects.toThrow('Network Error');
     expect(console.warn).toHaveBeenCalled();
+    expect(auth.askToSignUp).not.toHaveBeenCalled();
+  });
+
+  it('asks a guest refused as one too many new guests to sign up', async () => {
+    vi.mocked(basePostAxios).mockRejectedValue(tooManyGuests);
+
+    await expect(getUserAndSession()).rejects.toBe(tooManyGuests);
+    expect(auth.askToSignUp).toHaveBeenCalledWith('tooManyGuests');
+    expect(localStorage.getItem('sessionId')).toBeNull();
+  });
+
+  it('does not ask to sign up where there is no guest access', async () => {
+    auth.isGuest = false;
+    vi.mocked(basePostAxios).mockRejectedValue(tooManyGuests);
+
+    await expect(getUserAndSession()).rejects.toBe(tooManyGuests);
+    expect(auth.askToSignUp).not.toHaveBeenCalled();
   });
 });

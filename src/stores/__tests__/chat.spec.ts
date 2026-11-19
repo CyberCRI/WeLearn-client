@@ -3,14 +3,15 @@ import { createPinia, setActivePinia } from 'pinia';
 import { CHAT_STATUS, useChatStore } from '../chat';
 import { useFiltersStore } from '../filters';
 import { useGuestQuotaStore } from '../guestQuota';
-import { baseGetAxios, deleteChatThread, fetchStream } from '@/utils/fetch';
+import { baseGetAxios, deleteChatThread, fetchStream, getGuestQuota } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
   baseGetAxios: vi.fn(),
   deleteChatThread: vi.fn(),
-  fetchStream: vi.fn()
+  fetchStream: vi.fn(),
+  getGuestQuota: vi.fn()
 }));
 
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
@@ -71,8 +72,16 @@ const apiError = (status: number, code: string) =>
     response: { status, data: { detail: { message: 'nope', code } } }
   });
 
+// what GET /user/guest_quota answers to a guest
+const guestQuota = (chat: number) => ({
+  limited: true,
+  chat: { limit: 5, remaining: chat, resets_in: 0 },
+  syllabus: { limit: 1, remaining: 1, resets_in: 0 }
+});
+
 describe('chat store', () => {
   beforeEach(() => {
+    vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(5));
     auth.isGuest = false;
     auth.isAuthenticated = false;
     auth.askToSignUp.mockReset();
@@ -373,79 +382,43 @@ describe('chat store', () => {
         { role: 'user', content: 'first' },
         { role: 'assistant', content: 'Answer' }
       ]);
-      expect(useGuestQuotaStore().usage.chat).toBe(1);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
     });
 
-    it('counts the question in the guest quota as soon as it is accepted', async () => {
+    it('reloads the guest quota once the answer is done', async () => {
       auth.isGuest = true;
-      const stream = controlledStream();
-      const store = useChatStore();
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(4));
+      mockStream([sse({ content: 'Hello' })]);
 
-      const sending = store.onSendMessage('a question');
-      await stream.push(sse({ content: 'Hel' }));
+      await useChatStore().onSendMessage('a question');
+      await Promise.resolve();
 
-      expect(useGuestQuotaStore().usage.chat).toBe(1);
-      await stream.end();
-      await sending;
-      expect(useGuestQuotaStore().usage.chat).toBe(1);
+      expect(getGuestQuota).toHaveBeenCalledTimes(1);
+      expect(useGuestQuotaStore().remaining('chat')).toBe(4);
     });
 
-    it('gives the quota back when the stream breaks midway', async () => {
+    // the API gives the question back: what is left comes from it
+    it('reloads the guest quota after a failed answer too', async () => {
       auth.isGuest = true;
-      vi.spyOn(console, 'error').mockImplementation(() => {});
-      const read = vi
-        .fn()
-        .mockResolvedValueOnce({
-          done: false,
-          value: new TextEncoder().encode(sse({ content: 'a' }))
-        })
-        .mockRejectedValueOnce(new Error('connection lost'));
-      vi.mocked(fetchStream).mockResolvedValue({
-        getReader: () => ({ read })
-      } as unknown as StreamBody);
-      const store = useChatStore();
-
-      await store.onSendMessage('a question');
-
-      expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
-      expect(useGuestQuotaStore().usage.chat).toBe(0);
-    });
-
-    it('does not give back a use for a signed-in user', async () => {
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 3, syllabus: 0 }));
       vi.spyOn(console, 'error').mockImplementation(() => {});
       vi.mocked(fetchStream).mockRejectedValue(new Error('boom'));
 
       await useChatStore().onSendMessage('a question');
 
-      expect(useGuestQuotaStore().usage.chat).toBe(3);
+      expect(getGuestQuota).toHaveBeenCalledTimes(1);
     });
 
-    it('counts an answered question in the guest quota', async () => {
-      auth.isGuest = true;
+    it('does not ask the guest quota for a signed-in user', async () => {
       mockStream([sse({ content: 'Hello' })]);
-      const store = useChatStore();
 
-      await store.onSendMessage('a question');
+      await useChatStore().onSendMessage('a question');
 
-      expect(useGuestQuotaStore().usage.chat).toBe(1);
-    });
-
-    it('does not count a failed question in the guest quota', async () => {
-      auth.isGuest = true;
-      vi.spyOn(console, 'error').mockImplementation(() => {});
-      vi.mocked(fetchStream).mockRejectedValue(new Error('boom'));
-      const store = useChatStore();
-
-      await store.onSendMessage('a question');
-
-      expect(useGuestQuotaStore().usage.chat).toBe(0);
+      expect(getGuestQuota).not.toHaveBeenCalled();
     });
 
     it('asks a guest who used every free question to sign up', async () => {
       auth.isGuest = true;
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }));
+      useGuestQuotaStore().quota = guestQuota(0);
       const store = useChatStore();
 
       await store.onSendMessage('a question');
@@ -453,6 +426,29 @@ describe('chat store', () => {
       expect(auth.askToSignUp).toHaveBeenCalledWith('chatLimit');
       expect(fetchStream).not.toHaveBeenCalled();
       expect(store.chatMessagesList).toEqual([]);
+    });
+
+    // the browser did not know (another tab, another device): the API refuses before streaming
+    it('treats a question refused by the API quota as not sent', async () => {
+      auth.isGuest = true;
+      vi.mocked(fetchStream).mockRejectedValue(
+        Object.assign(new Error('status 403'), {
+          response: {
+            status: 403,
+            data: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'chat', retry_after: 60 } }
+          }
+        })
+      );
+      const store = useChatStore();
+      store.chatStatus = CHAT_STATUS.DONE;
+
+      expect(await store.onSendMessage('a question')).toBe(false);
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('chatLimit');
+      expect(store.chatMessagesList).toEqual([]);
+      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual([]);
+      expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
+      expect(store.hasChatAnswerError).toBe(false);
     });
 
     // the input keeps a refused question and clears an accepted one
@@ -465,8 +461,8 @@ describe('chat store', () => {
 
       store.chatStatus = CHAT_STATUS.DONE;
       auth.isGuest = true;
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }));
       setActivePinia(createPinia());
+      useGuestQuotaStore().quota = guestQuota(0);
       expect(await useChatStore().onSendMessage('a question')).toBe(false);
 
       auth.isGuest = false;
@@ -658,7 +654,6 @@ describe('chat store', () => {
       expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(question);
       expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
       expect(store.hasChatAnswerError).toBe(true);
-      expect(useGuestQuotaStore().usage.chat).toBe(0);
     });
 
     it('removes the empty assistant bubble when the stream breaks before any content', async () => {
@@ -1353,8 +1348,6 @@ describe('chat store', () => {
       for (const key of ['chat', 'chatSources', 'chatThreadId', 'chatMessageId']) {
         expect(localStorage.getItem(key)).toBeNull();
       }
-      // the stopped answer does not use the guest quota
-      expect(useGuestQuotaStore().usage.chat).toBe(0);
       expect(track).not.toHaveBeenCalledWith('Chat Answer Received', expect.anything());
 
       // the next question starts a new thread, and can be sent right away

@@ -358,7 +358,12 @@ export const fr = {
     language: 'Langue',
     cookies: 'Cookies',
     notAvailable: 'Non disponible',
-    notAuthenticated: "Vous n'êtes pas connecté·e."
+    notAuthenticated: "Vous n'êtes pas connecté·e.",
+    access: 'Accès',
+    accessUntil: "Jusqu'au {date} ({n} jour restant) | Jusqu'au {date} ({n} jours restants)",
+    accessTemporary: 'Temporaire (6 mois)',
+    accessHint:
+      'Connectez-vous avec le compte de votre établissement pour continuer à utiliser WeLearn ensuite.'
   },
   reload: 'Recharger',
   clearFilters: 'Effacer tous les filtres',
@@ -456,7 +461,226 @@ export const fr = {
       documents: 'Documents',
       summary: 'Résumé',
       resources: 'Ressources',
-      syllabus: 'Syllabus'
+      syllabus: 'Syllabus',
+      course: 'Importer le syllabus',
+      check: 'Vérifier le cours',
+      additions: 'Ajouts de durabilité',
+      updated: 'Syllabus mis à jour'
+    },
+    start: {
+      question: 'Avez-vous déjà un cours\u00a0?',
+      yes: "Oui, j'ai un cours",
+      no: 'Non, je pars de zéro',
+      working: "À partir d'un cours existant",
+      workingNew: "Création d'un cours à partir de zéro",
+      change: 'Changer',
+      changeTitle: 'Changer de parcours\u00a0?',
+      changeWarning: 'Changer effacera ce que vous avez ajouté pour ce cours.',
+      discard: 'Effacer et changer',
+      keepWorking: 'Continuer mon travail'
+    },
+    additions: {
+      title: 'Explorer les liens avec la durabilité',
+      intro:
+        'WeLearn a identifié des liens possibles avec votre cours. Parcourez les idées et les ressources qui les appuient, puis choisissez celles que vous souhaitez développer.',
+      courseChanged: "Votre cours a changé à l'étape 2. Vos liens et vos choix sont conservés.",
+      findAgain: 'Chercher de nouveaux liens',
+      thinking: 'Recherche de liens pertinents dans votre cours…',
+      searching: 'Recherche et sélection des ressources WeLearn pour chaque lien ({done}/{total})…',
+      pending: 'Recherche de ressources dans WeLearn…',
+      unavailable: "WeLearn n'a pas pu être joint. Réessayez dans un instant.",
+      error:
+        "WeLearn n'a pas pu proposer de liens cette fois-ci : sa réponse était inutilisable. C'est un problème technique, pas un jugement sur votre cours.",
+      retry: 'Réessayer',
+      noConnections: "WeLearn n'a trouvé aucun lien avec la durabilité assez solide pour ce cours.",
+      noneReason: 'Raison donnée par WeLearn : {reason}',
+      noSupport:
+        "WeLearn n'a trouvé aucune ressource qui appuie assez bien ses idées. Vous pouvez tout de même les consulter ci-dessous.",
+      connectsTo: 'Lien avec',
+      objectiveRef: "Objectif d'apprentissage {n}",
+      competencyRef: 'Compétence {n}',
+      why: 'Pourquoi cela pourrait être utile',
+      sources: 'Sources',
+      sourceCount: '1 source à l’appui | {n} sources à l’appui',
+      passage: 'Passage retenu',
+      unsupported: 'Aucune source à l’appui trouvée dans WeLearn pour cette idée.',
+      background: 'Pour aller plus loin ({count})',
+      backgroundHint:
+        "Un contexte sur l'enjeu de durabilité plus large. Ces lectures ne traitent pas directement cette partie de votre cours et ne constituent pas une preuve pour ce lien.",
+      unchecked:
+        "WeLearn n'a pas pu vérifier les ressources de cette idée (un problème technique, pas un jugement sur l'idée).",
+      rechecking: 'Nouvelle vérification des ressources de cette idée…',
+      leftOut:
+        "WeLearn a écarté une idée qu'il a jugée trop lâche pour cette discipline (une analogie, ou un mot employé dans un autre sens). | WeLearn a écarté {n} idées qu'il a jugées trop lâches pour cette discipline (des analogies, ou des mots employés dans un autre sens).",
+      unsupportedTitle: 'Idées sans appui solide dans les ressources WeLearn ({count})',
+      select: 'Retenir ce lien',
+      selected: 'Lien retenu',
+      undo: 'Annuler',
+      setAside: 'Pas pour mon cours',
+      setAsideTitle: 'Mis de côté ({count})',
+      bringBack: 'Remettre',
+      selectedCount: 'Aucun lien retenu pour le moment | 1 lien retenu | {n} liens retenus'
+    },
+    course: {
+      title: 'Votre cours',
+      description: 'Importez votre syllabus pour commencer.',
+      dropzone: 'Déposez votre syllabus ici ou',
+      limits: 'Un fichier · PDF, DOCX ou TXT · 5 Mo max',
+      languageLabel: 'Langue des réponses de WeLearn',
+      aiNotice:
+        "WeLearn utilise l'IA pour lire votre syllabus. Vous pourrez vérifier et corriger les informations avant de continuer.",
+      noFile: 'Importez un syllabus pour continuer.',
+      action: 'Continuer',
+      contextTitle: "Contexte d'enseignement",
+      optional: '(facultatif)',
+      contextHint:
+        'Comment le cours est enseigné. Rempli à partir de votre syllabus quand il le précise ; complétez le reste si vous le souhaitez.',
+      fields: {
+        title: 'Titre du cours',
+        discipline: 'Discipline',
+        level: 'Niveau',
+        sessions: 'Nombre de séances',
+        sessionLength: "Durée d'une séance",
+        sessionType: 'Type de séance',
+        sessionMode: 'Format',
+        classSize: "Nombre d'étudiants"
+      },
+      disciplinePlaceholder: 'ex. : Économie',
+      choose: 'Choisir…',
+      readByAi: "Lu par l'IA de WeLearn : à vérifier",
+      suggestedByAi:
+        'non précisée dans votre syllabus : suggérée par WeLearn à partir du contenu du cours',
+      fromSyllabus: 'Lu dans votre syllabus',
+      levels: {
+        l1: 'Licence 1',
+        l2: 'Licence 2',
+        l3: 'Licence 3',
+        m1: 'Master 1',
+        m2: 'Master 2',
+        doctorate: 'Doctorat',
+        other: 'Autre'
+      },
+      sessionTypes: {
+        lecture: 'Cours magistral',
+        tutorial: 'Travaux dirigés',
+        practical: 'Travaux pratiques',
+        seminar: 'Séminaire',
+        project: 'Projet',
+        mixed: 'Mixte'
+      },
+      modes: {
+        PRESENTIEL: 'Présentiel',
+        DISTANCIEL: 'Distanciel',
+        HYBRIDE: 'Hybride'
+      }
+    },
+    check: {
+      title: 'Vérifiez votre cours',
+      description:
+        'Relisez ce que WeLearn a compris de votre syllabus. Vous pouvez tout corriger avant d’explorer les adaptations liées à la durabilité.',
+      showSubtopics: 'Afficher les sous-thèmes',
+      editField: 'Modifier : {field}',
+      editObjective: 'Modifier cet élément',
+      outlineName: 'plan du cours',
+      hideSubtopics: 'Masquer les sous-thèmes',
+      readingPartial:
+        'Certaines informations du cours peuvent manquer. Vérifiez les thèmes et les objectifs identifiés au regard de votre syllabus.',
+      notSyllabus:
+        "WeLearn n'est pas sûr que ce fichier soit un syllabus (il ressemble à : {type}). Vérifiez ce qu'il a lu, ou revenez en arrière pour ajouter votre syllabus.",
+      topicsLabel: 'Thèmes principaux',
+      addTopic: 'Ajouter un thème',
+      removeTopic: 'Retirer {topic}',
+      objectivesTitle: "Objectifs d'apprentissage",
+      types: {
+        syllabus: 'un syllabus',
+        course_plan: 'un plan de cours',
+        lesson: 'une séance seule',
+        partial: "une description partielle d'un cours",
+        other: 'un autre type de document',
+        article: 'un article',
+        unknown: 'incertain',
+        none: 'vide'
+      },
+      groups: {
+        objective: 'Objectifs du cours',
+        competency: 'Compétences',
+        programme: 'Objectifs de niveau diplôme'
+      },
+      moveTo: 'Déplacer vers',
+      addObjective: 'Ajouter un objectif du cours',
+      addCompetency: 'Ajouter une compétence',
+      origin: {
+        extracted: 'Lu dans votre syllabus',
+        unverified: 'Non retrouvé mot pour mot dans votre syllabus : à vérifier',
+        unchecked: "Lu par l'IA de WeLearn",
+        edited: 'Corrigé par vous',
+        added: 'Ajouté par vous'
+      },
+      edit: 'Modifier',
+      save: 'Enregistrer',
+      cancel: 'Annuler',
+      remove: 'Retirer',
+      restore: "Rétablir l'original",
+      showMore: 'Afficher tout le texte',
+      showLess: 'Afficher moins',
+      openOriginal: 'Ouvrir l’original',
+      notFoundOverview: 'Non identifié par WeLearn :',
+      tag: {
+        suggested: 'Suggestion de WeLearn',
+        generated: 'Rédigé par WeLearn',
+        identified: 'Identifiés par WeLearn',
+        check: 'À vérifier'
+      },
+      noTopicsFound:
+        "WeLearn n'a pas identifié de thèmes principaux. Les ajouter aide WeLearn à proposer des liens adaptés à votre cours.",
+      addTopics: 'Ajouter les thèmes principaux',
+      outlineTitle: 'Plan du cours ({n})',
+      outlineHint: 'Une séance, une semaine ou un chapitre par ligne.',
+      showAll: 'Afficher les {n} objectifs',
+      showFewer: 'Afficher moins',
+      done: 'Terminé',
+      overviewLabel: 'Présentation',
+      topicTitle: 'Thème',
+      subtopics: 'Sous-thèmes, séparés par des virgules',
+      saveChanges: 'Enregistrer les modifications',
+      pleaseCheck: 'introuvable dans votre syllabus : à vérifier',
+      noObjectives:
+        "Aucun objectif d'apprentissage explicite n'a été trouvé dans votre syllabus. Vous pouvez continuer avec la description et les thèmes de votre cours, ou ajouter des objectifs si vous le souhaitez.",
+      programmeAside: 'Objectifs de la formation mis de côté ({n})',
+      programmeAsideHint:
+        'Ils concernent toute la formation, pas ce cours : WeLearn ne les utilise pas pour votre cours.',
+      moveToCourse: 'Remettre dans les objectifs du cours',
+      unsortedTitle: 'À vérifier : objectifs que WeLearn n’a pas pu classer ({n})',
+      unsortedHint:
+        'Votre syllabus ne dit pas clairement s’ils relèvent de ce cours ou de la formation ou de l’établissement. WeLearn ne les utilise pas tant que vous ne les avez pas classés.',
+      sortToCourse: 'Objectif du cours',
+      sortAside: 'Pas pour ce cours',
+      localNote: 'Vos corrections restent dans cet onglet du navigateur.',
+      needObjective: 'Ajoutez une présentation, un thème ou un objectif du cours pour continuer.',
+      action: 'Confirmer mon cours',
+      recap: 'Aucun objectif du cours | 1 objectif du cours | {n} objectifs du cours',
+      recapTopics: 'Aucun thème principal | 1 thème principal | {n} thèmes principaux',
+      severalCourses: 'Ce document contient plusieurs cours. Lequel est le vôtre ?',
+      severalCoursesHint: 'WeLearn lira uniquement ce cours.'
+    },
+    reading: {
+      sending: 'Envoi de votre syllabus',
+      sent: 'Syllabus envoyé',
+      reading: 'WeLearn lit votre cours',
+      elapsed: '{seconds} s',
+      cancel: 'Annuler',
+      unavailable: {
+        title: 'WeLearn est injoignable',
+        text: "Votre syllabus n'a pas été lu. Réessayez dans un moment."
+      },
+      error: {
+        title: "WeLearn n'a pas pu lire ce syllabus",
+        text: 'Réessayez, ou choisissez un autre fichier.'
+      },
+      emptyText: {
+        title: "WeLearn n'a trouvé aucun texte dans ce fichier",
+        text: 'Il s’agit peut-être d’un PDF scanné. Choisissez un PDF dont le texte peut être sélectionné, un DOCX ou un TXT.'
+      }
     },
     documentsStep: {
       title: 'Ajoutez vos supports de cours',
@@ -486,14 +710,22 @@ export const fr = {
       nudge: 'Sans informations sur le cours, votre syllabus sera générique.',
       addDetails: 'Ajouter des informations',
       continueAnyway: 'Continuer quand même',
+      aiNotice: "Vos fichiers sont envoyés à WeLearn pour être analysés par l'IA.",
       action: 'Analyser mes documents',
-      recap: '{files}\u00a0· {lang}'
+      recap: '{files}\u00a0· {lang}',
+      v2: {
+        title: 'Ajoutez votre syllabus ou vos supports de cours',
+        description:
+          "Importez 1 à 3 documents\u00a0: votre syllabus actuel, si vous en avez un, et les supports sur lesquels repose votre cours (articles, chapitres d'ouvrage…). WeLearn construit un nouveau syllabus à partir de ceux-ci.",
+        hint: 'Cette fonctionnalité est en bêta.'
+      }
     },
     summaryStep: {
       title: 'Le résumé de vos documents',
       description:
         "Voici ce que WeLearn a retenu de chaque document. Vous pouvez l'ajuster si besoin\u00a0: il oriente la recherche de ressources.",
       noFileName: 'Document {n}',
+      aiLabel: "Analysé par l'IA de WeLearn",
       action: 'Trouver des ressources',
       recap: 'Aucun document résumé | 1 document résumé | {n} documents résumés'
     },
@@ -504,6 +736,7 @@ export const fr = {
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
       noneHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
+      passageLabel: 'Passage qui correspond à vos documents',
       action: 'Générer le syllabus',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:
@@ -516,6 +749,7 @@ export const fr = {
       title: 'Votre syllabus est prêt',
       description:
         'Cliquez sur le texte pour le modifier, demandez des modifications à WeLearn, puis téléchargez-le au format Word.',
+      aiLabel: "Rédigé par l'IA de WeLearn. Relisez-le et gardez ce qui convient à votre cours.",
       feedbackLabel: 'Demander des modifications',
       feedbackPlaceholder:
         "ex.\u00a0: Ajouter une semaine sur l'évaluation, raccourcir la bibliographie, rendre le cours plus pratique…",

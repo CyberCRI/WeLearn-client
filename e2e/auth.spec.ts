@@ -84,8 +84,31 @@ test.describe('auth', () => {
     });
 
     test('is asked to sign up after the last free question', async ({ page }) => {
-      await page.evaluate(() =>
-        localStorage.setItem('guestUsage', JSON.stringify({ chat: 5, syllabus: 0 }))
+      await page.route('**/user/guest_quota', (route) =>
+        route.fulfill({
+          json: {
+            limited: true,
+            chat: { limit: 5, remaining: 0, resets_in: 3600 },
+            syllabus: { limit: 1, remaining: 1, resets_in: 0 }
+          }
+        })
+      );
+      await page.goto('/q-and-a');
+      await expect(page.getByTestId('guest-quota-text')).toContainText('5');
+
+      await page.fill('textarea', 'one more question');
+      await page.keyboard.press('Enter');
+
+      await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+    });
+
+    // the browser thought there was one left (another tab or device used it): the API decides
+    test('is asked to sign up when the API refuses the question', async ({ page }) => {
+      await page.route('**/qna/chat/agent_stream', (route) =>
+        route.fulfill({
+          status: 403,
+          json: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'chat', retry_after: 3600 } }
+        })
       );
       await page.goto('/q-and-a');
 
@@ -93,6 +116,40 @@ test.describe('auth', () => {
       await page.keyboard.press('Enter');
 
       await expect(page.getByTestId('signup-prompt-register')).toBeVisible();
+      await expect(page.locator('textarea')).toHaveValue('one more question');
+    });
+
+    test('is asked to sign up when the API refuses the file summaries', async ({ page }) => {
+      await page.route('**/tutor/files/content**', (route) =>
+        route.fulfill({
+          status: 403,
+          json: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'files', retry_after: 3600 } }
+        })
+      );
+      await page.goto('/tutor');
+      // dev asks first whether the teacher already has a course
+      await page.getByTestId('option-scratch').click();
+
+      await page.getByTestId('file-input').setInputFiles('./e2e/files/test_tutor.pdf');
+      await page.getByTestId('tutor-next-button').click();
+      // no course details were filled in: dev warns first
+      await page.getByRole('button', { name: 'Continuer quand même' }).click();
+
+      await expect(page.getByTestId('signup-prompt')).toContainText('documents gratuits du jour');
+    });
+
+    test('is asked to sign up when the API refuses a new guest', async ({ page }) => {
+      await page.route('**/user/user_and_session', (route) =>
+        route.fulfill({
+          status: 429,
+          headers: { 'Retry-After': '3600' },
+          json: { detail: { code: 'RATE_LIMITED', message: 'Too many new sessions' } }
+        })
+      );
+      await page.goto('/q-and-a');
+
+      await expect(page.getByTestId('signup-prompt')).toContainText('nouveaux invités');
+      await expect(page.getByTestId('signup-prompt-login')).toBeVisible();
     });
 
     test('logs in from the signup prompt and comes back to the page', async ({ page }) => {

@@ -9,16 +9,22 @@ import WelcomeModal from '@/components/modals/WelcomeModal.vue';
 import ConsentBanner from '@/components/ConsentBanner.vue';
 import SignupPromptModal from '@/components/modals/SignupPromptModal.vue';
 import SessionExpiredModal from '@/components/modals/SessionExpiredModal.vue';
+import AccessEndedModal from '@/components/modals/AccessEndedModal.vue';
+import LimitedAccessModal from '@/components/modals/LimitedAccessModal.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
 import { getUserAndSession } from '@/utils/auth';
 import { useAuthStore } from './stores/auth';
 import { useChatStore } from '@/stores/chat';
+import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useAccountAccessStore } from '@/stores/accountAccess';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
 const chatStore = useChatStore();
+const guestQuota = useGuestQuotaStore();
+const accountAccess = useAccountAccessStore();
 const fetchError = ref(false);
 
 const authStore = useAuthStore();
@@ -31,11 +37,14 @@ async function initCalls() {
       getSourcesList(),
       // once the session belongs to the account (a guest who logged in gets the account's user):
       // its latest chat is looked up through that session
+      // the guest quota is counted per session user, so it is read once the session exists
       getUserAndSession(getQueryParamValue('referer') || '').then(() =>
-        chatStore.restoreLatestThread()
+        Promise.all([chatStore.restoreLatestThread(), guestQuota.refresh()])
       ),
       // bookmarks need an account
-      ...(authStore.isGuest ? [] : [getBookmarks()])
+      ...(authStore.isGuest ? [] : [getBookmarks()]),
+      // a Google or email login is limited in time: says so once, the profile shows what is left
+      ...(authStore.isAuthenticated ? [accountAccess.refresh()] : [])
     ]);
   } catch (err) {
     console.error(err);
@@ -57,6 +66,8 @@ onMounted(async () => {
     <ConsentBanner />
     <SignupPromptModal />
     <SessionExpiredModal />
+    <AccessEndedModal />
+    <LimitedAccessModal />
 
     <AppLayout>
       <template #header v-if="!$route.meta.hideTemplate">

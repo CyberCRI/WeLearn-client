@@ -3,14 +3,32 @@ import { createPinia, setActivePinia } from 'pinia';
 import axios from 'axios';
 import { useTutorStore } from '../tutor';
 import { useGuestQuotaStore } from '../guestQuota';
-import { basePostAxios } from '@/utils/fetch';
+import { useConnectionsStore } from '../connections';
+import { basePostAxios, getGuestQuota } from '@/utils/fetch';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import type { Document, TutorSearch } from '@/types';
 import { track } from '@/utils/analytics';
 
 vi.mock('@/utils/fetch', () => ({
-  basePostAxios: vi.fn()
+  basePostAxios: vi.fn(),
+  getGuestQuota: vi.fn()
 }));
+
+// what GET /user/guest_quota answers to a guest
+const guestQuota = (syllabus: number, feedback = 2) => ({
+  limited: true,
+  chat: { limit: 5, remaining: 5, resets_in: 0 },
+  syllabus: { limit: 1, remaining: syllabus, resets_in: 0 },
+  feedback: { limit: 2, remaining: feedback, resets_in: 0 },
+  files: { limit: 5, remaining: 5, resets_in: 0 }
+});
+
+const quotaExceeded = (feature: string) => ({
+  response: {
+    status: 403,
+    data: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature, retry_after: 60 } }
+  }
+});
 
 vi.mock('@/utils/md-to-docx', () => ({
   convertMarkdownToDocx: vi.fn(),
@@ -69,6 +87,55 @@ describe('tutor store', () => {
 
       store.setStep(4);
       expect(store.step).toBe(4);
+    });
+  });
+
+  describe('path (syllabus v2)', () => {
+    it('starts with no path and keeps the one chosen', () => {
+      const store = useTutorStore();
+      expect(store.path).toBeNull();
+      store.choosePath('existing');
+      expect(store.path).toBe('existing');
+    });
+
+    it('counts files, course details or a later step as started work', () => {
+      const store = useTutorStore();
+      expect(store.hasStartedCourse).toBe(false);
+
+      store.courseTitle = 'Sociolinguistics';
+      expect(store.hasStartedCourse).toBe(true);
+      store.courseTitle = '';
+
+      store.addFiles([new File(['a'], 'a.pdf', { type: 'application/pdf' })]);
+      expect(store.hasStartedCourse).toBe(true);
+      store.newFilesToSearch = {};
+
+      store.setStep(2);
+      expect(store.hasStartedCourse).toBe(true);
+    });
+
+    it('goes back to the question and drops the work of the path', () => {
+      const store = useTutorStore();
+      store.choosePath('scratch');
+      store.courseTitle = 'Sociolinguistics';
+      store.setStep(3);
+      const connections = useConnectionsStore();
+      connections.status = 'ready';
+
+      store.resetPath();
+
+      expect(store.path).toBeNull();
+      expect(connections.status).toBe('idle');
+      expect(store.step).toBe(1);
+      expect(store.courseTitle).toBe('');
+      expect(store.hasStartedCourse).toBe(false);
+    });
+
+    it('keeps the path when the wizard starts over', () => {
+      const store = useTutorStore();
+      store.choosePath('scratch');
+      store.restart();
+      expect(store.path).toBe('scratch');
     });
   });
 
@@ -489,7 +556,7 @@ describe('tutor store', () => {
       ['no syllabus from the pedagogical engineer', [{ source: 'OtherAgent', content: 'x' }]],
       ['an empty syllabus', [{ source: 'PedagogicalEngineerAgent', content: '' }]],
       ['no syllabus at all', []]
-    ])('asks for a retry and keeps the guest quota on %s', async (_, syllabus) => {
+    ])('asks for a retry on %s', async (_, syllabus) => {
       auth.isGuest = true;
       mockPost({ data: { syllabus } });
       const store = useTutorStore();
@@ -502,7 +569,6 @@ describe('tutor store', () => {
       // the retry modal shows while loading
       expect(store.isLoading).toBe(true);
       expect(store.step).toBe(3);
-      expect(useGuestQuotaStore().usage.syllabus).toBe(0);
       expect(track).toHaveBeenCalledWith('Tutor Step Failed', expect.objectContaining({ step: 3 }));
     });
 
@@ -580,6 +646,44 @@ describe('tutor store', () => {
       expect(await store.giveFeedback('shorter')).toBeUndefined();
       expect(console.error).not.toHaveBeenCalled();
     });
+    it('asks a guest who used their changes of the day to sign up, and sends nothing', async () => {
+      auth.isGuest = true;
+      useGuestQuotaStore().quota = guestQuota(0, 0);
+      const store = ready();
+
+      expect(await store.giveFeedback('shorter')).toBeUndefined();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('feedbackLimit');
+      expect(basePostAxios).not.toHaveBeenCalled();
+    });
+
+    // another tab used them: the API refuses, and the text stays without an error
+    it('asks to sign up when the API refuses the change', async () => {
+      auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0, 0));
+      mockPostError(quotaExceeded('feedback'));
+      const store = ready();
+
+      expect(await store.giveFeedback('shorter')).toBeUndefined();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('feedbackLimit');
+      expect(console.error).not.toHaveBeenCalled();
+      expect(store.syllabi?.content).toBe('old');
+      expect(store.isLoading).toBe(false);
+    });
+
+    it("reloads a guest's quota after a change", async () => {
+      auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0, 1));
+      mockPost({ data: { syllabus: [{ source: 'agent', content: 'new' }] } });
+      const store = ready();
+
+      expect(await store.giveFeedback('shorter')).toBe(true);
+      await Promise.resolve();
+
+      expect(getGuestQuota).toHaveBeenCalledTimes(1);
+      expect(useGuestQuotaStore().remaining('feedback')).toBe(1);
+    });
   });
 
   describe('download and save', () => {
@@ -645,7 +749,7 @@ describe('tutor store', () => {
 
     it('asks a guest who used their syllabus to sign up before uploading files', async () => {
       auth.isGuest = true;
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
+      useGuestQuotaStore().quota = guestQuota(0);
       const store = useTutorStore();
       store.addFiles([file('a.pdf')]);
       store.setStep(3);
@@ -659,9 +763,24 @@ describe('tutor store', () => {
       expect(store.selectedSources).toEqual([doc('1')]);
     });
 
+    it('asks to sign up when the API refuses the file summaries', async () => {
+      auth.isGuest = true;
+      useGuestQuotaStore().quota = guestQuota(1);
+      mockPostError(quotaExceeded('files'));
+      const store = useTutorStore();
+      store.addFiles([file('a.pdf')]);
+
+      expect(await store.handleSummaryFiles()).toBe(false);
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('filesLimit');
+      expect(store.shouldRetryAction).toBe(false);
+      expect(store.isLoading).toBe(false);
+      expect(console.error).not.toHaveBeenCalled();
+    });
+
     it('asks a guest who used their syllabus to sign up before generating another', async () => {
       auth.isGuest = true;
-      localStorage.setItem('guestUsage', JSON.stringify({ chat: 0, syllabus: 1 }));
+      useGuestQuotaStore().quota = guestQuota(0);
       const store = useTutorStore();
       store.tutorSearch = search();
 
@@ -671,16 +790,41 @@ describe('tutor store', () => {
       expect(basePostAxios).not.toHaveBeenCalled();
     });
 
-    it('counts a generated syllabus in the guest quota', async () => {
+    it('reloads the guest quota after generating a syllabus', async () => {
       auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0));
       mockPost({ data: { syllabus: [pedagogical] } });
       const store = useTutorStore();
       store.tutorSearch = search();
 
       await store.handleCreateSyllabus();
+      await Promise.resolve();
 
       expect(store.step).toBe(4);
-      expect(useGuestQuotaStore().usage.syllabus).toBe(1);
+      expect(getGuestQuota).toHaveBeenCalledTimes(1);
+      expect(useGuestQuotaStore().remaining('syllabus')).toBe(0);
+    });
+
+    // another tab or device used it: the API refuses, retrying would not help
+    it('asks to sign up when the API refuses the syllabus of the day', async () => {
+      auth.isGuest = true;
+      vi.mocked(getGuestQuota).mockResolvedValue(guestQuota(0));
+      mockPostError({
+        response: {
+          status: 403,
+          data: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'syllabus', retry_after: 60 } }
+        }
+      });
+      const store = useTutorStore();
+      store.tutorSearch = search();
+
+      await store.handleCreateSyllabus();
+
+      expect(auth.askToSignUp).toHaveBeenCalledWith('syllabusLimit');
+      expect(store.shouldRetryAction).toBe(false);
+      expect(store.isLoading).toBe(false);
+      expect(store.syllabi).toBeUndefined();
+      expect(store.step).toBe(3);
     });
 
     it('keeps a guest syllabus and asks to sign up instead of downloading', async () => {

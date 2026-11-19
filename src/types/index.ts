@@ -86,6 +86,72 @@ export type UserRegisterData = {
 // the deploy targets, read from VITE_ENVIRONMENT (see utils/env.ts)
 export type Environment = 'dev' | 'staging' | 'test' | 'prod';
 
+// syllabus v2: improve a course the teacher already has, or create one from scratch
+export type CoursePath = 'existing' | 'scratch';
+
+// syllabus v2, "I have a course": the course as WeLearn read it from the teacher's file
+export type CourseReadResponse = ApiSchema<'CourseReadResponse'>;
+export type CourseReading = ApiSchema<'CourseReading'>;
+export type ObjectiveScope = ApiSchema<'ReadObjective'>['scope'];
+
+// one piece of the checked course: read from the syllabus, corrected or added by the teacher.
+// `original` keeps the syllabus wording of a corrected piece, so it can be restored
+export type CourseFieldOrigin = 'extracted' | 'edited' | 'added';
+// how an extracted piece compares with the syllabus text: found in it word for word (verified),
+// or not (unverified: reworded, translated or put together by the AI). unchecked: no text to
+// compare with
+export type Verification = 'verified' | 'unverified' | 'unchecked';
+// course objectives, competencies, or objectives wider than the course (degree, institution,
+// general education), kept apart; unsorted: neither the AI nor the syllabus's headings say
+// whether it belongs to this course
+export type ObjectiveGroup = 'objective' | 'competency' | 'programme' | 'unsorted';
+export type CourseField = {
+  value: string;
+  origin: CourseFieldOrigin;
+  original?: string;
+  verification?: Verification;
+  group?: ObjectiveGroup;
+  // written by the AI (an overview, a topic named in its own words), not copied from the syllabus
+  isSummary?: boolean;
+  subtopics?: string[];
+  // the syllabus line a topic comes from, found word for word in it: where changes to it go
+  source?: string | null;
+};
+
+// how the course is taught; empty means the teacher did not say, never a default
+export type TeachingContext = {
+  title: string;
+  discipline: string;
+  level: string;
+  sessions: number | null;
+  sessionLength: number | null; // hours
+  sessionType: string;
+  sessionMode: ApiSchema<'SessionMode'> | '';
+  classSize: number | null;
+};
+
+// the course as the teacher confirmed it on the review screen, for the sustainability additions:
+// their corrections included, degree-level objectives left out
+export type ConfirmedCourse = ApiSchema<'ConfirmedCourse'>;
+
+// the confirmed course as the updated syllabus uses it: topics keep the syllabus line they come
+// from
+export type CourseToUpdate = Required<Omit<ConfirmedCourse, 'topics'>> & {
+  topics: (ApiSchema<'CourseTopic'> & { source: string | null })[];
+};
+
+// a sustainability connection suggested for the confirmed course, and the WeLearn resources
+// found and judged for it
+export type ConnectionIdea = ApiSchema<'ConnectionIdea'>;
+// ponytail: `document` refined to the client's Document, as for search results
+export type EvidencedResource = Omit<ApiSchema<'EvidencedResource'>, 'document'> & {
+  document: Document;
+};
+export type ConnectionEvidence = Omit<
+  ApiSchema<'ConnectionEvidenceResponse'>,
+  'resources' | 'background'
+> & { resources: EvidencedResource[]; background: EvidencedResource[] };
+
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {
   status: 'granted' | 'denied';
@@ -101,10 +167,14 @@ export type SignupPromptReason =
   | 'download'
   | 'bibliography'
   | 'chatLimit'
-  | 'syllabusLimit';
+  | 'syllabusLimit'
+  // the API refused a new guest: too many from the same network (IP) this hour
+  | 'tooManyGuests'
+  | 'feedbackLimit'
+  | 'filesLimit';
 
-// what a guest can do a limited number of times (stores/guestQuota.ts)
-export type GuestQuotaFeature = 'chat' | 'syllabus';
+// what a guest can do a limited number of times a day (counted by the API, stores/guestQuota.ts)
+export type GuestQuotaFeature = 'chat' | 'syllabus' | 'feedback' | 'files';
 
 // event name -> props. Only counts, lengths, enums and ids: never free text or document content
 export type AnalyticsEvents = {

@@ -61,6 +61,18 @@ describe('featureFlip store', () => {
 
     expect(store.isFeatureEnabled('analytics')).toBe(expected);
   });
+
+  it.each<[Environment, boolean]>([
+    ['dev', true],
+    ['staging', false],
+    ['test', false],
+    ['prod', false]
+  ])('syllabusV2 in %s: %s', (name, expected) => {
+    env.name = name;
+    const store = useFeatureFlipStore();
+
+    expect(store.isFeatureEnabled('syllabusV2')).toBe(expected);
+  });
 });
 
 describe('featureFlip preview', () => {

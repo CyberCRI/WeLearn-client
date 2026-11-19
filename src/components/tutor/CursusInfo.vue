@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, nextTick } from 'vue';
 import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
+import FileDropzone from '@/components/tutor/FileDropzone.vue';
 import type { FileErrorReason } from '@/stores/tutor';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 interface Props {
   files: Record<string, File>;
@@ -25,7 +27,11 @@ const emit = defineEmits<{
   'update:description': [value: string];
 }>();
 
-const isDragging = ref(false);
+const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
+// syllabus v2 invites the teacher's own syllabus; prod keeps the current texts
+const introKey = (key: 'title' | 'description' | 'hint') =>
+  isSyllabusV2 ? `tutor.documentsStep.v2.${key}` : `tutor.documentsStep.${key}`;
+
 const showNudge = ref(false);
 const titleInput = ref<HTMLInputElement | null>(null);
 const nudge = ref<HTMLElement | null>(null);
@@ -34,18 +40,6 @@ const fileNames = computed(() => Object.keys(props.files));
 const hasDetails = computed(
   () => !!(props.courseTitle || props.level || props.duration || props.description)
 );
-
-const onPick = (e: Event) => {
-  const input = e.target as HTMLInputElement;
-  if (input.files) props.addFiles(input.files);
-  // allows picking the same file again after removing it
-  input.value = '';
-};
-
-const onDrop = (e: DragEvent) => {
-  isDragging.value = false;
-  if (e.dataTransfer?.files) props.addFiles(e.dataTransfer.files);
-};
 
 const onContinue = async () => {
   if (!hasDetails.value && !showNudge.value) {
@@ -67,30 +61,15 @@ const focusDetails = () => {
 
 <template>
   <div class="wrapper">
-    <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.documentsStep.title') }}</h1>
-    <p class="subtitle is-6">{{ $t('tutor.documentsStep.description') }}</p>
+    <h1 class="title is-4 is-size-5-mobile">{{ $t(introKey('title')) }}</h1>
+    <p class="subtitle is-6">{{ $t(introKey('description')) }}</p>
 
-    <label
-      class="dropzone"
-      :class="{ dragging: isDragging }"
-      @dragover.prevent="isDragging = true"
-      @dragleave="isDragging = false"
-      @drop.prevent="onDrop"
-    >
-      <input
-        class="is-sr-only"
-        type="file"
-        multiple
-        accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-        data-testid="file-input"
-        @change="onPick"
-      />
-      <span>
-        {{ $t('tutor.documentsStep.dropzone') }}
-        <span class="browse">{{ $t('tutor.documentsStep.browse') }}</span>
-      </span>
-      <span class="is-size-7 has-text-grey">{{ $t('tutor.documentsStep.limits') }}</span>
-    </label>
+    <FileDropzone
+      multiple
+      :label="$t('tutor.documentsStep.dropzone')"
+      :limits="$t('tutor.documentsStep.limits')"
+      @pick="addFiles"
+    />
 
     <p v-if="fileError.state" class="has-text-danger mt-2">
       {{ $t(`tutor.${fileError.reason}`) }}
@@ -108,7 +87,7 @@ const focusDetails = () => {
     </ul>
 
     <p class="is-size-7 has-text-grey mt-2">
-      {{ $t('tutor.documentsStep.hint') }}
+      {{ $t(introKey('hint')) }}
       <a
         class="example-link"
         href="https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0206282&type=printable"
@@ -206,6 +185,10 @@ const focusDetails = () => {
       </div>
     </div>
 
+    <p v-if="isSyllabusV2" class="is-size-7 has-text-grey mt-5" data-testid="ai-notice">
+      {{ $t('tutor.documentsStep.aiNotice') }}
+    </p>
+
     <div class="step-footer">
       <span v-if="!fileNames.length" class="has-text-grey is-size-7">
         {{ $t('tutor.documentsStep.noFile') }}
@@ -227,32 +210,6 @@ const focusDetails = () => {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.dropzone {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 1.5rem 1rem;
-  border: 2px dashed var(--neutral-20);
-  border-radius: 0.5rem;
-  text-align: center;
-  cursor: pointer;
-  transition:
-    border-color 0.2s,
-    background-color 0.2s;
-  &:hover,
-  &.dragging,
-  &:focus-within {
-    border-color: var(--primary);
-    background-color: var(--neutral-10);
-  }
-}
-
-.browse {
-  color: var(--primary-dark);
-  text-decoration: underline;
 }
 
 .files {

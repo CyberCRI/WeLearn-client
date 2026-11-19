@@ -178,6 +178,14 @@ export const useChatStore = defineStore('chat', () => {
     saveToStorage('chat', chatMessagesList.value);
   }
 
+  // the question the API refused: it was never asked
+  function dropLastUserMessage(content: string): void {
+    const last = chatMessagesList.value.at(-1);
+    if (last?.role !== 'user' || last.content !== content) return;
+    chatMessagesList.value.pop();
+    saveToStorage('chat', chatMessagesList.value);
+  }
+
   const setReformulatedQuery = (query: string): void => {
     reformulatedQuery.value = query;
     saveToStorage('reformulatedQuery', query);
@@ -498,15 +506,11 @@ export const useChatStore = defineStore('chat', () => {
       return false;
     }
 
+    // the API counts the question, and gives it back when no answer comes
     const guestQuota = useGuestQuotaStore();
     if (!guestQuota.checkQuota('chat')) return false;
-    // counted as soon as the question is accepted, so parallel sends cannot pass the check,
-    // and given back when no answer comes
-    const isQuotaCounted = guestQuota.consume('chat');
-    const refundQuota = () => {
-      if (isQuotaCounted) guestQuota.refund('chat');
-    };
 
+    const previousStatus = chatStatus.value;
     const answerGeneration = ++generation;
     const controller = new AbortController();
     streamController = controller;
@@ -530,10 +534,16 @@ export const useChatStore = defineStore('chat', () => {
     try {
       isAnswered = await getAgentAnswer(message, answerGeneration, controller.signal);
     } catch (error) {
-      refundQuota();
       // aborted by a reset: the conversation it belonged to is gone
       if (answerGeneration !== generation) {
         return true;
+      }
+      // refused by the API before any answer: as if refused here, the input keeps the text
+      if (guestQuota.handleQuotaError(error)) {
+        dropLastUserMessage(message);
+        clearProcessingMetadata();
+        chatStatus.value = previousStatus;
+        return false;
       }
       clearProcessingMetadata();
       chatStatus.value = CHAT_STATUS.ERROR;
@@ -545,10 +555,10 @@ export const useChatStore = defineStore('chat', () => {
       if (streamController === controller) {
         streamController = null;
       }
+      void guestQuota.refresh();
     }
 
     if (!isAnswered) {
-      refundQuota();
       return true;
     }
 
