@@ -244,7 +244,10 @@ export const useTutorStore = defineStore('tutor', () => {
     } catch (error) {
       if (axios.isCancel(error)) return false;
       // past the guest's daily limit: the signup prompt is open, retrying won't help
-      if (useGuestQuotaStore().handleQuotaError(error)) return false;
+      if (useGuestQuotaStore().handleQuotaError(error)) {
+        isLoading.value = false;
+        return false;
+      }
       console.error('get files content did not work', error);
       shouldRetryAction.value = true;
       track('Tutor Step Failed', { step: 1, durationMs: Date.now() - startedAt });

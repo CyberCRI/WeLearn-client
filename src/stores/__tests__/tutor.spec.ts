@@ -770,6 +770,7 @@ describe('tutor store', () => {
 
       expect(auth.askToSignUp).toHaveBeenCalledWith('filesLimit');
       expect(store.shouldRetryAction).toBe(false);
+      expect(store.isLoading).toBe(false);
       expect(console.error).not.toHaveBeenCalled();
     });
 
