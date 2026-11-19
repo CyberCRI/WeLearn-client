@@ -179,28 +179,6 @@ export const frameworks: ModuleText<typeof FRAMEWORKS> = {
       },
       lesson:
         'Same SDG, different competences: the competence depends on what students learn and do. There is no fixed SDG ↔ GreenComp mapping.'
-    },
-    myth: {
-      title: 'True or false?',
-      short: 'Myths',
-      statements: [
-        {
-          text: 'Adding SDG logos to my syllabus is enough to make it an ESD course.',
-          feedback:
-            'False. Labelling a course with an SDG does not change what students learn. Education for Sustainable Development (ESD) is about what they become able to understand and do.'
-        },
-        {
-          text: 'A course should develop all 12 GreenComp competences.',
-          feedback:
-            'False. GreenComp is non-prescriptive: a course can focus on the few competences that fit it.',
-          cite: [{ src: 'greencomp', loc: 'pp. 15, 29' }]
-        },
-        {
-          text: 'The SDGs and GreenComp can be used together.',
-          feedback:
-            'True. The SDGs help frame the challenge, and GreenComp helps frame what students develop while working on it.'
-        }
-      ]
     }
   }
 };

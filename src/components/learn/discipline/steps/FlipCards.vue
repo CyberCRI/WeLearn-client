@@ -5,13 +5,18 @@
       {{ $t('learn.discipline.contributions.subtitle') }}
     </p>
     <div class="cards">
-      <FlipCard
+      <!-- one-way: a revealed card stays open so its text can be read and selected -->
+      <NumberedCard
         v-for="(card, index) in step.cards"
         :key="index"
-        :card="card"
-        :flipped="flipped.includes(index)"
-        @flip="$emit('flip', index)"
-      />
+        :num="index + 1"
+        :title="card.verb"
+        :isOpen="isFlipped(index)"
+        :isSeen="isFlipped(index)"
+        @toggle="$emit('flip', index)"
+      >
+        <p v-if="isFlipped(index)" class="card-text">{{ card.text }}</p>
+      </NumberedCard>
     </div>
 
     <Transition name="fade">
@@ -26,7 +31,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import FlipCard from './FlipCard.vue';
+import NumberedCard from '@/components/learn/NumberedCard.vue';
 import type { FlipStep } from '@/types/learn/discipline';
 
 const props = defineProps<{
@@ -38,6 +43,8 @@ const props = defineProps<{
 defineEmits<{
   (e: 'flip', index: number): void;
 }>();
+
+const isFlipped = (index: number) => props.flipped.includes(index);
 
 const completed = computed(() => props.flipped.length === props.step.cards.length);
 </script>
@@ -67,24 +74,30 @@ const completed = computed(() => props.flipped.length === props.step.cards.lengt
 
 .cards {
   display: grid;
-
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 1fr; /* every card as tall as the tallest one */
-  gap: 1.5rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 0.75rem;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 700px) {
   .cards {
     grid-template-columns: 1fr;
   }
 }
 
+.card-text {
+  margin: 0;
+  padding: 0 1rem 0.9rem;
+  font-size: 0.88rem;
+  color: var(--neutral-70);
+}
+
 .success {
   padding: 1.5rem;
-  background: #eef9f4;
+  background: var(--primary-lighter);
   border-radius: 12px;
   text-align: center;
-  border: 1px solid #8cbe87;
+  border: 1px solid var(--primary-light);
 }
 
 .fade-enter-active,

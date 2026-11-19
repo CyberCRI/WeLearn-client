@@ -49,9 +49,7 @@ export const discipline = {
   },
   flipCards: {
     bravo: '✓ Bravo !',
-    completed: 'Vous avez découvert quelques-uns des apports clés de cette discipline.',
-    clickToDiscover: 'Cliquez pour découvrir',
-    nextHint: 'Retournez toutes les cartes pour continuer'
+    completed: 'Vous avez découvert quelques-uns des apports clés de cette discipline.'
   },
   contributions: {
     title: 'Les apports de votre discipline',
@@ -60,8 +58,7 @@ export const discipline = {
   activities: {
     intro: 'Des activités concrètes que vous pouvez intégrer dans une séance existante.',
     instruction:
-      'Laquelle de ces activités aimeriez-vous le plus essayer avec vos étudiant·es\u00a0? Choisissez-en une, vous la retrouverez à l’étape suivante.',
-    nextHint: 'Choisissez une activité pour continuer'
+      'Laquelle de ces activités aimeriez-vous le plus essayer avec vos étudiant·es\u00a0? Choisissez-en une, vous la retrouverez à l’étape suivante.'
   },
   competence: {
     title: 'Les compétences que vos étudiant·es développent',

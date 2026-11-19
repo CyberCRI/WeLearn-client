@@ -5,6 +5,7 @@ import i18n from '@/localisation/i18n';
 import ProgressBar from '@/components/learn/ProgressBar.vue';
 import TrailNavigation from '@/components/learn/TrailNavigation.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
+import BackLink from '@/components/BackLink.vue';
 import ConfidenceCheck from '@/components/learn/ConfidenceCheck.vue';
 import ConceptExplorer from '@/components/learn/steps/ConceptExplorer.vue';
 import DimensionsDiagram from '@/components/learn/steps/DimensionsDiagram.vue';
@@ -13,13 +14,13 @@ import TimelineStep from '@/components/learn/steps/TimelineStep.vue';
 import SdgMap from '@/components/learn/steps/SdgMap.vue';
 import GreenCompMap from '@/components/learn/steps/GreenCompMap.vue';
 import WorkedExample from '@/components/learn/steps/WorkedExample.vue';
-import MythCheck from '@/components/learn/steps/MythCheck.vue';
 import { getModuleCard, isModuleId, nextModule, useModuleContent } from '@/learn/modules';
 import { getProgress, saveProgress, type ModuleProgress } from '@/learn/progress';
 import { SOURCES, sourceUrl, type SourceId } from '@/learn/sources';
 import type { Cite, Step } from '@/types/learn/modules';
 import { calculateProgress } from '@/utils/progress';
 import { track } from '@/utils/analytics';
+import { scrollToTop } from '@/utils/navigation';
 
 // runs the typed-step modules (foundations, frameworks): intro + confidence, steps, wrap-up
 const STEP_COMPONENTS = {
@@ -29,8 +30,7 @@ const STEP_COMPONENTS = {
   timeline: TimelineStep,
   sdgs: SdgMap,
   greencomp: GreenCompMap,
-  example: WorkedExample,
-  myth: MythCheck
+  example: WorkedExample
 } as const;
 
 const route = useRoute();
@@ -47,12 +47,20 @@ const next = computed(() => {
   return { to: mod.to, title: getModuleCard(mod.id, locale.value).title };
 });
 
-// -1 = intro, 0..n-1 = steps, n = wrap-up. steps report "done" once their interaction is completed
+// -1 = intro, 0..n-1 = steps, n = wrap-up. steps report "done" once their interaction is completed,
+// but can be skipped: the steps bar keeps them unchecked and reopens them on click
 const pos = ref(-1);
+const reached = ref(-1);
 const doneSteps = ref<Record<number, boolean>>({});
 const steps = computed(() => content.value.steps);
 const step = computed<Step | undefined>(() => steps.value[pos.value]);
 const isWrapUp = computed(() => pos.value === steps.value.length);
+// in steps-bar indexes (intro = 0), like the ProgressBar props
+const skipped = computed(() =>
+  steps.value.flatMap((_, i) => (i <= reached.value && !doneSteps.value[i] ? [i + 1] : []))
+);
+
+watch(pos, (p) => (reached.value = Math.max(reached.value, p)));
 
 const confidenceBefore = ref<number | null>(null);
 const confidenceAfter = ref<number | null>(null);
@@ -73,7 +81,6 @@ const allSources = computed(() => {
     if (s.type === 'timeline') [...s.events.map((e) => e.cite), s.closingCite].forEach(collect);
     if (s.type === 'sdgs') [s.psCite, s.focus.cite].forEach(collect);
     if (s.type === 'greencomp') collect(s.noteCite);
-    if (s.type === 'myth') s.statements.forEach((m) => collect(m.cite));
   }
   return [...ids];
 });
@@ -82,6 +89,7 @@ watch(
   moduleId,
   (id) => {
     pos.value = -1;
+    reached.value = -1;
     doneSteps.value = {};
     confidenceBefore.value = id ? (getProgress(id).confidenceBefore ?? null) : null;
     confidenceAfter.value = null;
@@ -112,7 +120,12 @@ function handleNext() {
     save({ completedAt: new Date().toISOString() });
     track('Learn Module Completed', { module: id });
   }
-  document.querySelector('.learn-module')?.scrollIntoView({ block: 'start' });
+  scrollToTop();
+}
+
+function handleSelect(index: number) {
+  pos.value = index - 1;
+  scrollToTop();
 }
 
 watch(confidenceAfter, (value) => {
@@ -123,6 +136,7 @@ watch(confidenceAfter, (value) => {
 </script>
 
 <template>
+  <BackLink to="/learn" class="page-back">{{ $t('learn.module.backToLearn') }}</BackLink>
   <div class="learn-module py-5 px-4">
     <div v-if="!moduleId" class="box">{{ $t('learn.module.notFound') }}</div>
 
@@ -130,14 +144,15 @@ watch(confidenceAfter, (value) => {
       <ProgressBar
         :currentStep="pos + 1"
         :labels="labels"
-        :progress="calculateProgress(pos + 1, labels.length)"
+        :progress="calculateProgress(reached + 1, labels.length)"
+        :reached="reached + 1"
+        :skipped="skipped"
+        clickable
+        @select="handleSelect"
       />
 
       <header class="module-header">
-        <p class="kicker">
-          <RouterLink to="/learn" class="kicker-link">← {{ $t('learn.title') }}</RouterLink>
-          · {{ content.duration }}
-        </p>
+        <p class="kicker">{{ $t('learn.title') }} · {{ content.duration }}</p>
         <h1 class="title is-4 mb-1">
           {{ pos === -1 || isWrapUp ? content.title : step?.title }}
         </h1>
@@ -223,9 +238,8 @@ watch(confidenceAfter, (value) => {
       <TrailNavigation
         v-if="!isWrapUp"
         :showBack="pos > -1"
-        :canNext="pos === -1 || !!doneSteps[pos]"
         :nextLabel="pos === -1 ? 'learn.module.start' : 'next'"
-        hint="learn.module.nextHint"
+        :hint="step && !doneSteps[pos] ? 'learn.module.nextHint' : undefined"
         @back="pos--"
         @next="handleNext"
       />
@@ -234,6 +248,10 @@ watch(confidenceAfter, (value) => {
 </template>
 
 <style scoped>
+.page-back {
+  margin: 1rem 0 0 1rem;
+}
+
 .learn-module {
   max-width: 60rem;
   margin: 0 auto;
@@ -250,15 +268,6 @@ watch(confidenceAfter, (value) => {
   letter-spacing: 0.04em;
   color: var(--primary-dark);
   margin-bottom: 0.25rem;
-}
-
-.kicker-link {
-  color: inherit;
-}
-
-.kicker-link:hover,
-.kicker-link:focus-visible {
-  text-decoration: underline;
 }
 
 .instruction {

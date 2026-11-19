@@ -1,9 +1,9 @@
 <template>
   <header class="trail-header">
     <div class="left">
-      <button class="back-button" @click="confirmRestart">
+      <BackLink @click="confirmRestart">
         {{ $t('learn.discipline.briefingScreen.ghostButton') }}
-      </button>
+      </BackLink>
     </div>
 
     <div class="center">
@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import LineIcon from '@/components/icons/LineIcon.vue';
+import BackLink from '@/components/BackLink.vue';
 import type { DisciplineMeta } from '@/types/learn/discipline';
 import i18n from '@/localisation/i18n';
 
@@ -70,21 +71,6 @@ function confirmRestart() {
 .right {
   display: flex;
   justify-content: flex-end;
-}
-
-.back-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.55rem 1rem;
-  border: 1px solid var(--neutral-20);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.back-button:hover {
-  border-color: var(--primary);
 }
 
 .discipline-icon {

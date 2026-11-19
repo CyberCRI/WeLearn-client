@@ -7,10 +7,10 @@
     <div class="spacer" />
 
     <div class="next-group">
-      <button class="btn btn-primary" :disabled="!canNext" @click="$emit('next')">
+      <button class="btn btn-primary" @click="$emit('next')">
         {{ $t(nextLabel) }}
       </button>
-      <p v-if="!canNext && hint" class="next-hint">{{ $t(hint) }}</p>
+      <p v-if="hint" class="next-hint">{{ $t(hint) }}</p>
       <a v-if="skippable" class="skip-link" @click="$emit('skip')">{{ $t('skip') }}</a>
     </div>
   </footer>
@@ -20,12 +20,11 @@
 withDefaults(
   defineProps<{
     showBack?: boolean;
-    canNext?: boolean;
     nextLabel?: string;
     hint?: string;
     skippable?: boolean;
   }>(),
-  { showBack: true, canNext: true, nextLabel: 'next' }
+  { showBack: true, nextLabel: 'next' }
 );
 
 defineEmits<{
@@ -82,13 +81,8 @@ defineEmits<{
   color: var(--neutral-100);
 }
 
-.btn-primary:hover:not(:disabled) {
+.btn-primary:hover {
   background: var(--primary-hover);
-}
-
-.btn-primary:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
 }
 
 .btn-secondary {

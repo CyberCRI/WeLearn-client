@@ -183,28 +183,6 @@ export const frameworks: ModuleText<typeof FRAMEWORKS> = {
       },
       lesson:
         'Même ODD, compétences différentes : la compétence dépend de ce que les étudiant·es apprennent et font. Il n’existe pas de correspondance fixe ODD ↔ GreenComp.'
-    },
-    myth: {
-      title: 'Vrai ou faux ?',
-      short: 'Idées reçues',
-      statements: [
-        {
-          text: 'Ajouter des logos ODD à mon syllabus suffit à en faire un cours d’EDD.',
-          feedback:
-            'Faux. Associer un ODD à un cours ne change pas ce que les étudiant·es apprennent. L’éducation au développement durable (EDD) porte sur ce qu’elle les rend capables de comprendre et de faire.'
-        },
-        {
-          text: 'Un cours devrait développer les 12 compétences du GreenComp.',
-          feedback:
-            'Faux. Le GreenComp n’est pas prescriptif : un cours peut se concentrer sur les quelques compétences qui lui correspondent.',
-          cite: [{ src: 'greencomp', loc: 'p. 15, 30' }]
-        },
-        {
-          text: 'Les ODD et le GreenComp peuvent être utilisés ensemble.',
-          feedback:
-            'Vrai. Les ODD aident à cadrer l’enjeu, et le GreenComp aide à cadrer ce que les étudiant·es développent en y travaillant.'
-        }
-      ]
     }
   }
 };

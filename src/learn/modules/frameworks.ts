@@ -60,11 +60,6 @@ export const FRAMEWORKS = {
         { id: 'futures', area: 'futures', competence: 'futures-literacy' },
         { id: 'collective', area: 'acting', competence: 'collective-action' }
       ]
-    },
-    {
-      id: 'myth',
-      type: 'myth',
-      statements: [{ answer: false }, { answer: false }, { answer: true }]
     }
   ]
 } as const satisfies ModuleStructure;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { GreenCompStep } from '@/types/learn/modules';
 import SourceChip from './SourceChip.vue';
+import NumberedCard from '@/components/learn/NumberedCard.vue';
 import { useOpenAll } from '@/composables/useOpenAll';
 
 // the 4 GreenComp areas × 3 competences, drawn by us (adapted from the CC BY 4.0 framework, credited below)
@@ -11,7 +12,6 @@ const { openKey, opened, handleToggle } = useOpenAll<string>(
   () => props.step.areas.length,
   () => emit('done')
 );
-const COLORS = ['--learn-green', '--learn-blue', '--learn-violet', '--learn-orange'];
 </script>
 
 <template>
@@ -19,23 +19,16 @@ const COLORS = ['--learn-green', '--learn-blue', '--learn-violet', '--learn-oran
     <p class="mb-3">{{ step.explanation }} <SourceChip :cites="step.cite" /></p>
 
     <div class="areas">
-      <section
+      <NumberedCard
         v-for="(area, i) in step.areas"
         :key="area.id"
-        class="area"
-        :class="{ open: openKey === area.id }"
-        :style="{ '--c': `var(${COLORS[i]})` }"
+        :num="i + 1"
+        :title="area.name"
+        :isOpen="openKey === area.id"
+        :isSeen="opened.has(area.id)"
+        @toggle="handleToggle(area.id)"
       >
-        <button
-          class="area-head"
-          :aria-expanded="openKey === area.id"
-          @click="handleToggle(area.id)"
-        >
-          <span class="num">{{ i + 1 }}</span>
-          <strong>{{ area.name }}</strong>
-          <span aria-hidden="true">{{ opened.has(area.id) ? '✓' : '+' }}</span>
-        </button>
-        <ul class="competences">
+        <ul class="competences" :class="{ open: openKey === area.id }">
           <li
             v-for="(c, j) in area.competences"
             :key="c.name"
@@ -49,7 +42,7 @@ const COLORS = ['--learn-green', '--learn-blue', '--learn-violet', '--learn-oran
             </span>
           </li>
         </ul>
-      </section>
+      </NumberedCard>
     </div>
 
     <p class="note">{{ step.note }} <SourceChip :cites="step.noteCite" /></p>
@@ -68,48 +61,6 @@ const COLORS = ['--learn-green', '--learn-blue', '--learn-violet', '--learn-oran
   .areas {
     grid-template-columns: 1fr;
   }
-}
-
-.area {
-  border: 2px solid color-mix(in srgb, var(--c) 35%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--c) 6%, var(--neutral-0));
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
-}
-
-.area.open {
-  border-color: var(--c);
-  box-shadow: 0 6px 18px rgb(0 0 0 / 8%);
-}
-
-.area-head {
-  all: unset;
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 0.6rem;
-  width: 100%;
-  padding: 0.85rem 1rem;
-  cursor: pointer;
-}
-
-.area-head:focus-visible {
-  outline: 2px solid var(--c);
-  border-radius: 12px;
-}
-
-.num {
-  display: grid;
-  place-items: center;
-  width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 50%;
-  background: var(--c);
-  color: #fff;
-  font-weight: 700;
 }
 
 .competences {
@@ -132,7 +83,7 @@ const COLORS = ['--learn-green', '--learn-blue', '--learn-violet', '--learn-oran
     transform 0.3s;
 }
 
-.area.open .competence {
+.competences.open .competence {
   opacity: 1;
   transform: translateX(3px);
 }

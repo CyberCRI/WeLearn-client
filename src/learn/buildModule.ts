@@ -3,7 +3,6 @@ import type {
   DimensionsStructure,
   ExampleStructure,
   GreenCompStructure,
-  MythStructure,
   ModuleContent,
   ModuleStructure,
   ModuleText,
@@ -68,8 +67,7 @@ function buildStep(
         type: s.type,
         events: s.events.map((e, i) => ({ year: e.year, ...x.events[i] })),
         closing: x.closing,
-        closingCite: x.closingCite,
-        note: x.note
+        closingCite: x.closingCite
       };
     }
     case 'sdgs': {
@@ -119,14 +117,6 @@ function buildStep(
           };
         }),
         lesson: x.lesson
-      };
-    }
-    case 'myth': {
-      const x = t as Text<MythStructure>;
-      return {
-        ...base,
-        type: s.type,
-        statements: s.statements.map((st, i) => ({ ...x.statements[i], answer: st.answer }))
       };
     }
   }

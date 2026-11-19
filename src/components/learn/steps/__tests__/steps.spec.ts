@@ -8,7 +8,6 @@ import TimelineStep from '../TimelineStep.vue';
 import SdgMap from '../SdgMap.vue';
 import GreenCompMap from '../GreenCompMap.vue';
 import WorkedExample from '../WorkedExample.vue';
-import MythCheck from '../MythCheck.vue';
 import { getModuleContent } from '@/learn/modules';
 import type { ModuleId, SortStep } from '@/types/learn/modules';
 import { track } from '@/utils/analytics';
@@ -22,8 +21,7 @@ const STEP_COMPONENTS: Record<string, Component> = {
   timeline: TimelineStep,
   sdgs: SdgMap,
   greencomp: GreenCompMap,
-  example: WorkedExample,
-  myth: MythCheck
+  example: WorkedExample
 };
 
 const STEPS = (['foundations', 'frameworks'] as ModuleId[]).flatMap((moduleId) =>

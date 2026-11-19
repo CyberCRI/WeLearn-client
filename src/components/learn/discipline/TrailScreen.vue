@@ -8,7 +8,14 @@
     />
 
     <main class="trail-body">
-      <ProgressBar :current-step="currentStepIndex" :progress="progress" />
+      <ProgressBar
+        :current-step="currentStepIndex"
+        :reached="reached"
+        :skipped="skipped"
+        :progress="progress"
+        clickable
+        @select="select"
+      />
 
       <div class="content-panel">
         <Transition name="fade" mode="out-in">
@@ -43,8 +50,7 @@
 
         <TrailNavigation
           :next-label="isLastStep ? 'finish' : 'next'"
-          :can-next="canNext"
-          :hint="hint"
+          :hint="isDone(currentStepIndex) ? undefined : 'learn.module.nextHint'"
           @back="previous"
           @next="next"
         />
@@ -78,6 +84,7 @@ const props = defineProps<{
   disciplineMeta: DisciplineMeta | null;
   discipline: Discipline;
   step: number;
+  reached: number;
   flipDone: boolean;
   flippedCards: number[];
   chosenActivity: Activity | null;
@@ -90,6 +97,7 @@ const emit = defineEmits<{
   (e: 'previous'): void;
   (e: 'finish'): void;
   (e: 'restart'): void;
+  (e: 'select', index: number): void;
   (e: 'flipCard', index: number): void;
   (e: 'chooseActivity', activity: ActivityRef | null): void;
 }>();
@@ -99,18 +107,17 @@ const currentStep = computed<Step>(() => {
   return props.discipline.steps[currentStepIndex.value];
 });
 
-// Steps that need an action before moving on, with the hint shown under the disabled button
-const canNext = computed(() => {
-  if (currentStep.value.type === 'flip') return props.flipDone;
-  if (currentStep.value.type === 'activities') return !!props.chosenActivity;
+// steps with an action can be skipped: they stay unchecked in the steps bar until it is done
+function isDone(index: number) {
+  const type = props.discipline.steps[index].type;
+  if (type === 'flip') return props.flipDone;
+  if (type === 'activities') return !!props.chosenActivity;
   return true;
-});
+}
 
-const hint = computed(() => {
-  if (currentStep.value.type === 'flip') return 'learn.discipline.flipCards.nextHint';
-  if (currentStep.value.type === 'activities') return 'learn.discipline.activities.nextHint';
-  return undefined;
-});
+const skipped = computed(() =>
+  props.discipline.steps.flatMap((_, i) => (i <= props.reached && !isDone(i) ? [i] : []))
+);
 
 const isLastStep = computed(() => {
   return currentStepIndex.value === props.discipline.steps.length - 1;
@@ -121,9 +128,12 @@ function previous() {
 }
 
 function next() {
-  if (!canNext.value) return;
-
   emit('next');
+  scrollToAnchor('steps-focus');
+}
+
+function select(index: number) {
+  emit('select', index);
   scrollToAnchor('steps-focus');
 }
 </script>

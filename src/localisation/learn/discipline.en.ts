@@ -48,9 +48,7 @@ export const discipline = {
   },
   flipCards: {
     bravo: '✓ Well done!',
-    completed: 'You’ve explored some of the key ways this discipline contributes.',
-    clickToDiscover: 'Click to flip',
-    nextHint: 'Flip all the cards to continue'
+    completed: 'You’ve explored some of the key ways this discipline contributes.'
   },
   contributions: {
     title: 'What your discipline contributes',
@@ -59,8 +57,7 @@ export const discipline = {
   activities: {
     intro: 'Here are practical activities you can add to a class you already teach.',
     instruction:
-      'Which of these activities would you most like to try with your students? Pick one: you’ll build on it in the next step.',
-    nextHint: 'Choose an activity to continue'
+      'Which of these activities would you most like to try with your students? Pick one: you’ll build on it in the next step.'
   },
   competence: {
     title: 'Skills your students develop',

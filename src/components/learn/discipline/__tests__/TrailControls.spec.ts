@@ -42,11 +42,11 @@ describe('TrailHeader', () => {
     const confirm = vi.spyOn(window, 'confirm').mockReturnValueOnce(false);
     const wrapper = mountHeader();
 
-    await wrapper.get('.back-button').trigger('click');
+    await wrapper.get('.back-link').trigger('click');
     expect(wrapper.emitted('restart')).toBeUndefined();
 
     confirm.mockReturnValueOnce(true);
-    await wrapper.get('.back-button').trigger('click');
+    await wrapper.get('.back-link').trigger('click');
     expect(wrapper.emitted('restart')).toHaveLength(1);
     expect(confirm).toHaveBeenCalledTimes(2);
   });
@@ -66,6 +66,7 @@ describe('TrailScreen', () => {
         disciplineMeta: disciplines[0],
         discipline,
         step,
+        reached: step,
         flipDone: false,
         flippedCards: [],
         chosenActivity: null,
@@ -86,16 +87,27 @@ describe('TrailScreen', () => {
     expect(wrapper.emitted('previous')).toHaveLength(1);
   });
 
-  it('does not move on from the flip cards until every card is flipped', async () => {
+  it('lets an unfinished step be skipped, with a hint until it is done', async () => {
     const wrapper = mountScreen(0);
+    const nav = () => wrapper.findComponent({ name: 'TrailNavigation' });
 
-    wrapper.findComponent({ name: 'TrailNavigation' }).vm.$emit('next');
-    await wrapper.vm.$nextTick();
-    expect(wrapper.emitted('next')).toBeUndefined();
-
-    await wrapper.setProps({ flipDone: true });
-    wrapper.findComponent({ name: 'TrailNavigation' }).vm.$emit('next');
+    expect(nav().props('hint')).toBe('learn.module.nextHint');
+    nav().vm.$emit('next');
     await wrapper.vm.$nextTick();
     expect(wrapper.emitted('next')).toHaveLength(1);
+
+    await wrapper.setProps({ flipDone: true });
+    expect(nav().props('hint')).toBeUndefined();
+  });
+
+  it('marks skipped steps in the steps bar and reopens any reached step', async () => {
+    const wrapper = mountScreen(1);
+    const bar = wrapper.findComponent({ name: 'ProgressBar' });
+
+    // the flip step (0) was left unfinished
+    expect(bar.props('skipped')).toEqual([0]);
+    bar.vm.$emit('select', 0);
+    await wrapper.vm.$nextTick();
+    expect(wrapper.emitted('select')).toEqual([[0]]);
   });
 });

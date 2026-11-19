@@ -52,7 +52,6 @@ export type TimelineStep = StepBase & {
   events: { year: string; label: string; detail: string; cite: Cite[] }[];
   closing: string;
   closingCite: Cite[];
-  note: string;
 };
 
 export type SdgsStep = StepBase & {
@@ -82,11 +81,6 @@ export type ExampleStep = StepBase & {
   lesson: string;
 };
 
-export type MythStep = StepBase & {
-  type: 'myth';
-  statements: { text: string; answer: boolean; feedback: string; cite?: Cite[] }[];
-};
-
 export type Step =
   | ConceptsStep
   | DimensionsStep
@@ -94,8 +88,7 @@ export type Step =
   | TimelineStep
   | SdgsStep
   | GreenCompStep
-  | ExampleStep
-  | MythStep;
+  | ExampleStep;
 
 export type ModuleContent = {
   title: string;
@@ -147,10 +140,6 @@ export type ExampleStructure = StructureBase & {
   sdg: { goal: number };
   options: readonly { id: string; area: string; competence: string }[];
 };
-export type MythStructure = StructureBase & {
-  type: 'myth';
-  statements: readonly { answer: boolean }[];
-};
 
 export type StepStructure =
   | ConceptsStructure
@@ -159,8 +148,7 @@ export type StepStructure =
   | TimelineStructure
   | SdgsStructure
   | GreenCompStructure
-  | ExampleStructure
-  | MythStructure;
+  | ExampleStructure;
 
 export type ModuleStructure = { steps: readonly StepStructure[] };
 
@@ -214,7 +202,6 @@ export type StepText<S extends StepStructure> = StepTextBase &
               events: ByPosition<S['events'], { label: string; detail: string; cite: Cite[] }>;
               closing: string;
               closingCite: Cite[];
-              note: string;
             }
           : S extends SdgsStructure
             ? {
@@ -240,14 +227,7 @@ export type StepText<S extends StepStructure> = StepTextBase &
                     options: ById<S['options'], { intention: string }>;
                     lesson: string;
                   }
-                : S extends MythStructure
-                  ? {
-                      statements: ByPosition<
-                        S['statements'],
-                        { text: string; feedback: string; cite?: Cite[] }
-                      >;
-                    }
-                  : never);
+                : never);
 
 export type ModuleText<S extends ModuleStructure> = {
   title: string;

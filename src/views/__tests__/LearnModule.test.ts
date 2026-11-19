@@ -73,6 +73,24 @@ describe('Learn pages', () => {
     expect(wrapper.text()).toContain('learn.module.notFound');
   });
 
+  it('skips a step, keeps it unchecked, and reopens it from the steps bar', async () => {
+    const wrapper = mount(LearnModule);
+    const nav = () => wrapper.findComponent(TrailNavigation);
+    const bar = () => wrapper.findComponent({ name: 'ProgressBar' });
+
+    nav().vm.$emit('next'); // intro → step 1
+    await flushPromises();
+    nav().vm.$emit('next'); // skip step 1
+    await flushPromises();
+
+    // the current step is listed too, the bar only marks the ones behind or ahead of it
+    expect(bar().props('skipped')).toEqual([1, 2]);
+    bar().vm.$emit('select', 1);
+    await flushPromises();
+    expect(bar().props('currentStep')).toBe(1);
+    expect(bar().props('reached')).toBe(2);
+  });
+
   it('runs a module from intro to wrap-up and saves progress', async () => {
     const wrapper = mount(LearnModule);
     const steps = getModuleContent('foundations', 'fr').steps;
@@ -91,12 +109,12 @@ describe('Learn pages', () => {
 
     for (const step of steps) {
       const nav = wrapper.findComponent(TrailNavigation);
-      expect(nav.props('canNext')).toBe(false);
+      expect(nav.props('hint')).toBe('learn.module.nextHint');
       wrapper
         .findComponent(STEP_COMPONENTS[step.type as keyof typeof STEP_COMPONENTS])
         .vm.$emit('done');
       await flushPromises();
-      expect(nav.props('canNext')).toBe(true);
+      expect(nav.props('hint')).toBeUndefined();
       nav.vm.$emit('next');
       await flushPromises();
     }

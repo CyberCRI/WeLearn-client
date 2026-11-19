@@ -1,8 +1,16 @@
 <template>
   <div class="microlearning">
-    <RouterLink v-if="ml.screen.value === ScreensEnum.welcome" to="/learn" class="back-link">
-      ← {{ $t('learn.module.backToLearn') }}
-    </RouterLink>
+    <BackLink v-if="ml.screen.value === ScreensEnum.welcome" to="/learn" class="page-back">
+      {{ $t('learn.module.backToLearn') }}
+    </BackLink>
+    <!-- before the trail nothing is lost yet, so no confirm (the trail header asks) -->
+    <BackLink
+      v-else-if="[ScreensEnum.briefing, ScreensEnum.autoEvalStart].includes(ml.screen.value)"
+      class="page-back"
+      @click="ml.restart"
+    >
+      {{ $t('learn.discipline.briefingScreen.ghostButton') }}
+    </BackLink>
     <Transition name="fade" mode="out-in">
       <WelcomeScreen
         v-if="ml.screen.value === ScreensEnum.welcome"
@@ -28,6 +36,7 @@
         v-else-if="ml.screen.value === ScreensEnum.trail && ml.currentData.value"
         :discipline="ml.currentData.value"
         :step="ml.step.value"
+        :reached="ml.reachedStep.value"
         :disciplineMeta="ml.current_disc.value"
         :flip-done="ml.flipDone.value"
         :chosen-activity="ml.chosenActivity.value"
@@ -38,6 +47,7 @@
         @choose-activity="ml.chooseActivity"
         @previous="ml.prevStep"
         @next="ml.nextStep"
+        @select="ml.goToStep"
         @restart="ml.restart"
       />
       <AutoEvaluationEnd
@@ -62,6 +72,7 @@
 <script setup lang="ts">
 import { useDisciplineModule } from '@/composables/useDisciplineModule';
 import { ScreensEnum } from '@/types/learn/discipline';
+import BackLink from '@/components/BackLink.vue';
 
 import WelcomeScreen from '@/components/learn/discipline/WelcomeScreen.vue';
 import BriefingScreen from '@/components/learn/discipline/BriefingScreen.vue';
@@ -74,12 +85,8 @@ const ml = useDisciplineModule();
 </script>
 
 <style scoped>
-.back-link {
-  display: inline-block;
+.page-back {
   margin: 1rem 0 0 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--primary-dark);
 }
 
 .microlearning {

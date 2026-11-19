@@ -30,30 +30,27 @@ describe('DisciplineModule trail', () => {
     vi.clearAllMocks();
   });
 
-  // the flip step blocks the trail until every card is flipped
-  it('lets every card be flipped through its button, then unlocks next', async () => {
+  // the flip step can be skipped; "Bravo" shows once every card is revealed
+  it('reveals every card through its button, then moves on', async () => {
     const wrapper = mount(DisciplineModule);
     // open the trail like a browser back/forward to ?screen=trail would
     routing.route.query = { disc: 'math', screen: 'trail', step: '0' };
     await flushPromises();
 
     const flipStep = DATA.fr.math.steps[0] as FlipStep;
-    const cards = wrapper.findAll('button.flip-card');
+    const cards = wrapper.findAll('.numbered-card button');
     const next = () => wrapper.get('.trail-navigation .btn-primary');
     expect(cards).toHaveLength(flipStep.cards.length);
-    expect(next().attributes('disabled')).toBeDefined();
 
     // Enter/Space on a native button fire click, the browser run is in e2e/microlearning.spec.ts
     for (const card of cards) {
-      expect(card.attributes('aria-pressed')).toBe('false');
+      expect(card.attributes('aria-expanded')).toBe('false');
       await card.trigger('click');
-      expect(card.attributes('aria-pressed')).toBe('true');
+      expect(card.attributes('aria-expanded')).toBe('true');
     }
 
     expect(wrapper.text()).toContain('learn.discipline.flipCards.completed');
-    expect(next().attributes('disabled')).toBeUndefined();
-
     await next().trigger('click');
-    expect(wrapper.find('.flip-card').exists()).toBe(false);
+    expect(wrapper.find('.flip-cards').exists()).toBe(false);
   });
 });

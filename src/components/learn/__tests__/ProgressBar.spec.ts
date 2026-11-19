@@ -18,6 +18,28 @@ describe('ProgressBar', () => {
     expect(steps[2].classes()).toContain('active');
   });
 
+  it('reopens any reached step and keeps skipped ones unchecked', async () => {
+    const wrapper = mount(ProgressBar, {
+      props: {
+        currentStep: 1,
+        reached: 3,
+        skipped: [2],
+        labels: ['A', 'B', 'C', 'D', 'E'],
+        progress: 25,
+        clickable: true
+      }
+    });
+    const steps = wrapper.findAll('.step');
+
+    await steps[3].trigger('click');
+    await steps[4].trigger('click');
+
+    expect(wrapper.emitted('select')).toEqual([[3]]);
+    expect(steps[0].classes()).toContain('done');
+    expect(steps[2].classes()).toEqual(expect.arrayContaining(['skipped', 'clickable']));
+    expect(steps[2].find('.check').exists()).toBe(false);
+  });
+
   it('never emits select when not clickable', async () => {
     const wrapper = mount(ProgressBar, {
       props: { currentStep: 2, progress: 50, labels: ['One', 'Two', 'Three'] }

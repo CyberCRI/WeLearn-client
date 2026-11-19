@@ -38,7 +38,6 @@ const { openKey, opened, handleToggle } = useOpenAll<number>(
 
     <div class="closing">
       <p>{{ step.closing }} <SourceChip :cites="step.closingCite" /></p>
-      <p class="is-size-7 has-text-grey">{{ step.note }}</p>
     </div>
   </div>
 </template>

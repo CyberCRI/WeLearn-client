@@ -285,7 +285,8 @@ export const fr = {
       introLabel: 'Intro',
       wrapUpLabel: 'Bilan',
       start: 'Commencer',
-      nextHint: 'Terminez l’activité pour continuer',
+      nextHint:
+        'Vous pouvez passer cette activité et y revenir en cliquant sur son étape, en haut.',
       confidenceLow: 'Pas du tout',
       confidenceHigh: 'Tout à fait',
       confidenceDelta: 'Votre confiance\u00a0: {before}/5 au début, {after}/5 maintenant.',
@@ -301,8 +302,6 @@ export const fr = {
       groupByPs: 'Regrouper par les 5 P',
       showInOrder: 'Afficher dans l’ordre',
       challengeLabel: 'L’enjeu de durabilité',
-      answerTrue: 'Vrai',
-      answerFalse: 'Faux',
       takeawaysTitle: 'À retenir',
       sourcesTitle: 'Sources ({n})',
       completed: 'Terminé',

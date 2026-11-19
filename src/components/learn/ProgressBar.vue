@@ -10,10 +10,10 @@
         :key="index"
         class="step"
         :class="stepClass(index)"
-        @click="clickable && index < currentStep && $emit('select', index)"
+        @click="isClickable(index) && $emit('select', index)"
       >
         <div class="circle">
-          <svg v-if="index < currentStep" class="check" viewBox="0 0 24 24">
+          <svg v-if="isDone(index)" class="check" viewBox="0 0 24 24">
             <path
               d="M5 13l4 4L19 7"
               fill="none"
@@ -46,8 +46,12 @@ const props = defineProps<{
   currentStep: number;
   // already translated labels; defaults to the micro-learning steps
   labels?: string[];
-  // finished steps emit "select" when clicked
+  // reached steps emit "select" when clicked
   clickable?: boolean;
+  // furthest step reached, when the user went back; defaults to currentStep
+  reached?: number;
+  // reached steps left unfinished: they keep their number instead of a check
+  skipped?: number[];
   progress: number;
 }>();
 
@@ -59,11 +63,23 @@ const progressWidth = computed(() => {
   return `${props.progress}%`;
 });
 
+const reached = computed(() => Math.max(props.reached ?? 0, props.currentStep));
+
+// any step reached before, other than the one on screen
+const isVisited = (index: number) => index !== props.currentStep && index <= reached.value;
+
+const isSkipped = (index: number) => isVisited(index) && !!props.skipped?.includes(index);
+
+const isDone = (index: number) => isVisited(index) && !props.skipped?.includes(index);
+
+const isClickable = (index: number) => !!props.clickable && isVisited(index);
+
 function stepClass(index: number) {
   return {
     active: index === props.currentStep,
-    done: index < props.currentStep,
-    clickable: props.clickable && index < props.currentStep
+    done: isDone(index),
+    skipped: isSkipped(index),
+    clickable: isClickable(index)
   };
 }
 </script>
@@ -145,8 +161,15 @@ function stepClass(index: number) {
   color: white;
 }
 
-.done .label {
+.done .label,
+.skipped .label {
   color: #444;
+}
+
+.skipped .circle {
+  border-style: dashed;
+  border-color: var(--primary-hover);
+  color: var(--neutral-80);
 }
 
 .clickable {

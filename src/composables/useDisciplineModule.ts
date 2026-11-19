@@ -33,6 +33,8 @@ export function useDisciplineModule() {
   const disc = ref<DiscValue | null>(null);
   const current_disc = ref<DisciplineMeta | null>(null);
   const step = ref(0);
+  // furthest trail step reached, so the steps bar can reopen any step up to it
+  const reachedStep = ref(0);
 
   // Progress kept while navigating back and forth
   const flippedCards = ref<number[]>([]);
@@ -112,7 +114,7 @@ export function useDisciplineModule() {
 
   const progress = computed(() => {
     if (!currentData.value) return 0;
-    return calculateProgress(step.value, currentData.value.steps.length - 1);
+    return calculateProgress(reachedStep.value, currentData.value.steps.length - 1);
   });
 
   // =====================
@@ -125,6 +127,7 @@ export function useDisciplineModule() {
 
   function resetProgress() {
     step.value = 0;
+    reachedStep.value = 0;
     flippedCards.value = [];
     actChoice.value = null;
     reflectionAnswers.splice(0);
@@ -204,6 +207,10 @@ export function useDisciplineModule() {
     else goToautoEvalStart();
   }
 
+  function goToStep(index: number) {
+    step.value = index;
+  }
+
   function backToTrail() {
     screen.value = ScreensEnum.trail;
   }
@@ -223,6 +230,8 @@ export function useDisciplineModule() {
   function chooseActivity(choice: ActivityRef | null) {
     actChoice.value = choice;
   }
+
+  watch(step, (s) => (reachedStep.value = Math.max(reachedStep.value, s)));
 
   // Once the user has seen trail content, "before" answers no longer reflect a baseline
   watch(screen, (s) => {
@@ -359,6 +368,7 @@ export function useDisciplineModule() {
     DISC_META,
     DISC_LIST,
     step,
+    reachedStep,
     actChoice,
     flippedCards,
     flipDone,
@@ -386,6 +396,7 @@ export function useDisciplineModule() {
     goToautoEvalStart,
     nextStep,
     prevStep,
+    goToStep,
     backToTrail,
     goToComplete,
     restart,

@@ -205,8 +205,7 @@ export const foundations: ModuleText<typeof FOUNDATIONS> = {
       ],
       closing:
         'Pourquoi cela vous concerne : ces enjeux sont attendus dans toutes les disciplines (sciences, ingénierie, santé, sciences humaines et sociales) et intégrés aux cours existants, pas seulement aux cours spécialisés.',
-      closingCite: [{ src: 'mesr2023', loc: 'p. 5' }, { src: 'jouzel' }],
-      note: 'Il s’agit d’un aperçu : inutile de connaître la réglementation en détail.'
+      closingCite: [{ src: 'mesr2023', loc: 'p. 5' }, { src: 'jouzel' }]
     },
     'sort-2': {
       title: 'Savoir ne suffit pas',

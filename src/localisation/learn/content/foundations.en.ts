@@ -202,8 +202,7 @@ export const foundations: ModuleText<typeof FOUNDATIONS> = {
       ],
       closing:
         'Why it concerns you: these issues are expected in all disciplines (sciences, engineering, health, humanities and social sciences) and built into existing courses, not only specialist ones.',
-      closingCite: [{ src: 'mesr2023', loc: 'p. 5' }, { src: 'jouzel' }],
-      note: 'This is an overview: you don’t need to know the regulations in detail.'
+      closingCite: [{ src: 'mesr2023', loc: 'p. 5' }, { src: 'jouzel' }]
     },
     'sort-2': {
       title: 'Knowing is not enough',
