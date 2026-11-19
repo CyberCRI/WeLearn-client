@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
+import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
+import DatasetSimpleComponent from '@/components/DatasetSimpleComponent.vue';
 import type { Document } from '@/types';
 
 const doc = (id: string, sliceContent?: string) =>
@@ -12,6 +14,7 @@ const doc = (id: string, sliceContent?: string) =>
       slice_content: sliceContent,
       document_id: `doc-${id}`,
       document_title: `Title ${id}`,
+      document_desc: `Description ${id}`,
       document_corpus: 'corpus',
       document_url: 'https://example.org',
       document_sdg: [],
@@ -76,5 +79,45 @@ describe('ResourcesStep', () => {
     await wrapper.find('.source').trigger('click');
 
     expect(wrapper.props('appendSource')).toHaveBeenCalledWith(sources[0]);
+  });
+
+  it('shows dataset-specific empty and action states', () => {
+    const wrapper = mount(ResourcesStep, {
+      props: {
+        kind: 'datasets',
+        sources: [],
+        selectedSources: [],
+        appendSource: vi.fn(),
+        action: vi.fn()
+      },
+      global: { stubs: { CardSimpleComponent: true, Card: true, ModalWrapper: true } }
+    });
+    expect(wrapper.text()).toContain('tutor.datasetsStep.noSources');
+    expect(wrapper.get('[data-testid="tutor-generate-button"]').text()).toContain(
+      'tutor.datasetsStep.action'
+    );
+  });
+
+  it('shows dataset selection and invokes the action', async () => {
+    const action = vi.fn();
+    const wrapper = mount(ResourcesStep, {
+      props: {
+        kind: 'datasets',
+        sources: [doc('1')],
+        selectedSources: [],
+        appendSource: vi.fn(),
+        action
+      },
+      global: { stubs: { CardSimpleComponent: true, Card: true, ModalWrapper: true } }
+    });
+    expect(wrapper.findComponent(DatasetSimpleComponent).exists()).toBe(true);
+    expect(wrapper.findComponent(CardSimpleComponent).exists()).toBe(false);
+    const datasetCard = wrapper.findComponent(DatasetSimpleComponent);
+    expect(datasetCard.props('description')).toBe('Description 1');
+    expect(datasetCard.find('.description').text()).toBe('Description 1');
+    expect(wrapper.text()).toContain('tutor.datasetsStep.description');
+    expect(wrapper.text()).toContain('tutor.datasetsStep.noneHint');
+    await wrapper.get('[data-testid="tutor-generate-button"]').trigger('click');
+    expect(action).toHaveBeenCalledOnce();
   });
 });

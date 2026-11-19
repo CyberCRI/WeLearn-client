@@ -112,6 +112,27 @@ exports[`TutorPage > renders properly 1`] = `
             class="label"
             data-v-49a355d6=""
           >
+            Jeux de données
+          </span>
+        </div>
+        <div
+          class="step"
+          data-v-49a355d6=""
+        >
+          <div
+            class="circle"
+            data-v-49a355d6=""
+          >
+            <span
+              data-v-49a355d6=""
+            >
+              5
+            </span>
+          </div>
+          <span
+            class="label"
+            data-v-49a355d6=""
+          >
             Syllabus
           </span>
         </div>
@@ -399,6 +420,9 @@ exports[`TutorPage > renders properly 1`] = `
       </div>
       
     </section>
+    
+    
+    <!--v-if-->
     
     
     <!--v-if-->

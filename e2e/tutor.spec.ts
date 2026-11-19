@@ -182,6 +182,63 @@ test.describe('Tutor', () => {
     await expect(page.getByTestId('tutor-next-button')).toBeDisabled();
   });
 
+  test('selects resources and open datasets for the syllabus', async ({ page }) => {
+    const searches: { corpus: string | null; summaries: string[] }[] = [];
+    let syllabusDocuments: { payload: { document_id: string } }[] = [];
+    const document = (id: string, corpus: string) => ({
+      id,
+      score: 1,
+      payload: {
+        document_id: id,
+        document_corpus: corpus,
+        document_title: id,
+        document_url: 'https://example.org',
+        document_details: {},
+        document_sdg: []
+      }
+    });
+    await page.route('**/**/tutor/**', async (route) => {
+      const url = new URL(route.request().url());
+      if (url.pathname.endsWith('/files/content')) {
+        await route.fulfill({ json: { extracts: [{ summary: 'Original summary' }] } });
+      } else if (
+        url.pathname.endsWith('/search_extracts') ||
+        url.pathname.endsWith('/search_datasets')
+      ) {
+        const corpus = url.searchParams.get('corpus');
+        searches.push({ corpus, summaries: route.request().postDataJSON().summaries });
+        const documents = url.pathname.endsWith('/search_datasets')
+          ? [document('dataset', 'datagouv')]
+          : [document('resource', 'openalex')];
+        await route.fulfill({ json: { extracts: [], nb_results: 1, documents } });
+      } else if (url.pathname.endsWith('/syllabus')) {
+        syllabusDocuments = route.request().postDataJSON().documents;
+        await route.fulfill({
+          json: { syllabus: [{ source: 'PedagogicalEngineerAgent', content: 'Syllabus' }] }
+        });
+      } else {
+        await route.fallback();
+      }
+    });
+    await page.getByTestId('file-input').setInputFiles('./e2e/files/test_tutor.pdf');
+    await page.locator('#cursus-title').fill('Course');
+    await page.getByTestId('tutor-next-button').click();
+    await page.getByTestId('tutor-search-button').click();
+    await page.locator('#target-3 [role="checkbox"]').click();
+    await page.getByTestId('tutor-datasets-button').click();
+    await page.locator('#target-4 [role="checkbox"]').click();
+    await page.getByTestId('tutor-generate-button').click();
+    await expect(page.locator('#target-5')).toBeVisible();
+    expect(searches).toEqual([
+      { corpus: null, summaries: ['Original summary'] },
+      { corpus: null, summaries: ['Original summary'] }
+    ]);
+    expect(syllabusDocuments.map((item) => item.payload.document_id)).toEqual([
+      'resource',
+      'dataset'
+    ]);
+  });
+
   // test('should add file to input', async ({ page }) => {
   //   const fileInput = page.getByTestId('file-input');
   //   await fileInput.click();

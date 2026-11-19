@@ -440,6 +440,105 @@ describe('tutor store', () => {
     });
   });
 
+  describe('dataset search', () => {
+    it('uses the summaries sent to the resource search and includes selected datasets in generation', async () => {
+      mockPost({ status: 200, data: search([doc('resource')]) });
+      mockPost({ status: 200, data: search([doc('dataset')]) });
+      mockPost({ data: { syllabus: [pedagogical] } });
+      const store = useTutorStore();
+      store.summaries = ['original'];
+      await store.retrieveTutorSearch();
+      store.summaries = ['edited later'];
+      store.appendSource(doc('resource'));
+
+      await store.retrieveDatasetSearch();
+      expect(basePostAxios).toHaveBeenNthCalledWith(
+        2,
+        '/tutor/search_datasets',
+        { summaries: ['original'] },
+        { signal: expect.any(AbortSignal) }
+      );
+      expect(store.step).toBe(4);
+      store.appendDataset(doc('dataset'));
+      await store.retrieveSyllabus();
+      expect(vi.mocked(basePostAxios).mock.calls[2][1]).toMatchObject({
+        documents: [doc('resource'), doc('dataset')]
+      });
+    });
+
+    it('reuses results and selection when returning from the resource step', async () => {
+      mockPost({ status: 200, data: search() });
+      mockPost({ status: 200, data: search([doc('dataset')]) });
+      const store = useTutorStore();
+      await store.retrieveTutorSearch();
+      await store.retrieveDatasetSearch();
+      store.appendDataset(doc('dataset'));
+      await store.retrieveDatasetSearch();
+      expect(basePostAxios).toHaveBeenCalledTimes(2);
+      expect(store.selectedDatasets).toEqual([doc('dataset')]);
+      expect(store.step).toBe(4);
+      store.appendDataset(doc('dataset'));
+      expect(store.selectedDatasets).toEqual([]);
+    });
+
+    it('retries unsuccessful searches and ignores cancelled responses', async () => {
+      mockPost({ status: 204 });
+      mockPostError(new Error('offline'));
+      mockPostError(new axios.CanceledError());
+      const store = useTutorStore();
+      await store.retrieveDatasetSearch();
+      expect(store.shouldRetryAction).toBe(true);
+      expect(store.step).toBe(3);
+      await store.retrieveDatasetSearch();
+      expect(store.shouldRetryAction).toBe(true);
+      await store.retrieveDatasetSearch();
+      expect(store.shouldRetryAction).toBe(false);
+    });
+
+    it('discards datasets on a new resource search or restart', async () => {
+      mockPost({ status: 200, data: search() });
+      mockPost({ status: 200, data: search([doc('dataset')]) });
+      mockPost({ status: 200, data: search() });
+      const store = useTutorStore();
+      await store.retrieveTutorSearch();
+      await store.retrieveDatasetSearch();
+      store.appendDataset(doc('dataset'));
+      await store.retrieveTutorSearch();
+      expect(store.datasetSearch).toBeUndefined();
+      expect(store.selectedDatasets).toEqual([]);
+      store.appendDataset(doc('dataset'));
+      store.restart();
+      expect(store.selectedDatasets).toEqual([]);
+    });
+
+    it('flags network errors and ignores a response after restart', async () => {
+      mockPostError(Object.assign(new Error('offline'), { code: 'ERR_NETWORK' }));
+      const store = useTutorStore();
+      await store.retrieveDatasetSearch();
+      expect(store.reloadError).toBe(true);
+      const resolve = deferredPost();
+      const pending = store.retrieveDatasetSearch();
+      store.restart();
+      resolve({ status: 200, data: search([doc('dataset')]) });
+      await pending;
+      expect(store.datasetSearch).toBeUndefined();
+      expect(store.step).toBe(1);
+    });
+
+    it('includes selected datasets when requesting feedback', async () => {
+      mockPost({ data: { syllabus: [pedagogical] } });
+      const store = useTutorStore();
+      store.tutorSearch = search();
+      store.syllabi = pedagogical;
+      store.appendSource(doc('resource'));
+      store.appendDataset(doc('dataset'));
+      await store.giveFeedback('adjust');
+      expect(vi.mocked(basePostAxios).mock.calls[0][1]).toMatchObject({
+        documents: [doc('resource'), doc('dataset')]
+      });
+    });
+  });
+
   describe('stopAction', () => {
     it('aborts the running request and stops loading', async () => {
       let signal: AbortSignal | undefined;
@@ -480,7 +579,7 @@ describe('tutor store', () => {
 
       await store.handleCreateSyllabus();
 
-      expect(store.step).toBe(3);
+      expect(store.step).toBe(4);
       expect(basePostAxios).not.toHaveBeenCalled();
     });
 
@@ -504,7 +603,7 @@ describe('tutor store', () => {
       });
       expect(store.feedbackHistory).toEqual([]);
       expect(store.isLoading).toBe(false);
-      expect(store.step).toBe(4);
+      expect(store.step).toBe(5);
     });
 
     it('sends the selected sources and the course details', async () => {
@@ -536,7 +635,7 @@ describe('tutor store', () => {
       await store.handleCreateSyllabus();
 
       expect(store.shouldRetryAction).toBe(true);
-      expect(store.step).toBe(3);
+      expect(store.step).toBe(4);
     });
 
     it.each([
@@ -555,8 +654,8 @@ describe('tutor store', () => {
       expect(store.shouldRetryAction).toBe(true);
       // the retry modal shows while loading
       expect(store.isLoading).toBe(true);
-      expect(store.step).toBe(3);
-      expect(track).toHaveBeenCalledWith('Tutor Step Failed', expect.objectContaining({ step: 3 }));
+      expect(store.step).toBe(4);
+      expect(track).toHaveBeenCalledWith('Tutor Step Failed', expect.objectContaining({ step: 4 }));
     });
 
     it('returns false quietly when the syllabus request is cancelled', async () => {
@@ -734,7 +833,7 @@ describe('tutor store', () => {
       await store.handleCreateSyllabus();
       await Promise.resolve();
 
-      expect(store.step).toBe(4);
+      expect(store.step).toBe(5);
       expect(getGuestQuota).toHaveBeenCalledTimes(1);
       expect(useGuestQuotaStore().remaining('syllabus')).toBe(0);
     });
@@ -758,7 +857,7 @@ describe('tutor store', () => {
       expect(store.shouldRetryAction).toBe(false);
       expect(store.isLoading).toBe(false);
       expect(store.syllabi).toBeUndefined();
-      expect(store.step).toBe(3);
+      expect(store.step).toBe(4);
     });
 
     it('keeps a guest syllabus and asks to sign up instead of downloading', async () => {
@@ -1005,12 +1104,12 @@ describe('tutor store', () => {
       await store.handleCreateSyllabus();
 
       expect(track).toHaveBeenCalledWith('Tutor Step Completed', {
-        step: 3,
+        step: 4,
         durationMs: expect.any(Number),
         sourcesCount: 1
       });
       expect(track).toHaveBeenCalledWith('Tutor Step Failed', {
-        step: 3,
+        step: 4,
         durationMs: expect.any(Number)
       });
     });

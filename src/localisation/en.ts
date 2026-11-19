@@ -409,6 +409,7 @@ export const en = {
       documents: 'Documents',
       summary: 'Summary',
       resources: 'Resources',
+      datasets: 'Datasets',
       syllabus: 'Syllabus',
       course: 'Upload syllabus',
       check: 'Review course',
@@ -512,15 +513,23 @@ export const en = {
       description:
         'These WeLearn resources match your documents and help connect your course to the Sustainable Development Goals. Click a resource to select it.',
       selected: 'No resource selected | 1 resource selected | {n} resources selected',
-      noneHint: 'Nothing selected: the syllabus will be based only on your uploaded documents.',
+      noneHint: 'No resources will be included.',
       passageLabel: 'Passage that matches your documents',
-      action: 'Generate syllabus',
+      action: 'Find datasets',
       noSources: 'No related resources found',
       noSourcesDescription:
-        'You can still generate a syllabus from your documents only, but it will make fewer links to sustainability. To get resources, go back and try other documents.',
-      searchError:
-        'The search for resources failed. You can still generate a syllabus from your documents.',
+        'You can continue without resources, or go back and try other documents.',
+      searchError: 'The search for resources failed. You can continue without resources.',
       recapAll: 'All resources'
+    },
+    datasetsStep: {
+      title: 'Choose open datasets to include',
+      description: 'Select any datasets you would like to include in your syllabus.',
+      selected: 'No dataset selected | 1 dataset selected | {n} datasets selected',
+      noneHint: 'No datasets will be included.',
+      action: 'Generate syllabus',
+      noSources: 'No related datasets found',
+      noSourcesDescription: 'You can continue without datasets.'
     },
     syllabusStep: {
       title: 'Your syllabus is ready',

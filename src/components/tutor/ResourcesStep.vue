@@ -3,6 +3,8 @@
 import { type Document } from '@/types';
 import CardSimpleComponent from '@/components/CardSimpleComponent.vue';
 import Card from '@/components/CardComponent.vue';
+import DatasetSimpleComponent from '@/components/DatasetSimpleComponent.vue';
+import DatasetComponent from '@/components/DatasetComponent.vue';
 import ModalWrapper from '@/components/ModalWrapper.vue';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { sourceKey } from '@/stores/tutor';
@@ -15,6 +17,7 @@ const props = defineProps<{
   appendSource: (source: Document) => void;
   selectedSources: Document[];
   action: () => Promise<void>;
+  kind?: 'datasets';
 }>();
 
 const bookmarks = useBookmarksStore();
@@ -28,11 +31,19 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
 <template>
   <div class="wrapper">
     <h1 data-testId="documents-list-title" class="title is-4 is-size-5-mobile">
-      {{ $t('tutor.resourcesStep.title') }}
+      {{ $t(kind === 'datasets' ? 'tutor.datasetsStep.title' : 'tutor.resourcesStep.title') }}
     </h1>
 
     <template v-if="sources && sources.length">
-      <p class="subtitle is-6 mt-2">{{ $t('tutor.resourcesStep.description') }}</p>
+      <p class="subtitle is-6 mt-2">
+        {{
+          $t(
+            kind === 'datasets'
+              ? 'tutor.datasetsStep.description'
+              : 'tutor.resourcesStep.description'
+          )
+        }}
+      </p>
       <div class="sources">
         <div
           class="source"
@@ -54,7 +65,9 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
             :checked="isSelected(source)"
           />
           <div class="source-body">
-            <CardSimpleComponent
+            <component
+              :is="kind === 'datasets' ? DatasetSimpleComponent : CardSimpleComponent"
+              v-bind="kind === 'datasets' ? { description: source.payload.document_desc } : {}"
               :category="sourcesStore.sourceCategoryMap[source.payload.document_corpus]"
               :title="source.payload.document_title"
               :corpus="source.payload.document_corpus"
@@ -73,7 +86,8 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
                   @click.stop
                   @keydown.stop
                 >
-                  <Card
+                  <component
+                    :is="kind === 'datasets' ? DatasetComponent : Card"
                     :key="`modal-card-${source.id}`"
                     :category="sourcesStore.sourceCategoryMap[source.payload.document_corpus]"
                     :title="source.payload.document_title"
@@ -92,7 +106,7 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
                   />
                 </ModalWrapper>
               </template>
-            </CardSimpleComponent>
+            </component>
             <!-- the passage the search matched; long ones are cut to a few lines, the details window shows it whole -->
             <template v-if="isSyllabusV2 && source.payload.slice_content">
               <p class="passage-label">{{ $t('tutor.resourcesStep.passageLabel') }}</p>
@@ -104,23 +118,46 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
     </template>
 
     <div v-else class="empty has-text-centered">
-      <p class="title is-5">{{ $t('tutor.resourcesStep.noSources') }}</p>
+      <p class="title is-5">
+        {{
+          $t(kind === 'datasets' ? 'tutor.datasetsStep.noSources' : 'tutor.resourcesStep.noSources')
+        }}
+      </p>
       <p v-if="searchError" class="has-text-danger">{{ $t('tutor.resourcesStep.searchError') }}</p>
-      <p class="mt-2">{{ $t('tutor.resourcesStep.noSourcesDescription') }}</p>
+      <p class="mt-2">
+        {{
+          $t(
+            kind === 'datasets'
+              ? 'tutor.datasetsStep.noSourcesDescription'
+              : 'tutor.resourcesStep.noSourcesDescription'
+          )
+        }}
+      </p>
       <img class="image" src="@/assets/no-sources.svg" alt="" />
     </div>
 
     <div class="step-footer">
       <div v-if="sources && sources.length" class="is-size-7">
         <p class="has-text-weight-bold">
-          {{ $t('tutor.resourcesStep.selected', selectedSources.length) }}
+          {{
+            $t(
+              kind === 'datasets' ? 'tutor.datasetsStep.selected' : 'tutor.resourcesStep.selected',
+              selectedSources.length
+            )
+          }}
         </p>
         <p v-if="!selectedSources.length" class="has-text-grey">
-          {{ $t('tutor.resourcesStep.noneHint') }}
+          {{
+            $t(kind === 'datasets' ? 'tutor.datasetsStep.noneHint' : 'tutor.resourcesStep.noneHint')
+          }}
         </p>
       </div>
-      <button data-testid="tutor-generate-button" class="button is-primary" @click="action">
-        {{ $t('tutor.resourcesStep.action') }} →
+      <button
+        :data-testid="kind === 'datasets' ? 'tutor-generate-button' : 'tutor-datasets-button'"
+        class="button is-primary"
+        @click="action"
+      >
+        {{ $t(kind === 'datasets' ? 'tutor.datasetsStep.action' : 'tutor.resourcesStep.action') }} →
       </button>
     </div>
   </div>

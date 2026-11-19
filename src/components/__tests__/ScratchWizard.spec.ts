@@ -5,6 +5,7 @@ import { createPinia, setActivePinia } from 'pinia';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
+import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { scrollToAnchor } from '@/utils/navigation';
 
@@ -16,12 +17,12 @@ describe('ScratchWizard', () => {
     setActivePinia(createPinia());
     vi.mocked(scrollToAnchor).mockClear();
   });
-  it('shows its four steps in the steps bar', () => {
+  it('shows its five steps in the steps bar', () => {
     const store = useTutorStore();
     store.step = 3;
     const wrapper = mount(ScratchWizard, { shallow: true });
     const bar = wrapper.findComponent(TutorStepsBar);
-    expect(bar.props('labels')).toHaveLength(4);
+    expect(bar.props('labels')).toHaveLength(5);
     expect(bar.props('step')).toBe(3);
   });
 
@@ -31,6 +32,24 @@ describe('ScratchWizard', () => {
       slots: { intro: '<p data-testid="intro">intro</p>' }
     });
     expect(wrapper.find('[data-testid="intro"]').exists()).toBe(true);
+  });
+
+  it('connects resource selection to dataset search and dataset selection to generation', async () => {
+    const store = useTutorStore();
+    store.step = 3;
+    const search = vi.spyOn(store, 'retrieveDatasetSearch').mockResolvedValue();
+    const generate = vi.spyOn(store, 'handleCreateSyllabus').mockResolvedValue();
+    const wrapper = mount(ScratchWizard, { shallow: true });
+    const resources = wrapper.findComponent(ResourcesStep);
+    expect(resources.props('kind')).toBeUndefined();
+    await resources.props('action')();
+    expect(search).toHaveBeenCalledOnce();
+    store.step = 4;
+    await flushPromises();
+    const datasets = wrapper.findComponent(ResourcesStep);
+    expect(datasets.props('kind')).toBe('datasets');
+    await datasets.props('action')();
+    expect(generate).toHaveBeenCalledOnce();
   });
 
   it('scrolls to the new step when the step changes', async () => {

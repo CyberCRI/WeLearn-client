@@ -45,6 +45,9 @@ export const useTutorStore = defineStore('tutor', () => {
   const description: Ref<string> = ref('');
   const courseTitle: Ref<string> = ref('');
   const selectedSources: Ref<Document[]> = ref([]);
+  const datasetSearch: Ref<TutorSearch | undefined> = ref(undefined);
+  const selectedDatasets: Ref<Document[]> = ref([]);
+  const searchedSummaries: Ref<string[]> = ref([]);
   const extracts: Ref<string[]> = ref([]);
   // feedback the user already sent for the current syllabus, oldest first
   const feedbackHistory: Ref<string[]> = ref([]);
@@ -161,11 +164,12 @@ export const useTutorStore = defineStore('tutor', () => {
     setStep(2);
     const { signal } = startRequest();
     const startedAt = Date.now();
+    const searchSummaries = [...summaries.value];
 
     try {
       const resp = await basePostAxios(
         '/tutor/search_extracts',
-        { summaries: summaries.value },
+        { summaries: searchSummaries },
         { signal }
       );
       throwIfAborted(signal);
@@ -176,6 +180,9 @@ export const useTutorStore = defineStore('tutor', () => {
       tutorSearch.value = resp.data;
       // the selection belongs to the previous result
       selectedSources.value = [];
+      datasetSearch.value = undefined;
+      selectedDatasets.value = [];
+      searchedSummaries.value = searchSummaries;
       hasSearchError.value = false;
       isLoading.value = false;
       setStep(3);
@@ -193,6 +200,47 @@ export const useTutorStore = defineStore('tutor', () => {
       if (error.code === 'ERR_NETWORK') {
         reloadError.value = true;
       }
+    }
+  };
+
+  const retrieveDatasetSearch = async () => {
+    setStep(3);
+    if (datasetSearch.value) {
+      setStep(4);
+      return;
+    }
+    const { signal } = startRequest();
+    try {
+      const resp = await basePostAxios(
+        '/tutor/search_datasets',
+        { summaries: searchedSummaries.value },
+        { signal }
+      );
+      throwIfAborted(signal);
+      if (resp.status === 204) {
+        shouldRetryAction.value = true;
+        return;
+      }
+      datasetSearch.value = resp.data;
+      selectedDatasets.value = [];
+      isLoading.value = false;
+      setStep(4);
+    } catch (error: any) {
+      if (axios.isCancel(error)) return;
+      console.error('Error during dataset search:', error);
+      shouldRetryAction.value = true;
+      if (error.code === 'ERR_NETWORK') reloadError.value = true;
+    }
+  };
+
+  const appendDataset = (source: Document) => {
+    const key = sourceKey(source);
+    if (selectedDatasets.value.some((dataset) => sourceKey(dataset) === key)) {
+      selectedDatasets.value = selectedDatasets.value.filter(
+        (dataset) => sourceKey(dataset) !== key
+      );
+    } else {
+      selectedDatasets.value.push(source);
     }
   };
 
@@ -229,6 +277,9 @@ export const useTutorStore = defineStore('tutor', () => {
     setStep(1);
     selectedSources.value = [];
     tutorSearch.value = undefined;
+    datasetSearch.value = undefined;
+    selectedDatasets.value = [];
+    searchedSummaries.value = [];
     const startedAt = Date.now();
     try {
       await getFilesContent(arg);
@@ -262,6 +313,9 @@ export const useTutorStore = defineStore('tutor', () => {
     syllabi.value = undefined;
     summaries.value = [];
     selectedSources.value = [];
+    datasetSearch.value = undefined;
+    selectedDatasets.value = [];
+    searchedSummaries.value = [];
     courseTitle.value = '';
     level.value = '';
     duration.value = '';
@@ -303,7 +357,7 @@ export const useTutorStore = defineStore('tutor', () => {
         {
           ...tutorSearch.value,
           // nothing selected = no WeLearn resources, only the uploaded files
-          documents: selectedSources.value,
+          documents: [...selectedSources.value, ...selectedDatasets.value],
           extracts: extracts.value,
           ...(courseTitle.value && { course_title: courseTitle.value }),
           ...(level.value && { level: level.value }),
@@ -325,9 +379,9 @@ export const useTutorStore = defineStore('tutor', () => {
       syllabi.value = { ...syllabus, content: cleanSyllabus(syllabus.content) };
       isLoading.value = false;
       track('Tutor Step Completed', {
-        step: 3,
+        step: 4,
         durationMs: Date.now() - startedAt,
-        sourcesCount: selectedSources.value.length
+        sourcesCount: selectedSources.value.length + selectedDatasets.value.length
       });
       return true;
     } catch (error) {
@@ -338,7 +392,7 @@ export const useTutorStore = defineStore('tutor', () => {
         return false;
       }
       console.error('Error during syllabus retrieval:', error);
-      track('Tutor Step Failed', { step: 3, durationMs: Date.now() - startedAt });
+      track('Tutor Step Failed', { step: 4, durationMs: Date.now() - startedAt });
       shouldRetryAction.value = true;
       return false;
     }
@@ -346,7 +400,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
   // feedback on the generated syllabus is not counted, only generating one
   const handleCreateSyllabus = async () => {
-    setStep(3);
+    setStep(4);
     if (!tutorSearch.value) {
       console.error('No documents found');
       return;
@@ -381,7 +435,7 @@ export const useTutorStore = defineStore('tutor', () => {
           syllabus: [syllabi.value],
           ...tutorSearch.value,
           // known behaviour: feedback only relies on the current syllabus and the request
-          documents: selectedSources.value
+          documents: [...selectedSources.value, ...selectedDatasets.value]
         },
         { signal }
       );
@@ -483,6 +537,10 @@ export const useTutorStore = defineStore('tutor', () => {
     hasDownloadError,
     retrieveTutorSearch,
     tutorSearch,
+    retrieveDatasetSearch,
+    datasetSearch,
+    selectedDatasets,
+    appendDataset,
     appendSource,
     retrieveSyllabus,
     updateSummary,

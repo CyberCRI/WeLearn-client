@@ -415,6 +415,7 @@ export const fr = {
       documents: 'Documents',
       summary: 'Résumé',
       resources: 'Ressources',
+      datasets: 'Jeux de données',
       syllabus: 'Syllabus',
       course: 'Importer le syllabus',
       check: 'Vérifier le cours',
@@ -520,15 +521,24 @@ export const fr = {
         'Ces ressources WeLearn correspondent à vos documents et aident à relier votre cours aux Objectifs de développement durable. Cliquez sur une ressource pour la sélectionner.',
       selected:
         'Aucune ressource sélectionnée | 1 ressource sélectionnée | {n} ressources sélectionnées',
-      noneHint: 'Aucune sélection : le syllabus sera basé uniquement sur vos documents.',
+      noneHint: 'Aucune ressource ne sera intégrée.',
       passageLabel: 'Passage qui correspond à vos documents',
-      action: 'Générer le syllabus',
+      action: 'Trouver des jeux de données',
       noSources: 'Aucune ressource associée trouvée',
       noSourcesDescription:
-        "Vous pouvez tout de même générer un syllabus à partir de vos documents seulement, mais il fera moins de liens avec la durabilité. Pour obtenir des ressources, revenez en arrière et essayez d'autres documents.",
-      searchError:
-        'La recherche de ressources a échoué. Vous pouvez tout de même générer un syllabus à partir de vos documents.',
+        "Vous pouvez continuer sans ressources, ou revenir en arrière et essayer d'autres documents.",
+      searchError: 'La recherche de ressources a échoué. Vous pouvez continuer sans ressources.',
       recapAll: 'Toutes les ressources'
+    },
+    datasetsStep: {
+      title: 'Choisissez des jeux de données ouverts à intégrer',
+      description: 'Sélectionnez les jeux de données que vous souhaitez intégrer à votre syllabus.',
+      selected:
+        'Aucun jeu de données sélectionné | 1 jeu de données sélectionné | {n} jeux de données sélectionnés',
+      noneHint: 'Aucun jeu de données ne sera intégré.',
+      action: 'Générer le syllabus',
+      noSources: 'Aucun jeu de données associé trouvé',
+      noSourcesDescription: 'Vous pouvez continuer sans jeu de données.'
     },
     syllabusStep: {
       title: 'Votre syllabus est prêt',

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// the current syllabus creator: files → summaries → resources → syllabus. TutorPage renders it,
+// the current syllabus creator: files → summaries → resources → datasets → syllabus. TutorPage renders it,
 // and syllabus v2 makes it the "from scratch" path, with the path choice in its `intro` slot
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import i18n from '@/localisation/i18n';
@@ -18,12 +18,13 @@ import { scrollToAnchor } from '@/utils/navigation';
 const store = useTutorStore();
 const { t } = i18n.global;
 
-const STEPS = ['documents', 'summary', 'resources', 'syllabus'] as const;
+const STEPS = ['documents', 'summary', 'resources', 'datasets', 'syllabus'] as const;
 const stepLabels = computed(() => STEPS.map((s) => t(`tutor.steps.${s}`)));
 
-// which loading / error message the modal shows (feedback runs at step 4)
+// which loading / error message the modal shows (feedback runs at step 5)
 const loadingKind = computed(
-  () => (['extract', 'search', 'syllabus', 'feedback'] as const)[store.step - 1] || 'extract'
+  () =>
+    (['extract', 'search', 'search', 'syllabus', 'feedback'] as const)[store.step - 1] || 'extract'
 );
 
 // finished steps fold into a one-line recap; "Edit" opens one again
@@ -39,11 +40,12 @@ const continueFromDocuments = async () => {
   }
 };
 
-const stepToAction: Record<1 | 2 | 3 | 4, (arg?: any) => Promise<void>> = {
+const stepToAction: Record<1 | 2 | 3 | 4 | 5, (arg?: any) => Promise<void>> = {
   1: continueFromDocuments,
   2: store.retrieveTutorSearch,
-  3: store.handleCreateSyllabus,
-  4: store.handleDownloadSyllabus
+  3: store.retrieveDatasetSearch,
+  4: store.handleCreateSyllabus,
+  5: store.handleDownloadSyllabus
 };
 
 const recap = computed(() => ({
@@ -54,7 +56,8 @@ const recap = computed(() => ({
   2: t('tutor.summaryStep.recap', store.summaries.length),
   3: store.selectedSources.length
     ? t('tutor.resourcesStep.selected', store.selectedSources.length)
-    : t('tutor.resourcesStep.recapAll')
+    : t('tutor.resourcesStep.selected', 0),
+  4: t('tutor.datasetsStep.selected', store.selectedDatasets.length)
 }));
 
 watch(
@@ -87,19 +90,19 @@ onMounted(() => {
     <StatusModal
       :isLoading="store.isLoading"
       :shouldRetryAction="store.shouldRetryAction"
-      :action="stepToAction[store.step as 1 | 2 | 3 | 4]"
+      :action="stepToAction[store.step as 1 | 2 | 3 | 4 | 5]"
       :stopAction="store.stopAction"
       :kind="loadingKind"
     />
 
     <div class="layout-flex">
       <slot name="intro" />
-      <template v-for="n in 4" :key="n">
+      <template v-for="n in 5" :key="n">
         <section v-if="store.step >= n" :id="`target-${n}`" class="step-section">
           <div v-if="n < store.step" class="recap" :class="{ open: expanded[n] }">
             <span class="recap-check" aria-hidden="true">✓</span>
             <strong>{{ stepLabels[n - 1] }}</strong>
-            <span class="recap-text">{{ recap[n as 1 | 2 | 3] }}</span>
+            <span class="recap-text">{{ recap[n as 1 | 2 | 3 | 4] }}</span>
             <button class="button is-small is-text" @click="expanded[n] = !expanded[n]">
               {{ expanded[n] ? $t('tutor.collapse') : $t('tutor.edit') }}
             </button>
@@ -137,6 +140,15 @@ onMounted(() => {
               :selectedSources="store.selectedSources"
               :action="stepToAction[3]"
             />
+            <ResourcesStep
+              v-else-if="n === 4"
+              data-test="datasets-step"
+              kind="datasets"
+              :sources="store.datasetSearch?.documents"
+              :appendSource="store.appendDataset"
+              :selectedSources="store.selectedDatasets"
+              :action="stepToAction[4]"
+            />
             <EditableSyllabus
               v-else
               data-test="third-step"
@@ -144,7 +156,7 @@ onMounted(() => {
               :updateSyllabus="store.updateSyllabus"
               :giveFeedback="store.giveFeedback"
               :feedbackHistory="store.feedbackHistory"
-              :action="stepToAction[4]"
+              :action="stepToAction[5]"
               :restart="store.restart"
               :updateSyllabusInDB="store.updateSyllabusInDB"
             />
