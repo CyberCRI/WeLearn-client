@@ -394,6 +394,79 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/tutor/course/adaptation': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Propose one checked change to the course for a connection (syllabus v2)
+     * @description One concrete, limited change to the course for the connection the teacher chose,
+     *     from the resources `connection_evidence` kept for it (sent back as they came). Its
+     *     claims are checked against those resources, and the change is asked again once when
+     *     some are not established or wrong. `support` is capped by what the check found, and
+     *     `checks` lists the problems for the teacher. `lang` is the teacher's language.
+     */
+    post: operations['tutor-propose_course_adaptation'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tutor/course/connection_evidence': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Find and judge the WeLearn resources of a connection (syllabus v2)
+     * @description The resources behind one connection from `connection_ideas`: its two searches on
+     *     WeLearn (every language), then a judgement of the results. A resource is kept only
+     *     when its quoted sentence is found word for word in it; it supports the connection
+     *     directly (`resources`) or only gives background (`background`).
+     *
+     *     `status` is `unchecked` when the judgement gave no usable answer: ask again for this
+     *     idea alone. `lang` is the teacher's language (the answer's).
+     */
+    post: operations['tutor-judge_connection_evidence'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tutor/course/connection_ideas': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Suggest sustainability connections for a course (syllabus v2)
+     * @description At most 4 sustainability connections for the course the teacher confirmed, each tied
+     *     to the part of the course it builds on (`anchor`, as the teacher wrote it), with two
+     *     searches for its resources. No connection at all comes with `none_reason`.
+     *     `lang` is the teacher's language (the answer's).
+     */
+    post: operations['tutor-suggest_connection_ideas'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/course/read': {
     parameters: {
       query?: never;
@@ -632,6 +705,28 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/user/access': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * How long the account's access lasts
+     * @description Whether the caller's account is time-limited (Google or email/password
+     *     login) and until when. Needs a bearer token; an account whose access has
+     *     ended gets 403 ACCESS_EXPIRED.
+     */
+    get: operations['user-get_access'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/user/bookmarks': {
     parameters: {
       query?: never;
@@ -848,6 +943,129 @@ export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
     /**
+     * AccountAccessResponse
+     * @description Whether the account's access is time-limited (a Google or email/password
+     *     login, not an institution one) and until when. `access_until` is the last
+     *     day of access, `days_left` counts today; both are null when the account is
+     *     not limited, or when the end date could not be stored yet.
+     */
+    AccountAccessResponse: {
+      /** Access Until */
+      access_until?: string | null;
+      /** Days Left */
+      days_left?: number | null;
+      /** Limited */
+      limited: boolean;
+    };
+    /** AdaptationChecks */
+    AdaptationChecks: {
+      /**
+       * Problems
+       * @description Claims not established by the resources, or wrong, for the teacher
+       */
+      problems: string[];
+      /**
+       * Status
+       * @description unchecked: the check gave no usable answer (support partial at most)
+       * @enum {string}
+       */
+      status: 'checked' | 'unchecked';
+      /**
+       * Unbacked Names
+       * @description Names in the change that no direct resource nor the course contains
+       */
+      unbacked_names: string[];
+    };
+    /**
+     * AdaptationGuidance
+     * @description Optional notes for the teacher, never part of the syllabus change.
+     */
+    AdaptationGuidance: {
+      /**
+       * Check
+       * @description How the teacher might check the learning
+       */
+      check: string | null;
+      greencomp: components['schemas']['GreenCompLink'] | null;
+      /**
+       * Learning
+       * @description What students could do thanks to it
+       */
+      learning: string | null;
+      /**
+       * Teaching
+       * @description A teaching approach, in one sentence
+       */
+      teaching: string | null;
+    };
+    /** AdaptationProposal */
+    AdaptationProposal: {
+      /** @description The check of its claims; null when the change cites no resource (nothing to check it against, and its support is none) */
+      checks: components['schemas']['AdaptationChecks'] | null;
+      guidance: components['schemas']['AdaptationGuidance'];
+      /**
+       * Kind
+       * @enum {string}
+       */
+      kind: 'objective' | 'topic' | 'teaching' | 'assessment';
+      /**
+       * Original
+       * @description The course part changed, as the teacher wrote it; null when the change only adds something
+       */
+      original: string | null;
+      /**
+       * Resources
+       * @description The connection's resources the change relies on
+       */
+      resources: components['schemas']['AdaptationResource'][];
+      /** Suggested */
+      suggested: string;
+      /**
+       * Support
+       * @description strong only with a sentence of a direct resource found word for word, and never above what the check found
+       * @enum {string}
+       */
+      support: 'strong' | 'partial' | 'none';
+      /** Why */
+      why: string;
+    };
+    /** AdaptationRequest */
+    AdaptationRequest: {
+      connection: components['schemas']['ChosenConnection'];
+      course: components['schemas']['ConfirmedCourse'];
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
+    /** AdaptationResource */
+    AdaptationResource: {
+      document: components['schemas']['EnhancedDocumentSlice'];
+      /**
+       * Evidence
+       * @description The sentence it was kept for, found word for word in its text
+       */
+      evidence: string;
+      /**
+       * Quote
+       * @description The sentence of it that backs the change, found word for word
+       */
+      quote: string | null;
+      /**
+       * Role
+       * @description direct: supports the connection; context: background only
+       * @enum {string}
+       */
+      role: 'direct' | 'context';
+      /**
+       * Usefulness
+       * @description What it brings to the connection in class
+       */
+      usefulness: string;
+    };
+    /**
      * AgentContext
      * @example {
      *       "corpora": [
@@ -1011,6 +1229,30 @@ export interface components {
        */
       thread_id: string;
     };
+    /** ChosenConnection */
+    ChosenConnection: {
+      /**
+       * Anchor
+       * @description The course part the connection builds on, as the teacher wrote it
+       */
+      anchor: string | null;
+      /**
+       * Background
+       * @description Context only
+       * @default []
+       */
+      background: components['schemas']['EvidencedResource'][];
+      /**
+       * Resources
+       * @description Direct support
+       * @default []
+       */
+      resources: components['schemas']['EvidencedResource'][];
+      /** Title */
+      title: string;
+      /** Why */
+      why: string;
+    };
     /** CompetencyMapping */
     CompetencyMapping: {
       /** Greencomp Competencies */
@@ -1035,6 +1277,132 @@ export interface components {
     CompetencyMappings: {
       /** Mappings */
       mappings: components['schemas']['CompetencyMapping'][];
+    };
+    /** ConfirmedCourse */
+    ConfirmedCourse: {
+      /**
+       * Competencies
+       * @default []
+       */
+      competencies: string[];
+      /** Discipline */
+      discipline?: string | null;
+      /** Level */
+      level?: string | null;
+      /**
+       * Objectives
+       * @default []
+       */
+      objectives: string[];
+      /** Overview */
+      overview?: string | null;
+      /**
+       * Sessions
+       * @description The course outline: sessions, weeks or chapters
+       * @default []
+       */
+      sessions: string[];
+      /** Title */
+      title?: string | null;
+      /**
+       * Topics
+       * @default []
+       */
+      topics: components['schemas']['CourseTopic'][];
+    };
+    /** ConnectionEvidenceRequest */
+    ConnectionEvidenceRequest: {
+      course: components['schemas']['ConfirmedCourse'];
+      idea: components['schemas']['ConnectionIdea'];
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
+    /** ConnectionEvidenceResponse */
+    ConnectionEvidenceResponse: {
+      /**
+       * Background
+       * @description Context on the sustainability issue only, never counted as support
+       */
+      background: components['schemas']['EvidencedResource'][];
+      /**
+       * Candidate Count
+       * @description Search results judged
+       */
+      candidate_count: number;
+      /**
+       * Concept
+       * @description The course's concept or mechanism the connection rests on
+       */
+      concept: string | null;
+      /**
+       * Resources
+       * @description Direct support, best first (at most 3 with background)
+       */
+      resources: components['schemas']['EvidencedResource'][];
+      /**
+       * Status
+       * @description supported: at least one resource supports the connection directly; unsupported: none does (no candidate, or none passed the checks); forced: the connection itself was judged an analogy or off the discipline; unchecked: the resources could not be judged (ask again)
+       * @enum {string}
+       */
+      status: 'supported' | 'unsupported' | 'forced' | 'unchecked';
+      /**
+       * Why
+       * @description Why the connection matters for the course: the judgement's words when a resource supports it, otherwise the idea's own
+       */
+      why: string;
+    };
+    /** ConnectionIdea */
+    ConnectionIdea: {
+      /**
+       * Anchor
+       * @description The course part the connection builds on, as the teacher wrote it (a topic, subtopic, objective, competency or session); null when the model named no part of this course
+       */
+      anchor: string | null;
+      /**
+       * Anchor Label
+       * @description A few words naming the course part; null without an anchor
+       */
+      anchor_label: string | null;
+      /**
+       * Id
+       * @description Given by the server: idea-1, idea-2…
+       */
+      id: string;
+      /**
+       * Queries
+       * @description The searches for its resources
+       */
+      queries: string[];
+      /** Title */
+      title: string;
+      /** Use */
+      use: string | null;
+      /** Why */
+      why: string;
+    };
+    /** ConnectionIdeasRequest */
+    ConnectionIdeasRequest: {
+      course: components['schemas']['ConfirmedCourse'];
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
+    /** ConnectionIdeasResponse */
+    ConnectionIdeasResponse: {
+      /** Ideas */
+      ideas: components['schemas']['ConnectionIdea'][];
+      /**
+       * None Reason
+       * @description Why no connection is proposed, for the teacher; set only when ideas is empty
+       */
+      none_reason: string | null;
     };
     /** CorpusRead */
     CorpusRead: {
@@ -1151,6 +1519,16 @@ export interface components {
        * @default []
        */
       topics: components['schemas']['ReadTopic'][];
+    };
+    /** CourseTopic */
+    CourseTopic: {
+      /**
+       * Subtopics
+       * @default []
+       */
+      subtopics: string[];
+      /** Title */
+      title: string;
     };
     /** Document */
     Document: {
@@ -1315,6 +1693,20 @@ export interface components {
             [key: string]: unknown;
           }[];
     };
+    /** EvidencedResource */
+    EvidencedResource: {
+      document: components['schemas']['EnhancedDocumentSlice'];
+      /**
+       * Evidence
+       * @description The sentence it was kept for, found word for word in its text
+       */
+      evidence: string;
+      /**
+       * Usefulness
+       * @description What it brings to the connection in class
+       */
+      usefulness: string;
+    };
     /** ExtractorOutput */
     ExtractorOutput: {
       /** Summary */
@@ -1343,6 +1735,28 @@ export interface components {
       reasoning?: string | null;
       /** Summary */
       summary?: string | null;
+    };
+    /** GreenCompLink */
+    GreenCompLink: {
+      /** How */
+      how: string;
+      /**
+       * Id
+       * @enum {string}
+       */
+      id:
+        | 'valuing_sustainability'
+        | 'supporting_fairness'
+        | 'promoting_nature'
+        | 'systems_thinking'
+        | 'critical_thinking'
+        | 'problem_framing'
+        | 'futures_literacy'
+        | 'adaptability'
+        | 'exploratory_thinking'
+        | 'political_agency'
+        | 'collective_action'
+        | 'individual_initiative';
     };
     /** GuestFeatureQuota */
     GuestFeatureQuota: {
@@ -1965,6 +2379,15 @@ export interface operations {
           'text/plain': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'text/plain': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -2116,6 +2539,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -2233,7 +2665,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2293,7 +2725,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2727,8 +3159,125 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-propose_course_adaptation': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdaptationRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['AdaptationProposal'];
+        };
+      };
+      /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-judge_connection_evidence': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ConnectionEvidenceRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ConnectionEvidenceResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-suggest_connection_ideas': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ConnectionIdeasRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ConnectionIdeasResponse'];
+        };
+      };
+      /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
+      502: {
         headers: {
           [name: string]: unknown;
         };
@@ -2787,7 +3336,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2876,7 +3425,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -2941,6 +3490,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3080,7 +3638,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3124,6 +3682,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3182,6 +3749,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3233,7 +3809,7 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
-      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header) */
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
         headers: {
           [name: string]: unknown;
@@ -3277,6 +3853,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3335,6 +3920,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3379,6 +3973,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3439,6 +4042,62 @@ export interface operations {
       };
     };
   };
+  'user-get_access': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['AccountAccessResponse'];
+        };
+      };
+      /** @description No bearer token (code ACCOUNT_REQUIRED), or invalid or expired token */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   'user-get_user_bookmarks': {
     parameters: {
       query?: never;
@@ -3459,6 +4118,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3506,6 +4174,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3562,6 +4239,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3604,6 +4290,15 @@ export interface operations {
       };
       /** @description No bearer token while guest restrictions are on (code ACCOUNT_REQUIRED), or invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3660,6 +4355,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3709,6 +4413,15 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Keycloak unavailable, or bearer tokens not accepted because Keycloak is not configured (code AUTH_NOT_CONFIGURED) */
       503: {
         headers: {
@@ -3749,6 +4462,15 @@ export interface operations {
       };
       /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
@@ -3922,6 +4644,15 @@ export interface operations {
       };
       /** @description Invalid or expired token */
       401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The access of a time-limited account (Google or email/password login) has ended (code ACCESS_EXPIRED) */
+      403: {
         headers: {
           [name: string]: unknown;
         };
