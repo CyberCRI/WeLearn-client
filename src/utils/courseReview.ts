@@ -145,12 +145,10 @@ export const confirmCourse = (
   sessions: review.plan
 });
 
-// the same course with each topic and its subtopics as one line, as the connections read it
+// the same course as the connection routes take it: topics without their syllabus line
 export const toConfirmedCourse = (course: CourseToUpdate): ConfirmedCourse => ({
   ...course,
-  topics: course.topics.map(({ title, subtopics }) =>
-    subtopics.length ? `${title} (${subtopics.join(', ')})` : title
-  )
+  topics: course.topics.map(({ title, subtopics }) => ({ title, subtopics }))
 });
 
 // the parts of the course a connection may build on, each as the teacher sees it

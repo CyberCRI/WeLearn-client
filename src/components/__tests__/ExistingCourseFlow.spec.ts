@@ -5,11 +5,16 @@ import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import CourseUpload from '@/components/tutor/CourseUpload.vue';
 import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
 import CourseReview from '@/components/tutor/review/CourseReview.vue';
+import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import { useCourseStore } from '@/stores/course';
 import type { CourseReadResponse } from '@/types';
 
-vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn(), getGuestQuota: vi.fn() }));
+// the connections are asked for on screen 3; they never answer here
+vi.mock('@/utils/fetch', () => ({
+  basePostAxios: vi.fn(() => new Promise(() => {})),
+  getGuestQuota: vi.fn()
+}));
 
 const READ = {
   text: 'Ecology',
@@ -73,7 +78,7 @@ describe('ExistingCourseFlow', () => {
     expect(recap.text()).toContain('Ecology');
     expect(recap.text()).toContain('tutor.check.recapTopics');
     expect(wrapper.findComponent(CourseReview).exists()).toBe(false);
-    expect(wrapper.find('#target-3').exists()).toBe(true);
+    expect(wrapper.find('#target-3').findComponent(SustainabilityAdditions).exists()).toBe(true);
 
     await recap.find('button').trigger('click');
     expect(course.step).toBe(2);

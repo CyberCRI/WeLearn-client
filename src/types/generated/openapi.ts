@@ -394,6 +394,55 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/tutor/course/connection_evidence': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Find and judge the WeLearn resources of a connection (syllabus v2)
+     * @description The resources behind one connection from `connection_ideas`: its two searches on
+     *     WeLearn (every language), then a judgement of the results. A resource is kept only
+     *     when its quoted sentence is found word for word in it; it supports the connection
+     *     directly (`resources`) or only gives background (`background`).
+     *
+     *     `status` is `unchecked` when the judgement gave no usable answer: ask again for this
+     *     idea alone. `lang` is the teacher's language (the answer's).
+     */
+    post: operations['tutor-judge_connection_evidence'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/v1/tutor/course/connection_ideas': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Suggest sustainability connections for a course (syllabus v2)
+     * @description At most 4 sustainability connections for the course the teacher confirmed, each tied
+     *     to the part of the course it builds on (`anchor`, as the teacher wrote it), with two
+     *     searches for its resources. No connection at all comes with `none_reason`.
+     *     `lang` is the teacher's language (the answer's).
+     */
+    post: operations['tutor-suggest_connection_ideas'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/course/read': {
     parameters: {
       query?: never;
@@ -1073,6 +1122,132 @@ export interface components {
       /** Mappings */
       mappings: components['schemas']['CompetencyMapping'][];
     };
+    /** ConfirmedCourse */
+    ConfirmedCourse: {
+      /**
+       * Competencies
+       * @default []
+       */
+      competencies: string[];
+      /** Discipline */
+      discipline?: string | null;
+      /** Level */
+      level?: string | null;
+      /**
+       * Objectives
+       * @default []
+       */
+      objectives: string[];
+      /** Overview */
+      overview?: string | null;
+      /**
+       * Sessions
+       * @description The course outline: sessions, weeks or chapters
+       * @default []
+       */
+      sessions: string[];
+      /** Title */
+      title?: string | null;
+      /**
+       * Topics
+       * @default []
+       */
+      topics: components['schemas']['CourseTopic'][];
+    };
+    /** ConnectionEvidenceRequest */
+    ConnectionEvidenceRequest: {
+      course: components['schemas']['ConfirmedCourse'];
+      idea: components['schemas']['ConnectionIdea'];
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
+    /** ConnectionEvidenceResponse */
+    ConnectionEvidenceResponse: {
+      /**
+       * Background
+       * @description Context on the sustainability issue only, never counted as support
+       */
+      background: components['schemas']['EvidencedResource'][];
+      /**
+       * Candidate Count
+       * @description Search results judged
+       */
+      candidate_count: number;
+      /**
+       * Concept
+       * @description The course's concept or mechanism the connection rests on
+       */
+      concept: string | null;
+      /**
+       * Resources
+       * @description Direct support, best first (at most 3 with background)
+       */
+      resources: components['schemas']['EvidencedResource'][];
+      /**
+       * Status
+       * @description supported: at least one resource supports the connection directly; unsupported: none does (no candidate, or none passed the checks); forced: the connection itself was judged an analogy or off the discipline; unchecked: the resources could not be judged (ask again)
+       * @enum {string}
+       */
+      status: 'supported' | 'unsupported' | 'forced' | 'unchecked';
+      /**
+       * Why
+       * @description Why the connection matters for the course: the judgement's words when a resource supports it, otherwise the idea's own
+       */
+      why: string;
+    };
+    /** ConnectionIdea */
+    ConnectionIdea: {
+      /**
+       * Anchor
+       * @description The course part the connection builds on, as the teacher wrote it (a topic, subtopic, objective, competency or session); null when the model named no part of this course
+       */
+      anchor: string | null;
+      /**
+       * Anchor Label
+       * @description A few words naming the course part; null without an anchor
+       */
+      anchor_label: string | null;
+      /**
+       * Id
+       * @description Given by the server: idea-1, idea-2…
+       */
+      id: string;
+      /**
+       * Queries
+       * @description The searches for its resources
+       */
+      queries: string[];
+      /** Title */
+      title: string;
+      /** Use */
+      use: string | null;
+      /** Why */
+      why: string;
+    };
+    /** ConnectionIdeasRequest */
+    ConnectionIdeasRequest: {
+      course: components['schemas']['ConfirmedCourse'];
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
+    /** ConnectionIdeasResponse */
+    ConnectionIdeasResponse: {
+      /** Ideas */
+      ideas: components['schemas']['ConnectionIdea'][];
+      /**
+       * None Reason
+       * @description Why no connection is proposed, for the teacher; set only when ideas is empty
+       */
+      none_reason: string | null;
+    };
     /** CorpusRead */
     CorpusRead: {
       /** Category */
@@ -1188,6 +1363,16 @@ export interface components {
        * @default []
        */
       topics: components['schemas']['ReadTopic'][];
+    };
+    /** CourseTopic */
+    CourseTopic: {
+      /**
+       * Subtopics
+       * @default []
+       */
+      subtopics: string[];
+      /** Title */
+      title: string;
     };
     /** Document */
     Document: {
@@ -1351,6 +1536,20 @@ export interface components {
         | {
             [key: string]: unknown;
           }[];
+    };
+    /** EvidencedResource */
+    EvidencedResource: {
+      document: components['schemas']['EnhancedDocumentSlice'];
+      /**
+       * Evidence
+       * @description The sentence it was kept for, found word for word in its text
+       */
+      evidence: string;
+      /**
+       * Usefulness
+       * @description What it brings to the connection in class
+       */
+      usefulness: string;
     };
     /** ExtractorOutput */
     ExtractorOutput: {
@@ -2784,6 +2983,81 @@ export interface operations {
       };
       /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
       403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-judge_connection_evidence': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ConnectionEvidenceRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ConnectionEvidenceResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'tutor-suggest_connection_ideas': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['ConnectionIdeasRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ConnectionIdeasResponse'];
+        };
+      };
+      /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
+      502: {
         headers: {
           [name: string]: unknown;
         };

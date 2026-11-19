@@ -7,6 +7,7 @@ import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import CourseReview from '@/components/tutor/review/CourseReview.vue';
+import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
 import { useCourseStore } from '@/stores/course';
 
 const SCREENS = ['course', 'check', 'additions', 'updated'] as const;
@@ -85,8 +86,7 @@ const reviewRecap = computed(() => ({
       </section>
 
       <section v-if="course.step === 3" id="target-3" class="step-section">
-        <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.steps.additions') }}</h1>
-        <p class="subtitle is-6">{{ $t('tutor.existingCourse.comingSoon') }}</p>
+        <SustainabilityAdditions />
       </section>
     </div>
   </div>

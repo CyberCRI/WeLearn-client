@@ -431,8 +431,48 @@ export const en = {
       discard: 'Discard and change',
       keepWorking: 'Keep working'
     },
-    existingCourse: {
-      comingSoon: 'This path is still being built: its screens are not available yet.'
+    additions: {
+      title: 'Explore sustainability connections',
+      intro:
+        'WeLearn has identified possible connections to your course. Review the ideas and supporting resources, then choose which ones you want to develop.',
+      courseChanged: 'Your course changed in step 2. Your connections and choices are kept.',
+      findAgain: 'Look for new connections',
+      thinking: 'Looking for meaningful connections in your course…',
+      searching: 'Searching and selecting WeLearn resources for each connection ({done}/{total})…',
+      pending: 'Searching WeLearn for resources…',
+      unavailable: 'WeLearn could not be reached. Please try again in a moment.',
+      error:
+        'WeLearn could not suggest connections this time: its answer could not be used. This is a technical problem, not a judgement on your course.',
+      retry: 'Try again',
+      noConnections:
+        'WeLearn found no sustainability connection strong enough to suggest for this course.',
+      noneReason: 'WeLearn’s reason: {reason}',
+      noSupport:
+        'WeLearn found no resource that supports its ideas well enough. You can still look at them below.',
+      connectsTo: 'Connects to',
+      objectiveRef: 'Learning objective {n}',
+      competencyRef: 'Competency {n}',
+      why: 'Why this could be useful',
+      sources: 'Sources',
+      sourceCount: '1 supporting source | {n} supporting sources',
+      passage: 'Passage it was chosen for',
+      unsupported: 'No supporting source found in WeLearn for this idea.',
+      background: 'Related reading ({count})',
+      backgroundHint:
+        'Background on the wider sustainability issue. These do not treat this part of your course directly and are not evidence for this connection.',
+      unchecked:
+        'WeLearn could not check resources for this idea (a technical problem, not a judgement on the idea).',
+      rechecking: 'Checking resources for this idea again…',
+      leftOut:
+        'WeLearn left out one idea it judged too loose for this discipline (an analogy, or a word used in another sense). | WeLearn left out {n} ideas it judged too loose for this discipline (analogies, or words used in another sense).',
+      unsupportedTitle: 'Ideas without strong support from WeLearn resources ({count})',
+      select: 'Choose this connection',
+      selected: 'Connection chosen',
+      undo: 'Undo',
+      setAside: 'Not for my course',
+      setAsideTitle: 'Set aside ({count})',
+      bringBack: 'Bring back',
+      selectedCount: 'No connection chosen yet | 1 connection chosen | {n} connections chosen'
     },
     course: {
       title: 'Your course',
