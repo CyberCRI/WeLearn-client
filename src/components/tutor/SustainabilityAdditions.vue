@@ -135,6 +135,12 @@ const total = computed(() => store.connections.length - store.leftOut);
 
       <p v-if="store.status === 'ready'" class="next" data-testid="selected-count">
         {{ $t('tutor.additions.selectedCount', store.selectedConnections.length) }}
+        <template v-if="store.selectedConnections.some((c) => c.development)">
+          ·
+          <span data-testid="accepted-count">{{
+            $t('tutor.additions.acceptedCount', store.acceptedChanges.length)
+          }}</span>
+        </template>
       </p>
     </template>
   </section>

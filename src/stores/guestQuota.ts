@@ -11,7 +11,8 @@ const SIGNUP_REASONS = {
   chat: 'chatLimit',
   syllabus: 'syllabusLimit',
   feedback: 'feedbackLimit',
-  files: 'filesLimit'
+  files: 'filesLimit',
+  adaptation: 'adaptationLimit'
 } as const;
 
 // the browser counter used before the API counted the quota: nothing reads it anymore

@@ -63,7 +63,9 @@ export const authentication = {
       feedbackLimit:
         'You have used today’s free changes to your syllabus with the guest access. Come back tomorrow, or create a free account to keep improving it.',
       filesLimit:
-        'You have sent today’s free documents with the guest access. Come back tomorrow, or create a free account to send more.'
+        'You have sent today’s free documents with the guest access. Come back tomorrow, or create a free account to send more.',
+      adaptationLimit:
+        'You have used today’s free course changes of the guest access. Come back tomorrow, or create a free account to develop more connections.'
     }
   },
   // plural forms: none left | 1 left | n left

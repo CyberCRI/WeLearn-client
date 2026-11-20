@@ -411,6 +411,45 @@ test.describe('Tutor path choice (syllabusV2)', () => {
 
     await cards.first().getByTestId('select').click();
     await expect(cards.first().getByTestId('selected')).toBeVisible();
+
+    // the chosen connection becomes one checked change, accepted with the teacher's wording
+    let sentConnection: { title: string; resources: unknown[] } | null = null;
+    await page.route('**/tutor/course/adaptation', async (route) => {
+      sentConnection = route.request().postDataJSON().connection;
+      await route.fulfill({
+        json: {
+          kind: 'topic',
+          original: 'Soils',
+          suggested: 'Add how soils store carbon.',
+          why: 'Soils are a carbon sink.',
+          support: 'strong',
+          resources: [],
+          guidance: { learning: null, greencomp: null, teaching: null, check: null },
+          checks: null
+        }
+      });
+    });
+    await cards.first().getByTestId('develop').click();
+    const change = cards.first().getByTestId('development');
+    await expect(change.getByTestId('change-text')).toHaveText('Add how soils store carbon.');
+    await expect(change.getByTestId('placement-part')).toHaveText('Soils');
+    expect(sentConnection).toMatchObject({ title: 'Soil carbon', resources: [{}] });
+    const acceptedCount = page.getByTestId('accepted-count');
+    await expect(acceptedCount).toHaveText('Aucune modification acceptée pour le moment');
+
+    // accepted as proposed, then taken back
+    await change.getByTestId('accept-change').click();
+    await expect(change.getByTestId('change-accepted')).toBeVisible();
+    await expect(acceptedCount).toContainText('1 modification acceptée');
+    await change.getByTestId('reconsider').click();
+    await expect(acceptedCount).toHaveText('Aucune modification acceptée pour le moment');
+
+    await change.getByTestId('edit-change').click();
+    await change.getByTestId('change-editor').fill('Add a session on soil carbon.');
+    await change.getByTestId('save-change').click();
+    await expect(change.getByTestId('change-accepted')).toBeVisible();
+    await expect(change.getByTestId('change-text')).toHaveText('Add a session on soil carbon.');
+    await expect(acceptedCount).toContainText('1 modification acceptée');
   });
 
   test('tells a file without text (a scanned pdf)', async ({ page }) => {

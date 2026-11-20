@@ -1,11 +1,26 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { flushPromises } from '@vue/test-utils';
-import { MAX_PARALLEL_CHECKS, useConnectionsStore } from '../connections';
+import {
+  type Connection,
+  MAX_PARALLEL_CHECKS,
+  changeOf,
+  useConnectionsStore
+} from '../connections';
 import { basePostAxios } from '@/utils/fetch';
-import type { ConfirmedCourse, ConnectionEvidence, ConnectionIdea } from '@/types';
+import type {
+  AdaptationProposal,
+  ConfirmedCourse,
+  ConnectionEvidence,
+  ConnectionIdea,
+  EvidencedResource
+} from '@/types';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
+const handleQuotaError = vi.fn(
+  (error: any) => error?.response?.data?.detail?.code === 'GUEST_QUOTA_EXCEEDED'
+);
+vi.mock('@/stores/guestQuota', () => ({ useGuestQuotaStore: () => ({ handleQuotaError }) }));
 
 type PostResult = Awaited<ReturnType<typeof basePostAxios>>;
 const apiError = (status: number, code?: string) => ({
@@ -232,5 +247,255 @@ describe('connections store', () => {
     expect(store.connections).toEqual([]);
     expect(store.isCourseChanged).toBe(false);
     expect(store.isFor(corrected)).toBe(false);
+  });
+});
+
+const RESOURCE = {
+  document: { payload: { document_id: 'doc-1', document_title: 'Doc 1' } },
+  usefulness: 'useful',
+  evidence: 'The passage.'
+} as unknown as EvidencedResource;
+
+const proposal = (overrides: Partial<AdaptationProposal> = {}): AdaptationProposal => ({
+  kind: 'topic',
+  original: 'GDP',
+  suggested: 'Add the ecological footprint next to GDP.',
+  why: 'GDP ignores the environment.',
+  support: 'strong',
+  resources: [],
+  guidance: { learning: null, greencomp: null, teaching: null, check: null },
+  checks: { status: 'checked', problems: [], unbacked_names: [] },
+  ...overrides
+});
+
+// the ideas, their evidence, then the change of a developed connection (or its failure)
+const answerAll = (adaptation: () => unknown) =>
+  vi.mocked(basePostAxios).mockImplementation((url: string) => {
+    if (url === '/tutor/course/connection_ideas') {
+      return Promise.resolve({
+        data: { ideas: [idea(1), idea(2)], none_reason: null }
+      } as PostResult);
+    }
+    if (url === '/tutor/course/connection_evidence') {
+      return Promise.resolve({
+        data: { ...evidence('supported'), resources: [RESOURCE] }
+      } as PostResult);
+    }
+    const result = adaptation();
+    return (result as any)?.response
+      ? Promise.reject(result)
+      : Promise.resolve({ data: result } as PostResult);
+  });
+
+const adaptationCalls = () =>
+  vi.mocked(basePostAxios).mock.calls.filter(([url]) => url === '/tutor/course/adaptation');
+
+describe('connections store: developing a connection', () => {
+  beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(basePostAxios).mockReset();
+    handleQuotaError.mockClear();
+    setActivePinia(createPinia());
+  });
+
+  it('asks for one change with the resources the evidence kept, and chooses the connection', async () => {
+    answerAll(() => proposal());
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'fr');
+
+    const developing = store.develop('idea-1');
+    expect(store.connections[0].development?.status).toBe('thinking');
+    expect(store.connections[0].decision).toBe('selected');
+    await developing;
+
+    expect(adaptationCalls()[0][1]).toEqual({
+      course: COURSE,
+      connection: {
+        title: 'Idea 1',
+        anchor: 'GDP',
+        why: 'judged why',
+        resources: [RESOURCE],
+        background: []
+      },
+      lang: 'fr'
+    });
+    const { development } = store.connections[0];
+    expect(development?.status).toBe('ready');
+    expect(development?.proposal).toEqual(proposal());
+    expect(development?.decision).toBe('pending');
+    expect(store.hasWork).toBe(true);
+  });
+
+  it.each([
+    [apiError(503, 'LLM_UNAVAILABLE'), 'unavailable'],
+    [apiError(429, 'TOO_MANY_REQUESTS_IN_FLIGHT'), 'busy'],
+    [apiError(413, 'COURSE_TOO_LARGE'), 'tooLarge'],
+    [apiError(502, 'UNUSABLE_LLM_OUTPUT'), 'error'],
+    [apiError(422), 'error']
+  ])('says why a change could not be proposed (%#), and can try again', async (error, status) => {
+    let fails = true;
+    answerAll(() => (fails ? error : proposal()));
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+
+    await store.develop('idea-1');
+    expect(store.connections[0].development?.status).toBe(status);
+    expect(store.connections[0].decision).toBe('selected');
+
+    fails = false;
+    await store.develop('idea-1');
+    expect(store.connections[0].development?.status).toBe('ready');
+  });
+
+  it('keeps how long a busy API asks to wait, and forgets it once the change comes', async () => {
+    let fails = true;
+    answerAll(() =>
+      fails
+        ? {
+            response: {
+              status: 429,
+              data: { detail: { message: 'm', code: 'RATE_LIMITED', retry_after: 12 } }
+            }
+          }
+        : proposal()
+    );
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+
+    await store.develop('idea-1');
+    expect(store.connections[0].development).toMatchObject({ status: 'busy', retryAfter: 12 });
+
+    fails = false;
+    await store.develop('idea-1');
+    expect(store.connections[0].development).toMatchObject({ status: 'ready', retryAfter: null });
+  });
+
+  it('gives a guest past their daily changes the signup prompt, the card as before', async () => {
+    answerAll(() => ({
+      response: {
+        status: 403,
+        data: { detail: { code: 'GUEST_QUOTA_EXCEEDED', feature: 'adaptation' } }
+      }
+    }));
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+
+    await store.develop('idea-1');
+
+    expect(handleQuotaError).toHaveBeenCalled();
+    expect(store.connections[0].development).toBeNull();
+  });
+
+  it('accepts, edits, keeps the original or reconsiders a change', async () => {
+    answerAll(() => proposal());
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+    await store.develop('idea-1');
+    const development = () => store.connections[0].development!;
+
+    store.acceptChange('idea-1');
+    expect(development().decision).toBe('accepted');
+    expect(development().edited).toBeNull();
+    expect(store.acceptedChanges.map((change) => change.text)).toEqual([
+      'Add the ecological footprint next to GDP.'
+    ]);
+
+    // the same wording, or blanks around it, is not an edit
+    store.acceptChange('idea-1', '  Add the ecological footprint next to GDP. ');
+    expect(development().edited).toBeNull();
+    store.acceptChange('idea-1', 'My own wording.');
+    expect(development().edited).toBe('My own wording.');
+    expect(store.acceptedChanges[0].text).toBe('My own wording.');
+
+    store.reconsider('idea-1');
+    expect(development().decision).toBe('pending');
+    expect(store.acceptedChanges).toEqual([]);
+
+    store.keepOriginal('idea-1');
+    expect(development().decision).toBe('kept');
+    expect(store.acceptedChanges).toEqual([]);
+  });
+
+  it('leaves out the change of a connection no longer chosen, and keeps it', async () => {
+    answerAll(() => proposal());
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+    await store.develop('idea-1');
+    store.acceptChange('idea-1');
+
+    store.reopen('idea-1');
+    expect(store.acceptedChanges).toEqual([]);
+    store.select('idea-1');
+    expect(store.acceptedChanges).toHaveLength(1);
+  });
+
+  it('places a change where the teacher says, a revised objective with its objective', () => {
+    const development = {
+      status: 'ready' as const,
+      proposal: proposal({ original: null }),
+      decision: 'pending' as const,
+      edited: null as string | null,
+      placement: null as string | null,
+      retryAfter: null
+    };
+    const connection: Connection = {
+      ...idea(1),
+      decision: 'selected',
+      evidence: null,
+      isChecking: false,
+      hasCheckFailed: false,
+      development
+    };
+    expect(changeOf({ ...connection, development: null })).toBeNull();
+    expect(changeOf(connection)?.placement).toBeNull();
+
+    development.placement = 'Measure';
+    expect(changeOf(connection)).toMatchObject({
+      connectionId: 'idea-1',
+      connection: 'Idea 1',
+      placement: 'Measure',
+      text: 'Add the ecological footprint next to GDP.'
+    });
+
+    development.proposal = proposal({ original: 'GDP' });
+    expect(changeOf(connection)?.placement).toBe('Measure');
+
+    development.proposal = proposal({ kind: 'objective', original: 'Define GDP.' });
+    expect(changeOf(connection)?.placement).toBe('Define GDP.');
+  });
+
+  it(`runs at most ${MAX_PARALLEL_CHECKS} changes at a time, one per connection`, async () => {
+    const pending: ((value: unknown) => void)[] = [];
+    vi.mocked(basePostAxios).mockImplementation((url: string) => {
+      if (url === '/tutor/course/connection_ideas') {
+        const ideas = [idea(1), idea(2), idea(3)];
+        return Promise.resolve({ data: { ideas, none_reason: null } } as PostResult);
+      }
+      if (url === '/tutor/course/connection_evidence') {
+        return Promise.resolve({ data: evidence('supported') } as PostResult);
+      }
+      return new Promise<PostResult>((resolve) =>
+        pending.push(resolve as (value: unknown) => void)
+      );
+    });
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+
+    const developing = ['idea-1', 'idea-2', 'idea-3'].map((id) => store.develop(id));
+    // a second click while it runs asks nothing more
+    void store.develop('idea-1');
+    await flushPromises();
+    expect(adaptationCalls()).toHaveLength(MAX_PARALLEL_CHECKS);
+
+    pending[0]({ data: proposal() });
+    await flushPromises();
+    expect(adaptationCalls()).toHaveLength(3);
+    expect(store.connections[0].development?.status).toBe('ready');
+
+    // a new search drops what the former one would still bring
+    store.$reset();
+    pending.slice(1).forEach((resolve) => resolve({ data: proposal() }));
+    await Promise.all(developing);
+    expect(store.connections).toEqual([]);
   });
 });

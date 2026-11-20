@@ -152,6 +152,19 @@ export type ConnectionEvidence = Omit<
   'resources' | 'background'
 > & { resources: EvidencedResource[]; background: EvidencedResource[] };
 
+// one checked change to the course for a connection the teacher chose to develop
+export type ChosenConnection = Omit<ApiSchema<'ChosenConnection'>, 'resources' | 'background'> & {
+  resources: EvidencedResource[];
+  background: EvidencedResource[];
+};
+export type AdaptationResource = Omit<ApiSchema<'AdaptationResource'>, 'document'> & {
+  document: Document;
+};
+export type AdaptationProposal = Omit<ApiSchema<'AdaptationProposal'>, 'resources'> & {
+  resources: AdaptationResource[];
+};
+export type AdaptationKind = AdaptationProposal['kind'];
+
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {
   status: 'granted' | 'denied';
@@ -171,10 +184,11 @@ export type SignupPromptReason =
   // the API refused a new guest: too many from the same network (IP) this hour
   | 'tooManyGuests'
   | 'feedbackLimit'
-  | 'filesLimit';
+  | 'filesLimit'
+  | 'adaptationLimit';
 
 // what a guest can do a limited number of times a day (counted by the API, stores/guestQuota.ts)
-export type GuestQuotaFeature = 'chat' | 'syllabus' | 'feedback' | 'files';
+export type GuestQuotaFeature = 'chat' | 'syllabus' | 'feedback' | 'files' | 'adaptation';
 
 // event name -> props. Only counts, lengths, enums and ids: never free text or document content
 export type AnalyticsEvents = {

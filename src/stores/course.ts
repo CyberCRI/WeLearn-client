@@ -332,6 +332,11 @@ export const useCourseStore = defineStore('course', () => {
   );
   const confirmedCourse = computed(() => toConfirmedCourse(courseToUpdate.value));
   const courseParts = computed(() => coursePartsOf(courseToUpdate.value));
+  // where the teacher can place a change: the topics, their subtopics and the outline's sessions
+  const coursePlaces = computed(() => [
+    ...courseToUpdate.value.topics.flatMap(({ title, subtopics }) => [title, ...subtopics]),
+    ...courseToUpdate.value.sessions
+  ]);
 
   // enough to work on: the course's objectives or competencies, its topics, or its overview. a
   // syllabus without explicit objectives is still a course
@@ -403,6 +408,7 @@ export const useCourseStore = defineStore('course', () => {
     courseToUpdate,
     confirmedCourse,
     courseParts,
+    coursePlaces,
     canConfirm,
     setFile,
     removeFile,

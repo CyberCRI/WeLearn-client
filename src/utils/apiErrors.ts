@@ -15,6 +15,16 @@ export const apiErrorCode = (error: unknown): string | undefined => {
   return typeof code === 'string' ? code : undefined;
 };
 
+// the seconds a 429 asks to wait: from the body, since a browser on another origin cannot read
+// the Retry-After header, else from that header
+export const apiRetryAfter = (error: unknown): number | null => {
+  const fromBody = apiErrorDetail(error)?.retry_after;
+  const fromHeader = (error as { response?: { headers?: Record<string, unknown> } })?.response
+    ?.headers?.['retry-after'];
+  const seconds = Number(typeof fromBody === 'number' ? fromBody : fromHeader);
+  return Number.isFinite(seconds) && seconds > 0 ? Math.ceil(seconds) : null;
+};
+
 // 401 for a guest calling an account-only route (bookmarks, bibliography export, download)
 export const isAccountRequired = (error: unknown): boolean =>
   apiErrorCode(error) === 'ACCOUNT_REQUIRED';

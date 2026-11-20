@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { apiErrorCode, apiErrorDetail, isAccountRequired } from '../apiErrors';
+import { apiErrorCode, apiErrorDetail, apiRetryAfter, isAccountRequired } from '../apiErrors';
 import { StreamResponseError } from '../fetch';
 
 const axiosError = (detail: unknown) => ({ response: { status: 401, data: { detail } } });
@@ -27,5 +27,19 @@ describe('apiErrors', () => {
   ])('finds no code in %s', (_, error) => {
     expect(apiErrorCode(error)).toBeUndefined();
     expect(isAccountRequired(error)).toBe(false);
+  });
+
+  it('reads the seconds a 429 asks to wait, from the body first, then the header', () => {
+    const tooMany = (detail: unknown, headers: Record<string, string> = {}) => ({
+      response: { status: 429, headers, data: { detail } }
+    });
+    expect(apiRetryAfter(tooMany({ code: 'RATE_LIMITED', retry_after: 42 }))).toBe(42);
+    expect(apiRetryAfter(tooMany({ code: 'RATE_LIMITED' }, { 'retry-after': '7' }))).toBe(7);
+    expect(apiRetryAfter(tooMany('m', { 'retry-after': '2.2' }))).toBe(3);
+    expect(apiRetryAfter(tooMany({ code: 'RATE_LIMITED' }))).toBeNull();
+    expect(
+      apiRetryAfter(tooMany('m', { 'retry-after': 'Wed, 21 Oct 2026 07:28:00 GMT' }))
+    ).toBeNull();
+    expect(apiRetryAfter(new Error('network'))).toBeNull();
   });
 });
