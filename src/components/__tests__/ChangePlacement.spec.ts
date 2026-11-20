@@ -4,7 +4,14 @@ import { createPinia, setActivePinia } from 'pinia';
 import ChangePlacement from '@/components/tutor/development/ChangePlacement.vue';
 import type { Development } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
-import { exists, proposal, seedConnection, seedCourse, text } from './developmentFixtures';
+import {
+  exists,
+  proposal,
+  seedConnection,
+  seedCourse,
+  seedReading,
+  text
+} from './developmentFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 
@@ -78,5 +85,33 @@ describe('ChangePlacement', () => {
 
     await wrapper.find('select').setValue('GDP');
     expect(exists(wrapper, 'placement-stale')).toBe(false);
+  });
+
+  it('says after which line of the syllabus the word document adds it, once its whole text is read', async () => {
+    const { store, wrapper } = mountWith({ proposal: proposal({ original: 'GDP' }) });
+    // no text: the course part only
+    expect(exists(wrapper, 'placement-line')).toBe(false);
+
+    seedReading();
+    await wrapper.vm.$nextTick();
+    expect(text(wrapper, 'placement-line')).toBe('tutor.additions.change.afterLine');
+
+    // no single passage of the syllabus for it: at the end of the document
+    store.placeChange('idea-1', 'Measure');
+    await wrapper.vm.$nextTick();
+    expect(text(wrapper, 'placement-line')).toBe('tutor.additions.change.atEnd');
+  });
+
+  it('says no line for a revised objective, or a text cut short', async () => {
+    seedReading();
+    const { wrapper } = mountWith({
+      proposal: proposal({ kind: 'objective', original: 'Use indicators.' })
+    });
+    expect(exists(wrapper, 'placement-line')).toBe(false);
+
+    const other = mountWith({ proposal: proposal({ original: 'GDP' }) });
+    seedReading(undefined, true);
+    await other.wrapper.vm.$nextTick();
+    expect(exists(other.wrapper, 'placement-line')).toBe(false);
   });
 });

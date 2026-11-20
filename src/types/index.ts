@@ -164,6 +164,21 @@ export type AdaptationProposal = Omit<ApiSchema<'AdaptationProposal'>, 'resource
   resources: AdaptationResource[];
 };
 export type AdaptationKind = AdaptationProposal['kind'];
+export type AdaptationGuidance = AdaptationProposal['guidance'];
+export type GreenCompId = ApiSchema<'GreenCompLink'>['id'];
+
+// a change the teacher accepted, as the updated syllabus shows and exports it: the proposal, the
+// connection it came from, the accepted wording and where it goes in the course
+export type ApprovedChange = AdaptationProposal & {
+  connectionId: string;
+  connection: string;
+  // the course part it replaces or sits in, as the teacher confirmed it
+  placement: string | null;
+  // the accepted wording (the teacher's own when edited)
+  text: string;
+  // the session it belongs to, when the outline names it reliably (set when assembled)
+  session?: string | null;
+};
 
 // device-level choice, stored with the date so it can be asked again
 export type AnalyticsConsent = {

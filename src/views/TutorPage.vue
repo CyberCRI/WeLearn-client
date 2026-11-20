@@ -6,6 +6,7 @@ import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
+import { downloadPendingSyllabus } from '@/utils/syllabusDownload';
 import type { CoursePath } from '@/types';
 
 const store = useTutorStore();
@@ -19,7 +20,7 @@ const PATH_VIEWS: Record<CoursePath, typeof ScratchWizard | typeof ExistingCours
 
 onMounted(() => {
   // back from the login a guest started with the download button (never rejects)
-  void store.downloadPendingSyllabus();
+  void downloadPendingSyllabus();
 });
 </script>
 <template>

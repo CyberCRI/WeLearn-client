@@ -13,7 +13,7 @@ import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 import { useChatStore } from '@/stores/chat';
 import { useSearchStore } from '@/stores/search';
-import { PENDING_SYLLABUS_KEY } from '@/stores/tutor';
+import { PENDING_SYLLABUS_KEY } from '@/utils/syllabusDownload';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 type OnboardingState = {

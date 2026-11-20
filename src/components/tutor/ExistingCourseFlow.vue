@@ -8,6 +8,8 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import CourseReview from '@/components/tutor/review/CourseReview.vue';
 import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
+import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
+import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 
 const SCREENS = ['course', 'check', 'additions', 'updated'] as const;
@@ -16,6 +18,7 @@ const { t } = i18n.global;
 const stepLabels = computed(() => SCREENS.map((s) => t(`tutor.steps.${s}`)));
 
 const course = useCourseStore();
+const connections = useConnectionsStore();
 
 const progressProps = computed(() => ({
   fileName: course.file?.name ?? '',
@@ -85,8 +88,21 @@ const reviewRecap = computed(() => ({
         </div>
       </section>
 
-      <section v-if="course.step === 3" id="target-3" class="step-section">
-        <SustainabilityAdditions />
+      <section v-if="course.step >= 3 && course.reading" id="target-3" class="step-section">
+        <SustainabilityAdditions v-if="course.step === 3" />
+        <div v-else class="recap" data-testid="additions-recap">
+          <span>
+            {{ $t('tutor.additions.selectedCount', connections.selectedConnections.length) }} ·
+            {{ $t('tutor.additions.acceptedCount', connections.acceptedChanges.length) }}
+          </span>
+          <ButtonComponent is-discreet class="is-small" @click="course.setStep(3)">
+            {{ $t('tutor.edit') }}
+          </ButtonComponent>
+        </div>
+      </section>
+
+      <section v-if="course.step === 4 && course.reading" id="target-4" class="step-section">
+        <UpdatedSyllabus />
       </section>
     </div>
   </div>

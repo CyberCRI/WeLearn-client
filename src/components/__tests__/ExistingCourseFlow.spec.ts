@@ -7,6 +7,7 @@ import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
 import CourseReview from '@/components/tutor/review/CourseReview.vue';
 import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
+import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
 import { useCourseStore } from '@/stores/course';
 import type { CourseReadResponse } from '@/types';
 
@@ -99,5 +100,22 @@ describe('ExistingCourseFlow', () => {
 
     expect(wrapper.find('#target-2').findComponent(ReadingProgress).exists()).toBe(true);
     expect(wrapper.findComponent(CourseReview).exists()).toBe(false);
+  });
+
+  it('shows the updated syllabus on screen 4, the connections folded above it', async () => {
+    const course = useCourseStore();
+    course.setFile(pdf);
+    course.reading = READ;
+    course.setStep(4);
+    const wrapper = mount(ExistingCourseFlow);
+
+    expect(wrapper.find('#target-4').findComponent(UpdatedSyllabus).exists()).toBe(true);
+    expect(wrapper.findComponent(SustainabilityAdditions).exists()).toBe(false);
+    const recap = wrapper.find('[data-testid="additions-recap"]');
+    expect(recap.text()).toContain('tutor.additions.selectedCount');
+
+    await recap.find('button').trigger('click');
+    expect(course.step).toBe(3);
+    expect(wrapper.findComponent(SustainabilityAdditions).exists()).toBe(true);
   });
 });

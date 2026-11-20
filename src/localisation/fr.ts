@@ -537,6 +537,7 @@ export const fr = {
       selectedCount: 'Aucun lien retenu pour le moment | 1 lien retenu | {n} liens retenus',
       develop: 'Développer ce lien',
       contextTag: 'Lecture connexe, pas une preuve directe',
+      toUpdated: 'Voir le syllabus mis à jour',
       acceptedCount:
         'Aucune modification acceptée pour le moment | 1 modification acceptée pour votre syllabus mis à jour | {n} modifications acceptées pour votre syllabus mis à jour',
       change: {
@@ -561,6 +562,14 @@ export const fr = {
           "Son emplacement, « {place} », ne figure plus dans votre cours tel que confirmé à l'étape 2. Choisissez où elle se place.",
         staleObjective:
           "L'objectif qu'elle reformule ne figure plus dans votre cours tel que confirmé à l'étape 2. Vérifiez-la, ou gardez l'original.",
+        afterLine: 'Après « {line} »',
+        atEnd: 'À la fin du document Word, parmi les modifications à placer',
+        kinds: {
+          objective: "Objectif d'apprentissage reformulé",
+          topic: 'Ajout à un thème',
+          teaching: "Ajustement de l'enseignement",
+          assessment: "Modification de l'évaluation"
+        },
         suggested: 'Formulation proposée',
         why: 'Pourquoi cela pourrait être utile',
         basedOn: 'Sources et preuves',
@@ -650,6 +659,69 @@ export const fr = {
         PRESENTIEL: 'Présentiel',
         DISTANCIEL: 'Distanciel',
         HYBRIDE: 'Hybride'
+      }
+    },
+    updated: {
+      title: 'Votre syllabus mis à jour',
+      intro:
+        "Prévisualisez votre cours avec les modifications approuvées, ou affichez les modifications seules. Votre syllabus importé n'est pas modifié.",
+      approvedCount:
+        'aucune modification approuvée | 1 modification approuvée | {n} modifications approuvées',
+      noChanges: 'Aucune modification approuvée pour le moment : votre cours est inchangé.',
+      back: 'Retour aux liens avec la durabilité',
+      changesView: 'Modifications seules ({n})',
+      courseView: 'Cours mis à jour',
+      copy: 'Copier les modifications approuvées',
+      copied: 'Copié',
+      copyError:
+        'La copie a échoué : sélectionnez plutôt le texte dans la vue « Modifications seules ».',
+      download: 'Télécharger le plan et les modifications (Word)',
+      downloadError: "Le document Word n'a pas pu être créé. Réessayez.",
+      placementUnknown: 'Emplacement à choisir',
+      seeOriginal: "Voir l'original",
+      outlineNote:
+        "Plan de votre cours tel que vérifié à l'étape 2, avec les modifications approuvées en vert.",
+      outlineNoteComplete:
+        'Aperçu du document Word : le texte de votre syllabus dans son ordre, avec les modifications approuvées en vert. Vous pouvez reformuler ici une modification approuvée.',
+      localNote:
+        "Vos choix restent dans cet onglet du navigateur pendant que vous passez d'une étape à l'autre. Ils sont perdus si la page est rechargée : téléchargez-les ou copiez-les avant.",
+      complete: {
+        download: 'Télécharger le syllabus mis à jour (Word)',
+        layoutNote:
+          "Le document Word reprend le contenu de votre syllabus original et les modifications approuvées, et vous pouvez continuer à le modifier dans Word. La mise en forme peut différer de l'original : tableaux et colonnes apparaissent en texte simple. | Le document Word reprend le contenu de votre syllabus original et les modifications approuvées, et vous pouvez continuer à le modifier dans Word. La mise en forme peut différer de l'original : tableaux et colonnes apparaissent en texte simple. 1 modification n'a pas pu être placée : elle figure à la fin. | Le document Word reprend le contenu de votre syllabus original et les modifications approuvées, et vous pouvez continuer à le modifier dans Word. La mise en forme peut différer de l'original : tableaux et colonnes apparaissent en texte simple. {n} modifications n'ont pas pu être placées : elles figurent à la fin.",
+        unavailable:
+          "Le texte complet de ce fichier n'a pas pu être vérifié : le document Word contient le plan de votre cours et les modifications approuvées.",
+        title: '{title} — syllabus mis à jour',
+        note: "Texte complet du syllabus original, avec les modifications approuvées par l'enseignant·e signalées en vert. La mise en page du document original (tableaux, colonnes) n'est pas reproduite ; le fichier importé reste inchangé.",
+        change: 'Modification approuvée',
+        toPlaceNote:
+          "Ces modifications approuvées n'ont pas pu être placées de façon fiable dans le texte ci-dessus : ajoutez-les là où elles conviennent.",
+        fileSuffix: 'complet-mis-a-jour'
+      },
+      appendix: {
+        choice: 'Ajouter une annexe pédagogique (repères facultatifs)',
+        title: 'Annexe pédagogique (facultative)',
+        note: "Repères facultatifs liés aux modifications approuvées, pour aider à les enseigner. Ce ne sont ni des objectifs d'apprentissage ni des exigences d'évaluation, et ils ne font pas partie du syllabus."
+      },
+      export: {
+        documentTitle: 'Cours mis à jour',
+        note: "Plan de cours mis à jour avec WeLearn à partir du syllabus original et des modifications approuvées par l'enseignant·e. Les parties du syllabus original qui ne figurent pas ici sont inchangées.",
+        overview: 'Présentation',
+        objectives: "Objectifs d'apprentissage",
+        competencies: 'Compétences',
+        topics: 'Thèmes principaux',
+        outline: 'Plan du cours',
+        toPlace: 'Modifications à placer',
+        revised: 'Reformulé',
+        added: 'Ajout',
+        replaces: 'Remplace',
+        why: 'Pourquoi',
+        sources: 'Sources',
+        placement: 'Placement suggéré',
+        changesTitle: 'Modifications de durabilité approuvées',
+        placementUnknown: 'Emplacement à choisir',
+        context: 'contexte seulement',
+        fileSuffix: 'mis-a-jour'
       }
     },
     check: {

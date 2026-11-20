@@ -7,6 +7,14 @@ import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import { useTutorStore } from '@/stores/tutor';
+import { downloadPendingSyllabus } from '@/utils/syllabusDownload';
+
+// the page only starts the download a guest kept; the download itself has its own spec
+vi.mock('@/utils/syllabusDownload', () => ({
+  PENDING_SYLLABUS_KEY: 'pendingSyllabus',
+  exportSyllabus: vi.fn(),
+  downloadPendingSyllabus: vi.fn()
+}));
 
 // the wizard scrolls to the current step on mount, but the wrapper isn't in the document
 vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
@@ -14,6 +22,7 @@ vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
 describe('TutorPage', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    vi.mocked(downloadPendingSyllabus).mockClear();
   });
 
   afterEach(() => {
@@ -25,9 +34,7 @@ describe('TutorPage', () => {
     expect(wrapper.element).toMatchSnapshot();
   });
 
-  it('downloads the syllabus a guest kept before logging in', () => {
-    const store = useTutorStore();
-    const downloadPendingSyllabus = vi.spyOn(store, 'downloadPendingSyllabus');
+  it('downloads the syllabus a guest kept before logging in, from either path', () => {
     mount(TutorPage, { shallow: true });
     expect(downloadPendingSyllabus).toHaveBeenCalledOnce();
   });

@@ -5,6 +5,7 @@ import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
 import { apiErrorCode } from '@/utils/apiErrors';
 import { editField, restoreField } from '@/utils/courseCheck';
+import { isLongEnough } from '@/utils/completeSyllabus';
 import {
   type TopicDraft,
   applyTopicDrafts,
@@ -51,7 +52,7 @@ const fileKey = (file: File, lang: CourseLanguage, focus: string | null) =>
 // syllabus v2, "I have a course" (flag syllabusV2). kept apart from the `tutor` store, whose
 // files belong to the "from scratch" path and keep working as they did
 export const useCourseStore = defineStore('course', () => {
-  // 1: your course, 2: review the course, 3: sustainability additions
+  // 1: your course, 2: review the course, 3: sustainability additions, 4: updated syllabus
   const step = ref(1);
 
   const file: Ref<File | null> = ref(null);
@@ -338,6 +339,13 @@ export const useCourseStore = defineStore('course', () => {
     ...courseToUpdate.value.sessions
   ]);
 
+  // the syllabus's whole text as the API read it, for the complete updated syllabus: none when
+  // it was cut, or too short to stand for the syllabus (a scan)
+  const wholeText = computed(() => {
+    const text = reading.value?.is_text_truncated ? null : reading.value?.text;
+    return text && isLongEnough(text) ? text : null;
+  });
+
   // enough to work on: the course's objectives or competencies, its topics, or its overview. a
   // syllabus without explicit objectives is still a course
   const canConfirm = computed(
@@ -409,6 +417,7 @@ export const useCourseStore = defineStore('course', () => {
     confirmedCourse,
     courseParts,
     coursePlaces,
+    wholeText,
     canConfirm,
     setFile,
     removeFile,

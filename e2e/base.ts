@@ -111,10 +111,13 @@ export const test = base.extend<Fixtures>({
       await route.fulfill({ json: { predictions: [] } });
     });
 
-    // Mock metrics-related calls
-    await page.route('**/**/metrics/**', async (route) => {
+    // Mock the /metric/* calls (corpus counts at boot, download counts); none may reach the
+    // network, or a page never goes idle
+    await page.route('**/metric/**', async (route) => {
       const url = route.request().url();
-      if (url.includes('nb_docs_info_per_corpus')) {
+      if (!url.includes('nb_docs_info_per_corpus')) {
+        await route.fulfill({ json: {} });
+      } else {
         const json = [
           {
             corpus: 'hal',

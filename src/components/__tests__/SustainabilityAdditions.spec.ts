@@ -188,6 +188,36 @@ describe('SustainabilityAdditions (screen 3a)', () => {
     expect(wrapper.find('[data-testid="accepted-count"]').text()).toBe(
       'tutor.additions.acceptedCount'
     );
+    // nothing accepted yet: no updated syllabus to see
+    expect(wrapper.find('[data-testid="to-updated"]').exists()).toBe(false);
+  });
+
+  it('opens the updated syllabus once a change is accepted', async () => {
+    const store = prepare('ready', [
+      connection('idea-1', { decision: 'selected', evidence: evidence('supported', [resource]) })
+    ]);
+    const course = useCourseStore();
+    course.reading = { text: '' } as never;
+    store.connections[0].development = {
+      status: 'ready',
+      proposal: {
+        kind: 'topic',
+        original: 'GDP',
+        suggested: 'Add it.',
+        why: 'Why.',
+        support: 'strong',
+        resources: [],
+        guidance: { learning: null, greencomp: null, teaching: null, check: null },
+        checks: null
+      },
+      decision: 'accepted',
+      edited: null,
+      placement: null,
+      retryAfter: null
+    };
+    const wrapper = mount(SustainabilityAdditions);
+    await wrapper.find('[data-testid="to-updated"]').trigger('click');
+    expect(course.step).toBe(4);
   });
 });
 

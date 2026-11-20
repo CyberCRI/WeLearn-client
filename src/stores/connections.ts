@@ -8,6 +8,7 @@ import { useGuestQuotaStore } from '@/stores/guestQuota';
 import type { CourseLanguage } from '@/stores/course';
 import type {
   AdaptationProposal,
+  ApprovedChange,
   ChosenConnection,
   ConfirmedCourse,
   ConnectionEvidence,
@@ -77,7 +78,7 @@ export type Connection = ConnectionIdea & {
 
 // a developed connection as a change to the syllabus: the teacher's wording and place first,
 // then the proposal's. a revised objective always stays with the objective it revises
-export const changeOf = ({ id, title, development }: Connection) =>
+export const changeOf = ({ id, title, development }: Connection): ApprovedChange | null =>
   development?.proposal
     ? {
         connectionId: id,
@@ -90,7 +91,7 @@ export const changeOf = ({ id, title, development }: Connection) =>
         text: development.edited || development.proposal.suggested
       }
     : null;
-export type CourseChange = NonNullable<ReturnType<typeof changeOf>>;
+export type CourseChange = ApprovedChange;
 
 // statuses that mean the API was not reached or is busy, rather than an answer it could not use
 // (UNUSABLE_LLM_OUTPUT is a 502 too, told apart by its code)

@@ -836,43 +836,11 @@ describe('tutor store', () => {
 
       expect(auth.askToSignUp).toHaveBeenCalledWith('download');
       expect(convertMarkdownToDocx).not.toHaveBeenCalled();
-      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '')).toBe('# Course');
-    });
-
-    it('downloads the kept syllabus once the guest is logged in, only once', async () => {
-      localStorage.setItem('pendingSyllabus', JSON.stringify('# Course'));
-      vi.mocked(convertMarkdownToDocx).mockResolvedValueOnce(new Blob(['docx']));
-      mockPost({});
-      const store = useTutorStore();
-
-      await store.downloadPendingSyllabus();
-      await store.downloadPendingSyllabus();
-
-      expect(convertMarkdownToDocx).toHaveBeenCalledOnce();
-      expect(convertMarkdownToDocx).toHaveBeenCalledWith('# Course');
-      expect(downloadDocx).toHaveBeenCalledOnce();
-      expect(localStorage.getItem('pendingSyllabus')).toBeNull();
-    });
-
-    it('keeps the kept syllabus and shows an error when its download fails', async () => {
-      localStorage.setItem('pendingSyllabus', JSON.stringify('# Course'));
-      vi.mocked(convertMarkdownToDocx).mockRejectedValueOnce(new Error('docx'));
-      const store = useTutorStore();
-
-      await expect(store.downloadPendingSyllabus()).resolves.toBeUndefined();
-
-      expect(store.hasDownloadError).toBe(true);
-      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '')).toBe('# Course');
-    });
-
-    it('does not download the kept syllabus while still a guest', async () => {
-      auth.isGuest = true;
-      localStorage.setItem('pendingSyllabus', JSON.stringify('# Course'));
-
-      await useTutorStore().downloadPendingSyllabus();
-
-      expect(convertMarkdownToDocx).not.toHaveBeenCalled();
-      expect(localStorage.getItem('pendingSyllabus')).not.toBeNull();
+      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '')).toMatchObject({
+        kind: 'markdown',
+        markdown: '# Course',
+        fileName: 'syllabus.docx'
+      });
     });
 
     it('does not save without a syllabus', async () => {

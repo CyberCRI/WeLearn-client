@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue';
 import { type Connection, changeOf, useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
+import { insertionPoint } from '@/utils/completeSyllabus';
 
 // where a proposed change goes in the course: the objective or competency it revises (its full
 // wording below, clamped when long), or the course part it is added to. the teacher can choose
@@ -38,6 +39,17 @@ const canChoosePlace = computed(() => !isRevision.value && course.coursePlaces.l
 const isChoosingPlace = ref(false);
 const isStale = computed(
   () => !!change.value?.placement && !course.courseParts.includes(change.value.placement)
+);
+
+// where the complete word document puts it, after which line of the syllabus: the same plan as
+// the export, so the same place. only for an addition, when the syllabus's whole text was read
+const isLinePlaced = computed(
+  () => !!course.wholeText && !!change.value && !isRevision.value && !isStale.value
+);
+const point = computed(() =>
+  isLinePlaced.value && course.wholeText && change.value
+    ? insertionPoint(course.wholeText, course.courseToUpdate, change.value)
+    : null
 );
 
 const handlePlace = (event: Event) => {
@@ -82,6 +94,14 @@ const handlePlace = (event: Event) => {
       </button>
     </template>
 
+    <p v-if="isLinePlaced" class="line" data-testid="placement-line">
+      {{
+        point
+          ? $t('tutor.additions.change.afterLine', { line: point.line })
+          : $t('tutor.additions.change.atEnd')
+      }}
+    </p>
+
     <p v-if="isStale" class="stale" role="alert" data-testid="placement-stale">
       {{
         isRevision
@@ -110,6 +130,17 @@ const handlePlace = (event: Event) => {
 </template>
 
 <style scoped>
+/* a long line of the syllabus, shortened: the document holds it whole */
+.line {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  font-size: 0.85rem;
+  color: var(--neutral-70);
+}
+
 .ref {
   display: block;
   font-size: 0.85rem;
