@@ -410,6 +410,8 @@ export interface paths {
      *     claims are checked against those resources, and the change is asked again once when
      *     some are not established or wrong. `support` is capped by what the check found, and
      *     `checks` lists the problems for the teacher. `lang` is the teacher's language.
+     *
+     *     A guest's change counts against their daily adaptations, refunded if it fails.
      */
     post: operations['tutor-propose_course_adaptation'];
     delete?: never;
@@ -1773,6 +1775,7 @@ export interface components {
      *     guest restrictions are off: the features are then null.
      */
     GuestQuotaResponse: {
+      adaptation?: components['schemas']['GuestFeatureQuota'] | null;
       chat?: components['schemas']['GuestFeatureQuota'] | null;
       feedback?: components['schemas']['GuestFeatureQuota'] | null;
       files?: components['schemas']['GuestFeatureQuota'] | null;
@@ -3201,8 +3204,53 @@ export interface operations {
           'application/json': components['schemas']['AdaptationProposal'];
         };
       };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The course does not fit a prompt (code COURSE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
       502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
         headers: {
           [name: string]: unknown;
         };
@@ -3243,6 +3291,33 @@ export interface operations {
           'application/json': components['schemas']['ConnectionEvidenceResponse'];
         };
       };
+      /** @description The course does not fit a prompt (code COURSE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description Error */
       default: {
         headers: {
@@ -3276,8 +3351,35 @@ export interface operations {
           'application/json': components['schemas']['ConnectionIdeasResponse'];
         };
       };
+      /** @description The course does not fit a prompt (code COURSE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
       502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
         headers: {
           [name: string]: unknown;
         };
@@ -3363,8 +3465,26 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description The document could not be read (code UNUSABLE_READING) */
       502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
         headers: {
           [name: string]: unknown;
         };
