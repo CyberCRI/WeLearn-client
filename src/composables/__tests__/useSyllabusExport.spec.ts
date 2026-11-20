@@ -1,9 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useSyllabusExport } from '@/composables/useSyllabusExport';
-import { saveSyllabusFile } from '@/utils/syllabusDownload';
-import { PENDING_COURSE_EXPORT_KEY, type CourseExport } from '@/utils/courseExport';
-import { getFromStorage } from '@/utils/storage';
+import { exportSyllabus, type SyllabusExport } from '@/utils/syllabusDownload';
 import {
   proposal,
   seedAccepted,
@@ -13,9 +11,7 @@ import {
 } from '@/components/__tests__/developmentFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
-vi.mock('@/utils/syllabusDownload', () => ({ saveSyllabusFile: vi.fn() }));
-const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
-vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
+vi.mock('@/utils/syllabusDownload', () => ({ exportSyllabus: vi.fn() }));
 
 const TOPIC = proposal({ kind: 'topic', original: 'GDP', suggested: 'Add the footprint.' });
 const NOTED = proposal({
@@ -29,15 +25,13 @@ const NOTED = proposal({
     check: null
   }
 });
-const lastExport = () => vi.mocked(saveSyllabusFile).mock.calls.at(-1);
+const lastExport = () => vi.mocked(exportSyllabus).mock.calls.at(-1)?.[0] as SyllabusExport;
 
 describe('useSyllabusExport', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
-    localStorage.clear();
-    auth.isGuest = false;
-    vi.mocked(saveSyllabusFile).mockResolvedValue(true);
+    vi.mocked(exportSyllabus).mockResolvedValue(true);
     const course = seedCourse();
     course.teachingContext.title = 'Macro économie 101';
   });
@@ -50,7 +44,10 @@ describe('useSyllabusExport', () => {
     expect(syllabus.completePlan.value?.toPlace).toEqual([]);
 
     await syllabus.exportWord('complete', false);
-    expect(lastExport()?.[1]).toBe('Macro-économie-101-complet-mis-a-jour.docx');
+    expect(lastExport()).toMatchObject({
+      kind: 'complete',
+      fileName: 'Macro-économie-101-complet-mis-a-jour.docx'
+    });
     expect(syllabus.hasExportError.value).toBe(false);
   });
 
@@ -62,12 +59,16 @@ describe('useSyllabusExport', () => {
 
     // asked for the complete one, the outline is what can be made
     await syllabus.exportWord('complete', false);
-    expect(lastExport()?.[1]).toBe('Macro-économie-101-mis-a-jour.docx');
+    expect(lastExport()).toMatchObject({
+      kind: 'markdown',
+      fileName: 'Macro-économie-101-mis-a-jour.docx'
+    });
+    expect((lastExport() as { markdown: string }).markdown).toContain('Add the footprint.');
   });
 
   it('says when the word file could not be made', async () => {
     seedAccepted(TOPIC);
-    vi.mocked(saveSyllabusFile).mockResolvedValueOnce(false);
+    vi.mocked(exportSyllabus).mockResolvedValueOnce(false);
     const syllabus = useSyllabusExport();
     await syllabus.exportWord('outline', false);
     expect(syllabus.hasExportError.value).toBe(true);
@@ -81,28 +82,14 @@ describe('useSyllabusExport', () => {
 
     seedAccepted(TOPIC, NOTED);
     expect(syllabus.hasNotes.value).toBe(true);
-    auth.isGuest = true;
     await syllabus.exportWord('outline', false);
-    expect((getFromStorage(PENDING_COURSE_EXPORT_KEY) as CourseExport).appendix).toBeNull();
+    expect(lastExport().appendix).toBeNull();
     await syllabus.exportWord('outline', true);
-    const kept = getFromStorage(PENDING_COURSE_EXPORT_KEY) as CourseExport;
-    expect(kept.appendix?.changes).toHaveLength(2);
+    expect(lastExport().appendix?.changes).toHaveLength(2);
     // only the competences cited, named in the syllabus's language
-    expect(Object.keys(kept.appendix?.labels.greencompNames || {})).toEqual(['systems_thinking']);
-  });
-
-  it('asks a guest to sign up first, the export kept for right after', async () => {
-    seedReading();
-    seedAccepted(TOPIC);
-    auth.isGuest = true;
-    await useSyllabusExport().exportWord('complete', false);
-
-    expect(saveSyllabusFile).not.toHaveBeenCalled();
-    expect(auth.askToSignUp).toHaveBeenCalledWith('download');
-    expect(getFromStorage(PENDING_COURSE_EXPORT_KEY)).toMatchObject({
-      kind: 'complete',
-      fileName: 'Macro-économie-101-complet-mis-a-jour.docx'
-    });
+    expect(Object.keys(lastExport().appendix?.labels.greencompNames || {})).toEqual([
+      'systems_thinking'
+    ]);
   });
 
   it('copies the changes as text, and says when the copy failed', async () => {

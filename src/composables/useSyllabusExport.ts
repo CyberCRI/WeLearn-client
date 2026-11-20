@@ -1,12 +1,10 @@
 import { computed, ref } from 'vue';
 import i18n from '@/localisation/i18n';
-import { useAuthStore } from '@/stores/auth';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 import { planComplete, validatePlan, type CompleteLabels } from '@/utils/completeSyllabus';
-import { buildCourseExport, keepCourseExport, type CourseExport } from '@/utils/courseExport';
 import { changesWithNotes, type AppendixLabels } from '@/utils/pedagogicalAppendix';
-import { saveSyllabusFile } from '@/utils/syllabusDownload';
+import { exportSyllabus, type SyllabusExport } from '@/utils/syllabusDownload';
 import { changesText, updatedCourseMarkdown, type ExportLabels } from '@/utils/updatedSyllabus';
 import type { AdaptationKind } from '@/types';
 
@@ -26,7 +24,6 @@ export const useSyllabusText = () => {
 export const useSyllabusExport = () => {
   const course = useCourseStore();
   const store = useConnectionsStore();
-  const auth = useAuthStore();
 
   const courseToUpdate = computed(() => course.courseToUpdate);
   const changes = computed(() => store.acceptedChanges);
@@ -113,14 +110,15 @@ export const useSyllabusExport = () => {
       .replace(/[^\p{L}\p{N}]+/gu, '-')
       .replace(/^-|-$/g, '')}-${lt(suffixKey)}.docx`;
 
-  const exportOf = (kind: CourseExport['kind'], withAppendix: boolean): CourseExport => {
+  // the word document asked for: the complete syllabus when it is ready, the outline otherwise
+  const exportOf = (choice: 'complete' | 'outline', withAppendix: boolean): SyllabusExport => {
     const appendix =
       withAppendix && hasNotes.value
         ? { changes: changes.value, labels: appendixLabels.value }
         : null;
-    if (kind === 'complete' && completePlan.value) {
+    if (choice === 'complete' && isCompleteReady.value && completePlan.value) {
       return {
-        kind,
+        kind: 'complete',
         fileName: fileName('tutor.updated.complete.fileSuffix'),
         plan: completePlan.value,
         labels: completeLabels.value,
@@ -128,7 +126,7 @@ export const useSyllabusExport = () => {
       };
     }
     return {
-      kind: 'outline',
+      kind: 'markdown',
       fileName: fileName('tutor.updated.export.fileSuffix'),
       markdown: updatedCourseMarkdown(courseToUpdate.value, changes.value, labels.value),
       appendix
@@ -137,24 +135,11 @@ export const useSyllabusExport = () => {
 
   const isExporting = ref(false);
   const hasExportError = ref(false);
-  // a guest is asked to sign up first, the export kept for right after, as from scratch
-  const exportWord = async (kind: CourseExport['kind'], withAppendix: boolean) => {
-    const courseExport = exportOf(
-      kind === 'complete' && isCompleteReady.value ? kind : 'outline',
-      withAppendix
-    );
-    if (auth.isGuest) {
-      keepCourseExport(courseExport);
-      auth.askToSignUp('download');
-      return;
-    }
+  // the same download as from scratch: a guest is asked to sign up first
+  const exportWord = async (choice: 'complete' | 'outline', withAppendix: boolean) => {
     isExporting.value = true;
     hasExportError.value = false;
-    const isSaved = await saveSyllabusFile(
-      () => buildCourseExport(courseExport),
-      courseExport.fileName
-    );
-    hasExportError.value = !isSaved;
+    hasExportError.value = !(await exportSyllabus(exportOf(choice, withAppendix)));
     isExporting.value = false;
   };
 

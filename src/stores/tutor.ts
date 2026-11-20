@@ -1,23 +1,18 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { convertMarkdownToDocx } from '@/utils/md-to-docx';
-import { saveSyllabusFile } from '@/utils/syllabusDownload';
+import { exportSyllabus } from '@/utils/syllabusDownload';
 import _isequal from 'lodash.isequal';
 import { type Ref, computed, ref } from 'vue';
 import { type CoursePath, type Document, type TutorSearch, type TutorSyllabus } from '@/types';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
-import { useAuthStore } from '@/stores/auth';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
-import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 
 const MAX_FILES = 3;
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
-// a guest's syllabus, kept through the keycloak redirect and downloaded once they are logged in
-export const PENDING_SYLLABUS_KEY = 'pendingSyllabus';
 
 // the LLM sometimes writes a literal "\n" (backslash + n): inside a table cell it
 // means a line break (<br>), anywhere else a real new line
@@ -418,38 +413,20 @@ export const useTutorStore = defineStore('tutor', () => {
     }
   };
 
-  // resolves false when the word file could not be made
-  const downloadSyllabus = async (content: string): Promise<boolean> => {
-    hasDownloadError.value = false;
-    const isSaved = await saveSyllabusFile(() => convertMarkdownToDocx(content), 'syllabus.docx');
-    hasDownloadError.value = !isSaved;
-    return isSaved;
-  };
-
+  // a guest is asked to sign up first; the wizard itself is not restored after the login
+  // (uploaded files can't be stored), only the syllabus they asked for is downloaded
   const handleDownloadSyllabus = async () => {
     if (!syllabi.value || !syllabi.value.content) {
       console.error('No syllabi available for download');
       return;
     }
-
-    const authStore = useAuthStore();
-    if (authStore.isGuest) {
-      saveToStorage(PENDING_SYLLABUS_KEY, syllabi.value.content);
-      authStore.askToSignUp('download');
-      return;
-    }
-
-    await downloadSyllabus(syllabi.value.content);
-  };
-
-  // the wizard itself is not restored after the login (uploaded files can't be stored),
-  // only the syllabus the guest asked for is downloaded
-  const downloadPendingSyllabus = async () => {
-    const content: unknown = getFromStorage(PENDING_SYLLABUS_KEY);
-    if (useAuthStore().isGuest || typeof content !== 'string' || !content) return;
-
-    // kept on a failure, so the next visit tries again
-    if (await downloadSyllabus(content)) clearFromStorage(PENDING_SYLLABUS_KEY);
+    hasDownloadError.value = false;
+    hasDownloadError.value = !(await exportSyllabus({
+      kind: 'markdown',
+      markdown: syllabi.value.content,
+      fileName: 'syllabus.docx',
+      appendix: null
+    }));
   };
 
   const updateSyllabusInDB = async () => {
@@ -496,7 +473,6 @@ export const useTutorStore = defineStore('tutor', () => {
     giveFeedback,
     feedbackHistory,
     handleDownloadSyllabus,
-    downloadPendingSyllabus,
     courseTitle,
     selectedSources,
     level,

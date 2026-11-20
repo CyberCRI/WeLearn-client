@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
-import { saveSyllabusFile } from '@/utils/syllabusDownload';
+import { exportSyllabus } from '@/utils/syllabusDownload';
 import {
   exists,
   proposal,
@@ -13,10 +13,7 @@ import {
 } from './developmentFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
-vi.mock('@/utils/syllabusDownload', () => ({ saveSyllabusFile: vi.fn() }));
-vi.mock('@/stores/auth', () => ({
-  useAuthStore: () => ({ isGuest: false, askToSignUp: vi.fn() })
-}));
+vi.mock('@/utils/syllabusDownload', () => ({ exportSyllabus: vi.fn() }));
 
 const TOPIC = proposal({ kind: 'topic', original: 'GDP', suggested: 'Add the footprint.' });
 const REVISION = proposal({
@@ -28,7 +25,7 @@ const REVISION = proposal({
 describe('UpdatedSyllabus', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
-    vi.mocked(saveSyllabusFile).mockReset().mockResolvedValue(true);
+    vi.mocked(exportSyllabus).mockReset().mockResolvedValue(true);
     seedCourse().teachingContext.title = 'Macroeconomics';
   });
 
@@ -76,7 +73,9 @@ describe('UpdatedSyllabus', () => {
 
     await wrapper.find('[data-testid="download-outline"]').trigger('click');
     await flushPromises();
-    expect(vi.mocked(saveSyllabusFile).mock.calls[0][1]).toBe('Macroeconomics-mis-a-jour.docx');
+    expect(vi.mocked(exportSyllabus).mock.calls[0][0].fileName).toBe(
+      'Macroeconomics-mis-a-jour.docx'
+    );
   });
 
   it('downloads the word document from the export bar', async () => {
@@ -85,7 +84,7 @@ describe('UpdatedSyllabus', () => {
     const wrapper = mount(UpdatedSyllabus);
     await wrapper.find('[data-testid="download-complete"]').trigger('click');
     await flushPromises();
-    expect(vi.mocked(saveSyllabusFile).mock.calls[0][1]).toBe(
+    expect(vi.mocked(exportSyllabus).mock.calls[0][0].fileName).toBe(
       'Macroeconomics-complet-mis-a-jour.docx'
     );
   });
