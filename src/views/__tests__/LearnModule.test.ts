@@ -13,6 +13,7 @@ import TimelineStep from '@/components/learn/steps/TimelineStep.vue';
 import { getModuleContent } from '@/learn/modules';
 import { getProgress, saveProgress } from '@/learn/progress';
 import { track } from '@/utils/analytics';
+import i18n from '@/localisation/i18n';
 
 const routing = vi.hoisted(() => ({
   params: { id: 'foundations' } as Record<string, string>,
@@ -24,6 +25,13 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({ push: routing.push })
 }));
 vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
+
+const flags = vi.hoisted(() => ({ disabled: [] as string[] }));
+vi.mock('@/stores/featureFlip', () => ({
+  useFeatureFlipStore: () => ({
+    isFeatureEnabled: (feature: string) => !flags.disabled.includes(feature)
+  })
+}));
 
 const STEP_COMPONENTS = {
   concepts: ConceptExplorer,
@@ -39,6 +47,7 @@ describe('Learn pages', () => {
     setActivePinia(createPinia());
     localStorage.clear();
     routing.params = { id: 'foundations' };
+    flags.disabled = [];
     Element.prototype.scrollIntoView = vi.fn();
   });
 
@@ -64,6 +73,53 @@ describe('Learn pages', () => {
     expect(cards[2].props()).toMatchObject({
       title: 'La durabilité dans votre discipline'
     });
+  });
+
+  it('lists and numbers only the modules that are on (prod: discipline alone, as 1)', () => {
+    flags.disabled = ['learnFoundations', 'learnFrameworks'];
+    const wrapper = mount(LearnPage, { global: { stubs: { RouterLink } } });
+
+    const cards = wrapper.findAllComponents(LearnModuleCard);
+    expect(cards.map((c) => [c.props('index'), c.props('to')])).toEqual([[1, '/learn/discipline']]);
+  });
+
+  it.each([
+    [['learnFoundations', 'learnFrameworks'], 1],
+    [[], 3]
+  ])('gives the intro the number of modules shown (off: %j)', (disabled, count) => {
+    flags.disabled = disabled;
+    const $t = vi.fn((key: string) => key);
+    mount(LearnPage, { global: { stubs: { RouterLink }, mocks: { $t } } });
+
+    expect($t).toHaveBeenCalledWith('learn.intro', count);
+  });
+
+  it.each<['fr' | 'en', number, string]>([
+    ['fr', 1, 'Un module court pour intégrer la durabilité dans votre enseignement.'],
+    ['fr', 3, '3 modules courts pour intégrer la durabilité dans votre enseignement. Suivez-les'],
+    ['en', 1, 'A short module to bring sustainability into your teaching.'],
+    ['en', 3, '3 short modules to bring sustainability into your teaching. Follow them']
+  ])('words the %s intro for %i module(s)', (locale, count, start) => {
+    const text = i18n.global.t('learn.intro', count, { locale });
+
+    expect(text.startsWith(start)).toBe(true);
+    if (count === 1) expect(text).toBe(start);
+  });
+
+  it('numbers the modules shown 1, 2, 3 when they are all on', () => {
+    const wrapper = mount(LearnPage, { global: { stubs: { RouterLink } } });
+
+    expect(wrapper.findAllComponents(LearnModuleCard).map((c) => c.props('index'))).toEqual([
+      1, 2, 3
+    ]);
+  });
+
+  it('skips a module that is off in the next-module link', async () => {
+    flags.disabled = ['learnFrameworks'];
+    const wrapper = mount(LearnModule);
+
+    const next = wrapper.vm as unknown as { next: { to: string } | null };
+    expect(next.next?.to).toBe('/learn/discipline');
   });
 
   it('shows a not-found message for an unknown module', () => {

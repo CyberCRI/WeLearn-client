@@ -14,7 +14,14 @@ import TimelineStep from '@/components/learn/steps/TimelineStep.vue';
 import SdgMap from '@/components/learn/steps/SdgMap.vue';
 import GreenCompMap from '@/components/learn/steps/GreenCompMap.vue';
 import WorkedExample from '@/components/learn/steps/WorkedExample.vue';
-import { getModuleCard, isModuleId, nextModule, useModuleContent } from '@/learn/modules';
+import {
+  getModuleCard,
+  isModuleId,
+  nextModule,
+  useModuleContent,
+  visibleModules
+} from '@/learn/modules';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { getProgress, saveProgress, type ModuleProgress } from '@/learn/progress';
 import { SOURCES, sourceUrl, type SourceId } from '@/learn/sources';
 import type { Cite, Step } from '@/types/learn/modules';
@@ -36,13 +43,14 @@ const STEP_COMPONENTS = {
 const route = useRoute();
 const router = useRouter();
 const { t, locale } = i18n.global;
+const { isFeatureEnabled } = useFeatureFlipStore();
 
 const moduleId = computed(() => (isModuleId(route.params.id) ? route.params.id : null));
 const content = useModuleContent(() => moduleId.value ?? 'foundations');
 
 // the next module on the Learn page, with its title in the current language
 const next = computed(() => {
-  const mod = moduleId.value && nextModule(moduleId.value);
+  const mod = moduleId.value && nextModule(moduleId.value, visibleModules(isFeatureEnabled));
   if (!mod) return null;
   return { to: mod.to, title: getModuleCard(mod.id, locale.value).title };
 });

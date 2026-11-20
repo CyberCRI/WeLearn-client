@@ -9,6 +9,7 @@ import TestMAS from '@/views/TestMAS.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useFeatureFlipStore, type Feature } from '@/stores/featureFlip';
 import RegisterPage from '@/views/RegisterPage.vue';
+import { isLearnModule, isModuleVisible } from '@/learn/moduleList';
 import type { SignupPromptReason } from '@/types';
 
 declare module 'vue-router' {
@@ -22,6 +23,13 @@ declare module 'vue-router' {
     // no welcome form here: it waits for the next normal page (onboarding flags stay unchanged)
     hideWelcome?: boolean;
   }
+}
+
+// a module that is off sends back to the hub (meta.feature would fall back to the chat).
+// unknown ids pass: the page shows its "module not found" box
+function learnModuleGuard(id: unknown) {
+  if (!isLearnModule(id)) return true;
+  return isModuleVisible(id, useFeatureFlipStore().isFeatureEnabled) || '/learn';
 }
 
 const router = createRouter({
@@ -94,8 +102,18 @@ const router = createRouter({
       meta: { feature: 'learn' },
       children: [
         { path: '', name: 'learn', component: () => import('@/views/LearnPage.vue') },
-        { path: 'discipline', name: 'learn-discipline', component: DisciplineModule },
-        { path: ':id', name: 'learn-module', component: () => import('@/views/LearnModule.vue') }
+        {
+          path: 'discipline',
+          name: 'learn-discipline',
+          component: DisciplineModule,
+          beforeEnter: () => learnModuleGuard('discipline')
+        },
+        {
+          path: ':id',
+          name: 'learn-module',
+          component: () => import('@/views/LearnModule.vue'),
+          beforeEnter: (to) => learnModuleGuard(to.params.id)
+        }
       ]
     },
     // old url, kept for links already shared (page params like ?disc= come along)

@@ -1,5 +1,13 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { MODULES, getModuleContent, isModuleId, nextModule } from '@/learn/modules';
+import {
+  MODULES,
+  getModuleContent,
+  isModuleId,
+  isModuleVisible,
+  nextModule,
+  visibleModules
+} from '@/learn/modules';
+import type { Feature } from '@/stores/featureFlip';
 import { getProgress, saveProgress } from '@/learn/progress';
 import { SOURCES } from '@/learn/sources';
 import { emptySort, placeCard, isSortDone, firstTryCount, shuffled } from '@/learn/sort';
@@ -82,6 +90,28 @@ describe('Learn modules', () => {
     expect(nextModule('foundations')?.id).toBe('frameworks');
     expect(nextModule('frameworks')?.id).toBe('discipline');
     expect(nextModule('discipline')).toBeNull();
+  });
+
+  // prod: foundations and frameworks are flipped off, only the discipline module is listed
+  const onlyDiscipline = (feature: Feature) => feature === 'learnDiscipline';
+
+  it('lists only the modules whose feature flip is on', () => {
+    expect(visibleModules(() => true).map((m) => m.id)).toEqual([
+      'foundations',
+      'frameworks',
+      'discipline'
+    ]);
+    expect(visibleModules(onlyDiscipline).map((m) => m.id)).toEqual(['discipline']);
+    expect(visibleModules(() => false)).toEqual([]);
+    expect(isModuleVisible('discipline', onlyDiscipline)).toBe(true);
+    expect(isModuleVisible('foundations', onlyDiscipline)).toBe(false);
+  });
+
+  it('never points to a module that is off', () => {
+    const noFrameworks = visibleModules((feature) => feature !== 'learnFrameworks');
+
+    expect(nextModule('foundations', noFrameworks)?.id).toBe('discipline');
+    expect(nextModule('frameworks', noFrameworks)).toBeNull();
   });
 
   it('falls back to French for any other locale', () => {

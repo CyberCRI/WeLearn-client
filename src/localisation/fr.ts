@@ -271,8 +271,9 @@ export const fr = {
   learn: {
     discipline,
     title: 'Se former',
+    // plural on the number of modules shown (feature flips): one, then several
     intro:
-      'Des modules courts pour intégrer la durabilité dans votre enseignement. Suivez-les dans l’ordre ou ouvrez celui dont vous avez besoin.',
+      'Un module court pour intégrer la durabilité dans votre enseignement. | {n} modules courts pour intégrer la durabilité dans votre enseignement. Suivez-les dans l’ordre ou ouvrez celui dont vous avez besoin.',
     cards: {
       discipline: {
         title: 'La durabilité dans votre discipline',

@@ -11,12 +11,8 @@ import type { LearnModuleId, ModuleContent, ModuleId } from '@/types/learn/modul
 
 // components get content only through getModuleContent / useModuleContent
 
-// order shown on the Learn page, also the "next module" order. nothing is locked.
-export const MODULES: { id: LearnModuleId; to: string }[] = [
-  { id: 'foundations', to: '/learn/foundations' },
-  { id: 'frameworks', to: '/learn/frameworks' },
-  { id: 'discipline', to: '/learn/discipline' }
-];
+// the list lives apart so the router can check it without loading the module text
+export { MODULES, visibleModules, isModuleVisible, nextModule } from './moduleList';
 
 // built once: each module's structure merged with its text in each language
 const CONTENT: Record<ModuleId, { en: ModuleContent; fr: ModuleContent }> = {
@@ -53,6 +49,3 @@ export function getModuleCard(id: LearnModuleId, locale: string) {
     duration: t(`learn.cards.${id}.duration`)
   };
 }
-
-export const nextModule = (id: LearnModuleId) =>
-  MODULES[MODULES.findIndex((m) => m.id === id) + 1] ?? null;

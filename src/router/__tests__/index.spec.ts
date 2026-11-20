@@ -244,6 +244,32 @@ describe('router', () => {
       expect(router.currentRoute.value.query).toEqual({ disc: 'history', lang: 'en' });
     });
 
+    it('sends a learn module that is off back to the hub', async () => {
+      flags.disabled = ['learnFoundations', 'learnFrameworks'];
+
+      await router.push('/learn/foundations');
+      expect(router.currentRoute.value.path).toBe('/learn');
+
+      await router.push('/learn/discipline');
+      expect(router.currentRoute.value.path).toBe('/learn/discipline');
+    });
+
+    it('sends the discipline module back to the hub when it is off', async () => {
+      flags.disabled = ['learnDiscipline'];
+
+      await router.push('/microlearning');
+
+      expect(router.currentRoute.value.path).toBe('/learn');
+    });
+
+    it('lets an unknown module id through to its not-found page', async () => {
+      flags.disabled = ['learnFoundations', 'learnFrameworks', 'learnDiscipline'];
+
+      await router.push('/learn/unknown');
+
+      expect(router.currentRoute.value.path).toBe('/learn/unknown');
+    });
+
     it('keeps the module id when carrying app-wide params', async () => {
       await router.push('/search?lang=en');
       await router.push('/learn/frameworks');

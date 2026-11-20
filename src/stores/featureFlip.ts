@@ -11,7 +11,12 @@ const FEATURE_ENVIRONMENTS = {
   search: ENVIRONMENTS,
   bookmarks: ENVIRONMENTS,
   about: ENVIRONMENTS,
+  // the learn hub and its nav entry
   learn: ENVIRONMENTS,
+  // learn hub modules, one flip each: the hub lists and numbers only the enabled ones
+  learnFoundations: ['dev', 'staging'],
+  learnFrameworks: ['dev', 'staging'],
+  learnDiscipline: ENVIRONMENTS,
   workshop: ['dev'],
   // keycloak login is rolled out on dev and staging, not on prod yet
   auth: ['dev', 'staging'],

@@ -2,11 +2,15 @@
 import { computed } from 'vue';
 import i18n from '@/localisation/i18n';
 import LearnModuleCard from '@/components/learn/LearnModuleCard.vue';
-import { MODULES, getModuleCard, isModuleId } from '@/learn/modules';
+import { getModuleCard, isModuleId, visibleModules } from '@/learn/modules';
 import { getProgress } from '@/learn/progress';
+import { useFeatureFlipStore } from '@/stores/featureFlip';
 
+const { isFeatureEnabled } = useFeatureFlipStore();
+
+// numbered from the modules shown, so a hidden module leaves no gap
 const cards = computed(() =>
-  MODULES.map((m) => ({
+  visibleModules(isFeatureEnabled).map((m) => ({
     ...m,
     ...getModuleCard(m.id, i18n.global.locale.value),
     // ponytail: no completion state for the discipline module until progress moves to the API
@@ -18,7 +22,7 @@ const cards = computed(() =>
 <template>
   <div class="learn-page py-5 px-4">
     <h1 class="title is-3 is-size-4-mobile">{{ $t('learn.title') }}</h1>
-    <p class="subtitle is-6">{{ $t('learn.intro') }}</p>
+    <p class="subtitle is-6">{{ $t('learn.intro', cards.length) }}</p>
 
     <div class="cards">
       <LearnModuleCard

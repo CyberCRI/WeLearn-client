@@ -267,8 +267,9 @@ export const en = {
   learn: {
     discipline,
     title: 'Learn',
+    // plural on the number of modules shown (feature flips): one, then several
     intro:
-      'Short modules to bring sustainability into your teaching. Follow them in order or open the one you need.',
+      'A short module to bring sustainability into your teaching. | {n} short modules to bring sustainability into your teaching. Follow them in order or open the one you need.',
     cards: {
       discipline: {
         title: 'Sustainability in your discipline',
