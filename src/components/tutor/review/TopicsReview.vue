@@ -120,7 +120,7 @@ const save = () => {
         @click="startEditing"
       />
       <ul class="topic-list">
-        <li v-for="topic in store.courseTopics" :key="topic.value" data-testid="topic">
+        <li v-for="(topic, index) in store.courseTopics" :key="index" data-testid="topic">
           <span class="topic-title">{{ topic.value }}</span>
           <AiNote
             v-if="topic.origin === 'extracted' && topic.verification === 'unverified'"

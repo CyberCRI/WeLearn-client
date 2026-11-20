@@ -162,13 +162,14 @@ export const useConnectionsStore = defineStore('connections', () => {
     else running -= 1;
   };
 
-  // the resources of one idea, found and judged by the API
+  // the resources of one idea, found and judged by the API. marked as checking while it waits
+  // for a slot too, so a retry clicked meanwhile asks nothing more
   const checkIdea = async (connection: Connection, signal: AbortSignal) => {
+    connection.isChecking = true;
+    connection.hasCheckFailed = false;
     await takeSlot();
     try {
       if (signal.aborted || !confirmedFor.value) return;
-      connection.isChecking = true;
-      connection.hasCheckFailed = false;
       const { data } = await basePostAxios<
         ApiResponse<'/tutor/course/connection_evidence', 'post'>
       >(

@@ -82,7 +82,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     <template v-if="updated.topics.length">
       <h3>{{ lt('tutor.check.topicsLabel') }}</h3>
       <ul class="plain-list bullets">
-        <li v-for="topic in updated.topics" :key="topic.title">
+        <li v-for="(topic, index) in updated.topics" :key="index">
           <strong>{{ topic.title }}</strong>
           <span v-if="topic.subtopics.length" class="muted">
             — {{ topic.subtopics.join(', ') }}</span
@@ -101,7 +101,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     <template v-if="isOutlineShown">
       <h3>{{ lt('tutor.check.outlineTitle', { n: updated.sessions.length }) }}</h3>
       <ul class="plain-list bullets">
-        <li v-for="session in updated.sessions" :key="session.line">
+        <li v-for="(session, index) in updated.sessions" :key="index">
           {{ session.line }}
           <AddedChange
             v-for="change in session.added"

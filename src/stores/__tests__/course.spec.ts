@@ -4,6 +4,7 @@ import axios from 'axios';
 import { MAX_COURSE_FILE_SIZE, useCourseStore } from '../course';
 import { useGuestQuotaStore } from '../guestQuota';
 import { useTutorStore } from '../tutor';
+import { useConnectionsStore } from '../connections';
 import { basePostAxios, getGuestQuota } from '@/utils/fetch';
 import type { CourseReadResponse } from '@/types';
 
@@ -104,6 +105,26 @@ describe('course store', () => {
       expect(store.step).toBe(2);
       expect(store.phase).toBe('idle');
       expect(store.readError).toBeNull();
+    });
+
+    it('starts the connections over for another course, not for the same one', async () => {
+      const store = useCourseStore();
+      const connections = useConnectionsStore();
+      store.setFile(file());
+      mockPost({ data: READ });
+      await store.readCourse();
+      connections.status = 'ready';
+      store.setStep(1);
+
+      // the same reading again: the teacher's work stays
+      await store.readCourse();
+      expect(connections.status).toBe('ready');
+
+      // another file: what was found for the former course does not apply
+      store.setFile(file('other.pdf'));
+      mockPost({ data: READ });
+      await store.readCourse();
+      expect(connections.status).toBe('idle');
     });
 
     it('does not read the same file in the same language twice', async () => {
