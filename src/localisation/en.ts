@@ -529,6 +529,7 @@ export const en = {
       selectedCount: 'No connection chosen yet | 1 connection chosen | {n} connections chosen',
       develop: 'Develop this connection',
       contextTag: 'Related reading, not direct evidence',
+      toUpdated: 'See the updated syllabus',
       acceptedCount:
         'No change accepted yet | 1 change accepted for your updated syllabus | {n} changes accepted for your updated syllabus',
       change: {
@@ -552,6 +553,14 @@ export const en = {
           'Its place, “{place}”, is no longer in your course as confirmed in step 2. Choose where it goes.',
         staleObjective:
           'The objective it revises is no longer in your course as confirmed in step 2. Check it, or keep the original.',
+        afterLine: 'After “{line}”',
+        atEnd: 'At the end of the Word document, among the changes to place',
+        kinds: {
+          objective: 'Revised learning objective',
+          topic: 'Addition to a topic',
+          teaching: 'Teaching adjustment',
+          assessment: 'Assessment change'
+        },
         suggested: 'Suggested wording',
         why: 'Why this could be useful',
         basedOn: 'Sources and evidence',
@@ -638,6 +647,67 @@ export const en = {
         PRESENTIEL: 'In person',
         DISTANCIEL: 'Remote',
         HYBRIDE: 'Hybrid'
+      }
+    },
+    updated: {
+      title: 'Your updated syllabus',
+      intro:
+        'Preview your course with the changes you approved, or list the changes alone. Your uploaded syllabus is not changed.',
+      approvedCount: 'no approved change | 1 approved change | {n} approved changes',
+      noChanges: 'No change approved yet: your course is unchanged.',
+      back: 'Back to sustainability connections',
+      changesView: 'Changes only ({n})',
+      courseView: 'Updated course',
+      copy: 'Copy approved changes',
+      copied: 'Copied',
+      copyError: 'Copy failed: select the text in the "Changes only" view instead.',
+      download: 'Download outline and changes (Word)',
+      downloadError: 'The Word document could not be made. Try again.',
+      placementUnknown: 'Placement to choose',
+      seeOriginal: 'See the original',
+      outlineNote:
+        'Outline of your course as checked in step 2, with the approved changes in green.',
+      outlineNoteComplete:
+        'Preview of the Word document: your syllabus text in its order, with the approved changes in green. You can edit an approved change here.',
+      localNote:
+        'Your choices stay in this browser tab while you move between steps. They are lost if the page is reloaded: download or copy them first.',
+      complete: {
+        download: 'Download updated syllabus (Word)',
+        layoutNote:
+          'The Word document includes your original syllabus content and approved changes, and you can keep editing it in Word. Formatting may differ from the original: tables and columns appear as plain text. | The Word document includes your original syllabus content and approved changes, and you can keep editing it in Word. Formatting may differ from the original: tables and columns appear as plain text. 1 change could not be placed and is listed at the end. | The Word document includes your original syllabus content and approved changes, and you can keep editing it in Word. Formatting may differ from the original: tables and columns appear as plain text. {n} changes could not be placed and are listed at the end.',
+        unavailable:
+          'The full text of this file could not be checked, so the Word document contains your course outline and approved changes.',
+        title: '{title} — updated syllabus',
+        note: 'Complete text of the original syllabus, with the changes approved by the teacher marked in green. The layout of the original document (tables, columns) is not reproduced; the uploaded file itself is unchanged.',
+        change: 'Approved change',
+        toPlaceNote:
+          'These approved changes could not be placed reliably in the text above: add them where they fit.',
+        fileSuffix: 'complete-updated'
+      },
+      appendix: {
+        choice: 'Add a pedagogical appendix (optional notes)',
+        title: 'Pedagogical appendix (optional)',
+        note: 'Optional notes linked to the approved changes, to help with teaching them. They are not learning objectives or assessment requirements, and they are not part of the syllabus.'
+      },
+      export: {
+        documentTitle: 'Updated course',
+        note: 'Updated course outline built with WeLearn from the original syllabus and the changes approved by the teacher. Parts of the original syllabus that are not listed here are unchanged.',
+        overview: 'Overview',
+        objectives: 'Learning objectives',
+        competencies: 'Competencies',
+        topics: 'Main topics',
+        outline: 'Course outline',
+        toPlace: 'Changes to place',
+        revised: 'Revised',
+        added: 'Added',
+        replaces: 'Replaces',
+        why: 'Why',
+        sources: 'Sources',
+        placement: 'Suggested placement',
+        changesTitle: 'Approved sustainability changes',
+        placementUnknown: 'Placement to choose',
+        context: 'context only',
+        fileSuffix: 'updated'
       }
     },
     check: {

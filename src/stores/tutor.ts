@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
+import { convertMarkdownToDocx } from '@/utils/md-to-docx';
+import { saveSyllabusFile } from '@/utils/syllabusDownload';
 import _isequal from 'lodash.isequal';
 import { type Ref, computed, ref } from 'vue';
 import { type CoursePath, type Document, type TutorSearch, type TutorSyllabus } from '@/types';
@@ -420,21 +421,9 @@ export const useTutorStore = defineStore('tutor', () => {
   // resolves false when the word file could not be made
   const downloadSyllabus = async (content: string): Promise<boolean> => {
     hasDownloadError.value = false;
-    try {
-      const docxContent = await convertMarkdownToDocx(content);
-      downloadDocx(docxContent, 'syllabus.docx');
-    } catch (error) {
-      console.error('Error during syllabus download:', error);
-      hasDownloadError.value = true;
-      return false;
-    }
-    track('Syllabus Downloaded', {});
-    try {
-      await basePostAxios('/metric/syllabus_downloaded');
-    } catch (error) {
-      console.error('Error during metrics update:', error);
-    }
-    return true;
+    const isSaved = await saveSyllabusFile(() => convertMarkdownToDocx(content), 'syllabus.docx');
+    hasDownloadError.value = !isSaved;
+    return isSaved;
   };
 
   const handleDownloadSyllabus = async () => {

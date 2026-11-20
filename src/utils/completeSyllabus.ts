@@ -28,6 +28,9 @@ const MIN_ANCHOR = 6;
 // a schedule entry is a few lines (title, date, teacher, activities): never more than this
 const MAX_ENTRY = 8;
 
+// enough text to stand for the whole syllabus
+export const isLongEnough = (text: string) => (text.match(/\p{L}/gu) || []).length >= MIN_LETTERS;
+
 export const lineStarts = (lines: string[]) => {
   const starts: number[] = [];
   let joined = '';
@@ -190,8 +193,7 @@ export const validatePlan = (text: string, changes: ApprovedChange[], plan: Comp
   const isEveryChangeOnce =
     ids.length === changes.length &&
     changes.every(({ connectionId }) => ids.filter((id) => id === connectionId).length === 1);
-  const letters = (text.match(/\p{L}/gu) || []).length;
-  return isTextKept && isEveryChangeOnce && letters >= MIN_LETTERS;
+  return isTextKept && isEveryChangeOnce && isLongEnough(text);
 };
 
 export interface CompleteLabels {

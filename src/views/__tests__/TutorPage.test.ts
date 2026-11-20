@@ -7,6 +7,12 @@ import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import { useTutorStore } from '@/stores/tutor';
+import { downloadPendingCourseExport } from '@/utils/courseExport';
+
+vi.mock('@/utils/courseExport', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/utils/courseExport')>()),
+  downloadPendingCourseExport: vi.fn()
+}));
 
 // the wizard scrolls to the current step on mount, but the wrapper isn't in the document
 vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
@@ -14,6 +20,7 @@ vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
 describe('TutorPage', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
+    vi.mocked(downloadPendingCourseExport).mockClear();
   });
 
   afterEach(() => {
@@ -30,6 +37,8 @@ describe('TutorPage', () => {
     const downloadPendingSyllabus = vi.spyOn(store, 'downloadPendingSyllabus');
     mount(TutorPage, { shallow: true });
     expect(downloadPendingSyllabus).toHaveBeenCalledOnce();
+    // the updated syllabus belongs to the syllabus v2 path only
+    expect(downloadPendingCourseExport).not.toHaveBeenCalled();
   });
 
   describe('with the syllabusV2 flag off', () => {
@@ -47,6 +56,11 @@ describe('TutorPage', () => {
 
     const mountPage = () =>
       mount(TutorPage, { global: { stubs: { ScratchWizard: false, ExistingCourseFlow: false } } });
+
+    it('downloads the updated syllabus a guest kept before logging in', () => {
+      mount(TutorPage, { shallow: true });
+      expect(downloadPendingCourseExport).toHaveBeenCalledOnce();
+    });
 
     it('asks whether the teacher already has a course', () => {
       const wrapper = mountPage();

@@ -321,10 +321,19 @@ test.describe('Tutor path choice (syllabusV2)', () => {
   });
 
   test('suggests sustainability connections for the confirmed course', async ({ page }) => {
+    // long enough to stand for the whole syllabus, so the complete updated syllabus is offered
+    const text = [
+      'Ecology',
+      'Theme 1: Soil ecology',
+      ...Array.from(
+        { length: 8 },
+        (_, i) => `Reading ${i + 1}: a chapter on the water cycle and the rivers of Europe.`
+      )
+    ].join('\n');
     await page.route('**/tutor/course/read', (route) =>
       route.fulfill({
         json: {
-          text: 'Ecology\nTheme 1: Soils',
+          text,
           is_text_truncated: false,
           is_partial: false,
           reading: {
@@ -332,7 +341,7 @@ test.describe('Tutor path choice (syllabusV2)', () => {
             material_type: 'syllabus',
             courses_found: [],
             objectives: [],
-            topics: [{ title: 'Soils', subtopics: [], source: 'Theme 1: Soils' }],
+            topics: [{ title: 'Soil ecology', subtopics: [], source: 'Theme 1: Soil ecology' }],
             sessions: []
           }
         }
@@ -342,7 +351,7 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     const idea = (id: string, title: string) => ({
       id,
       title,
-      anchor: 'Soils',
+      anchor: 'Soil ecology',
       anchor_label: null,
       why: `${title} matters.`,
       use: null,
@@ -402,7 +411,7 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     await expect(page.getByTestId('selected-count')).toBeVisible();
     expect(sentCourse).toMatchObject({
       title: 'Ecology',
-      topics: [{ title: 'Soils', subtopics: [] }]
+      topics: [{ title: 'Soil ecology', subtopics: [] }]
     });
     const cards = page.locator('.connection-list').first().getByTestId('connection');
     await expect(cards).toHaveCount(1);
@@ -419,7 +428,7 @@ test.describe('Tutor path choice (syllabusV2)', () => {
       await route.fulfill({
         json: {
           kind: 'topic',
-          original: 'Soils',
+          original: 'Soil ecology',
           suggested: 'Add how soils store carbon.',
           why: 'Soils are a carbon sink.',
           support: 'strong',
@@ -432,7 +441,9 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     await cards.first().getByTestId('develop').click();
     const change = cards.first().getByTestId('development');
     await expect(change.getByTestId('change-text')).toHaveText('Add how soils store carbon.');
-    await expect(change.getByTestId('placement-part')).toHaveText('Soils');
+    await expect(change.getByTestId('placement-part')).toHaveText('Soil ecology');
+    // where the word document will add it
+    await expect(change.getByTestId('placement-line')).toHaveText('Après « Theme 1: Soil ecology »');
     expect(sentConnection).toMatchObject({ title: 'Soil carbon', resources: [{}] });
     const acceptedCount = page.getByTestId('accepted-count');
     await expect(acceptedCount).toHaveText('Aucune modification acceptée pour le moment');
@@ -450,6 +461,27 @@ test.describe('Tutor path choice (syllabusV2)', () => {
     await expect(change.getByTestId('change-accepted')).toBeVisible();
     await expect(change.getByTestId('change-text')).toHaveText('Add a session on soil carbon.');
     await expect(acceptedCount).toContainText('1 modification acceptée');
+
+    // screen 4: the syllabus's own text, the accepted change where it goes
+    await page.getByTestId('to-updated').click();
+    const updated = page.getByTestId('updated');
+    await expect(updated.getByTestId('complete-document')).toBeVisible();
+    await expect(updated.getByTestId('document-line').nth(1)).toHaveText('Theme 1: Soil ecology');
+    await expect(updated.getByTestId('added').getByTestId('change-text')).toHaveText(
+      'Add a session on soil carbon.'
+    );
+    await expect(page.getByTestId('additions-recap')).toBeVisible();
+
+    // downloaded as word, and counted
+    let isCounted = false;
+    await page.route('**/metric/syllabus_downloaded', async (route) => {
+      isCounted = true;
+      await route.fulfill({ json: {} });
+    });
+    const downloading = page.waitForEvent('download');
+    await updated.getByTestId('download-complete').click();
+    expect((await downloading).suggestedFilename()).toBe('Ecology-complet-mis-a-jour.docx');
+    await expect.poll(() => isCounted).toBe(true);
   });
 
   test('tells a file without text (a scanned pdf)', async ({ page }) => {

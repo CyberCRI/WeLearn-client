@@ -1,7 +1,7 @@
 import type { mount } from '@vue/test-utils';
 import { type Connection, type Development, useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
-import type { AdaptationProposal, AdaptationResource, Document } from '@/types';
+import type { AdaptationProposal, AdaptationResource, CourseReadResponse, Document } from '@/types';
 
 // shared data for the specs of the components that show a developed connection
 
@@ -47,9 +47,9 @@ export const development = (overrides: Partial<Development> = {}): Development =
   ...overrides
 });
 
-const connection = (dev: Development): Connection => ({
-  id: 'idea-1',
-  title: 'Idea 1',
+const connection = (dev: Development, id = 'idea-1'): Connection => ({
+  id,
+  title: `Idea ${id.slice(-1)}`,
   anchor: 'GDP',
   anchor_label: null,
   why: 'why',
@@ -79,6 +79,46 @@ export const seedConnection = (dev: Partial<Development> = {}) => {
   const store = useConnectionsStore();
   store.connections = [connection(development(dev))];
   return store;
+};
+
+// several accepted changes, one connection each (idea-1, idea-2, …)
+export const seedAccepted = (...proposals: AdaptationProposal[]) => {
+  const store = useConnectionsStore();
+  store.connections = proposals.map((one, index) =>
+    connection(development({ proposal: one, decision: 'accepted' }), `idea-${index + 1}`)
+  );
+  return store;
+};
+
+// the seeded course's syllabus as the API read it: long enough to stand for the whole syllabus,
+// each part of the course appearing once
+export const WHOLE_TEXT = [
+  'MACROECONOMICS',
+  'OBJECTIVES',
+  'Define GDP.',
+  'Use indicators.',
+  'CONTENT',
+  'Week 1 – GDP',
+  '',
+  ...Array.from(
+    { length: 8 },
+    (_, i) => `Reading ${i + 1}: a chapter of the handbook on national accounting and growth.`
+  )
+].join('\n');
+
+export const seedReading = (text = WHOLE_TEXT, isTruncated = false) => {
+  useCourseStore().reading = {
+    text,
+    is_text_truncated: isTruncated,
+    is_partial: false,
+    reading: {
+      title: 'Macroeconomics',
+      courses_found: [],
+      objectives: [],
+      topics: [],
+      sessions: []
+    }
+  } as unknown as CourseReadResponse;
 };
 
 type Wrapper = Pick<ReturnType<typeof mount>, 'find'>;

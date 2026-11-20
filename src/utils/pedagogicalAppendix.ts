@@ -13,7 +13,8 @@ export interface AppendixLabels {
   greencomp: string;
   teaching: string;
   check: string;
-  greencompNames: Record<GreenCompId, string>;
+  // the names of the GreenComp competences the changes cite (plain data, so it can be stored)
+  greencompNames: Partial<Record<GreenCompId, string>>;
   kinds: Record<ApprovedChange['kind'], string>;
 }
 
@@ -34,7 +35,7 @@ const noteLines = (change: ApprovedChange, labels: AppendixLabels) => {
     [
       labels.greencomp,
       guidance.greencomp
-        ? `${labels.greencompNames[guidance.greencomp.id]} — ${guidance.greencomp.how}`
+        ? `${labels.greencompNames[guidance.greencomp.id] ?? guidance.greencomp.id} — ${guidance.greencomp.how}`
         : null
     ],
     [labels.teaching, guidance.teaching],

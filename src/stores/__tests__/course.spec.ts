@@ -436,4 +436,18 @@ describe('course store', () => {
       expect(store.focus).toBeNull();
     });
   });
+
+  describe('the whole text', () => {
+    it('is the text the API read, unless it was cut or is too short for a syllabus', () => {
+      const store = useCourseStore();
+      expect(store.wholeText).toBeNull();
+      const long = 'A line of the syllabus with enough letters in it. '.repeat(10);
+      store.reading = { ...READ, text: long };
+      expect(store.wholeText).toBe(long);
+      store.reading = { ...READ, text: long, is_text_truncated: true };
+      expect(store.wholeText).toBeNull();
+      store.reading = { ...READ, text: 'Ecology' };
+      expect(store.wholeText).toBeNull();
+    });
+  });
 });

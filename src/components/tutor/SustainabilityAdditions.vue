@@ -142,6 +142,15 @@ const total = computed(() => store.connections.length - store.leftOut);
           }}</span>
         </template>
       </p>
+      <ButtonComponent
+        v-if="store.acceptedChanges.length"
+        color="primary"
+        class="to-updated"
+        data-testid="to-updated"
+        @click="course.setStep(4)"
+      >
+        {{ $t('tutor.additions.toUpdated') }} →
+      </ButtonComponent>
     </template>
   </section>
 </template>
@@ -223,5 +232,9 @@ const total = computed(() => store.connections.length - store.leftOut);
 .next {
   margin-top: 1.5rem;
   font-weight: 600;
+}
+
+.to-updated {
+  margin-top: 0.75rem;
 }
 </style>

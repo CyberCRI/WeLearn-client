@@ -5,7 +5,6 @@ import {
   changesWithNotes,
   type AppendixLabels
 } from '@/utils/pedagogicalAppendix';
-import type { GreenCompId } from '@/types';
 import { approvedChange } from './approvedChange';
 
 const LABELS = {
@@ -15,7 +14,7 @@ const LABELS = {
   greencomp: 'GreenComp',
   teaching: 'Idée pédagogique',
   check: 'Vérifier les acquis',
-  greencompNames: { systems_thinking: 'Pensée systémique' } as Record<GreenCompId, string>,
+  greencompNames: { systems_thinking: 'Pensée systémique' },
   kinds: { objective: 'Objectif', topic: 'Thème', teaching: 'Enseignement', assessment: 'Éval' }
 } satisfies AppendixLabels;
 

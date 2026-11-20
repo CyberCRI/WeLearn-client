@@ -4,7 +4,13 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 
 // the wording of a proposed change: the teacher's own when edited, the suggestion otherwise. in
 // edit mode, saving accepts it with the new wording
-const props = defineProps<{ suggested: string; edited: string | null; isEditing: boolean }>();
+// saveLabel: the i18n key of the save button (accepting it, by default)
+const props = defineProps<{
+  suggested: string;
+  edited: string | null;
+  isEditing: boolean;
+  saveLabel?: string;
+}>();
 const emit = defineEmits<{ save: [text: string]; cancel: [] }>();
 
 const draft = ref('');
@@ -41,7 +47,7 @@ watch(
           data-testid="save-change"
           @click="emit('save', draft)"
         >
-          {{ $t('tutor.additions.change.saveAndAccept') }}
+          {{ $t(saveLabel || 'tutor.additions.change.saveAndAccept') }}
         </ButtonComponent>
         <ButtonComponent class="is-small is-text" data-testid="cancel-edit" @click="emit('cancel')">
           {{ $t('tutor.check.cancel') }}
