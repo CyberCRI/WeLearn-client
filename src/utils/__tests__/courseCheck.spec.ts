@@ -1,9 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import {
-  checkObjectives,
   editField,
   fromSyllabus,
-  groupInDocument,
+  headingScope,
   looksLikeMoreThanDescription,
   placeObjectives,
   restoreField,
@@ -67,14 +66,12 @@ describe('verify', () => {
   });
 });
 
-describe('groupInDocument', () => {
+describe('headingScope', () => {
   it('places an item under its heading: objectives, competencies or the degree', () => {
-    expect(groupInDocument('Comprendre leur définition et leur mesure.', SYLLABUS)).toBe(
-      'objective'
-    );
-    expect(groupInDocument('Apprendre à travailler en équipe', SYLLABUS)).toBe('competency');
+    expect(headingScope('Comprendre leur définition et leur mesure.', SYLLABUS)).toBe('generic');
+    expect(headingScope('Apprendre à travailler en équipe', SYLLABUS)).toBe('competency');
     expect(
-      groupInDocument(
+      headingScope(
         'Savoir décrire et comprendre les grands problèmes économiques et de gestion contemporains',
         SYLLABUS
       )
@@ -83,45 +80,13 @@ describe('groupInDocument', () => {
 
   it('does not take a list item for a heading', () => {
     const text = 'Compétences développées :\no Capacité à lire.\no Apprendre à travailler.';
-    expect(groupInDocument('Apprendre à travailler.', text)).toBe('competency');
+    expect(headingScope('Apprendre à travailler.', text)).toBe('competency');
   });
 
-  it('cannot place an item it cannot find, or under an unrelated heading', () => {
-    expect(groupInDocument('Model climate policy.', SYLLABUS)).toBeNull();
-    expect(groupInDocument('En économie : aucun pré-requis.', SYLLABUS)).toBeNull();
-    expect(groupInDocument('Comprendre leur définition', null)).toBeNull();
-  });
-});
-
-describe('checkObjectives', () => {
-  it('keeps every item, checked and placed in its group', () => {
-    const fields = checkObjectives(
-      [
-        'Comprendre leur définition et leur mesure.',
-        'Maîtriser une première démarche méthodologique de modélisation en macroéconomie.',
-        'Mobiliser des outils théoriques simples d’analyse conjoncturelle (court terme).',
-        'Développer la capacité à lire et interpréter les graphiques et tableaux.',
-        'Apprendre à travailler en équipe.'
-      ],
-      SYLLABUS
-    );
-    expect(fields.map((field) => [field.verification, field.group])).toEqual([
-      ['verified', 'objective'],
-      // reworded: kept, flagged, and placed between its two neighbours
-      ['unverified', 'objective'],
-      ['verified', 'objective'],
-      // reworded, last of its list: its neighbours disagree, so it stays a course objective
-      ['unverified', 'objective'],
-      ['verified', 'competency']
-    ]);
-  });
-
-  it('keeps everything as course objectives when the file could not be read', () => {
-    const fields = checkObjectives(['A.', 'B.'], null);
-    expect(fields.map((field) => [field.verification, field.group])).toEqual([
-      ['unchecked', 'objective'],
-      ['unchecked', 'objective']
-    ]);
+  it('cannot place an item it cannot find; a descriptive part is not objectives', () => {
+    expect(headingScope('Model climate policy.', SYLLABUS)).toBeNull();
+    expect(headingScope('En économie : aucun pré-requis.', SYLLABUS)).toBe('other');
+    expect(headingScope('Comprendre leur définition', null)).toBeNull();
   });
 });
 

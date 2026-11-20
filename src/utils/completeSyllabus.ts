@@ -1,6 +1,7 @@
 import { BorderStyle, Document, Packer, Paragraph, TextRun } from 'docx';
 import { core, normalise } from '@/utils/courseCheck';
 import type { ApprovedChange, CourseToUpdate } from '@/types';
+import { sessionParts } from '@/utils/courseReview';
 
 // the complete updated syllabus: every line of the syllabus's own text, in its order, with the
 // teacher's approved changes added where they belong. nothing of the original is rewritten,
@@ -73,8 +74,8 @@ export const locate = (
 // the passages of the syllabus a change may be tied to, most precise first. a session line
 // ("Semaine du 15/12 – CM7 « Évaluation »") is tried by its title, then its label, then whole
 const sessionAnchors = (line: string) => {
-  const cut = line.indexOf(' – ');
-  return cut >= 0 ? [line.slice(cut + 3), line.slice(0, cut), line] : [line];
+  const { label, title } = sessionParts(line);
+  return label !== null ? [title, label, line] : [line];
 };
 
 // a course part as step 2 may word it, with a closing aside the syllabus does not have
@@ -121,7 +122,7 @@ export const planComplete = (
   // next entry or heading, so the entry is never split
   // an untitled session ("TD6") is its own label
   const labels = course.sessions
-    .map((line) => normalise(line.includes(' – ') ? line.slice(0, line.indexOf(' – ')) : line))
+    .map((line) => normalise(sessionParts(line).label ?? line))
     .filter((label) => label.length >= 2 && label.length <= 30);
   const startsEntry = (line: number) =>
     labels.some((label) => index.normalised[line].startsWith(label));
@@ -219,7 +220,6 @@ export interface CompleteLabels {
   title: string;
   note: string;
   change: string;
-  replaces: string;
   sources: string;
   toPlace: string;
   toPlaceNote: string;

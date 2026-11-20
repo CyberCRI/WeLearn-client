@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import AddedChange from '@/components/tutor/updated/AddedChange.vue';
 import { useSyllabusText } from '@/composables/useSyllabusExport';
 import { useCourseStore } from '@/stores/course';
-import { buildUpdatedCourse } from '@/utils/updatedSyllabus';
+import { buildUpdatedCourse, isOutlineShown as outlineShown } from '@/utils/updatedSyllabus';
 import { capitalise } from '@/utils/strings';
 import type { ApprovedChange } from '@/types';
 
@@ -14,17 +14,12 @@ const props = defineProps<{ changes: ApprovedChange[] }>();
 const emit = defineEmits<{ save: [connectionId: string, text: string] }>();
 
 const course = useCourseStore();
-const lt = useSyllabusText();
+const syllabusT = useSyllabusText();
 const info = computed(() => course.courseToUpdate);
 const updated = computed(() => buildUpdatedCourse(info.value, props.changes));
-// the outline is shown only when it holds a change or there are no topics: it would otherwise
-// repeat them
-const isOutlineShown = computed(
-  () =>
-    updated.value.sessions.length > 0 &&
-    (updated.value.sessions.some(({ added }) => added.length) || !updated.value.topics.length)
-);
-const kindLabel = (change: ApprovedChange) => lt(`tutor.additions.change.kinds.${change.kind}`);
+const isOutlineShown = computed(() => outlineShown(updated.value));
+const kindLabel = (change: ApprovedChange) =>
+  syllabusT(`tutor.additions.change.kinds.${change.kind}`);
 const save = (id: string, text: string) => emit('save', id, text);
 </script>
 
@@ -37,7 +32,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     <p v-if="info.overview" class="overview">{{ info.overview }}</p>
 
     <template v-if="updated.objectives.length">
-      <h3>{{ lt('tutor.check.objectivesTitle') }}</h3>
+      <h3>{{ syllabusT('tutor.check.objectivesTitle') }}</h3>
       <ol class="plain-list">
         <li v-for="(objective, index) in updated.objectives" :key="index">
           <AddedChange
@@ -49,7 +44,7 @@ const save = (id: string, text: string) => emit('save', id, text);
           />
           <template v-else>{{ objective.text }}</template>
           <details v-if="objective.original" class="was">
-            <summary>{{ lt('tutor.updated.seeOriginal') }}</summary>
+            <summary>{{ syllabusT('tutor.updated.seeOriginal') }}</summary>
             {{ objective.original }}
           </details>
           <AddedChange
@@ -64,7 +59,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     </template>
 
     <template v-if="updated.competencies.length">
-      <h3>{{ lt('tutor.check.groups.competency') }}</h3>
+      <h3>{{ syllabusT('tutor.check.groups.competency') }}</h3>
       <ul class="plain-list bullets">
         <li v-for="(competency, index) in updated.competencies" :key="index">
           {{ competency.text }}
@@ -80,7 +75,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     </template>
 
     <template v-if="updated.topics.length">
-      <h3>{{ lt('tutor.check.topicsLabel') }}</h3>
+      <h3>{{ syllabusT('tutor.check.topicsLabel') }}</h3>
       <ul class="plain-list bullets">
         <li v-for="(topic, index) in updated.topics" :key="index">
           <strong>{{ topic.title }}</strong>
@@ -99,7 +94,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     </template>
 
     <template v-if="isOutlineShown">
-      <h3>{{ lt('tutor.check.outlineTitle', { n: updated.sessions.length }) }}</h3>
+      <h3>{{ syllabusT('tutor.check.outlineTitle', { n: updated.sessions.length }) }}</h3>
       <ul class="plain-list bullets">
         <li v-for="(session, index) in updated.sessions" :key="index">
           {{ session.line }}
@@ -115,7 +110,7 @@ const save = (id: string, text: string) => emit('save', id, text);
     </template>
 
     <template v-if="updated.unplaced.length">
-      <h3 data-testid="outline-unplaced">{{ lt('tutor.updated.placementUnknown') }}</h3>
+      <h3 data-testid="outline-unplaced">{{ syllabusT('tutor.updated.placementUnknown') }}</h3>
       <AddedChange
         v-for="change in updated.unplaced"
         :key="change.connectionId"

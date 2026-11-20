@@ -64,7 +64,7 @@ export const reviewFromReading = ({
       source: asWritten === 'verified' ? title : grounding === 'verified' ? source : null
     };
   }),
-  plan: reading.sessions.map(({ label, title }) => [label, title].filter(Boolean).join(' – ')),
+  plan: reading.sessions.map(({ label, title }) => sessionLine(label, title)),
   isPartial: is_text_truncated || is_partial
 });
 
@@ -119,12 +119,22 @@ const inGroup = (objectives: CourseField[], group: 'objective' | 'competency') =
 
 // the overview: the AI's short summary, or the syllabus's description when it is a clear one (a
 // description holding programme information is not)
-export const overviewOf = (summary: CourseField | null, description: CourseField | null) => {
-  if (summary?.value) return summary.value;
+// which text stands for the overview: WeLearn's summary, else the syllabus's description when it
+// is a clear one (one holding programme information is not)
+export const overviewKind = (
+  summary: CourseField | null,
+  description: CourseField | null
+): 'summary' | 'description' | null => {
+  if (summary?.value) return 'summary';
   const isClear =
     !!description &&
     (description.origin !== 'extracted' || !looksLikeMoreThanDescription(description.value));
-  return isClear ? description!.value : null;
+  return isClear ? 'description' : null;
+};
+
+export const overviewOf = (summary: CourseField | null, description: CourseField | null) => {
+  const kind = overviewKind(summary, description);
+  return kind === 'summary' ? summary!.value : kind === 'description' ? description!.value : null;
 };
 
 export const confirmCourse = (
@@ -152,8 +162,32 @@ export const toConfirmedCourse = (course: CourseToUpdate): ConfirmedCourse => ({
 });
 
 // the parts of the course a connection may build on, each as the teacher sees it
+// a session of the outline is one line: its label ("Semaine du 15/12") and its title
+const SESSION_SEPARATOR = ' – ';
+export const sessionLine = (label?: string | null, title?: string | null) =>
+  [label, title].filter(Boolean).join(SESSION_SEPARATOR);
+// the label and title of a session line; no label when it has none
+export const sessionParts = (line: string) => {
+  const cut = line.indexOf(SESSION_SEPARATOR);
+  return cut >= 0
+    ? { label: line.slice(0, cut), title: line.slice(cut + SESSION_SEPARATOR.length) }
+    : { label: null, title: line };
+};
+
+// a course's topics as parts of it: each title, then its subtopics
+export const topicNames = (topics: { title: string; subtopics: string[] }[]) =>
+  topics.flatMap(({ title, subtopics }) => [title, ...subtopics]);
+
+// the course's parts by kind, as placeInCourse reads them
+export const courseOutline = (course: CourseToUpdate) => ({
+  topics: topicNames(course.topics),
+  objectives: course.objectives,
+  competencies: course.competencies,
+  sessions: course.sessions
+});
+
 export const coursePartsOf = (course: CourseToUpdate) => [
-  ...course.topics.flatMap(({ title, subtopics }) => [title, ...subtopics]),
+  ...topicNames(course.topics),
   ...course.objectives,
   ...course.competencies,
   ...course.sessions

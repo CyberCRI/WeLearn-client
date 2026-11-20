@@ -28,17 +28,17 @@ export const useSyllabusExport = () => {
   const courseToUpdate = computed(() => course.courseToUpdate);
   const changes = computed(() => store.acceptedChanges);
 
-  const lt = useSyllabusText();
+  const syllabusT = useSyllabusText();
 
   const kinds = computed(
     () =>
       Object.fromEntries(
-        KINDS.map((kind) => [kind, lt(`tutor.additions.change.kinds.${kind}`)])
+        KINDS.map((kind) => [kind, syllabusT(`tutor.additions.change.kinds.${kind}`)])
       ) as Record<AdaptationKind, string>
   );
 
   const labels = computed<ExportLabels>(() => {
-    const at = (key: string) => lt(`tutor.updated.export.${key}`);
+    const at = (key: string) => syllabusT(`tutor.updated.export.${key}`);
     return {
       documentTitle: at('documentTitle'),
       note: at('note'),
@@ -49,7 +49,6 @@ export const useSyllabusExport = () => {
       outline: at('outline'),
       toPlace: at('toPlace'),
       revised: at('revised'),
-      added: at('added'),
       replaces: at('replaces'),
       why: at('why'),
       sources: at('sources'),
@@ -62,15 +61,14 @@ export const useSyllabusExport = () => {
   });
 
   const completeLabels = computed<CompleteLabels>(() => ({
-    title: lt('tutor.updated.complete.title', {
+    title: syllabusT('tutor.updated.complete.title', {
       title: courseToUpdate.value.title || labels.value.documentTitle
     }),
-    note: lt('tutor.updated.complete.note'),
-    change: lt('tutor.updated.complete.change'),
-    replaces: labels.value.replaces,
+    note: syllabusT('tutor.updated.complete.note'),
+    change: syllabusT('tutor.updated.complete.change'),
     sources: labels.value.sources,
     toPlace: labels.value.toPlace,
-    toPlaceNote: lt('tutor.updated.complete.toPlaceNote'),
+    toPlaceNote: syllabusT('tutor.updated.complete.toPlaceNote'),
     context: labels.value.context,
     kinds: kinds.value
   }));
@@ -88,17 +86,17 @@ export const useSyllabusExport = () => {
   // the optional pedagogical appendix: offered only when an accepted change carries notes
   const hasNotes = computed(() => changesWithNotes(changes.value).length > 0);
   const appendixLabels = computed<AppendixLabels>(() => ({
-    title: lt('tutor.updated.appendix.title'),
-    note: lt('tutor.updated.appendix.note'),
-    learning: lt('tutor.additions.change.notes.learning'),
-    greencomp: lt('tutor.additions.change.notes.greencomp'),
-    teaching: lt('tutor.additions.change.notes.teaching'),
-    check: lt('tutor.additions.change.notes.check'),
+    title: syllabusT('tutor.updated.appendix.title'),
+    note: syllabusT('tutor.updated.appendix.note'),
+    learning: syllabusT('tutor.additions.change.notes.learning'),
+    greencomp: syllabusT('tutor.additions.change.notes.greencomp'),
+    teaching: syllabusT('tutor.additions.change.notes.teaching'),
+    check: syllabusT('tutor.additions.change.notes.check'),
     // only the competences cited, so the labels stay plain data
     greencompNames: Object.fromEntries(
       changes.value.flatMap(({ guidance }) =>
         guidance.greencomp
-          ? [[guidance.greencomp.id, lt(`tutor.greencomp.${guidance.greencomp.id}`)]]
+          ? [[guidance.greencomp.id, syllabusT(`tutor.greencomp.${guidance.greencomp.id}`)]]
           : []
       )
     ),
@@ -108,7 +106,7 @@ export const useSyllabusExport = () => {
   const fileName = (suffixKey: string) =>
     `${(courseToUpdate.value.title || labels.value.documentTitle)
       .replace(/[^\p{L}\p{N}]+/gu, '-')
-      .replace(/^-|-$/g, '')}-${lt(suffixKey)}.docx`;
+      .replace(/^-|-$/g, '')}-${syllabusT(suffixKey)}.docx`;
 
   // the word document asked for: the complete syllabus when it is ready, the outline otherwise
   const exportOf = (choice: 'complete' | 'outline', withAppendix: boolean): SyllabusExport => {
@@ -169,7 +167,7 @@ export const useSyllabusExport = () => {
 
   return {
     changes,
-    lt,
+    syllabusT,
     kinds,
     completeLabels,
     completePlan,

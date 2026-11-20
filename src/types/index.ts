@@ -264,3 +264,6 @@ export type AnalyticsEvents = {
   'Logged Out': Record<string, never>;
   'Language Changed': { language: string };
 };
+
+// why a course file was refused before upload
+export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'TOO_MANY_FILES';

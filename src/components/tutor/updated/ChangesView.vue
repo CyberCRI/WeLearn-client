@@ -13,9 +13,16 @@ const props = defineProps<{ changes: ApprovedChange[] }>();
 
 const course = useCourseStore();
 const store = useConnectionsStore();
-const groups = computed(() => groupChanges(course.courseToUpdate, props.changes));
-const connectionOf = (change: ApprovedChange) =>
-  store.connections.find(({ id }) => id === change.connectionId);
+// each change with the connection it belongs to, whose card shows it
+const groups = computed(() =>
+  groupChanges(course.courseToUpdate, props.changes).map(({ placement, changes }) => ({
+    placement,
+    items: changes.map((change) => ({
+      change,
+      connection: store.connections.find(({ id }) => id === change.connectionId)
+    }))
+  }))
+);
 </script>
 
 <template>
@@ -30,7 +37,7 @@ const connectionOf = (change: ApprovedChange) =>
         {{ group.placement || $t('tutor.updated.placementUnknown') }}
       </h2>
       <article
-        v-for="change in group.changes"
+        v-for="{ change, connection } in group.items"
         :key="change.connectionId"
         class="change"
         data-testid="approved-change"
@@ -39,11 +46,7 @@ const connectionOf = (change: ApprovedChange) =>
           {{ $t(`tutor.additions.change.kinds.${change.kind}`) }}
           <span class="from">· {{ change.connection }}</span>
         </p>
-        <ConnectionDevelopment
-          v-if="connectionOf(change)"
-          :connection="connectionOf(change)!"
-          class="development"
-        />
+        <ConnectionDevelopment v-if="connection" :connection="connection" class="development" />
       </article>
     </section>
   </div>

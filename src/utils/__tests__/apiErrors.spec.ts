@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { apiErrorCode, apiErrorDetail, apiRetryAfter, isAccountRequired } from '../apiErrors';
+import {
+  apiErrorCode,
+  apiErrorDetail,
+  apiRetryAfter,
+  isAborted,
+  isAccountRequired,
+  isUnreachable
+} from '../apiErrors';
 import { StreamResponseError } from '../fetch';
 
 const axiosError = (detail: unknown) => ({ response: { status: 401, data: { detail } } });
@@ -41,5 +48,19 @@ describe('apiErrors', () => {
       apiRetryAfter(tooMany('m', { 'retry-after': 'Wed, 21 Oct 2026 07:28:00 GMT' }))
     ).toBeNull();
     expect(apiRetryAfter(new Error('network'))).toBeNull();
+  });
+
+  it('tells an API out of reach or busy from an answer it could not give', () => {
+    expect(isUnreachable(new Error('Network Error'))).toBe(true);
+    expect(isUnreachable({ response: { status: 503 } })).toBe(true);
+    expect(isUnreachable({ response: { status: 429 } })).toBe(true);
+    expect(isUnreachable({ response: { status: 500 } })).toBe(false);
+  });
+
+  it('knows a request dropped on purpose', () => {
+    const controller = new AbortController();
+    expect(isAborted(new Error('x'), controller.signal)).toBe(false);
+    controller.abort();
+    expect(isAborted(new Error('x'), controller.signal)).toBe(true);
   });
 });

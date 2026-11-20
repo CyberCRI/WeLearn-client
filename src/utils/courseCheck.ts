@@ -171,16 +171,6 @@ const scopeAbove = (line: number, lines: string[]): HeadingScope | null => {
   return found;
 };
 
-// the group a heading alone gives (a reading without the AI's scope)
-export const groupInDocument = (
-  value: string,
-  documentText: string | null
-): ObjectiveGroup | null => {
-  const scope = headingScope(value, documentText);
-  if (scope === 'programme' || scope === 'competency') return scope;
-  return scope && scope !== 'other' ? 'objective' : null;
-};
-
 // a "description" that includes other parts of the syllabus: very long, or several labelled
 // parts ("Intitulé du cours :", "Plan de cours :") inside it
 export const looksLikeMoreThanDescription = (text: string) =>
@@ -198,20 +188,6 @@ export const fromSyllabus = (
   ...(group && { group })
 });
 
-// WeLearn's objectives, each checked and placed in its group; nothing is dropped. WeLearn
-// returns them in document order, so an item that cannot be placed (reworded, or the file not
-// readable here) joins its neighbours when both sit in the same group; otherwise it stays a course
-// objective, which the teacher can move
-export const checkObjectives = (values: string[], documentText: string | null): CourseField[] => {
-  const groups = values.map((value) => groupInDocument(value, documentText));
-  return values.map((value, index) => {
-    const before = groups.slice(0, index).reverse().find(Boolean);
-    const after = groups.slice(index + 1).find(Boolean);
-    const group = groups[index] || (before && before === after ? before : 'objective');
-    return fromSyllabus(value, verify(value, documentText), group);
-  });
-};
-
 // the full reading's objectives, placed with both what the AI says (the course, the programme,
 // or unspecified) and the heading they sit under. a sentence of a descriptive part (summary,
 // description, organisation, prerequisites) is not taken as the course's: it waits for the
@@ -224,20 +200,20 @@ export const placeObjectives = (
   items: { text: string; scope: ObjectiveScope }[],
   documentText: string | null
 ): CourseField[] =>
-  items.map(({ text, scope }) => {
-    const heading = headingScope(text, documentText);
-    const group: ObjectiveGroup =
-      heading === 'other'
-        ? 'unsorted'
-        : scope === 'programme' || heading === 'programme'
-          ? 'programme'
-          : heading === 'competency'
-            ? 'competency'
-            : scope === 'course' || heading === 'course'
-              ? 'objective'
-              : 'unsorted';
-    return fromSyllabus(text, verify(text, documentText), group);
-  });
+  items.map(({ text, scope }) =>
+    fromSyllabus(text, verify(text, documentText), groupOf(scope, headingScope(text, documentText)))
+  );
+
+// the group of an item from what the AI says (`scope`) and its heading in the syllabus: under a
+// descriptive part it is no objective; the programme wins from either; then the heading's
+// competencies; the course's own only when one of them says so
+const groupOf = (scope: ObjectiveScope, heading: HeadingScope | null): ObjectiveGroup => {
+  if (heading === 'other') return 'unsorted';
+  if (scope === 'programme' || heading === 'programme') return 'programme';
+  if (heading === 'competency') return 'competency';
+  if (scope === 'course' || heading === 'course') return 'objective';
+  return 'unsorted';
+};
 
 // a corrected piece keeps its syllabus wording; getting that wording back makes it "read" again
 export const editField = (field: CourseField, value: string): CourseField => {

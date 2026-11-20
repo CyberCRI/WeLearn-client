@@ -251,7 +251,6 @@ describe('the complete updated syllabus', () => {
       title: 'Syllabus mis à jour',
       note: 'Texte complet.',
       change: 'Modification approuvée',
-      replaces: 'Remplace',
       sources: 'Sources',
       toPlace: 'À placer',
       toPlaceNote: 'À placer.',

@@ -9,7 +9,6 @@ const LABELS = {
   title: 'Syllabus',
   note: 'Note.',
   change: 'Approved change',
-  replaces: 'Replaces',
   sources: 'Sources',
   toPlace: 'Changes to place',
   toPlaceNote: 'Place them.',

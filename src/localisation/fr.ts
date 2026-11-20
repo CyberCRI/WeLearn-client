@@ -713,7 +713,6 @@ export const fr = {
         outline: 'Plan du cours',
         toPlace: 'Modifications à placer',
         revised: 'Reformulé',
-        added: 'Ajout',
         replaces: 'Remplace',
         why: 'Pourquoi',
         sources: 'Sources',
@@ -776,9 +775,6 @@ export const fr = {
       openOriginal: 'Ouvrir l’original',
       notFoundOverview: 'Non identifié par WeLearn :',
       tag: {
-        suggested: 'Suggestion de WeLearn',
-        generated: 'Rédigé par WeLearn',
-        identified: 'Identifiés par WeLearn',
         check: 'À vérifier'
       },
       noTopicsFound:

@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import axios from 'axios';
-import { MAX_COURSE_FILE_SIZE, useCourseStore } from '../course';
+import { useCourseStore } from '../course';
+import { MAX_COURSE_FILE_SIZE } from '@/utils/courseFiles';
 import { useGuestQuotaStore } from '../guestQuota';
 import { useTutorStore } from '../tutor';
 import { useConnectionsStore } from '../connections';
@@ -174,7 +175,8 @@ describe('course store', () => {
       ['a reading that failed', apiError(502, 'UNUSABLE_READING'), 'error'],
       ['an unexpected error', apiError(500), 'error'],
       ['the api unreachable', { message: 'Network Error' }, 'unavailable'],
-      ['the api down', apiError(503), 'unavailable']
+      ['the api down', apiError(503), 'unavailable'],
+      ['the api busy', apiError(429), 'unavailable']
     ])('tells %s', async (_case, error, expected) => {
       const store = useCourseStore();
       store.setFile(file());

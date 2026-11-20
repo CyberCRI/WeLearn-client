@@ -6,6 +6,7 @@ import ConnectionDevelopment from '@/components/tutor/development/ConnectionDeve
 import { type Connection, useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 import { evidenceState, placeInCourse, sourceName } from '@/utils/connections';
+import { courseOutline } from '@/utils/courseReview';
 
 // one suggested connection, read in four lines: what is suggested (its title), where it connects
 // to the course, why it could be useful, and how well it is supported. the sources are one line
@@ -24,15 +25,9 @@ const why = computed(() => props.connection.evidence?.why || props.connection.wh
 // what the connection is about in the course, and where it is taught when the outline says so
 // reliably; an objective or competency is named by a few words (its number otherwise), its full
 // wording one click away. nothing is placed by guess
-const place = computed(() => {
-  const { topics, objectives, competencies, sessions } = course.courseToUpdate;
-  return placeInCourse(props.connection.anchor, {
-    topics: topics.flatMap(({ title, subtopics }) => [title, ...subtopics]),
-    objectives,
-    competencies,
-    sessions
-  });
-});
+const place = computed(() =>
+  placeInCourse(props.connection.anchor, courseOutline(course.courseToUpdate))
+);
 const isNumbered = computed(
   () => place.value?.kind === 'objective' || place.value?.kind === 'competency'
 );

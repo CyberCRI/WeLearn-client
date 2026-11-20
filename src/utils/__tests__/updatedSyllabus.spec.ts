@@ -54,7 +54,6 @@ const LABELS: ExportLabels = {
   outline: 'Plan',
   toPlace: 'À placer',
   revised: 'Reformulé',
-  added: 'Ajout',
   replaces: 'Remplace',
   why: 'Pourquoi',
   sources: 'Sources',

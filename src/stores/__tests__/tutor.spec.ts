@@ -165,6 +165,10 @@ describe('tutor store', () => {
 
       expect(store.newFilesToSearch).toEqual({});
       expect(store.fileError).toEqual({ state: true, reason: 'BAD_EXTENSION' });
+
+      // only plain text, as the API reads it: a csv would fail there
+      store.addFiles([file('data.csv', 'text/csv')]);
+      expect(store.newFilesToSearch).toEqual({});
     });
 
     it('rejects a fourth file but accepts the same name again', () => {
