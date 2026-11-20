@@ -31,29 +31,43 @@ const MAX_ENTRY = 8;
 // enough text to stand for the whole syllabus
 export const isLongEnough = (text: string) => (text.match(/\p{L}/gu) || []).length >= MIN_LETTERS;
 
-export const lineStarts = (lines: string[]) => {
+// the syllabus's lines normalised once, joined, and where each one starts in the joined text:
+// built once per plan, then searched for every anchor of every change
+const indexLines = (lines: string[]) => {
+  const normalised = lines.map(normalise);
   const starts: number[] = [];
   let joined = '';
-  lines.forEach((line) => {
+  normalised.forEach((line) => {
     starts.push(joined.length);
-    joined += normalise(line);
+    joined += line;
   });
-  return { joined, starts };
+  return { normalised, joined, starts };
+};
+type LineIndex = ReturnType<typeof indexLines>;
+
+// the line an offset of the joined text falls in: the last one starting at or before it
+const lineAt = ({ starts }: LineIndex, offset: number) => {
+  let low = 0;
+  let high = starts.length - 1;
+  while (low < high) {
+    const middle = Math.ceil((low + high) / 2);
+    if (starts[middle] <= offset) low = middle;
+    else high = middle - 1;
+  }
+  return low;
 };
 
 // the lines a passage of the syllabus covers, when it appears exactly once; null otherwise
-export const locate = (lines: string[], passage: string | null | undefined) => {
+export const locate = (
+  lines: string[],
+  passage: string | null | undefined,
+  index: LineIndex = indexLines(lines)
+) => {
   const needle = passage ? core(passage) : '';
   if (needle.length < MIN_ANCHOR) return null;
-  const { joined, starts } = lineStarts(lines);
-  const first = joined.indexOf(needle);
-  if (first < 0 || joined.indexOf(needle, first + 1) >= 0) return null;
-  const lineAt = (offset: number) => {
-    let line = starts.length - 1;
-    while (line > 0 && starts[line] > offset) line--;
-    return line;
-  };
-  return { start: lineAt(first), end: lineAt(first + needle.length - 1) };
+  const first = index.joined.indexOf(needle);
+  if (first < 0 || index.joined.indexOf(needle, first + 1) >= 0) return null;
+  return { start: lineAt(index, first), end: lineAt(index, first + needle.length - 1) };
 };
 
 // the passages of the syllabus a change may be tied to, most precise first. a session line
@@ -101,6 +115,7 @@ export const planComplete = (
   changes: ApprovedChange[]
 ): CompletePlan => {
   const lines = text.split(/\r?\n/);
+  const index = indexLines(lines);
   // a schedule entry ("CM6 « Management organisationnel »", then its date and teacher) starts with
   // one of the outline's session labels: an addition to it goes after the whole entry, before the
   // next entry or heading, so the entry is never split
@@ -108,15 +123,16 @@ export const planComplete = (
   const labels = course.sessions
     .map((line) => normalise(line.includes(' – ') ? line.slice(0, line.indexOf(' – ')) : line))
     .filter((label) => label.length >= 2 && label.length <= 30);
-  const startsEntry = (line: string) => labels.some((label) => normalise(line).startsWith(label));
+  const startsEntry = (line: number) =>
+    labels.some((label) => index.normalised[line].startsWith(label));
   const entryEnd = (start: number, end: number) => {
-    if (!startsEntry(lines[start])) return end;
+    if (!startsEntry(start)) return end;
     let last = end;
     while (
       last + 1 < lines.length &&
       last - start < MAX_ENTRY &&
       lines[last + 1].trim() &&
-      !startsEntry(lines[last + 1]) &&
+      !startsEntry(last + 1) &&
       !looksLikeHeading(lines[last + 1])
     ) {
       last++;
@@ -127,10 +143,16 @@ export const planComplete = (
   const replaced = new Set<number>();
   const toPlace: ApprovedChange[] = [];
   changes.forEach((change) => {
-    const found = anchorsFor(change, course)
-      .map((anchor) => ({ anchor, range: locate(lines, anchor) }))
-      .find(({ range }) => range);
-    if (!found?.range) {
+    // the most precise anchor found wins: the others are not searched
+    let found: { anchor: string; range: { start: number; end: number } } | null = null;
+    for (const anchor of anchorsFor(change, course)) {
+      const range = locate(lines, anchor, index);
+      if (range) {
+        found = { anchor, range };
+        break;
+      }
+    }
+    if (!found) {
       toPlace.push(change);
       return;
     }
@@ -174,9 +196,6 @@ export const insertionPoints = (plan: CompletePlan) => {
   });
   return points;
 };
-// one change, before it is accepted: the same plan, so the same place as the export
-export const insertionPoint = (text: string, course: CourseToUpdate, change: ApprovedChange) =>
-  insertionPoints(planComplete(text, course, [change])).get(change.connectionId) || null;
 
 // the checks before a document is called complete: every original line kept, in order and
 // unchanged; every approved change present exactly once, placed or waiting to be placed

@@ -4,8 +4,9 @@ import { type Ref, computed, ref } from 'vue';
 import { basePostAxios } from '@/utils/fetch';
 import { apiErrorCode, apiRetryAfter } from '@/utils/apiErrors';
 import { evidenceState } from '@/utils/connections';
+import { insertionPoints as insertionPointsOf, planComplete } from '@/utils/completeSyllabus';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
-import type { CourseLanguage } from '@/stores/course';
+import { type CourseLanguage, useCourseStore } from '@/stores/course';
 import type {
   AdaptationProposal,
   ApprovedChange,
@@ -326,6 +327,18 @@ export const useConnectionsStore = defineStore('connections', () => {
       .filter((change): change is CourseChange => !!change)
   );
 
+  // where the complete word document puts each developed change, accepted or not: one plan for
+  // every card. a change's place depends on the syllabus's lines only, so it is the place the
+  // export gives it too. none without the syllabus's whole text
+  const insertionPoints = computed(() => {
+    const course = useCourseStore();
+    if (!course.wholeText) return null;
+    const changes = connections.value
+      .map(changeOf)
+      .filter((change): change is CourseChange => !!change);
+    return insertionPointsOf(planComplete(course.wholeText, course.courseToUpdate, changes));
+  });
+
   // the teacher has worked on the connections: a decision taken or a change developed
   const hasWork = computed(() =>
     connections.value.some(
@@ -369,6 +382,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     status,
     noneReason,
     connections,
+    insertionPoints,
     confirmedFor,
     isCourseChanged,
     hasWork,

@@ -6,7 +6,6 @@ import {
   planComplete,
   validatePlan,
   type CompleteLabels,
-  insertionPoint,
   insertionPoints,
   sourcesLine
 } from '@/utils/completeSyllabus';
@@ -240,8 +239,10 @@ describe('the complete updated syllabus', () => {
     // no single passage: not placed, it waits at the end
     expect(points.get('2')).toBeUndefined();
     // one change alone gets the same place as in the whole plan
-    expect(insertionPoint(SYLLABUS, COURSE, changes[0])).toEqual(points.get('0'));
-    expect(insertionPoint(SYLLABUS, COURSE, changes[2])).toBeNull();
+    const alone = (change: (typeof changes)[number]) =>
+      insertionPoints(planComplete(SYLLABUS, COURSE, [change])).get(change.connectionId);
+    expect(alone(changes[0])).toEqual(points.get('0'));
+    expect(alone(changes[2])).toBeUndefined();
   });
 
   it('writes a word document', async () => {
