@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
-import ProgressBar from '@/components/microlearning/ProgressBar.vue';
+import ProgressBar from '@/components/learn/ProgressBar.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 
 vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));

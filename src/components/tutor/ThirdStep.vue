@@ -111,7 +111,7 @@ const sendFeedback = async () => {
     <h1 data-testid="thirdStepTitle" class="title is-4 is-size-5-mobile">
       {{ $t('tutor.syllabusStep.title') }}
     </h1>
-    <p class="subtitle is-6 mt-2">{{ $t('tutor.syllabusStep.description') }}</p>
+    <p class="subtitle is-6">{{ $t('tutor.syllabusStep.description') }}</p>
     <p v-if="isSyllabusV2" class="is-size-7 has-text-grey mb-4" data-testid="ai-label">
       {{ $t('tutor.syllabusStep.aiLabel') }}
     </p>

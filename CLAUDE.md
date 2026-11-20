@@ -9,6 +9,7 @@ WeLearn client: a Vue 3 + TypeScript SPA that helps university teachers bring su
 These rules are strict and apply to every agent and subagent working in this repo.
 
 - **Never install, add, remove or upgrade a package without the human confirming it first.** This covers `yarn add`, `yarn remove`, `yarn upgrade`, `npm install <pkg>`, `npx playwright install`, and editing dependency versions in `package.json` or `yarn.lock`. Say which package and version you want and why, then wait for a yes. Running `yarn install` to restore the existing lockfile is fine.
+- **Never change the learn module text without the human confirming it first.** This is `src/localisation/learn/content/` (foundations, frameworks and discipline, in every language): it is written with the researchers. Say which text you want to change and why, then wait for a yes.
 - **Never commit to `main`, and never push to it.** Work on a feature branch; if you are on `main`, create a branch before your first commit. Changes reach `main` only through a PR.
 - The hooks in `.claude/hooks/` (wired in `.claude/settings.json`, they need `jq`) enforce these rules and the "never edit" ones below. They also run prettier on each file you edit in `src/`. If a hook blocks you, ask the human. Don't work around it.
 
@@ -40,6 +41,7 @@ CI (`.github/workflows/ci.yml`) runs `yarn lint:check`, `yarn format:check`, `ya
 - Pinia **setup stores** (`defineStore('name', () => { ... return {...} })`).
 - vue-router 4, vue-i18n 9 (`legacy: false`), axios, keycloak-js.
 - Styling: **Bulma 1.0 from the CDN** (`index.html`) plus design tokens in `src/assets/base.css` (`--neutral-*`, `--lpi-*`, `--primary-*`). Use Bulma classes and those CSS variables. Don't add hard-coded colors or a new CSS framework. Component styles are `<style scoped>`.
+- Title/subtitle spacing: one app-wide rule in `src/assets/base.css` spaces a `.title` and the `.subtitle` right under it. Don't add `mt-*`/`mb-*` helpers, `is-spaced` or scoped margins to that pair, and don't put the pair in a container whose `gap` would split it.
 - Path alias: `@/` → `src/`.
 - Prettier: 2 spaces, single quotes, `printWidth: 100`, no trailing commas.
 
@@ -51,12 +53,13 @@ src/
   App.vue            # layout + boot calls: sources, corpus info, user/session, bookmarks
   router/index.ts    # routes + auth guard + query-param carry-over
   views/             # one per route
-  components/        # shared UI; feature subfolders: tutor/, microlearning/, MAS_tutor/, nav/, dropdowns/, icons/, modals/
+  components/        # shared UI; feature subfolders: tutor/, learn/ (steps/, discipline/), MAS_tutor/, nav/, dropdowns/, icons/, modals/
+  learn/             # Learn hub: modules list, progress, per-module structure (modules/<id>.ts)
   stores/            # one Pinia store per feature (chat, search, tutor, bookmarks, sources, filters, user, auth, metrics, featureFlip)
-  composables/       # useAuth, useMicrolearning (screen state machine), useGoTo
+  composables/       # useAuth, useDisciplineModule (screen state machine), useGoTo
   utils/             # api.ts (axios instance), fetch.ts (API helpers), storage.ts, md-to-docx/, ...
-  localisation/      # en.ts / fr.ts (+ authentication/, microLearning/ sub-namespaces)
-  types/             # shared types; microlearning/ has its own
+  localisation/      # en.ts / fr.ts (+ authentication/, learn/ sub-namespaces); learn/content/ holds the learn module text, outside vue-i18n
+  types/             # shared types; learn/discipline.ts has the discipline module's
 e2e/                 # Playwright specs; e2e/base.ts mocks every API route
 tests/unit.setup.ts  # global $t mock → returns the key
 ```
@@ -75,7 +78,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
 
    `TutorPage.vue` maps each step to a store action (`stepToAction`). Only one request runs at a time (`AbortController` in `startRequest`). Finished steps fold into a recap.
 
-5. **`/microlearning`:** a screen state machine in `useMicrolearning` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). The content lives in the static `stores/microlearning/data.ts`, keyed by language and then discipline. Answers are kept in memory only.
+5. **`/learn` (Learn / Se former):** a hub of short modules listed in `src/learn/modules.ts`. `foundations` and `frameworks` run in `LearnModule.vue` from typed steps, with progress through `src/learn/progress.ts`. Module content stays in the front, in two parts: the structure (`src/learn/modules/<id>.ts`: ids, order, answers, the same in every language) and one text file per language (`src/localisation/learn/content/<id>.<lang>.ts`, typed from the structure's ids, not in vue-i18n). `buildModule` merges them, and components only read content through `getModuleContent` / `useModuleContent`. UI labels (buttons, kickers, tags) go in vue-i18n under `learn.module.*` / `learn.discipline.*`, never in the content. `/learn/discipline` (old `/microlearning`, which redirects) is the discipline module: a screen state machine in `useDisciplineModule` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). Its content follows the same split: `DISCIPLINES` and `buildDiscipline` in `src/learn/modules/discipline.ts`, the text in `src/localisation/learn/content/discipline.<lang>.ts`. Answers are kept in memory only.
 6. **`/search`:** document similarity search (the query needs >5 words or >50 chars) plus SDG detection from an external classifier.
 7. **`/bookmarks`:** the saved documents, with a bibliography export.
 8. `/tutor_test` (TestMAS) is a hidden experimental page. Don't remove it or `SecondStep.vue`, which it depends on.
@@ -141,6 +144,5 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 
 ## Gotchas
 
-- `stores/microlearning/data.ts` is about 4k lines of static FR/EN content. Never edit this file.
 - `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
 - Mixpanel is behind the `analytics` feature flip (`FEATURE_ENVIRONMENTS.analytics`, `['dev']` for now): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.

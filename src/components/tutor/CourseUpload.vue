@@ -25,7 +25,7 @@ const onPick = (files: File[]) => props.setFile(files[0]);
 <template>
   <div class="wrapper">
     <h1 class="title is-4 is-size-5-mobile">{{ $t('tutor.course.title') }}</h1>
-    <p class="subtitle is-6 mt-2">{{ $t('tutor.course.description') }}</p>
+    <p class="subtitle is-6">{{ $t('tutor.course.description') }}</p>
 
     <FileDropzone
       :label="$t('tutor.course.dropzone')"

@@ -4,11 +4,12 @@ import QandA from '@/views/QandA.vue';
 import Bookmarks from '@/views/BookmarkdSources.vue';
 import Tutor from '@/views/TutorPage.vue';
 import NotFound from '@/views/NotFound.vue';
-import MicrolearningModule from '@/views/MicrolearningModule.vue';
+import DisciplineModule from '@/views/DisciplineModule.vue';
 import TestMAS from '@/views/TestMAS.vue';
 import { useAuthStore } from '@/stores/auth';
 import { useFeatureFlipStore, type Feature } from '@/stores/featureFlip';
 import RegisterPage from '@/views/RegisterPage.vue';
+import { isLearnModule, isModuleVisible } from '@/learn/moduleList';
 import type { SignupPromptReason } from '@/types';
 
 declare module 'vue-router' {
@@ -22,6 +23,13 @@ declare module 'vue-router' {
     // no welcome form here: it waits for the next normal page (onboarding flags stay unchanged)
     hideWelcome?: boolean;
   }
+}
+
+// a module that is off sends back to the hub (meta.feature would fall back to the chat).
+// unknown ids pass: the page shows its "module not found" box
+function learnModuleGuard(id: unknown) {
+  if (!isLearnModule(id)) return true;
+  return isModuleVisible(id, useFeatureFlipStore().isFeatureEnabled) || '/learn';
 }
 
 const router = createRouter({
@@ -88,11 +96,30 @@ const router = createRouter({
       name: 'terms',
       component: () => import('@/views/TermsPage.vue')
     },
+    // learn: a hub of short modules. nested so the nav entry stays active inside a module
+    {
+      path: '/learn',
+      meta: { feature: 'learn' },
+      children: [
+        { path: '', name: 'learn', component: () => import('@/views/LearnPage.vue') },
+        {
+          path: 'discipline',
+          name: 'learn-discipline',
+          component: DisciplineModule,
+          beforeEnter: () => learnModuleGuard('discipline')
+        },
+        {
+          path: ':id',
+          name: 'learn-module',
+          component: () => import('@/views/LearnModule.vue'),
+          beforeEnter: (to) => learnModuleGuard(to.params.id)
+        }
+      ]
+    },
+    // old url, kept for links already shared (page params like ?disc= come along)
     {
       path: '/microlearning',
-      name: 'micro-learning',
-      component: MicrolearningModule,
-      meta: { feature: 'microlearning' }
+      redirect: (to) => ({ path: '/learn/discipline', query: to.query, hash: to.hash })
     },
     {
       path: '/profile',
@@ -167,7 +194,8 @@ router.beforeEach((to, from, next) => {
     Object.entries(from.query).filter(([key]) => CARRIED_QUERY_KEYS.includes(key))
   );
   if (!hasQueryParams(to) && Object.keys(carried).length) {
-    next({ name: to.name as string, query: carried });
+    // path, not name: a route with params (/learn/:id) can't be rebuilt from its name alone
+    next({ path: to.path, query: carried, hash: to.hash });
   } else {
     next();
   }

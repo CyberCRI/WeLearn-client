@@ -15,7 +15,7 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
     <h2 data-testid="tutor-summaries-title" class="title is-4 is-size-5-mobile">
       {{ $t('tutor.summaryStep.title') }}
     </h2>
-    <p class="subtitle is-6 mt-2">{{ $t('tutor.summaryStep.description') }}</p>
+    <p class="subtitle is-6">{{ $t('tutor.summaryStep.description') }}</p>
     <p v-if="isSyllabusV2" class="is-size-7 has-text-grey mb-4" data-testid="ai-label">
       {{ $t('tutor.summaryStep.aiLabel') }}
     </p>

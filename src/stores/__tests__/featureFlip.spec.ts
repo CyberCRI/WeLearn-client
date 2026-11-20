@@ -12,7 +12,15 @@ vi.mock('@/utils/env', () => ({
   }
 }));
 
-const PAGE_FEATURES = ['chat', 'tutor', 'search', 'bookmarks', 'about', 'microlearning'] as const;
+const PAGE_FEATURES = [
+  'chat',
+  'tutor',
+  'search',
+  'bookmarks',
+  'about',
+  'learn',
+  'learnDiscipline'
+] as const;
 
 describe('featureFlip store', () => {
   beforeEach(() => {
@@ -60,6 +68,19 @@ describe('featureFlip store', () => {
     const store = useFeatureFlipStore();
 
     expect(store.isFeatureEnabled('analytics')).toBe(expected);
+  });
+
+  it.each<[Environment, boolean]>([
+    ['dev', true],
+    ['staging', true],
+    ['test', false],
+    ['prod', false]
+  ])('learnFoundations and learnFrameworks in %s: %s', (name, expected) => {
+    env.name = name;
+    const store = useFeatureFlipStore();
+
+    expect(store.isFeatureEnabled('learnFoundations')).toBe(expected);
+    expect(store.isFeatureEnabled('learnFrameworks')).toBe(expected);
   });
 
   it.each<[Environment, boolean]>([

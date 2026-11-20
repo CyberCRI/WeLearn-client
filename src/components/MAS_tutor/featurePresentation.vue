@@ -1,6 +1,6 @@
 <template>
   <div :id="`target-${id_number}`" class="feature-presentation">
-    <h1 class="title is-3 has-text-centered mb-4">WeLearn Syllabus Generator</h1>
+    <h1 class="title is-3 has-text-centered">WeLearn Syllabus Generator</h1>
     <p class="subtitle is-5 has-text-centered">
       This tool will assist you in creating a comprehensive syllabus for your course.
     </p>

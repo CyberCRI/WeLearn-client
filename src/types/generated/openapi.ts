@@ -394,6 +394,32 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/tutor/course/adaptation': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Propose one checked change to the course for a connection (syllabus v2)
+     * @description One concrete, limited change to the course for the connection the teacher chose,
+     *     from the resources `connection_evidence` kept for it (sent back as they came). Its
+     *     claims are checked against those resources, and the change is asked again once when
+     *     some are not established or wrong. `support` is capped by what the check found, and
+     *     `checks` lists the problems for the teacher. `lang` is the teacher's language.
+     *
+     *     A guest's change counts against their daily adaptations, refunded if it fails.
+     */
+    post: operations['tutor-propose_course_adaptation'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/course/connection_evidence': {
     parameters: {
       query?: never;
@@ -933,6 +959,114 @@ export interface components {
       /** Limited */
       limited: boolean;
     };
+    /** AdaptationChecks */
+    AdaptationChecks: {
+      /**
+       * Problems
+       * @description Claims not established by the resources, or wrong, for the teacher
+       */
+      problems: string[];
+      /**
+       * Status
+       * @description unchecked: the check gave no usable answer (support partial at most)
+       * @enum {string}
+       */
+      status: 'checked' | 'unchecked';
+      /**
+       * Unbacked Names
+       * @description Names in the change that no direct resource nor the course contains
+       */
+      unbacked_names: string[];
+    };
+    /**
+     * AdaptationGuidance
+     * @description Optional notes for the teacher, never part of the syllabus change.
+     */
+    AdaptationGuidance: {
+      /**
+       * Check
+       * @description How the teacher might check the learning
+       */
+      check: string | null;
+      greencomp: components['schemas']['GreenCompLink'] | null;
+      /**
+       * Learning
+       * @description What students could do thanks to it
+       */
+      learning: string | null;
+      /**
+       * Teaching
+       * @description A teaching approach, in one sentence
+       */
+      teaching: string | null;
+    };
+    /** AdaptationProposal */
+    AdaptationProposal: {
+      /** @description The check of its claims; null when the change cites no resource (nothing to check it against, and its support is none) */
+      checks: components['schemas']['AdaptationChecks'] | null;
+      guidance: components['schemas']['AdaptationGuidance'];
+      /**
+       * Kind
+       * @enum {string}
+       */
+      kind: 'objective' | 'topic' | 'teaching' | 'assessment';
+      /**
+       * Original
+       * @description The course part changed, as the teacher wrote it; null when the change only adds something
+       */
+      original: string | null;
+      /**
+       * Resources
+       * @description The connection's resources the change relies on
+       */
+      resources: components['schemas']['AdaptationResource'][];
+      /** Suggested */
+      suggested: string;
+      /**
+       * Support
+       * @description strong only with a sentence of a direct resource found word for word, and never above what the check found
+       * @enum {string}
+       */
+      support: 'strong' | 'partial' | 'none';
+      /** Why */
+      why: string;
+    };
+    /** AdaptationRequest */
+    AdaptationRequest: {
+      connection: components['schemas']['ChosenConnection'];
+      course: components['schemas']['ConfirmedCourse'];
+      /**
+       * Lang
+       * @default en
+       * @enum {string}
+       */
+      lang: 'en' | 'fr';
+    };
+    /** AdaptationResource */
+    AdaptationResource: {
+      document: components['schemas']['EnhancedDocumentSlice'];
+      /**
+       * Evidence
+       * @description The sentence it was kept for, found word for word in its text
+       */
+      evidence: string;
+      /**
+       * Quote
+       * @description The sentence of it that backs the change, found word for word
+       */
+      quote: string | null;
+      /**
+       * Role
+       * @description direct: supports the connection; context: background only
+       * @enum {string}
+       */
+      role: 'direct' | 'context';
+      /**
+       * Usefulness
+       * @description What it brings to the connection in class
+       */
+      usefulness: string;
+    };
     /**
      * AgentContext
      * @example {
@@ -1096,6 +1230,30 @@ export interface components {
        * @example 6fca8d02-0bc2-48a5-9c95-4942ca57e651
        */
       thread_id: string;
+    };
+    /** ChosenConnection */
+    ChosenConnection: {
+      /**
+       * Anchor
+       * @description The course part the connection builds on, as the teacher wrote it
+       */
+      anchor: string | null;
+      /**
+       * Background
+       * @description Context only
+       * @default []
+       */
+      background: components['schemas']['EvidencedResource'][];
+      /**
+       * Resources
+       * @description Direct support
+       * @default []
+       */
+      resources: components['schemas']['EvidencedResource'][];
+      /** Title */
+      title: string;
+      /** Why */
+      why: string;
     };
     /** CompetencyMapping */
     CompetencyMapping: {
@@ -1580,6 +1738,28 @@ export interface components {
       /** Summary */
       summary?: string | null;
     };
+    /** GreenCompLink */
+    GreenCompLink: {
+      /** How */
+      how: string;
+      /**
+       * Id
+       * @enum {string}
+       */
+      id:
+        | 'valuing_sustainability'
+        | 'supporting_fairness'
+        | 'promoting_nature'
+        | 'systems_thinking'
+        | 'critical_thinking'
+        | 'problem_framing'
+        | 'futures_literacy'
+        | 'adaptability'
+        | 'exploratory_thinking'
+        | 'political_agency'
+        | 'collective_action'
+        | 'individual_initiative';
+    };
     /** GuestFeatureQuota */
     GuestFeatureQuota: {
       /** Limit */
@@ -1595,6 +1775,7 @@ export interface components {
      *     guest restrictions are off: the features are then null.
      */
     GuestQuotaResponse: {
+      adaptation?: components['schemas']['GuestFeatureQuota'] | null;
       chat?: components['schemas']['GuestFeatureQuota'] | null;
       feedback?: components['schemas']['GuestFeatureQuota'] | null;
       files?: components['schemas']['GuestFeatureQuota'] | null;
@@ -3001,6 +3182,93 @@ export interface operations {
       };
     };
   };
+  'tutor-propose_course_adaptation': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['AdaptationRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['AdaptationProposal'];
+        };
+      };
+      /** @description Invalid or expired token, or, with guest restrictions on, a guest without a known session (code SESSION_NOT_FOUND) */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Guest daily quota used up (code GUEST_QUOTA_EXCEEDED, with `feature` and `retry_after` in seconds, and a Retry-After header), or the access of a time-limited account has ended (code ACCESS_EXPIRED) */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The course does not fit a prompt (code COURSE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
+      502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
   'tutor-judge_connection_evidence': {
     parameters: {
       query?: never;
@@ -3021,6 +3289,33 @@ export interface operations {
         };
         content: {
           'application/json': components['schemas']['ConnectionEvidenceResponse'];
+        };
+      };
+      /** @description The course does not fit a prompt (code COURSE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
         };
       };
       /** @description Error */
@@ -3056,8 +3351,35 @@ export interface operations {
           'application/json': components['schemas']['ConnectionIdeasResponse'];
         };
       };
+      /** @description The course does not fit a prompt (code COURSE_TOO_LARGE) */
+      413: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description The model gave no usable answer (code UNUSABLE_LLM_OUTPUT) */
       502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
         headers: {
           [name: string]: unknown;
         };
@@ -3143,8 +3465,26 @@ export interface operations {
           'application/json': components['schemas']['ErrorResponse'];
         };
       };
+      /** @description The session already has its LLM requests running (code TOO_MANY_REQUESTS_IN_FLIGHT) or sent too many requests (code RATE_LIMITED); both come with a Retry-After header */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
       /** @description The document could not be read (code UNUSABLE_READING) */
       502: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The model failed or did not answer in time (code LLM_UNAVAILABLE) */
+      503: {
         headers: {
           [name: string]: unknown;
         };

@@ -11,7 +11,7 @@ defineProps<{
   <button
     :disabled="disabled"
     class="button"
-    :class="[isDiscreet && 'is-outline', color && `is-${color}`]"
+    :class="[isDiscreet && 'is-outlined', color && `is-${color}`]"
   >
     <slot></slot>
   </button>

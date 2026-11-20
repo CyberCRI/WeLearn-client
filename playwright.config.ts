@@ -15,8 +15,8 @@ dotenv.config({ path: path.resolve(configDir, '..', '.env.test') });
 
 const PORT = 5180;
 const AUTH_PORT = 5181;
-// keycloak and analytics are only on in dev
-const DEV_SPECS = ['auth.spec.ts', 'profile.spec.ts', 'consent.spec.ts'];
+// keycloak, analytics and the new learn modules are only on in dev
+const DEV_SPECS = ['auth.spec.ts', 'profile.spec.ts', 'consent.spec.ts', 'learnModules.spec.ts'];
 
 // the tests run against a production build: the dev server compiles every module on request,
 // which on a slow runner keeps the page blank past the expect timeout.

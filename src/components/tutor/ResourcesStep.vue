@@ -32,7 +32,7 @@ const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
     </h1>
 
     <template v-if="sources && sources.length">
-      <p class="subtitle is-6 mt-2">{{ $t('tutor.resourcesStep.description') }}</p>
+      <p class="subtitle is-6">{{ $t('tutor.resourcesStep.description') }}</p>
       <div class="sources">
         <div
           class="source"

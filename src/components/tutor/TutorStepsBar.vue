@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ProgressBar from '@/components/microlearning/ProgressBar.vue';
+import ProgressBar from '@/components/learn/ProgressBar.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 import { calculateProgress } from '@/utils/progress';
 
