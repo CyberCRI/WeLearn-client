@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ExportBar from '@/components/tutor/updated/ExportBar.vue';
-import { exists, text } from './developmentFixtures';
+import { exists, text } from '@/__tests__/coursePathFixtures';
 
 const props = {
   isCompleteReady: true,

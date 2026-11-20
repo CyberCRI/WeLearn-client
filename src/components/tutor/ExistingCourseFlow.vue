@@ -4,11 +4,11 @@ import i18n from '@/localisation/i18n';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import CourseUpload from '@/components/tutor/CourseUpload.vue';
 import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
-import ButtonComponent from '@/components/ButtonComponent.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import CourseReview from '@/components/tutor/review/CourseReview.vue';
 import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
 import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
+import StepRecap from '@/components/tutor/StepRecap.vue';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 
@@ -58,12 +58,12 @@ const reviewRecap = computed(() => ({
           :selectLanguage="course.selectLanguage"
           :action="course.readCourse"
         />
-        <div v-else class="recap" data-testid="course-recap">
-          <span class="file-name">{{ course.file?.name }}</span>
-          <ButtonComponent is-discreet class="is-small" @click="course.setStep(1)">
-            {{ $t('tutor.edit') }}
-          </ButtonComponent>
-        </div>
+        <StepRecap
+          v-else
+          :title="course.file?.name"
+          data-testid="course-recap"
+          @edit="course.setStep(1)"
+        />
       </section>
 
       <section v-if="course.step >= 2 && course.reading" id="target-2" class="step-section">
@@ -74,31 +74,23 @@ const reviewRecap = computed(() => ({
           @cancel="course.cancelReading"
         />
         <CourseReview v-else-if="course.step === 2" />
-        <div v-else class="recap" data-testid="review-recap">
-          <span>
-            <span class="file-name">{{ reviewRecap.title }}</span>
-            <span class="muted">
-              {{ $t('tutor.check.recapTopics', reviewRecap.topics) }} ·
-              {{ $t('tutor.check.recap', reviewRecap.objectives) }}
-            </span>
-          </span>
-          <ButtonComponent is-discreet class="is-small" @click="course.setStep(2)">
-            {{ $t('tutor.edit') }}
-          </ButtonComponent>
-        </div>
+        <StepRecap
+          v-else
+          :title="reviewRecap.title"
+          :details="`${$t('tutor.check.recapTopics', reviewRecap.topics)} · ${$t('tutor.check.recap', reviewRecap.objectives)}`"
+          data-testid="review-recap"
+          @edit="course.setStep(2)"
+        />
       </section>
 
       <section v-if="course.step >= 3 && course.reading" id="target-3" class="step-section">
         <SustainabilityAdditions v-if="course.step === 3" />
-        <div v-else class="recap" data-testid="additions-recap">
-          <span>
-            {{ $t('tutor.additions.selectedCount', connections.selectedConnections.length) }} ·
-            {{ $t('tutor.additions.acceptedCount', connections.acceptedChanges.length) }}
-          </span>
-          <ButtonComponent is-discreet class="is-small" @click="course.setStep(3)">
-            {{ $t('tutor.edit') }}
-          </ButtonComponent>
-        </div>
+        <StepRecap
+          v-else
+          :details="`${$t('tutor.additions.selectedCount', connections.selectedConnections.length)} · ${$t('tutor.additions.acceptedCount', connections.acceptedChanges.length)}`"
+          data-testid="additions-recap"
+          @edit="course.setStep(3)"
+        />
       </section>
 
       <section v-if="course.step === 4 && course.reading" id="target-4" class="step-section">
@@ -125,29 +117,6 @@ const reviewRecap = computed(() => ({
 
 .step-section {
   padding: 1.5rem 0;
-}
-
-.recap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--neutral-20);
-  border-radius: 0.5rem;
-}
-
-.muted {
-  margin-left: 0.5rem;
-  font-size: 0.85rem;
-  color: var(--neutral-70);
-}
-
-.file-name {
-  overflow: hidden;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 @media (max-width: 1024px) {

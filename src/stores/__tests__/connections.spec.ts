@@ -8,8 +8,8 @@ import {
   useConnectionsStore
 } from '../connections';
 import { basePostAxios } from '@/utils/fetch';
+import { proposal } from '@/__tests__/coursePathFixtures';
 import type {
-  AdaptationProposal,
   ConfirmedCourse,
   ConnectionEvidence,
   ConnectionIdea,
@@ -272,18 +272,6 @@ const RESOURCE = {
   usefulness: 'useful',
   evidence: 'The passage.'
 } as unknown as EvidencedResource;
-
-const proposal = (overrides: Partial<AdaptationProposal> = {}): AdaptationProposal => ({
-  kind: 'topic',
-  original: 'GDP',
-  suggested: 'Add the ecological footprint next to GDP.',
-  why: 'GDP ignores the environment.',
-  support: 'strong',
-  resources: [],
-  guidance: { learning: null, greencomp: null, teaching: null, check: null },
-  checks: { status: 'checked', problems: [], unbacked_names: [] },
-  ...overrides
-});
 
 // the ideas, their evidence, then the change of a developed connection (or its failure)
 const answerAll = (adaptation: () => unknown) =>

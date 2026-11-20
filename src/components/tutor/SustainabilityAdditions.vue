@@ -6,7 +6,7 @@ import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 import { evidenceState } from '@/utils/connections';
 
-// screen 3a "sustainability additions": a few sustainability connections WeLearn suggests for
+// step 3 "sustainability additions": a few sustainability connections WeLearn suggests for
 // the confirmed course, each backed by WeLearn resources and shown as soon as they are judged.
 // failures and empty results are said plainly. nothing here changes the course
 const course = useCourseStore();

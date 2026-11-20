@@ -1,9 +1,10 @@
 import { placeInCourse } from '@/utils/connections';
+import { courseOutline, topicNames } from '@/utils/courseReview';
 import type { AdaptationKind, ApprovedChange, CourseToUpdate } from '@/types';
 
 // the updated syllabus: the teacher's accepted changes brought together with the course as
 // they confirmed it. nothing is generated here: the course is what step 2 holds, each change is
-// the wording the teacher accepted, placed where step 3b placed it. a revised objective replaces
+// the wording the teacher accepted, placed where step 3 placed it. a revised objective replaces
 // its original; any other change is added to the topic, session or objective it belongs to. what
 // has no place yet stays apart, said as such. the uploaded document is never touched
 
@@ -54,12 +55,7 @@ export const buildUpdatedCourse = (
       // a topic taught in one session of the outline: that session is kept with the change
       const session =
         'subtopics' in target
-          ? placeInCourse(place, {
-              topics: course.topics.flatMap(({ title, subtopics }) => [title, ...subtopics]),
-              objectives: course.objectives,
-              competencies: course.competencies,
-              sessions: course.sessions
-            })?.placement || null
+          ? placeInCourse(place, courseOutline(course))?.placement || null
           : null;
       target.added.push({ ...change, session });
     } else updated.unplaced.push(change);
@@ -67,12 +63,18 @@ export const buildUpdatedCourse = (
   return updated;
 };
 
+// the outline is shown only when it holds a change or there are no topics: it would otherwise
+// repeat them
+export const isOutlineShown = (updated: UpdatedCourse) =>
+  updated.sessions.length > 0 &&
+  (updated.sessions.some(({ added }) => added.length) || !updated.topics.length);
+
 // the changes grouped by where they belong, in the course's order; the unplaced last
 export const groupChanges = (course: CourseToUpdate, changes: ApprovedChange[]) => {
   const order = [
     ...course.objectives,
     ...course.competencies,
-    ...course.topics.flatMap(({ title, subtopics }) => [title, ...subtopics]),
+    ...topicNames(course.topics),
     ...course.sessions
   ];
   const groups = new Map<string | null, ApprovedChange[]>();
@@ -102,7 +104,6 @@ export interface ExportLabels {
   outline: string;
   toPlace: string;
   revised: string;
-  added: string;
   replaces: string;
   why: string;
   sources: string;
@@ -168,15 +169,13 @@ export const updatedCourseMarkdown = (
     });
     lines.push('');
   }
-  if (updated.sessions.some(({ added }) => added.length) || !updated.topics.length) {
-    if (updated.sessions.length) {
-      lines.push(`## ${labels.outline}`);
-      updated.sessions.forEach(({ line, added }) => {
-        lines.push(`- ${line}`);
-        added.forEach((change) => lines.push(...changeLines(change, labels, '  ')));
-      });
-      lines.push('');
-    }
+  if (isOutlineShown(updated)) {
+    lines.push(`## ${labels.outline}`);
+    updated.sessions.forEach(({ line, added }) => {
+      lines.push(`- ${line}`);
+      added.forEach((change) => lines.push(...changeLines(change, labels, '  ')));
+    });
+    lines.push('');
   }
   if (updated.unplaced.length) {
     lines.push(`## ${labels.toPlace}`);

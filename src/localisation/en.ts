@@ -699,7 +699,6 @@ export const en = {
         outline: 'Course outline',
         toPlace: 'Changes to place',
         revised: 'Revised',
-        added: 'Added',
         replaces: 'Replaces',
         why: 'Why',
         sources: 'Sources',
@@ -763,9 +762,6 @@ export const en = {
       openOriginal: 'Open the original',
       notFoundOverview: 'Not identified by WeLearn:',
       tag: {
-        suggested: 'Suggested by WeLearn',
-        generated: 'Written by WeLearn',
-        identified: 'Identified by WeLearn',
         check: 'To check'
       },
       noTopicsFound:

@@ -1,15 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue';
+import { hasGuidance } from '@/utils/pedagogicalAppendix';
 import type { AdaptationProposal } from '@/types';
 
 // optional pedagogical notes for the teacher, folded under the change: they help to weigh it,
 // are not part of it and are never added to the syllabus. GreenComp comes last
 const props = defineProps<{ guidance: AdaptationProposal['guidance'] }>();
 
-const hasNotes = computed(() => {
-  const { learning, teaching, check, greencomp } = props.guidance;
-  return !!(learning || teaching || check || greencomp);
-});
+const hasNotes = computed(() => hasGuidance(props.guidance));
 </script>
 
 <template>

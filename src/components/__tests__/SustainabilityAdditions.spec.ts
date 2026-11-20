@@ -70,7 +70,7 @@ const ids = (wrapper: ReturnType<typeof mount>, selector = 'section') =>
     .findAllComponents(ConnectionCard)
     .map((card: VueWrapper) => (card.props() as { connection: Connection }).connection.id);
 
-describe('SustainabilityAdditions (screen 3a)', () => {
+describe('SustainabilityAdditions', () => {
   beforeEach(() => {
     setActivePinia(createPinia());
   });

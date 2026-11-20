@@ -9,6 +9,8 @@ import {
   noteOf,
   overviewOf,
   reviewFromReading,
+  sessionLine,
+  sessionParts,
   toConfirmedCourse
 } from '@/utils/courseReview';
 import { emptyTeachingContext } from '@/utils/teachingContext';
@@ -169,6 +171,16 @@ describe('the confirmed course', () => {
       'Work in a team.',
       'Week 1'
     ]);
+  });
+});
+
+describe('session lines', () => {
+  it('joins a label and a title, and splits them back', () => {
+    const line = sessionLine('Semaine du 15/12', 'CM7 « Évaluation »');
+    expect(line).toBe('Semaine du 15/12 – CM7 « Évaluation »');
+    expect(sessionParts(line)).toEqual({ label: 'Semaine du 15/12', title: 'CM7 « Évaluation »' });
+    expect(sessionLine(null, 'TD6')).toBe('TD6');
+    expect(sessionParts('TD6')).toEqual({ label: null, title: 'TD6' });
   });
 });
 

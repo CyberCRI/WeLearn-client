@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ChangeEvidence from '@/components/tutor/development/ChangeEvidence.vue';
 import type { AdaptationProposal } from '@/types';
-import { exists, proposal, resource, text } from './developmentFixtures';
+import { exists, proposal, resource, text } from '@/__tests__/coursePathFixtures';
 
 const mountWith = (overrides: Partial<AdaptationProposal> = {}) =>
   mount(ChangeEvidence, { props: { proposal: proposal(overrides) } });

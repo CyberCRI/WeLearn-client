@@ -2,14 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import CompleteDocument from '@/components/tutor/updated/CompleteDocument.vue';
 import type { CompleteLabels, CompletePlan } from '@/utils/completeSyllabus';
-import { approvedChange } from '@/utils/__tests__/approvedChange';
-import { exists, resource } from './developmentFixtures';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
+import { exists, resource } from '@/__tests__/coursePathFixtures';
 
 const LABELS = {
   title: 'Syllabus',
   note: 'Note.',
   change: 'Approved change',
-  replaces: 'Replaces',
   sources: 'Sources',
   toPlace: 'Changes to place',
   toPlaceNote: 'Place them.',

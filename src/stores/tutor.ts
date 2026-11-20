@@ -3,7 +3,14 @@ import axios from 'axios';
 import { exportSyllabus } from '@/utils/syllabusDownload';
 import _isequal from 'lodash.isequal';
 import { type Ref, computed, ref } from 'vue';
-import { type CoursePath, type Document, type TutorSearch, type TutorSyllabus } from '@/types';
+import {
+  type CoursePath,
+  type Document,
+  type FileErrorReason,
+  type TutorSearch,
+  type TutorSyllabus
+} from '@/types';
+import { MAX_COURSE_FILE_SIZE, isCourseFileType } from '@/utils/courseFiles';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
@@ -12,7 +19,6 @@ import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 
 const MAX_FILES = 3;
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 // the LLM sometimes writes a literal "\n" (backslash + n): inside a table cell it
 // means a line break (<br>), anywhere else a real new line
@@ -26,8 +32,6 @@ export const cleanSyllabus = (content: string) =>
 
 // the api may leave a slice without an id, then the document id tells sources apart
 export const sourceKey = (source: Document) => source.id ?? source.payload.document_id;
-
-export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'TOO_MANY_FILES';
 
 export const useTutorStore = defineStore('tutor', () => {
   const tutorSearch: Ref<TutorSearch | undefined> = ref(undefined);
@@ -78,17 +82,12 @@ export const useTutorStore = defineStore('tutor', () => {
     if (signal.aborted) throw new axios.CanceledError();
   };
 
-  const isAllowedType = (file: File) =>
-    file.type === 'application/pdf' ||
-    file.type.startsWith('text/') ||
-    file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-
   const addFiles = (files: FileList | File[]) => {
     let reason: FileErrorReason | null = null;
     const next = { ...newFilesToSearch.value };
     for (const file of Array.from(files)) {
-      if (file.size > MAX_FILE_SIZE) reason = 'BIG_FILE';
-      else if (!isAllowedType(file)) reason = 'BAD_EXTENSION';
+      if (file.size > MAX_COURSE_FILE_SIZE) reason = 'BIG_FILE';
+      else if (!isCourseFileType(file)) reason = 'BAD_EXTENSION';
       else if (!next[file.name] && Object.keys(next).length >= MAX_FILES) reason = 'TOO_MANY_FILES';
       else next[file.name] = file;
     }

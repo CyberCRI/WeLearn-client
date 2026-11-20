@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import UpdatedOutline from '@/components/tutor/updated/UpdatedOutline.vue';
-import { approvedChange } from '@/utils/__tests__/approvedChange';
-import { exists, seedCourse } from './developmentFixtures';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
+import { exists, seedCourse } from '@/__tests__/coursePathFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 
