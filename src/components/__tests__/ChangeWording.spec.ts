@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ChangeWording from '@/components/tutor/development/ChangeWording.vue';
-import { exists, text } from './developmentFixtures';
+import { exists, text } from '@/__tests__/coursePathFixtures';
 
 const suggested = 'Add the ecological footprint next to GDP.';
 

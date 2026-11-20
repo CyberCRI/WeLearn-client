@@ -12,7 +12,7 @@ import { basePostAxios } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
 import { getFromStorage } from '@/utils/storage';
 import type { CourseToUpdate } from '@/types';
-import { approvedChange } from './approvedChange';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
 
 vi.mock('@/utils/md-to-docx', () => ({ convertMarkdownToDocx: vi.fn(), downloadDocx: vi.fn() }));
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));

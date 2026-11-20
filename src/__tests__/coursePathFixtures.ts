@@ -1,9 +1,15 @@
 import type { mount } from '@vue/test-utils';
 import { type Connection, type Development, useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
-import type { AdaptationProposal, AdaptationResource, CourseReadResponse, Document } from '@/types';
+import type {
+  AdaptationProposal,
+  AdaptationResource,
+  ApprovedChange,
+  CourseReadResponse,
+  Document
+} from '@/types';
 
-// shared data for the specs of the components that show a developed connection
+// shared data for the specs of the course path: proposals, developed connections, accepted changes
 
 export const resource = (
   role: AdaptationResource['role'],
@@ -127,3 +133,20 @@ export const text = (wrapper: Wrapper, testId: string) =>
   wrapper.find(`[data-testid="${testId}"]`).text();
 export const exists = (wrapper: Wrapper, testId: string) =>
   wrapper.find(`[data-testid="${testId}"]`).exists();
+
+// an accepted change for the updated-syllabus specs: id n becomes connection "n"
+export const approvedChange = (id: number, values: Partial<ApprovedChange>): ApprovedChange => ({
+  connectionId: String(id),
+  connection: `Lien ${id}`,
+  kind: 'topic',
+  placement: null,
+  original: null,
+  suggested: `Changement ${id}.`,
+  text: `Changement ${id}.`,
+  why: '',
+  support: 'strong',
+  resources: [],
+  guidance: { learning: null, greencomp: null, teaching: null, check: null },
+  checks: null,
+  ...values
+});

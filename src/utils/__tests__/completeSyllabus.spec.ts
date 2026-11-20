@@ -10,7 +10,7 @@ import {
   sourcesLine
 } from '@/utils/completeSyllabus';
 import type { CourseToUpdate } from '@/types';
-import { approvedChange } from './approvedChange';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
 
 // a syllabus with its schedule, assessment and bibliography: all of it must come through
 const SYLLABUS = [

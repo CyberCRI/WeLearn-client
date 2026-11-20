@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import ChangesView from '@/components/tutor/updated/ChangesView.vue';
-import { proposal, seedAccepted, seedCourse } from './developmentFixtures';
+import { proposal, seedAccepted, seedCourse } from '@/__tests__/coursePathFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 

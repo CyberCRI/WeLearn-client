@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import AddedChange from '@/components/tutor/updated/AddedChange.vue';
-import { approvedChange } from '@/utils/__tests__/approvedChange';
-import { exists, text } from './developmentFixtures';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
+import { exists, text } from '@/__tests__/coursePathFixtures';
 
 describe('AddedChange', () => {
   it('labels the change, says its session, and lists its sources', () => {

@@ -8,7 +8,7 @@ import {
   seedCourse,
   seedReading,
   WHOLE_TEXT
-} from '@/components/__tests__/developmentFixtures';
+} from '@/__tests__/coursePathFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 vi.mock('@/utils/syllabusDownload', () => ({ exportSyllabus: vi.fn() }));
