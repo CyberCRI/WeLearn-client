@@ -545,6 +545,8 @@ export const fr = {
         error:
           "WeLearn n'a pas pu proposer de modification cette fois-ci. Vos choix sont conservés : réessayez.",
         busy: 'WeLearn traite encore vos autres demandes. Réessayez dans quelques secondes.',
+        busyFor:
+          'WeLearn traite encore vos autres demandes. Réessayez dans 1 seconde. | WeLearn traite encore vos autres demandes. Réessayez dans {n} secondes.',
         tooLarge:
           "Votre cours est trop long pour que WeLearn propose une modification. Raccourcissez-le à l'étape 2, puis réessayez.",
         title: 'Modification suggérée du syllabus',

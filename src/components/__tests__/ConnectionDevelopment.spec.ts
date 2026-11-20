@@ -31,6 +31,11 @@ describe('ConnectionDevelopment', () => {
     expect(text(wrapper, 'development-problem')).toBe('tutor.additions.change.busy');
     await wrapper.find('[data-testid="retry-develop"]').trigger('click');
     expect(develop).toHaveBeenCalledWith('idea-1');
+
+    // how long to wait, when the API said
+    store.connections[0].development!.retryAfter = 12;
+    await wrapper.vm.$nextTick();
+    expect(text(wrapper, 'development-problem')).toBe('tutor.additions.change.busyFor');
   });
 
   it('shows where it goes, the wording, why, and how well it is supported', () => {

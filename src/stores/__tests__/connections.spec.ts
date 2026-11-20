@@ -347,6 +347,29 @@ describe('connections store: developing a connection', () => {
     expect(store.connections[0].development?.status).toBe('ready');
   });
 
+  it('keeps how long a busy API asks to wait, and forgets it once the change comes', async () => {
+    let fails = true;
+    answerAll(() =>
+      fails
+        ? {
+            response: {
+              status: 429,
+              data: { detail: { message: 'm', code: 'RATE_LIMITED', retry_after: 12 } }
+            }
+          }
+        : proposal()
+    );
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'en');
+
+    await store.develop('idea-1');
+    expect(store.connections[0].development).toMatchObject({ status: 'busy', retryAfter: 12 });
+
+    fails = false;
+    await store.develop('idea-1');
+    expect(store.connections[0].development).toMatchObject({ status: 'ready', retryAfter: null });
+  });
+
   it('gives a guest past their daily changes the signup prompt, the card as before', async () => {
     answerAll(() => ({
       response: {
@@ -412,7 +435,8 @@ describe('connections store: developing a connection', () => {
       proposal: proposal({ original: null }),
       decision: 'pending' as const,
       edited: null as string | null,
-      placement: null as string | null
+      placement: null as string | null,
+      retryAfter: null
     };
     const connection: Connection = {
       ...idea(1),

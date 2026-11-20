@@ -536,6 +536,8 @@ export const en = {
         unavailable: 'WeLearn could not be reached. Your choices are kept: try again.',
         error: 'WeLearn could not propose a change this time. Your choices are kept: try again.',
         busy: 'WeLearn is still working on your other requests. Try again in a few seconds.',
+        busyFor:
+          'WeLearn is still working on your other requests. Try again in 1 second. | WeLearn is still working on your other requests. Try again in {n} seconds.',
         tooLarge:
           'Your course is too long for WeLearn to propose a change. Shorten it in step 2, then try again.',
         title: 'Suggested syllabus change',

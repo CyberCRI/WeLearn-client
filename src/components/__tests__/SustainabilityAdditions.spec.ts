@@ -181,7 +181,8 @@ describe('SustainabilityAdditions (screen 3a)', () => {
       proposal: null,
       decision: 'pending',
       edited: null,
-      placement: null
+      placement: null,
+      retryAfter: null
     };
     await wrapper.vm.$nextTick();
     expect(wrapper.find('[data-testid="accepted-count"]').text()).toBe(
@@ -277,7 +278,8 @@ describe('ConnectionCard', () => {
           proposal: null,
           decision: 'pending',
           edited: null,
-          placement: null
+          placement: null,
+          retryAfter: null
         }
       })
     });

@@ -43,6 +43,7 @@ export const development = (overrides: Partial<Development> = {}): Development =
   decision: 'pending',
   edited: null,
   placement: null,
+  retryAfter: null,
   ...overrides
 });
 

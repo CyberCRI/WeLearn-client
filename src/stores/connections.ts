@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import { type Ref, computed, ref } from 'vue';
 import { basePostAxios } from '@/utils/fetch';
-import { apiErrorCode } from '@/utils/apiErrors';
+import { apiErrorCode, apiRetryAfter } from '@/utils/apiErrors';
 import { evidenceState } from '@/utils/connections';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
 import type { CourseLanguage } from '@/stores/course';
@@ -59,6 +59,8 @@ export interface Development {
   edited: string | null;
   // where the teacher places the change, when WeLearn could not or they chose another place
   placement: string | null;
+  // the seconds to wait before trying again, when busy and the API said
+  retryAfter: number | null;
 }
 
 export type Connection = ConnectionIdea & {
@@ -254,7 +256,8 @@ export const useConnectionsStore = defineStore('connections', () => {
       proposal: null,
       decision: 'pending',
       edited: null,
-      placement: null
+      placement: null,
+      retryAfter: null
     };
     // the reactive copy, so the changes below show on the card
     const development = connection.development;
@@ -277,6 +280,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       }
       console.error('Error while developing a connection:', error);
       development.status = developmentFailure(error);
+      development.retryAfter = development.status === 'busy' ? apiRetryAfter(error) : null;
     } finally {
       releaseSlot();
     }

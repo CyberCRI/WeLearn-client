@@ -34,7 +34,9 @@ const handleSave = (text: string) => {
 
     <div v-else-if="development.status !== 'ready'" class="problem" role="alert">
       <span data-testid="development-problem">{{
-        $t(`tutor.additions.change.${development.status}`)
+        development.status === 'busy' && development.retryAfter
+          ? $t('tutor.additions.change.busyFor', development.retryAfter)
+          : $t(`tutor.additions.change.${development.status}`)
       }}</span>
       <ButtonComponent
         class="is-small"
