@@ -139,12 +139,19 @@ export const useSyllabusExport = () => {
   const exportWord = async (choice: 'complete' | 'outline', withAppendix: boolean) => {
     isExporting.value = true;
     hasExportError.value = false;
-    hasExportError.value = !(await exportSyllabus(exportOf(choice, withAppendix)));
-    isExporting.value = false;
+    try {
+      hasExportError.value = !(await exportSyllabus(exportOf(choice, withAppendix)));
+    } catch (error) {
+      console.error('Error while preparing the word document:', error);
+      hasExportError.value = true;
+    } finally {
+      isExporting.value = false;
+    }
   };
 
   const isCopied = ref(false);
   const hasCopyError = ref(false);
+  let copiedTimer: ReturnType<typeof setTimeout> | undefined;
   const copyChanges = async () => {
     hasCopyError.value = false;
     try {
@@ -152,7 +159,9 @@ export const useSyllabusExport = () => {
         changesText(courseToUpdate.value, changes.value, labels.value)
       );
       isCopied.value = true;
-      setTimeout(() => (isCopied.value = false), 2000);
+      // a second copy shows "copied" for its own 2 seconds
+      clearTimeout(copiedTimer);
+      copiedTimer = setTimeout(() => (isCopied.value = false), 2000);
     } catch {
       hasCopyError.value = true;
     }

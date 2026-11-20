@@ -145,6 +145,23 @@ describe('connections store', () => {
     expect(store.leftOut).toBe(1);
   });
 
+  it('asks nothing more when a check waiting for its slot is retried', async () => {
+    vi.mocked(basePostAxios).mockImplementation((url: string) =>
+      url === '/tutor/course/connection_ideas'
+        ? Promise.resolve({ data: { ideas: [1, 2, 3].map(idea), none_reason: null } } as PostResult)
+        : new Promise(() => {})
+    );
+    const store = useConnectionsStore();
+    void store.findConnections(COURSE, 'fr');
+    await flushPromises();
+    expect(evidenceCalls()).toHaveLength(MAX_PARALLEL_CHECKS);
+
+    // the third waits for a slot, and says it is being checked
+    expect(store.connections[2].isChecking).toBe(true);
+    await store.recheck('idea-3');
+    expect(evidenceCalls()).toHaveLength(MAX_PARALLEL_CHECKS);
+  });
+
   it('keeps why no connection was found', async () => {
     vi.mocked(basePostAxios).mockResolvedValueOnce({
       data: { ideas: [], none_reason: 'A course on method only.' }

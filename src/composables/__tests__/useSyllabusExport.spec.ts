@@ -73,6 +73,13 @@ describe('useSyllabusExport', () => {
     await syllabus.exportWord('outline', false);
     expect(syllabus.hasExportError.value).toBe(true);
     expect(syllabus.isExporting.value).toBe(false);
+
+    // an unexpected failure ends the same way, the button usable again
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(exportSyllabus).mockRejectedValueOnce(new Error('docx'));
+    await syllabus.exportWord('outline', false);
+    expect(syllabus.hasExportError.value).toBe(true);
+    expect(syllabus.isExporting.value).toBe(false);
   });
 
   it('adds the pedagogical appendix only when asked, and only when a change has notes', async () => {
@@ -105,5 +112,21 @@ describe('useSyllabusExport', () => {
     writeText.mockRejectedValueOnce(new Error('denied'));
     await syllabus.copyChanges();
     expect(syllabus.hasCopyError.value).toBe(true);
+  });
+
+  it('shows "copied" for 2 seconds after the last copy', async () => {
+    vi.useFakeTimers();
+    seedAccepted(TOPIC);
+    Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } });
+    const syllabus = useSyllabusExport();
+
+    await syllabus.copyChanges();
+    vi.advanceTimersByTime(1500);
+    await syllabus.copyChanges();
+    vi.advanceTimersByTime(1500);
+    expect(syllabus.isCopied.value).toBe(true);
+    vi.advanceTimersByTime(500);
+    expect(syllabus.isCopied.value).toBe(false);
+    vi.useRealTimers();
   });
 });
