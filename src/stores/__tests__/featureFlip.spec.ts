@@ -130,6 +130,29 @@ describe('featureFlip preview', () => {
     expect(store.previewFeatures).toEqual(['auth', 'analytics']);
   });
 
+  it('never previews the features page, so prod never gets it', () => {
+    const store = openWith('?preview=featuresPage,auth');
+
+    expect(store.previewFeatures).toEqual(['auth']);
+    expect(store.isFeatureEnabled('featuresPage')).toBe(false);
+  });
+
+  it('keeps the previews chosen on the features page for the next load', () => {
+    const store = openWith('');
+    store.keepPreviewFeatures(['auth', 'featuresPage', 'auth']);
+    expect(openWith('').previewFeatures).toEqual(['auth']);
+
+    openWith('').keepPreviewFeatures([]);
+    expect(localStorage.getItem('featurePreview')).toBeNull();
+  });
+
+  it('tells a feature its environment turns on from a previewed one', () => {
+    const store = openWith('?preview=auth');
+
+    expect(store.isOnInEnvironment('chat')).toBe(true);
+    expect(store.isOnInEnvironment('auth')).toBe(false);
+  });
+
   it('survives a reload without the param', () => {
     openWith('?preview=auth');
     const store = openWith('');

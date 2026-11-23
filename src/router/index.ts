@@ -24,6 +24,8 @@ declare module 'vue-router' {
     hideWelcome?: boolean;
     // no header nor nav bar (App.vue): pages reached from the keycloak login
     hideTemplate?: boolean;
+    // a hidden page is never where a disabled page sends the user
+    isHidden?: boolean;
   }
 }
 
@@ -144,6 +146,13 @@ const router = createRouter({
       component: () => import('@/views/AboutPage.vue'),
       meta: { feature: 'about' }
     },
+    // hidden: the feature flags and their previews, on dev and staging only
+    {
+      path: '/features',
+      name: 'features',
+      component: () => import('@/views/FeaturesPage.vue'),
+      meta: { feature: 'featuresPage', isHidden: true }
+    },
     { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
   ]
 });
@@ -162,7 +171,7 @@ router.beforeEach((to: RouteLocationNormalized) => {
 
   // not '/': it redirects to the chat, which may be the disabled page
   const fallback = router.options.routes.find(
-    (route) => route.meta?.feature && isFeatureEnabled(route.meta.feature)
+    (route) => route.meta?.feature && !route.meta.isHidden && isFeatureEnabled(route.meta.feature)
   );
   return fallback ? fallback.path : false;
 });
