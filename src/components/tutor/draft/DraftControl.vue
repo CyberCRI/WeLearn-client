@@ -37,6 +37,7 @@ const savedTime = computed(() =>
       </template>
       <ButtonComponent
         v-else
+        color="primary"
         isDiscreet
         class="is-small"
         data-testid="save-draft"
