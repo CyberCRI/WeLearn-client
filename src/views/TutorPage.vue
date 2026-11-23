@@ -4,12 +4,15 @@ import ScratchWizard from '@/components/tutor/ScratchWizard.vue';
 import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
+import AutoEvaluationStart from '@/components/learn/discipline/AutoEvaluationStart.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 import { downloadPendingSyllabus } from '@/utils/syllabusDownload';
 import type { CoursePath } from '@/types';
 
 const store = useTutorStore();
+const evaluation = useSyllabusEvalStore();
 // flag off, the page is the current syllabus creator and nothing else
 const isSyllabusV2 = useFeatureFlipStore().isFeatureEnabled('syllabusV2');
 
@@ -34,6 +37,18 @@ onMounted(() => {
       />
     </template>
   </component>
+  <!-- the first time only: where the teacher stands before using the tool -->
+  <div v-else-if="evaluation.isPreDue" class="path-question" data-testid="syllabus-eval-start">
+    <AutoEvaluationStart
+      :answers="evaluation.preAnswers"
+      :locked="false"
+      :linkQuestion="$t('autoEvaluation.syllabus.linkQuestion')"
+      nextLabel="next"
+      :showBack="false"
+      @start="evaluation.submitPre"
+      @skip="evaluation.skipPre"
+    />
+  </div>
   <div v-else class="path-question">
     <!-- a guest sees what is left before choosing, as in the creator -->
     <GuestQuotaNotice feature="syllabus" class="mb-3" />

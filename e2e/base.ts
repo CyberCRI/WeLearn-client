@@ -17,6 +17,9 @@ type Fixtures = ProjectOptions & {
   startUrl: string;
   // false when the start page hides the welcome modal (meta.hideWelcome, e.g. /register)
   hasWelcomeModal: boolean;
+  // the syllabus v2 self-evaluation was done on a first visit: no form before the path question
+  // nor on the last screen. false to see them
+  hasDoneSyllabusEval: boolean;
 };
 
 export const test = base.extend<Fixtures>({
@@ -24,12 +27,22 @@ export const test = base.extend<Fixtures>({
   loggedIn: [false, { option: true }],
   startUrl: ['/', { option: true }],
   hasWelcomeModal: [true, { option: true }],
+  hasDoneSyllabusEval: [true, { option: true }],
   keycloak: async ({ context, loggedIn }, use) => {
     await use(await mockKeycloak(context, loggedIn));
   },
   // depends on `keycloak` so Keycloak is mocked before the first navigation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  page: async ({ page, keycloak, startUrl, hasWelcomeModal, isDevEnvironment }, use) => {
+  page: async (
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    { page, keycloak, startUrl, hasWelcomeModal, hasDoneSyllabusEval, isDevEnvironment },
+    use
+  ) => {
+    if (hasDoneSyllabusEval) {
+      await page.addInitScript(() => {
+        localStorage.setItem('syllabus_v2_pre', 'true');
+        localStorage.setItem('syllabus_v2_post', 'true');
+      });
+    }
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();

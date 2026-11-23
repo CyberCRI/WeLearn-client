@@ -969,7 +969,12 @@ export const en = {
       'I clearly see the connection between my discipline ({discipline}) and sustainability.',
     secondQuestion: 'I feel confident bringing this topic into my teaching.',
     willUse: 'Do you plan to use what you have learned in an upcoming class?',
-    feedback: 'Is there anything else you’d like to tell us?'
+    feedback: 'Is there anything else you’d like to tell us?',
+    // the syllabus tool's self-evaluation
+    syllabus: {
+      linkQuestion: 'I clearly see the connection between my course and sustainability.',
+      willUse: 'Do you plan to use this syllabus in an upcoming course?'
+    }
   },
   previous: 'Previous',
   previous_page: 'Previous page',

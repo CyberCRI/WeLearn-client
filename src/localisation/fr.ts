@@ -983,7 +983,12 @@ export const fr = {
       'Je vois clairement le lien entre ma discipline ({discipline}) et la transition écologique.',
     secondQuestion: 'Je me sens capable d’intégrer ce sujet dans mon enseignement.',
     willUse: 'Comptez-vous utiliser ce que vous venez de voir dans un prochain cours ?',
-    feedback: 'Une remarque à partager avec nous ?'
+    feedback: 'Une remarque à partager avec nous ?',
+    // l'auto-évaluation de l'outil syllabus
+    syllabus: {
+      linkQuestion: 'Je vois clairement le lien entre mon cours et la transition écologique.',
+      willUse: 'Comptez-vous utiliser ce syllabus dans un prochain cours ?'
+    }
   },
   previous: 'Précédent',
   previous_page: 'Page précédente',

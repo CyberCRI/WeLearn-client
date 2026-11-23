@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { flushPromises, mount } from '@vue/test-utils';
 import ScratchWizard from '@/components/tutor/ScratchWizard.vue';
 import { createPinia, setActivePinia } from 'pinia';
@@ -7,6 +7,8 @@ import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { scrollToAnchor } from '@/utils/navigation';
+import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
+import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
 
 // the wizard scrolls to the current step on mount, but the wrapper isn't in the document
 vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
@@ -118,5 +120,33 @@ describe('ScratchWizard', () => {
     expect(store.level).toBe('Master');
     expect(store.duration).toBe('10h');
     expect(store.description).toBe('About soils');
+  });
+
+  describe('the self-evaluation on the syllabus step', () => {
+    afterEach(() => localStorage.clear());
+
+    it('asks it the first time with syllabus v2, then shows the syllabus', async () => {
+      localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+      setActivePinia(createPinia());
+      useTutorStore().step = 4;
+      const wrapper = mount(ScratchWizard, { shallow: true });
+      const form = wrapper.findComponent(AutoEvaluationEnd);
+      expect(form.props('willUseQuestion')).toBe('autoEvaluation.syllabus.willUse');
+      expect(wrapper.findComponent(EditableSyllabus).exists()).toBe(false);
+
+      form.vm.$emit('skip');
+      await flushPromises();
+
+      expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);
+      expect(wrapper.findComponent(EditableSyllabus).exists()).toBe(true);
+    });
+
+    it('is not there without syllabus v2: the current creator as it was', () => {
+      useTutorStore().step = 4;
+      const wrapper = mount(ScratchWizard, { shallow: true });
+
+      expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);
+      expect(wrapper.findComponent(EditableSyllabus).exists()).toBe(true);
+    });
   });
 });

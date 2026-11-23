@@ -7,15 +7,19 @@ import CursusInfo from '@/components/tutor/CursusInfo.vue';
 import SummariesStep from '@/components/tutor/SummariesStep.vue';
 import ResourcesStep from '@/components/tutor/ResourcesStep.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
+import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 import StatusModal from '@/components/tutor/StatusModal.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 import { scrollToAnchor } from '@/utils/navigation';
 
 const store = useTutorStore();
+// off without syllabus v2: the current creator stays as it is
+const evaluation = useSyllabusEvalStore();
 const { t } = i18n.global;
 
 const STEPS = ['documents', 'summary', 'resources', 'syllabus'] as const;
@@ -136,6 +140,17 @@ onMounted(() => {
               :appendSource="store.appendSource"
               :selectedSources="store.selectedSources"
               :action="stepToAction[3]"
+            />
+            <!-- the first time only, before the syllabus: what the teacher takes away -->
+            <AutoEvaluationEnd
+              v-else-if="evaluation.isPostDue"
+              data-testid="syllabus-eval-end"
+              :answers="evaluation.postAnswers"
+              :linkQuestion="$t('autoEvaluation.syllabus.linkQuestion')"
+              :willUseQuestion="$t('autoEvaluation.syllabus.willUse')"
+              :showBack="false"
+              @start="evaluation.submitPost('scratch')"
+              @skip="evaluation.skipPost"
             />
             <EditableSyllabus
               v-else

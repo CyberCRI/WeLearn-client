@@ -12,14 +12,12 @@ import type {
 import { ScreensEnum } from '@/types/learn/discipline';
 import { DATA } from '@/learn/modules/discipline';
 import i18n from '@/localisation/i18n';
-import { basePostAxios } from '@/utils/fetch';
 import { scrollToTop } from '@/utils/navigation';
-import { getFromStorage, saveToStorage } from '@/utils/storage';
 import { calculateProgress } from '@/utils/progress';
 import { track } from '@/utils/analytics';
+import { clearAnswers, hasAnswers, useEvalForms } from '@/composables/useEvalForms';
 
 type EvalForm = 'pre' | 'post';
-type SavedForm = true | string[];
 
 export function useDisciplineModule() {
   const route = useRoute();
@@ -47,11 +45,8 @@ export function useDisciplineModule() {
   const postAnswers = reactive<EvalAnswers>({});
   const preLocked = ref(false);
 
-  // save state per form name, mirrored in storage: `true` once every answer is saved, else the
-  // questions already saved. reactive, unlike localStorage, so the screens follow a submit
-  const savedForms = reactive<Record<string, SavedForm>>({});
-  // questions whose POST is still running, so a quick Back then Next doesn't send them twice
-  const sendingQuestions = new Set<string>();
+  // save state per form name, see useEvalForms
+  const { isFormSubmitted, registerFormAnswer } = useEvalForms();
 
   const DISC_META: Record<string, DisciplineMeta> = {
     math: { id: 'math', name: 'Mathématiques' },
@@ -120,10 +115,6 @@ export function useDisciplineModule() {
   // =====================
   // ACTIONS
   // =====================
-
-  function clearAnswers(answers: EvalAnswers) {
-    for (const key of Object.keys(answers)) delete answers[key as keyof EvalAnswers];
-  }
 
   function resetProgress() {
     step.value = 0;
@@ -242,62 +233,6 @@ export function useDisciplineModule() {
 
   function formName(form: EvalForm) {
     return `${current_disc.value?.id}_microlearning_${form}`;
-  }
-
-  function getSavedForm(form_name: string): SavedForm {
-    if (savedForms[form_name] !== undefined) return savedForms[form_name];
-    const stored = getFromStorage(form_name);
-    return stored === true || Array.isArray(stored) ? stored : [];
-  }
-
-  function setSavedForm(form_name: string, saved: SavedForm) {
-    savedForms[form_name] = saved;
-    saveToStorage(form_name, saved);
-  }
-
-  function isFormSubmitted(form_name: string) {
-    return getSavedForm(form_name) === true;
-  }
-
-  const isAnswered = (value: EvalAnswers[keyof EvalAnswers]) => value !== undefined && value !== '';
-
-  const hasAnswers = (ans: EvalAnswers) => Object.values(ans).some(isAnswered);
-
-  // one POST per answer, each sent at most once: a submitted form is never sent again, and after
-  // a partial failure only the answers that failed are sent on the next try
-  async function registerFormAnswer(ans: EvalAnswers, form_name: string) {
-    if (isFormSubmitted(form_name)) return;
-    const questions = Object.keys(ans) as (keyof EvalAnswers)[];
-    const alreadySaved = getSavedForm(form_name) as string[];
-    const toSend = questions.filter(
-      (key) => !alreadySaved.includes(key) && !sendingQuestions.has(`${form_name}/${key}`)
-    );
-    toSend.forEach((key) => sendingQuestions.add(`${form_name}/${key}`));
-
-    const results = await Promise.allSettled(
-      toSend.map((key) =>
-        basePostAxios('/metric/form_data', {
-          form_name,
-          question: key,
-          answer: String(ans[key] ?? ''),
-          answer_type: 'text'
-        })
-      )
-    );
-    toSend.forEach((key) => sendingQuestions.delete(`${form_name}/${key}`));
-
-    // read again: another call may have saved answers while these requests ran
-    const current = getSavedForm(form_name);
-    if (current === true) return ans;
-    const saved = [...current, ...toSend.filter((_, i) => results[i].status === 'fulfilled')];
-    const isComplete = questions.every((key) => saved.includes(key));
-    if (isComplete) setSavedForm(form_name, true);
-    else if (saved.length) setSavedForm(form_name, saved);
-
-    if (results.some((result) => result.status === 'rejected')) {
-      console.error('error while saving the answer');
-    }
-    return isComplete ? ans : undefined;
   }
 
   // =====================
