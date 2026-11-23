@@ -4,8 +4,10 @@ import ScratchWizard from '@/components/tutor/ScratchWizard.vue';
 import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
+import DraftResume from '@/components/tutor/draft/DraftResume.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
+import { useCourseDraftStore } from '@/stores/courseDraft';
 import { downloadPendingSyllabus } from '@/utils/syllabusDownload';
 import type { CoursePath } from '@/types';
 
@@ -18,9 +20,13 @@ const PATH_VIEWS: Record<CoursePath, typeof ScratchWizard | typeof ExistingCours
   existing: ExistingCourseFlow
 };
 
+const draft = useCourseDraftStore();
+
 onMounted(() => {
   // back from the login a guest started with the download button (never rejects)
   void downloadPendingSyllabus();
+  // a draft kept in this browser is offered on the path question
+  if (isSyllabusV2 && !store.path) draft.check();
 });
 </script>
 <template>
@@ -37,6 +43,7 @@ onMounted(() => {
   <div v-else class="path-question">
     <!-- a guest sees what is left before choosing, as in the creator -->
     <GuestQuotaNotice feature="syllabus" class="mb-3" />
+    <DraftResume />
     <PathChoice :path="null" :hasStarted="false" @choose="store.choosePath" />
   </div>
 </template>

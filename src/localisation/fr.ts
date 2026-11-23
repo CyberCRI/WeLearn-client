@@ -468,6 +468,27 @@ export const fr = {
       additions: 'Ajouts de durabilité',
       updated: 'Syllabus mis à jour'
     },
+    draft: {
+      save: 'Enregistrer le brouillon',
+      savedAt: 'Brouillon enregistré sur cet appareil à {time}',
+      what: 'Que contient le brouillon ?',
+      explain:
+        'Votre cours tel que vérifié, le texte lu dans votre syllabus (nécessaire au document Word complet), les liens avec la durabilité et les modifications acceptées, avec votre formulation et leurs emplacements. Il reste dans ce navigateur, sur cet appareil, et n’est envoyé ni à WeLearn ni à personne ; le fichier importé lui-même n’est pas conservé. Il est supprimé quand vous vous déconnectez, et au bout de 30 jours. Il remplace tout brouillon gardé auparavant. Vous pouvez le supprimer à tout moment.',
+      keptNote: 'Votre travail est gardé comme brouillon dans ce navigateur, sur cet appareil.',
+      foundTitle: 'Brouillon gardé sur cet appareil :',
+      found: '{course} ({file}), enregistré le {time}.',
+      untitled: 'Cours sans titre',
+      resume: 'Reprendre',
+      startNew: 'Commencer un nouveau syllabus',
+      remove: 'Supprimer le brouillon',
+      unusable:
+        'Un brouillon gardé sur cet appareil ne peut pas être restauré : il est incomplet, ne correspond pas à son syllabus ou a été enregistré par une version antérieure de WeLearn. Rien n’a été restauré.',
+      problem: {
+        unavailable:
+          'Ce navigateur ne permet pas à WeLearn de garder un brouillon (navigation privée ou stockage bloqué). Téléchargez votre travail avant de partir.',
+        full: 'Le stockage de ce navigateur est plein : le brouillon n’a pas pu être mis à jour. Téléchargez votre travail avant de partir.'
+      }
+    },
     start: {
       question: 'Avez-vous déjà un cours\u00a0?',
       yes: "Oui, j'ai un cours",

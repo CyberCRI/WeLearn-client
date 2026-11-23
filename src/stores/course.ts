@@ -36,6 +36,27 @@ export type ReadingPhase = 'idle' | 'sending' | 'reading';
 export type ReadError = 'unavailable' | 'error' | 'emptyText';
 type ContextKey = keyof TeachingContext;
 
+// the course as a draft keeps it (see toDraft)
+export interface CourseDraft {
+  step: number;
+  language: CourseLanguage;
+  fileName: string | null;
+  reading: CourseReadResponse | null;
+  focus: string | null;
+  detectedType: string | null;
+  courseDescription: CourseField | null;
+  courseSummary: CourseField | null;
+  courseObjectives: CourseField[];
+  courseTopics: CourseField[];
+  coursePlan: string[];
+  isReadingPartial: boolean;
+  teachingContext: TeachingContext;
+  prefilled: ContextKey[];
+  aiFilled: ContextKey[];
+  aiSuggested: ContextKey[];
+  contextEvidence: Partial<Record<ContextKey, string>>;
+}
+
 const fileKey = (file: File, lang: CourseLanguage, focus: string | null) =>
   `${file.name}|${file.size}|${file.lastModified}|${lang}|${focus ?? ''}`;
 
@@ -60,6 +81,8 @@ export const useCourseStore = defineStore('course', () => {
   const readKey: Ref<string | null> = ref(null);
   // the one course read when the document holds several
   const focus: Ref<string | null> = ref(null);
+  // the name of the file `reading` comes from, still known when a draft is resumed without it
+  const fileName: Ref<string | null> = ref(null);
 
   // the review: what WeLearn read, then corrected by the teacher
   const detectedType: Ref<string | null> = ref(null);
@@ -220,6 +243,7 @@ export const useCourseStore = defineStore('course', () => {
       reading.value = resp.data;
       readKey.value = key;
       focus.value = courseTitle;
+      fileName.value = picked.name;
       applyReading(resp.data);
       step.value = 2;
       void guestQuota.refresh();
@@ -352,6 +376,49 @@ export const useCourseStore = defineStore('course', () => {
     if (canConfirm.value) step.value = 3;
   };
 
+  // what a draft keeps: the reading, its whole text included, and the teacher's corrections. not
+  // the file itself, so the course is not read again unless the teacher uploads it
+  const toDraft = (): CourseDraft => ({
+    step: step.value,
+    language: language.value,
+    fileName: fileName.value,
+    reading: reading.value,
+    focus: focus.value,
+    detectedType: detectedType.value,
+    courseDescription: courseDescription.value,
+    courseSummary: courseSummary.value,
+    courseObjectives: courseObjectives.value,
+    courseTopics: courseTopics.value,
+    coursePlan: coursePlan.value,
+    isReadingPartial: isReadingPartial.value,
+    teachingContext: teachingContext.value,
+    prefilled: prefilled.value,
+    aiFilled: aiFilled.value,
+    aiSuggested: aiSuggested.value,
+    contextEvidence: contextEvidence.value
+  });
+
+  const fromDraft = (draft: CourseDraft) => {
+    $reset();
+    step.value = draft.step;
+    language.value = draft.language;
+    fileName.value = draft.fileName;
+    reading.value = draft.reading;
+    focus.value = draft.focus;
+    detectedType.value = draft.detectedType;
+    courseDescription.value = draft.courseDescription;
+    courseSummary.value = draft.courseSummary;
+    courseObjectives.value = draft.courseObjectives;
+    courseTopics.value = draft.courseTopics;
+    coursePlan.value = draft.coursePlan;
+    isReadingPartial.value = draft.isReadingPartial;
+    teachingContext.value = draft.teachingContext;
+    prefilled.value = draft.prefilled;
+    aiFilled.value = draft.aiFilled;
+    aiSuggested.value = draft.aiSuggested;
+    contextEvidence.value = draft.contextEvidence;
+  };
+
   const $reset = () => {
     controller?.abort();
     step.value = 1;
@@ -365,6 +432,7 @@ export const useCourseStore = defineStore('course', () => {
     reading.value = null;
     readKey.value = null;
     focus.value = null;
+    fileName.value = null;
     detectedType.value = null;
     courseDescription.value = null;
     courseSummary.value = null;
@@ -390,6 +458,7 @@ export const useCourseStore = defineStore('course', () => {
     readError,
     reading,
     focus,
+    fileName,
     isReading,
     hasStarted,
     coursesFound,
@@ -431,6 +500,8 @@ export const useCourseStore = defineStore('course', () => {
     setCoursePlan,
     updateContext,
     confirmReview,
+    toDraft,
+    fromDraft,
     $reset
   };
 });

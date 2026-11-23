@@ -459,6 +459,27 @@ export const en = {
       additions: 'Sustainability additions',
       updated: 'Updated syllabus'
     },
+    draft: {
+      save: 'Save draft',
+      savedAt: 'Draft saved on this device at {time}',
+      what: 'What is kept?',
+      explain:
+        'Your course as checked, the text read from your syllabus (needed for the complete Word document), the sustainability connections and the changes you accepted, with your wording and places. It stays in this browser on this device and is not sent to WeLearn or anyone else; the uploaded file itself is not kept. It is removed when you log out, and after 30 days. It replaces any draft kept before. You can remove it at any time.',
+      keptNote: 'Your work is kept as a draft in this browser on this device.',
+      foundTitle: 'Draft kept on this device:',
+      found: '{course} ({file}), saved {time}.',
+      untitled: 'Untitled course',
+      resume: 'Resume',
+      startNew: 'Start a new syllabus',
+      remove: 'Remove the draft',
+      unusable:
+        'A draft kept on this device cannot be restored: it is incomplete, does not match its syllabus, or was saved by an earlier version of WeLearn. Nothing was restored.',
+      problem: {
+        unavailable:
+          'This browser does not let WeLearn keep a draft (private browsing or blocked storage). Download your work before leaving.',
+        full: "This browser's storage is full: the draft could not be updated. Download your work before leaving."
+      }
+    },
     start: {
       question: 'Do you already have a course?',
       yes: 'Yes, I have a course',

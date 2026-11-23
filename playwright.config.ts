@@ -21,7 +21,8 @@ const DEV_SPECS = [
   'profile.spec.ts',
   'consent.spec.ts',
   'learnModules.spec.ts',
-  'syllabusV2Guest.spec.ts'
+  'syllabusV2Guest.spec.ts',
+  'syllabusV2Draft.spec.ts'
 ];
 
 // the tests run against a production build: the dev server compiles every module on request,
