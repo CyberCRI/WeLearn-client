@@ -10,7 +10,7 @@ import { basePostAxios } from '@/utils/fetch';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import { resetAnalytics, track } from '@/utils/analytics';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
-import type { SignupPromptReason, UserRegisterData } from '@/types';
+import type { SignupPromptReason, UniversityRequestData, UserRegisterData } from '@/types';
 
 // set before the keycloak redirect, so init() knows it comes back from a login and not a reload
 const LOGIN_PENDING_KEY = 'loginPending';
@@ -234,6 +234,44 @@ export const useAuthStore = defineStore('auth', () => {
     registerErrorCode.value = null;
   }
 
+  const isRequestingUniversity = ref(false);
+  const hasRequestedUniversity = ref(false);
+  const universityRequestErrorCode = ref<string | null>(null);
+
+  // the "Other" entry of the keycloak login's list of universities: the API emails the
+  // WeLearn team, with the person's email as reply-to when given
+  async function requestUniversity(data: UniversityRequestData): Promise<void> {
+    if (isRequestingUniversity.value) return;
+
+    isRequestingUniversity.value = true;
+    universityRequestErrorCode.value = null;
+    const body: ApiRequestBody<'/user/university-request'> = {
+      university: data.university.trim(),
+      city: data.city.trim(),
+      email: data.email.trim() || null,
+      locale: i18n.global.locale.value
+    };
+
+    try {
+      await basePostAxios<ApiResponse<'/user/university-request', 'post'>>(
+        '/user/university-request',
+        body
+      );
+      hasRequestedUniversity.value = true;
+    } catch (error: any) {
+      // RATE_LIMITED (429), EMAIL_UNAVAILABLE (503), EMAIL_DISABLED (500)
+      universityRequestErrorCode.value = error?.response?.data?.detail?.code ?? 'UNKNOWN';
+    } finally {
+      isRequestingUniversity.value = false;
+    }
+  }
+
+  function resetUniversityRequest(): void {
+    isRequestingUniversity.value = false;
+    hasRequestedUniversity.value = false;
+    universityRequestErrorCode.value = null;
+  }
+
   return {
     isAuthenticated,
     shouldAuthenticate,
@@ -258,6 +296,11 @@ export const useAuthStore = defineStore('auth', () => {
     hasRegistered,
     registerErrorCode,
     register,
-    resetRegister
+    resetRegister,
+    isRequestingUniversity,
+    hasRequestedUniversity,
+    universityRequestErrorCode,
+    requestUniversity,
+    resetUniversityRequest
   };
 });

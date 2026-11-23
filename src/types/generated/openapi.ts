@@ -873,6 +873,27 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/user/university-request': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Ask to add a university to the login page
+     * @description Email the WeLearn team a university missing from the login page's list of
+     *     identity providers. No session or account needed.
+     */
+    post: operations['user-request_university'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/user/user_and_session': {
     parameters: {
       query?: never;
@@ -2304,6 +2325,25 @@ export interface components {
       level?: string | null;
       /** Nb Results */
       nb_results: number;
+    };
+    /**
+     * UniversityRequest
+     * @description A university missing from the login page, to add as an identity provider.
+     */
+    UniversityRequest: {
+      /** City */
+      city: string;
+      /** Email */
+      email?: string | null;
+      /** Locale */
+      locale?: string | null;
+      /** University */
+      university: string;
+    };
+    /** UniversityRequestResponse */
+    UniversityRequestResponse: {
+      /** Message */
+      message: string;
     };
     /** UserAndSessionResponse */
     UserAndSessionResponse: {
@@ -4723,6 +4763,66 @@ export interface operations {
         };
       };
       /** @description Keycloak unavailable (code KEYCLOAK_UNAVAILABLE) */
+      503: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'user-request_university': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UniversityRequest'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      202: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UniversityRequestResponse'];
+        };
+      };
+      /** @description Too many requests (code RATE_LIMITED), see Retry-After */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description Sending emails is not configured (code EMAIL_DISABLED) */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+      /** @description The email could not be sent (code EMAIL_UNAVAILABLE) */
       503: {
         headers: {
           [name: string]: unknown;

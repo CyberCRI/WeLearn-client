@@ -19,9 +19,29 @@ export const authentication = {
     RATE_LIMITED: 'Trop de tentatives. Patientez un moment avant de réessayer.',
     KEYCLOAK_UNAVAILABLE: 'Le service est indisponible pour le moment. Réessayez dans un instant.',
     SIGNUP_DISABLED: 'L’inscription n’est pas disponible pour le moment.',
+    EMAIL_UNAVAILABLE: 'Le service est indisponible pour le moment. Réessayez dans un instant.',
+    EMAIL_DISABLED: 'L’envoi de demandes n’est pas disponible pour le moment.',
     UNKNOWN: 'Une erreur est survenue. Réessayez dans un instant.'
   },
   errorTitle: 'Votre compte n’a pas pu être créé',
+  // l’entrée « Autre » de la liste des universités de la page de connexion mène ici
+  universityRequest: {
+    title: 'Mon université n’est pas dans la liste',
+    intro:
+      'Indiquez-nous l’université avec laquelle vous souhaitez vous connecter : nous demanderons à l’ajouter à WeLearn.',
+    universityLabel: 'Nom de l’université',
+    universityRequired: 'Saisissez le nom de votre université.',
+    cityLabel: 'Ville',
+    cityRequired: 'Saisissez la ville de votre université.',
+    emailLabel: 'Votre adresse e-mail (facultatif)',
+    emailHint: 'Pour vous prévenir quand votre université sera ajoutée.',
+    submitButton: 'Envoyer la demande',
+    submitting: 'Envoi…',
+    successTitle: 'Demande envoyée',
+    successMessage: 'Merci ! L’équipe WeLearn a bien reçu votre demande d’ajout de {university}.',
+    backToLogin: 'Retour à la page de connexion',
+    errorTitle: 'Votre demande n’a pas pu être envoyée'
+  },
   sessionExpired: {
     title: 'Votre session a expiré',
     message:

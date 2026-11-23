@@ -34,6 +34,19 @@ describe('router', () => {
     vi.clearAllMocks();
   });
 
+  // reached from the keycloak login: no header nor nav bar (App.vue)
+  it.each(['/register', '/request-university'])('hides the header and nav on %s', async (path) => {
+    await router.push(path);
+
+    expect(router.currentRoute.value.meta.hideTemplate).toBe(true);
+  });
+
+  it('keeps the header and nav on the other pages', async () => {
+    await router.push('/q-and-a');
+
+    expect(router.currentRoute.value.meta.hideTemplate).toBeUndefined();
+  });
+
   it('redirects / to the chat', async () => {
     await router.push('/');
 
@@ -166,6 +179,15 @@ describe('router', () => {
       await router.push('/register');
 
       expect(router.currentRoute.value.name).toBe('register');
+      expect(keycloak.login).not.toHaveBeenCalled();
+    });
+
+    it('lets a logged out user open the university request page', async () => {
+      useAuthStore().isLoading = false;
+
+      await router.push('/request-university');
+
+      expect(router.currentRoute.value.name).toBe('requestUniversity');
       expect(keycloak.login).not.toHaveBeenCalled();
     });
 
