@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { type Ref, computed, ref } from 'vue';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
+import { track } from '@/utils/analytics';
 import { apiErrorCode, isAborted, isUnreachable } from '@/utils/apiErrors';
 import { editField, restoreField } from '@/utils/courseCheck';
 import { isLongEnough } from '@/utils/completeSyllabus';
@@ -221,6 +222,12 @@ export const useCourseStore = defineStore('course', () => {
       readKey.value = key;
       focus.value = courseTitle;
       applyReading(resp.data);
+      const { material_type, topics, objectives } = resp.data.reading;
+      track('Course Read', {
+        materialType: material_type,
+        topicsCount: topics.length,
+        objectivesCount: objectives.length
+      });
       step.value = 2;
       void guestQuota.refresh();
     } catch (error) {

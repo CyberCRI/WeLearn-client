@@ -5,6 +5,7 @@ import { useCourseStore } from '@/stores/course';
 import { planComplete, validatePlan, type CompleteLabels } from '@/utils/completeSyllabus';
 import { changesWithNotes, type AppendixLabels } from '@/utils/pedagogicalAppendix';
 import { exportSyllabus, type SyllabusExport } from '@/utils/syllabusDownload';
+import { track } from '@/utils/analytics';
 import { changesText, updatedCourseMarkdown, type ExportLabels } from '@/utils/updatedSyllabus';
 import type { AdaptationKind } from '@/types';
 
@@ -138,7 +139,13 @@ export const useSyllabusExport = () => {
     isExporting.value = true;
     hasExportError.value = false;
     try {
-      hasExportError.value = !(await exportSyllabus(exportOf(choice, withAppendix)));
+      const syllabus = exportOf(choice, withAppendix);
+      track('Updated Syllabus Exported', {
+        changesCount: changes.value.length,
+        hasAppendix: syllabus.appendix !== null,
+        document: syllabus.kind === 'complete' ? 'complete' : 'outline'
+      });
+      hasExportError.value = !(await exportSyllabus(syllabus));
     } catch (error) {
       console.error('Error while preparing the word document:', error);
       hasExportError.value = true;

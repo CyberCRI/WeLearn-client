@@ -240,6 +240,25 @@ export type AnalyticsEvents = {
   'Tutor Step Failed': { step: number; durationMs: number };
   'Syllabus Feedback Sent': { feedbackLength: number; isApplied: boolean };
   'Syllabus Downloaded': Record<string, never>;
+  // the "I have a course" path, counts and enums only
+  'Syllabus Path Chosen': { path: CoursePath };
+  'Course Read': {
+    materialType: CourseReadResponse['reading']['material_type'];
+    topicsCount: number;
+    objectivesCount: number;
+  };
+  'Connections Found': { count: number; supportedCount: number };
+  'Change Accepted': {
+    kind: AdaptationProposal['kind'];
+    support: AdaptationProposal['support'];
+    isEdited: boolean;
+  };
+  // asked from the last screen; a guest's file waits for the login ('Syllabus Downloaded' then)
+  'Updated Syllabus Exported': {
+    changesCount: number;
+    hasAppendix: boolean;
+    document: 'complete' | 'outline';
+  };
   'Bookmark Added': { corpus: string; bookmarksCount: number };
   'Bookmark Removed': { bookmarksCount: number };
   'Bibliography Exported': { count: number };
