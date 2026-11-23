@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
 import { type Ref, computed, ref } from 'vue';
 import { basePostAxios } from '@/utils/fetch';
-import { apiErrorCode, apiRetryAfter } from '@/utils/apiErrors';
+import { apiErrorCode, apiRetryAfter, isAborted, isUnreachable } from '@/utils/apiErrors';
 import { evidenceState } from '@/utils/connections';
+import { insertionPoints as insertionPointsOf, planComplete } from '@/utils/completeSyllabus';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
-import type { CourseLanguage } from '@/stores/course';
+import { type CourseLanguage, useCourseStore } from '@/stores/course';
 import type {
   AdaptationProposal,
   ApprovedChange,
@@ -91,15 +91,10 @@ export const changeOf = ({ id, title, development }: Connection): ApprovedChange
         text: development.edited || development.proposal.suggested
       }
     : null;
-export type CourseChange = ApprovedChange;
 
-// statuses that mean the API was not reached or is busy, rather than an answer it could not use
-// (UNUSABLE_LLM_OUTPUT is a 502 too, told apart by its code)
-const UNREACHABLE_STATUSES = [404, 429, 502, 503, 504];
-const failureStatus = (error: any): 'unavailable' | 'error' => {
+const failureStatus = (error: unknown): 'unavailable' | 'error' => {
   if (apiErrorCode(error) === 'UNUSABLE_LLM_OUTPUT') return 'error';
-  const status = error?.response?.status;
-  return !error?.response || UNREACHABLE_STATUSES.includes(status) ? 'unavailable' : 'error';
+  return isUnreachable(error) ? 'unavailable' : 'error';
 };
 
 const developmentFailure = (error: any): DevelopmentStatus => {
@@ -137,7 +132,6 @@ export const useConnectionsStore = defineStore('connections', () => {
   const connections: Ref<Connection[]> = ref([]);
   // the course the connections were found for: coming back to it keeps them
   const confirmedFor: Ref<ConfirmedCourse | null> = ref(null);
-  let courseKey = '';
   let language: CourseLanguage = 'fr';
   // the course was corrected on screen 2 after work was done here: the work is kept and the
   // teacher is told, nothing is looked for again unless they ask
@@ -180,7 +174,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       if (signal.aborted) return;
       connection.evidence = data as ConnectionEvidence;
     } catch (error) {
-      if (axios.isCancel(error) || signal.aborted) return;
+      if (isAborted(error, signal)) return;
       console.error('Error while checking a connection:', error);
       connection.hasCheckFailed = true;
     } finally {
@@ -195,7 +189,6 @@ export const useConnectionsStore = defineStore('connections', () => {
     controller = new AbortController();
     const { signal } = controller;
     confirmedFor.value = course;
-    courseKey = JSON.stringify(course);
     language = lang;
     isCourseChanged.value = false;
     connections.value = [];
@@ -221,7 +214,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       await Promise.all(connections.value.map((connection) => checkIdea(connection, signal)));
       if (!signal.aborted) status.value = 'ready';
     } catch (error) {
-      if (axios.isCancel(error) || signal.aborted) return;
+      if (isAborted(error, signal)) return;
       console.error('Error while finding connections:', error);
       status.value = failureStatus(error);
     }
@@ -275,7 +268,7 @@ export const useConnectionsStore = defineStore('connections', () => {
       development.proposal = data as AdaptationProposal;
       development.status = 'ready';
     } catch (error) {
-      if (axios.isCancel(error) || signal.aborted) return;
+      if (isAborted(error, signal)) return;
       if (useGuestQuotaStore().handleQuotaError(error)) {
         connection.development = null;
         return;
@@ -323,8 +316,20 @@ export const useConnectionsStore = defineStore('connections', () => {
           decision === 'selected' && development?.decision === 'accepted'
       )
       .map(changeOf)
-      .filter((change): change is CourseChange => !!change)
+      .filter((change): change is ApprovedChange => !!change)
   );
+
+  // where the complete word document puts each developed change, accepted or not: one plan for
+  // every card. a change's place depends on the syllabus's lines only, so it is the place the
+  // export gives it too. none without the syllabus's whole text
+  const insertionPoints = computed(() => {
+    const course = useCourseStore();
+    if (!course.wholeText) return null;
+    const changes = connections.value
+      .map(changeOf)
+      .filter((change): change is ApprovedChange => !!change);
+    return insertionPointsOf(planComplete(course.wholeText, course.courseToUpdate, changes));
+  });
 
   // the teacher has worked on the connections: a decision taken or a change developed
   const hasWork = computed(() =>
@@ -333,12 +338,11 @@ export const useConnectionsStore = defineStore('connections', () => {
     )
   );
   const isFor = (course: ConfirmedCourse) =>
-    status.value !== 'idle' && courseKey === JSON.stringify(course);
+    status.value !== 'idle' && JSON.stringify(confirmedFor.value) === JSON.stringify(course);
 
   // the corrected course is the one later screens build on; the connections stay
   const keepFor = (course: ConfirmedCourse) => {
     confirmedFor.value = course;
-    courseKey = JSON.stringify(course);
     isCourseChanged.value = true;
   };
 
@@ -361,7 +365,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     noneReason.value = null;
     connections.value = [];
     confirmedFor.value = null;
-    courseKey = '';
+    language = 'fr';
     isCourseChanged.value = false;
   };
 
@@ -369,6 +373,7 @@ export const useConnectionsStore = defineStore('connections', () => {
     status,
     noneReason,
     connections,
+    insertionPoints,
     confirmedFor,
     isCourseChanged,
     hasWork,

@@ -1,5 +1,5 @@
 import { Paragraph, TextRun } from 'docx';
-import type { ApprovedChange, GreenCompId } from '@/types';
+import type { AdaptationGuidance, ApprovedChange, GreenCompId } from '@/types';
 
 // the optional pedagogical appendix of the word exports: the notes attached to the changes the
 // teacher accepted (intended learning, GreenComp, a teaching idea, a way to check learning), on
@@ -18,13 +18,13 @@ export interface AppendixLabels {
   kinds: Record<ApprovedChange['kind'], string>;
 }
 
+// a change's guidance holds at least one note
+export const hasGuidance = (guidance: AdaptationGuidance | null | undefined) =>
+  !!guidance && !!(guidance.learning || guidance.greencomp || guidance.teaching || guidance.check);
+
 // the accepted changes that carry at least one note
 export const changesWithNotes = (changes: ApprovedChange[]) =>
-  changes.filter(
-    ({ guidance }) =>
-      !!guidance &&
-      !!(guidance.learning || guidance.greencomp || guidance.teaching || guidance.check)
-  );
+  changes.filter(({ guidance }) => hasGuidance(guidance));
 
 // each change's notes as label / text pairs, in a fixed order
 const noteLines = (change: ApprovedChange, labels: AppendixLabels) => {

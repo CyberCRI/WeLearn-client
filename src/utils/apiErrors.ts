@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // the `detail` of an API error. Axios errors and fetchStream's StreamResponseError share
 // `error.response.data`; domain errors answer { detail: { message, code, ... } }
 export const apiErrorDetail = (error: unknown): Record<string, unknown> | undefined => {
@@ -6,6 +8,18 @@ export const apiErrorDetail = (error: unknown): Record<string, unknown> | undefi
     ? (detail as Record<string, unknown>)
     : undefined;
 };
+
+// statuses that mean the API was not reached or is busy, rather than an answer it could not use
+// (an unusable answer is a 502 too, told apart by its code)
+const UNREACHABLE_STATUSES = [404, 429, 502, 503, 504];
+export const isUnreachable = (error: unknown): boolean => {
+  const response = (error as { response?: { status?: number } })?.response;
+  return !response || UNREACHABLE_STATUSES.includes(response.status ?? 0);
+};
+
+// a request dropped on purpose (a newer one, a reset): nothing to tell the teacher
+export const isAborted = (error: unknown, signal: AbortSignal): boolean =>
+  axios.isCancel(error) || signal.aborted;
 
 // 403 for an account whose time-limited access (Google or email login) has ended
 export const ACCESS_EXPIRED_CODE = 'ACCESS_EXPIRED';

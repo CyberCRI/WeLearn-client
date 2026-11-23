@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
 import { type Ref, computed, ref } from 'vue';
 import i18n from '@/localisation/i18n';
 import { basePostAxios } from '@/utils/fetch';
-import { apiErrorCode } from '@/utils/apiErrors';
+import { apiErrorCode, isAborted, isUnreachable } from '@/utils/apiErrors';
 import { editField, restoreField } from '@/utils/courseCheck';
 import { isLongEnough } from '@/utils/completeSyllabus';
+import { MAX_COURSE_FILE_SIZE, isCourseFileType } from '@/utils/courseFiles';
 import {
   type TopicDraft,
   applyTopicDrafts,
@@ -14,38 +14,27 @@ import {
   coursePartsOf,
   overviewOf,
   reviewFromReading,
-  toConfirmedCourse
+  toConfirmedCourse,
+  topicNames
 } from '@/utils/courseReview';
 import { emptyTeachingContext, readTeachingContext } from '@/utils/teachingContext';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
 import { useConnectionsStore } from '@/stores/connections';
-import type { FileErrorReason } from '@/stores/tutor';
 import type {
   CourseField,
   CourseReadResponse,
   CourseToUpdate,
+  FileErrorReason,
   ObjectiveGroup,
   TeachingContext
 } from '@/types';
 import type { ApiResponse } from '@/types/api';
-
-// one course document, as the API accepts it
-export const MAX_COURSE_FILE_SIZE = 5 * 1024 * 1024;
-const ALLOWED_TYPES = [
-  'application/pdf',
-  'text/plain',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-];
 
 export type CourseLanguage = 'fr' | 'en';
 export type ReadingPhase = 'idle' | 'sending' | 'reading';
 // unavailable: WeLearn could not be reached; emptyText: no text in the file (a scanned pdf)
 export type ReadError = 'unavailable' | 'error' | 'emptyText';
 type ContextKey = keyof TeachingContext;
-
-// statuses that mean the API was not reached or did not answer, rather than a reading that
-// failed (UNUSABLE_READING is a 502 too, told apart by its code)
-const UNREACHABLE_STATUSES = [404, 502, 503, 504];
 
 const fileKey = (file: File, lang: CourseLanguage, focus: string | null) =>
   `${file.name}|${file.size}|${file.lastModified}|${lang}|${focus ?? ''}`;
@@ -100,7 +89,7 @@ export const useCourseStore = defineStore('course', () => {
   const setFile = (picked: File) => {
     readError.value = null;
     if (picked.size > MAX_COURSE_FILE_SIZE) fileError.value = 'BIG_FILE';
-    else if (!ALLOWED_TYPES.includes(picked.type)) fileError.value = 'BAD_EXTENSION';
+    else if (!isCourseFileType(picked)) fileError.value = 'BAD_EXTENSION';
     else {
       fileError.value = null;
       file.value = picked;
@@ -185,8 +174,7 @@ export const useCourseStore = defineStore('course', () => {
     const code = apiErrorCode(error);
     if (code === 'EMPTY_DOCUMENT_TEXT') return 'emptyText';
     if (code === 'UNUSABLE_READING') return 'error';
-    const status = error?.response?.status;
-    return !error?.response || UNREACHABLE_STATUSES.includes(status) ? 'unavailable' : 'error';
+    return isUnreachable(error) ? 'unavailable' : 'error';
   };
 
   // screen 1 → 2: WeLearn reads the course (only `courseTitle` of it, when the document holds
@@ -236,7 +224,7 @@ export const useCourseStore = defineStore('course', () => {
       step.value = 2;
       void guestQuota.refresh();
     } catch (error) {
-      if (axios.isCancel(error) || signal.aborted) return;
+      if (isAborted(error, signal)) return;
       if (!guestQuota.handleQuotaError(error)) {
         console.error('Error while reading the course:', error);
         readError.value = classifyError(error);
@@ -339,7 +327,7 @@ export const useCourseStore = defineStore('course', () => {
   const courseParts = computed(() => coursePartsOf(courseToUpdate.value));
   // where the teacher can place a change: the topics, their subtopics and the outline's sessions
   const coursePlaces = computed(() => [
-    ...courseToUpdate.value.topics.flatMap(({ title, subtopics }) => [title, ...subtopics]),
+    ...topicNames(courseToUpdate.value.topics),
     ...courseToUpdate.value.sessions
   ]);
 

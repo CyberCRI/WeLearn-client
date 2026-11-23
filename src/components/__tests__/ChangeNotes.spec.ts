@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ChangeNotes from '@/components/tutor/development/ChangeNotes.vue';
-import { exists, proposal, text } from './developmentFixtures';
+import { exists, proposal, text } from '@/__tests__/coursePathFixtures';
 
 describe('ChangeNotes', () => {
   it('folds the pedagogical notes, GreenComp by its name', () => {

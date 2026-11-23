@@ -5,7 +5,7 @@ import {
   changesWithNotes,
   type AppendixLabels
 } from '@/utils/pedagogicalAppendix';
-import { approvedChange } from './approvedChange';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
 
 const LABELS = {
   title: 'Annexe pédagogique',

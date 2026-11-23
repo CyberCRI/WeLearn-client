@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import ConnectionDevelopment from '@/components/tutor/development/ConnectionDevelopment.vue';
 import type { Development } from '@/stores/connections';
-import { exists, seedConnection, seedCourse, text } from './developmentFixtures';
+import { exists, seedConnection, seedCourse, text } from '@/__tests__/coursePathFixtures';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 

@@ -23,10 +23,26 @@ const LIST_MARKER = /^\s*(?:[-–•o▪◦*]|\d+[.)])\s/;
 export const core = (text: string) =>
   normalise(text.replace(LIST_MARKER, '')).replace(/[.;:,!]+$/, '');
 
+// every item of a reading is checked against the same syllabus: what is built from its text is
+// kept for the last text, not built again for each item
+const forLastText = <T>(build: (text: string) => T) => {
+  let lastText: string | null = null;
+  let value: T;
+  return (text: string): T => {
+    if (text !== lastText) {
+      value = build(text);
+      lastText = text;
+    }
+    return value;
+  };
+};
+
+const normalisedText = forLastText(normalise);
+
 export const verify = (value: string, documentText: string | null): Verification => {
   if (documentText === null) return 'unchecked';
   const needle = core(value);
-  return needle && normalise(documentText).includes(needle) ? 'verified' : 'unverified';
+  return needle && normalisedText(documentText).includes(needle) ? 'verified' : 'unverified';
 };
 
 const HEADING = {
@@ -78,21 +94,14 @@ const MAX_HEADINGS = 3;
 // heading cannot be found
 export const headingScope = (value: string, documentText: string | null): HeadingScope | null => {
   if (!documentText) return null;
-  const lines = documentText.split('\n');
+  const { lines, joined, starts } = lineIndex(documentText);
   const needle = core(value);
-  // the line where the item starts: the normalised text is built line by line
-  let joined = '';
-  const starts: number[] = [];
-  lines.forEach((line) => {
-    starts.push(joined.length);
-    joined += normalise(line);
-  });
   const at = needle ? joined.indexOf(needle) : -1;
   // an item the AI reworded: found only by its words, which tells no more than whether it comes
   // from a descriptive part (its summary, description, organisation); any other scope stays unknown.
   // its words may start on the heading's own line ("Summary" then its sentence)
   if (at < 0) {
-    const near = lineByWords(value, lines);
+    const near = lineByWords(value, documentText);
     // up from there: a descriptive heading first means a descriptive part; a short heading first
     // (an objectives one) means nothing can be said. a long line is the text, never a heading
     for (let i = near; i >= 0; i--) {
@@ -117,14 +126,28 @@ const wordsIn = (text: string) =>
     .toLowerCase()
     .split(/[^\p{L}\p{N}]+/u)
     .filter((word) => word.length >= 4);
-const lineByWords = (value: string, lines: string[]) => {
+// the syllabus's lines: normalised and joined (where each starts), and the words of each
+const lineIndex = forLastText((text: string) => {
+  const lines = text.split('\n');
+  let joined = '';
+  const starts: number[] = [];
+  lines.forEach((line) => {
+    starts.push(joined.length);
+    joined += normalise(line);
+  });
+  return { lines, joined, starts, lineWords: lines.map((line) => new Set(wordsIn(line))) };
+});
+
+const lineByWords = (value: string, documentText: string) => {
   const wanted = [...new Set(wordsIn(value))];
   if (wanted.length < MIN_WORDS) return -1;
+  const { lineWords } = lineIndex(documentText);
   let best = -1;
   let bestShare = 0;
-  lines.forEach((_, i) => {
-    const near = new Set(wordsIn(lines.slice(i, i + 3).join(' ')));
-    const share = wanted.filter((word) => near.has(word)).length / wanted.length;
+  lineWords.forEach((_, i) => {
+    const window = lineWords.slice(i, i + 3);
+    const share =
+      wanted.filter((word) => window.some((words) => words.has(word))).length / wanted.length;
     // the last of the best windows: it starts on the item's own first line, not above it
     if (share >= bestShare) [best, bestShare] = [i, share];
   });
@@ -148,16 +171,6 @@ const scopeAbove = (line: number, lines: string[]): HeadingScope | null => {
   return found;
 };
 
-// the group a heading alone gives (a reading without the AI's scope)
-export const groupInDocument = (
-  value: string,
-  documentText: string | null
-): ObjectiveGroup | null => {
-  const scope = headingScope(value, documentText);
-  if (scope === 'programme' || scope === 'competency') return scope;
-  return scope && scope !== 'other' ? 'objective' : null;
-};
-
 // a "description" that includes other parts of the syllabus: very long, or several labelled
 // parts ("Intitulé du cours :", "Plan de cours :") inside it
 export const looksLikeMoreThanDescription = (text: string) =>
@@ -175,20 +188,6 @@ export const fromSyllabus = (
   ...(group && { group })
 });
 
-// WeLearn's objectives, each checked and placed in its group; nothing is dropped. WeLearn
-// returns them in document order, so an item that cannot be placed (reworded, or the file not
-// readable here) joins its neighbours when both sit in the same group; otherwise it stays a course
-// objective, which the teacher can move
-export const checkObjectives = (values: string[], documentText: string | null): CourseField[] => {
-  const groups = values.map((value) => groupInDocument(value, documentText));
-  return values.map((value, index) => {
-    const before = groups.slice(0, index).reverse().find(Boolean);
-    const after = groups.slice(index + 1).find(Boolean);
-    const group = groups[index] || (before && before === after ? before : 'objective');
-    return fromSyllabus(value, verify(value, documentText), group);
-  });
-};
-
 // the full reading's objectives, placed with both what the AI says (the course, the programme,
 // or unspecified) and the heading they sit under. a sentence of a descriptive part (summary,
 // description, organisation, prerequisites) is not taken as the course's: it waits for the
@@ -201,20 +200,20 @@ export const placeObjectives = (
   items: { text: string; scope: ObjectiveScope }[],
   documentText: string | null
 ): CourseField[] =>
-  items.map(({ text, scope }) => {
-    const heading = headingScope(text, documentText);
-    const group: ObjectiveGroup =
-      heading === 'other'
-        ? 'unsorted'
-        : scope === 'programme' || heading === 'programme'
-          ? 'programme'
-          : heading === 'competency'
-            ? 'competency'
-            : scope === 'course' || heading === 'course'
-              ? 'objective'
-              : 'unsorted';
-    return fromSyllabus(text, verify(text, documentText), group);
-  });
+  items.map(({ text, scope }) =>
+    fromSyllabus(text, verify(text, documentText), groupOf(scope, headingScope(text, documentText)))
+  );
+
+// the group of an item from what the AI says (`scope`) and its heading in the syllabus: under a
+// descriptive part it is no objective; the programme wins from either; then the heading's
+// competencies; the course's own only when one of them says so
+const groupOf = (scope: ObjectiveScope, heading: HeadingScope | null): ObjectiveGroup => {
+  if (heading === 'other') return 'unsorted';
+  if (scope === 'programme' || heading === 'programme') return 'programme';
+  if (heading === 'competency') return 'competency';
+  if (scope === 'course' || heading === 'course') return 'objective';
+  return 'unsorted';
+};
 
 // a corrected piece keeps its syllabus wording; getting that wording back makes it "read" again
 export const editField = (field: CourseField, value: string): CourseField => {

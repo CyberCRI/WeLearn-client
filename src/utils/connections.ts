@@ -2,6 +2,7 @@ import i18n from '@/localisation/i18n';
 import type { ConnectionEvidence, Document } from '@/types';
 import { normalise } from '@/utils/courseCheck';
 import { idToLabel } from '@/utils/strings';
+import { sessionParts } from '@/utils/courseReview';
 
 // what the sustainability additions screen shows of a connection, ported from the prototype
 // (esra/syllabus-improvement). the ideas, searches, judgement and checks are the API's
@@ -54,9 +55,9 @@ export interface CoursePlace {
 }
 
 const splitSession = (line: string) => {
-  const cut = line.indexOf(' – ');
-  const label = cut >= 0 ? line.slice(0, cut).trim() : null;
-  const title = cut >= 0 ? line.slice(cut + 3).trim() : line.trim();
+  const parts = sessionParts(line);
+  const label = parts.label?.trim() ?? null;
+  const title = parts.title.trim();
   const quoted = title.match(/[«"“]\s*([^»"”]+?)\s*[»"”]/);
   const subject = quoted ? quoted[1] : title;
   const rest = quoted

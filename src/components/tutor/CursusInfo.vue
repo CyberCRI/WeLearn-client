@@ -2,7 +2,7 @@
 import { ref, computed, nextTick } from 'vue';
 import OpenUrlIcon from '@/components/icons/OpenUrlIcon.vue';
 import FileDropzone from '@/components/tutor/FileDropzone.vue';
-import type { FileErrorReason } from '@/stores/tutor';
+import type { FileErrorReason } from '@/types';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 interface Props {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import FileDropzone from '@/components/tutor/FileDropzone.vue';
-import type { FileErrorReason } from '@/stores/tutor';
+import type { FileErrorReason } from '@/types';
 import type { CourseLanguage, ReadError } from '@/stores/course';
 
 // syllabus v2, screen 1 "your course": one syllabus file and the teacher's language

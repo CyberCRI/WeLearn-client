@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
 import ChangeActions from '@/components/tutor/development/ChangeActions.vue';
-import { exists, text } from './developmentFixtures';
+import { exists, text } from '@/__tests__/coursePathFixtures';
 
 describe('ChangeActions', () => {
   it('offers to accept, edit or skip a pending change', async () => {

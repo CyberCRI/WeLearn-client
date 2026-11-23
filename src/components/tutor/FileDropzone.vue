@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { COURSE_FILE_TYPES } from '@/utils/courseFiles';
 
 // a box to drop files on, or click to browse. used by both syllabus paths: CursusInfo (up to 3
 // course materials) and CourseUpload (one syllabus); each decides what to keep of the files
@@ -16,8 +17,7 @@ withDefaults(
 
 const emit = defineEmits<{ pick: [files: File[]] }>();
 
-const ACCEPT =
-  'application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+const ACCEPT = COURSE_FILE_TYPES.join(', ');
 
 const isDragging = ref(false);
 

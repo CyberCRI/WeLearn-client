@@ -7,7 +7,7 @@ import {
   type ExportLabels
 } from '@/utils/updatedSyllabus';
 import type { AdaptationResource, ApprovedChange, CourseToUpdate, Document } from '@/types';
-import { approvedChange } from './approvedChange';
+import { approvedChange } from '@/__tests__/coursePathFixtures';
 
 const COURSE: CourseToUpdate = {
   title: 'Introduction à la gestion',
@@ -54,7 +54,6 @@ const LABELS: ExportLabels = {
   outline: 'Plan',
   toPlace: 'À placer',
   revised: 'Reformulé',
-  added: 'Ajout',
   replaces: 'Remplace',
   why: 'Pourquoi',
   sources: 'Sources',

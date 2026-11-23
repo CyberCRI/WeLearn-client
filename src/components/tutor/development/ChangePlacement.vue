@@ -2,7 +2,6 @@
 import { computed, ref } from 'vue';
 import { type Connection, changeOf, useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
-import { insertionPoint } from '@/utils/completeSyllabus';
 
 // where a proposed change goes in the course: the objective or competency it revises (its full
 // wording below, clamped when long), or the course part it is added to. the teacher can choose
@@ -47,9 +46,7 @@ const isLinePlaced = computed(
   () => !!course.wholeText && !!change.value && !isRevision.value && !isStale.value
 );
 const point = computed(() =>
-  isLinePlaced.value && course.wholeText && change.value
-    ? insertionPoint(course.wholeText, course.courseToUpdate, change.value)
-    : null
+  isLinePlaced.value ? store.insertionPoints?.get(props.connection.id) || null : null
 );
 
 const handlePlace = (event: Event) => {
