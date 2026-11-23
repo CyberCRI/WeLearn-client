@@ -5,6 +5,7 @@ import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import AutoEvaluationStart from '@/components/learn/discipline/AutoEvaluationStart.vue';
+import DraftResume from '@/components/tutor/draft/DraftResume.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { useSyllabusEvalStore } from '@/stores/syllabusEval';
