@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useSyllabusExport } from '@/composables/useSyllabusExport';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 import { exportSyllabus, type SyllabusExport } from '@/utils/syllabusDownload';
 import { track } from '@/utils/analytics';
 import {
@@ -145,5 +146,18 @@ describe('useSyllabusExport', () => {
       hasAppendix: true,
       document: 'outline'
     });
+  });
+
+  it('offers the self-evaluation once the word file is downloaded, not when it failed', async () => {
+    seedAccepted(TOPIC);
+    const offerPost = vi.spyOn(useSyllabusEvalStore(), 'offerPost');
+    const syllabus = useSyllabusExport();
+
+    vi.mocked(exportSyllabus).mockResolvedValueOnce(false);
+    await syllabus.exportWord('outline', false);
+    expect(offerPost).not.toHaveBeenCalled();
+
+    await syllabus.exportWord('outline', false);
+    expect(offerPost).toHaveBeenCalledOnce();
   });
 });

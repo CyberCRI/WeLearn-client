@@ -49,7 +49,7 @@ test.describe('Tutor self-evaluation (syllabusV2)', () => {
     expect(sent).toEqual([]);
   });
 
-  test('asks "after" on the last screen, with the path, then shows the updated syllabus', async ({
+  test('asks "after" under the updated syllabus once it is downloaded, with the path', async ({
     page
   }) => {
     const sent = formAnswers(page);
@@ -59,13 +59,21 @@ test.describe('Tutor self-evaluation (syllabusV2)', () => {
     await acceptFirstConnection(page);
     await page.getByTestId('to-updated').click();
 
+    // the updated syllabus first, no form until it is downloaded
+    const updated = page.getByTestId('updated');
+    await expect(updated.getByTestId('complete-document')).toBeVisible();
+    await expect(page.getByTestId('syllabus-eval-end')).toHaveCount(0);
+    const downloading = page.waitForEvent('download');
+    await updated.getByTestId('download-complete').click();
+    await downloading;
+
     const form = page.getByTestId('syllabus-eval-end');
     await expect(form).toContainText('Comptez-vous utiliser ce syllabus dans un prochain cours');
-    await expect(page.getByTestId('updated')).toHaveCount(0);
     await form.locator('.questionAndScale button.scaleValue').first().click();
     await form.locator('.btn-primary').click();
 
-    await expect(page.getByTestId('updated').getByTestId('complete-document')).toBeVisible();
+    await expect(form).toHaveCount(0);
+    await expect(updated.getByTestId('complete-document')).toBeVisible();
     await expect
       .poll(() => sent.map(({ question, answer }) => `${question}=${answer}`))
       .toEqual(['link=1', 'path=existing']);

@@ -6,7 +6,7 @@ import type { CoursePath } from '@/types';
 import type { EvalAnswers } from '@/types/learn/discipline';
 
 // the self-evaluation of syllabus v2, as in the microlearning: "before" ahead of the path
-// question, "after" on the final syllabus, for either path. asked only the first time in this
+// question, "after" under the final syllabus once the teacher downloaded it, for either path. asked only the first time in this
 // browser: unlike the microlearning, a form skipped is done too, nothing sent
 export const PRE_FORM = 'syllabus_v2_pre';
 export const POST_FORM = 'syllabus_v2_post';
@@ -26,6 +26,12 @@ export const useSyllabusEvalStore = defineStore('syllabusEval', () => {
   const isPostDue = computed(
     () => isSyllabusV2 && !isPostDone.value && !isFormSubmitted(POST_FORM)
   );
+  // "after" waits for the syllabus to be downloaded: the teacher answers with it in hand
+  const hasDownloaded = ref(false);
+  const isPostShown = computed(() => isPostDue.value && hasDownloaded.value);
+  const offerPost = () => {
+    hasDownloaded.value = true;
+  };
 
   const skip = (answers: EvalAnswers, form: string) => {
     clearAnswers(answers);
@@ -49,6 +55,8 @@ export const useSyllabusEvalStore = defineStore('syllabusEval', () => {
     postAnswers,
     isPreDue,
     isPostDue,
+    isPostShown,
+    offerPost,
     submitPre: () => {
       isPreDone.value = true;
       submit(preAnswers, PRE_FORM);

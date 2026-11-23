@@ -83,6 +83,18 @@ describe('syllabus self-evaluation store', () => {
     expect(nextVisit().isPreDue).toBe(true);
   });
 
+  it('shows "after" only once the syllabus is downloaded', () => {
+    const evaluation = useSyllabusEvalStore();
+    expect(evaluation.isPostDue).toBe(true);
+    expect(evaluation.isPostShown).toBe(false);
+
+    evaluation.offerPost();
+    expect(evaluation.isPostShown).toBe(true);
+
+    evaluation.skipPost();
+    expect(evaluation.isPostShown).toBe(false);
+  });
+
   it('never asks without the syllabusV2 flag', () => {
     localStorage.removeItem('featurePreview');
     const evaluation = nextVisit();

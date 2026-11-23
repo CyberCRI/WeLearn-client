@@ -9,6 +9,7 @@ import { useTutorStore } from '@/stores/tutor';
 import { scrollToAnchor } from '@/utils/navigation';
 import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 
 // the wizard scrolls to the current step on mount, but the wrapper isn't in the document
 vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
@@ -125,24 +126,29 @@ describe('ScratchWizard', () => {
   describe('the self-evaluation on the syllabus step', () => {
     afterEach(() => localStorage.clear());
 
-    it('asks it the first time with syllabus v2, then shows the syllabus', async () => {
+    it('asks it under the syllabus the first time with syllabus v2, once it is downloaded', async () => {
       localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
       setActivePinia(createPinia());
       useTutorStore().step = 4;
       const wrapper = mount(ScratchWizard, { shallow: true });
+      expect(wrapper.findComponent(EditableSyllabus).exists()).toBe(true);
+      expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);
+
+      useSyllabusEvalStore().offerPost();
+      await flushPromises();
       const form = wrapper.findComponent(AutoEvaluationEnd);
       expect(form.props('willUseQuestion')).toBe('autoEvaluation.syllabus.willUse');
-      expect(wrapper.findComponent(EditableSyllabus).exists()).toBe(false);
+      expect(scrollToAnchor).toHaveBeenLastCalledWith('syllabus-eval-end');
 
       form.vm.$emit('skip');
       await flushPromises();
-
       expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);
       expect(wrapper.findComponent(EditableSyllabus).exists()).toBe(true);
     });
 
     it('is not there without syllabus v2: the current creator as it was', () => {
       useTutorStore().step = 4;
+      useSyllabusEvalStore().offerPost();
       const wrapper = mount(ScratchWizard, { shallow: true });
 
       expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);

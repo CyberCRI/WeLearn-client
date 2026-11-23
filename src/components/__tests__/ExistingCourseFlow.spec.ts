@@ -10,7 +10,12 @@ import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
 import { useCourseStore } from '@/stores/course';
 import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
+import { scrollToAnchor } from '@/utils/navigation';
 import type { CourseReadResponse } from '@/types';
+
+// the form under the final syllabus is scrolled into view; the wrapper isn't in the document
+vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
 
 // the connections are asked for on screen 3; they never answer here
 vi.mock('@/utils/fetch', () => ({
@@ -122,18 +127,25 @@ describe('ExistingCourseFlow', () => {
     expect(wrapper.findComponent(SustainabilityAdditions).exists()).toBe(true);
   });
 
-  it('asks the self-evaluation the first time with syllabus v2, then shows the updated syllabus', async () => {
+  it('asks the self-evaluation under the updated syllabus, once it is downloaded', async () => {
     localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
     setActivePinia(createPinia());
     const course = useCourseStore();
     course.reading = READ;
     course.setStep(4);
     const wrapper = mount(ExistingCourseFlow);
-    expect(wrapper.find('#target-4').findComponent(UpdatedSyllabus).exists()).toBe(false);
+    expect(wrapper.find('#target-4').findComponent(UpdatedSyllabus).exists()).toBe(true);
+    expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);
 
-    wrapper.findComponent(AutoEvaluationEnd).vm.$emit('skip');
+    useSyllabusEvalStore().offerPost();
     await flushPromises();
+    const form = wrapper.findComponent(AutoEvaluationEnd);
+    expect(form.exists()).toBe(true);
+    expect(scrollToAnchor).toHaveBeenCalledWith('syllabus-eval-end');
 
+    form.vm.$emit('skip');
+    await flushPromises();
+    expect(wrapper.findComponent(AutoEvaluationEnd).exists()).toBe(false);
     expect(wrapper.find('#target-4').findComponent(UpdatedSyllabus).exists()).toBe(true);
     localStorage.clear();
   });
