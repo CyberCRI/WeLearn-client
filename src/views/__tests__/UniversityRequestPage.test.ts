@@ -9,7 +9,7 @@ vi.mock('@/utils/keycloak', () => ({ default: { login: vi.fn() } }));
 const mountPage = () =>
   mount(UniversityRequestPage, {
     attachTo: document.body,
-    global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } }
+    global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' } } }
   });
 
 const fill = async (
@@ -148,5 +148,13 @@ describe('UniversityRequestPage', () => {
     page.unmount();
 
     expect(reset).toHaveBeenCalledOnce();
+  });
+
+  it('cancels back to the login page', () => {
+    wrapper = mountPage();
+
+    expect(wrapper.get('[data-testid="university-request-cancel"]').attributes('href')).toBe(
+      '/login'
+    );
   });
 });

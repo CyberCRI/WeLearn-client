@@ -141,7 +141,10 @@ onUnmounted(() => authStore.resetRegister());
       </TextInputComponent>
 
       <div class="action-buttons">
-        <router-link class="button" to="/">{{ $t('authentication.cancelButton') }}</router-link>
+        <!-- the keycloak login, where the sign-up link is (the home page where auth is off) -->
+        <router-link class="button" to="/login" data-testid="register-cancel">{{
+          $t('authentication.cancelButton')
+        }}</router-link>
         <!-- stays enabled: a disabled button can't be focused nor tell why it is disabled -->
         <ButtonComponent
           type="submit"

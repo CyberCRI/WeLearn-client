@@ -139,7 +139,8 @@ onUnmounted(() => authStore.resetUniversityRequest());
       </TextInputComponent>
 
       <div class="action-buttons">
-        <router-link class="button" to="/login">{{
+        <!-- back to the keycloak login, where the "Other" entry is -->
+        <router-link class="button" to="/login" data-testid="university-request-cancel">{{
           $t('authentication.cancelButton')
         }}</router-link>
         <!-- stays enabled: a disabled button can't be focused nor tell why it is disabled -->
