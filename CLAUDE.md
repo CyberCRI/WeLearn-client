@@ -30,6 +30,7 @@ yarn lint           # eslint --fix
 yarn format         # prettier --write src/
 yarn type-check     # vue-tsc
 yarn gen:api        # regenerate src/types/generated from WeLearn-api's openapi.json
+yarn docs:features  # write docs/features.md (feature flags by environment) from src/featureEnvironments.json
 yarn build          # type-check + vite build
 ```
 
@@ -67,7 +68,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
 ## User flow
 
 1. **Boot:** `main.ts` → `authStore.init()` (Keycloak `check-sso`) → mount. `App.vue` then calls `/user/user_and_session` (it stores `sessionId` in localStorage, and that value is sent as the `X-Session-Id` header), loads the source/corpus lists and loads bookmarks.
-2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced where the `auth` feature flip is on, today `dev` and `staging`** (`FEATURE_ENVIRONMENTS.auth` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
+2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced where the `auth` feature flip is on, today `dev` and `staging`** (`auth` in `src/featureEnvironments.json` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
 3. `/` redirects to **`/q-and-a` (Chat)**. The user asks a question with optional SDG/corpus filters (`filters` store). The answer is streamed from `/qna/chat/agent_stream` through `fetchStream`, and `chatStatus` moves through the `CHAT_STATUS` states. Cited sources can be bookmarked.
 4. **`/tutor` (Syllabus):** a 4-step wizard driven by `tutor` store `step`:
 
@@ -91,7 +92,7 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 - **Store pattern:** async actions live in the store. Track state with `isLoading`, error flags such as `hasXError` / `shouldRetryAction` and an `errorCode` from `error.response.data.detail.code`. Stores expose `$reset()` when they persist state.
 - **Analytics:** track product events with `track('Event Name', props)` from `@/utils/analytics`, never by importing `mixpanel-browser` directly. Declare each event and its props in `AnalyticsEvents` (`src/types/index.ts`). Send only counts, lengths, enums and ids, never free text, file content, names or emails. When you add an event, update the Mixpanel section of `public/terms_*.md` if the kind of data changes.
 - **Persistence:** use `saveToStorage` / `getFromStorage` / `clearFromStorage` from `utils/storage.ts`, which handle JSON for you. Stores that survive a reload initialize from storage (`ref(getFromStorage('chat') || [])`).
-- **Feature flips:** `FEATURE_ENVIRONMENTS` in `stores/featureFlip.ts` lists the environments where each feature is on. It is resolved at runtime from `ENVIRONMENT_NAME` (`utils/env.ts`), because one Docker image serves every environment. A new page gets an entry there and `meta.feature` on its route; the router guard then redirects it away where it is off. Remove the entry once the feature is on everywhere.
+- **Feature flips:** `src/featureEnvironments.json` lists, for each feature, the environments where it is on, its page and a one-line description. `stores/featureFlip.ts` reads it and resolves it at runtime from `ENVIRONMENT_NAME` (`utils/env.ts`), because one Docker image serves every environment. A new page gets an entry there and `meta.feature` on its route; the router guard then redirects it away where it is off. Remove the entry once the feature is on everywhere. After any change, run `yarn docs:features` and commit `docs/features.md`: CI and the pre-push hook fail when it is out of date. On a version tag, `.github/workflows/release.yml` adds the same table to the GitHub release notes (a draft release when there is none).
 - **i18n:** every user-facing string goes in **both** `localisation/en.ts` and `localisation/fr.ts`. A unit test (`localisation/__tests__/langs.spec.ts`) fails if their top-level keys differ. In templates use `$t('key')`. In TS use `i18n.global.t`. French is the default locale (`?lang=` or localStorage `language` overrides it).
 - **Comments:** comments are short, lowercase and explain _why_. A `// ponytail:` comment marks a deliberate shortcut or trade-off (for example "kept for a future rewrite" or "native checkbox for the visual only"). Read it before "fixing" that code, and use the same tag when you knowingly take a shortcut.
 - **Components:** use PascalCase file names. Many shared ones end in `Component.vue` (`ButtonComponent`, `ModalComponent`). Icons are SVG components in `components/icons/`.
@@ -145,4 +146,4 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 ## Gotchas
 
 - `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
-- Mixpanel is behind the `analytics` feature flip (`FEATURE_ENVIRONMENTS.analytics`, `['dev']` for now): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.
+- Mixpanel is behind the `analytics` feature flip (`analytics` in `src/featureEnvironments.json`, `['dev']` for now): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.

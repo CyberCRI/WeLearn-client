@@ -150,6 +150,12 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
+      # docs/features.md is generated from src/featureEnvironments.json: fail when a flag changed
+      # without the page
+      - name: Check the feature flags doc is up to date
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: yarn docs:features:check
+
       # the API types in src/types/generated come from the API's committed openapi.json:
       # fail when they no longer match the API's main branch
       - name: Check generated API types are up to date

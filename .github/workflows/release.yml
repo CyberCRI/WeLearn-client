@@ -1,0 +1,51 @@
+name: Release notes
+run-name: Release notes for ${{ inputs.tag || github.ref_name }}
+
+# On a version tag (v0.8.0, not the <ref>_deploy tags), the GitHub release of that tag gets a
+# "Features by environment" section, built from src/featureEnvironments.json at that tag: what
+# this version turns on in dev, staging, test and prod, and how to preview the rest.
+# A missing release is created as a draft, to be written and published by hand; an existing one
+# keeps its notes, and the section is replaced, never added twice. Run it by hand to redo a tag.
+on:
+  push:
+    tags:
+      - 'v*'
+      - '!**_deploy'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Version tag whose release gets the section (v0.8.0)
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  features-section:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      # the script only uses node's own modules: no install needed
+      - name: Add the features section to the release
+        run: |
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release view "$TAG" --json body --jq .body > notes.md
+            node scripts/features-doc.mjs --release notes.md > new-notes.md
+            gh release edit "$TAG" --notes-file new-notes.md
+            echo "Updated the notes of release $TAG"
+          else
+            node scripts/features-doc.mjs --release > new-notes.md
+            gh release create "$TAG" --draft --verify-tag --title "$TAG" --notes-file new-notes.md
+            echo "Created draft release $TAG"
+          fi
+          cat new-notes.md >> "$GITHUB_STEP_SUMMARY"

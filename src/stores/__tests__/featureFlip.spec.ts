@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import type { Environment } from '@/types';
-import { useFeatureFlipStore } from '../featureFlip';
+import { type Feature, environmentsOf, useFeatureFlipStore } from '../featureFlip';
+import featureEnvironments from '@/featureEnvironments.json';
 
 const env = vi.hoisted(() => ({ name: 'prod' as Environment }));
 
@@ -165,4 +166,15 @@ describe('featureFlip preview', () => {
 
     expect(store.previewFeatures).toEqual([]);
   });
+});
+
+describe('featureEnvironments.json', () => {
+  // a typo would silently turn a feature off there: the docs script refuses it too
+  it.each(Object.entries(featureEnvironments))(
+    '%s lists known environments only',
+    (name, entry) => {
+      expect(environmentsOf(name as Feature)).toEqual(entry.environments);
+      expect(entry.description.trim()).not.toBe('');
+    }
+  );
 });

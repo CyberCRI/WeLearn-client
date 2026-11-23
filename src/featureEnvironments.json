@@ -1,0 +1,67 @@
+{
+  "chat": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/q-and-a",
+    "description": "Chat: questions answered from WeLearn's sources"
+  },
+  "tutor": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/tutor",
+    "description": "Syllabus tool"
+  },
+  "search": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/search",
+    "description": "Document search and SDG detection"
+  },
+  "bookmarks": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/bookmarks",
+    "description": "Bookmarks and bibliography export"
+  },
+  "about": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/about",
+    "description": "About page"
+  },
+  "learn": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/learn",
+    "description": "Learn hub and its nav entry"
+  },
+  "learnFoundations": {
+    "environments": ["dev", "staging"],
+    "page": "/learn/foundations",
+    "description": "Learn module: foundations (the hub lists and numbers only the enabled modules)"
+  },
+  "learnFrameworks": {
+    "environments": ["dev", "staging"],
+    "page": "/learn/frameworks",
+    "description": "Learn module: frameworks"
+  },
+  "learnDiscipline": {
+    "environments": ["dev", "staging", "test", "prod"],
+    "page": "/learn/discipline",
+    "description": "Learn module: discipline (the former microlearning)"
+  },
+  "workshop": {
+    "environments": ["dev"],
+    "page": null,
+    "description": "Workshop, reserved: no page reads it yet"
+  },
+  "auth": {
+    "environments": ["dev", "staging"],
+    "page": null,
+    "description": "Keycloak login, accounts and guest limits on the client side; not on prod yet"
+  },
+  "analytics": {
+    "environments": ["dev"],
+    "page": null,
+    "description": "Mixpanel and its consent banner, until the rollout is validated"
+  },
+  "syllabusV2": {
+    "environments": ["dev"],
+    "page": "/tutor",
+    "description": "Syllabus v2: path choice, the \"I have a course\" path, drafts and the before/after self-evaluation. Every change of the rework sits behind it, so prod stays as it is"
+  }
+}

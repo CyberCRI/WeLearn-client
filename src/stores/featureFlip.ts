@@ -1,32 +1,20 @@
 import { defineStore } from 'pinia';
 import { ENVIRONMENTS, ENVIRONMENT_NAME } from '@/utils/env';
+import featureEnvironments from '@/featureEnvironments.json';
 import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import type { Environment } from '@/types';
 
-// where each feature is on. a new page gets an entry here and a `meta.feature` on its route;
+// where each feature is on, with what docs/features.md says about it (`yarn docs:features` writes
+// that page from this file). a new page gets an entry there and a `meta.feature` on its route;
 // remove the entry once the feature is on everywhere and nothing reads it anymore
-const FEATURE_ENVIRONMENTS = {
-  chat: ENVIRONMENTS,
-  tutor: ENVIRONMENTS,
-  search: ENVIRONMENTS,
-  bookmarks: ENVIRONMENTS,
-  about: ENVIRONMENTS,
-  // the learn hub and its nav entry
-  learn: ENVIRONMENTS,
-  // learn hub modules, one flip each: the hub lists and numbers only the enabled ones
-  learnFoundations: ['dev', 'staging'],
-  learnFrameworks: ['dev', 'staging'],
-  learnDiscipline: ENVIRONMENTS,
-  workshop: ['dev'],
-  // keycloak login is rolled out on dev and staging, not on prod yet
-  auth: ['dev', 'staging'],
-  // mixpanel + consent banner, dev only until the rollout is validated
-  analytics: ['dev'],
-  // syllabus v2 (/tutor): every change of the rework, even small text ones, so prod stays as it is
-  syllabusV2: ['dev']
-} satisfies Record<string, readonly Environment[]>;
+export type Feature = keyof typeof featureEnvironments;
 
-export type Feature = keyof typeof FEATURE_ENVIRONMENTS;
+const isEnvironment = (value: string): value is Environment =>
+  (ENVIRONMENTS as readonly string[]).includes(value);
+
+// a name that is not an environment is left out here, and refused by the docs script
+export const environmentsOf = (feature: Feature): readonly Environment[] =>
+  featureEnvironments[feature].environments.filter(isEnvironment);
 
 // `?preview=auth,analytics` turns features on for this browser where their env keeps them off,
 // `?preview=off` turns it back off. kept in storage because the param is lost on reload and on
@@ -36,7 +24,7 @@ const PREVIEW_QUERY_PARAM = 'preview';
 const PREVIEW_OFF = 'off';
 
 const isFeature = (value: string): value is Feature =>
-  Object.prototype.hasOwnProperty.call(FEATURE_ENVIRONMENTS, value);
+  Object.prototype.hasOwnProperty.call(featureEnvironments, value);
 
 function loadPreviewFeatures(): Feature[] {
   const param = new URLSearchParams(window.location.search).get(PREVIEW_QUERY_PARAM);
@@ -59,8 +47,7 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
   const previewFeatures: readonly Feature[] = loadPreviewFeatures();
 
   const isFeatureEnabled = (feature: Feature) => {
-    const environments: readonly Environment[] = FEATURE_ENVIRONMENTS[feature];
-    return environments.includes(ENVIRONMENT_NAME) || previewFeatures.includes(feature);
+    return environmentsOf(feature).includes(ENVIRONMENT_NAME) || previewFeatures.includes(feature);
   };
 
   return {

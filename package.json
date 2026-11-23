@@ -21,6 +21,8 @@
     "format": "prettier --write src/",
     "format:check": "prettier --check src/",
     "prepare": "git config core.hooksPath .githooks 2>/dev/null || true",
+    "docs:features": "node scripts/features-doc.mjs",
+    "docs:features:check": "node scripts/features-doc.mjs --check",
     "gen:api": "openapi-typescript ${OPENAPI_SCHEMA:-https://raw.githubusercontent.com/CyberCRI/WeLearn-api/main/openapi.json} -o src/types/generated/openapi.ts && prettier --write src/types/generated"
   },
   "dependencies": {
