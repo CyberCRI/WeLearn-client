@@ -9,8 +9,10 @@ import CourseReview from '@/components/tutor/review/CourseReview.vue';
 import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
 import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
 import StepRecap from '@/components/tutor/StepRecap.vue';
+import DraftControl from '@/components/tutor/draft/DraftControl.vue';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
+import { useCourseDraftStore } from '@/stores/courseDraft';
 
 const SCREENS = ['course', 'check', 'additions', 'updated'] as const;
 
@@ -19,6 +21,7 @@ const stepLabels = computed(() => SCREENS.map((s) => t(`tutor.steps.${s}`)));
 
 const course = useCourseStore();
 const connections = useConnectionsStore();
+const draft = useCourseDraftStore();
 
 const progressProps = computed(() => ({
   fileName: course.file?.name ?? '',
@@ -29,7 +32,7 @@ const progressProps = computed(() => ({
 
 // the confirmed course, folded: its title and what WeLearn will build on
 const reviewRecap = computed(() => ({
-  title: course.courseToUpdate.title || course.file?.name || '',
+  title: course.courseToUpdate.title || course.fileName || '',
   topics: course.courseToUpdate.topics.length,
   objectives: course.courseToUpdate.objectives.length + course.courseToUpdate.competencies.length
 }));
@@ -60,7 +63,7 @@ const reviewRecap = computed(() => ({
         />
         <StepRecap
           v-else
-          :title="course.file?.name"
+          :title="course.fileName ?? undefined"
           data-testid="course-recap"
           @edit="course.setStep(1)"
         />
@@ -96,6 +99,8 @@ const reviewRecap = computed(() => ({
       <section v-if="course.step === 4 && course.reading" id="target-4" class="step-section">
         <UpdatedSyllabus />
       </section>
+
+      <DraftControl v-if="draft.isSavable" />
     </div>
   </div>
 </template>

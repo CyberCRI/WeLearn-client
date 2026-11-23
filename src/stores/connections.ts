@@ -76,6 +76,16 @@ export type Connection = ConnectionIdea & {
   development: Development | null;
 };
 
+// the connections as a draft keeps them (see toDraft)
+export interface ConnectionsDraft {
+  status: ConnectionsStatus;
+  noneReason: string | null;
+  connections: Connection[];
+  confirmedFor: ConfirmedCourse | null;
+  language: CourseLanguage;
+  isCourseChanged: boolean;
+}
+
 // a developed connection as a change to the syllabus: the teacher's wording and place first,
 // then the proposal's. a revised objective always stays with the objective it revises
 export const changeOf = ({ id, title, development }: Connection): ApprovedChange | null =>
@@ -358,6 +368,35 @@ export const useConnectionsStore = defineStore('connections', () => {
     connections.value.filter((connection) => connection.decision === 'selected')
   );
 
+  const toDraft = (): ConnectionsDraft => ({
+    status: status.value,
+    noneReason: noneReason.value,
+    connections: connections.value,
+    confirmedFor: confirmedFor.value,
+    language,
+    isCourseChanged: isCourseChanged.value
+  });
+
+  // the calls running when the draft was saved are not: still without ideas, they are asked
+  // again; an idea not judged yet shows as unchecked, to check again; a change being written
+  // goes back to the connection as it was before
+  const fromDraft = (draft: ConnectionsDraft) => {
+    $reset();
+    if (draft.status === 'thinking') return;
+    controller = new AbortController();
+    status.value = draft.status === 'searching' ? 'ready' : draft.status;
+    noneReason.value = draft.noneReason;
+    connections.value = draft.connections.map((connection) => ({
+      ...connection,
+      isChecking: false,
+      hasCheckFailed: connection.hasCheckFailed || !connection.evidence,
+      development: connection.development?.status === 'thinking' ? null : connection.development
+    }));
+    confirmedFor.value = draft.confirmedFor;
+    language = draft.language;
+    isCourseChanged.value = draft.isCourseChanged;
+  };
+
   const $reset = () => {
     controller?.abort();
     controller = undefined;
@@ -393,6 +432,8 @@ export const useConnectionsStore = defineStore('connections', () => {
     select: (id: string) => decide(id, 'selected'),
     setAside: (id: string) => decide(id, 'setAside'),
     reopen: (id: string) => decide(id, 'open'),
+    toDraft,
+    fromDraft,
     $reset
   };
 });
