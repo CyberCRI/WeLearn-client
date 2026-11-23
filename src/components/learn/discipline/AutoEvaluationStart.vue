@@ -8,11 +8,7 @@
         {{ locked ? $t('autoEvaluation.start.lockedNotice') : $t('autoEvaluation.start.subtitle') }}
       </p>
     </div>
-    <QuestionComponent
-      v-model="answers.link"
-      :disabled="locked"
-      :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })"
-    />
+    <QuestionComponent v-model="answers.link" :disabled="locked" :question="linkQuestion" />
     <QuestionComponent
       v-model="answers.confidence"
       :disabled="locked"
@@ -20,7 +16,8 @@
     />
     <TrailNavigation
       class="nav"
-      :next-label="locked ? 'next' : 'learn.discipline.briefingScreen.primaryButton'"
+      :next-label="locked ? 'next' : nextLabel"
+      :show-back="showBack"
       :skippable="!locked"
       @back="$emit('back')"
       @next="$emit('start')"
@@ -34,10 +31,16 @@ import QuestionComponent from '@/components/learn/discipline/QuestionComponent.v
 import TrailNavigation from '@/components/learn/TrailNavigation.vue';
 import type { EvalAnswers } from '@/types/learn/discipline';
 
-defineProps<{
-  discipline?: string;
-  locked: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    // the first question, about the link between the teacher's field and the transition
+    linkQuestion: string;
+    locked: boolean;
+    nextLabel?: string;
+    showBack?: boolean;
+  }>(),
+  { nextLabel: 'learn.discipline.briefingScreen.primaryButton', showBack: true }
+);
 
 // reactive object owned by useDisciplineModule, fields are filled in place
 const answers = defineModel<EvalAnswers>('answers', { required: true });

@@ -6,11 +6,16 @@ import AutoEvaluationEnd from '../AutoEvaluationEnd.vue';
 import type { EvalAnswers } from '@/types/learn/discipline';
 
 describe.each([
-  ['AutoEvaluationStart', AutoEvaluationStart, { locked: false }, { link: 1, confidence: 1 }],
+  [
+    'AutoEvaluationStart',
+    AutoEvaluationStart,
+    { locked: false, linkQuestion: 'link' },
+    { link: 1, confidence: 1 }
+  ],
   [
     'AutoEvaluationEnd',
     AutoEvaluationEnd,
-    {},
+    { linkQuestion: 'link' },
     { link: 1, confidence: 1, willUse: 'yes', feedback: 'feedback' }
   ]
 ])('%s', (_, component, props, expected) => {
@@ -55,9 +60,33 @@ describe.each([
 
 describe('AutoEvaluationStart once the trail was seen', () => {
   it('shows the locked notice and cannot be skipped', () => {
-    const wrapper = mount(AutoEvaluationStart, { props: { locked: true, answers: {} } });
+    const wrapper = mount(AutoEvaluationStart, {
+      props: { locked: true, linkQuestion: 'link', answers: {} }
+    });
 
     expect(wrapper.text()).toContain('autoEvaluation.start.lockedNotice');
     expect(wrapper.find('.skip-link').exists()).toBe(false);
+  });
+});
+
+describe('the self-evaluation of another feature', () => {
+  it('asks its own questions, and the start one can have no way back', () => {
+    const start = mount(AutoEvaluationStart, {
+      props: {
+        locked: false,
+        linkQuestion: 'my link',
+        showBack: false,
+        nextLabel: 'next',
+        answers: {}
+      }
+    });
+    const end = mount(AutoEvaluationEnd, {
+      props: { linkQuestion: 'my link', willUseQuestion: 'my will use', answers: {} }
+    });
+
+    expect(start.text()).toContain('my link');
+    expect(start.find('.btn-secondary').exists()).toBe(false);
+    expect(end.text()).toContain('my link');
+    expect(end.text()).toContain('my will use');
   });
 });

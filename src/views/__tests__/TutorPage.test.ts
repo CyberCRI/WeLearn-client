@@ -6,6 +6,7 @@ import ScratchWizard from '@/components/tutor/ScratchWizard.vue';
 import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import PathChoice from '@/components/tutor/PathChoice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
+import AutoEvaluationStart from '@/components/learn/discipline/AutoEvaluationStart.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { downloadPendingSyllabus } from '@/utils/syllabusDownload';
 
@@ -27,6 +28,7 @@ describe('TutorPage', () => {
 
   afterEach(() => {
     localStorage.removeItem('featurePreview');
+    localStorage.removeItem('syllabus_v2_pre');
   });
 
   it('renders properly', () => {
@@ -47,9 +49,30 @@ describe('TutorPage', () => {
     });
   });
 
+  describe('the first time with the syllabusV2 flag on', () => {
+    beforeEach(() => {
+      localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+    });
+
+    it('asks the self-evaluation first, then whether the teacher already has a course', async () => {
+      const wrapper = mount(TutorPage);
+      const form = wrapper.findComponent(AutoEvaluationStart);
+      expect(form.props('linkQuestion')).toBe('autoEvaluation.syllabus.linkQuestion');
+      expect(wrapper.findComponent(PathChoice).exists()).toBe(false);
+
+      form.vm.$emit('skip');
+      await flushPromises();
+
+      expect(wrapper.findComponent(AutoEvaluationStart).exists()).toBe(false);
+      expect(wrapper.findComponent(PathChoice).exists()).toBe(true);
+    });
+  });
+
   describe('with the syllabusV2 flag on', () => {
     beforeEach(() => {
       localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+      // the self-evaluation was done on a first visit
+      localStorage.setItem('syllabus_v2_pre', 'true');
     });
 
     const mountPage = () =>

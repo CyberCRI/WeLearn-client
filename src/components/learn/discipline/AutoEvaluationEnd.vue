@@ -8,11 +8,7 @@
         {{ $t('autoEvaluation.end.subtitle') }}
       </p>
     </div>
-    <QuestionComponent
-      v-model="answers.link"
-      type="likert"
-      :question="$t('autoEvaluation.firstQuestion', { discipline: discipline })"
-    />
+    <QuestionComponent v-model="answers.link" type="likert" :question="linkQuestion" />
     <QuestionComponent
       v-model="answers.confidence"
       type="likert"
@@ -21,7 +17,7 @@
     <QuestionComponent
       v-model="answers.willUse"
       type="yesMaybeNot"
-      :question="$t('autoEvaluation.willUse')"
+      :question="willUseQuestion ?? $t('autoEvaluation.willUse')"
     />
     <QuestionComponent
       v-model="answers.feedback"
@@ -31,6 +27,7 @@
     <TrailNavigation
       class="nav"
       next-label="finish"
+      :show-back="showBack"
       skippable
       @back="$emit('back')"
       @next="$emit('start')"
@@ -44,9 +41,15 @@ import QuestionComponent from '@/components/learn/discipline/QuestionComponent.v
 import TrailNavigation from '@/components/learn/TrailNavigation.vue';
 import type { EvalAnswers } from '@/types/learn/discipline';
 
-defineProps<{
-  discipline?: string;
-}>();
+withDefaults(
+  defineProps<{
+    // the first question, about the link between the teacher's field and the transition
+    linkQuestion: string;
+    willUseQuestion?: string;
+    showBack?: boolean;
+  }>(),
+  { willUseQuestion: undefined, showBack: true }
+);
 
 // reactive object owned by useDisciplineModule, fields are filled in place
 const answers = defineModel<EvalAnswers>('answers', { required: true });

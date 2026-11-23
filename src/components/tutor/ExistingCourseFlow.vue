@@ -9,9 +9,11 @@ import CourseReview from '@/components/tutor/review/CourseReview.vue';
 import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
 import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
 import StepRecap from '@/components/tutor/StepRecap.vue';
+import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
 import DraftControl from '@/components/tutor/draft/DraftControl.vue';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 import { useCourseDraftStore } from '@/stores/courseDraft';
 
 const SCREENS = ['course', 'check', 'additions', 'updated'] as const;
@@ -21,6 +23,7 @@ const stepLabels = computed(() => SCREENS.map((s) => t(`tutor.steps.${s}`)));
 
 const course = useCourseStore();
 const connections = useConnectionsStore();
+const evaluation = useSyllabusEvalStore();
 const draft = useCourseDraftStore();
 
 const progressProps = computed(() => ({
@@ -97,7 +100,18 @@ const reviewRecap = computed(() => ({
       </section>
 
       <section v-if="course.step === 4 && course.reading" id="target-4" class="step-section">
-        <UpdatedSyllabus />
+        <!-- the first time only, before the updated syllabus: what the teacher takes away -->
+        <AutoEvaluationEnd
+          v-if="evaluation.isPostDue"
+          data-testid="syllabus-eval-end"
+          :answers="evaluation.postAnswers"
+          :linkQuestion="$t('autoEvaluation.syllabus.linkQuestion')"
+          :willUseQuestion="$t('autoEvaluation.syllabus.willUse')"
+          :showBack="false"
+          @start="evaluation.submitPost('existing')"
+          @skip="evaluation.skipPost"
+        />
+        <UpdatedSyllabus v-else />
       </section>
 
       <DraftControl v-if="draft.isSavable" />

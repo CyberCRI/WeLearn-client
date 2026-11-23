@@ -30,7 +30,11 @@
         @back="ml.goToBriefing"
         @start="ml.startTrail"
         @skip="ml.skipAutoEvalStart"
-        :discipline="$t(`learn.discipline.disciplineNames.${ml.disc.value}`)"
+        :link-question="
+          $t('autoEvaluation.firstQuestion', {
+            discipline: $t(`learn.discipline.disciplineNames.${ml.disc.value}`)
+          })
+        "
       />
       <TrailScreen
         v-else-if="ml.screen.value === ScreensEnum.trail && ml.currentData.value"
@@ -56,7 +60,11 @@
         @back="ml.backToTrail"
         @start="ml.goToComplete"
         @skip="ml.skipAutoEvalEnd"
-        :discipline="$t(`learn.discipline.disciplineNames.${ml.disc.value}`)"
+        :link-question="
+          $t('autoEvaluation.firstQuestion', {
+            discipline: $t(`learn.discipline.disciplineNames.${ml.disc.value}`)
+          })
+        "
       />
 
       <CompleteScreen

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { createPinia, setActivePinia } from 'pinia';
 import ExistingCourseFlow from '@/components/tutor/ExistingCourseFlow.vue';
 import CourseUpload from '@/components/tutor/CourseUpload.vue';
@@ -9,6 +9,7 @@ import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import UpdatedSyllabus from '@/components/tutor/updated/UpdatedSyllabus.vue';
 import { useCourseStore } from '@/stores/course';
+import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
 import type { CourseReadResponse } from '@/types';
 
 // the connections are asked for on screen 3; they never answer here
@@ -119,5 +120,21 @@ describe('ExistingCourseFlow', () => {
     await recap.find('button').trigger('click');
     expect(course.step).toBe(3);
     expect(wrapper.findComponent(SustainabilityAdditions).exists()).toBe(true);
+  });
+
+  it('asks the self-evaluation the first time with syllabus v2, then shows the updated syllabus', async () => {
+    localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
+    setActivePinia(createPinia());
+    const course = useCourseStore();
+    course.reading = READ;
+    course.setStep(4);
+    const wrapper = mount(ExistingCourseFlow);
+    expect(wrapper.find('#target-4').findComponent(UpdatedSyllabus).exists()).toBe(false);
+
+    wrapper.findComponent(AutoEvaluationEnd).vm.$emit('skip');
+    await flushPromises();
+
+    expect(wrapper.find('#target-4').findComponent(UpdatedSyllabus).exists()).toBe(true);
+    localStorage.clear();
   });
 });
