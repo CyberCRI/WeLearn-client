@@ -56,6 +56,8 @@ describe('ExistingCourseFlow', () => {
     const course = useCourseStore();
     course.setFile(pdf);
     course.reading = READ;
+    // the name of the file read, kept with a draft
+    course.fileName = 'syllabus.pdf';
     course.setStep(2);
     const wrapper = mount(ExistingCourseFlow);
 

@@ -14,6 +14,7 @@ import { basePostAxios } from '@/utils/fetch';
 import { useChatStore } from '@/stores/chat';
 import { useSearchStore } from '@/stores/search';
 import { PENDING_SYLLABUS_KEY } from '@/utils/syllabusDownload';
+import { DRAFT_KEY } from '@/utils/courseDraft';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 type OnboardingState = {
@@ -111,6 +112,8 @@ export const useUserStore = defineStore('user', () => {
     clearFromStorage('userMetricsData');
     // a guest's syllabus waiting for a login must not download for someone else
     clearFromStorage(PENDING_SYLLABUS_KEY);
+    // the draft of a syllabus holds its whole text: it belongs to the account
+    clearFromStorage(DRAFT_KEY);
   };
 
   // after a logout: the next user_and_session must start a new guest, not reuse the account's
