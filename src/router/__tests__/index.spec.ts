@@ -65,6 +65,20 @@ describe('router', () => {
       expect(router.currentRoute.value.name).toBe('q-and-a');
     });
 
+    it('opens the hidden features page only where it is on, and never falls back to it', async () => {
+      await router.push('/features');
+      expect(router.currentRoute.value.name).toBe('features');
+
+      flags.disabled = ['featuresPage'];
+      await router.push('/about');
+      await router.push('/features');
+      expect(router.currentRoute.value.name).toBe('q-and-a');
+
+      flags.disabled = ['chat', 'search', 'bookmarks', 'tutor', 'learn', 'about'];
+      await router.push('/tutor');
+      expect(router.currentRoute.value.name).not.toBe('features');
+    });
+
     it('falls back to the first enabled page when the chat is disabled', async () => {
       flags.disabled = ['chat'];
 

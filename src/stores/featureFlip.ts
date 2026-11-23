@@ -26,10 +26,19 @@ const PREVIEW_OFF = 'off';
 const isFeature = (value: string): value is Feature =>
   Object.prototype.hasOwnProperty.call(featureEnvironments, value);
 
+// a feature with `"preview": false` is never turned on by a preview (the features page)
+export const isPreviewable = (feature: Feature) => {
+  const entry = featureEnvironments[feature];
+  return !('preview' in entry && entry.preview === false);
+};
+
+const isPreviewFeature = (value: string): value is Feature =>
+  isFeature(value) && isPreviewable(value);
+
 function loadPreviewFeatures(): Feature[] {
   const param = new URLSearchParams(window.location.search).get(PREVIEW_QUERY_PARAM);
   const stored: unknown = getFromStorage(PREVIEW_STORAGE_KEY);
-  const saved = Array.isArray(stored) ? stored.filter(isFeature) : [];
+  const saved = Array.isArray(stored) ? stored.filter(isPreviewFeature) : [];
 
   if (param === null) return saved;
   if (param === PREVIEW_OFF) {
@@ -38,7 +47,7 @@ function loadPreviewFeatures(): Feature[] {
   }
 
   const requested = param.split(',').map((name) => name.trim());
-  const features = [...new Set([...saved, ...requested.filter(isFeature)])];
+  const features = [...new Set([...saved, ...requested.filter(isPreviewFeature)])];
   saveToStorage(PREVIEW_STORAGE_KEY, features);
   return features;
 }
@@ -47,11 +56,24 @@ export const useFeatureFlipStore = defineStore('featureFlip', () => {
   const previewFeatures: readonly Feature[] = loadPreviewFeatures();
 
   const isFeatureEnabled = (feature: Feature) => {
-    return environmentsOf(feature).includes(ENVIRONMENT_NAME) || previewFeatures.includes(feature);
+    return isOnInEnvironment(feature) || previewFeatures.includes(feature);
+  };
+
+  // the features turned on here by the environment itself, not by a preview
+  const isOnInEnvironment = (feature: Feature) =>
+    environmentsOf(feature).includes(ENVIRONMENT_NAME);
+
+  // keeps the previews for the next page load: the flags are read once, when the app starts
+  const keepPreviewFeatures = (features: Feature[]) => {
+    const kept = [...new Set(features.filter((feature) => isPreviewFeature(feature)))];
+    if (kept.length) saveToStorage(PREVIEW_STORAGE_KEY, kept);
+    else clearFromStorage(PREVIEW_STORAGE_KEY);
   };
 
   return {
     previewFeatures,
-    isFeatureEnabled
+    isFeatureEnabled,
+    isOnInEnvironment,
+    keepPreviewFeatures
   };
 });

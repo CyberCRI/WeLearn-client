@@ -984,6 +984,24 @@ export const fr = {
     mainTitle: 'Choisissez un sujet :',
     chooseSdg: "Choisissez l'ODD qui vous intéresse :"
   },
+  features: {
+    title: 'Fonctionnalités',
+    subtitle: 'Ce que cette version allume en {environment}, et ce que ce navigateur prévisualise.',
+    previews: 'Aperçus dans ce navigateur : {features}',
+    noPreview: 'Aucun aperçu dans ce navigateur.',
+    stopAll: 'Arrêter tous les aperçus',
+    feature: 'Fonctionnalité',
+    environments: 'Allumée en',
+    here: 'Ici',
+    status: {
+      environment: 'Allumée',
+      preview: 'Allumée, en aperçu',
+      off: 'Éteinte'
+    },
+    startPreview: 'L’essayer',
+    stopPreview: 'Arrêter l’aperçu',
+    open: 'Ouvrir'
+  },
   autoEvaluation: {
     notAtAll: 'Pas vraiment',
     tottally: 'Complètement',

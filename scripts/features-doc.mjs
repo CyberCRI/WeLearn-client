@@ -16,7 +16,7 @@ export const ENVIRONMENTS = ['dev', 'staging', 'test', 'prod'];
 
 // every feature, checked: known environments, a description, a page starting with /
 export function readFeatures(json) {
-  return Object.entries(json).map(([name, { environments, page, description }]) => {
+  return Object.entries(json).map(([name, { environments, page, preview, description }]) => {
     const unknown = environments.filter((env) => !ENVIRONMENTS.includes(env));
     if (unknown.length) {
       throw new Error(`${SOURCE}: ${name} lists unknown environments: ${unknown.join(', ')}`);
@@ -25,13 +25,23 @@ export function readFeatures(json) {
     if (page !== null && !page?.startsWith('/')) {
       throw new Error(`${SOURCE}: ${name} has a page that does not start with /: ${page}`);
     }
-    return { name, environments, page, description: description.trim() };
+    if (preview !== undefined && typeof preview !== 'boolean') {
+      throw new Error(`${SOURCE}: ${name} has a preview that is not true or false`);
+    }
+    return {
+      name,
+      environments,
+      page,
+      preview: preview !== false,
+      description: description.trim()
+    };
   });
 }
 
 // a feature off somewhere can be previewed there; one on everywhere has nothing to preview
-const previewOf = ({ name, environments, page }) => {
+const previewOf = ({ name, environments, page, preview }) => {
   if (environments.length === ENVIRONMENTS.length) return '—';
+  if (!preview) return 'never';
   return page ? `\`${page}?preview=${name}\`` : `\`?preview=${name}\``;
 };
 
@@ -50,7 +60,9 @@ export function featuresTable(features) {
 const HOW_TO_PREVIEW = `\`?preview=<feature>\` turns a feature on for this browser where its environment keeps it off,
 \`?preview=a,b\` several at once. The choice is kept in localStorage (\`featurePreview\`), so it
 survives reloads and the Keycloak redirects; \`?preview=off\` clears it. A preview never turns off
-a feature its environment turns on. Hidden, not secret: anyone who knows the parameter gets it.`;
+a feature its environment turns on, and a feature marked "never" (\`"preview": false\`) is never
+previewed. Hidden, not secret: anyone who knows the parameter gets it. On dev and staging, the
+\`/features\` page lists the same flags with a button to preview each one in this browser.`;
 
 export function featuresPage(features) {
   return `# Feature flags
