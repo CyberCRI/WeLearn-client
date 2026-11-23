@@ -286,6 +286,7 @@ export const useTutorStore = defineStore('tutor', () => {
 
   const choosePath = (chosen: CoursePath) => {
     path.value = chosen;
+    track('Syllabus Path Chosen', { path: chosen });
   };
 
   // back to the question: drops the work of the current path

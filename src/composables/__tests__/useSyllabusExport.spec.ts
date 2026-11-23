@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import { useSyllabusExport } from '@/composables/useSyllabusExport';
 import { exportSyllabus, type SyllabusExport } from '@/utils/syllabusDownload';
+import { track } from '@/utils/analytics';
 import {
   proposal,
   seedAccepted,
@@ -12,6 +13,7 @@ import {
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 vi.mock('@/utils/syllabusDownload', () => ({ exportSyllabus: vi.fn() }));
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 const TOPIC = proposal({ kind: 'topic', original: 'GDP', suggested: 'Add the footprint.' });
 const NOTED = proposal({
@@ -128,5 +130,20 @@ describe('useSyllabusExport', () => {
     vi.advanceTimersByTime(500);
     expect(syllabus.isCopied.value).toBe(false);
     vi.useRealTimers();
+  });
+
+  it('counts the export asked: changes, appendix and the document made', async () => {
+    seedReading(WHOLE_TEXT, true);
+    seedAccepted(TOPIC, NOTED);
+    const syllabus = useSyllabusExport();
+
+    // the complete one asked, the outline made
+    await syllabus.exportWord('complete', true);
+
+    expect(track).toHaveBeenCalledWith('Updated Syllabus Exported', {
+      changesCount: 2,
+      hasAppendix: true,
+      document: 'outline'
+    });
   });
 });

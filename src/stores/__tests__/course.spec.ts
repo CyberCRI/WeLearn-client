@@ -7,6 +7,7 @@ import { useGuestQuotaStore } from '../guestQuota';
 import { useTutorStore } from '../tutor';
 import { useConnectionsStore } from '../connections';
 import { basePostAxios, getGuestQuota } from '@/utils/fetch';
+import { track } from '@/utils/analytics';
 import type { CourseReadResponse } from '@/types';
 
 vi.mock('@/utils/fetch', () => ({
@@ -16,6 +17,7 @@ vi.mock('@/utils/fetch', () => ({
 
 const auth = vi.hoisted(() => ({ isGuest: false, askToSignUp: vi.fn() }));
 vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 
 type PostResult = Awaited<ReturnType<typeof basePostAxios>>;
 const mockPost = (value: unknown) =>
@@ -106,6 +108,34 @@ describe('course store', () => {
       expect(store.step).toBe(2);
       expect(store.phase).toBe('idle');
       expect(store.readError).toBeNull();
+    });
+
+    it('counts what was read: the kind of document, its topics and objectives', async () => {
+      vi.mocked(track).mockClear();
+      const store = useCourseStore();
+      store.setFile(file());
+      mockPost({
+        data: {
+          ...READ,
+          reading: {
+            ...READ.reading,
+            material_type: 'course_plan',
+            objectives: [{ text: 'Define soils.', scope: 'course' }],
+            topics: [
+              { title: 'Soils', subtopics: [], source: null },
+              { title: 'Water', subtopics: [], source: null }
+            ]
+          }
+        }
+      });
+
+      await store.readCourse();
+
+      expect(track).toHaveBeenCalledWith('Course Read', {
+        materialType: 'course_plan',
+        topicsCount: 2,
+        objectivesCount: 1
+      });
     });
 
     it('starts the connections over for another course, not for the same one', async () => {
