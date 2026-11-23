@@ -1,5 +1,7 @@
 export const authentication = {
   registerTitle: 'Créer votre compte',
+  // le logo des pages sans barre de navigation, un lien vers le chat
+  logoAlt: 'WeLearn, retour au chat',
   registerButton: 'Inscription',
   cancelButton: 'Annuler',
   requiredFieldsNote: 'Les champs marqués d’un astérisque (*) sont obligatoires.',

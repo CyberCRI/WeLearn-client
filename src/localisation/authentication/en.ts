@@ -1,5 +1,7 @@
 export const authentication = {
   registerTitle: 'Create account',
+  // the logo of the pages without the nav bar, a link to the chat
+  logoAlt: 'WeLearn, back to the chat',
   registerButton: 'Sign up',
   cancelButton: 'Cancel',
   requiredFieldsNote: 'Fields marked with an asterisk (*) are required.',
