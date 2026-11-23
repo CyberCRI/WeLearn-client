@@ -18,6 +18,7 @@ import {
 } from '@/utils/courseReview';
 import { emptyTeachingContext, readTeachingContext } from '@/utils/teachingContext';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
+import { useConnectionsStore } from '@/stores/connections';
 import type { FileErrorReason } from '@/stores/tutor';
 import type {
   CourseField,
@@ -225,6 +226,9 @@ export const useCourseStore = defineStore('course', () => {
         }
       );
       if (signal.aborted) return;
+      // another course (a new file, or another one of the document): the connections and changes
+      // found for the former one don't apply to it
+      useConnectionsStore().$reset();
       reading.value = resp.data;
       readKey.value = key;
       focus.value = courseTitle;
