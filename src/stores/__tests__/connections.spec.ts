@@ -8,6 +8,7 @@ import {
   useConnectionsStore
 } from '../connections';
 import { basePostAxios } from '@/utils/fetch';
+import { track } from '@/utils/analytics';
 import { proposal } from '@/__tests__/coursePathFixtures';
 import type {
   ConfirmedCourse,
@@ -17,6 +18,7 @@ import type {
 } from '@/types';
 
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
+vi.mock('@/utils/analytics', () => ({ track: vi.fn() }));
 const handleQuotaError = vi.fn(
   (error: any) => error?.response?.data?.detail?.code === 'GUEST_QUOTA_EXCEEDED'
 );
@@ -502,5 +504,49 @@ describe('connections store: developing a connection', () => {
     pending.slice(1).forEach((resolve) => resolve({ data: proposal() }));
     await Promise.all(developing);
     expect(store.connections).toEqual([]);
+  });
+});
+
+describe('connections store: analytics', () => {
+  beforeEach(() => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(basePostAxios).mockReset();
+    vi.mocked(track).mockClear();
+    setActivePinia(createPinia());
+  });
+
+  it('counts the connections found once all are checked, and the supported ones', async () => {
+    answer([idea(1), idea(2), idea(3)], (id) =>
+      id === 'idea-3' ? apiError(503) : evidence(id === 'idea-1' ? 'supported' : 'forced')
+    );
+    const store = useConnectionsStore();
+
+    await store.findConnections(COURSE, 'en');
+
+    expect(track).toHaveBeenCalledTimes(1);
+    expect(track).toHaveBeenCalledWith('Connections Found', { count: 3, supportedCount: 1 });
+  });
+
+  it('counts nothing when the ideas could not be found', async () => {
+    vi.mocked(basePostAxios).mockRejectedValueOnce(apiError(503));
+    await useConnectionsStore().findConnections(COURSE, 'en');
+
+    expect(track).not.toHaveBeenCalled();
+  });
+
+  it('tells the kind and support of an accepted change, and whether it was reworded', async () => {
+    answerAll(() => proposal({ kind: 'assessment', support: 'partial' }));
+    const store = useConnectionsStore();
+    await store.findConnections(COURSE, 'fr');
+    await store.develop('idea-1');
+    vi.mocked(track).mockClear();
+
+    store.acceptChange('idea-1');
+    store.acceptChange('idea-1', 'My own wording.');
+
+    expect(vi.mocked(track).mock.calls).toEqual([
+      ['Change Accepted', { kind: 'assessment', support: 'partial', isEdited: false }],
+      ['Change Accepted', { kind: 'assessment', support: 'partial', isEdited: true }]
+    ]);
   });
 });

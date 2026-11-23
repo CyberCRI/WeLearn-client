@@ -984,6 +984,12 @@ describe('tutor store', () => {
   });
 
   describe('analytics', () => {
+    it('tracks the path the teacher chose', () => {
+      useTutorStore().choosePath('existing');
+
+      expect(track).toHaveBeenCalledWith('Syllabus Path Chosen', { path: 'existing' });
+    });
+
     it('tracks the files step with counts only', async () => {
       mockPost({ status: 200, data: { extracts: [{ summary: 's1' }, { summary: 's2' }] } });
       const store = useTutorStore();

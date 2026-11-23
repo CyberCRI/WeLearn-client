@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { type Ref, computed, ref } from 'vue';
 import { basePostAxios } from '@/utils/fetch';
+import { track } from '@/utils/analytics';
 import { apiErrorCode, apiRetryAfter, isAborted, isUnreachable } from '@/utils/apiErrors';
 import { evidenceState } from '@/utils/connections';
 import { insertionPoints as insertionPointsOf, planComplete } from '@/utils/completeSyllabus';
@@ -222,7 +223,14 @@ export const useConnectionsStore = defineStore('connections', () => {
       }));
       status.value = 'searching';
       await Promise.all(connections.value.map((connection) => checkIdea(connection, signal)));
-      if (!signal.aborted) status.value = 'ready';
+      if (signal.aborted) return;
+      status.value = 'ready';
+      track('Connections Found', {
+        count: connections.value.length,
+        supportedCount: connections.value.filter(
+          (connection) => evidenceState(connection) === 'supported'
+        ).length
+      });
     } catch (error) {
       if (isAborted(error, signal)) return;
       console.error('Error while finding connections:', error);
@@ -300,6 +308,8 @@ export const useConnectionsStore = defineStore('connections', () => {
     const wording = text?.trim();
     development.edited = wording && wording !== development.proposal.suggested ? wording : null;
     development.decision = 'accepted';
+    const { kind, support } = development.proposal;
+    track('Change Accepted', { kind, support, isEdited: development.edited !== null });
   };
 
   const placeChange = (id: string, part: string | null) => {
