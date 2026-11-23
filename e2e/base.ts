@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 
-import { docs } from './data';
+import { connectionEvidence, connectionIdeas, courseAdaptation, courseReading, docs } from './data';
 import { mockKeycloak, type KeycloakMock } from './keycloak';
 
 // set per project in playwright.config.ts
@@ -109,6 +109,19 @@ export const test = base.extend<Fixtures>({
     // external sdg classifier called alongside every search, it must not hang the tests when down
     await page.route('**/aurora-sdg.labs.vu.nl/**', async (route) => {
       await route.fulfill({ json: { predictions: [] } });
+    });
+
+    // the "I have a course" path, one run that goes well; a test changes a step with its own
+    // page.route, which Playwright tries first
+    await page.route('**/tutor/course/**', async (route) => {
+      const step = new URL(route.request().url()).pathname.split('/').pop();
+      if (step === 'read') return route.fulfill({ json: courseReading });
+      if (step === 'connection_ideas') return route.fulfill({ json: connectionIdeas });
+      if (step === 'connection_evidence') {
+        return route.fulfill({ json: connectionEvidence(route.request().postDataJSON().idea) });
+      }
+      if (step === 'adaptation') return route.fulfill({ json: courseAdaptation });
+      return route.fulfill({ status: 404, json: { detail: 'Not mocked' } });
     });
 
     // Mock the /metric/* calls (corpus counts at boot, download counts); none may reach the
