@@ -12,3 +12,6 @@ export const scrollToAnchor = (id: string) => {
 export const scrollToTop = () => {
   document.querySelector('.main')?.scrollTo?.({ top: 0 });
 };
+
+// a full page load, for what the app only reads when it starts (the feature flags)
+export const reloadPage = () => window.location.reload();

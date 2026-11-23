@@ -969,6 +969,24 @@ export const en = {
     mainTitle: 'Choose a subject:',
     chooseSdg: 'Choose an SDG:'
   },
+  features: {
+    title: 'Feature flags',
+    subtitle: 'What this build turns on in {environment}, and what this browser previews.',
+    previews: 'Previewed in this browser: {features}',
+    noPreview: 'Nothing is previewed in this browser.',
+    stopAll: 'Stop every preview',
+    feature: 'Feature',
+    environments: 'On in',
+    here: 'Here',
+    status: {
+      environment: 'On',
+      preview: 'On, previewed',
+      off: 'Off'
+    },
+    startPreview: 'Preview it',
+    stopPreview: 'Stop the preview',
+    open: 'Open'
+  },
   autoEvaluation: {
     notAtAll: 'Not really',
     tottally: 'Completely',

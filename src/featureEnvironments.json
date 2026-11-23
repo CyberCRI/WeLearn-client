@@ -59,6 +59,12 @@
     "page": null,
     "description": "Mixpanel and its consent banner, until the rollout is validated"
   },
+  "featuresPage": {
+    "environments": ["dev", "staging"],
+    "page": "/features",
+    "preview": false,
+    "description": "This list as a page, with a button to preview each feature in this browser; never previewed, so never on prod"
+  },
   "syllabusV2": {
     "environments": ["dev"],
     "page": "/tutor",
