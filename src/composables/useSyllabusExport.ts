@@ -2,6 +2,7 @@ import { computed, ref } from 'vue';
 import i18n from '@/localisation/i18n';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 import { planComplete, validatePlan, type CompleteLabels } from '@/utils/completeSyllabus';
 import { changesWithNotes, type AppendixLabels } from '@/utils/pedagogicalAppendix';
 import { exportSyllabus, type SyllabusExport } from '@/utils/syllabusDownload';
@@ -146,6 +147,7 @@ export const useSyllabusExport = () => {
         document: syllabus.kind === 'complete' ? 'complete' : 'outline'
       });
       hasExportError.value = !(await exportSyllabus(syllabus));
+      if (!hasExportError.value) useSyllabusEvalStore().offerPost();
     } catch (error) {
       console.error('Error while preparing the word document:', error);
       hasExportError.value = true;

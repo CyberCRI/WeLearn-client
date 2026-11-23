@@ -17,6 +17,7 @@ import { track } from '@/utils/analytics';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
+import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 
 const MAX_FILES = 3;
 
@@ -427,6 +428,7 @@ export const useTutorStore = defineStore('tutor', () => {
       fileName: 'syllabus.docx',
       appendix: null
     }));
+    if (!hasDownloadError.value) useSyllabusEvalStore().offerPost();
   };
 
   const updateSyllabusInDB = async () => {

@@ -20,6 +20,11 @@ import { scrollToAnchor } from '@/utils/navigation';
 const store = useTutorStore();
 // off without syllabus v2: the current creator stays as it is
 const evaluation = useSyllabusEvalStore();
+// the form appears under a long syllabus: brought into view
+watch(
+  () => evaluation.isPostShown,
+  (isShown) => isShown && nextTick(() => scrollToAnchor('syllabus-eval-end'))
+);
 const { t } = i18n.global;
 
 const STEPS = ['documents', 'summary', 'resources', 'syllabus'] as const;
@@ -141,28 +146,31 @@ onMounted(() => {
               :selectedSources="store.selectedSources"
               :action="stepToAction[3]"
             />
-            <!-- the first time only, before the syllabus: what the teacher takes away -->
-            <AutoEvaluationEnd
-              v-else-if="evaluation.isPostDue"
-              data-testid="syllabus-eval-end"
-              :answers="evaluation.postAnswers"
-              :linkQuestion="$t('autoEvaluation.syllabus.linkQuestion')"
-              :willUseQuestion="$t('autoEvaluation.syllabus.willUse')"
-              :showBack="false"
-              @start="evaluation.submitPost('scratch')"
-              @skip="evaluation.skipPost"
-            />
-            <EditableSyllabus
-              v-else
-              data-test="third-step"
-              :syllabus="store.syllabi"
-              :updateSyllabus="store.updateSyllabus"
-              :giveFeedback="store.giveFeedback"
-              :feedbackHistory="store.feedbackHistory"
-              :action="stepToAction[4]"
-              :restart="store.restart"
-              :updateSyllabusInDB="store.updateSyllabusInDB"
-            />
+            <template v-else>
+              <EditableSyllabus
+                data-test="third-step"
+                :syllabus="store.syllabi"
+                :updateSyllabus="store.updateSyllabus"
+                :giveFeedback="store.giveFeedback"
+                :feedbackHistory="store.feedbackHistory"
+                :action="stepToAction[4]"
+                :restart="store.restart"
+                :updateSyllabusInDB="store.updateSyllabusInDB"
+              />
+              <!-- the first time only, once the syllabus is downloaded: what the teacher takes away -->
+              <AutoEvaluationEnd
+                v-if="evaluation.isPostShown"
+                id="syllabus-eval-end"
+                class="mt-6"
+                data-testid="syllabus-eval-end"
+                :answers="evaluation.postAnswers"
+                :linkQuestion="$t('autoEvaluation.syllabus.linkQuestion')"
+                :willUseQuestion="$t('autoEvaluation.syllabus.willUse')"
+                :showBack="false"
+                @start="evaluation.submitPost('scratch')"
+                @skip="evaluation.skipPost"
+              />
+            </template>
           </template>
         </section>
       </template>

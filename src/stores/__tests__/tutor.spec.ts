@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
 import axios from 'axios';
 import { useTutorStore } from '../tutor';
+import { useSyllabusEvalStore } from '../syllabusEval';
 import { useGuestQuotaStore } from '../guestQuota';
 import { useConnectionsStore } from '../connections';
 import { basePostAxios, getGuestQuota } from '@/utils/fetch';
@@ -712,6 +713,21 @@ describe('tutor store', () => {
       expect(convertMarkdownToDocx).toHaveBeenCalledWith('# Course');
       expect(downloadDocx).toHaveBeenCalledWith(blob, 'syllabus.docx');
       expect(basePostAxios).toHaveBeenCalledWith('/metric/syllabus_downloaded');
+    });
+
+    it('offers the self-evaluation once the syllabus is downloaded, not when it failed', async () => {
+      const offerPost = vi.spyOn(useSyllabusEvalStore(), 'offerPost');
+      const store = useTutorStore();
+      store.syllabi = { source: 'agent', content: '# Course' };
+
+      vi.mocked(convertMarkdownToDocx).mockRejectedValueOnce(new Error('docx'));
+      await store.handleDownloadSyllabus();
+      expect(offerPost).not.toHaveBeenCalled();
+
+      vi.mocked(convertMarkdownToDocx).mockResolvedValueOnce(new Blob(['docx']));
+      mockPost({});
+      await store.handleDownloadSyllabus();
+      expect(offerPost).toHaveBeenCalledOnce();
     });
 
     it('still downloads when the metric fails', async () => {

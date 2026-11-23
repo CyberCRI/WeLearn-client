@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, nextTick, watch } from 'vue';
 import i18n from '@/localisation/i18n';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import CourseUpload from '@/components/tutor/CourseUpload.vue';
@@ -14,6 +14,7 @@ import DraftControl from '@/components/tutor/draft/DraftControl.vue';
 import { useConnectionsStore } from '@/stores/connections';
 import { useCourseStore } from '@/stores/course';
 import { useSyllabusEvalStore } from '@/stores/syllabusEval';
+import { scrollToAnchor } from '@/utils/navigation';
 import { useCourseDraftStore } from '@/stores/courseDraft';
 
 const SCREENS = ['course', 'check', 'additions', 'updated'] as const;
@@ -24,6 +25,11 @@ const stepLabels = computed(() => SCREENS.map((s) => t(`tutor.steps.${s}`)));
 const course = useCourseStore();
 const connections = useConnectionsStore();
 const evaluation = useSyllabusEvalStore();
+// the form appears under a long syllabus: brought into view
+watch(
+  () => evaluation.isPostShown,
+  (isShown) => isShown && nextTick(() => scrollToAnchor('syllabus-eval-end'))
+);
 const draft = useCourseDraftStore();
 
 const progressProps = computed(() => ({
@@ -100,9 +106,12 @@ const reviewRecap = computed(() => ({
       </section>
 
       <section v-if="course.step === 4 && course.reading" id="target-4" class="step-section">
-        <!-- the first time only, before the updated syllabus: what the teacher takes away -->
+        <UpdatedSyllabus />
+        <!-- the first time only, once the syllabus is downloaded: what the teacher takes away -->
         <AutoEvaluationEnd
-          v-if="evaluation.isPostDue"
+          v-if="evaluation.isPostShown"
+          id="syllabus-eval-end"
+          class="mt-6"
           data-testid="syllabus-eval-end"
           :answers="evaluation.postAnswers"
           :linkQuestion="$t('autoEvaluation.syllabus.linkQuestion')"
@@ -111,7 +120,6 @@ const reviewRecap = computed(() => ({
           @start="evaluation.submitPost('existing')"
           @skip="evaluation.skipPost"
         />
-        <UpdatedSyllabus v-else />
       </section>
 
       <DraftControl v-if="draft.isSavable" />
