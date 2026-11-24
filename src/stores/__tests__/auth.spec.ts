@@ -522,6 +522,91 @@ describe('auth store', () => {
     });
   });
 
+  describe('requestUniversity', () => {
+    const data = { university: ' Université de Nantes ', city: 'Nantes ', email: ' ' };
+    type PostResponse = Awaited<ReturnType<typeof basePostAxios>>;
+
+    it('sends trimmed values, without an email when none is given', async () => {
+      vi.mocked(basePostAxios).mockResolvedValue({ data: { message: 'sent' } } as PostResponse);
+      const store = useAuthStore();
+
+      await store.requestUniversity(data);
+
+      expect(basePostAxios).toHaveBeenCalledWith('/user/university-request', {
+        university: 'Université de Nantes',
+        city: 'Nantes',
+        email: null,
+        locale: i18n.global.locale.value
+      });
+      expect(store.hasRequestedUniversity).toBe(true);
+      expect(store.universityRequestErrorCode).toBeNull();
+      expect(store.isRequestingUniversity).toBe(false);
+    });
+
+    it('sends the email when given', async () => {
+      vi.mocked(basePostAxios).mockResolvedValue({ data: { message: 'sent' } } as PostResponse);
+
+      await useAuthStore().requestUniversity({ ...data, email: ' ada@test.org ' });
+
+      expect(basePostAxios).toHaveBeenCalledWith(
+        '/user/university-request',
+        expect.objectContaining({ email: 'ada@test.org' })
+      );
+    });
+
+    it.each([
+      [429, 'RATE_LIMITED'],
+      [503, 'EMAIL_UNAVAILABLE'],
+      [500, 'EMAIL_DISABLED']
+    ])('keeps the API error code of a %i', async (status, code) => {
+      vi.mocked(basePostAxios).mockRejectedValue(
+        Object.assign(new Error('Request failed'), {
+          response: { status, data: { detail: { message: 'm', code } } }
+        })
+      );
+      const store = useAuthStore();
+
+      await store.requestUniversity(data);
+
+      expect(store.universityRequestErrorCode).toBe(code);
+      expect(store.hasRequestedUniversity).toBe(false);
+    });
+
+    it('maps an error without a code to UNKNOWN', async () => {
+      vi.mocked(basePostAxios).mockRejectedValue(new Error('Network Error'));
+      const store = useAuthStore();
+
+      await store.requestUniversity(data);
+
+      expect(store.universityRequestErrorCode).toBe('UNKNOWN');
+    });
+
+    it('ignores a second submit while the first is running', async () => {
+      let resolve!: (value: PostResponse) => void;
+      vi.mocked(basePostAxios).mockReturnValue(new Promise((r) => (resolve = r)));
+      const store = useAuthStore();
+
+      const first = store.requestUniversity(data);
+      await store.requestUniversity(data);
+      expect(store.isRequestingUniversity).toBe(true);
+      resolve({ data: { message: 'ok' } } as PostResponse);
+      await first;
+
+      expect(basePostAxios).toHaveBeenCalledOnce();
+    });
+
+    it('resets its state', async () => {
+      vi.mocked(basePostAxios).mockRejectedValue(new Error('Network Error'));
+      const store = useAuthStore();
+      await store.requestUniversity(data);
+
+      store.resetUniversityRequest();
+
+      expect(store.universityRequestErrorCode).toBeNull();
+      expect(store.hasRequestedUniversity).toBe(false);
+    });
+  });
+
   describe('register', () => {
     const data = { firstName: ' Ada ', lastName: 'Lovelace', email: ' ada@test.org ' };
     type PostResponse = Awaited<ReturnType<typeof basePostAxios>>;

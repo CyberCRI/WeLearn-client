@@ -1,5 +1,7 @@
 export const authentication = {
   registerTitle: 'Create account',
+  // the logo of the pages without the nav bar, a link to the chat
+  logoAlt: 'WeLearn, back to the chat',
   registerButton: 'Sign up',
   cancelButton: 'Cancel',
   requiredFieldsNote: 'Fields marked with an asterisk (*) are required.',
@@ -19,9 +21,29 @@ export const authentication = {
     RATE_LIMITED: 'Too many attempts. Please wait a while before trying again.',
     KEYCLOAK_UNAVAILABLE: 'The service is unavailable right now. Please try again in a moment.',
     SIGNUP_DISABLED: 'Sign-up is not available at the moment.',
+    EMAIL_UNAVAILABLE: 'The service is unavailable right now. Please try again in a moment.',
+    EMAIL_DISABLED: 'Sending requests is not available at the moment.',
     UNKNOWN: 'Something went wrong. Please try again in a moment.'
   },
   errorTitle: 'Your account could not be created',
+  // the "Other" entry of the login page's list of universities leads here
+  universityRequest: {
+    title: 'My university is not listed',
+    intro:
+      'Tell us which university you would like to log in with, and we will ask to add it to WeLearn.',
+    universityLabel: 'University name',
+    universityRequired: 'Enter the name of your university.',
+    cityLabel: 'City',
+    cityRequired: 'Enter the city of your university.',
+    emailLabel: 'Your email (optional)',
+    emailHint: 'To let you know when your university is added.',
+    submitButton: 'Send the request',
+    submitting: 'Sending…',
+    successTitle: 'Request sent',
+    successMessage: 'Thank you! The WeLearn team has received your request to add {university}.',
+    backToLogin: 'Back to the login page',
+    errorTitle: 'Your request could not be sent'
+  },
   sessionExpired: {
     title: 'Your session has expired',
     message: 'For your security, your session was closed. Log in again to find your work.',

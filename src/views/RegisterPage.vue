@@ -2,6 +2,7 @@
 import { computed, nextTick, onUnmounted, reactive, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth';
+import AuthPageLayout from '@/components/AuthPageLayout.vue';
 import ButtonComponent from '@/components/ButtonComponent.vue';
 import TextInputComponent from '@/components/TextInputComponent.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
@@ -75,8 +76,7 @@ onUnmounted(() => authStore.resetRegister());
 </script>
 
 <template>
-  <h1 class="title is-3 is-size-5-mobile">{{ $t('authentication.registerTitle') }}</h1>
-  <div class="box">
+  <AuthPageLayout :title="$t('authentication.registerTitle')">
     <!-- live regions stay in the DOM so screen readers announce what appears in them -->
     <div role="status">
       <ToasterComponent
@@ -141,7 +141,10 @@ onUnmounted(() => authStore.resetRegister());
       </TextInputComponent>
 
       <div class="action-buttons">
-        <router-link class="button" to="/">{{ $t('authentication.cancelButton') }}</router-link>
+        <!-- the keycloak login, where the sign-up link is (the home page where auth is off) -->
+        <router-link class="button" to="/login" data-testid="register-cancel">{{
+          $t('authentication.cancelButton')
+        }}</router-link>
         <!-- stays enabled: a disabled button can't be focused nor tell why it is disabled -->
         <ButtonComponent
           type="submit"
@@ -155,24 +158,10 @@ onUnmounted(() => authStore.resetRegister());
         </ButtonComponent>
       </div>
     </form>
-  </div>
+  </AuthPageLayout>
 </template>
 
 <style lang="css" scoped>
-h1 {
-  margin: auto;
-  margin-top: 8rem;
-  text-align: center;
-}
-
-.box {
-  width: 25%;
-  min-width: 420px;
-  margin: auto;
-  margin-top: 1rem;
-  padding: 4rem;
-}
-
 form {
   display: flex;
   flex-direction: column;
@@ -188,18 +177,8 @@ form {
 }
 
 @media (max-width: 750px) {
-  .box {
-    width: 100%;
-    min-width: unset;
-    padding: 1rem 2rem;
-  }
-
   form {
     gap: 0.2rem;
-  }
-
-  h1 {
-    margin-top: 1rem;
   }
 
   .action-buttons {

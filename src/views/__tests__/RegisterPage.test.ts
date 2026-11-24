@@ -14,7 +14,7 @@ vi.mock('@/utils/env', () => ({
 const mountPage = () =>
   mount(RegisterPage, {
     attachTo: document.body,
-    global: { stubs: { RouterLink: { template: '<a><slot /></a>' } } }
+    global: { stubs: { RouterLink: { props: ['to'], template: '<a :href="to"><slot /></a>' } } }
   });
 
 const fill = async (
@@ -183,5 +183,11 @@ describe('RegisterPage', () => {
     page.unmount();
 
     expect(reset).toHaveBeenCalled();
+  });
+
+  it('cancels back to the login page', () => {
+    wrapper = mountPage();
+
+    expect(wrapper.get('[data-testid="register-cancel"]').attributes('href')).toBe('/login');
   });
 });

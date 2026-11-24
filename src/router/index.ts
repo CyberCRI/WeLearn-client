@@ -22,6 +22,8 @@ declare module 'vue-router' {
     feature?: Feature;
     // no welcome form here: it waits for the next normal page (onboarding flags stay unchanged)
     hideWelcome?: boolean;
+    // no header nor nav bar (App.vue): pages reached from the keycloak login
+    hideTemplate?: boolean;
     // a hidden page is never where a disabled page sends the user
     isHidden?: boolean;
   }
@@ -45,7 +47,14 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterPage,
-      meta: { requiresAuth: false, hideWelcome: true }
+      meta: { requiresAuth: false, hideWelcome: true, hideTemplate: true }
+    },
+    // the "Other" entry of the keycloak login's list of universities
+    {
+      path: '/request-university',
+      name: 'requestUniversity',
+      component: () => import('@/views/UniversityRequestPage.vue'),
+      meta: { requiresAuth: false, hideWelcome: true, hideTemplate: true }
     },
     // keycloak sends users here once their account is set up (password set from the sign-up
     // email): straight to the keycloak login, then back to the home page

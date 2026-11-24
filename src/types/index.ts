@@ -83,6 +83,13 @@ export type UserRegisterData = {
   email: string;
 };
 
+// a university missing from the keycloak login page; the email is optional ('' when not given)
+export type UniversityRequestData = {
+  university: string;
+  city: string;
+  email: string;
+};
+
 // the deploy targets, read from VITE_ENVIRONMENT (see utils/env.ts)
 export type Environment = 'dev' | 'staging' | 'test' | 'prod';
 
