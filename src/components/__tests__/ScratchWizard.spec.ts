@@ -10,6 +10,7 @@ import { scrollToAnchor } from '@/utils/navigation';
 import AutoEvaluationEnd from '@/components/learn/discipline/AutoEvaluationEnd.vue';
 import EditableSyllabus from '@/components/tutor/ThirdStep.vue';
 import { useSyllabusEvalStore } from '@/stores/syllabusEval';
+import AiNotice from '@/components/AiNotice.vue';
 
 // the wizard scrolls to the current step on mount, but the wrapper isn't in the document
 vi.mock('@/utils/navigation', () => ({ scrollToAnchor: vi.fn() }));
@@ -26,6 +27,11 @@ describe('ScratchWizard', () => {
     const bar = wrapper.findComponent(TutorStepsBar);
     expect(bar.props('labels')).toHaveLength(4);
     expect(bar.props('step')).toBe(3);
+  });
+
+  it('says the syllabus is written by an AI', () => {
+    const wrapper = mount(ScratchWizard, { shallow: true });
+    expect(wrapper.findComponent(AiNotice).props('feature')).toBe('syllabus');
   });
 
   it('puts what it is given before the steps', () => {

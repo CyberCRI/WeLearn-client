@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue';
 import ChatArea from '@/components/ChatArea.vue';
 import ChatBuble from '@/components/ChatBuble.vue';
 import ChatInput from '@/components/ChatInput.vue';
+import AiNotice from '@/components/AiNotice.vue';
 import ChatError from '@/components/ChatError.vue';
 import ChatEmptyContent from '@/components/ChatEmptyContent.vue';
 import ChatQueuesPills from '@/components/ChatQueuesPills.vue';
@@ -117,6 +118,7 @@ const clearChat = () => {
         :action="(content: string) => store.onSendMessage(content)"
       />
     </div>
+    <AiNotice feature="chat" class="chat-ai-notice mt-2" />
     <GuestQuotaNotice feature="chat" class="quota-notice mt-2" />
   </div>
 </template>
@@ -146,7 +148,8 @@ const clearChat = () => {
   }
 }
 
-.quota-notice {
+.quota-notice,
+.chat-ai-notice {
   width: 80%;
 }
 

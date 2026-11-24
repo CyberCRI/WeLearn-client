@@ -6,6 +6,11 @@ export const fr = {
   ':': '\u00a0:',
   adaptedTo: 'Adapté à\u00a0:',
   addBookmark: 'Ajouter aux favoris',
+  aiNotice: {
+    chat: 'Les réponses sont générées par une IA à partir des ressources de WeLearn. Elle peut se tromper\u00a0: vérifiez les sources.',
+    syllabus:
+      'Les propositions sont générées par une IA. Relisez-les avant de les utiliser dans votre cours.'
+  },
   back: 'Retour',
   bookmarks: 'Favoris',
   cardArticle: {

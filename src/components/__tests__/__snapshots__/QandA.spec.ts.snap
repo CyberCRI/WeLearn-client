@@ -154,6 +154,14 @@ exports[`QandA > renders properly 1`] = `
           </button>
         </div>
       </div>
+      <p
+        class="ai-notice is-size-7 chat-ai-notice mt-2"
+        data-testid="ai-generated-notice"
+        data-v-21b11c16=""
+        data-v-8765cc6e=""
+      >
+        aiNotice.chat
+      </p>
       <!--v-if-->
     </div>
     
