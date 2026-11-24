@@ -13,6 +13,7 @@ import ErrorComponent from '@/components/ErrorComponent.vue';
 import { useTutorStore } from '@/stores/tutor';
 import { useSyllabusEvalStore } from '@/stores/syllabusEval';
 import StatusModal from '@/components/tutor/StatusModal.vue';
+import AiNotice from '@/components/AiNotice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import ToasterComponent from '@/components/ToasterComponent.vue';
 import { scrollToAnchor } from '@/utils/navigation';
@@ -82,6 +83,7 @@ onMounted(() => {
 <template>
   <div class="content-centered-wrapper">
     <TutorStepsBar :labels="stepLabels" :step="store.step" />
+    <AiNotice feature="syllabus" class="mt-1 mb-3" />
     <GuestQuotaNotice feature="syllabus" class="mb-3" />
     <ToasterComponent
       v-if="store.hasDownloadError"

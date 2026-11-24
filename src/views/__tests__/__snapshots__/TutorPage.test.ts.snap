@@ -119,6 +119,14 @@ exports[`TutorPage > renders properly 1`] = `
       </div>
     </div>
   </div>
+  <p
+    class="ai-notice is-size-7 mt-1 mb-3"
+    data-testid="ai-generated-notice"
+    data-v-21b11c16=""
+    data-v-6483a8ca=""
+  >
+    aiNotice.syllabus
+  </p>
   <!--v-if-->
   <!--v-if-->
   <!--v-if-->

@@ -19,6 +19,11 @@ describe('ChatComponent', () => {
     document.body.innerHTML = '';
   });
 
+  it('says the answers are written by an AI', () => {
+    const wrapper = mountChat();
+    expect(wrapper.find('[data-testid="ai-generated-notice"]').text()).toBe('aiNotice.chat');
+  });
+
   describe('sending a message', () => {
     let store: ReturnType<typeof useChatStore>;
     beforeEach(() => {

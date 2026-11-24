@@ -4,6 +4,7 @@ import i18n from '@/localisation/i18n';
 import TutorStepsBar from '@/components/tutor/TutorStepsBar.vue';
 import CourseUpload from '@/components/tutor/CourseUpload.vue';
 import ReadingProgress from '@/components/tutor/ReadingProgress.vue';
+import AiNotice from '@/components/AiNotice.vue';
 import GuestQuotaNotice from '@/components/GuestQuotaNotice.vue';
 import CourseReview from '@/components/tutor/review/CourseReview.vue';
 import SustainabilityAdditions from '@/components/tutor/SustainabilityAdditions.vue';
@@ -49,6 +50,7 @@ const reviewRecap = computed(() => ({
 <template>
   <div class="content-centered-wrapper">
     <TutorStepsBar :labels="stepLabels" :step="course.step" @select="course.setStep" />
+    <AiNotice feature="syllabus" class="mt-1 mb-3" />
     <div class="layout-flex">
       <slot name="intro" />
       <GuestQuotaNotice feature="syllabus" class="mb-3" />

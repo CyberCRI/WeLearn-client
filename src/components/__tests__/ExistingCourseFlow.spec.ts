@@ -42,6 +42,11 @@ describe('ExistingCourseFlow', () => {
     expect(wrapper.find('#target-2').exists()).toBe(false);
   });
 
+  it('says the syllabus is written by an AI', () => {
+    const wrapper = mount(ExistingCourseFlow);
+    expect(wrapper.find('[data-testid="ai-generated-notice"]').text()).toBe('aiNotice.syllabus');
+  });
+
   it('shows the progress while WeLearn reads, and cancels it', async () => {
     const course = useCourseStore();
     course.setFile(pdf);
