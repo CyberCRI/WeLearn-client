@@ -53,9 +53,7 @@ export const authentication = {
   limitedAccess: {
     title: 'Your access is temporary',
     message:
-      'You did not log in with your school or university account, so your access to WeLearn is limited to 6 months: it ends on {date}. The length of this access is indicative: the WeLearn team may review it. To keep using WeLearn after that, log in with your institution account. Your profile shows how much time you have left.',
-    messageWithoutDate:
-      'You did not log in with your school or university account, so your access to WeLearn is limited to 6 months. The length of this access is indicative: the WeLearn team may review it. To keep using WeLearn after that, log in with your institution account. Your profile shows how much time you have left.',
+      'WeLearn is mainly intended for teachers and students of French higher education institutions. You logged in with a personal account, so your access to WeLearn is limited. The length of this access is shown on your profile as an indication, but the WeLearn team may review it, or even revoke it, at any time. To keep using WeLearn, log in with your institution account.',
     ok: 'I understand'
   },
   accessEnded: {

@@ -369,7 +369,7 @@ export const fr = {
     accessUntil: "Jusqu'au {date} ({n} jour restant) | Jusqu'au {date} ({n} jours restants)",
     accessTemporary: 'Temporaire (6 mois)',
     accessHint:
-      "Connectez-vous avec le compte de votre établissement pour continuer à utiliser WeLearn ensuite. La durée de cet accès est indicative : l'équipe WeLearn peut la revoir."
+      'Durée indicative : l’équipe WeLearn peut la revoir, voire la révoquer, à tout moment. Pour continuer à utiliser WeLearn, connectez-vous avec le compte de votre établissement.'
   },
   reload: 'Recharger',
   clearFilters: 'Effacer tous les filtres',

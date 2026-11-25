@@ -23,16 +23,6 @@ describe('LimitedAccessModal', () => {
     expect(wrapper.text()).toContain('authentication.limitedAccess.message');
   });
 
-  it('has a message without the date when it is not known', async () => {
-    const store = useAccountAccessStore();
-    store.access = { limited: true };
-    store.isNoticeOpen = true;
-
-    const wrapper = mount(LimitedAccessModal);
-
-    expect(wrapper.text()).toContain('authentication.limitedAccess.messageWithoutDate');
-  });
-
   it('closes on "I understand"', async () => {
     const store = useAccountAccessStore();
     store.access = { limited: true, access_until: '2027-05-20', days_left: 184 };
