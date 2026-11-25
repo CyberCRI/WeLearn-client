@@ -2,6 +2,7 @@ import { BorderStyle, Document, Packer, Paragraph, TextRun } from 'docx';
 import { core, normalise } from '@/utils/courseCheck';
 import type { ApprovedChange, CourseToUpdate } from '@/types';
 import { sessionParts } from '@/utils/courseReview';
+import { withAiMark } from '@/utils/aiDocument';
 
 // the complete updated syllabus: every line of the syllabus's own text, in its order, with the
 // teacher's approved changes added where they belong. nothing of the original is rewritten,
@@ -326,9 +327,11 @@ export const completeSyllabusDocx = (
   }
   children.push(...appendix);
   return Packer.toBlob(
-    new Document({
-      sections: [{ properties: {}, children }],
-      styles: { default: { document: { run: { font: 'Calibri', size: 22 } } } }
-    })
+    new Document(
+      withAiMark({
+        sections: [{ properties: {}, children }],
+        styles: { default: { document: { run: { font: 'Calibri', size: 22 } } } }
+      })
+    )
   );
 };
