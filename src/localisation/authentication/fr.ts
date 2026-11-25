@@ -54,9 +54,7 @@ export const authentication = {
   limitedAccess: {
     title: 'Votre accès est temporaire',
     message:
-      "Vous ne vous êtes pas connecté·e avec le compte de votre établissement : votre accès à WeLearn est donc limité à 6 mois et se termine le {date}. Pour continuer à utiliser WeLearn ensuite, connectez-vous avec le compte de votre établissement. Votre profil indique le temps qu'il vous reste.",
-    messageWithoutDate:
-      "Vous ne vous êtes pas connecté·e avec le compte de votre établissement : votre accès à WeLearn est donc limité à 6 mois. Pour continuer à utiliser WeLearn ensuite, connectez-vous avec le compte de votre établissement. Votre profil indique le temps qu'il vous reste.",
+      'WeLearn est principalement destiné aux enseignants et étudiants des établissements de l’enseignement supérieur français. Vous vous êtes connectés avec un compte personnel : votre accès à WeLearn est donc limité. La durée de cet accès est visible à titre indicatif sur votre profil, mais l’équipe WeLearn peut la revoir, voire la révoquer, à tout moment. Pour continuer à utiliser WeLearn, connectez-vous avec le compte de votre établissement.',
     ok: "J'ai compris"
   },
   accessEnded: {

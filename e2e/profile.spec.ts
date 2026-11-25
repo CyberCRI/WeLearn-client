@@ -46,7 +46,7 @@ test.describe('profile', () => {
       await page.goto('/profile');
 
       const notice = page.getByTestId('limited-access');
-      await expect(notice).toContainText('20 mai 2027');
+      await expect(notice).toContainText('compte personnel');
       await page.getByTestId('limited-access-ok').click();
       await expect(notice).toHaveCount(0);
       await expect(page.getByTestId('profile-access')).toContainText(

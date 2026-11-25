@@ -5,7 +5,7 @@ import ButtonComponent from '@/components/ButtonComponent.vue';
 import { useAccountAccessStore } from '@/stores/accountAccess';
 
 const accountAccess = useAccountAccessStore();
-const { isNoticeOpen, accessUntilLabel } = storeToRefs(accountAccess);
+const { isNoticeOpen } = storeToRefs(accountAccess);
 </script>
 
 <template>
@@ -14,11 +14,7 @@ const { isNoticeOpen, accessUntilLabel } = storeToRefs(accountAccess);
     v-if="isNoticeOpen"
     data-testid="limited-access"
     :title="$t('authentication.limitedAccess.title')"
-    :message="
-      accessUntilLabel
-        ? $t('authentication.limitedAccess.message', { date: accessUntilLabel })
-        : $t('authentication.limitedAccess.messageWithoutDate')
-    "
+    :message="$t('authentication.limitedAccess.message')"
     :isOpen="true"
     size="small"
     :onClose="accountAccess.closeNotice"

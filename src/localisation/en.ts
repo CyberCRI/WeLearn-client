@@ -363,7 +363,8 @@ export const en = {
     access: 'Access',
     accessUntil: 'Until {date} ({n} day left) | Until {date} ({n} days left)',
     accessTemporary: 'Temporary (6 months)',
-    accessHint: 'Log in with your school or university account to keep using WeLearn after that.'
+    accessHint:
+      'An indicative length: the WeLearn team may review it, or even revoke it, at any time. To keep using WeLearn, log in with your institution account.'
   },
   reload: 'Reload',
   clearFilters: 'Clear all filters',
