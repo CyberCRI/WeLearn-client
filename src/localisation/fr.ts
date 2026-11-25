@@ -9,7 +9,8 @@ export const fr = {
   aiNotice: {
     chat: 'Les réponses sont générées par une IA à partir des ressources de WeLearn. Elle peut se tromper\u00a0: vérifiez les sources.',
     syllabus:
-      'Les propositions sont générées par une IA. Relisez-les avant de les utiliser dans votre cours.'
+      'Les propositions sont générées par une IA. Relisez-les avant de les utiliser dans votre cours.',
+    document: "Document rédigé avec l'aide de l'IA de WeLearn."
   },
   back: 'Retour',
   bookmarks: 'Favoris',

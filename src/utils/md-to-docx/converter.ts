@@ -6,7 +6,8 @@ import {
   PageOrientation,
   Packer,
   Table,
-  BorderStyle
+  BorderStyle,
+  type IPropertiesOptions
 } from 'docx';
 import { type Options, type Style, headingConfigs } from './types';
 import {
@@ -21,6 +22,7 @@ import {
   processCodeBlock,
   processImage
 } from './helpers';
+import { withAiMark } from '@/utils/aiDocument';
 
 const defaultStyle: Style = {
   titleSize: 32,
@@ -322,7 +324,7 @@ export async function convertMarkdownToDocx(
     }
 
     // Create the document with appropriate settings
-    const doc = new Document({
+    const docOptions: IPropertiesOptions = {
       sections: [
         {
           properties: {
@@ -466,7 +468,8 @@ export async function convertMarkdownToDocx(
           }
         ]
       }
-    });
+    };
+    const doc = new Document(withAiMark(docOptions));
 
     return await Packer.toBlob(doc);
   } catch (error) {
