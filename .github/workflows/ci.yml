@@ -34,6 +34,7 @@ jobs:
       pull-requests: read
     outputs:
       deploy: ${{ steps.check.outputs.deploy }}
+      extra-tags: ${{ steps.docker-tag.outputs.extra-tags }}
     steps:
       - id: check
         env:
@@ -66,6 +67,25 @@ jobs:
             echo "Image built only, not pushed, no deploy tag: $reason" >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # the image also gets the <ref>_deploy tag, so it must be a valid docker tag:
+      # [A-Za-z0-9_][A-Za-z0-9._-]{0,127}. a branch like feat/x is refused here, with a clear
+      # error, instead of failing later in the push. only checked when the image is pushed
+      - id: docker-tag
+        env:
+          DEPLOY: ${{ steps.check.outputs.deploy }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          if [ "$DEPLOY" != "true" ]; then
+            echo "extra-tags=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          tag="${REF_NAME}_deploy"
+          if ! printf '%s' "$tag" | grep -Eq '^[A-Za-z0-9_][A-Za-z0-9._-]{0,127}$'; then
+            echo "::error::'$tag' is not a valid docker tag (allowed: letters, digits, '_', '.', '-'; max 128 characters; cannot start with '.' or '-'). Rename the branch, e.g. with '_' instead of '/'."
+            exit 1
+          fi
+          echo "extra-tags=$tag" >> "$GITHUB_OUTPUT"
+
   # every push builds the image once the checks passed; only deploy targets push it.
   # the name says which: the inner job of the shared workflow is always called build-push
   build-docker:
@@ -75,11 +95,14 @@ jobs:
       - deploy-target
     # Dependabot runs only get Dependabot secrets: no registry or submodule access
     if: github.actor != 'dependabot[bot]'
-    uses: CyberCRI/github-workflows/.github/workflows/build-push.yaml@main
+    uses: CyberCRI/github-workflows/.github/workflows/build-push.yaml@extratags
     with:
       registry-name: ${{ vars.DOCKER_PROD_REGISTRY }}
       image-name: welearn-client
       image-tag: ${{ github.sha }}
+      # <ref>_deploy, empty when the image is not pushed. needs the extra-tags input of
+      # build-push.yaml (pinned to the extratags branch of CyberCRI/github-workflows: back to @main once merged)
+      extra-tags: ${{ needs.deploy-target.outputs.extra-tags }}
       recursive-submodule-checkout: true
       push: ${{ needs.deploy-target.outputs.deploy == 'true' }}
       build-args: |
