@@ -28,10 +28,13 @@ This project is built with Vue 3 and TypeScript and serves as an SDG expert to h
 ## Features
 
 - **Chat**: Teachers ask questions and get answers built from a database of verified sources, through the WeLearn API (language model + vector similarity search). Results can be filtered by SDG or by source, and cited sources can be bookmarked.
-- **Syllabus**: A step-by-step assistant that turns a teacher's own course files (PDF, TXT or DOCX) into a syllabus enriched with SDG-related resources. Teachers review the summaries, pick resources, edit the syllabus and download it as a Word document.
-- **Microlearning**: Short learning journeys, by discipline, that show how a subject connects to sustainability and how to bring it into class.
+- **Syllabus**: A step-by-step assistant that turns a teacher's own course files (PDF, TXT or DOCX) into a syllabus enriched with SDG-related resources. Teachers review the summaries, pick resources, edit the syllabus and download it as a Word document. On dev and staging (`syllabusV2` flag), teachers can also start from an existing course and get sustainability additions to it.
+- **Learn**: A hub of short learning modules. The discipline module (formerly Microlearning) shows how a subject connects to sustainability and how to bring it into class; the foundations and frameworks modules are on dev and staging only.
 - **Search**: Similarity-based search across the database of verified sources, with detection of the SDGs a text relates to.
 - **Bookmarks**: A central place to view and manage the documents saved from the search or chat features, with a bibliography export.
+- **Accounts**: Keycloak login and sign-up. Guests can use the tools within daily limits; bookmarks need an account.
+
+Where each feature is on (dev, staging, test, prod) is listed in [docs/features.md](docs/features.md), generated from `src/featureEnvironments.json`.
 
 ## Requirements
 
@@ -60,19 +63,19 @@ git clone https://github.com/CyberCRI/WeLearn-client.git
 cd WeLearn-client
 ```
 
-3. Copy the example env file, then fill in the values:
+3. Copy `.env.test` (the dummy values used by the tests) to `.env.local`, then fill in the real values:
 
 ```bash
 cp .env.test .env.local
 ```
 
-| Variable                                                              | Purpose                                                                       |
-| --------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| `VITE_API_BASE`, `VITE_API_VERSION`                                   | URL and version of the WeLearn API                                            |
-| `VITE_WL_API_KEY`                                                     | API key sent with every request                                               |
-| `VITE_ENVIRONMENT`                                                    | Environment name. Login is only required when it is set to `dev` or `staging` |
-| `VITE_KEYCLOAK_URL`, `VITE_KEYCLOAK_REALM`, `VITE_KEYCLOAK_CLIENT_ID` | Keycloak authentication                                                       |
-| `VITE_MIXPANEL_TOKEN`                                                 | Analytics token. Optional, analytics are currently disabled                   |
+| Variable                                                              | Purpose                                                                                  |
+| --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `VITE_API_BASE`, `VITE_API_VERSION`                                   | URL and version of the WeLearn API                                                       |
+| `VITE_WL_API_KEY`                                                     | API key sent with every request                                                          |
+| `VITE_ENVIRONMENT`                                                    | `dev`, `staging`, `test` or `prod`. Picks the feature flags: login is off only in `test` |
+| `VITE_KEYCLOAK_URL`, `VITE_KEYCLOAK_REALM`, `VITE_KEYCLOAK_CLIENT_ID` | Keycloak authentication                                                                  |
+| `VITE_MIXPANEL_TOKEN`                                                 | Analytics token. Optional, analytics stay off without it                                 |
 
 4. Install dependencies using Yarn (this also enables the git pre-push hook, see [Development](#development)):
 
@@ -104,8 +107,9 @@ The project follows a standard Vue 3 application structure:
 
 - **`src/`**: All the source code of the web application.
   - `src/views/`: One view per page of the app.
-  - `src/components/`: Reusable Vue components, with feature subfolders (`tutor/`, `microlearning/`, `icons/`, ...).
+  - `src/components/`: Reusable Vue components, with feature subfolders (`tutor/`, `learn/`, `icons/`, ...).
   - `src/stores/`: Pinia stores for state management, one per feature.
+  - `src/learn/`: The Learn hub's module list, progress and module structures.
   - `src/composables/`: Reusable composition functions.
   - `src/utils/`: API helpers, storage and other utilities.
   - `src/localisation/`: English and French translations.
@@ -127,6 +131,7 @@ The project follows a standard Vue 3 application structure:
 | `yarn format`        | Format the code (Prettier)                               |
 | `yarn type-check`    | Check types (vue-tsc)                                    |
 | `yarn gen:api`       | Regenerate the API types from WeLearn-api's OpenAPI file |
+| `yarn docs:features` | Regenerate `docs/features.md` from the feature flags     |
 
 See `package.json` for the full list of scripts.
 
@@ -155,7 +160,7 @@ The types in `src/types/generated/` are generated from the `openapi.json` file o
 
 ### Pre-push hook
 
-`yarn install` enables a git pre-push hook (`.githooks/pre-push`) that runs the same checks as CI before every push: lint, format, type check, unit tests with coverage and the API contract check. End-to-end tests are left to CI. It also refuses to push:
+`yarn install` enables a git pre-push hook (`.githooks/pre-push`) that runs the same checks as CI before every push: lint, format, type check, unit tests with coverage, the feature flags doc check and the API contract check. End-to-end tests are left to CI. It also refuses to push:
 
 - to `main`;
 - when there are uncommitted or untracked files, because the checks run on the working tree.
