@@ -32,6 +32,7 @@ describe('analytics', () => {
 
   afterEach(() => {
     vi.unstubAllEnvs();
+    vi.unstubAllGlobals();
     vi.resetAllMocks();
     vi.restoreAllMocks();
   });
@@ -89,6 +90,29 @@ describe('analytics', () => {
     );
   });
 
+  it('sends no url, referrer or campaign data, and keeps none on the device', async () => {
+    const analytics = await loadAnalytics();
+    analytics.initAnalytics();
+
+    analytics.grantAnalyticsConsent();
+
+    const config = vi.mocked(mixpanel.init).mock.calls[0][1];
+    expect(config).toMatchObject({ store_google: false, save_referrer: false });
+    expect(config?.property_blacklist).toEqual(
+      expect.arrayContaining([
+        '$current_url',
+        'current_url_search',
+        '$referrer',
+        '$referring_domain',
+        '$initial_referrer',
+        '$initial_referring_domain',
+        'mp_keyword',
+        'utm_source',
+        'gclid'
+      ])
+    );
+  });
+
   it('opts in, registers the super properties and identifies a known user on consent', async () => {
     const analytics = await loadAnalytics();
     analytics.initAnalytics();
@@ -137,8 +161,11 @@ describe('analytics', () => {
     analytics.initAnalytics();
     analytics.grantAnalyticsConsent();
     localStorage.setItem('mp_token_mixpanel', '{}');
+    localStorage.setItem('__mpq_token_ev', '[]');
     sessionStorage.setItem('mp_tab_id_token', 'tab');
     localStorage.setItem('language', 'en');
+    const deleteDatabase = vi.fn();
+    vi.stubGlobal('indexedDB', { deleteDatabase });
 
     analytics.revokeAnalyticsConsent();
     analytics.track('Chat Reset', {});
@@ -147,7 +174,9 @@ describe('analytics', () => {
     expect(mixpanel.opt_out_tracking).toHaveBeenCalled();
     expect(mixpanel.track).not.toHaveBeenCalled();
     expect(localStorage.getItem('mp_token_mixpanel')).toBeNull();
+    expect(localStorage.getItem('__mpq_token_ev')).toBeNull();
     expect(sessionStorage.getItem('mp_tab_id_token')).toBeNull();
+    expect(deleteDatabase).toHaveBeenCalledWith('mixpanelBrowserDb');
     expect(localStorage.getItem('language')).toBe('en');
   });
 

@@ -62,7 +62,7 @@ onUnmounted(() => {
       <button
         ref="triggerElement"
         type="button"
-        class="button is-text trigger"
+        class="button is-text trigger mp-sensitive"
         aria-haspopup="true"
         aria-controls="user-menu"
         :aria-expanded="isOpen"

@@ -79,7 +79,7 @@ const focusDetails = () => {
       <li v-for="name in fileNames" :key="name">
         <span class="file-name">{{ name }}</span>
         <button
-          class="delete is-small"
+          class="delete is-small mp-sensitive"
           :aria-label="$t('tutor.documentsStep.removeFile', { name })"
           @click="removeFile(name)"
         />

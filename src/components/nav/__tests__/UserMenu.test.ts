@@ -63,6 +63,12 @@ describe('UserMenu open state', () => {
   const isOpen = (wrapper: ReturnType<typeof mountAttached>) =>
     wrapper.get('[data-testid="user-menu"]').classes().includes('is-active');
 
+  it("keeps the user's name out of the click analytics", () => {
+    const trigger = mount(UserMenu, mountOptions).get('[data-testid="user-menu-trigger"]');
+    expect(trigger.attributes('aria-label')).toBe('Jane Doe');
+    expect(trigger.classes()).toContain('mp-sensitive');
+  });
+
   it('opens and closes from the trigger, and aria-expanded follows', async () => {
     const wrapper = mountAttached();
     const trigger = wrapper.get('[data-testid="user-menu-trigger"]');

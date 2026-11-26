@@ -41,7 +41,7 @@ const onPick = (files: File[]) => props.setFile(files[0]);
     <div v-if="file" class="picked-file" data-testid="course-file">
       <span class="file-name">{{ file.name }}</span>
       <button
-        class="delete is-small"
+        class="delete is-small mp-sensitive"
         :aria-label="$t('tutor.documentsStep.removeFile', { name: file.name })"
         @click="removeFile"
       />

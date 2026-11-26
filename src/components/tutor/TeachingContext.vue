@@ -109,7 +109,7 @@ const isPrefilled = (key: Key) => props.prefilled.includes(key);
         />
         <p
           v-if="isPrefilled(key)"
-          class="help from-syllabus"
+          class="help from-syllabus mp-sensitive"
           :title="evidence[key]"
           data-testid="prefilled"
         >
