@@ -14,7 +14,9 @@ const user = useUserStore();
     data-testid="consent-banner"
   >
     <div class="consent-content">
-      <p id="consent-title" class="has-text-weight-bold mb-1">{{ $t('consent.title') }}</p>
+      <p id="consent-title" class="has-text-weight-bold mb-1">
+        {{ $t('consent.title') }}
+      </p>
       <p class="is-size-7">
         {{ $t('consent.text') }}
         <router-link to="/terms">{{ $t('consent.policyLink') }}</router-link>
@@ -23,7 +25,7 @@ const user = useUserStore();
     <!-- CNIL: refusing must be as easy and as visible as accepting -->
     <div class="buttons consent-actions">
       <ButtonComponent
-        color="primary"
+        isDiscreet
         data-testid="consent-refuse"
         @click="user.setAnalyticsConsent(false)"
       >

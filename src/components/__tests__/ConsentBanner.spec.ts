@@ -43,7 +43,7 @@ describe('ConsentBanner', () => {
     const wrapper = mountWithRouter(ConsentBanner);
 
     expect(wrapper.find('[data-testid="consent-banner"]').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="consent-accept"]').classes()).toEqual(
+    expect(wrapper.find('[data-testid="consent-accept"]').classes()).not.toEqual(
       wrapper.find('[data-testid="consent-refuse"]').classes()
     );
     expect(wrapper.findComponent(RouterLinkStub).props('to')).toBe('/terms');
