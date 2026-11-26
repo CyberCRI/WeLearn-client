@@ -20,6 +20,13 @@ vi.mock('@/stores/auth', () => ({ useAuthStore: () => auth }));
 
 const doc = (id: string) => ({ payload: { document_id: id } }) as Document;
 
+const accountRequired = {
+  response: {
+    status: 401,
+    data: { detail: { code: 'ACCOUNT_REQUIRED', message: 'An account is required' } }
+  }
+};
+
 const mockGetBookmarks = (docs: Document[]) =>
   vi
     .mocked(getBookmarks)
@@ -85,6 +92,18 @@ describe('bookmarks store', () => {
 
     expect(store.sourcesBookmarked).toEqual([]);
     expect(console.error).toHaveBeenCalled();
+    expect(store.hasBookmarkError).toBe(true);
+    expect(store.errorCode).toBe('UNKNOWN_ERROR');
+  });
+
+  it('shows no error when a guest has no bookmarks to load', async () => {
+    vi.mocked(getBookmarks).mockRejectedValue(accountRequired);
+    const store = useBookmarksStore();
+
+    await store.getBookmarks();
+
+    expect(store.hasBookmarkError).toBe(false);
+    expect(auth.askToSignUp).not.toHaveBeenCalled();
   });
 
   it('adds a bookmark', async () => {
@@ -108,17 +127,65 @@ describe('bookmarks store', () => {
 
   // the API refuses guests too, e.g. when the client did not know the user was one
   it('asks to sign up when the API requires an account', async () => {
-    vi.mocked(postBookmark).mockRejectedValue({
-      response: {
-        status: 401,
-        data: { detail: { code: 'ACCOUNT_REQUIRED', message: 'An account is required' } }
-      }
-    });
+    vi.mocked(postBookmark).mockRejectedValue(accountRequired);
     const store = useBookmarksStore();
 
     await store.addBookmark(doc('doc-1'));
 
     expect(auth.askToSignUp).toHaveBeenCalledWith('bookmark');
+    expect(store.isBookmarked('doc-1')).toBe(false);
+    expect(store.hasBookmarkError).toBe(false);
+  });
+
+  it('shows an error when adding a bookmark fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(postBookmark).mockRejectedValue({
+      response: { status: 500, data: { detail: { code: 'DB_ERROR' } } }
+    });
+    const store = useBookmarksStore();
+
+    await store.addBookmark(doc('doc-1'));
+
+    expect(store.hasBookmarkError).toBe(true);
+    expect(store.errorCode).toBe('DB_ERROR');
+  });
+
+  it('clears the error once a bookmark goes through', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.mocked(postBookmark).mockRejectedValueOnce(new Error('Network Error'));
+    const store = useBookmarksStore();
+    await store.addBookmark(doc('doc-1'));
+
+    await store.addBookmark(doc('doc-1'));
+
+    expect(store.hasBookmarkError).toBe(false);
+    expect(store.errorCode).toBe('');
+    expect(store.isBookmarked('doc-1')).toBe(true);
+  });
+
+  it('sends one request on a double click', async () => {
+    const store = useBookmarksStore();
+
+    store.toggleBookmark(doc('doc-1'));
+    store.toggleBookmark(doc('doc-1'));
+    await flushPromises();
+
+    expect(postBookmark).toHaveBeenCalledOnce();
+    expect(deleteBookmark).not.toHaveBeenCalled();
+    expect(store.isBookmarked('doc-1')).toBe(true);
+  });
+
+  it('sends one delete on a double click on a bookmarked document', async () => {
+    mockGetBookmarks([doc('doc-1')]);
+    const store = useBookmarksStore();
+    await store.getBookmarks();
+
+    store.toggleBookmark(doc('doc-1'));
+    store.toggleBookmark(doc('doc-1'));
+    await flushPromises();
+
+    expect(deleteBookmark).toHaveBeenCalledOnce();
+    expect(postBookmark).not.toHaveBeenCalled();
     expect(store.isBookmarked('doc-1')).toBe(false);
   });
 
@@ -132,6 +199,34 @@ describe('bookmarks store', () => {
     expect(deleteBookmark).toHaveBeenCalledWith('doc-1');
     expect(store.sourcesBookmarked).toEqual([doc('doc-2')]);
     expect(store.isBookmarked('doc-1')).toBe(false);
+  });
+
+  it('puts a bookmark back in its place when removing it fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    mockGetBookmarks([doc('doc-1'), doc('doc-2'), doc('doc-3')]);
+    vi.mocked(deleteBookmark).mockRejectedValue(new Error('Network Error'));
+    const store = useBookmarksStore();
+    await store.getBookmarks();
+
+    await store.removeBookmark('doc-2');
+
+    expect(store.sourcesBookmarked).toEqual([doc('doc-1'), doc('doc-2'), doc('doc-3')]);
+    expect(store.isBookmarked('doc-2')).toBe(true);
+    expect(store.hasBookmarkError).toBe(true);
+    expect(track).not.toHaveBeenCalled();
+  });
+
+  it('asks to sign up when removing a bookmark needs an account', async () => {
+    mockGetBookmarks([doc('doc-1')]);
+    vi.mocked(deleteBookmark).mockRejectedValue(accountRequired);
+    const store = useBookmarksStore();
+    await store.getBookmarks();
+
+    await store.removeBookmark('doc-1');
+
+    expect(auth.askToSignUp).toHaveBeenCalledWith('bookmark');
+    expect(store.hasBookmarkError).toBe(false);
+    expect(store.isBookmarked('doc-1')).toBe(true);
   });
 
   it('toggles a bookmark on and off', async () => {
@@ -170,6 +265,20 @@ describe('bookmarks store', () => {
     expect(deleteAllBookmarks).toHaveBeenCalledOnce();
     expect(store.bookmarkedLength).toBe(0);
     expect(store.isBookmarked('doc-1')).toBe(false);
+  });
+
+  it('restores every bookmark when clearing them fails', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    mockGetBookmarks([doc('doc-1'), doc('doc-2')]);
+    vi.mocked(deleteAllBookmarks).mockRejectedValue(new Error('Network Error'));
+    const store = useBookmarksStore();
+    await store.getBookmarks();
+
+    await store.resetBookmarks();
+
+    expect(store.sourcesBookmarked).toEqual([doc('doc-1'), doc('doc-2')]);
+    expect(store.isBookmarked('doc-1')).toBe(true);
+    expect(store.hasBookmarkError).toBe(true);
   });
 
   it('tracks added and removed bookmarks', async () => {
