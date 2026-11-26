@@ -326,6 +326,7 @@ export const fr = {
     help: 'Aide',
     preview: 'Aperçu',
     profile: 'Profil',
+    greeting: 'Bonjour, {name}',
     learn: 'Se former',
     workshopForm: "Formulaire d'atelier"
   },

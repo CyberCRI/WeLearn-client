@@ -10,9 +10,13 @@ const login = vi.fn();
 const logout = vi.fn();
 const isAuthenticated = ref(true);
 const userName = ref('Jane Doe');
+const user = ref<{ firstName?: string; lastName?: string } | undefined>({
+  firstName: 'Jane',
+  lastName: 'Doe'
+});
 
 vi.mock('@/composables/useAuth', () => ({
-  useAuth: () => ({ isAuthenticated, userName, login, logout })
+  useAuth: () => ({ isAuthenticated, user, userName, login, logout })
 }));
 
 const mountOptions = { global: { plugins: [router] } };
@@ -22,6 +26,8 @@ describe('UserMenu', () => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
     isAuthenticated.value = true;
+    userName.value = 'Jane Doe';
+    user.value = { firstName: 'Jane', lastName: 'Doe' };
   });
 
   it('links to the profile and bookmarks and logs out when authenticated', async () => {
@@ -56,6 +62,8 @@ describe('UserMenu open state', () => {
     setActivePinia(createPinia());
     vi.clearAllMocks();
     isAuthenticated.value = true;
+    userName.value = 'Jane Doe';
+    user.value = { firstName: 'Jane', lastName: 'Doe' };
   });
 
   // attached to the document so the document listeners and focus work
@@ -67,6 +75,31 @@ describe('UserMenu open state', () => {
     const trigger = mount(UserMenu, mountOptions).get('[data-testid="user-menu-trigger"]');
     expect(trigger.attributes('aria-label')).toBe('Jane Doe');
     expect(trigger.classes()).toContain('mp-sensitive');
+  });
+
+  it('shows the initials and a greeting instead of the empty icon when logged in', () => {
+    const trigger = mount(UserMenu, mountOptions).get('[data-testid="user-menu-trigger"]');
+
+    expect(trigger.get('[data-testid="user-menu-initials"]').text()).toBe('JD');
+    expect(trigger.get('[data-testid="user-menu-greeting"]').text()).toBe('nav.greeting');
+    expect(trigger.find('.icon').exists()).toBe(false);
+  });
+
+  it('falls back on the user name for the initials', () => {
+    user.value = undefined;
+    userName.value = 'jdoe';
+    const trigger = mount(UserMenu, mountOptions).get('[data-testid="user-menu-trigger"]');
+
+    expect(trigger.get('[data-testid="user-menu-initials"]').text()).toBe('J');
+  });
+
+  it('keeps the empty user icon for a guest', () => {
+    isAuthenticated.value = false;
+    const trigger = mount(UserMenu, mountOptions).get('[data-testid="user-menu-trigger"]');
+
+    expect(trigger.find('.icon').exists()).toBe(true);
+    expect(trigger.find('[data-testid="user-menu-initials"]').exists()).toBe(false);
+    expect(trigger.find('[data-testid="user-menu-greeting"]').exists()).toBe(false);
   });
 
   it('opens and closes from the trigger, and aria-expanded follows', async () => {

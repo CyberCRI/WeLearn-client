@@ -320,6 +320,7 @@ export const en = {
     help: 'Help',
     preview: 'Preview',
     profile: 'Profile',
+    greeting: 'Hi, {name}',
     learn: 'Learn',
     workshopForm: 'Workshop form'
   },
