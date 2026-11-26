@@ -49,14 +49,14 @@ describe('getUserAndSession', () => {
   it("clears the previous user's data when the user changed", async () => {
     localStorage.setItem('userId', JSON.stringify('user-1'));
     localStorage.setItem('sessionId', JSON.stringify('session-1'));
-    localStorage.setItem('searchInput', JSON.stringify('old query'));
+    sessionStorage.setItem('searchInput', JSON.stringify('old query'));
     vi.mocked(basePostAxios).mockResolvedValue({
       data: { session_id: 'session-2', user_id: 'user-2', message: 'ok' }
     } as PostResponse);
 
     await getUserAndSession();
 
-    expect(localStorage.getItem('searchInput')).toBeNull();
+    expect(sessionStorage.getItem('searchInput')).toBeNull();
     expect(localStorage.getItem('sessionId')).toBe('"session-2"');
     expect(localStorage.getItem('userId')).toBe('"user-2"');
   });

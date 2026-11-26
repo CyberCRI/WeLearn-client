@@ -22,6 +22,9 @@ type Fixtures = ProjectOptions & {
   hasDoneSyllabusEval: boolean;
 };
 
+// the conversation the mocked chat API holds, one per test
+const chatThread = { id: 'e2e-thread', question: '', answer: 'An answer from the API' };
+
 export const test = base.extend<Fixtures>({
   isDevEnvironment: [false, { option: true }],
   loggedIn: [false, { option: true }],
@@ -39,10 +42,11 @@ export const test = base.extend<Fixtures>({
   ) => {
     if (hasDoneSyllabusEval) {
       await page.addInitScript(() => {
-        localStorage.setItem('syllabus_v2_pre', 'true');
-        localStorage.setItem('syllabus_v2_post', 'true');
+        localStorage.setItem('evalForm:syllabus_v2_pre', 'true');
+        localStorage.setItem('evalForm:syllabus_v2_post', 'true');
       });
     }
+    chatThread.question = '';
     // Mock auth/session calls from App.vue
     await page.route('**/**/user/**', async (route) => {
       const url = route.request().url();
@@ -119,6 +123,39 @@ export const test = base.extend<Fixtures>({
       } else {
         await route.continue();
       }
+    });
+
+    // a question is answered with the two docs on thread chatThread.id; the history of that thread
+    // is the question and its answer, as the API keeps them (without their sources)
+    await page.route('**/qna/chat/agent_stream', async (route) => {
+      const { query } = route.request().postDataJSON();
+      chatThread.question = query;
+      const events = [
+        { docs },
+        { content: chatThread.answer },
+        { thread_id: chatThread.id, message_id: 'e2e-message' }
+      ];
+      await route.fulfill({
+        contentType: 'text/event-stream',
+        body: events.map((event) => `data: ${JSON.stringify(event)}\n\n`).join('')
+      });
+    });
+    await page.route('**/qna/chat/history**', async (route) => {
+      const threadId = new URL(route.request().url()).searchParams.get('thread_id');
+      await route.fulfill({
+        json:
+          threadId === chatThread.id && chatThread.question
+            ? [
+                { role: 'user', content: chatThread.question },
+                { role: 'assistant', content: chatThread.answer }
+              ]
+            : []
+      });
+    });
+
+    // external sdg classifier called alongside every search, it must not hang the tests when down
+    await page.route('**/aurora-sdg.labs.vu.nl/**', async (route) => {
+      await route.fulfill({ json: { predictions: [] } });
     });
 
     // the "I have a course" path, one run that goes well; a test changes a step with its own

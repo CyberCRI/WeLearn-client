@@ -7,7 +7,7 @@ import { basePostAxios } from '@/utils/fetch';
 vi.mock('@/utils/fetch', () => ({ basePostAxios: vi.fn() }));
 
 const sent = () => vi.mocked(basePostAxios).mock.calls.map(([, body]) => body);
-const stored = (form: string) => JSON.parse(localStorage.getItem(form) || 'null');
+const stored = (form: string) => JSON.parse(localStorage.getItem(`evalForm:${form}`) || 'null');
 // a new visit: the store as the next page load creates it
 const nextVisit = () => {
   setActivePinia(createPinia());

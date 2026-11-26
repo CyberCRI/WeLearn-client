@@ -28,7 +28,7 @@ describe('TutorPage', () => {
 
   afterEach(() => {
     localStorage.removeItem('featurePreview');
-    localStorage.removeItem('syllabus_v2_pre');
+    localStorage.removeItem('evalForm:syllabus_v2_pre');
   });
 
   it('renders properly', () => {
@@ -72,7 +72,7 @@ describe('TutorPage', () => {
     beforeEach(() => {
       localStorage.setItem('featurePreview', JSON.stringify(['syllabusV2']));
       // the self-evaluation was done on a first visit
-      localStorage.setItem('syllabus_v2_pre', 'true');
+      localStorage.setItem('evalForm:syllabus_v2_pre', 'true');
     });
 
     const mountPage = () =>

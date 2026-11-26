@@ -11,7 +11,7 @@ import {
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import { basePostAxios } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
-import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
+import { clearFromStorage, getFromStorage, isOlderThan, saveToStorage } from '@/utils/storage';
 import { useAuthStore } from '@/stores/auth';
 import type { ApprovedChange } from '@/types';
 
@@ -27,9 +27,30 @@ export type SyllabusExport = {
   | { kind: 'complete'; plan: CompletePlan; labels: CompleteLabels }
 );
 
-// a guest's syllabus waiting for a login (cleared on logout, so it never downloads for someone
-// else)
+// a guest's syllabus waiting for a login, saved with its date (cleared on logout, so it never
+// downloads for someone else). a login takes minutes: after a day it is dropped
 export const PENDING_SYLLABUS_KEY = 'pendingSyllabus';
+export const PENDING_SYLLABUS_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+type PendingSyllabus = { savedAt: string; syllabus: SyllabusExport };
+
+// the syllabus still waiting, if any. an expired one is removed, and so is the undated format of
+// older versions: how long it has been there can't be told
+const readPendingSyllabus = (now = Date.now()): SyllabusExport | null => {
+  const pending: Partial<PendingSyllabus> | null = getFromStorage(PENDING_SYLLABUS_KEY);
+  if (!pending) return null;
+  if (
+    !pending.syllabus?.fileName ||
+    isOlderThan(pending.savedAt, PENDING_SYLLABUS_MAX_AGE_MS, now)
+  ) {
+    clearFromStorage(PENDING_SYLLABUS_KEY);
+    return null;
+  }
+  return pending.syllabus;
+};
+
+// at boot: a guest who never logged in does not keep it longer either
+export const dropExpiredPendingSyllabus = () => void readPendingSyllabus();
 
 export const buildSyllabusFile = (syllabus: SyllabusExport): Promise<Blob> => {
   const { appendix } = syllabus;
@@ -70,7 +91,8 @@ export const exportSyllabus = async (syllabus: SyllabusExport): Promise<boolean>
   const auth = useAuthStore();
   if (!auth.isGuest) return downloadSyllabus(syllabus);
   try {
-    saveToStorage(PENDING_SYLLABUS_KEY, syllabus);
+    const pending: PendingSyllabus = { savedAt: new Date().toISOString(), syllabus };
+    saveToStorage(PENDING_SYLLABUS_KEY, pending);
   } catch (error) {
     // storage full or blocked: only this download is lost
     console.error('Could not keep the syllabus for after the sign-up:', error);
@@ -83,7 +105,7 @@ export const exportSyllabus = async (syllabus: SyllabusExport): Promise<boolean>
 // tries again
 export const downloadPendingSyllabus = async () => {
   if (useAuthStore().isGuest) return;
-  const syllabus = getFromStorage(PENDING_SYLLABUS_KEY) as SyllabusExport | null;
-  if (!syllabus?.fileName) return;
+  const syllabus = readPendingSyllabus();
+  if (!syllabus) return;
   if (await downloadSyllabus(syllabus)) clearFromStorage(PENDING_SYLLABUS_KEY);
 };

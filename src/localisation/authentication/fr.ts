@@ -25,6 +25,14 @@ export const authentication = {
     EMAIL_DISABLED: 'L’envoi de demandes n’est pas disponible pour le moment.',
     UNKNOWN: 'Une erreur est survenue. Réessayez dans un instant.'
   },
+  // under the sign-up form: what the account data is for, in plain words
+  privacyNotice: {
+    account:
+      'Nous demandons votre nom et votre adresse e-mail uniquement pour créer votre compte WeLearn et vous envoyer le lien qui permet de choisir votre mot de passe.',
+    sharing:
+      'Ils sont conservés par notre service de connexion et ne sont jamais partagés à des fins commerciales.',
+    policyLink: 'Lire notre politique de confidentialité'
+  },
   errorTitle: 'Votre compte n’a pas pu être créé',
   // l’entrée « Autre » de la liste des universités de la page de connexion mène ici
   universityRequest: {

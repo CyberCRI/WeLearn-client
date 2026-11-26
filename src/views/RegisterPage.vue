@@ -157,6 +157,17 @@ onUnmounted(() => authStore.resetRegister());
           }}
         </ButtonComponent>
       </div>
+
+      <div class="privacy-notice" data-testid="register-privacy-notice">
+        <p>{{ $t('authentication.privacyNotice.account') }}</p>
+        <p>
+          {{ $t('authentication.privacyNotice.sharing') }}
+          <!-- a new tab, so the filled-in form is still there when they come back -->
+          <router-link to="/terms" target="_blank" rel="noopener">{{
+            $t('authentication.privacyNotice.policyLink')
+          }}</router-link>
+        </p>
+      </div>
     </form>
   </AuthPageLayout>
 </template>
@@ -174,6 +185,12 @@ form {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
+}
+
+.privacy-notice {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--neutral-70);
 }
 
 @media (max-width: 750px) {

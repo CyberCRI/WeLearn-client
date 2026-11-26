@@ -80,7 +80,7 @@ describe('useDisciplineModule form answers', () => {
 
       await registerFormAnswer({ link: 3 }, 'math_microlearning_pre');
 
-      expect(localStorage.getItem('math_microlearning_pre')).toBe('true');
+      expect(localStorage.getItem('evalForm:math_microlearning_pre')).toBe('true');
     });
 
     it('does not record the form locally when the request fails', async () => {
@@ -91,7 +91,7 @@ describe('useDisciplineModule form answers', () => {
       const result = await registerFormAnswer({ link: 3 }, 'math_microlearning_pre');
 
       expect(result).toBeUndefined();
-      expect(localStorage.getItem('math_microlearning_pre')).toBeNull();
+      expect(localStorage.getItem('evalForm:math_microlearning_pre')).toBeNull();
     });
   });
 
@@ -108,7 +108,7 @@ describe('useDisciplineModule form answers', () => {
         '/metric/form_data',
         expect.objectContaining({ form_name: 'math_microlearning_pre', question: 'confidence' })
       );
-      expect(localStorage.getItem('math_microlearning_pre')).toBe('true');
+      expect(localStorage.getItem('evalForm:math_microlearning_pre')).toBe('true');
     });
 
     it('does not submit anything when no pre answer was given', async () => {
@@ -120,7 +120,7 @@ describe('useDisciplineModule form answers', () => {
       await flushPromises();
 
       expect(basePostAxios).not.toHaveBeenCalled();
-      expect(localStorage.getItem('math_microlearning_pre')).toBeNull();
+      expect(localStorage.getItem('evalForm:math_microlearning_pre')).toBeNull();
     });
   });
 
@@ -141,7 +141,7 @@ describe('useDisciplineModule form answers', () => {
         answer: '5',
         answer_type: 'text'
       });
-      expect(localStorage.getItem('math_microlearning_post')).toBe('true');
+      expect(localStorage.getItem('evalForm:math_microlearning_post')).toBe('true');
     });
 
     it('does not submit anything when no post answer was given', async () => {
@@ -219,7 +219,7 @@ describe('useDisciplineModule form answers', () => {
       await flushPromises();
 
       expect(basePostAxios).toHaveBeenCalledTimes(2);
-      expect(localStorage.getItem('math_microlearning_post')).toBe('true');
+      expect(localStorage.getItem('evalForm:math_microlearning_post')).toBe('true');
     });
 
     it('does not post an answer twice while its request is still running', async () => {
@@ -232,7 +232,7 @@ describe('useDisciplineModule form answers', () => {
       await flushPromises();
 
       expect(basePostAxios).toHaveBeenCalledTimes(1);
-      expect(localStorage.getItem('math_microlearning_pre')).toBe('true');
+      expect(localStorage.getItem('evalForm:math_microlearning_pre')).toBe('true');
     });
 
     it('discards the pre answers on skip and posts nothing', async () => {
@@ -261,7 +261,7 @@ describe('useDisciplineModule form answers', () => {
       expect(screen.value).toBe(ScreensEnum.complete);
       expect(postAnswers).toEqual({});
       expect(basePostAxios).not.toHaveBeenCalled();
-      expect(localStorage.getItem('math_microlearning_post')).toBeNull();
+      expect(localStorage.getItem('evalForm:math_microlearning_post')).toBeNull();
     });
 
     it('only re-sends the failed answers on retry after a partial failure', async () => {
@@ -281,7 +281,9 @@ describe('useDisciplineModule form answers', () => {
 
       expect(console.error).toHaveBeenCalled();
       expect(shouldHideAutoEvalStart.value).toBe(false);
-      expect(JSON.parse(localStorage.getItem('math_microlearning_pre')!)).toEqual(['confidence']);
+      expect(JSON.parse(localStorage.getItem('evalForm:math_microlearning_pre')!)).toEqual([
+        'confidence'
+      ]);
 
       vi.mocked(basePostAxios).mockResolvedValue({} as Awaited<ReturnType<typeof basePostAxios>>);
       startTrail();
@@ -290,11 +292,11 @@ describe('useDisciplineModule form answers', () => {
       expect(postsFor('confidence')).toHaveLength(1);
       expect(postsFor('link')).toHaveLength(2);
       expect(shouldHideAutoEvalStart.value).toBe(true);
-      expect(localStorage.getItem('math_microlearning_pre')).toBe('true');
+      expect(localStorage.getItem('evalForm:math_microlearning_pre')).toBe('true');
     });
 
     it('skips the answers a previous visit already saved', async () => {
-      localStorage.setItem('math_microlearning_pre', JSON.stringify(['confidence']));
+      localStorage.setItem('evalForm:math_microlearning_pre', JSON.stringify(['confidence']));
       const { registerFormAnswer } = useDisciplineModule();
 
       const result = await registerFormAnswer({ link: 2, confidence: 4 }, 'math_microlearning_pre');
@@ -305,7 +307,7 @@ describe('useDisciplineModule form answers', () => {
     });
 
     it('never posts a form already submitted on a previous visit', async () => {
-      localStorage.setItem('math_microlearning_pre', 'true');
+      localStorage.setItem('evalForm:math_microlearning_pre', 'true');
       const { registerFormAnswer } = useDisciplineModule();
 
       await registerFormAnswer({ link: 2 }, 'math_microlearning_pre');
@@ -349,7 +351,7 @@ describe('useDisciplineModule form answers', () => {
     });
 
     it('goes straight to the trail when the pre form was already submitted', () => {
-      localStorage.setItem('math_microlearning_pre', 'true');
+      localStorage.setItem('evalForm:math_microlearning_pre', 'true');
       const { selectDiscipline, goToautoEvalStart, screen, step } = useDisciplineModule();
       selectDiscipline('math');
 
@@ -373,7 +375,7 @@ describe('useDisciplineModule form answers', () => {
     });
 
     it('goes straight to the end when the post form was already submitted', () => {
-      localStorage.setItem('math_microlearning_post', 'true');
+      localStorage.setItem('evalForm:math_microlearning_post', 'true');
       const { selectDiscipline, nextStep, screen, step, currentData } = useDisciplineModule();
       selectDiscipline('math');
       step.value = currentData.value!.steps.length - 1;
@@ -387,7 +389,7 @@ describe('useDisciplineModule form answers', () => {
 
   describe('prevStep', () => {
     it('goes back to the briefing from the first step when the pre form is hidden', () => {
-      localStorage.setItem('math_microlearning_pre', 'true');
+      localStorage.setItem('evalForm:math_microlearning_pre', 'true');
       const { selectDiscipline, goToautoEvalStart, prevStep, screen } = useDisciplineModule();
       selectDiscipline('math');
       goToautoEvalStart();
@@ -407,7 +409,7 @@ describe('useDisciplineModule form answers', () => {
     });
 
     it('is true when the pre form was submitted for the discipline', () => {
-      localStorage.setItem('math_microlearning_pre', 'true');
+      localStorage.setItem('evalForm:math_microlearning_pre', 'true');
       const { selectDiscipline, shouldHideAutoEvalStart } = useDisciplineModule();
       selectDiscipline('math');
 
@@ -415,7 +417,7 @@ describe('useDisciplineModule form answers', () => {
     });
 
     it('is scoped to the selected discipline', () => {
-      localStorage.setItem('history_microlearning_pre', 'true');
+      localStorage.setItem('evalForm:history_microlearning_pre', 'true');
       const { selectDiscipline, shouldHideAutoEvalStart } = useDisciplineModule();
       selectDiscipline('math');
 

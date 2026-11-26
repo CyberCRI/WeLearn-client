@@ -39,6 +39,7 @@ const storedOnboarding = () => JSON.parse(localStorage.getItem('onboardingState'
 describe('user store', () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     env.name = 'dev';
     setActivePinia(createPinia());
   });
@@ -83,7 +84,7 @@ describe('user store', () => {
     expect(basePostAxios).not.toHaveBeenCalled();
   });
 
-  it('sends and stores the user data when consent is given', async () => {
+  it('sends the user data when consent is given, without keeping it', async () => {
     const userData = { institution: 'LPI', role: 'teacher', consentRefused: false };
 
     await useUserStore().userMetricsDataAction(true, userData);
@@ -92,7 +93,7 @@ describe('user store', () => {
       role: 'teacher',
       institution: 'LPI'
     });
-    expect(JSON.parse(localStorage.getItem('userMetricsData') || 'null')).toEqual(userData);
+    expect(localStorage.getItem('userMetricsData')).toBeNull();
   });
 
   it('neither sends nor stores the user data when consent is refused', async () => {
@@ -123,18 +124,20 @@ describe('user store', () => {
   describe('syncUserId', () => {
     const stored = (key: string) => JSON.parse(localStorage.getItem(key) || 'null');
     const USER_DATA_KEYS = [
-      'chat',
       'chatThreadId',
-      'searchInput',
-      'searchResults',
-      'courseMetadaRef',
-      'userMetricsData',
       'pendingSyllabus',
-      'courseDraft'
+      'courseDraft',
+      'learnProgress',
+      'evalForm:syllabus_v2_pre',
+      'evalForm:math_microlearning_post',
+      // the self-evaluation keys of older versions
+      'history_microlearning_pre'
     ];
+    const TAB_KEYS = ['searchInput', 'searchResults'];
 
     beforeEach(() => {
       USER_DATA_KEYS.forEach((key) => localStorage.setItem(key, JSON.stringify(`old-${key}`)));
+      TAB_KEYS.forEach((key) => sessionStorage.setItem(key, JSON.stringify(`old-${key}`)));
       localStorage.setItem('language', 'fr');
       localStorage.setItem('onboardingState', JSON.stringify({ hasSeenWelcome: true }));
       localStorage.setItem('sessionId', JSON.stringify('session-1'));
@@ -163,6 +166,7 @@ describe('user store', () => {
 
       expect(stored('userId')).toBe('user-2');
       USER_DATA_KEYS.forEach((key) => expect(localStorage.getItem(key)).toBeNull());
+      TAB_KEYS.forEach((key) => expect(sessionStorage.getItem(key)).toBeNull());
       expect(localStorage.getItem('language')).toBe('fr');
       expect(stored('onboardingState')).toEqual({ hasSeenWelcome: true });
       expect(resetAnalytics).toHaveBeenCalled();
@@ -204,7 +208,7 @@ describe('user store', () => {
     beforeEach(() => {
       localStorage.setItem('userId', JSON.stringify('user-1'));
       localStorage.setItem('sessionId', JSON.stringify('session-1'));
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'q' }]));
+      localStorage.setItem('chatThreadId', 'thread-1');
       localStorage.setItem('language', 'fr');
       localStorage.setItem('onboardingState', JSON.stringify({ hasSeenWelcome: true }));
     });
@@ -218,12 +222,12 @@ describe('user store', () => {
 
     it('empties the chat but keeps the device preferences', () => {
       const chat = useChatStore();
-      expect(chat.chatMessagesList).toHaveLength(1);
+      chat.chatMessagesList = [{ role: 'user', content: 'q' }];
 
       useUserStore().forgetUser();
 
       expect(chat.chatMessagesList).toEqual([]);
-      expect(localStorage.getItem('chat')).toBeNull();
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
       expect(localStorage.getItem('language')).toBe('fr');
       expect(localStorage.getItem('onboardingState')).not.toBeNull();
       expect(resetAnalytics).toHaveBeenCalled();

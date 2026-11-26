@@ -1,12 +1,40 @@
 import { reactive } from 'vue';
 import { basePostAxios } from '@/utils/fetch';
-import { getFromStorage, saveToStorage } from '@/utils/storage';
+import {
+  clearFromStorage,
+  clearFromStorageWhere,
+  getFromStorage,
+  saveToStorage
+} from '@/utils/storage';
 import type { EvalAnswers } from '@/types/learn/discipline';
 
 // a self-evaluation form for research: each answer is sent once to /metric/form_data. what was
-// saved is kept in storage under the form's name: `true` once every answer is saved, else the
-// questions already saved
+// saved is kept in storage under the form's name with a common prefix, so they can all be found
+// again: `true` once every answer is saved, else the questions already saved
 export type SavedForm = true | string[];
+
+export const EVAL_FORM_PREFIX = 'evalForm:';
+// older versions used the bare form name: `<discipline>_microlearning_<pre|post>`,
+// `syllabus_v2_<pre|post>`
+const LEGACY_FORM_KEY = /^(\w+_microlearning|syllabus_v2)_(pre|post)$/;
+
+const storageKey = (formName: string) => `${EVAL_FORM_PREFIX}${formName}`;
+
+// moved under the prefix on first read
+const readStoredForm = (formName: string) => {
+  const stored = getFromStorage(storageKey(formName));
+  if (stored !== null || !LEGACY_FORM_KEY.test(formName)) return stored;
+  const legacy = getFromStorage(formName);
+  if (legacy !== null) {
+    saveToStorage(storageKey(formName), legacy);
+    clearFromStorage(formName);
+  }
+  return legacy;
+};
+
+// the forms belong to whoever answered them: cleared when the user changes
+export const clearSavedForms = () =>
+  clearFromStorageWhere((key) => key.startsWith(EVAL_FORM_PREFIX) || LEGACY_FORM_KEY.test(key));
 
 const isAnswered = (value: EvalAnswers[keyof EvalAnswers]) => value !== undefined && value !== '';
 
@@ -24,13 +52,13 @@ export function useEvalForms() {
 
   function getSavedForm(form_name: string): SavedForm {
     if (savedForms[form_name] !== undefined) return savedForms[form_name];
-    const stored = getFromStorage(form_name);
+    const stored = readStoredForm(form_name);
     return stored === true || Array.isArray(stored) ? stored : [];
   }
 
   function setSavedForm(form_name: string, saved: SavedForm) {
     savedForms[form_name] = saved;
-    saveToStorage(form_name, saved);
+    saveToStorage(storageKey(form_name), saved);
   }
 
   function isFormSubmitted(form_name: string) {

@@ -8,7 +8,7 @@ import {
   visibleModules
 } from '@/learn/modules';
 import type { Feature } from '@/stores/featureFlip';
-import { getProgress, saveProgress } from '@/learn/progress';
+import { clearProgress, getProgress, saveProgress } from '@/learn/progress';
 import { SOURCES } from '@/learn/sources';
 import { emptySort, placeCard, isSortDone, firstTryCount, shuffled } from '@/learn/sort';
 import type { Cite, ModuleId } from '@/types/learn/modules';
@@ -184,5 +184,9 @@ describe('Learn modules', () => {
       confidenceAfter: 4
     });
     expect(getProgress('frameworks')).toEqual({ confidenceBefore: 3 });
+
+    clearProgress();
+    expect(localStorage.getItem('learnProgress')).toBeNull();
+    expect(getProgress('foundations')).toEqual({});
   });
 });

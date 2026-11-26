@@ -4,10 +4,46 @@ import i18n from '@/localisation/i18n';
 import { useAuthStore } from '@/stores/auth';
 import { getAccountAccess } from '@/utils/fetch';
 import { getFromStorage, saveToStorage } from '@/utils/storage';
+import { formatDay } from '@/utils/time';
 import type { ApiSchema } from '@/types/api';
 
-// the accounts (keycloak ids) already told their access is limited, in this browser
+// the accounts already told their access is limited, in this browser: a sha-256 hash of their
+// keycloak id rather than the id, and only the last few, as a browser is rarely shared by more
 const NOTICE_SEEN_KEY = 'limitedAccessNoticeSeen';
+const MAX_SEEN_ACCOUNTS = 5;
+const HASH_PATTERN = /^[0-9a-f]{64}$/;
+
+// null where the browser has no web crypto (a page not served over https): the notice is then
+// shown, not remembered
+export const hashAccountId = async (id: string): Promise<string | null> => {
+  try {
+    const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(id));
+    return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, '0')).join(
+      ''
+    );
+  } catch {
+    return null;
+  }
+};
+
+// the most recent last, each account once
+const saveSeenAccounts = (hashes: string[]) => {
+  const seen = hashes.filter((hash, i) => hashes.lastIndexOf(hash) === i).slice(-MAX_SEEN_ACCOUNTS);
+  saveToStorage(NOTICE_SEEN_KEY, seen);
+  return seen;
+};
+
+// older versions kept the ids themselves: hashed on read, and saved back that way
+const readSeenAccounts = async (): Promise<string[]> => {
+  const stored = getFromStorage(NOTICE_SEEN_KEY);
+  if (!Array.isArray(stored)) return [];
+  const entries = stored.filter((entry): entry is string => typeof entry === 'string');
+  if (entries.every((entry) => HASH_PATTERN.test(entry))) return entries;
+  const hashes = await Promise.all(
+    entries.map((entry) => (HASH_PATTERN.test(entry) ? entry : hashAccountId(entry)))
+  );
+  return saveSeenAccounts(hashes.filter((hash): hash is string => !!hash));
+};
 
 // a Google or email login, not an institution one, gets 6 months of access. the API says until
 // when, and answers 403 ACCESS_EXPIRED once it has ended (handled in utils/api.ts)
@@ -17,24 +53,17 @@ export const useAccountAccessStore = defineStore('accountAccess', () => {
 
   const isLimited = computed(() => access.value?.limited === true);
 
-  // the date alone, read as UTC so a timezone west of UTC does not show the day before
   const accessUntilLabel = computed(() => {
     const day = access.value?.access_until;
-    if (!day) return null;
-    return new Date(`${day}T00:00:00Z`).toLocaleDateString(i18n.global.locale.value, {
-      dateStyle: 'long',
-      timeZone: 'UTC'
-    });
+    return day ? formatDay(day, i18n.global.locale.value) : null;
   });
 
   const daysLeft = computed(() => access.value?.days_left ?? null);
 
-  const seenAccounts = (): string[] => {
-    const seen = getFromStorage(NOTICE_SEEN_KEY);
-    return Array.isArray(seen) ? seen : [];
+  const accountHash = async () => {
+    const id = useAuthStore().tokenParsed?.sub;
+    return id ? hashAccountId(id) : null;
   };
-
-  const accountId = () => useAuthStore().tokenParsed?.sub;
 
   // call once logged in
   const refresh = async () => {
@@ -49,14 +78,15 @@ export const useAccountAccessStore = defineStore('accountAccess', () => {
       console.error('Failed to fetch the account access:', error);
       return;
     }
-    const id = accountId();
-    if (isLimited.value && id && !seenAccounts().includes(id)) isNoticeOpen.value = true;
+    if (!isLimited.value || !useAuthStore().tokenParsed?.sub) return;
+    const hash = await accountHash();
+    if (!hash || !(await readSeenAccounts()).includes(hash)) isNoticeOpen.value = true;
   };
 
-  const closeNotice = () => {
+  const closeNotice = async () => {
     isNoticeOpen.value = false;
-    const id = accountId();
-    if (id && !seenAccounts().includes(id)) saveToStorage(NOTICE_SEEN_KEY, [...seenAccounts(), id]);
+    const hash = await accountHash();
+    if (hash) saveSeenAccounts([...(await readSeenAccounts()), hash]);
   };
 
   return { access, isLimited, accessUntilLabel, daysLeft, isNoticeOpen, refresh, closeNotice };

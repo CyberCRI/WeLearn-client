@@ -1,6 +1,6 @@
 import type { CourseDraft } from '@/stores/course';
 import type { ConnectionsDraft } from '@/stores/connections';
-import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
+import { clearFromStorage, getFromStorage, isOlderThan, saveToStorage } from '@/utils/storage';
 
 // a draft of the "I have a course" path, kept in this browser when a logged-in teacher asks for
 // it: the course as checked, the whole text read from the syllabus (the complete word document is
@@ -84,7 +84,7 @@ export const readStoredDraft = (now = Date.now()): StoredDraft => {
     if (!localStorage.getItem(DRAFT_KEY)) return { state: 'none' };
     const value = getFromStorage(DRAFT_KEY);
     if (!isWholeDraft(value)) return { state: 'invalid' };
-    if (now - Date.parse(value.savedAt) > DRAFT_MAX_AGE_MS) {
+    if (isOlderThan(value.savedAt, DRAFT_MAX_AGE_MS, now)) {
       removeDraft();
       return { state: 'none' };
     }

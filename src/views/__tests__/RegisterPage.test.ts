@@ -185,6 +185,19 @@ describe('RegisterPage', () => {
     expect(reset).toHaveBeenCalled();
   });
 
+  it('says what the account data is for and links to the privacy policy', () => {
+    wrapper = mountPage();
+
+    const notice = wrapper.get('[data-testid="register-privacy-notice"]');
+    expect(notice.text()).toContain('authentication.privacyNotice.account');
+    expect(notice.text()).toContain('authentication.privacyNotice.sharing');
+    const link = notice.get('a');
+    expect(link.attributes('href')).toBe('/terms');
+    expect(link.text()).toBe('authentication.privacyNotice.policyLink');
+    // information only: no box to tick
+    expect(wrapper.find('input[type="checkbox"]').exists()).toBe(false);
+  });
+
   it('cancels back to the login page', () => {
     wrapper = mountPage();
 
