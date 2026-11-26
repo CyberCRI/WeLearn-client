@@ -1,4 +1,4 @@
-// Runs with VITE_ENVIRONMENT=dev (chromium-auth project), like staging (auth is on in dev and staging)
+// Runs with VITE_ENVIRONMENT=dev (chromium-auth project), like staging and prod (auth is on there)
 import { test, expect } from './base';
 import { fakeUser, keycloakSignIn, signInOnKeycloak } from './keycloak';
 
@@ -31,6 +31,10 @@ test.describe('auth', () => {
 
       await expect(page.getByTestId('user-menu').getByText(fullName)).toBeAttached();
       expect(keycloak.loggedIn).toBe(true);
+      // logged in shows on the trigger: the initials replace the empty user icon
+      await expect(page.getByTestId('user-menu-initials')).toHaveText(
+        `${fakeUser.firstName[0]}${fakeUser.lastName[0]}`
+      );
 
       await page.getByTestId('user-menu-trigger').click();
       await expect(page.getByTestId('user-menu-logout')).toBeVisible();

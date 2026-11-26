@@ -50,7 +50,7 @@ describe('ConsentBanner', () => {
   });
 
   it('never shows when the analytics feature is off', () => {
-    env.name = 'prod';
+    env.name = 'test';
     const wrapper = mountWithRouter(ConsentBanner);
 
     expect(wrapper.find('[data-testid="consent-banner"]').exists()).toBe(false);

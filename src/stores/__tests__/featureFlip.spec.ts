@@ -51,7 +51,7 @@ describe('featureFlip store', () => {
     ['dev', true],
     ['staging', true],
     ['test', false],
-    ['prod', false]
+    ['prod', true]
   ])('auth in %s: %s', (name, expected) => {
     env.name = name;
     const store = useFeatureFlipStore();
@@ -61,9 +61,9 @@ describe('featureFlip store', () => {
 
   it.each<[Environment, boolean]>([
     ['dev', true],
-    ['staging', false],
+    ['staging', true],
     ['test', false],
-    ['prod', false]
+    ['prod', true]
   ])('analytics in %s: %s', (name, expected) => {
     env.name = name;
     const store = useFeatureFlipStore();
@@ -86,7 +86,7 @@ describe('featureFlip store', () => {
 
   it.each<[Environment, boolean]>([
     ['dev', true],
-    ['staging', false],
+    ['staging', true],
     ['test', false],
     ['prod', false]
   ])('syllabusV2 in %s: %s', (name, expected) => {
@@ -105,7 +105,7 @@ describe('featureFlip preview', () => {
   };
 
   beforeEach(() => {
-    env.name = 'prod';
+    env.name = 'test';
     localStorage.clear();
   });
 
@@ -130,7 +130,7 @@ describe('featureFlip preview', () => {
     expect(store.previewFeatures).toEqual(['auth', 'analytics']);
   });
 
-  it('never previews the features page, so prod never gets it', () => {
+  it('never previews the features page, so test and prod never get it', () => {
     const store = openWith('?preview=featuresPage,auth');
 
     expect(store.previewFeatures).toEqual(['auth']);

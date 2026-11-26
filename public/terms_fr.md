@@ -223,7 +223,7 @@ La plateforme WeLearn utilise des cookies et des traceurs similaires (stockage l
 - si vous êtes connecté·e, ces événements sont associés à votre identifiant utilisateur WeLearn aléatoire, jamais à votre nom ni à votre adresse e-mail ;
 - votre adresse IP n’est pas utilisée pour vous localiser ;
 - une petite partie des sessions peut être enregistrée afin de comprendre l’usage de l’interface (enregistrement de session et cartes de chaleur). Dans ces enregistrements, **tous les textes et tous les champs de saisie sont masqués**, et les images et fichiers téléversés sont cachés ;
-- Mixpanel dépose des identifiants dans le stockage local de votre navigateur (clés commençant par `mp_` et `__mp_opt_in_out_`).
+- Mixpanel dépose des identifiants et les événements pas encore envoyés dans le stockage local de votre navigateur (clés commençant par `mp_`, `__mp_opt_in_out_` et `__mpq_`), et les enregistrements de session pas encore envoyés dans une base IndexedDB (`mixpanelBrowserDb`). Tout est effacé quand vous retirez votre consentement.
 
 Vous pouvez modifier votre choix à tout moment via le lien **Gestion des cookies** en bas de chaque page. Un refus n’a aucune incidence sur votre accès à la plateforme.
 Aucun cookie publicitaire n’est utilisé.

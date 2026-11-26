@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import UserIcon from '@/components/icons/UserIcon.vue';
 import LogoutIcon from '@/components/icons/LogoutIcon.vue';
 import { useAuth } from '@/composables/useAuth';
@@ -7,9 +7,18 @@ import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 import { useAuthStore } from '@/stores/auth';
 
-const { isAuthenticated, userName, login, logout } = useAuth();
+const { isAuthenticated, user, userName, login, logout } = useAuth();
 const { askToSignUp } = useAuthStore();
 const isBookmarksEnabled = useFeatureFlipStore().isFeatureEnabled('bookmarks');
+
+// a badge with the initials and a greeting replace the empty user icon, so being logged in shows
+const firstName = computed(() => user.value?.firstName || userName.value);
+const initials = computed(() => {
+  const names = [user.value?.firstName, user.value?.lastName].filter(Boolean) as string[];
+  return (names.length ? names : [userName.value])
+    .map((name) => name.charAt(0).toUpperCase())
+    .join('');
+});
 
 // driven by state, not :hover / :focus-within, so choosing an item closes the menu
 const isOpen = ref(false);
@@ -62,7 +71,7 @@ onUnmounted(() => {
       <button
         ref="triggerElement"
         type="button"
-        class="button is-text trigger"
+        class="button is-text trigger mp-sensitive"
         aria-haspopup="true"
         aria-controls="user-menu"
         :aria-expanded="isOpen"
@@ -70,7 +79,15 @@ onUnmounted(() => {
         data-testid="user-menu-trigger"
         @click="toggle"
       >
-        <span class="icon">
+        <template v-if="isAuthenticated">
+          <span class="avatar" aria-hidden="true" data-testid="user-menu-initials">
+            {{ initials }}
+          </span>
+          <span class="greeting" aria-hidden="true" data-testid="user-menu-greeting">
+            {{ $t('nav.greeting', { name: firstName }) }}
+          </span>
+        </template>
+        <span v-else class="icon">
           <UserIcon />
         </span>
       </button>
@@ -149,6 +166,41 @@ onUnmounted(() => {
 .trigger .icon {
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.button.trigger {
+  gap: 0.5rem;
+  /* bulma underlines is-text buttons, the nav labels are not */
+  text-decoration: none;
+}
+
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--primary-dark);
+  color: var(--neutral-0);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.greeting {
+  max-width: 10rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* icon-only nav, like the nav labels: the badge alone says the user is logged in */
+@media (max-width: 1450px) {
+  .greeting {
+    display: none;
+  }
 }
 
 .item-button {

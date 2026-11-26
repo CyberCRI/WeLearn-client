@@ -216,7 +216,7 @@ The WeLearn platform uses cookies and similar storage (browser local storage) th
 - if you are logged in, these events are linked to your random WeLearn user identifier, never to your name or email address;
 - your IP address is not used to locate you;
 - a small share of sessions may be recorded to understand how the interface is used (session replay and heatmaps). In these recordings **all text and every input field are masked**, and images and uploaded files are hidden;
-- Mixpanel stores identifiers in your browser's local storage (keys starting with `mp_` and `__mp_opt_in_out_`).
+- Mixpanel stores identifiers and the events not sent yet in your browser's local storage (keys starting with `mp_`, `__mp_opt_in_out_` and `__mpq_`), and the session recordings not sent yet in an IndexedDB database (`mixpanelBrowserDb`). They are all erased when you withdraw your consent.
 
 You can change your choice at any time with the **Cookie settings** link at the bottom of every page. Refusing has no impact on your access to the platform.
 No advertising cookies are used.

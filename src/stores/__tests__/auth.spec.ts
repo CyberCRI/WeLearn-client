@@ -81,8 +81,8 @@ describe('auth store', () => {
   });
 
   describe('init', () => {
-    it('skips keycloak outside dev and staging', async () => {
-      env.name = 'prod';
+    it('skips keycloak in the test build', async () => {
+      env.name = 'test';
       const store = useAuthStore();
 
       expect(store.shouldAuthenticate).toBe(false);
@@ -210,7 +210,7 @@ describe('auth store', () => {
     });
 
     it('is never a guest where auth is off', () => {
-      env.name = 'prod';
+      env.name = 'test';
 
       expect(useAuthStore().isGuest).toBe(false);
     });

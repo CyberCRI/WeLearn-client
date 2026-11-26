@@ -60,7 +60,9 @@ const sourceNames = computed(() =>
         </summary>
         <p class="anchor-text" data-testid="anchor-full">{{ place.full }}</p>
       </details>
-      <span v-else :title="place.full" data-testid="anchor-topic">{{ place.subject }}</span>
+      <span v-else class="mp-sensitive" :title="place.full" data-testid="anchor-topic">{{
+        place.subject
+      }}</span>
       <span v-if="place.placement" class="muted" data-testid="placement">
         · {{ place.placement }}
       </span>

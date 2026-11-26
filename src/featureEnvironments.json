@@ -50,14 +50,14 @@
     "description": "Workshop, reserved: no page reads it yet"
   },
   "auth": {
-    "environments": ["dev", "staging"],
+    "environments": ["dev", "staging", "prod"],
     "page": null,
-    "description": "Keycloak login, accounts and guest limits on the client side; not on prod yet"
+    "description": "Keycloak login, accounts and guest limits on the client side; off in the test build"
   },
   "analytics": {
-    "environments": ["dev"],
+    "environments": ["dev", "staging", "prod"],
     "page": null,
-    "description": "Mixpanel and its consent banner, until the rollout is validated"
+    "description": "Mixpanel and its consent banner; off in the test build, whose e2e specs check that Mixpanel is never called"
   },
   "featuresPage": {
     "environments": ["dev", "staging"],
@@ -66,7 +66,7 @@
     "description": "This list as a page, with a button to preview each feature in this browser; never previewed, so never on prod"
   },
   "syllabusV2": {
-    "environments": ["dev"],
+    "environments": ["dev", "staging"],
     "page": "/tutor",
     "description": "Syllabus v2: path choice, the \"I have a course\" path, drafts and the before/after self-evaluation. Every change of the rework sits behind it, so prod stays as it is"
   }

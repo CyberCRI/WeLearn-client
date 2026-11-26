@@ -69,7 +69,7 @@ const save = () => {
         </div>
         <button
           type="button"
-          class="delete"
+          class="delete mp-sensitive"
           :aria-label="$t('tutor.check.removeTopic', { topic: draft.title })"
           data-testid="remove-topic"
           @click="drafts.splice(index, 1)"
