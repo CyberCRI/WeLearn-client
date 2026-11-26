@@ -6,7 +6,7 @@ import { track } from '@/utils/analytics';
 import { apiErrorCode, isAborted, isUnreachable } from '@/utils/apiErrors';
 import { editField, restoreField } from '@/utils/courseCheck';
 import { isLongEnough } from '@/utils/completeSyllabus';
-import { MAX_COURSE_FILE_SIZE, isCourseFileType } from '@/utils/courseFiles';
+import { courseFileError } from '@/utils/courseFiles';
 import {
   type TopicDraft,
   applyTopicDrafts,
@@ -112,8 +112,8 @@ export const useCourseStore = defineStore('course', () => {
 
   const setFile = (picked: File) => {
     readError.value = null;
-    if (picked.size > MAX_COURSE_FILE_SIZE) fileError.value = 'BIG_FILE';
-    else if (!isCourseFileType(picked)) fileError.value = 'BAD_EXTENSION';
+    const refused = courseFileError(picked);
+    if (refused) fileError.value = refused;
     else {
       fileError.value = null;
       file.value = picked;

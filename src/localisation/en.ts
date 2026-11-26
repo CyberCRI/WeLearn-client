@@ -458,6 +458,7 @@ export const en = {
   tutor: {
     BIG_FILE: 'File size exceeds 5 MB.',
     BAD_EXTENSION: 'File type not supported. Only PDF, TXT, and DOCX files are allowed.',
+    EMPTY_FILE: 'The file is empty: there is nothing to read in it.',
     TOO_MANY_FILES: 'You can add up to 3 files.',
     edit: 'Edit',
     collapse: 'Close',

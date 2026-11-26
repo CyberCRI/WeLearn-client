@@ -13,6 +13,7 @@ describe('FileDropzone', () => {
     const input = wrapper.find('[data-testid="file-input"]');
     expect(input.attributes('multiple')).toBeUndefined();
     expect(input.attributes('accept')).toContain('application/pdf');
+    expect(input.attributes('accept')).toContain('.docx');
   });
 
   it('takes several files when asked, under its own test id', () => {
@@ -31,15 +32,40 @@ describe('FileDropzone', () => {
     expect((input.element as HTMLInputElement).value).toBe('');
   });
 
-  it('gives the dropped files and shows the drag', async () => {
+  it('keeps the drag highlight while the pointer moves over its children', async () => {
     const wrapper = mount(FileDropzone, { props: { label: 'l', limits: 'm' } });
     const zone = wrapper.find('.dropzone');
-    await zone.trigger('dragover');
+    const child = wrapper.find('.browse');
+    await zone.trigger('dragenter');
+    expect(zone.classes()).toContain('dragging');
+    // into a child: the child is entered before the zone is left
+    await child.trigger('dragenter');
+    await zone.trigger('dragleave');
+    expect(zone.classes()).toContain('dragging');
+    // back onto the zone, then out of it
+    await zone.trigger('dragenter');
+    await child.trigger('dragleave');
     expect(zone.classes()).toContain('dragging');
     await zone.trigger('dragleave');
     expect(zone.classes()).not.toContain('dragging');
+    // a stray leave does not break the next drag
+    await zone.trigger('dragleave');
+    await zone.trigger('dragenter');
+    expect(zone.classes()).toContain('dragging');
+  });
+
+  it('gives the dropped files and clears the drag', async () => {
+    const wrapper = mount(FileDropzone, { props: { label: 'l', limits: 'm' } });
+    const zone = wrapper.find('.dropzone');
+    await zone.trigger('dragenter');
+    await wrapper.find('.browse').trigger('dragenter');
     await zone.trigger('drop', { dataTransfer: { files: [pdf] } });
+    expect(zone.classes()).not.toContain('dragging');
     expect(wrapper.emitted('pick')).toEqual([[[pdf]]]);
+    // the drop reset the count: one leave of the next drag clears it
+    await zone.trigger('dragenter');
+    await zone.trigger('dragleave');
+    expect(zone.classes()).not.toContain('dragging');
   });
 
   it('ignores an empty pick or drop', async () => {

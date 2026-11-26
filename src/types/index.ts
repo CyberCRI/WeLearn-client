@@ -292,4 +292,4 @@ export type AnalyticsEvents = {
 };
 
 // why a course file was refused before upload
-export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'TOO_MANY_FILES';
+export type FileErrorReason = 'BIG_FILE' | 'BAD_EXTENSION' | 'EMPTY_FILE' | 'TOO_MANY_FILES';

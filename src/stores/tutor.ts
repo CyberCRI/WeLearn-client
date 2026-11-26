@@ -10,7 +10,7 @@ import {
   type TutorSearch,
   type TutorSyllabus
 } from '@/types';
-import { MAX_COURSE_FILE_SIZE, isCourseFileType } from '@/utils/courseFiles';
+import { courseFileError } from '@/utils/courseFiles';
 import { basePostAxios } from '@/utils/fetch';
 import i18n from '@/localisation/i18n';
 import { track } from '@/utils/analytics';
@@ -87,8 +87,8 @@ export const useTutorStore = defineStore('tutor', () => {
     let reason: FileErrorReason | null = null;
     const next = { ...newFilesToSearch.value };
     for (const file of Array.from(files)) {
-      if (file.size > MAX_COURSE_FILE_SIZE) reason = 'BIG_FILE';
-      else if (!isCourseFileType(file)) reason = 'BAD_EXTENSION';
+      const refused = courseFileError(file);
+      if (refused) reason = refused;
       else if (!next[file.name] && Object.keys(next).length >= MAX_FILES) reason = 'TOO_MANY_FILES';
       else next[file.name] = file;
     }

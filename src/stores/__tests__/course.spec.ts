@@ -65,11 +65,18 @@ describe('course store', () => {
       expect(store.fileError).toBe('BIG_FILE');
       store.setFile(file('photo.png', 'image/png'));
       expect(store.fileError).toBe('BAD_EXTENSION');
+      store.setFile(file('empty.pdf', PDF, 0));
+      expect(store.fileError).toBe('EMPTY_FILE');
       // a refused file leaves the one picked before
       expect(store.file?.name).toBe('syllabus.pdf');
 
       store.setFile(file('course.txt', 'text/plain'));
       expect(store.file?.name).toBe('course.txt');
+      expect(store.fileError).toBeNull();
+
+      // some systems give a .docx no type
+      store.setFile(file('course.docx', ''));
+      expect(store.file?.name).toBe('course.docx');
       expect(store.fileError).toBeNull();
     });
 
