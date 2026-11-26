@@ -4,6 +4,7 @@ import i18n from '@/localisation/i18n';
 import { useAuthStore } from '@/stores/auth';
 import { getAccountAccess } from '@/utils/fetch';
 import { getFromStorage, saveToStorage } from '@/utils/storage';
+import { formatDay } from '@/utils/time';
 import type { ApiSchema } from '@/types/api';
 
 // the accounts already told their access is limited, in this browser: a sha-256 hash of their
@@ -52,14 +53,9 @@ export const useAccountAccessStore = defineStore('accountAccess', () => {
 
   const isLimited = computed(() => access.value?.limited === true);
 
-  // the date alone, read as UTC so a timezone west of UTC does not show the day before
   const accessUntilLabel = computed(() => {
     const day = access.value?.access_until;
-    if (!day) return null;
-    return new Date(`${day}T00:00:00Z`).toLocaleDateString(i18n.global.locale.value, {
-      dateStyle: 'long',
-      timeZone: 'UTC'
-    });
+    return day ? formatDay(day, i18n.global.locale.value) : null;
   });
 
   const daysLeft = computed(() => access.value?.days_left ?? null);

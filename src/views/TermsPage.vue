@@ -1,39 +1,27 @@
 <script lang="ts" setup>
+import { computed } from 'vue';
 import i18n from '@/localisation/i18n';
 import { renderMarkdown } from '@/utils/markdown';
-import { onMounted, ref, watch, type Ref } from 'vue';
-import terms_en from '/public/terms_en.md?raw';
+import { PRIVACY_POLICY_UPDATED_AT, PRIVACY_POLICY_VERSION } from '@/utils/privacyPolicy';
+import { formatDay } from '@/utils/time';
+import termsEn from '/public/terms_en.md?raw';
+import termsFr from '/public/terms_fr.md?raw';
 
-const termsHtml: Ref<string> = ref('Loading...');
-const fetchMarkdown = async (locale: string) => {
-  try {
-    const res = await fetch(
-      `https://raw.githubusercontent.com/CyberCRI/WeLearn-client/refs/heads/main/public/terms_${locale}.md`
-    );
-    if (!res.ok) throw new Error('Failed to fetch Markdown');
-    const md = await res.text();
+// bundled rather than fetched, so the page shows the text that matches the deployed app and its
+// version, with no request to a third party
+const TERMS: Record<string, string> = { en: termsEn, fr: termsFr };
 
-    termsHtml.value = renderMarkdown(md);
-  } catch (err) {
-    termsHtml.value = renderMarkdown(terms_en);
-    console.error(err);
-  }
-};
-
-onMounted(async () => {
-  fetchMarkdown(i18n.global.locale.value);
-});
-
-watch(
-  () => i18n.global.locale.value,
-  (newLocale: string) => {
-    fetchMarkdown(newLocale);
-  }
-);
+// another language (?lang= is free text) gets the english text
+const termsHtml = computed(() => renderMarkdown(TERMS[i18n.global.locale.value] ?? termsEn));
+const updatedAt = computed(() => formatDay(PRIVACY_POLICY_UPDATED_AT, i18n.global.locale.value));
 </script>
 
 <template>
   <div class="terms-page">
+    <h1 class="title is-3">{{ $t('privacyPolicy.title') }}</h1>
+    <p class="subtitle is-6" data-testid="privacy-policy-version">
+      {{ $t('privacyPolicy.lastUpdated', { date: updatedAt, version: PRIVACY_POLICY_VERSION }) }}
+    </p>
     <div v-html="termsHtml"></div>
   </div>
 </template>

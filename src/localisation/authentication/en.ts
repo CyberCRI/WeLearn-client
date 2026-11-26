@@ -25,6 +25,13 @@ export const authentication = {
     EMAIL_DISABLED: 'Sending requests is not available at the moment.',
     UNKNOWN: 'Something went wrong. Please try again in a moment.'
   },
+  // under the sign-up form: what the account data is for, in plain words
+  privacyNotice: {
+    account:
+      'We ask for your name and email only to create your WeLearn account and send you the link to set your password.',
+    sharing: 'They are kept by our login service and are never shared for commercial purposes.',
+    policyLink: 'Read our privacy policy'
+  },
   errorTitle: 'Your account could not be created',
   // the "Other" entry of the login page's list of universities leads here
   universityRequest: {

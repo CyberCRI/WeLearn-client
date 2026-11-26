@@ -55,6 +55,19 @@ test.describe('register', () => {
     expect((await signup).postDataJSON()).toMatchObject({ locale: 'en' });
   });
 
+  test('says what the account data is for and opens the privacy policy', async ({ page }) => {
+    await expect(page.getByText('uniquement pour créer votre compte WeLearn')).toBeVisible();
+
+    const policyPage = page.waitForEvent('popup');
+    await page.getByRole('link', { name: 'Lire notre politique de confidentialité' }).click();
+    const policy = await policyPage;
+
+    await expect(
+      policy.getByRole('heading', { level: 1, name: 'Politique de confidentialité de WeLearn' })
+    ).toBeVisible();
+    await expect(policy.getByRole('heading', { name: '1. Qui sommes-nous ?' })).toBeVisible();
+  });
+
   test('explains an invalid email without calling the API', async ({ page }) => {
     let hasCalledSignup = false;
     page.on('request', (request) => {
