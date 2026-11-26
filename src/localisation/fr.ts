@@ -431,6 +431,10 @@ export const fr = {
     exportingBibliography: 'Export en cours...'
   },
   terms: 'Politique de confidentialité',
+  privacyPolicy: {
+    title: 'Politique de confidentialité de WeLearn',
+    lastUpdated: 'Dernière mise à jour : {date} (version {version})'
+  },
   consent: {
     title: 'Aidez-nous à améliorer WeLearn',
     text: "Avec votre accord, nous mesurons l'utilisation de WeLearn (pages visitées, fonctionnalités utilisées, enregistrements de session masqués) avec Mixpanel, hébergé dans l'UE. Nous n'enregistrons jamais vos questions, vos documents ni vos syllabus. Vous pouvez modifier votre choix à tout moment depuis le pied de page, ou depuis votre profil si vous êtes connecté·e.",
