@@ -40,7 +40,7 @@ CI (`.github/workflows/ci.yml`) runs `yarn lint:check`, `yarn format:check`, `ya
 
 - Vue 3 `<script setup lang="ts">` everywhere. No Options API.
 - Pinia **setup stores** (`defineStore('name', () => { ... return {...} })`).
-- vue-router 4, vue-i18n 9 (`legacy: false`), axios, keycloak-js.
+- vue-router 4, vue-i18n 11 (`legacy: false`), axios, keycloak-js.
 - Styling: **Bulma 1.0 from the CDN** (`index.html`) plus design tokens in `src/assets/base.css` (`--neutral-*`, `--lpi-*`, `--primary-*`). Use Bulma classes and those CSS variables. Don't add hard-coded colors or a new CSS framework. Component styles are `<style scoped>`.
 - Title/subtitle spacing: one app-wide rule in `src/assets/base.css` spaces a `.title` and the `.subtitle` right under it. Don't add `mt-*`/`mb-*` helpers, `is-spaced` or scoped margins to that pair, and don't put the pair in a container whose `gap` would split it.
 - Path alias: `@/` → `src/`.
@@ -51,38 +51,43 @@ CI (`.github/workflows/ci.yml`) runs `yarn lint:check`, `yarn format:check`, `ya
 ```
 src/
   main.ts            # creates the app, then waits for authStore.init() (Keycloak) before mounting
-  App.vue            # layout + boot calls: sources, corpus info, user/session, bookmarks
+  App.vue            # layout + boot calls: sources, corpus info, user/session (then latest chat thread, guest quota), bookmarks, account access
   router/index.ts    # routes + auth guard + query-param carry-over
   views/             # one per route
-  components/        # shared UI; feature subfolders: tutor/, learn/ (steps/, discipline/), MAS_tutor/, nav/, dropdowns/, icons/, modals/
-  learn/             # Learn hub: modules list, progress, per-module structure (modules/<id>.ts)
-  stores/            # one Pinia store per feature (chat, search, tutor, bookmarks, sources, filters, user, auth, metrics, featureFlip)
-  composables/       # useAuth, useDisciplineModule (screen state machine), useGoTo
+  components/        # shared UI; feature subfolders: tutor/ (draft/, review/, updated/, development/), learn/ (steps/, discipline/), MAS_tutor/, nav/, dropdowns/, icons/, modals/
+  learn/             # Learn hub: modules list (moduleList.ts), progress, per-module structure (modules/<id>.ts)
+  stores/            # one Pinia store per feature: chat, search, tutor (from-scratch syllabus), course, connections, courseDraft,
+                     # syllabusEval (syllabus v2), bookmarks, sources, filters, user, auth, accountAccess, guestQuota, metrics,
+                     # featureFlip, mas_tutor (/tutor_test)
+  composables/       # useAuth, useDisciplineModule (screen state machine), useEvalForms, useGoTo, useOpenAll, useSyllabusExport
   utils/             # api.ts (axios instance), fetch.ts (API helpers), storage.ts, md-to-docx/, ...
   localisation/      # en.ts / fr.ts (+ authentication/, learn/ sub-namespaces); learn/content/ holds the learn module text, outside vue-i18n
-  types/             # shared types; learn/discipline.ts has the discipline module's
+  types/             # shared types; learn/ has the learn modules' (discipline.ts, modules.ts)
 e2e/                 # Playwright specs; e2e/base.ts mocks every API route
 tests/unit.setup.ts  # global $t mock → returns the key
 ```
 
 ## User flow
 
-1. **Boot:** `main.ts` → `authStore.init()` (Keycloak `check-sso`) → mount. `App.vue` then calls `/user/user_and_session` (it stores `sessionId` in localStorage, and that value is sent as the `X-Session-Id` header), loads the source/corpus lists and loads bookmarks.
-2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced where the `auth` feature flip is on: `dev`, `staging` and `prod`, not the `test` build** (`auth` in `src/featureEnvironments.json` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
+1. **Boot:** `main.ts` → `authStore.init()` (Keycloak `check-sso`) → mount. `App.vue` then calls `/user/user_and_session` (guests get a session too; it stores `sessionId` in localStorage, and that value is sent as the `X-Session-Id` header), then restores the latest chat thread and the guest quota (`guestQuota` store). It also loads the source/corpus lists, the bookmarks (accounts only) and, for a logged-in user, `/user/access` (`accountAccess` store: a Google or email login is limited in time).
+2. **Auth:** a route with `meta.requiresAuth` sends a guest to the Keycloak login, or opens the sign-up prompt when it also has `meta.signupPromptReason` (`/bookmarks`). `/register` is the sign-up form: `authStore.register` posts to `/user/signup` and Keycloak emails a link to set the password. **Auth is only enforced where the `auth` feature flip is on: `dev`, `staging` and `prod`, not the `test` build** (`auth` in `src/featureEnvironments.json` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
 3. `/` redirects to **`/q-and-a` (Chat)**. The user asks a question with optional SDG/corpus filters (`filters` store). The answer is streamed from `/qna/chat/agent_stream` through `fetchStream`, and `chatStatus` moves through the `CHAT_STATUS` states. Cited sources can be bookmarked.
-4. **`/tutor` (Syllabus):** a 4-step wizard driven by `tutor` store `step`:
+4. **`/tutor` (Syllabus):** where `syllabusV2` is off (`test`, `prod`), `TutorPage.vue` only shows `ScratchWizard.vue`, a 4-step wizard driven by `tutor` store `step`:
 
    1. upload files (max 3, 5 MB each; pdf/txt/docx)
    2. summaries
    3. pick resources
    4. edit the syllabus, give feedback, download it as .docx (`utils/md-to-docx`)
 
-   `TutorPage.vue` maps each step to a store action (`stepToAction`). Only one request runs at a time (`AbortController` in `startRequest`). Finished steps fold into a recap.
+   `ScratchWizard.vue` maps each step to a store action (`stepToAction`). Only one request runs at a time (`AbortController` in `startRequest`). Finished steps fold into a recap.
 
-5. **`/learn` (Learn / Se former):** a hub of short modules listed in `src/learn/modules.ts`. `foundations` and `frameworks` run in `LearnModule.vue` from typed steps, with progress through `src/learn/progress.ts`. Module content stays in the front, in two parts: the structure (`src/learn/modules/<id>.ts`: ids, order, answers, the same in every language) and one text file per language (`src/localisation/learn/content/<id>.<lang>.ts`, typed from the structure's ids, not in vue-i18n). `buildModule` merges them, and components only read content through `getModuleContent` / `useModuleContent`. UI labels (buttons, kickers, tags) go in vue-i18n under `learn.module.*` / `learn.discipline.*`, never in the content. `/learn/discipline` (old `/microlearning`, which redirects) is the discipline module: a screen state machine in `useDisciplineModule` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). Its content follows the same split: `DISCIPLINES` and `buildDiscipline` in `src/learn/modules/discipline.ts`, the text in `src/localisation/learn/content/discipline.<lang>.ts`. Answers are kept in memory only.
+   Where `syllabusV2` is on (`dev`, `staging`), the page first asks a self-evaluation (`syllabusEval` store, first time only), then the path (`PathChoice.vue`): "from scratch" runs the same wizard, "I have a course" runs `ExistingCourseFlow.vue` (one course file → review the course → sustainability additions → updated syllabus; `course` and `connections` stores). A logged-in teacher can keep a draft of that path in the browser (`courseDraft` store).
+
+5. **`/learn` (Learn / Se former):** a hub of short modules listed in `src/learn/moduleList.ts`, each behind its own feature flip (`learnFoundations` and `learnFrameworks` on `dev` and `staging` only, `learnDiscipline` everywhere); the hub lists and numbers only the enabled ones. `foundations` and `frameworks` run in `LearnModule.vue` from typed steps, with progress through `src/learn/progress.ts`. Module content stays in the front, in two parts: the structure (`src/learn/modules/<id>.ts`: ids, order, answers, the same in every language) and one text file per language (`src/localisation/learn/content/<id>.<lang>.ts`, typed from the structure's ids, not in vue-i18n). `buildModule` merges them, and components only read content through `getModuleContent` / `useModuleContent`. UI labels (buttons, kickers, tags) go in vue-i18n under `learn.module.*` / `learn.discipline.*`, never in the content. `/learn/discipline` (old `/microlearning`, which redirects) is the discipline module: a screen state machine in `useDisciplineModule` (welcome → briefing → self-eval before → trail of steps → self-eval after → complete). Its content follows the same split: `DISCIPLINES` and `buildDiscipline` in `src/learn/modules/discipline.ts`, the text in `src/localisation/learn/content/discipline.<lang>.ts`. The self-evaluation answers are sent once each to `/metric/form_data` (`useEvalForms`, which keeps in localStorage which forms are done); the other answers stay in memory.
 6. **`/search`:** document similarity search (the query needs >5 words or >50 chars) plus SDG detection from an external classifier.
 7. **`/bookmarks`:** the saved documents, with a bibliography export.
 8. `/tutor_test` (TestMAS) is a hidden experimental page. Don't remove it or `SecondStep.vue`, which it depends on.
+9. Other routes: `/profile` (accounts only), `/about`, `/terms`, `/register` and `/request-university` (reached from the Keycloak login, no header or nav: `meta.hideTemplate`), `/login` (back from the account set-up email) and the hidden `/features`.
 
 The nav entries and routes are gated by `featureFlip` store flags (see Conventions).
 
@@ -102,13 +107,13 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
     - Buttons: `ButtonComponent`, `DeleteButton`
     - Modals: `ModalWrapper`, `ModalComponent`
     - Pills and tags: `PillComponent`, `GenericPillComponent`
-    - Form inputs: `CheckboxCompnent`, `TextAreaComponent`
+    - Form inputs: `CheckboxCompnent`, `TextInputComponent`, `TextAreaComponent`
     - Dropdowns: `BaseDropdown`, `DropDownMenu`
     - Cards: `CardComponent`, `CardSimpleComponent`
     - Feedback: `TooltipComponent`, `ToasterComponent`
     - Loading and errors: `LoadingComponent`, `LoadingOverlay`, `ErrorComponent`
     - Layout: `ColumnTemplate`, `FullpageTemplate`
-    - Progress: `ProgressBar`
+    - Progress: `learn/ProgressBar`
     - Icons: anything in `icons/`
   - If an existing component is close but not quite right, extend it with a prop or slot without breaking current usages. Don't fork it. If you really must fork, add a `// ponytail:` comment explaining why.
   - Views in `src/views/` should mostly compose components and wire stores. Don't hand-code buttons, modals, inputs or inline SVGs in a page.
@@ -145,5 +150,5 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 
 ## Gotchas
 
-- `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
+- Sign-up (`RegisterPage.vue` → `authStore.register` → `/user/signup`): the API answers the same whether or not the email already has an account (no user enumeration), so a success only means "check your email".
 - Mixpanel is behind the `analytics` feature flip (`analytics` in `src/featureEnvironments.json`: on in `dev`, `staging` and `prod`, off in the `test` build): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.
