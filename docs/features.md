@@ -18,10 +18,10 @@ build. A feature on everywhere can lose its entry once nothing reads it anymore.
 | `learnFrameworks` | ✅ | ✅ | ❌ | ❌ | `/learn/frameworks?preview=learnFrameworks` | Learn module: frameworks |
 | `learnDiscipline` | ✅ | ✅ | ✅ | ✅ | — | Learn module: discipline (the former microlearning) |
 | `workshop` | ✅ | ❌ | ❌ | ❌ | `?preview=workshop` | Workshop, reserved: no page reads it yet |
-| `auth` | ✅ | ✅ | ❌ | ❌ | `?preview=auth` | Keycloak login, accounts and guest limits on the client side; not on prod yet |
-| `analytics` | ✅ | ❌ | ❌ | ❌ | `?preview=analytics` | Mixpanel and its consent banner, until the rollout is validated |
+| `auth` | ✅ | ✅ | ❌ | ✅ | `?preview=auth` | Keycloak login, accounts and guest limits on the client side; off in the test build |
+| `analytics` | ✅ | ✅ | ❌ | ✅ | `?preview=analytics` | Mixpanel and its consent banner; off in the test build, whose e2e specs check that Mixpanel is never called |
 | `featuresPage` | ✅ | ✅ | ❌ | ❌ | never | This list as a page, with a button to preview each feature in this browser; never previewed, so never on prod |
-| `syllabusV2` | ✅ | ❌ | ❌ | ❌ | `/tutor?preview=syllabusV2` | Syllabus v2: path choice, the "I have a course" path, drafts and the before/after self-evaluation. Every change of the rework sits behind it, so prod stays as it is |
+| `syllabusV2` | ✅ | ✅ | ❌ | ❌ | `/tutor?preview=syllabusV2` | Syllabus v2: path choice, the "I have a course" path, drafts and the before/after self-evaluation. Every change of the rework sits behind it, so prod stays as it is |
 
 ## Preview a feature
 

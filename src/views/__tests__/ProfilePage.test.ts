@@ -108,7 +108,7 @@ describe('ProfilePage', () => {
   });
 
   it('hides the cookie settings when the analytics feature is off', () => {
-    env.name = 'prod';
+    env.name = 'test';
     const wrapper = mount(ProfilePage, { global: { plugins: [i18n] } });
     expect(wrapper.find('[data-testid="profile-consent-settings"]').exists()).toBe(false);
   });

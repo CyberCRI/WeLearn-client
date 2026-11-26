@@ -1,4 +1,4 @@
-// Runs with VITE_ENVIRONMENT=dev (chromium-auth project), like staging (auth is on in dev and staging)
+// Runs with VITE_ENVIRONMENT=dev (chromium-auth project), like staging and prod (auth is on there)
 import { test, expect } from './base';
 import { fakeUser, keycloakSignIn, signInOnKeycloak } from './keycloak';
 

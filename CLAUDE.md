@@ -68,7 +68,7 @@ tests/unit.setup.ts  # global $t mock → returns the key
 ## User flow
 
 1. **Boot:** `main.ts` → `authStore.init()` (Keycloak `check-sso`) → mount. `App.vue` then calls `/user/user_and_session` (it stores `sessionId` in localStorage, and that value is sent as the `X-Session-Id` header), loads the source/corpus lists and loads bookmarks.
-2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced where the `auth` feature flip is on, today `dev` and `staging`** (`auth` in `src/featureEnvironments.json` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
+2. **Auth:** a route with `meta.requiresAuth` sends the user to the Keycloak login. **Auth is only enforced where the `auth` feature flip is on: `dev`, `staging` and `prod`, not the `test` build** (`auth` in `src/featureEnvironments.json` → `authStore.shouldAuthenticate`). In other environments the guard lets everything through.
 3. `/` redirects to **`/q-and-a` (Chat)**. The user asks a question with optional SDG/corpus filters (`filters` store). The answer is streamed from `/qna/chat/agent_stream` through `fetchStream`, and `chatStatus` moves through the `CHAT_STATUS` states. Cited sources can be bookmarked.
 4. **`/tutor` (Syllabus):** a 4-step wizard driven by `tutor` store `step`:
 
@@ -146,4 +146,4 @@ The nav entries and routes are gated by `featureFlip` store flags (see Conventio
 ## Gotchas
 
 - `RegisterPage.vue` / `authStore.register` is a stub (it only shows an alert). Registration is not implemented yet.
-- Mixpanel is behind the `analytics` feature flip (`analytics` in `src/featureEnvironments.json`, `['dev']` for now): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.
+- Mixpanel is behind the `analytics` feature flip (`analytics` in `src/featureEnvironments.json`: on in `dev`, `staging` and `prod`, off in the `test` build): elsewhere there is no consent banner, no cookie settings link and Mixpanel never starts. When on, it only starts after the user accepts the consent banner (`ConsentBanner.vue`, `user` store `analyticsConsent`). In `test` mode or without a token it never starts. E2E specs that need it run in the `chromium-auth` (dev) project.

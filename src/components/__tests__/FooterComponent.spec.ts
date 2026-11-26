@@ -46,7 +46,7 @@ describe('FooterComponent', () => {
   });
 
   it('hides the cookie settings when the analytics feature is off', () => {
-    env.name = 'prod';
+    env.name = 'test';
     const wrapper = mountFooter();
     expect(wrapper.find('[data-testid="consent-settings"]').exists()).toBe(false);
   });

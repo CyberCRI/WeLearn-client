@@ -5,10 +5,10 @@ import FeaturesPage from '../FeaturesPage.vue';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 import { reloadPage } from '@/utils/navigation';
 
-// staging: auth on, syllabusV2 off, analytics previewed in this browser
+// the test build: chat on, syllabusV2 off, analytics previewed in this browser
 vi.mock('@/utils/env', () => ({
   ENVIRONMENTS: ['dev', 'staging', 'test', 'prod'],
-  ENVIRONMENT_NAME: 'staging'
+  ENVIRONMENT_NAME: 'test'
 }));
 vi.mock('@/utils/navigation', () => ({ reloadPage: vi.fn() }));
 
@@ -28,7 +28,7 @@ describe('FeaturesPage', () => {
   it('says, for each feature, whether it is on here and how', () => {
     const wrapper = mountPage();
 
-    expect(row(wrapper, 'auth').get('[data-testid="status"]').text()).toBe(
+    expect(row(wrapper, 'chat').get('[data-testid="status"]').text()).toBe(
       'features.status.environment'
     );
     expect(row(wrapper, 'analytics').get('[data-testid="status"]').text()).toBe(
@@ -59,7 +59,7 @@ describe('FeaturesPage', () => {
   it('offers no preview for a feature on here, nor for the page itself', () => {
     const wrapper = mountPage();
 
-    expect(row(wrapper, 'auth').find('[data-testid="start-preview"]').exists()).toBe(false);
+    expect(row(wrapper, 'chat').find('[data-testid="start-preview"]').exists()).toBe(false);
     expect(row(wrapper, 'featuresPage').find('[data-testid="start-preview"]').exists()).toBe(false);
   });
 });

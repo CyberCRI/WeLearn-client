@@ -239,7 +239,7 @@ describe('user store', () => {
     });
 
     it('never asks when the analytics feature is off', () => {
-      env.name = 'prod';
+      env.name = 'test';
 
       expect(useUserStore().shouldAskAnalyticsConsent).toBe(false);
     });

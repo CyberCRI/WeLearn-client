@@ -15,7 +15,7 @@ dotenv.config({ path: path.resolve(configDir, '..', '.env.test') });
 
 const PORT = 5180;
 const AUTH_PORT = 5181;
-// keycloak, analytics, the new learn modules and guests of the syllabus v2 paths are only on in dev
+// keycloak, analytics, the new learn modules and guests of the syllabus v2 paths are off in the test build
 const DEV_SPECS = [
   'auth.spec.ts',
   'profile.spec.ts',
@@ -68,7 +68,7 @@ export default defineConfig<{ isDevEnvironment: boolean }>({
   /* Configure projects for major browsers */
   projects: [
     {
-      // VITE_ENVIRONMENT=test: no auth nor analytics, like prod
+      // VITE_ENVIRONMENT=test: no auth nor analytics
       name: 'chromium',
       testIgnore: DEV_SPECS,
       use: { ...devices['Desktop Chrome'], baseURL: `http://localhost:${PORT}` }
