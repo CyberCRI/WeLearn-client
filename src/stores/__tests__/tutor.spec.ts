@@ -879,7 +879,7 @@ describe('tutor store', () => {
 
       expect(auth.askToSignUp).toHaveBeenCalledWith('download');
       expect(convertMarkdownToDocx).not.toHaveBeenCalled();
-      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '')).toMatchObject({
+      expect(JSON.parse(localStorage.getItem('pendingSyllabus') || '').syllabus).toMatchObject({
         kind: 'markdown',
         markdown: '# Course',
         fileName: 'syllabus.docx'

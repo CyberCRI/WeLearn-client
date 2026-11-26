@@ -20,6 +20,7 @@ import { useAuthStore } from './stores/auth';
 import { useChatStore } from '@/stores/chat';
 import { useGuestQuotaStore } from '@/stores/guestQuota';
 import { useAccountAccessStore } from '@/stores/accountAccess';
+import { dropExpiredPendingSyllabus } from '@/utils/syllabusDownload';
 
 const { getSourcesList, getInfoPerCorpus } = useSourcesStore();
 const { getBookmarks } = useBookmarksStore();
@@ -53,6 +54,7 @@ async function initCalls() {
 }
 
 onMounted(async () => {
+  dropExpiredPendingSyllabus();
   try {
     await initCalls();
   } catch (error) {
