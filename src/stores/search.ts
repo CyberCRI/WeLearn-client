@@ -21,8 +21,7 @@ export const useSearchStore = defineStore('search', () => {
   const hasPartialResult = ref(false);
   const hasSourcesError = ref(false);
   const isFetchingSources = ref(false);
-  const sdgsQuery: Ref<string[]> = ref([]);
-  // the last search is kept for this tab only: it survives a reload, not the tab being closed
+  const sdgsQuery: Ref<number[]> = ref([]);
   const searchInput: Ref<string> = ref(getFromSessionStorage('searchInput') || '');
   const displayNoResult: Ref<boolean> = ref(false);
   const errorCode: Ref<string> = ref('');

@@ -377,6 +377,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/v1/search/sdg_classify': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * SDGs of a text
+     * @description The SDGs a text is about, from the Aurora SDG classifier (VU Amsterdam), called by the API so the classifier does not get the user's IP address or browser. 503 SDG_CLASSIFIER_UNAVAILABLE when the classifier fails or is slow.
+     */
+    post: operations['search-sdg_classify'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/v1/tutor/api/generate': {
     parameters: {
       query?: never;
@@ -1980,6 +2000,27 @@ export interface components {
       /** Url */
       url: string;
     };
+    /** SDGClassification */
+    SDGClassification: {
+      /**
+       * Sdgs
+       * @description SDG numbers (1-17) the text is about, most likely first: at most 3, each above the classifier's confidence threshold. Empty when none is.
+       * @example [
+       *       6,
+       *       4
+       *     ]
+       */
+      sdgs: number[];
+    };
+    /** SDGClassifyQuery */
+    SDGClassifyQuery: {
+      /**
+       * Query
+       * @description Text to find the SDGs of, usually the search query.
+       * @example How can schools reduce water waste?
+       */
+      query: string;
+    };
     /** SDGFilter */
     SDGFilter: {
       /**
@@ -3158,6 +3199,39 @@ export interface operations {
           'application/json': {
             [key: string]: number;
           };
+        };
+      };
+      /** @description Error */
+      default: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ErrorResponse'];
+        };
+      };
+    };
+  };
+  'search-sdg_classify': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['SDGClassifyQuery'];
+      };
+    };
+    responses: {
+      /** @description Successful Response */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SDGClassification'];
         };
       };
       /** @description Error */

@@ -18,7 +18,7 @@ const VALID_QUERY = 'how do forests store carbon dioxide';
 const DOCS = [{ id: 'doc-1' }];
 
 const mockSearch = (status: number, data: Record<string, unknown> = { docs: DOCS }) => {
-  vi.mocked(getSDGsFromQuery).mockResolvedValue(['13', '15']);
+  vi.mocked(getSDGsFromQuery).mockResolvedValue([13, 15]);
   vi.mocked(getSearch).mockResolvedValue({ status, data } as Awaited<ReturnType<typeof getSearch>>);
 };
 
@@ -119,7 +119,7 @@ describe('search store', () => {
       );
       expect(store.isFetchingSources).toBe(false);
       expect(store.searchResults).toEqual(DOCS);
-      expect(store.sdgsQuery).toEqual(['13', '15']);
+      expect(store.sdgsQuery).toEqual([13, 15]);
       expect(store.hasPartialResult).toBe(false);
       expect(store.displayNoResult).toBe(false);
       expect(JSON.parse(sessionStorage.getItem('searchInput') || '')).toBe(VALID_QUERY);
@@ -197,7 +197,7 @@ describe('search store', () => {
     store.lastMessageId = 'message-1';
     store.hasPartialResult = true;
     store.hasSourcesError = true;
-    store.sdgsQuery = ['13'];
+    store.sdgsQuery = [13];
 
     store.$reset();
 

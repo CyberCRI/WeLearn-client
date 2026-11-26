@@ -100,6 +100,8 @@ export const test = base.extend<Fixtures>({
         await route.fulfill({ json });
       } else if (url.includes('nb_docs')) {
         await route.fulfill({ json: { nb_docs: 10 } });
+      } else if (url.includes('sdg_classify')) {
+        await route.fulfill({ json: { sdgs: [6, 13] } });
       } else if (url.includes('by_document')) {
         await route.fulfill({ status: 200, body: JSON.stringify({ docs }) });
       } else if (url.includes('by_ids')) {
