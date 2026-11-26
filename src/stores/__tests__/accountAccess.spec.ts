@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPinia, setActivePinia } from 'pinia';
-import { useAccountAccessStore } from '../accountAccess';
+import { hashAccountId, useAccountAccessStore } from '../accountAccess';
 import i18n from '@/localisation/i18n';
 
 const auth = vi.hoisted(() => ({
@@ -13,6 +13,10 @@ const fetchMocks = vi.hoisted(() => ({ getAccountAccess: vi.fn() }));
 vi.mock('@/utils/fetch', () => ({ getAccountAccess: fetchMocks.getAccountAccess }));
 
 const LIMITED = { limited: true, access_until: '2027-05-20', days_left: 184 };
+
+const NOTICE_SEEN_KEY = 'limitedAccessNoticeSeen';
+const storedSeen = () => JSON.parse(localStorage.getItem(NOTICE_SEEN_KEY) || '[]');
+const hash = async (id: string) => (await hashAccountId(id))!;
 
 describe('account access store', () => {
   beforeEach(() => {
@@ -42,7 +46,7 @@ describe('account access store', () => {
   it('does not open it again once closed for this account', async () => {
     const store = useAccountAccessStore();
     await store.refresh();
-    store.closeNotice();
+    await store.closeNotice();
     expect(store.isNoticeOpen).toBe(false);
 
     setActivePinia(createPinia());
@@ -56,7 +60,7 @@ describe('account access store', () => {
   it('opens it for another limited account of the same browser', async () => {
     const store = useAccountAccessStore();
     await store.refresh();
-    store.closeNotice();
+    await store.closeNotice();
 
     auth.tokenParsed = { sub: 'user-2' };
     setActivePinia(createPinia());
@@ -64,7 +68,54 @@ describe('account access store', () => {
     await next.refresh();
 
     expect(next.isNoticeOpen).toBe(true);
-    expect(JSON.parse(localStorage.getItem('limitedAccessNoticeSeen') || '[]')).toEqual(['user-1']);
+    expect(storedSeen()).toEqual([await hash('user-1')]);
+  });
+
+  it('keeps a sha-256 hash of the keycloak id, never the id', async () => {
+    const store = useAccountAccessStore();
+    await store.refresh();
+    await store.closeNotice();
+
+    // sha-256 of "user-1", as `echo -n user-1 | sha256sum` gives it
+    expect(storedSeen()).toEqual([
+      'c6c289e49e9c05b2145860387b73bcb18df43fb09a1e4a4a9713c76c88bb541b'
+    ]);
+    expect(localStorage.getItem(NOTICE_SEEN_KEY)).not.toContain('user-1');
+  });
+
+  it('remembers the last five accounts only, each once', async () => {
+    for (const id of ['a', 'b', 'c', 'd', 'e', 'f', 'b']) {
+      auth.tokenParsed = { sub: id };
+      setActivePinia(createPinia());
+      const store = useAccountAccessStore();
+      await store.refresh();
+      await store.closeNotice();
+    }
+
+    expect(storedSeen()).toEqual(await Promise.all(['c', 'd', 'e', 'f', 'b'].map(hash)));
+  });
+
+  it('hashes the ids kept by older versions when it reads them', async () => {
+    const oldHash = await hash('user-0');
+    localStorage.setItem(NOTICE_SEEN_KEY, JSON.stringify([oldHash, 'user-1', 42]));
+    const store = useAccountAccessStore();
+
+    await store.refresh();
+
+    expect(store.isNoticeOpen).toBe(false);
+    expect(storedSeen()).toEqual([oldHash, await hash('user-1')]);
+  });
+
+  it('shows the notice without remembering it where the browser cannot hash', async () => {
+    vi.spyOn(crypto.subtle, 'digest').mockRejectedValue(new Error('insecure context'));
+    const store = useAccountAccessStore();
+
+    await store.refresh();
+    expect(store.isNoticeOpen).toBe(true);
+    await store.closeNotice();
+
+    expect(store.isNoticeOpen).toBe(false);
+    expect(localStorage.getItem(NOTICE_SEEN_KEY)).toBeNull();
   });
 
   it('says nothing to an institution account', async () => {
