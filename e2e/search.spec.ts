@@ -56,5 +56,33 @@ test.describe('search', () => {
       await page.getByText('1 - Pas de pauvreté').click();
       await expect(page.getByLabel('1 - Pas de pauvreté')).toBeChecked();
     });
+
+    test('shows the SDGs of the query, found through the API', async ({ page }) => {
+      const sdgRequest = page.waitForRequest('**/search/sdg_classify');
+      await page.fill('textarea', 'this is a longer text for testing');
+      await page.getByLabel('Recherche', { exact: true }).click();
+
+      expect((await sdgRequest).postDataJSON()).toEqual({
+        query: 'this is a longer text for testing'
+      });
+      const sdgs = page.locator('.sdgs-list');
+      await expect(sdgs.getByText('ODD dans la requête')).toBeVisible();
+      await expect(sdgs.getByText('6', { exact: true })).toBeVisible();
+      await expect(sdgs.getByText('13', { exact: true })).toBeVisible();
+    });
+
+    test('searches without SDGs when the classifier is unavailable', async ({ page }) => {
+      await page.route('**/search/sdg_classify', (route) =>
+        route.fulfill({
+          status: 503,
+          json: { detail: { message: 'unavailable', code: 'SDG_CLASSIFIER_UNAVAILABLE' } }
+        })
+      );
+      await page.fill('textarea', 'this is a longer text for testing');
+      await page.getByLabel('Recherche', { exact: true }).click();
+
+      await expect(page.getByText('Document one test')).toBeVisible();
+      await expect(page.locator('.sdgs-list')).toHaveCount(0);
+    });
   });
 });

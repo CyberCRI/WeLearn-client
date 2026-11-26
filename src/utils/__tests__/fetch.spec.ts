@@ -129,28 +129,31 @@ describe('fetch helpers', () => {
   });
 
   describe('getSDGsFromQuery', () => {
-    it('returns the codes of the 3 best predictions, best first', async () => {
-      vi.spyOn(axios, 'post').mockResolvedValue({
-        data: {
-          predictions: [
-            { prediction: 0.2, sdg: { code: '4' } },
-            { prediction: 0.9, sdg: { code: '13' } },
-            { prediction: 0.5, sdg: { code: '15' } },
-            { prediction: 0.7, sdg: { code: '6' } }
-          ]
-        }
-      });
+    it('asks the API, which applies the confidence threshold', async () => {
+      vi.spyOn(http, 'post').mockResolvedValue({ status: 200, data: { sdgs: [13, 6] } });
 
-      expect(await getSDGsFromQuery('forests and water')).toEqual(['13', '6', '15']);
-      expect(axios.post).toHaveBeenCalledWith(
-        'https://aurora-sdg.labs.vu.nl/classifier/classify/aurora-sdg-multi',
-        { text: 'forests and water' }
+      expect(await getSDGsFromQuery('forests and water')).toEqual([13, 6]);
+      expect(http.post).toHaveBeenCalledWith(
+        '/search/sdg_classify',
+        { query: 'forests and water' },
+        undefined
       );
     });
 
-    it('returns no sdg when the classifier fails', async () => {
+    it('never calls the classifier from the browser', async () => {
+      vi.spyOn(http, 'post').mockResolvedValue({ status: 200, data: { sdgs: [] } });
+      const directPost = vi.spyOn(axios, 'post');
+
+      await getSDGsFromQuery('forests and water');
+
+      expect(directPost).not.toHaveBeenCalled();
+    });
+
+    it('returns no sdg when the classifier is unavailable', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
-      vi.spyOn(axios, 'post').mockRejectedValue(new Error('Network Error'));
+      vi.spyOn(http, 'post').mockRejectedValue({
+        response: { status: 503, data: { detail: { code: 'SDG_CLASSIFIER_UNAVAILABLE' } } }
+      });
 
       expect(await getSDGsFromQuery('forests and water')).toEqual([]);
     });

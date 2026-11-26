@@ -1,4 +1,4 @@
-import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import http, { getAuthHeaders, handleUnauthorized } from './api';
 import { apiErrorCode } from './apiErrors';
 import type { ApiRequestBody, ApiResponse } from '@/types/api';
@@ -49,26 +49,21 @@ export const baseDeleteAxios = async <T = any>(
   }
 };
 
-export const getSDGsFromQuery = async (query: string): Promise<string[]> => {
+// the API calls the classifier (VU Amsterdam), so it gets the text but not the user's IP or
+// browser. it keeps the 3 best SDGs above its confidence threshold, best first
+export const getSDGsFromQuery = async (
+  query: string
+): Promise<ApiResponse<'/search/sdg_classify', 'post'>['sdgs']> => {
   try {
-    // external classifier, not part of the WeLearn API contract
-    const result = await axios.post<{
-      predictions: { prediction: number; sdg: { code: string } }[];
-    }>(`https://aurora-sdg.labs.vu.nl/classifier/classify/aurora-sdg-multi`, {
-      text: query
-    });
+    const body: ApiRequestBody<'/search/sdg_classify'> = { query };
+    const result = await basePostAxios<ApiResponse<'/search/sdg_classify', 'post'>>(
+      '/search/sdg_classify',
+      body
+    );
 
-    if (!result) return [];
-
-    const sdgs = result.data.predictions
-      .sort((a, b) => b.prediction - a.prediction)
-      .slice(0, 3)
-      .map(({ sdg }) => sdg.code)
-      .filter((sdg) => Number(sdg) > 0.1);
-
-    return sdgs;
-  } catch (error) {
-    console.error(error);
+    return result.data.sdgs;
+  } catch {
+    // the sdgs are a hint next to the results: without them the search goes on
     return [];
   }
 };

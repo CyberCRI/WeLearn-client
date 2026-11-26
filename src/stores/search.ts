@@ -17,7 +17,7 @@ export const useSearchStore = defineStore('search', () => {
   const hasPartialResult = ref(false);
   const hasSourcesError = ref(false);
   const isFetchingSources = ref(false);
-  const sdgsQuery: Ref<string[]> = ref([]);
+  const sdgsQuery: Ref<number[]> = ref([]);
   const searchInput: Ref<string> = ref(getFromStorage('searchInput') || '');
   const displayNoResult: Ref<boolean> = ref(false);
   const errorCode: Ref<string> = ref('');
