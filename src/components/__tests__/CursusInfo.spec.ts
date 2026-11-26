@@ -71,12 +71,16 @@ describe('CursusInfo', () => {
   it('highlights the dropzone while dragging and adds the dropped files', async () => {
     const wrapper = mountInfo();
     const dropzone = wrapper.find('.dropzone');
-    await dropzone.trigger('dragover');
+    await dropzone.trigger('dragenter');
     expect(dropzone.classes()).toContain('dragging');
+    // over a child of the zone: still highlighted
+    await dropzone.find('.browse').trigger('dragenter');
     await dropzone.trigger('dragleave');
+    expect(dropzone.classes()).toContain('dragging');
+    await dropzone.find('.browse').trigger('dragleave');
     expect(dropzone.classes()).not.toContain('dragging');
 
-    await dropzone.trigger('dragover');
+    await dropzone.trigger('dragenter');
     const file = new File(['c'], 'c.txt', { type: 'text/plain' });
     await dropzone.trigger('drop', { dataTransfer: { files: [file] } });
     expect(dropzone.classes()).not.toContain('dragging');

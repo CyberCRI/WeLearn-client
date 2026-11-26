@@ -170,7 +170,7 @@ exports[`TutorPage > renders properly 1`] = `
           data-v-8e439d67=""
         >
           <input
-            accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            accept="application/pdf, text/plain, application/vnd.openxmlformats-officedocument.wordprocessingml.document, .pdf, .txt, .docx"
             class="is-sr-only"
             data-testid="file-input"
             data-v-8e439d67=""

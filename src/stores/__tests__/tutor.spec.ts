@@ -172,6 +172,29 @@ describe('tutor store', () => {
       expect(store.newFilesToSearch).toEqual({});
     });
 
+    it('accepts a docx the browser gives no type, by its extension', () => {
+      const store = useTutorStore();
+
+      store.addFiles([file('c.docx', ''), file('d.DOCX', 'application/octet-stream')]);
+
+      expect(Object.keys(store.newFilesToSearch)).toEqual(['c.docx', 'd.DOCX']);
+      expect(store.fileError).toEqual({ state: false, reason: null });
+
+      // the extension only counts when the type is unknown
+      store.addFiles([file('e.exe', ''), file('f.docx', 'image/png')]);
+      expect(Object.keys(store.newFilesToSearch)).toEqual(['c.docx', 'd.DOCX']);
+      expect(store.fileError).toEqual({ state: true, reason: 'BAD_EXTENSION' });
+    });
+
+    it('rejects an empty file', () => {
+      const store = useTutorStore();
+
+      store.addFiles([file('empty.pdf', PDF, 0)]);
+
+      expect(store.newFilesToSearch).toEqual({});
+      expect(store.fileError).toEqual({ state: true, reason: 'EMPTY_FILE' });
+    });
+
     it('rejects a fourth file but accepts the same name again', () => {
       const store = useTutorStore();
       store.addFiles([file('1.pdf'), file('2.pdf'), file('3.pdf')]);

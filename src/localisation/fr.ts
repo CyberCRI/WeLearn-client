@@ -462,6 +462,7 @@ export const fr = {
     BIG_FILE: 'La taille du fichier dépasse 5 Mo.',
     BAD_EXTENSION:
       'Type de fichier non pris en charge. Seuls les fichiers PDF, TXT et DOCX sont acceptés.',
+    EMPTY_FILE: 'Le fichier est vide : il n’y a rien à lire.',
     TOO_MANY_FILES: "Vous pouvez ajouter jusqu'à 3 fichiers.",
     edit: 'Modifier',
     collapse: 'Fermer',
