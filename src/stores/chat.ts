@@ -3,7 +3,14 @@ import { computed, ref, type ComputedRef, type Ref } from 'vue';
 import type { Document, ChatMessage, ChatProcessingMetadata } from '@/types';
 import { baseGetAxios, deleteChatThread, fetchStream } from '@/utils/fetch';
 import { getQueryParamValue } from '@/utils/urlsUtils';
-import { getFromStorage, saveToStorage, clearFromStorage } from '@/utils/storage';
+import {
+  getFromStorage,
+  saveToStorage,
+  clearFromStorage,
+  getFromSessionStorage,
+  saveToSessionStorage,
+  clearFromSessionStorage
+} from '@/utils/storage';
 import { extractProcessingMetadata } from '@/utils/chatProcessing';
 import i18n from '@/localisation/i18n';
 import { useFiltersStore } from '@/stores/filters';
@@ -43,21 +50,31 @@ const SETTLED_STATUSES = [
   CHAT_STATUS.NO_RESULTS
 ];
 
+// the sources of the last answer, kept for this tab only with the thread they belong to: the
+// history from the api has the messages but not their sources
+const SOURCES_KEY = 'chatSources';
+
+const readStoredSources = (threadId: string | null): Document[] => {
+  const stored = getFromSessionStorage(SOURCES_KEY);
+  return threadId && stored?.threadId === threadId && Array.isArray(stored.docs) ? stored.docs : [];
+};
+
 export const useChatStore = defineStore('chat', () => {
   const questionNumbers: Ref<number[] | undefined> = ref(undefined);
   const chatInput: Ref<string> = ref('');
   const hasChatAnswerError: Ref<boolean> = ref(false);
-  const chatMessagesList: Ref<ChatMessage[]> = ref(getFromStorage('chat') || []);
+  // the conversation itself stays in memory: after a reload it comes back from the api through
+  // the stored thread id
+  const chatMessagesList: Ref<ChatMessage[]> = ref([]);
   const questionQueues: Ref<string[] | null> = ref(getFromStorage('questionQueues'));
-  const sourcesList: Ref<Document[] | []> = ref(getFromStorage('chatSources') || []);
-  const reformulatedQuery: Ref<string | null> = ref(getFromStorage('reformulatedQuery'));
   const storedThreadId: Ref<string | null> = ref(localStorage.getItem('chatThreadId'));
-  const storedMessageId: Ref<string | null> = ref(localStorage.getItem('chatMessageId'));
+  const sourcesList: Ref<Document[] | []> = ref(readStoredSources(storedThreadId.value));
+  const reformulatedQuery: Ref<string | null> = ref(null);
+  // the server id of the last answer, for the clicks on its sources (metrics store)
+  const lastMessageId: Ref<string | null> = ref(null);
 
   const isChatEmpty: ComputedRef<Boolean> = computed(() => chatMessagesList.value.length === 0);
-  const chatStatus: Ref<(typeof CHAT_STATUS)[CHAT_STATUSES_TYPE]> = ref(
-    isChatEmpty.value ? CHAT_STATUS.EMPTY : CHAT_STATUS.DONE
-  );
+  const chatStatus: Ref<(typeof CHAT_STATUS)[CHAT_STATUSES_TYPE]> = ref(CHAT_STATUS.EMPTY);
   const processingMetadata: Ref<ChatProcessingMetadata | null> = ref(null);
   const isAnswering: ComputedRef<boolean> = computed(
     () => !SETTLED_STATUSES.includes(chatStatus.value)
@@ -121,7 +138,6 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       chatMessagesList.value = chatThread;
-      saveToStorage('chat', chatThread);
     } catch (error) {
       if (isThreadNotFound(error)) {
         // the conversation can't be continued, so a follow-up would be answered without it
@@ -130,7 +146,7 @@ export const useChatStore = defineStore('chat', () => {
         }
         return;
       }
-      // keep the chat restored from storage
+      // the thread stays stored: a follow-up still continues it, and a reload tries again
       console.error(error);
     }
   };
@@ -174,8 +190,6 @@ export const useChatStore = defineStore('chat', () => {
     }
 
     chatMessagesList.value.push(message);
-    // saved now, so the question survives a reload even when no answer comes
-    saveToStorage('chat', chatMessagesList.value);
   }
 
   // the question the API refused: it was never asked
@@ -183,37 +197,40 @@ export const useChatStore = defineStore('chat', () => {
     const last = chatMessagesList.value.at(-1);
     if (last?.role !== 'user' || last.content !== content) return;
     chatMessagesList.value.pop();
-    saveToStorage('chat', chatMessagesList.value);
   }
 
   const setReformulatedQuery = (query: string): void => {
     reformulatedQuery.value = query;
-    saveToStorage('reformulatedQuery', query);
   };
 
   function clearInput(): void {
     chatInput.value = '';
   }
 
+  // the thread id may come after the sources in the stream: saved again once it is known
+  function saveSources() {
+    if (storedThreadId.value && sourcesList.value.length) {
+      saveToSessionStorage(SOURCES_KEY, {
+        threadId: storedThreadId.value,
+        docs: sourcesList.value
+      });
+    } else {
+      clearFromSessionStorage(SOURCES_KEY);
+    }
+  }
+
   function storeThreadId(threadId: string) {
     if (threadId !== storedThreadId.value) {
       localStorage.setItem('chatThreadId', threadId);
       storedThreadId.value = threadId;
+      saveSources();
     }
   }
 
   function forgetThread() {
     storedThreadId.value = null;
-    storedMessageId.value = null;
+    lastMessageId.value = null;
     clearFromStorage('chatThreadId');
-    clearFromStorage('chatMessageId');
-  }
-
-  function storeMessageId(messageId: string) {
-    if (messageId !== storedMessageId.value) {
-      localStorage.setItem('chatMessageId', messageId);
-      storedMessageId.value = messageId;
-    }
   }
 
   // resolves false when the answer was dropped because a reset started a new generation
@@ -265,15 +282,6 @@ export const useChatStore = defineStore('chat', () => {
     const assistantMessageIndex = chatMessagesList.value.length - 1;
 
     let streamBuffer = '';
-    let lastPersistTimestamp = 0;
-
-    const persistChat = (force = false) => {
-      const now = Date.now();
-      if (force || now - lastPersistTimestamp >= 250) {
-        saveToStorage('chat', chatMessagesList.value);
-        lastPersistTimestamp = now;
-      }
-    };
 
     const appendToAssistantMessage = (chunk: string) => {
       const currentMessage = chatMessagesList.value[assistantMessageIndex];
@@ -285,7 +293,6 @@ export const useChatStore = defineStore('chat', () => {
         ...currentMessage,
         content: `${currentMessage.content}${chunk}`
       };
-      persistChat();
     };
 
     // an answer that failed or came back empty leaves no blank bubble behind
@@ -303,7 +310,6 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       chatMessagesList.value[assistantMessageIndex] = { ...currentMessage, content };
-      persistChat();
     };
 
     const extractContentChunk = (parsed: any): string => {
@@ -410,7 +416,7 @@ export const useChatStore = defineStore('chat', () => {
       const docs = extractDocs(parsed);
       if (docs) {
         sourcesList.value = docs;
-        saveToStorage('chatSources', docs);
+        saveSources();
         if (docs.length > 0) {
           chatStatus.value = CHAT_STATUS.SEARCHED;
         }
@@ -421,7 +427,7 @@ export const useChatStore = defineStore('chat', () => {
       }
 
       if (typeof parsed?.message_id === 'string') {
-        storeMessageId(parsed.message_id);
+        lastMessageId.value = parsed.message_id;
       }
     };
 
@@ -486,12 +492,9 @@ export const useChatStore = defineStore('chat', () => {
       // and the error shown under it tells the answer is not complete
       if (!isStale()) {
         dropEmptyAssistantMessage();
-        persistChat(true);
       }
       throw error;
     }
-
-    persistChat(true);
 
     clearProcessingMetadata();
     chatStatus.value = CHAT_STATUS.FORMULATED_ANSWER;
@@ -594,9 +597,7 @@ export const useChatStore = defineStore('chat', () => {
     sourcesList.value = [];
     reformulatedQuery.value = null;
     forgetThread();
-    clearFromStorage('chat');
-    clearFromStorage('chatSources');
-    clearFromStorage('reformulatedQuery');
+    clearFromSessionStorage(SOURCES_KEY);
   }
 
   function startNewChat() {
@@ -703,6 +704,7 @@ export const useChatStore = defineStore('chat', () => {
     questionQueues,
     sourcesList,
     reformulatedQuery,
+    lastMessageId,
     onSendMessage,
     clearInput,
     setReformulatedQuery,

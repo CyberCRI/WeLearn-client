@@ -1,4 +1,4 @@
-import { getFromStorage, saveToStorage } from '@/utils/storage';
+import { clearFromStorage, getFromStorage, saveToStorage } from '@/utils/storage';
 import type { ModuleId } from '@/types/learn/modules';
 
 // ponytail: browser only, lost on another device. swap these two functions for API calls once the
@@ -20,3 +20,6 @@ export function saveProgress(id: ModuleId, patch: ModuleProgress) {
   const all = readAll();
   saveToStorage(STORAGE_KEY, { ...all, [id]: { ...all[id], ...patch } });
 }
+
+// the progress belongs to whoever followed the modules: cleared when the user changes
+export const clearProgress = () => clearFromStorage(STORAGE_KEY);

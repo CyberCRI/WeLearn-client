@@ -1,8 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   downloadPendingSyllabus,
+  dropExpiredPendingSyllabus,
   exportSyllabus,
   PENDING_SYLLABUS_KEY,
+  PENDING_SYLLABUS_MAX_AGE_MS,
   type SyllabusExport
 } from '@/utils/syllabusDownload';
 import { planComplete, type CompleteLabels } from '@/utils/completeSyllabus';
@@ -10,7 +12,7 @@ import type { AppendixLabels } from '@/utils/pedagogicalAppendix';
 import { convertMarkdownToDocx, downloadDocx } from '@/utils/md-to-docx';
 import { basePostAxios } from '@/utils/fetch';
 import { track } from '@/utils/analytics';
-import { getFromStorage } from '@/utils/storage';
+import { getFromStorage, saveToStorage } from '@/utils/storage';
 import type { CourseToUpdate } from '@/types';
 import { approvedChange } from '@/__tests__/coursePathFixtures';
 
@@ -112,8 +114,8 @@ describe('syllabus downloads', () => {
     expect(downloadDocx).not.toHaveBeenCalled();
     expect(auth.askToSignUp).toHaveBeenCalledWith('download');
     expect(getFromStorage(PENDING_SYLLABUS_KEY)).toMatchObject({
-      kind: 'complete',
-      fileName: 'Gestion-complet.docx'
+      savedAt: expect.any(String),
+      syllabus: { kind: 'complete', fileName: 'Gestion-complet.docx' }
     });
   });
 
@@ -126,12 +128,63 @@ describe('syllabus downloads', () => {
     auth.isGuest = false;
     vi.mocked(convertMarkdownToDocx).mockRejectedValueOnce(new Error('docx'));
     await downloadPendingSyllabus();
-    expect(getFromStorage(PENDING_SYLLABUS_KEY)).toEqual(MARKDOWN);
+    expect(getFromStorage(PENDING_SYLLABUS_KEY).syllabus).toEqual(MARKDOWN);
 
     await downloadPendingSyllabus();
     await downloadPendingSyllabus();
     expect(downloadDocx).toHaveBeenCalledOnce();
     expect(getFromStorage(PENDING_SYLLABUS_KEY)).toBeNull();
+  });
+
+  describe('after a day', () => {
+    const HOUR = 60 * 60 * 1000;
+    const savedHoursAgo = (hours: number) =>
+      saveToStorage(PENDING_SYLLABUS_KEY, {
+        savedAt: new Date(Date.now() - hours * HOUR).toISOString(),
+        syllabus: MARKDOWN
+      });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('downloads a syllabus kept less than a day ago', async () => {
+      savedHoursAgo(23);
+      await downloadPendingSyllabus();
+      expect(downloadDocx).toHaveBeenCalledOnce();
+    });
+
+    it('drops a syllabus kept for more than a day instead of downloading it', async () => {
+      savedHoursAgo(25);
+      await downloadPendingSyllabus();
+      expect(downloadDocx).not.toHaveBeenCalled();
+      expect(getFromStorage(PENDING_SYLLABUS_KEY)).toBeNull();
+    });
+
+    it('drops it at boot even for a guest who never logs in', async () => {
+      vi.useFakeTimers();
+      auth.isGuest = true;
+      await exportSyllabus(MARKDOWN);
+
+      dropExpiredPendingSyllabus();
+      expect(getFromStorage(PENDING_SYLLABUS_KEY)).not.toBeNull();
+
+      vi.advanceTimersByTime(PENDING_SYLLABUS_MAX_AGE_MS + 1);
+      dropExpiredPendingSyllabus();
+      expect(getFromStorage(PENDING_SYLLABUS_KEY)).toBeNull();
+    });
+
+    // older versions kept the syllabus alone, without a date
+    it.each([
+      ['the undated format of older versions', MARKDOWN],
+      ['a date that cannot be read', { savedAt: 'yesterday', syllabus: MARKDOWN }],
+      ['something else', { savedAt: new Date().toISOString(), syllabus: { kind: 'markdown' } }]
+    ])('drops %s without downloading it', async (_, value) => {
+      saveToStorage(PENDING_SYLLABUS_KEY, value);
+      await downloadPendingSyllabus();
+      expect(downloadDocx).not.toHaveBeenCalled();
+      expect(getFromStorage(PENDING_SYLLABUS_KEY)).toBeNull();
+    });
   });
 
   it('still asks a guest to sign up when the storage refuses the syllabus', async () => {

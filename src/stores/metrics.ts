@@ -3,6 +3,8 @@ import { isInPage } from '@/utils/urlsUtils';
 import { track } from '@/utils/analytics';
 import type { SourceOrigin } from '@/types';
 import { defineStore } from 'pinia';
+import { useChatStore } from '@/stores/chat';
+import { useSearchStore } from '@/stores/search';
 
 const PAGE_TO_ORIGIN: [string, SourceOrigin][] = [
   ['q-and-a', 'chat'],
@@ -28,24 +30,13 @@ export const useMetricsStore = defineStore('metrics', () => {
       return;
     }
 
-    let storageKey;
-
+    // the answer or the search the clicked source came from, known only until a reload
+    let messageId: string | null = null;
     if (isInPage('q-and-a')) {
-      storageKey = 'chatMessageId';
+      messageId = useChatStore().lastMessageId;
+    } else if (isInPage('search')) {
+      messageId = useSearchStore().lastMessageId;
     }
-    if (isInPage('tutor')) {
-      storageKey = 'tutorMessageId';
-    }
-    if (isInPage('search')) {
-      storageKey = 'searchMessageId';
-    }
-
-    if (!storageKey) {
-      return;
-    }
-
-    // get message id from storage
-    const messageId = localStorage.getItem(storageKey);
     if (!messageId || !docId) {
       return;
     }

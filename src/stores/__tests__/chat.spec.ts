@@ -86,6 +86,7 @@ describe('chat store', () => {
     auth.isAuthenticated = false;
     auth.askToSignUp.mockReset();
     localStorage.clear();
+    sessionStorage.clear();
     setActivePinia(createPinia());
   });
 
@@ -105,12 +106,34 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual([]);
     });
 
-    it('starts done when a chat is stored', () => {
+    // the conversation comes back from the api, through the stored thread id
+    it('reads no conversation from the browser', () => {
+      localStorage.setItem('chatThreadId', 'thread-1');
       localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
+      localStorage.setItem('reformulatedQuery', JSON.stringify('reformulated'));
       const store = useChatStore();
 
-      expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
-      expect(store.chatMessagesList).toHaveLength(1);
+      expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
+      expect(store.chatMessagesList).toEqual([]);
+      expect(store.reformulatedQuery).toBeNull();
+      expect(store.lastMessageId).toBeNull();
+    });
+
+    it('restores the sources of this tab when they belong to the stored thread', () => {
+      const docs = [{ id: 'doc-1' }];
+      localStorage.setItem('chatThreadId', 'thread-1');
+      sessionStorage.setItem('chatSources', JSON.stringify({ threadId: 'thread-1', docs }));
+      expect(useChatStore().sourcesList).toEqual(docs);
+
+      // another tab moved on to another thread meanwhile
+      localStorage.setItem('chatThreadId', 'thread-2');
+      setActivePinia(createPinia());
+      expect(useChatStore().sourcesList).toEqual([]);
+
+      // older versions kept the docs alone
+      sessionStorage.setItem('chatSources', JSON.stringify(docs));
+      setActivePinia(createPinia());
+      expect(useChatStore().sourcesList).toEqual([]);
     });
   });
 
@@ -155,42 +178,50 @@ describe('chat store', () => {
       expect(baseGetAxios).toHaveBeenCalledWith('/qna/chat/history?thread_id=a%20b%26c%3Dd');
     });
 
-    it('keeps the stored chat when the history cannot be loaded', async () => {
+    // the page opened again in the same visit: the chat is still in memory
+    it('keeps the chat on screen and the thread when the history cannot be loaded', async () => {
       const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
       localStorage.setItem('chatThreadId', 'thread-1');
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
       vi.mocked(baseGetAxios).mockRejectedValue(new Error('network'));
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'hi' }];
+      store.chatStatus = CHAT_STATUS.DONE;
 
       await expect(store.initializeChat()).resolves.toBeUndefined();
 
       expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'hi' }]);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
+      expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
       expect(errorLog).toHaveBeenCalled();
     });
 
     it('starts a new conversation when the stored thread is not found', async () => {
       localStorage.setItem('chatThreadId', 'thread-1');
-      localStorage.setItem('chatMessageId', 'msg-1');
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
+      sessionStorage.setItem(
+        'chatSources',
+        JSON.stringify({ threadId: 'thread-1', docs: [{ id: 'doc-1' }] })
+      );
       vi.mocked(baseGetAxios).mockRejectedValue(apiError(404, 'THREAD_NOT_FOUND'));
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'hi' }];
+      store.lastMessageId = 'msg-1';
 
       await store.initializeChat();
 
       expect(store.chatMessagesList).toEqual([]);
+      expect(store.sourcesList).toEqual([]);
+      expect(store.lastMessageId).toBeNull();
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
       expect(localStorage.getItem('chatThreadId')).toBeNull();
-      expect(localStorage.getItem('chatMessageId')).toBeNull();
-      expect(localStorage.getItem('chat')).toBeNull();
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
     });
 
     it('keeps the stored chat for another 404', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
       localStorage.setItem('chatThreadId', 'thread-1');
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
       vi.mocked(baseGetAxios).mockRejectedValue(apiError(404, 'SOMETHING_ELSE'));
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'hi' }];
 
       await store.initializeChat();
 
@@ -219,9 +250,9 @@ describe('chat store', () => {
 
     it('ignores a history that is not a list', async () => {
       localStorage.setItem('chatThreadId', 'thread-1');
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'hi' }]));
       vi.mocked(baseGetAxios).mockResolvedValue({ detail: 'nope' });
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'hi' }];
 
       await store.initializeChat();
 
@@ -446,7 +477,6 @@ describe('chat store', () => {
 
       expect(auth.askToSignUp).toHaveBeenCalledWith('chatLimit');
       expect(store.chatMessagesList).toEqual([]);
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual([]);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
       expect(store.hasChatAnswerError).toBe(false);
     });
@@ -474,7 +504,7 @@ describe('chat store', () => {
       expect(await useChatStore().onSendMessage('another question')).toBe(true);
     });
 
-    it('streams the answer into an assistant message and persists the chat', async () => {
+    it('streams the answer into an assistant message, kept in memory only', async () => {
       mockStream([sse({ content: 'Hello' }), sse({ delta: ' world' })]);
       const store = useChatStore();
 
@@ -489,7 +519,7 @@ describe('chat store', () => {
         { role: 'user', content: 'a question' },
         { role: 'assistant', content: 'Hello world' }
       ]);
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(store.chatMessagesList);
+      expect(localStorage.getItem('chat')).toBeNull();
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
       expect(store.processingMetadata).toBeNull();
       expect(store.hasChatAnswerError).toBe(false);
@@ -522,14 +552,15 @@ describe('chat store', () => {
       expect(lastBody()).not.toHaveProperty('thread_id');
     });
 
-    it('stores the thread and message ids sent by the stream', async () => {
+    it('stores the thread id and keeps the message id in memory', async () => {
       mockStream([sse({ content: 'Answer', thread_id: 'thread-1', message_id: 'msg-1' })]);
       const store = useChatStore();
 
       await store.onSendMessage('first');
 
       expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
-      expect(localStorage.getItem('chatMessageId')).toBe('msg-1');
+      expect(store.lastMessageId).toBe('msg-1');
+      expect(localStorage.getItem('chatMessageId')).toBeNull();
 
       // the next question continues the same thread
       mockStream([sse({ content: 'Answer' })]);
@@ -538,15 +569,20 @@ describe('chat store', () => {
       expect(lastBody().thread_id).toBe('thread-1');
     });
 
-    it('stores the sources sent by the stream', async () => {
+    // the thread id comes after the sources on a new thread
+    it('keeps the sources sent by the stream in this tab, with their thread', async () => {
       const docs = [{ id: 'doc-1' }];
-      mockStream([sse({ data: { docs } }), sse({ content: 'Answer' })]);
+      mockStream([sse({ data: { docs } }), sse({ content: 'Answer', thread_id: 'thread-1' })]);
       const store = useChatStore();
 
       await store.onSendMessage('a question');
 
       expect(store.sourcesList).toEqual(docs);
-      expect(JSON.parse(localStorage.getItem('chatSources')!)).toEqual(docs);
+      expect(JSON.parse(sessionStorage.getItem('chatSources')!)).toEqual({
+        threadId: 'thread-1',
+        docs
+      });
+      expect(localStorage.getItem('chatSources')).toBeNull();
     });
 
     it('moves through the processing statuses while streaming', async () => {
@@ -626,7 +662,10 @@ describe('chat store', () => {
         if (key === 'chatSources') throw new Error('quota exceeded');
         setItem.call(this, key, value);
       });
-      mockStream([sse({ content: 'Hello' }), sse({ docs: [{ id: 'doc-1' }] })]);
+      mockStream([
+        sse({ content: 'Hello', thread_id: 'thread-1' }),
+        sse({ docs: [{ id: 'doc-1' }] })
+      ]);
       const store = useChatStore();
 
       await store.onSendMessage('a question');
@@ -651,7 +690,6 @@ describe('chat store', () => {
 
       const question = [{ role: 'user', content: 'a question' }];
       expect(store.chatMessagesList).toEqual(question);
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(question);
       expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
       expect(store.hasChatAnswerError).toBe(true);
     });
@@ -668,12 +706,11 @@ describe('chat store', () => {
 
       const question = [{ role: 'user', content: 'a question' }];
       expect(store.chatMessagesList).toEqual(question);
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(question);
       expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
       expect(store.hasChatAnswerError).toBe(true);
     });
 
-    it('keeps and persists a partial answer when the stream breaks midway', async () => {
+    it('keeps a partial answer when the stream breaks midway', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
       const read = vi
         .fn()
@@ -694,43 +731,35 @@ describe('chat store', () => {
         { role: 'assistant', content: 'Hel' }
       ];
       expect(store.chatMessagesList).toEqual(partial);
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(partial);
       expect(store.chatStatus).toBe(CHAT_STATUS.ERROR);
       expect(store.hasChatAnswerError).toBe(true);
     });
 
-    it('persists the question before the answer arrives', async () => {
+    it('shows the question before the answer arrives', async () => {
       const stream = controlledStream();
       const store = useChatStore();
 
       const sending = store.onSendMessage('a question');
 
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual([
-        { role: 'user', content: 'a question' }
-      ]);
+      expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'a question' }]);
       await stream.push(sse({ content: 'Answer' }));
       await stream.end();
       await sending;
     });
 
-    it('keeps the persisted question when the request fails', async () => {
+    it('keeps the question on screen when the request fails', async () => {
       vi.spyOn(console, 'error').mockImplementation(() => {});
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'earlier' }]));
       vi.mocked(fetchStream).mockRejectedValue(new Error('network'));
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'earlier' }];
 
       await store.onSendMessage('a question');
 
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual([
+      expect(store.chatMessagesList).toEqual([
         { role: 'user', content: 'earlier' },
         { role: 'user', content: 'a question' }
       ]);
-      // a reloaded store shows the question
-      setActivePinia(createPinia());
-      expect(useChatStore().chatMessagesList.at(-1)).toEqual({
-        role: 'user',
-        content: 'a question'
-      });
+      expect(localStorage.getItem('chat')).toBeNull();
     });
 
     it('clears the error of the previous answer as soon as the next question is sent', async () => {
@@ -759,8 +788,8 @@ describe('chat store', () => {
 
     it('asks again on a new thread when the stored one is not found', async () => {
       localStorage.setItem('chatThreadId', 'thread-0');
-      localStorage.setItem('chatMessageId', 'msg-0');
       const store = useChatStore();
+      store.lastMessageId = 'msg-0';
       mockStream([sse({ content: 'Answer', thread_id: 'thread-1' })]);
       vi.mocked(fetchStream).mockRejectedValueOnce(apiError(404, 'THREAD_NOT_FOUND'));
 
@@ -778,7 +807,7 @@ describe('chat store', () => {
       ]);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
       expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
-      expect(localStorage.getItem('chatMessageId')).toBeNull();
+      expect(store.lastMessageId).toBeNull();
     });
 
     it('asks again only once', async () => {
@@ -833,7 +862,6 @@ describe('chat store', () => {
         role: 'assistant',
         content: 'See [[1]](https://doc)'
       });
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(store.chatMessagesList);
     });
 
     it('keeps the streamed answer when the final event has no final content', async () => {
@@ -937,14 +965,14 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual([]);
       expect(store.sourcesList).toEqual([]);
       expect(store.reformulatedQuery).toBeNull();
-      for (const key of ['chat', 'chatSources', 'reformulatedQuery', 'chatThreadId']) {
-        expect(localStorage.getItem(key)).toBeNull();
-      }
+      expect(store.lastMessageId).toBeNull();
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
     });
   });
 
   describe('openThread', () => {
-    it('loads the history of the thread and persists it', async () => {
+    it('loads the history of the thread and stores its id only', async () => {
       const history = [
         { role: 'user', content: 'hi' },
         { role: 'assistant', content: 'hello' }
@@ -958,7 +986,7 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual(history);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
       expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual(history);
+      expect(localStorage.getItem('chat')).toBeNull();
     });
 
     it('drops the previous conversation, its sources and its reformulated query', async () => {
@@ -977,8 +1005,8 @@ describe('chat store', () => {
       expect(store.sourcesList).toEqual([]);
       expect(store.reformulatedQuery).toBeNull();
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
-      expect(localStorage.getItem('chatSources')).toBeNull();
-      expect(localStorage.getItem('chatMessageId')).toBeNull();
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
+      expect(store.lastMessageId).toBeNull();
       answerHistory([{ role: 'user', content: 'hi' }]);
       await opening;
       expect(store.chatMessagesList).toEqual([{ role: 'user', content: 'hi' }]);
@@ -1009,7 +1037,7 @@ describe('chat store', () => {
       expect(store.hasChatAnswerError).toBe(false);
       expect(store.chatStatus).toBe(CHAT_STATUS.DONE);
       expect(localStorage.getItem('chatThreadId')).toBe('thread-1');
-      expect(JSON.parse(localStorage.getItem('chat')!)).toEqual([{ role: 'user', content: 'hi' }]);
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
     });
 
     it('drops a history that arrives after another thread was opened', async () => {
@@ -1090,8 +1118,8 @@ describe('chat store', () => {
     });
 
     it('does nothing when the chat has messages', async () => {
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'unanswered' }]));
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'unanswered' }];
 
       await store.restoreLatestThread();
 
@@ -1227,9 +1255,8 @@ describe('chat store', () => {
       expect(store.chatMessagesList).toEqual([]);
       expect(store.sourcesList).toEqual([]);
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
-      for (const key of ['chat', 'chatSources', 'chatThreadId']) {
-        expect(localStorage.getItem(key)).toBeNull();
-      }
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
     };
 
     it('deletes the thread in the api and empties the chat', async () => {
@@ -1265,8 +1292,8 @@ describe('chat store', () => {
     });
 
     it('calls nothing without a thread', async () => {
-      localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'unanswered' }]));
       const store = useChatStore();
+      store.chatMessagesList = [{ role: 'user', content: 'unanswered' }];
 
       await store.deleteCurrentChat();
 
@@ -1345,9 +1372,9 @@ describe('chat store', () => {
       expect(store.chatStatus).toBe(CHAT_STATUS.EMPTY);
       expect(store.hasChatAnswerError).toBe(false);
       expect(store.processingMetadata).toBeNull();
-      for (const key of ['chat', 'chatSources', 'chatThreadId', 'chatMessageId']) {
-        expect(localStorage.getItem(key)).toBeNull();
-      }
+      expect(store.lastMessageId).toBeNull();
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
       expect(track).not.toHaveBeenCalledWith('Chat Answer Received', expect.anything());
 
       // the next question starts a new thread, and can be sent right away
@@ -1420,16 +1447,10 @@ describe('chat store', () => {
       expect(store.storedSubject).toBeUndefined();
       expect(store.questionNumbers).toHaveLength(2);
       expect(store.questionNumbers![0]).not.toBe(store.questionNumbers![1]);
-      for (const key of [
-        'chat',
-        'chatSources',
-        'reformulatedQuery',
-        'chatSubject',
-        'chatThreadId',
-        'chatMessageId'
-      ]) {
-        expect(localStorage.getItem(key)).toBeNull();
-      }
+      expect(store.lastMessageId).toBeNull();
+      expect(localStorage.getItem('chatSubject')).toBeNull();
+      expect(localStorage.getItem('chatThreadId')).toBeNull();
+      expect(sessionStorage.getItem('chatSources')).toBeNull();
 
       // the thread id is forgotten for the next question
       mockStream([sse({ content: 'Answer' })]);
