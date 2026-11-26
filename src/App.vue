@@ -11,6 +11,7 @@ import SignupPromptModal from '@/components/modals/SignupPromptModal.vue';
 import SessionExpiredModal from '@/components/modals/SessionExpiredModal.vue';
 import AccessEndedModal from '@/components/modals/AccessEndedModal.vue';
 import LimitedAccessModal from '@/components/modals/LimitedAccessModal.vue';
+import BookmarkErrorNotice from '@/components/BookmarkErrorNotice.vue';
 import { useSourcesStore } from '@/stores/sources';
 import { useBookmarksStore } from '@/stores/bookmarks';
 import { getQueryParamValue } from '@/utils/urlsUtils';
@@ -68,6 +69,7 @@ onMounted(async () => {
     <SessionExpiredModal />
     <AccessEndedModal />
     <LimitedAccessModal />
+    <BookmarkErrorNotice />
 
     <AppLayout>
       <template #header v-if="!$route.meta.hideTemplate">

@@ -62,7 +62,8 @@ onMounted(async () => {
   <div v-else-if="isLoading" class="empty">
     <LoadingComponent />
   </div>
-  <div v-else class="empty" data-testid="noBookmarks">
+  <!-- a failed load is told by the bookmark error notice, not as "no bookmarks" -->
+  <div v-else-if="!store.hasBookmarkError" class="empty" data-testid="noBookmarks">
     <h1 class="title is-4 is-size-5-mobile">{{ $t('noBookmarks') }}</h1>
     <p class="hint">{{ $t('noBookmarksHint') }}</p>
   </div>

@@ -14,6 +14,11 @@ export const fr = {
   },
   back: 'Retour',
   bookmarks: 'Favoris',
+  bookmarkError: {
+    title: 'Favoris indisponibles',
+    description:
+      'Vos favoris n’ont pas pu être chargés ou enregistrés. Veuillez réessayer dans un instant.'
+  },
   cardArticle: {
     seeDetails: 'Voir les détails',
     openArticle: 'Ouvrir l’article',

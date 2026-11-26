@@ -14,6 +14,10 @@ export const en = {
   },
   back: 'Back',
   bookmarks: 'Bookmarks',
+  bookmarkError: {
+    title: 'Bookmarks unavailable',
+    description: 'Your bookmarks could not be loaded or saved. Please try again in a moment.'
+  },
   cardArticle: {
     seeDetails: 'See details',
     openArticle: 'Open article',
