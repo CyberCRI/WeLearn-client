@@ -10,6 +10,10 @@ import { useAuthStore } from './stores/auth';
 import { useFeatureFlipStore } from './stores/featureFlip';
 import { useUserStore } from './stores/user';
 import { initAnalytics, track } from './utils/analytics';
+import { clearLegacyKeys } from './utils/storage';
+
+// what older versions kept in this browser and this one no longer does
+clearLegacyKeys();
 
 const pinia = createPinia();
 const app = createApp(App);

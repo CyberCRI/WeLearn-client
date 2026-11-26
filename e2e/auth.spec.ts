@@ -246,9 +246,9 @@ test.describe('auth', () => {
     });
 
     test('logs out from the user menu', async ({ page, keycloak }) => {
-      await page.evaluate(() =>
-        localStorage.setItem('chat', JSON.stringify([{ role: 'user', content: 'q' }]))
-      );
+      await page.fill('textarea', 'a question before the logout');
+      await page.keyboard.press('Enter');
+      await expect(page.getByText('An answer from the API')).toBeVisible();
       const apiLogout = page.waitForRequest(
         (request) => request.url().includes('/user/logout') && request.method() === 'POST'
       );
@@ -261,9 +261,8 @@ test.describe('auth', () => {
       await expect(page.getByTestId('user-menu-login')).toBeVisible();
       expect(keycloak.logoutCalls).toBe(1);
       expect(keycloak.loggedIn).toBe(false);
-      expect(await page.evaluate(() => JSON.parse(localStorage.getItem('chat') || '[]'))).toEqual(
-        []
-      );
+      await expect(page.getByText('a question before the logout')).toHaveCount(0);
+      expect(await page.evaluate(() => localStorage.getItem('chatThreadId'))).toBeNull();
       // the user asked for it, so no "session expired" message
       await expect(page.getByTestId('session-expired')).toHaveCount(0);
     });

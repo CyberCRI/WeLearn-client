@@ -3,7 +3,7 @@ import type { CourseMetadata } from '@/types';
 import { reactive } from 'vue';
 import ChevronDown from '@/components/icons/ChevronDown.vue';
 import i18n from '@/localisation/i18n';
-import { getFromStorage } from '@/utils/storage';
+import { useMAsTutorStore } from '@/stores/mas_tutor';
 
 const emit = defineEmits(['submit']);
 
@@ -13,20 +13,25 @@ defineProps<{
   action?: () => void;
 }>();
 
+const masStore = useMAsTutorStore();
+
+// prefilled with what was sent last in this visit, kept in memory only
 const form: CourseMetadata = reactive(
-  getFromStorage('courseMetadaRef') || {
-    discipline: undefined,
-    topic: undefined,
-    level: undefined,
-    num_sessions: undefined,
-    session_duration: undefined,
-    user_description: undefined,
-    session_type: undefined,
-    class_size: undefined,
-    session_mode: 'PRESENTIEL',
-    output_language: i18n.global.locale.value === 'fr' ? 'french' : 'english',
-    syllabus_mode: 'mode_1'
-  }
+  masStore.hasUserInputData
+    ? { ...masStore.courseMetadaRef }
+    : {
+        discipline: undefined,
+        topic: undefined,
+        level: undefined,
+        num_sessions: undefined,
+        session_duration: undefined,
+        user_description: undefined,
+        session_type: undefined,
+        class_size: undefined,
+        session_mode: 'PRESENTIEL',
+        output_language: i18n.global.locale.value === 'fr' ? 'french' : 'english',
+        syllabus_mode: 'mode_1'
+      }
 );
 
 function submitForm() {

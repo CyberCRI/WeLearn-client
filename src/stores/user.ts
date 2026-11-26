@@ -15,6 +15,8 @@ import { useChatStore } from '@/stores/chat';
 import { useSearchStore } from '@/stores/search';
 import { PENDING_SYLLABUS_KEY } from '@/utils/syllabusDownload';
 import { DRAFT_KEY } from '@/utils/courseDraft';
+import { clearProgress } from '@/learn/progress';
+import { clearSavedForms } from '@/composables/useEvalForms';
 import { useFeatureFlipStore } from '@/stores/featureFlip';
 
 type OnboardingState = {
@@ -52,7 +54,6 @@ export const useUserStore = defineStore('user', () => {
     saveToStorage('onboardingState', onboardingState.value);
 
     if (userData && !userData.consentRefused) {
-      saveToStorage('userMetricsData', userData);
       try {
         await basePostAxios('/user/institution-data', {
           role: userData.role,
@@ -107,13 +108,13 @@ export const useUserStore = defineStore('user', () => {
     resetAnalytics();
     useChatStore().$reset();
     useSearchStore().$reset();
-    // storage only for the hidden TestMAS page, its in-memory state goes on reload
-    clearFromStorage('courseMetadaRef');
-    clearFromStorage('userMetricsData');
     // a guest's syllabus waiting for a login must not download for someone else
     clearFromStorage(PENDING_SYLLABUS_KEY);
     // the draft of a syllabus holds its whole text: it belongs to the account
     clearFromStorage(DRAFT_KEY);
+    // the next user would see the previous one's progress, and not be asked the self-evaluations
+    clearProgress();
+    clearSavedForms();
   };
 
   // after a logout: the next user_and_session must start a new guest, not reuse the account's

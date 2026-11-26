@@ -3,7 +3,6 @@ import { basePostAxios } from '@/utils/fetch';
 import { computed, ref, type Ref } from 'vue';
 import { type CourseMetadata, type Document, type SyllabusData } from '@/types';
 import { scrollToAnchor } from '@/utils/navigation';
-import { saveToStorage } from '@/utils/storage';
 import type { AxiosResponse } from 'axios';
 
 interface MAS_FILES {
@@ -50,7 +49,6 @@ export const useMAsTutorStore = defineStore('masTutor', () => {
     courseMetadaRef.value = { ...args };
     hasUserInputData.value = true;
 
-    saveToStorage('courseMetadaRef', courseMetadaRef.value);
     if (courseMetadaRef.value.syllabus_mode !== 'mode_3') {
       if (filesRef.value.length === 0) {
         window.alert('Please upload a syllabus file before proceeding.');

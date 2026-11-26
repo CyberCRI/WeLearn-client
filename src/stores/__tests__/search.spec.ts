@@ -25,6 +25,7 @@ const mockSearch = (status: number, data: Record<string, unknown> = { docs: DOCS
 describe('search store', () => {
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     setActivePinia(createPinia());
   });
 
@@ -57,14 +58,26 @@ describe('search store', () => {
     });
   });
 
-  it('restores the last search from storage', () => {
-    localStorage.setItem('searchInput', JSON.stringify(VALID_QUERY));
-    localStorage.setItem('searchResults', JSON.stringify(DOCS));
+  it('restores the last search of this tab', () => {
+    sessionStorage.setItem('searchInput', JSON.stringify(VALID_QUERY));
+    sessionStorage.setItem('searchResults', JSON.stringify(DOCS));
 
     const store = useSearchStore();
 
     expect(store.searchInput).toBe(VALID_QUERY);
     expect(store.searchResults).toEqual(DOCS);
+  });
+
+  it('reads no search kept in localStorage by older versions', () => {
+    localStorage.setItem('searchInput', JSON.stringify(VALID_QUERY));
+    localStorage.setItem('searchResults', JSON.stringify(DOCS));
+    localStorage.setItem('searchMessageId', 'message-1');
+
+    const store = useSearchStore();
+
+    expect(store.searchInput).toBe('');
+    expect(store.searchResults).toBeNull();
+    expect(store.lastMessageId).toBeNull();
   });
 
   describe('fetchSources', () => {
@@ -109,9 +122,10 @@ describe('search store', () => {
       expect(store.sdgsQuery).toEqual(['13', '15']);
       expect(store.hasPartialResult).toBe(false);
       expect(store.displayNoResult).toBe(false);
-      expect(JSON.parse(localStorage.getItem('searchInput') || '')).toBe(VALID_QUERY);
-      expect(JSON.parse(localStorage.getItem('searchResults') || '')).toEqual(DOCS);
-      expect(localStorage.getItem('searchMessageId')).toBe('message-1');
+      expect(JSON.parse(sessionStorage.getItem('searchInput') || '')).toBe(VALID_QUERY);
+      expect(JSON.parse(sessionStorage.getItem('searchResults') || '')).toEqual(DOCS);
+      expect(store.lastMessageId).toBe('message-1');
+      expect(localStorage.length).toBe(0);
     });
 
     it('flags a partial result on 206', async () => {
@@ -128,12 +142,14 @@ describe('search store', () => {
       mockSearch(204, {});
       const store = useSearchStore();
       store.searchInput = VALID_QUERY;
+      // from the previous search: the clicks on the new results are not its own
+      store.lastMessageId = 'message-0';
 
       await store.fetchSources();
 
       expect(store.displayNoResult).toBe(true);
       expect(store.searchResults).toEqual([]);
-      expect(localStorage.getItem('searchMessageId')).toBeNull();
+      expect(store.lastMessageId).toBeNull();
     });
 
     it('keeps the api error code', async () => {
@@ -175,9 +191,10 @@ describe('search store', () => {
   });
 
   it('resets the state and the storage', () => {
-    localStorage.setItem('searchInput', JSON.stringify(VALID_QUERY));
-    localStorage.setItem('searchResults', JSON.stringify(DOCS));
+    sessionStorage.setItem('searchInput', JSON.stringify(VALID_QUERY));
+    sessionStorage.setItem('searchResults', JSON.stringify(DOCS));
     const store = useSearchStore();
+    store.lastMessageId = 'message-1';
     store.hasPartialResult = true;
     store.hasSourcesError = true;
     store.sdgsQuery = ['13'];
@@ -189,8 +206,9 @@ describe('search store', () => {
     expect(store.hasPartialResult).toBe(false);
     expect(store.hasSourcesError).toBe(false);
     expect(store.sdgsQuery).toEqual([]);
-    expect(localStorage.getItem('searchInput')).toBeNull();
-    expect(localStorage.getItem('searchResults')).toBeNull();
+    expect(store.lastMessageId).toBeNull();
+    expect(sessionStorage.getItem('searchInput')).toBeNull();
+    expect(sessionStorage.getItem('searchResults')).toBeNull();
   });
 
   describe('analytics', () => {
